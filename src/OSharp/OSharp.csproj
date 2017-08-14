@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\docs\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>柳柳软件(66soft.net)</Authors>
+    <Company>柳柳软件(66soft.net)</Company>
+    <Copyright>Copyright © 66SOFT 2014-2017</Copyright>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
+    <PackageIconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</PackageIconUrl>
+    <PackageTags>osharp</PackageTags>
+    <Description>OSharp核心组件，封装着框架核心及数据存储，缓存，辅助操作等功能</Description>
+    <Summary>OSharp核心组件</Summary>
+    <PackageReleaseNotes />
+    <NeutralLanguage>zh-CHS</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>
