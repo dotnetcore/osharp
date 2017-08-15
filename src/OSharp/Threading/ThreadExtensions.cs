@@ -10,7 +10,7 @@ using System;
 using System.Threading;
 
 
-namespace OSharp.Theading
+namespace OSharp.Threading
 {
     /// <summary>
     /// 线程扩展操作类
