@@ -38,7 +38,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ComponentModel.Annotations.4.4.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
@@ -54,7 +62,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ComparisonHelperTests.cs" />
+    <Compile Include="Collections\EnumerableExtensionsTests.cs" />
+    <Compile Include="Collections\EqualityHelperTests.cs" />
+    <Compile Include="Collections\QueryableExtensionsTests.cs" />
+    <Compile Include="DataAnnotations\PasswordAttributeTests.cs" />
+    <Compile Include="Data\CompressionTests.cs" />
+    <Compile Include="Develop\T4\T4ModelInfoTests.cs" />
+    <Compile Include="Extensions\BooleanExtensionsTests.cs" />
+    <Compile Include="Extensions\EnumExtensionsTests.cs" />
+    <Compile Include="Extensions\ExceptionExtensionsTests.cs" />
+    <Compile Include="Extensions\ExpressionExtensionsTests.cs" />
+    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
+    <Compile Include="Extensions\ParamterCheckExtensionsTests.cs" />
+    <Compile Include="Extensions\RandomExtensionsTest.cs" />
+    <Compile Include="Extensions\StringBuilderExtensionsTest.cs" />
+    <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Filter\CollectionPropertySorterTests.cs" />
+    <Compile Include="Filter\FilterGroupTests.cs" />
+    <Compile Include="Filter\FilterHelperTests.cs" />
+    <Compile Include="Json\JsonHelperTests.cs" />
+    <Compile Include="Maths\AnyRadixConvertTests.cs" />
+    <Compile Include="Net\NetHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\TypeExtensionsTests.cs" />
+    <Compile Include="Secutiry\DesHelperTests.cs" />
+    <Compile Include="Secutiry\HashHelperTests.cs" />
+    <Compile Include="Theading\ThreadExtensionsTests.cs" />
+    <Compile Include="Timing\DateTimeExtensionsTests.cs" />
+    <Compile Include="Timing\DateTimeRangeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +99,10 @@
     <ProjectReference Include="..\..\src\OSharp\OSharp.csproj">
       <Project>{d1b8f25f-68ed-470b-b996-436fe321f74a}</Project>
       <Name>OSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj">
+      <Project>{f3391963-914e-4128-bcec-f672749e04e7}</Project>
+      <Name>OSharp.UnitTest.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

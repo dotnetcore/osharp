@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-using OSharp.Utility.Extensions;
+using OSharp.Timing;
 
 
 namespace OSharp.UnitTest.Infrastructure
@@ -36,6 +36,5 @@ namespace OSharp.UnitTest.Infrastructure
             }
             Entities = entities;
         }
-        
     }
 }
