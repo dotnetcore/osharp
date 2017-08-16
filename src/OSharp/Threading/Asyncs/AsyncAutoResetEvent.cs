@@ -18,7 +18,7 @@ namespace OSharp.Threading.Asyncs
     /// </summary>
     public class AsyncAutoResetEvent
     {
-        private readonly static Task Completed = Task.FromResult(true);
+        private static readonly Task Completed = Task.FromResult(true);
         private readonly Queue<TaskCompletionSource<bool>> _waits = new Queue<TaskCompletionSource<bool>>();
         private bool _signaled;
 

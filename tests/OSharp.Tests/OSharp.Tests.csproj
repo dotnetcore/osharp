@@ -88,7 +88,7 @@
     <Compile Include="Reflection\TypeExtensionsTests.cs" />
     <Compile Include="Secutiry\DesHelperTests.cs" />
     <Compile Include="Secutiry\HashHelperTests.cs" />
-    <Compile Include="Theading\ThreadExtensionsTests.cs" />
+    <Compile Include="Threading\ThreadExtensionsTests.cs" />
     <Compile Include="Timing\DateTimeExtensionsTests.cs" />
     <Compile Include="Timing\DateTimeRangeTests.cs" />
   </ItemGroup>

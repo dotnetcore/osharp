@@ -3,7 +3,7 @@
 using Xunit;
 
 
-namespace OSharp.Theading.Tests
+namespace OSharp.Threading.Tests
 {
     public class ThreadExtensionsTests
     {
