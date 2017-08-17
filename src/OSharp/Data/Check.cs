@@ -95,8 +95,7 @@ namespace OSharp
         /// <exception cref="ArgumentException"></exception>
         public static void NotNullOrEmpty(string value, string paramName)
         {
-            value.CheckNotNull(paramName);
-            Require<ArgumentException>(value.Length > 0, string.Format(Resources.ParameterCheck_NotNullOrEmpty_String, paramName));
+            Require<ArgumentException>(!string.IsNullOrEmpty(value), string.Format(Resources.ParameterCheck_NotNullOrEmpty_String, paramName));
         }
 
         /// <summary>
@@ -120,7 +119,7 @@ namespace OSharp
         /// <exception cref="ArgumentException"></exception>
         public static void NotNullOrEmpty<T>(IEnumerable<T> collection, string paramName)
         {
-            collection.CheckNotNull(paramName);
+            NotNull(collection, paramName);
             Require<ArgumentException>(collection.Any(), string.Format(Resources.ParameterCheck_NotNullOrEmpty_Collection, paramName));
         }
 

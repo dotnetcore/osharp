@@ -25,9 +25,10 @@ namespace OSharp.Entity
         where TKey : IEquatable<TKey>
     {
         /// <summary>
-        /// 获取所属的上下文类型，如为null，将使用默认上下文，否则使用指定类型的上下文类型
+        /// 获取所属的上下文类型，如为null，将使用默认上下文，
+        /// 否则使用指定类型的上下文类型（尚不支持）
         /// </summary>
-        public virtual Type DbContextType => null;
+        public Type DbContextType => null;
 
         /// <summary>
         /// 将当前实体类映射对象注册到数据上下文模型构建器中

@@ -228,7 +228,7 @@ namespace OSharp.Timing
         }
 
         /// <summary>
-        /// 获取 过去30天的时间范围
+        /// 获取 相对当前时间过去30天的时间范围
         /// </summary>
         public static DateTimeRange Last30Days
         {
@@ -240,7 +240,19 @@ namespace OSharp.Timing
         }
 
         /// <summary>
-        /// 获取 过去7天的时间范围
+        /// 获取 截止到昨天的最近30天的天数范围
+        /// </summary>
+        public static DateTimeRange Last30DaysExceptToday
+        {
+            get
+            {
+                var now = DateTime.Now;
+                return new DateTimeRange(now.Date.AddDays(-30), now.Date.AddMilliseconds(-1));
+            }
+        }
+
+        /// <summary>
+        /// 获取 相对当前时间过去7天的时间范围
         /// </summary>
         public static DateTimeRange Last7Days
         {
@@ -248,6 +260,18 @@ namespace OSharp.Timing
             {
                 DateTime now = DateTime.Now;
                 return new DateTimeRange(now.AddDays(-7), now);
+            }
+        }
+
+        /// <summary>
+        /// 获取 截止到昨天的最近7天的天数范围
+        /// </summary>
+        public static DateTimeRange Last7DaysExceptToday
+        {
+            get
+            {
+                var now = DateTime.Now;
+                return new DateTimeRange(now.Date.AddDays(-7), now.Date.AddMilliseconds(-1));
             }
         }
 

@@ -8,9 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
+using OSharp.Entity.Defaults;
 using OSharp.Finders;
 
 
@@ -22,7 +24,7 @@ namespace OSharp.Entity
     public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder
     {
         private readonly IEntityConfigurationAssemblyFinder _assemblyFinder;
-        private readonly ReadOnlyDictionary<Type,>
+        private ReadOnlyDictionary<Type, IEntityRegister[]> _entityRegistersDict;
 
         /// <summary>
         /// 初始化一个<see cref="EntityConfigurationTypeFinder"/>类型的新实例
@@ -30,6 +32,7 @@ namespace OSharp.Entity
         public EntityConfigurationTypeFinder(IEntityConfigurationAssemblyFinder assemblyFinder)
         {
             _assemblyFinder = assemblyFinder;
+            _entityRegistersDict = new ReadOnlyDictionary<Type, IEntityRegister[]>(new Dictionary<Type, IEntityRegister[]>());
         }
 
         /// <summary>
@@ -42,7 +45,41 @@ namespace OSharp.Entity
             Type[] types = _assemblyFinder.FindAll()
                 .SelectMany(assembly => assembly.GetTypes().Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract))
                 .ToArray();
+            EntityRegistersInit(types);
             return types;
+        }
+
+        /// <summary>
+        /// 初始化实体映射对象字典
+        /// </summary>
+        /// <param name="types"></param>
+        private void EntityRegistersInit(Type[] types)
+        {
+            if (types.Length == 0)
+            {
+                return;
+            }
+            List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance<IEntityRegister>()).ToList();
+            Dictionary<Type, IEntityRegister[]> dict = new Dictionary<Type, IEntityRegister[]>();
+            List<IGrouping<Type, IEntityRegister>> groups = registers.GroupBy(m => m.DbContextType).ToList();
+            foreach (IGrouping<Type, IEntityRegister> group in groups)
+            {
+                Type key = group.Key ?? typeof(DefaultDbContext);
+                List<IEntityRegister> list = new List<IEntityRegister>();
+                if (group.Key == null || group.Key == typeof(DefaultDbContext))
+                {
+                    list.AddRange(group);
+                }
+                else
+                {
+                    list = group.ToList();
+                }
+                if (list.Count > 0)
+                {
+                    dict[key] = list.ToArray();
+                }
+            }
+            _entityRegistersDict = new ReadOnlyDictionary<Type, IEntityRegister[]>(dict);
         }
 
         /// <summary>
@@ -52,7 +89,7 @@ namespace OSharp.Entity
         /// <returns></returns>
         public IEntityRegister[] GetEntityRegisters(Type dbContextType)
         {
-            throw new NotImplementedException();
+            return _entityRegistersDict.ContainsKey(dbContextType) ? _entityRegistersDict[dbContextType] : new IEntityRegister[0];
         }
     }
 }
