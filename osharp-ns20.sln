@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Tests", "tests\OSharp.EntityFrameworkCore.Tests\OSharp.EntityFrameworkCore.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{5D746995-B838-4A63-AAF3-4C51523BB61C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Web", "samples\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{66CDD352-2A6D-4CA5-B7CE-A6AF34807565}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,10 @@ Global
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66CDD352-2A6D-4CA5-B7CE-A6AF34807565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66CDD352-2A6D-4CA5-B7CE-A6AF34807565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66CDD352-2A6D-4CA5-B7CE-A6AF34807565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66CDD352-2A6D-4CA5-B7CE-A6AF34807565}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,7 @@ Global
 		{F3391963-914E-4128-BCEC-F672749E04E7} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{2FE5F5AC-50D5-426A-AF0D-E75AA6D1085B} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
+		{66CDD352-2A6D-4CA5-B7CE-A6AF34807565} = {5D746995-B838-4A63-AAF3-4C51523BB61C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}
