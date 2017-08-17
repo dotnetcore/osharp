@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <Import Project="../../build/public.props" />
-  <Import Project="../version.props" />
+  <Import Project="../../build/version.props" />
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.0" />

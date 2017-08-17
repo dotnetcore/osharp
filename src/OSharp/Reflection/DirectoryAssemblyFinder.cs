@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace OSharp.Reflection
     /// </summary>
     public class DirectoryAssemblyFinder : IAssemblyFinder
     {
-        private static readonly IDictionary<string, Assembly[]> AssembliesesDict = new Dictionary<string, Assembly[]>();
+        private static readonly ConcurrentDictionary<string, Assembly[]> CacheDict = new ConcurrentDictionary<string, Assembly[]>();
         private readonly string _path;
         
         /// <summary>
@@ -36,27 +37,28 @@ namespace OSharp.Reflection
         /// 查找指定条件的项
         /// </summary>
         /// <param name="predicate">筛选条件</param>
+        /// <param name="fromCache">是否来自缓存</param>
         /// <returns></returns>
-        public Assembly[] Find(Func<Assembly, bool> predicate)
+        public Assembly[] Find(Func<Assembly, bool> predicate, bool fromCache = false)
         {
-            return FindAll().Where(predicate).ToArray();
+            return FindAll(fromCache).Where(predicate).ToArray();
         }
 
         /// <summary>
         /// 查找所有项
         /// </summary>
         /// <returns></returns>
-        public Assembly[] FindAll()
+        public Assembly[] FindAll(bool fromCache = false)
         {
-            if (AssembliesesDict.ContainsKey(_path))
+            if (fromCache && CacheDict.ContainsKey(_path))
             {
-                return AssembliesesDict[_path];
+                return CacheDict[_path];
             }
             string[] files = Directory.GetFiles(_path, "*.dll", SearchOption.TopDirectoryOnly)
                 .Concat(Directory.GetFiles(_path, "*.exe", SearchOption.TopDirectoryOnly))
                 .ToArray();
             Assembly[] assemblies = files.Select(Assembly.LoadFrom).Distinct().ToArray();
-            AssembliesesDict.Add(_path, assemblies);
+            CacheDict[_path] = assemblies;
             return assemblies;
         }
 

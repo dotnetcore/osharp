@@ -13,6 +13,7 @@
     <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</PackageIconUrl>
     <PackageTags>osharp</PackageTags>
+    <RootNamespace>OSharp.Entity</RootNamespace>
   </PropertyGroup>
 
   <Import Project="../../build/public.props" />

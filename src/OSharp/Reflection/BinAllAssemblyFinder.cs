@@ -16,7 +16,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// Bin 目录程序集查找器
     /// </summary>
-    public class BinAllAssemblyFinder : DirectoryAssemblyFinder
+    public class BinAllAssemblyFinder : DirectoryAssemblyFinder, IAllAssemblyFinder
     {
         /// <summary>
         /// 初始化一个<see cref="BinAllAssemblyFinder"/>类型的新实例
