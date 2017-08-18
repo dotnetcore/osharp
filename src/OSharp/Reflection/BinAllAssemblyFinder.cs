@@ -9,23 +9,34 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+
+using OSharp.Dependency;
+using OSharp.Finders;
 
 namespace OSharp.Reflection
 {
     /// <summary>
     /// Bin 目录程序集查找器
     /// </summary>
-    public class BinAllAssemblyFinder : DirectoryAssemblyFinder, IAllAssemblyFinder
+    public class BinAllAssemblyFinder : FinderBase<Assembly>, IAllAssemblyFinder, ISingletonDependency
     {
+        private readonly bool _filterNetAssembly;
+
         /// <summary>
         /// 初始化一个<see cref="BinAllAssemblyFinder"/>类型的新实例
         /// </summary>
-        public BinAllAssemblyFinder()
-            : base(GetBinPath())
-        { }
+        public BinAllAssemblyFinder(bool filterNetAssembly = true)
+        {
+            _filterNetAssembly = filterNetAssembly;
+        }
 
-        private static string GetBinPath()
+        /// <summary>
+        /// 重写以获取Bin目录
+        /// </summary>
+        /// <returns></returns>
+        protected string GetBinPath()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
@@ -34,6 +45,24 @@ namespace OSharp.Reflection
                 return path;
             }
             return path == Environment.CurrentDirectory + "\\" ? path : Path.Combine(path, "bin");
+        }
+
+        /// <summary>
+        /// 重写以实现程序集的查找
+        /// </summary>
+        /// <returns></returns>
+        protected override Assembly[] FindAllItems()
+        {
+            string path = GetBinPath();
+            string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
+                .ToArray();
+            if (_filterNetAssembly)
+            {
+                string[] filters = { "System.", "Microsoft.", "netstandard" };
+                files = files.Where(m => files.Any(n => m.StartsWith(n, StringComparison.OrdinalIgnoreCase))).ToArray();
+            }
+            return files.Select(m => Assembly.LoadFrom(m)).ToArray();
         }
     }
 }

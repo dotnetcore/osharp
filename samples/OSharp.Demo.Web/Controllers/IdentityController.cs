@@ -7,28 +7,46 @@
 //  <last-date>2017-08-18 14:11</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Text;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Demo.Identity;
+using OSharp.Demo.Identity.Entities;
+using OSharp.Entity;
 
 namespace OSharp.Demo.Web.Controllers
 {
     public class IdentityController : Controller
     {
         private readonly IIdentityContract _identityContract;
+        private readonly IServiceProvider _provider;
 
-        public IdentityController(IIdentityContract identityContract)
+        public IdentityController(IIdentityContract identityContract, IServiceProvider provider)
         {
             _identityContract = identityContract;
+            _provider = provider;
         }
 
         public IActionResult Index()
         {
-            var userQuery = _identityContract.Users();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"IEntityConfigurationAssemblyFinder => {_provider.GetService<IEntityConfigurationAssemblyFinder>().GetType()}");
+            sb.AppendLine($"IEntityConfigurationAssemblyFinder => {_provider.GetService<IEntityConfigurationAssemblyFinder>().GetHashCode()}");
+            sb.AppendLine($"IEntityConfigurationAssemblyFinder => {_provider.GetService<IEntityConfigurationAssemblyFinder>().GetHashCode()}");
 
-            return Content($"用户数：{userQuery.Count()}");
+            sb.AppendLine($"IIdentityContract => {_identityContract.GetType()}");
+            sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetType()}");
+            sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetHashCode()}");
+            sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetHashCode()}");
+            sb.AppendLine($"IRepository<User,int> => {_provider.GetService(typeof(IRepository<User, int>))}");
+            sb.AppendLine($"当前用户数量： {_identityContract.Users().Count()}");
+
+            return Content(sb.ToString());
         }
     }
+    
 }

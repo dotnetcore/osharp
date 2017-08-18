@@ -7,10 +7,12 @@
 //  <last-date>2017-08-16 22:34</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace OSharp.Dependency
 {
     /// <summary>
-    /// 实现此接口的类型将被注册为<see cref="LifetimeStyle.Scoped"/>模式
+    /// 实现此接口的类型将被注册为<see cref="ServiceLifetime.Scoped"/>模式
     /// </summary>
     public interface IScopeDependency
     { }

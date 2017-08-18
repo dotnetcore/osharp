@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
+using OSharp.Dependency;
 using OSharp.Finders;
 
 
@@ -20,7 +21,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类配置类型查找器
     /// </summary>
-    public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder
+    public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder, ISingletonDependency
     {
         private readonly IEntityConfigurationAssemblyFinder _assemblyFinder;
         private ReadOnlyDictionary<Type, IEntityRegister[]> _entityRegistersDict;

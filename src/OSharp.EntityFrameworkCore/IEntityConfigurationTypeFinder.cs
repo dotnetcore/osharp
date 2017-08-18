@@ -18,7 +18,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 定义实体类配置类型查找器
     /// </summary>
-    public interface IEntityConfigurationTypeFinder : ITypeFinder, ISingletonDependency
+    public interface IEntityConfigurationTypeFinder : ITypeFinder
     {
         /// <summary>
         /// 获取指定上下文类型的实体配置注册信息

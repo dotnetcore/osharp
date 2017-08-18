@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-24C2-4506-9E06-AF1B5534C098}"
 	ProjectSection(SolutionItems) = preProject
-		docs\EFCore数据组件设计.txt = docs\EFCore数据组件设计.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Tests", "tests\OSharp.EntityFrameworkCore.Tests\OSharp.EntityFrameworkCore.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
@@ -44,6 +44,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Core", "samples\OSharp.Demo.Core\OSharp.Demo.Core.csproj", "{5D1A1B22-9D55-4E0E-B10D-4798352A70DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.EntityConfiguration", "samples\OSharp.Demo.EntityConfiguration\OSharp.Demo.EntityConfiguration.csproj", "{0D6F6AE2-6566-4563-8C5C-6FE1B0642C20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFrameworkCore", "EntityFrameworkCore", "{34CA9B47-C044-41AF-BFD8-D1E94606EFD5}"
+	ProjectSection(SolutionItems) = preProject
+		EntityFrameworkCore组件的使用.md = EntityFrameworkCore组件的使用.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +117,7 @@ Global
 		{2482450C-50F1-4BAE-8269-9D37D396773F} = {5D746995-B838-4A63-AAF3-4C51523BB61C}
 		{5D1A1B22-9D55-4E0E-B10D-4798352A70DB} = {2482450C-50F1-4BAE-8269-9D37D396773F}
 		{0D6F6AE2-6566-4563-8C5C-6FE1B0642C20} = {2482450C-50F1-4BAE-8269-9D37D396773F}
+		{34CA9B47-C044-41AF-BFD8-D1E94606EFD5} = {806C30F7-24C2-4506-9E06-AF1B5534C098}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

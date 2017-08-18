@@ -14,10 +14,8 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         public static IServiceCollection AddOSharp(this IServiceCollection services)
         {
-            services.AddOSharpCoreService();
-            services.AddOSharpEntityServices();
+            services.AddAppServices();
 
-            services.AddScoped<IIdentityContract, IdentityService>();
             services.AddScoped<IUnitOfWork, DefaultDbContext>(provider =>
             {
                 IEntityConfigurationTypeFinder finder = provider.GetService<IEntityConfigurationTypeFinder>();
