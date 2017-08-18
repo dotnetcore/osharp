@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
@@ -36,8 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Net\Mail\" />
     <Folder Include="Infrastructure\" />
+    <Folder Include="Net\Mail\" />
   </ItemGroup>
 
   <ItemGroup>

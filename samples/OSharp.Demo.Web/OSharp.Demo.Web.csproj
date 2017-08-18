@@ -12,4 +12,11 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\OSharp.Demo.Core\OSharp.Demo.Core.csproj" />
+    <ProjectReference Include="..\OSharp.Demo.EntityConfiguration\OSharp.Demo.EntityConfiguration.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -37,24 +37,10 @@ namespace OSharp.Entity
             _dbSet = ((DbContext)UnitOfWork).Set<TEntity>();
         }
 
-        #region 属性
-
         /// <summary>
         /// 获取 当前单元操作对象
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
-        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询，当数据用于展现时，推荐使用此数据集，如果用于新增，更新，删除时，请使用<see cref="IRepository{TEntity,TKey}.TrackEntities"/>数据集
-        /// </summary>
-        public IQueryable<TEntity> Entities => _dbSet.AsNoTracking();
-
-        /// <summary>
-        /// 获取 当前实体类型的查询数据集，当数据用于新增，更新，删除时，使用此数据集，如果数据用于展现，推荐使用<see cref="IRepository{TEntity,TKey}.Entities"/>数据集
-        /// </summary>
-        public IQueryable<TEntity> TrackEntities => _dbSet;
-
-        #endregion
 
         #region 同步方法
 
@@ -66,6 +52,7 @@ namespace OSharp.Entity
         public int Insert(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+
             _dbSet.AddRange(entities);
             return UnitOfWork.SaveChanges();
         }
@@ -78,6 +65,7 @@ namespace OSharp.Entity
         public int Delete(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+
             _dbSet.RemoveRange(entities);
             return UnitOfWork.SaveChanges();
         }
@@ -90,6 +78,7 @@ namespace OSharp.Entity
         public int Delete(TKey key)
         {
             CheckEntityKey(key, nameof(key));
+
             TEntity entity = _dbSet.Find(key);
             return Delete(entity);
         }
@@ -102,6 +91,7 @@ namespace OSharp.Entity
         public int Delete(Expression<Func<TEntity, bool>> predicate)
         {
             Check.NotNull(predicate, nameof(predicate));
+
             TEntity[] entities = _dbSet.Where(predicate).ToArray();
             return Delete(entities);
         }
@@ -114,6 +104,7 @@ namespace OSharp.Entity
         public int Update(TEntity entity)
         {
             Check.NotNull(entity, nameof(entity));
+
             _dbSet.Update(entity);
             return UnitOfWork.SaveChanges();
         }
@@ -144,7 +135,36 @@ namespace OSharp.Entity
         public TEntity Get(TKey key)
         {
             CheckEntityKey(key, nameof(key));
+
             return _dbSet.Find(key);
+        }
+
+        /// <inheritdoc />
+        public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            var query = _dbSet.AsQueryable();
+            if (propertySelectors != null && propertySelectors.Length > 0)
+            {
+                foreach (Expression<Func<TEntity, object>> selector in propertySelectors)
+                {
+                    query = query.Include(selector);
+                }
+            }
+            return query.AsNoTracking();
+        }
+
+        /// <inheritdoc />
+        public IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            var query = _dbSet.AsQueryable();
+            if (propertySelectors != null && propertySelectors.Length > 0)
+            {
+                foreach (Expression<Func<TEntity, object>> selector in propertySelectors)
+                {
+                    query = query.Include(selector);
+                }
+            }
+            return query;
         }
 
         #endregion
@@ -159,6 +179,7 @@ namespace OSharp.Entity
         public async Task<int> InsertAsync(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+
             await _dbSet.AddRangeAsync(entities);
             return await UnitOfWork.SaveChangesAsync();
         }
@@ -223,7 +244,8 @@ namespace OSharp.Entity
         /// <returns>是否存在</returns>
         public async Task<bool> CheckExistsAsync(Expression<Func<TEntity, bool>> predicate, TKey id = default(TKey))
         {
-            predicate.CheckNotNull("predicate");
+            predicate.CheckNotNull(nameof(predicate));
+
             TKey defaultId = default(TKey);
             var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
             bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)

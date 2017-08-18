@@ -9,7 +9,7 @@
 
 using System;
 using System.IO;
-
+using System.Reflection;
 
 namespace OSharp.Reflection
 {
@@ -28,6 +28,11 @@ namespace OSharp.Reflection
         private static string GetBinPath()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
+            string path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
+            if (path == path1)
+            {
+                return path;
+            }
             return path == Environment.CurrentDirectory + "\\" ? path : Path.Combine(path, "bin");
         }
     }

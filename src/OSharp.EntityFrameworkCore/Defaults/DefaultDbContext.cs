@@ -10,7 +10,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace OSharp.Entity.Defaults
+namespace OSharp.Entity
 {
     /// <summary>
     /// 默认EntityFramework数据上下文

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using OSharp.Entity.Defaults;
 using OSharp.Finders;
 
 
@@ -59,7 +58,7 @@ namespace OSharp.Entity
             {
                 return;
             }
-            List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance<IEntityRegister>()).ToList();
+            List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance(type) as IEntityRegister).ToList();
             Dictionary<Type, IEntityRegister[]> dict = new Dictionary<Type, IEntityRegister[]>();
             List<IGrouping<Type, IEntityRegister>> groups = registers.GroupBy(m => m.DbContextType).ToList();
             foreach (IGrouping<Type, IEntityRegister> group in groups)

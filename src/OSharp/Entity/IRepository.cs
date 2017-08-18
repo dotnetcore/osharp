@@ -23,31 +23,17 @@ namespace OSharp.Entity
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TKey">主键类型</typeparam>
-    public interface IRepository<TEntity, TKey> : IScopeDependency
+    public interface IRepository<TEntity, in TKey> : IScopeDependency
         where TEntity : IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        #region 属性
-
         /// <summary>
         /// 获取 当前单元操作对象
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
 
-        /// <summary>
-        /// 获取 当前实体类型的查询数据集，数据将使用不跟踪变化的方式来查询，当数据用于展现时，推荐使用此数据集，如果用于新增，更新，删除时，请使用<see cref="TrackEntities"/>数据集
-        /// </summary>
-        IQueryable<TEntity> Entities { get; }
-
-        /// <summary>
-        /// 获取 当前实体类型的查询数据集，当数据用于新增，更新，删除时，使用此数据集，如果数据用于展现，推荐使用<see cref="Entities"/>数据集
-        /// </summary>
-        IQueryable<TEntity> TrackEntities { get; }
-
-        #endregion
-
         #region 同步方法
-        
+
         /// <summary>
         /// 插入实体
         /// </summary>
@@ -98,10 +84,24 @@ namespace OSharp.Entity
         /// <returns>符合主键的实体，不存在时返回null</returns>
         TEntity Get(TKey key);
 
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
+        /// </summary>
+        /// <param name="propertySelectors">要Include操作的属性表达式</param>
+        /// <returns></returns>
+        IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] propertySelectors);
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
+        /// </summary>
+        /// <param name="propertySelectors">要Include操作的属性表达式</param>
+        /// <returns></returns>
+        IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] propertySelectors);
+
         #endregion
 
         #region 异步方法
-        
+
         /// <summary>
         /// 异步插入实体
         /// </summary>

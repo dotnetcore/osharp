@@ -88,6 +88,7 @@ namespace OSharp.Entity
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //通过实体配置信息将实体注册到当前上下文
+            _typeFinder.FindAll();
             IEntityRegister[] registers = _typeFinder.GetEntityRegisters(typeof(TDbContext));
             foreach (IEntityRegister register in registers)
             {

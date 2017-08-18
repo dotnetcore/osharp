@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using OSharp.Entity;
-using OSharp.Entity.Defaults;
 using Xunit;
 using Shouldly;
 using OSharp.Reflection;
