@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-
+using OSharp.Dependency;
 using OSharp.Finders;
 
 
@@ -17,6 +17,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// 定义类型查找行为
     /// </summary>
+    [IgnoreDependency]
     public interface ITypeFinder : IFinder<Type>
     { }
 }

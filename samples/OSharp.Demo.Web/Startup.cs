@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OSharp.Data;
 using OSharp.Reflection;
 
 namespace OSharp.Demo.Web
@@ -17,8 +18,10 @@ namespace OSharp.Demo.Web
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
+
+        public static IServiceCollection Services { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -26,6 +29,8 @@ namespace OSharp.Demo.Web
             services.AddOSharp();
 
             services.AddMvc();
+
+            Services = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,7 +9,9 @@
 
 using System.Reflection;
 
+using OSharp.Dependency;
 using OSharp.Finders;
+
 
 
 namespace OSharp.Reflection
@@ -17,6 +19,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// 定义程序集查找器
     /// </summary>
+    [IgnoreDependency]
     public interface IAssemblyFinder : IFinder<Assembly>
     { }
 }

@@ -7,6 +7,7 @@
 //  <last-date>2017-08-16 22:29</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,38 +17,19 @@ namespace OSharp.Entity
     /// <summary>
     /// 业务单元操作接口
     /// </summary>
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         /// <summary>
-        /// 获取 是否开启事务提交
+        /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例
         /// </summary>
-        bool TransactionEnabled { get; }
-
-        /// <summary>
-        /// 显式开启数据上下文事务
-        /// </summary>
-        void BeginTransaction();
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <typeparam name="TKey">实体主键类型</typeparam>
+        /// <returns><typeparamref name="TEntity"/>所属上下文类的实例</returns>
+        IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey> where TKey : IEquatable<TKey>;
 
         /// <summary>
         /// 提交当前上下文的事务更改
         /// </summary>
         void Commit();
-
-        /// <summary>
-        /// 显式回滚事务，仅在显式开启事务后有用
-        /// </summary>
-        void Rollback();
-
-        /// <summary>
-        /// 提交当前单元操作的更改。
-        /// </summary>
-        /// <returns>操作影响的行数</returns>
-        int SaveChanges();
-
-        /// <summary>
-        /// 异步提交当前单元操作的更改。
-        /// </summary>
-        /// <returns>操作影响的行数</returns>
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

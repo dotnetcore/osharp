@@ -197,7 +197,7 @@ namespace OSharp.Filter
             {
                 return bodys.Aggregate(Expression.OrElse);
             }
-            throw new OSharpException(Resources.Filter_GroupOperateError);
+            throw new OsharpException(Resources.Filter_GroupOperateError);
         }
 
         private static Expression GetExpressionBody(ParameterExpression param, FilterRule rule)

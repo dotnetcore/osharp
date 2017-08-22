@@ -13,33 +13,33 @@ namespace OSharp.Data
     /// OSharp结果基类
     /// </summary>
     /// <typeparam name="TResultType"></typeparam>
-    public abstract class OSharpResult<TResultType> : OSharpResult<TResultType, object>, IOSharpResult<TResultType>
+    public abstract class OsharpResult<TResultType> : OsharpResult<TResultType, object>, IOsharpResult<TResultType>
     {
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType}"/>类型的新实例
         /// </summary>
-        protected OSharpResult()
+        protected OsharpResult()
             : this(default(TResultType))
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type)
+        protected OsharpResult(TResultType type)
             : this(type, null, null)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type, string message)
+        protected OsharpResult(TResultType type, string message)
             : this(type, message, null)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type, string message, object data)
+        protected OsharpResult(TResultType type, string message, object data)
             : base(type, message, data)
         { }
     }
@@ -50,7 +50,7 @@ namespace OSharp.Data
     /// </summary>
     /// <typeparam name="TResultType">结果类型</typeparam>
     /// <typeparam name="TData">结果数据类型</typeparam>
-    public abstract class OSharpResult<TResultType, TData> : IOSharpResult<TResultType, TData>
+    public abstract class OsharpResult<TResultType, TData> : IOSharpResult<TResultType, TData>
     {
         /// <summary>
         /// 内部消息
@@ -58,30 +58,30 @@ namespace OSharp.Data
         protected string _message;
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType,TData}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType,TData}"/>类型的新实例
         /// </summary>
-        protected OSharpResult()
+        protected OsharpResult()
             : this(default(TResultType))
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType,TData}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType,TData}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type)
+        protected OsharpResult(TResultType type)
             : this(type, null, default(TData))
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType,TData}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType,TData}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type, string message)
+        protected OsharpResult(TResultType type, string message)
             : this(type, message, default(TData))
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpResult{TResultType,TData}"/>类型的新实例
+        /// 初始化一个<see cref="OsharpResult{TResultType,TData}"/>类型的新实例
         /// </summary>
-        protected OSharpResult(TResultType type, string message, TData data)
+        protected OsharpResult(TResultType type, string message, TData data)
         {
             ResultType = type;
             _message = message;

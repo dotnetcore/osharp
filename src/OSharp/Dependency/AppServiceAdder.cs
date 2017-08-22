@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using OSharp.Reflection;
 
 namespace OSharp.Dependency
 {
@@ -90,7 +90,7 @@ namespace OSharp.Dependency
         private static Type[] GetImplementedInterfaces(Type type)
         {
             Type[] exceptInterfaces = { typeof(IDisposable), typeof(ITransientDependency), typeof(IScopeDependency), typeof(ISingletonDependency) };
-            Type[] interfaceTypes = type.GetInterfaces().Where(t => !exceptInterfaces.Contains(t)).ToArray();
+            Type[] interfaceTypes = type.GetInterfaces().Where(t => !exceptInterfaces.Contains(t) && !t.HasAttribute<IgnoreDependencyAttribute>()).ToArray();
             for (int index = 0; index < interfaceTypes.Length; index++)
             {
                 Type interfaceType = interfaceTypes[index];

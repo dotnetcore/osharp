@@ -26,6 +26,7 @@ namespace OSharp.Entity
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
+        private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
 
         /// <summary>
@@ -34,13 +35,16 @@ namespace OSharp.Entity
         public Repository(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
-            _dbSet = ((DbContext)UnitOfWork).Set<TEntity>();
+            _dbContext = (DbContext)unitOfWork.GetDbContext<TEntity, TKey>();
+            _dbSet = _dbContext.Set<TEntity>();
         }
 
         /// <summary>
         /// 获取 当前单元操作对象
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
+
+        public IDbContext DbContext { get => _dbContext as IDbContext; }
 
         #region 同步方法
 
@@ -54,7 +58,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             _dbSet.AddRange(entities);
-            return UnitOfWork.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             _dbSet.RemoveRange(entities);
-            return UnitOfWork.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace OSharp.Entity
             Check.NotNull(entity, nameof(entity));
 
             _dbSet.Update(entity);
-            return UnitOfWork.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -181,7 +185,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             await _dbSet.AddRangeAsync(entities);
-            return await UnitOfWork.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -194,7 +198,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             _dbSet.RemoveRange(entities);
-            return await UnitOfWork.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -233,7 +237,7 @@ namespace OSharp.Entity
             Check.NotNull(entity, nameof(entity));
 
             _dbSet.Update(entity);
-            return await UnitOfWork.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>

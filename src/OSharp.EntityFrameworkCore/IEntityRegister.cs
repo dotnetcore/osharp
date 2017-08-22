@@ -25,6 +25,11 @@ namespace OSharp.Entity
         Type DbContextType { get; }
 
         /// <summary>
+        /// 获取 相应的实体类型
+        /// </summary>
+        Type EntityType { get; }
+
+        /// <summary>
         /// 将当前实体类映射对象注册到数据上下文模型构建器中
         /// </summary>
         /// <param name="modelBuilder">上下文模型构建器</param>

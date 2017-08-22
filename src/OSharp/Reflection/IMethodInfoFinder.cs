@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System.Reflection;
-
+using OSharp.Dependency;
 using OSharp.Finders;
 
 
@@ -17,6 +17,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// 定义方法信息查找器
     /// </summary>
+    [IgnoreDependency]
     public interface IMethodInfoFinder : IFinder<MemberInfo>
     { }
 }

@@ -13,7 +13,7 @@ namespace OSharp.Data
     /// OSharp操作结果
     /// </summary>
     /// <typeparam name="TResultType"></typeparam>
-    public interface IOSharpResult<TResultType> : IOSharpResult<TResultType, object>
+    public interface IOsharpResult<TResultType> : IOSharpResult<TResultType, object>
     { }
 
 

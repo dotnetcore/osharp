@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 
 using OSharp.Dependency;
+using OSharp.Exceptions;
 using OSharp.Finders;
 
 
@@ -24,7 +25,22 @@ namespace OSharp.Entity
     public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder, ISingletonDependency
     {
         private readonly IEntityConfigurationAssemblyFinder _assemblyFinder;
-        private ReadOnlyDictionary<Type, IEntityRegister[]> _entityRegistersDict;
+        private Dictionary<Type, IEntityRegister[]> _entityRegistersDict;
+
+        /// <summary>
+        /// 获取 各个上下文的实体注册信息字典
+        /// </summary>
+        protected Dictionary<Type, IEntityRegister[]> EntityRegistersDict
+        {
+            get
+            {
+                if (_entityRegistersDict == null)
+                {
+                    FindAll(true);
+                }
+                return _entityRegistersDict;
+            }
+        }
 
         /// <summary>
         /// 初始化一个<see cref="EntityConfigurationTypeFinder"/>类型的新实例
@@ -32,7 +48,6 @@ namespace OSharp.Entity
         public EntityConfigurationTypeFinder(IEntityConfigurationAssemblyFinder assemblyFinder)
         {
             _assemblyFinder = assemblyFinder;
-            _entityRegistersDict = new ReadOnlyDictionary<Type, IEntityRegister[]>(new Dictionary<Type, IEntityRegister[]>());
         }
 
         /// <summary>
@@ -79,7 +94,7 @@ namespace OSharp.Entity
                     dict[key] = list.ToArray();
                 }
             }
-            _entityRegistersDict = new ReadOnlyDictionary<Type, IEntityRegister[]>(dict);
+            _entityRegistersDict = dict;
         }
 
         /// <summary>
@@ -89,7 +104,24 @@ namespace OSharp.Entity
         /// <returns></returns>
         public IEntityRegister[] GetEntityRegisters(Type dbContextType)
         {
-            return _entityRegistersDict.ContainsKey(dbContextType) ? _entityRegistersDict[dbContextType] : new IEntityRegister[0];
+            return EntityRegistersDict.ContainsKey(dbContextType) ? EntityRegistersDict[dbContextType] : new IEntityRegister[0];
+        }
+
+        /// <summary>
+        /// 获取 实体类所属的数据上下文类
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <returns>数据上下文类型</returns>
+        public Type GetDbContextTypeForEntity(Type entityType)
+        {
+            foreach (var item in EntityRegistersDict)
+            {
+                if (item.Value.Any(m => m.EntityType == entityType))
+                {
+                    return item.Key;
+                }
+            }
+            throw new OsharpException($"无法获取实体类“{entityType}”的所属上下上下文类型");
         }
     }
 }

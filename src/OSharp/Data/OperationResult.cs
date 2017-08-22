@@ -66,7 +66,7 @@ namespace OSharp.Data
     /// 泛型版本的业务操作结果信息类，对操作结果进行封装
     /// </summary>
     /// <typeparam name="TData">返回数据的类型</typeparam>
-    public class OperationResult<TData> : OSharpResult<OperationResultType, TData>
+    public class OperationResult<TData> : OsharpResult<OperationResultType, TData>
     {
         static OperationResult()
         {

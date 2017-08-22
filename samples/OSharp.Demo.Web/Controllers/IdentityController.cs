@@ -42,11 +42,11 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetType()}");
             sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetHashCode()}");
             sb.AppendLine($"IUnitOfWork => {_provider.GetService(typeof(IUnitOfWork)).GetHashCode()}");
-            sb.AppendLine($"IRepository<User,int> => {_provider.GetService(typeof(IRepository<User, int>))}");
+            sb.AppendLine($"IRepository<User,int> => {_provider.GetService(typeof(IRepository<User, int>)).GetType()}");
             sb.AppendLine($"当前用户数量： {_identityContract.Users().Count()}");
 
             return Content(sb.ToString());
         }
     }
-    
+
 }

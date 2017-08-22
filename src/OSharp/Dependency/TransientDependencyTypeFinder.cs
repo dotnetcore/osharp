@@ -41,7 +41,7 @@ namespace OSharp.Dependency
         {
             Type baseType = typeof(ITransientDependency);
             Type[] types = AllAssemblyFinder.FindAll().SelectMany(assembly => assembly.GetTypes())
-                .Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+                .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
                 .ToArray();
             return types;
         }

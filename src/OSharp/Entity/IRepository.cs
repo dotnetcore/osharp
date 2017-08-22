@@ -32,6 +32,11 @@ namespace OSharp.Entity
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
 
+        /// <summary>
+        /// 获取 当前的数据上下文
+        /// </summary>
+        IDbContext DbContext { get; }
+
         #region 同步方法
 
         /// <summary>

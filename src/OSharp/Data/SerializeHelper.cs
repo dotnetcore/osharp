@@ -102,7 +102,7 @@ namespace OSharp.Data
         {
             xml.CheckNotNull("xml");
             byte[] bytes = Encoding.Default.GetBytes(xml);
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(bytes))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
                 return (T)serializer.Deserialize(ms);

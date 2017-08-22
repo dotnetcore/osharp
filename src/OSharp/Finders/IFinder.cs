@@ -9,6 +9,8 @@
 
 using System;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Finders
 {
@@ -16,6 +18,7 @@ namespace OSharp.Finders
     /// 定义一个查找器
     /// </summary>
     /// <typeparam name="TItem">要查找的项类型</typeparam>
+    [IgnoreDependency]
     public interface IFinder<out TItem>
     {
         /// <summary>
