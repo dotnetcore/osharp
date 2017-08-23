@@ -35,34 +35,6 @@ namespace OSharp.Data
         /// 获取或设置 数据上下文配置信息
         /// </summary>
         public IDictionary<string, OsharpDbContextConfig> DbContexts { get; set; }
-
-        /// <summary>
-        /// 初始化配置，读取配置文件，不存在则返回默认配置
-        /// </summary>
-        public static OsharpConfig Init(IConfiguration configuration)
-        {
-            OsharpConfig config = new OsharpConfig();
-            IConfigurationSection section = configuration.GetSection("OSharp");
-            if (section == null)
-            {
-                //默认数据上下文配置
-                string connectionString = configuration["ConnectionStrings:DefaultDbContext"];
-                if (connectionString == null)
-                {
-                    throw new OsharpException($"无法找到键名为“DefaultDbContext”的数据库连接字符串信息，请在 appsettings.json 添加 “ConnectionStrings:DefaultDbContext” 节点的数据库连接字符串配置信息");
-                }
-                OsharpDbContextConfig defaultDbContextConfig = new OsharpDbContextConfig()
-                {
-                    DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
-                    ConnectionString = connectionString,
-                    DatabaseType = DatabaseType.SqlServer
-                };
-                config.DbContexts.Add("DefaultDbContext", defaultDbContextConfig);
-                return config;
-            }
-            section.Bind(config);
-            return config;
-        }
     }
 
     /// <summary>

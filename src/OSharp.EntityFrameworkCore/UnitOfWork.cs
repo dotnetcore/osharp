@@ -112,8 +112,8 @@ namespace OSharp.Entity
 
         private OsharpDbContextConfig GetDbContextResolveOptionsConfig(Type dbContextType)
         {
-            IConfiguration configuration = _serviceProvider.GetService<IConfiguration>();
-            OsharpConfig osharpConfig = OsharpConfig.Init(configuration);
+            IOsharpConfigProvider osharpConfigProvider = _serviceProvider.GetService<IOsharpConfigProvider>();
+            OsharpConfig osharpConfig = osharpConfigProvider.Create();
             OsharpDbContextConfig dbContextConfig = osharpConfig.DbContexts.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
             if (dbContextConfig == null)
             {
