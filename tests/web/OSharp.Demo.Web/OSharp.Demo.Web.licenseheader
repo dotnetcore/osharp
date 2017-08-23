@@ -1,0 +1,13 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Copyright (c) 2011 rubicon IT GmbH
+extensions: .aspx .ascx
+<%-- 
+Copyright (c) 2011 rubicon IT GmbH
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd
+<!--
+Sample license text.
+-->
