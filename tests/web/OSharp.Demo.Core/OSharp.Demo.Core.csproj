@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
   </ItemGroup>
 
 </Project>
