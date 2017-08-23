@@ -28,7 +28,7 @@ namespace OSharp.Dependency
         /// </summary>
         public ScopedDependencyTypeFinder()
         {
-            AllAssemblyFinder = new BinAllAssemblyFinder();
+            AllAssemblyFinder = new AppAllAssemblyFinder();
         }
 
         /// <summary>

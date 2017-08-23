@@ -18,33 +18,34 @@ using OSharp.Finders;
 namespace OSharp.Reflection
 {
     /// <summary>
-    /// Bin 目录程序集查找器
+    /// 应用程序目录程序集查找器
     /// </summary>
-    public class BinAllAssemblyFinder : FinderBase<Assembly>, IAllAssemblyFinder, ISingletonDependency
+    public class AppAllAssemblyFinder : FinderBase<Assembly>, IAllAssemblyFinder, ISingletonDependency
     {
         private readonly bool _filterNetAssembly;
 
         /// <summary>
-        /// 初始化一个<see cref="BinAllAssemblyFinder"/>类型的新实例
+        /// 初始化一个<see cref="AppAllAssemblyFinder"/>类型的新实例
         /// </summary>
-        public BinAllAssemblyFinder(bool filterNetAssembly = true)
+        public AppAllAssemblyFinder(bool filterNetAssembly = true)
         {
             _filterNetAssembly = filterNetAssembly;
         }
 
         /// <summary>
-        /// 重写以获取Bin目录
+        /// 重写以获取应用程序目录
         /// </summary>
         /// <returns></returns>
-        protected string GetBinPath()
+        protected string GetAppPath()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
-            string path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
-            if (path == path1)
-            {
-                return path;
-            }
-            return path == Environment.CurrentDirectory + "\\" ? path : Path.Combine(path, "bin");
+            return path;
+            //string path1 = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
+            //if (path == path1)
+            //{
+            //    return path;
+            //}
+            //return path == Environment.CurrentDirectory + "\\" ? path : Path.Combine(path, "bin");
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace OSharp.Reflection
         /// <returns></returns>
         protected override Assembly[] FindAllItems()
         {
-            string path = GetBinPath();
+            string path = GetAppPath();
             string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
                 .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
                 .ToArray();

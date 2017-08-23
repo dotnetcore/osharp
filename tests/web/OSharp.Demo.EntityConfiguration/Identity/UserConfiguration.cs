@@ -7,6 +7,8 @@
 //  <last-date>2017-08-18 11:35</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using OSharp.Demo.Identity.Entities;

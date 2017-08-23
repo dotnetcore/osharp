@@ -18,7 +18,7 @@ namespace OSharp.Extensions.Tests
             }
             catch (DivideByZeroException e)
             {
-                ex = new OSharpException("服务器正忙，请稍候再尝试。", e);
+                ex = new OsharpException("服务器正忙，请稍候再尝试。", e);
             }
             Assert.True(ex != null);
             string msg = ex.FormatMessage();

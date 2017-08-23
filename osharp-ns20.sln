@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp.csproj", "{D1B8F25F-68ED-470B-B996-436FE321F74A}"
 EndProject
@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{79640129-15A3-4AB6-9473-FE4EBAC334E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}"
+	ProjectSection(SolutionItems) = preProject
+		tests\OSharp.EntityFrameworkCore.Tests\OSharp.EntityFrameworkCore.Tests.csproj = tests\OSharp.EntityFrameworkCore.Tests\OSharp.EntityFrameworkCore.Tests.csproj
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{F3391963-914E-4128-BCEC-F672749E04E7}"
 EndProject
@@ -33,8 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-2
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Tests", "tests\OSharp.EntityFrameworkCore.Tests\OSharp.EntityFrameworkCore.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFrameworkCore", "EntityFrameworkCore", "{34CA9B47-C044-41AF-BFD8-D1E94606EFD5}"
 	ProjectSection(SolutionItems) = preProject
 		EntityFrameworkCore组件的使用.md = EntityFrameworkCore组件的使用.md
@@ -49,6 +50,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.EntityConfiguration", "tests\web\OSharp.Demo.EntityConfiguration\OSharp.Demo.EntityConfiguration.csproj", "{0D5EE763-EFAC-4DE7-8F19-69452908B307}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Web", "tests\web\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{27010D11-18DC-43E0-937D-BC086BD33876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Tests.MsTester", "tests\OSharp.Tests.MsTester\OSharp.Tests.MsTester.csproj", "{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,10 +87,6 @@ Global
 		{2FE5F5AC-50D5-426A-AF0D-E75AA6D1085B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE5F5AC-50D5-426A-AF0D-E75AA6D1085B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE5F5AC-50D5-426A-AF0D-E75AA6D1085B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2ACDE867-4B21-40B1-AC52-A14BDA260787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2ACDE867-4B21-40B1-AC52-A14BDA260787}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ACDE867-4B21-40B1-AC52-A14BDA260787}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,6 +103,10 @@ Global
 		{27010D11-18DC-43E0-937D-BC086BD33876}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27010D11-18DC-43E0-937D-BC086BD33876}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27010D11-18DC-43E0-937D-BC086BD33876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,13 +119,13 @@ Global
 		{79640129-15A3-4AB6-9473-FE4EBAC334E2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{F3391963-914E-4128-BCEC-F672749E04E7} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{2FE5F5AC-50D5-426A-AF0D-E75AA6D1085B} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
-		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{34CA9B47-C044-41AF-BFD8-D1E94606EFD5} = {806C30F7-24C2-4506-9E06-AF1B5534C098}
 		{2ACDE867-4B21-40B1-AC52-A14BDA260787} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{0E239259-0BC3-4521-AD60-07CB87263140} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{65289D82-D632-4804-9F00-CCBB39F8D561} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{0D5EE763-EFAC-4DE7-8F19-69452908B307} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{27010D11-18DC-43E0-937D-BC086BD33876} = {0E239259-0BC3-4521-AD60-07CB87263140}
+		{613654E9-D0F5-4EE0-A2B5-5F6BBB94E119} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}
