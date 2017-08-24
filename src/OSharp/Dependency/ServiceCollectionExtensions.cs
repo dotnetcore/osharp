@@ -11,8 +11,10 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Dependency;
 
-namespace OSharp.Dependency
+
+namespace OSharp
 {
     /// <summary>
     /// ServiceCollection扩展类
@@ -25,7 +27,7 @@ namespace OSharp.Dependency
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddAppServices(this IServiceCollection services, AppServiceAdderOptions options = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceAdderOptions options = null)
         {
             if (_added)
             {
@@ -42,7 +44,7 @@ namespace OSharp.Dependency
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddAppServices(this IServiceCollection services, IAppServiceAdder adder)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, IAppServiceAdder adder)
         {
             if (_added)
             {

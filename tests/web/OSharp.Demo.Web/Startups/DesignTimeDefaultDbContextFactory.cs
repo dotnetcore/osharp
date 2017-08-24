@@ -10,15 +10,15 @@ using OSharp.Reflection;
 
 namespace OSharp.Demo.Web.Startups
 {
-    public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DesignTimeDefaultDbContext>
+public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DesignTimeDefaultDbContext>
+{
+    public DesignTimeDefaultDbContext CreateDbContext(string[] args)
     {
-        public DesignTimeDefaultDbContext CreateDbContext(string[] args)
-        {
-            string connString = "Server=.;Database=osharp.demo.web;Trusted_Connection=True;MultipleActiveResultSets=true";
-            DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
-            builder.UseSqlServer(connString);
-            IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppAllAssemblyFinder()));
-            return new DesignTimeDefaultDbContext(builder.Options, typeFinder);
-        }
+        string connString = "Server=.;Database=osharp.demo.web;Trusted_Connection=True;MultipleActiveResultSets=true";
+        DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
+        builder.UseSqlServer(connString);
+        IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppAllAssemblyFinder()));
+        return new DesignTimeDefaultDbContext(builder.Options, typeFinder);
     }
+}
 }

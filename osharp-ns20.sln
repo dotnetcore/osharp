@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFrameworkCore", "EntityFrameworkCore", "{34CA9B47-C044-41AF-BFD8-D1E94606EFD5}"
 	ProjectSection(SolutionItems) = preProject
-		EntityFrameworkCore组件的使用.md = EntityFrameworkCore组件的使用.md
+		docs\EntityFrameworkCore组件的使用.md = docs\EntityFrameworkCore组件的使用.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{2ACDE867-4B21-40B1-AC52-A14BDA260787}"

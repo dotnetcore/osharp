@@ -54,12 +54,9 @@ namespace OSharp.Dependency
 
             return services;
         }
-
+        
         /// <summary>
         /// 以类型实现的接口进行服务添加，需排除
-        /// <see cref="ITransientDependency"/>、
-        /// <see cref="IScopeDependency"/>、
-        /// <see cref="ISingletonDependency"/>、
         /// <see cref="IDisposable"/>等非业务接口，如无接口则注册自身
         /// </summary>
         /// <param name="services">服务映射信息集合</param>
@@ -89,7 +86,7 @@ namespace OSharp.Dependency
 
         private static Type[] GetImplementedInterfaces(Type type)
         {
-            Type[] exceptInterfaces = { typeof(IDisposable), typeof(ITransientDependency), typeof(IScopeDependency), typeof(ISingletonDependency) };
+            Type[] exceptInterfaces = { typeof(IDisposable) };
             Type[] interfaceTypes = type.GetInterfaces().Where(t => !exceptInterfaces.Contains(t) && !t.HasAttribute<IgnoreDependencyAttribute>()).ToArray();
             for (int index = 0; index < interfaceTypes.Length; index++)
             {

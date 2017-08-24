@@ -14,7 +14,7 @@ namespace OSharp.Tests.MsTester
         public void StartupTest()
         {
             ServiceCollection services = new ServiceCollection();
-            services.AddAppServices();
+            services.AddOSharp();
 
             IServiceProvider provider = services.BuildServiceProvider();
             using (var scope = provider.CreateScope())
