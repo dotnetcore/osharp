@@ -29,6 +29,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 通过UnitOfWork模式管理DbContext的创建，使同上下文类型同数据库连接字符串的上下文使用相同DbConnection对象来创建，达到多上下文的事务同步功能。（**注：由于EF Core2.0尚不支持`TransactionScope`的限制，不同库的多上下文事务同步尚未实现**）
 
 ## <a id="03"/>快速启动
+
 ### 1.引用nuget package
 
 > Install-Package OSharpNS.Framework -Version 0.1.0-Alpha01
@@ -78,9 +79,9 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
 ```
 
 #### 3.2 数据迁移命令，Add-Migration 命令时，使用`-context`参数指定上下文类型
+
 > Add-Migration MigrationName -context "OSharp.Demo.Web.DesignTimeDefaultDbContext"
 
-提交迁移更改：
 > Update-Database
 
 ## <a id="04"/>项目开发进度
