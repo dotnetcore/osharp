@@ -1,8 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>OSharpNS.EntityFrameworkCore.SqlServer</PackageId>
+    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的SqlServer数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.0)数据访问组件SqlServer</Summary>
     <RootNamespace>OSharp.Entity.SqlServer</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.SqlServer.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

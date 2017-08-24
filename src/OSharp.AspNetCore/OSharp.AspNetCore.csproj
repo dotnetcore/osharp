@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Summary>OSharp AspNetCore组件</Summary>
-    <Description>OSharp AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
+    <PackageId>OSharpNS.AspNetCore</PackageId>
+    <Summary>OSharp(.NetStandard2.0) AspNetCore组件</Summary>
+    <Description>OSharp(.NetStandard2.0) AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
   </PropertyGroup>
 
   <Import Project="../../build/public.props" />
