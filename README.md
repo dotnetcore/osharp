@@ -1,6 +1,7 @@
 # OSharp Framework with .NETStandard2.0
 
-标签： osharp-ns
+[![GitHub stars](https://img.shields.io/github/stars/i66soft/osharp-ns20.svg)](https://github.com/i66soft/osharp-ns20/stargazers)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
 ---
 
