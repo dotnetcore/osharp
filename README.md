@@ -34,7 +34,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 
 ### 1.引用nuget package
 
-> Install-Package OSharpNS.Framework -Pre
+> Install-Package OSharpNS -Pre
 
 ### 2.向Startup.cs文件中添加如下代码
 > services.AddOSharp();
