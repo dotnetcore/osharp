@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>OSharpNT</id>
-        <version>${version}</version>
+        <version>0.1.0-alpha03</version>
         <title>OSharpFramework(.NetStandard2.0)</title>
         <authors>柳柳软件(66soft.net)</authors>
         <owners>柳柳软件(66soft.net)</owners>
