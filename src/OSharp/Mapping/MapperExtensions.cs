@@ -28,7 +28,7 @@ namespace OSharp.Mapping
         /// 设置对象映射执行者
         /// </summary>
         /// <param name="mapper">映射执行者</param>
-        public static void SetMaper(IMapper mapper)
+        public static void SetMapper(IMapper mapper)
         {
             mapper.CheckNotNull("mapper");
             _mapper = mapper;

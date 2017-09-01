@@ -28,7 +28,7 @@ namespace OSharp.Dependency
         /// </summary>
         public TransientDependencyTypeFinder()
         {
-            AllAssemblyFinder = new AppAllAssemblyFinder();
+            AllAssemblyFinder = new AppDomainAllAssemblyFinder();
         }
 
         /// <summary>

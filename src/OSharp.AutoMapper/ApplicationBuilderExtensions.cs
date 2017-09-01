@@ -46,7 +46,7 @@ namespace Microsoft.AspNetCore.Builder
             Mapper.Initialize(cfg);
 
             IMapper mapper = app.ApplicationServices.GetService<IMapper>();
-            MapperExtensions.SetMaper(mapper);
+            MapperExtensions.SetMapper(mapper);
 
             return app;
         }

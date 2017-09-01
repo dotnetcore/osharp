@@ -28,7 +28,7 @@ namespace OSharp.Dependency
         /// </summary>
         public SingletonDependencyTypeFinder()
         {
-            AllAssemblyFinder = new AppAllAssemblyFinder();
+            AllAssemblyFinder = new AppDomainAllAssemblyFinder();
         }
 
         /// <summary>

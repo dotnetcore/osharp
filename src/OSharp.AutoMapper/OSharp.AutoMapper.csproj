@@ -6,6 +6,14 @@
     <Description>OSharp(.NetStandard2.0) AutoMapper 对象映射组件，封装基于AutoMapper的对象映射实现</Description>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.AutoMapper.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AutoMapper.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
 

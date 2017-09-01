@@ -7,6 +7,14 @@
     <PackageReleaseNotes />
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
 

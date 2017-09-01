@@ -6,6 +6,14 @@
     <Description>OSharp(.NetStandard2.0) AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.AspNetCore.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AspNetCore.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
   
