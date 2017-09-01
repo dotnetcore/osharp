@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>OSharpNT</id>
-        <version>0.1.0-alpha03</version>
+        <version>0.1.0-alpha04</version>
         <title>OSharpFramework(.NetStandard2.0)</title>
         <authors>柳柳软件(66soft.net)</authors>
         <owners>柳柳软件(66soft.net)</owners>
@@ -15,9 +15,9 @@
         <tags>osharp</tags>
         <dependencies>
             <group targetFramework=".NETStandard2.0">
-                <dependency id="OSharpNS.Core" version="0.1.0-alpha03" />
-                <dependency id="OSharpNS.EntityFrameworkCore" version="0.1.0-alpha03" />
-                <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.1.0-alpha03" />
+                <dependency id="OSharpNS.Core" version="0.1.0-alpha04" />
+                <dependency id="OSharpNS.EntityFrameworkCore" version="0.1.0-alpha04" />
+                <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.1.0-alpha04" />
             </group>
         </dependencies>
     </metadata>
