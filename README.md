@@ -3,6 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/i66soft/osharp-ns20.svg)](https://github.com/i66soft/osharp-ns20/stargazers)
 [![NuGet](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
+[![osharp@66soft](https://img.shields.io/badge/66soft-osharp-red.svg)](http://www.osharp.org)
 
 ---
 
