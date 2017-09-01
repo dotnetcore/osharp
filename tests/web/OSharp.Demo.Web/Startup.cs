@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OSharp;
+using OSharp.AspNetCore.Mvc.ModelBinding;
+
 
 namespace OSharp.Demo.Web
 {
@@ -26,8 +28,11 @@ namespace OSharp.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOSharp();
-
-            services.AddMvc();
+            
+            services.AddMvc(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
+            });
             
             Services = services;
 

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\OSharp.Demo.Core\OSharp.Demo.Core.csproj" />

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mvc\Extensions\" />
+  </ItemGroup>
+
 </Project>
