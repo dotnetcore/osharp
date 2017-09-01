@@ -11,8 +11,8 @@ using System;
 namespace OSharp.Demo.Web.Migrations
 {
     [DbContext(typeof(DesignTimeDefaultDbContext))]
-    [Migration("20170824163338_Init")]
-    partial class Init
+    [Migration("20170828105930_FirstInit")]
+    partial class FirstInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

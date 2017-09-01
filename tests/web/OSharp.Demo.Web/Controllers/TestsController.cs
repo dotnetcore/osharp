@@ -5,8 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Demo.Identity;
+using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
+using OSharp.Mapping;
+
 
 namespace OSharp.Demo.Web.Controllers
 {
@@ -36,6 +41,10 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"IRepository<User, int>： => {repository.GetHashCode()}");
             sb.AppendLine($"IRepository<User, int>.DbContext： => {repository.DbContext.GetHashCode()}");
 
+            sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
+            sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
+            sb.AppendLine($"IEntityTypeFinder: => {_provider.GetService<IEntityTypeFinder>().GetHashCode()}");
+
             return Content(sb.ToString());
         }
 
@@ -56,6 +65,24 @@ namespace OSharp.Demo.Web.Controllers
                 { }
                 sb.AppendLine(line);
             }
+
+            return Content(sb.ToString());
+        }
+
+        public IActionResult Mapper()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            UserInputDto dto = new UserInputDto()
+            {
+                Id = 1,
+                UserName = "lao guo",
+                NickName = "郭老板"
+            };
+            sb.AppendLine($"UserInputDto：{dto.ToJsonString()}");
+
+            User user = dto.MapTo<User>();
+            sb.AppendLine($"User: {user.ToJsonString()}");
 
             return Content(sb.ToString());
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace OSharp.Demo.Web.Migrations
 {
-    public partial class Init : Migration
+    public partial class FirstInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

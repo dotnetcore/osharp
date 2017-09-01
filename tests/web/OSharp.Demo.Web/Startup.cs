@@ -28,13 +28,15 @@ namespace OSharp.Demo.Web
             services.AddOSharp();
 
             services.AddMvc();
-
+            
             Services = services;
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            env.EnvironmentName = "Development";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,6 +55,8 @@ namespace OSharp.Demo.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseAutoMapper();
         }
     }
 }
