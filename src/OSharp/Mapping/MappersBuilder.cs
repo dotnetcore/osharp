@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="MappersBuilder.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
@@ -9,15 +9,13 @@
 
 using System.Collections.Generic;
 
-using OSharp.Dependency;
-
 
 namespace OSharp.Mapping
 {
     /// <summary>
     /// 对象映射构造器
     /// </summary>
-    public class MappersBuilder : IMappersBuilder, ISingletonDependency
+    public class MappersBuilder : IMappersBuilder
     {
         /// <summary>
         /// 执行对象映射构造
