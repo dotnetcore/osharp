@@ -94,12 +94,16 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
         - [x] 定义Entity数据访问相关接口
         - [x] 定义依赖注入模块相关接口
         - [x] 实现依赖注入功能的ServiceCollection自动初始化
-        - [ ] 定义Mapper对象映射模块相关接口
+        - [x] 定义Mapper对象映射模块相关接口
         - [ ] 定义Permissions权限模块的相关接口
-    - [ ] OSharp.EntityFrameworkCore
+    - [x] OSharp.EntityFrameworkCore
         - [x] 实现运行时上下文类型初始化及自动加载相关实体类型的功能
         - [x] 实现Repository仓储的数据存储功能        - 
         - [x] 实现UnitOfWork的多上下文管理及同DbConnection的上下文事务同步
-    - [ ] OSharp.AutoMapper
+    - [x] OSharp.AutoMapper
+        - [x] 不同的映射类型，通过实现`Profile`来实现映射注册
+        - [x] 实现通过遍历程序集，查找实现了`IMapTuple`接口的`Profile`来自动注册映射策略
+        - [x] 定义输入DTO到实体类的简单映射规则，命名规则为实体类`Entity`的输入DTO为`EntityInputDto`
+        - [x] 定义实体类到输出DTO的简单映射规则，命名规则为实体类`Entity`的输出DTO为`EntityOutputDto`
     - [ ] OSharp.AspNetCore
     - [ ] OSharp.Permissions
