@@ -5,3 +5,5 @@ dotnet: 2.0.0
 dist: trusty
 script:
  - dotnet restore
+ - xbuild /p:Configuration=Release osharp-ns20.sln
+ - mono ./packages/xunit.runner.console.*/tools/xunit.console.exe ./tests/OSharp.Tests/bin/Release/OSharp.dll
