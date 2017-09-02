@@ -50,15 +50,33 @@ namespace OSharp.Reflection
                 "Window",
                 "mscorlib"
             };
+            Assembly[] assemblies;
             DependencyContext context = DependencyContext.Default;
-            string[] dllNames = context.CompileLibraries.SelectMany(m => m.Assemblies).Distinct().Select(m => m.Replace(".dll", "")).ToArray();
-            string[] names = (from name in dllNames
-                let i = name.LastIndexOf('/') + 1
-                select name.Substring(i, name.Length - i)).Distinct().ToArray();
+            if (context != null)
+            {
+                string[] dllNames = context.CompileLibraries.SelectMany(m => m.Assemblies).Distinct().Select(m => m.Replace(".dll", "")).ToArray();
+                string[] names = (from name in dllNames
+                    let i = name.LastIndexOf('/') + 1
+                    select name.Substring(i, name.Length - i)).Distinct().ToArray();
 
-            Assembly[] assemblies = names.WhereIf(name => !filters.Any(name.StartsWith), _filterNetAssembly)
-                .Select(name => Assembly.Load(new AssemblyName(name)))
-                .ToArray();
+                assemblies = names.WhereIf(name => !filters.Any(name.StartsWith), _filterNetAssembly)
+                    .Select(name => Assembly.Load(new AssemblyName(name)))
+                    .ToArray();
+            }
+            else
+            {
+                //遍历文件夹的方式，用于传统.net fx
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
+                    .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
+                    .ToArray();
+                if (_filterNetAssembly)
+                {
+                    string[] files1 = files;
+                    files = files.WhereIf(m => files1.Any(n => m.StartsWith(n, StringComparison.OrdinalIgnoreCase)), _filterNetAssembly).ToArray();
+                }
+                return files.Select(file => Assembly.LoadFrom(file)).ToArray();
+            }
             return assemblies;
         }
     }
