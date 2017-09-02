@@ -16,11 +16,11 @@ namespace OSharp.Json.Tests
             object value = null;
             Assert.Throws<ArgumentNullException>(() => JsonHelper.ToJson(value));
             value = "";
-            Assert.Equal(JsonHelper.ToJson(value), "\"\"");
+            Assert.Equal("\"\"", JsonHelper.ToJson(value));
             value = "123";
-            Assert.Equal(JsonHelper.ToJson(value), "\"123\"");
+            Assert.Equal("\"123\"", JsonHelper.ToJson(value));
             value = 123;
-            Assert.Equal(JsonHelper.ToJson(value), "123");
+            Assert.Equal("123", JsonHelper.ToJson(value));
 
             DateTime now = new DateTime(2015, 10, 15, 13, 38, 51);
             TestEntity source = new TestEntity() { AddDate = now };

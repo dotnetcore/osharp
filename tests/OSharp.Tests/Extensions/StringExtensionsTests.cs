@@ -23,26 +23,26 @@ namespace OSharp.Extensions.Tests
             const string pattern = @"\d.*";
             Assert.Null(((string)null).Match(pattern));
             Assert.Equal("abc".Match(pattern), string.Empty);
-            Assert.Equal("abc123".Match(pattern), "123");
+            Assert.Equal("123", "abc123".Match(pattern));
         }
 
         [Fact()]
         public void MatchesTest()
         {
             const string pattern = @"\d";
-            Assert.Equal(((string)null).Matches(pattern).Count(), 0);
-            Assert.Equal("abc".Matches(pattern).Count(), 0);
-            Assert.Equal("abc123".Matches(pattern).Count(), 3);
+            Assert.Equal(0, ((string)null).Matches(pattern).Count());
+            Assert.Equal(0, "abc".Matches(pattern).Count());
+            Assert.Equal(3, "abc123".Matches(pattern).Count());
         }
 
         [Fact()]
         public void StrLengthTest()
         {
-            Assert.Equal("".TextLength(), 0);
-            Assert.Equal("123".TextLength(), 3);
-            Assert.Equal("abc".TextLength(), 3);
-            Assert.Equal("$%^*&".TextLength(), 5);
-            Assert.Equal("汉字测试".TextLength(), 8);
+            Assert.Equal(0, "".TextLength());
+            Assert.Equal(3, "123".TextLength());
+            Assert.Equal(3, "abc".TextLength());
+            Assert.Equal(5, "$%^*&".TextLength());
+            Assert.Equal(8, "汉字测试".TextLength());
         }
 
         [Fact()]
@@ -95,9 +95,9 @@ namespace OSharp.Extensions.Tests
         public void GetQueryParamTest()
         {
             string url = "http://www.baidu.com?key=website&word=beyond&name=%E9%83%AD%E6%98%8E%E9%94%8B";
-            Assert.Equal(url.GetUrlQuery("key"), "website");
-            Assert.Equal(url.GetUrlQuery("word"), "beyond");
-            Assert.Equal(url.GetUrlQuery("name"), "%E9%83%AD%E6%98%8E%E9%94%8B");
+            Assert.Equal("website", url.GetUrlQuery("key"));
+            Assert.Equal("beyond", url.GetUrlQuery("word"));
+            Assert.Equal("%E9%83%AD%E6%98%8E%E9%94%8B", url.GetUrlQuery("name"));
             Assert.Equal(url.GetUrlQuery("nokey"), string.Empty);
         }
 
@@ -113,14 +113,14 @@ namespace OSharp.Extensions.Tests
         public void MatchFirstNumberTest()
         {
             const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
-            Assert.Equal(source.MatchFirstNumber(), "13800138000");
+            Assert.Equal("13800138000", source.MatchFirstNumber());
         }
 
         [Fact()]
         public void MatchLastNumberTest()
         {
             const string source = "电话号码：13800138000，卡号：123456789，QQ号码：123202901，记住了吗？";
-            Assert.Equal(source.MatchLastNumber(), "123202901");
+            Assert.Equal("123202901", source.MatchLastNumber());
         }
 
         [Fact()]
@@ -152,9 +152,9 @@ namespace OSharp.Extensions.Tests
         public void SubstringTest()
         {
             const string source = "http://vote3.52meirongwang.com/members/vote_detail.aspx?id=484&pid=37857&from=groupmessage&isappinstalled=0";
-            Assert.Equal(source.Substring("?id=", "&"), "484");
-            Assert.Equal(source.Substring("&pid=", "&"), "37857");
-            Assert.Equal(source.Substring("&isappinstalled=", "&", ""), "0");
+            Assert.Equal("484", source.Substring("?id=", "&"));
+            Assert.Equal("37857", source.Substring("&pid=", "&"));
+            Assert.Equal("0", source.Substring("&isappinstalled=", "&", ""));
         }
 
         [Fact()]
@@ -176,17 +176,7 @@ namespace OSharp.Extensions.Tests
             value = "37132819810401652x";
             Assert.True(value.IsIdentityCardId());
         }
-
-        [Fact()]
-        public void GetChineseSpellTest()
-        {
-            char @char = '郭';
-            Assert.Equal(@char.GetChineseSpell(), "G");
-
-            string str = "郭明锋";
-            Assert.Equal(str.GetChineseSpell(), "GMF");
-        }
-
+        
         [Fact()]
         public void ToUnicodeStringTest()
         {

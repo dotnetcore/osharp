@@ -23,11 +23,11 @@ namespace OSharp.Collections.Tests
             }
             IComparer<int> comparer = ComparisonHelper<int>.CreateComparer(m => m);
             List<int> list3 = list1.Union(list2).ToList();
-            Assert.NotEqual(list3[0], 0);
-            Assert.NotEqual(list3[149], 149);
+            Assert.NotEqual(0, list3[0]);
+            Assert.NotEqual(149, list3[149]);
             list3.Sort(comparer);
-            Assert.Equal(list3[0], 0);
-            Assert.Equal(list3[149], 149);
+            Assert.Equal(0, list3[0]);
+            Assert.Equal(149, list3[149]);
         }
     }
 }

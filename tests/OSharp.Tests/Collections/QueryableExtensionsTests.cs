@@ -34,12 +34,12 @@ namespace OSharp.Tests.Collections
                 new TestEntity { Id = 3, Name = "hdg" },
             }.AsQueryable();
 
-            Assert.Equal(source.OrderBy("Id").ToArray()[1].Name, "hdg");
-            Assert.Equal(source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id, 1);
-            Assert.Equal(source.OrderBy(new SortCondition("Id")).ToArray()[1].Name, "hdg");
-            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name, "hdg");
-            Assert.Equal(source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length, ListSortDirection.Ascending)).ToArray()[1].Name, "fda");
-            Assert.Equal(source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id, 1);
+            Assert.Equal("hdg", source.OrderBy("Id").ToArray()[1].Name);
+            Assert.Equal(1, source.OrderBy("Name", ListSortDirection.Descending).ToArray()[3].Id);
+            Assert.Equal("hdg", source.OrderBy(new SortCondition("Id")).ToArray()[1].Name);
+            Assert.Equal("hdg", source.OrderBy(new SortCondition<TestEntity>(m => m.Id)).ToArray()[1].Name);
+            Assert.Equal("fda", source.OrderBy(new SortCondition<TestEntity>(m => m.Name.Length, ListSortDirection.Ascending)).ToArray()[1].Name);
+            Assert.Equal(1, source.OrderBy(new SortCondition("Name", ListSortDirection.Descending)).ToArray()[3].Id);
         }
 
         [Fact()]
@@ -52,10 +52,9 @@ namespace OSharp.Tests.Collections
                 new TestEntity { Id = 6, Name = "rwg", IsDeleted = true },
                 new TestEntity { Id = 3, Name = "hdg" },
             }.AsQueryable();
-            Assert.Equal(source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name, "fda");
-            Assert.Equal(source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name,
-                "hdg");
-            Assert.Equal(source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name, "fda");
+            Assert.Equal("fda", source.OrderBy("IsDeleted").ThenBy("Id").ToArray()[2].Name);
+            Assert.Equal("hdg", source.OrderBy("IsDeleted", ListSortDirection.Descending).ThenBy("Id", ListSortDirection.Descending).ToArray()[2].Name);
+            Assert.Equal("fda", source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name);
         }
     }
 }

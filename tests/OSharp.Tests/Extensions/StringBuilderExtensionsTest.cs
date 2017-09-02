@@ -13,17 +13,17 @@ namespace OSharp.Tests.Extensions
         {
             StringBuilder sb = null;
             sb = new StringBuilder("   asd sdf  ");
-            Assert.Equal(sb.Trim().ToString(), "asd sdf");
+            Assert.Equal("asd sdf", sb.Trim().ToString());
         }
 
         [Fact()]
         public void TrimStartTest()
         {
             StringBuilder sb = new StringBuilder("asdfgef");
-            Assert.Equal(sb.TrimStart('a').ToString(), "sdfgef");
+            Assert.Equal("sdfgef", sb.TrimStart('a').ToString());
             sb.Insert(0, "   ");
-            Assert.Equal(sb.TrimStart().ToString(), "sdfgef");
-            Assert.Equal(sb.TrimStart("sdf").ToString(), "gef");
+            Assert.Equal("sdfgef", sb.TrimStart().ToString());
+            Assert.Equal("gef", sb.TrimStart("sdf").ToString());
             Assert.Equal(sb.TrimStart("gef").ToString(), string.Empty);
         }
 
@@ -32,11 +32,11 @@ namespace OSharp.Tests.Extensions
         {
             StringBuilder sb;
             sb = new StringBuilder("asdfgef");
-            Assert.Equal(sb.TrimEnd('a').ToString(), "asdfgef");
-            Assert.Equal(sb.TrimEnd('f').ToString(), "asdfge");
+            Assert.Equal("asdfgef", sb.TrimEnd('a').ToString());
+            Assert.Equal("asdfge", sb.TrimEnd('f').ToString());
             sb.Append("   ");
-            Assert.Equal(sb.TrimEnd().ToString(), "asdfge");
-            Assert.Equal(sb.TrimEnd(new[] { 'g', 'e' }).ToString(), "asdf");
+            Assert.Equal("asdfge", sb.TrimEnd().ToString());
+            Assert.Equal("asdf", sb.TrimEnd(new[] { 'g', 'e' }).ToString());
             Assert.Equal(sb.TrimEnd("asdf").ToString(), string.Empty);
         }
     }

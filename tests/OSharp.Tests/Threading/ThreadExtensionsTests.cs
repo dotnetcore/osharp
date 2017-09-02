@@ -21,10 +21,10 @@ namespace OSharp.Threading.Tests
             });
             thread.Start();
             Thread.Sleep(300);
-            Assert.Equal(thread.ThreadState, ThreadState.WaitSleepJoin);
+            Assert.Equal(ThreadState.WaitSleepJoin, thread.ThreadState);
             thread.CancelSleep();
             Thread.Sleep(300);
-            Assert.NotEqual(thread.ThreadState, ThreadState.WaitSleepJoin);
+            Assert.NotEqual(ThreadState.WaitSleepJoin, thread.ThreadState);
         }
     }
 }

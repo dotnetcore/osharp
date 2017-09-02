@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +35,7 @@ namespace OSharp.Reflection
         {
             _filterNetAssembly = filterNetAssembly;
         }
-        
+
         /// <summary>
         /// 重写以实现程序集的查找
         /// </summary>
@@ -50,34 +51,76 @@ namespace OSharp.Reflection
                 "Window",
                 "mscorlib"
             };
-            Assembly[] assemblies;
             DependencyContext context = DependencyContext.Default;
             if (context != null)
             {
+                List<string> names = new List<string>();
                 string[] dllNames = context.CompileLibraries.SelectMany(m => m.Assemblies).Distinct().Select(m => m.Replace(".dll", "")).ToArray();
-                string[] names = (from name in dllNames
-                    let i = name.LastIndexOf('/') + 1
-                    select name.Substring(i, name.Length - i)).Distinct().ToArray();
-
-                assemblies = names.WhereIf(name => !filters.Any(name.StartsWith), _filterNetAssembly)
-                    .Select(name => Assembly.Load(new AssemblyName(name)))
-                    .ToArray();
-            }
-            else
-            {
-                //遍历文件夹的方式，用于传统.net fx
-                string path = AppDomain.CurrentDomain.BaseDirectory;
-                string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
-                    .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
-                    .ToArray();
-                if (_filterNetAssembly)
+                if (dllNames.Length > 0)
                 {
-                    string[] files1 = files;
-                    files = files.WhereIf(m => files1.Any(n => m.StartsWith(n, StringComparison.OrdinalIgnoreCase)), _filterNetAssembly).ToArray();
+                    names = (from name in dllNames
+                             let i = name.LastIndexOf('/') + 1
+                             select name.Substring(i, name.Length - i)).Distinct()
+                        .WhereIf(name => !filters.Any(name.StartsWith), _filterNetAssembly)
+                        .ToList();
                 }
-                return files.Select(file => Assembly.LoadFrom(file)).ToArray();
+                else
+                {
+                    foreach (CompilationLibrary library in context.CompileLibraries)
+                    {
+                        string name = library.Name;
+                        if (_filterNetAssembly && filters.Any(name.StartsWith))
+                        {
+                            continue;
+                        }
+                        if (name == "OSharpNS")
+                        {
+                            continue;
+                        }
+                        if (name == "OSharpNS.Core")
+                        {
+                            name = "OSharp";
+                        }
+                        else if (name.StartsWith("OSharpNS."))
+                        {
+                            name = name.Replace("OSharpNS.", "OSharp.");
+                        }
+                        if (!names.Contains(name))
+                        {
+                            names.Add(name);
+                        }
+                    }
+                }
+                return LoadFiles(names);
             }
-            return assemblies;
+
+            //遍历文件夹的方式，用于传统.netfx
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
+                .ToArray();
+            if (_filterNetAssembly)
+            {
+                string[] files1 = files;
+                files = files.WhereIf(m => files1.Any(n => m.StartsWith(n, StringComparison.OrdinalIgnoreCase)), _filterNetAssembly).ToArray();
+            }
+            return files.Select(Assembly.LoadFrom).ToArray();
+        }
+
+        private static Assembly[] LoadFiles(IEnumerable<string> files)
+        {
+            List<Assembly> assemblies = new List<Assembly>();
+            foreach (string file in files)
+            {
+                AssemblyName name = new AssemblyName(file);
+                try
+                {
+                    assemblies.Add(Assembly.Load(name));
+                }
+                catch (FileNotFoundException)
+                { }
+            }
+            return assemblies.ToArray();
         }
     }
 }

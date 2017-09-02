@@ -5,5 +5,4 @@ dotnet: 2.0.0
 dist: trusty
 script:
  - dotnet restore
- //- dotnet test tests/OSharp.Tests/OSharp.Tests.csproj -f net461
- //- dotnet test tests/OSharp.Tests.MsTester/OSharp.Tests.MsTester.csproj -f net461
+ - dotnet test tests/OSharp.Tests/OSharp.Tests.csproj -f netcoreapp2.0

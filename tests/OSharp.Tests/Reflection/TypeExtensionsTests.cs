@@ -50,31 +50,31 @@ namespace OSharp.Reflection.Tests
         [Fact()]
         public void GetNonNummableType()
         {
-            Assert.Equal(typeof(int?).GetNonNummableType(), typeof(int));
-            Assert.Equal(typeof(Nullable<int>).GetNonNummableType(), typeof(int));
+            Assert.Equal(typeof(int), typeof(int?).GetNonNummableType());
+            Assert.Equal(typeof(int), typeof(Nullable<int>).GetNonNummableType());
 
-            Assert.Equal(typeof(int).GetNonNummableType(), typeof(int));
+            Assert.Equal(typeof(int), typeof(int).GetNonNummableType());
         }
 
         [Fact()]
         public void GetUnNullableTypeTest()
         {
-            Assert.Equal(typeof(int?).GetUnNullableType(), typeof(int));
-            Assert.Equal(typeof(Nullable<int>).GetUnNullableType(), typeof(int));
+            Assert.Equal(typeof(int), typeof(int?).GetUnNullableType());
+            Assert.Equal(typeof(int), typeof(Nullable<int>).GetUnNullableType());
 
-            Assert.Equal(typeof(int).GetUnNullableType(), typeof(int));
+            Assert.Equal(typeof(int), typeof(int).GetUnNullableType());
         }
 
         [Fact()]
         public void ToDescriptionTest()
         {
             Type type = typeof(TestEntity);
-            Assert.Equal(type.ToDescription(), "测试实体");
+            Assert.Equal("测试实体", type.ToDescription());
             PropertyInfo property = type.GetProperty("Id");
-            Assert.Equal(property.ToDescription(), "编号");
+            Assert.Equal("编号", property.ToDescription());
 
             type = GetType();
-            Assert.Equal(type.ToDescription(), "OSharp.Reflection.Tests.TypeExtensionsTests");
+            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", type.ToDescription());
         }
 
         [Fact()]
@@ -89,9 +89,9 @@ namespace OSharp.Reflection.Tests
         public void GetAttributeTest()
         {
             Type type = typeof(TestEntity);
-            Assert.Equal(type.GetAttribute<DescriptionAttribute>().Description, "测试实体");
+            Assert.Equal("测试实体", type.GetAttribute<DescriptionAttribute>().Description);
             PropertyInfo property = type.GetProperty("Id");
-            Assert.Equal(property.GetAttribute<DescriptionAttribute>().Description, "编号");
+            Assert.Equal("编号", property.GetAttribute<DescriptionAttribute>().Description);
             MethodInfo method = GetType().GetMethod("GetAttributeTest");
             Assert.False(method.GetAttribute<FactAttribute>() == null);
         }
@@ -100,7 +100,7 @@ namespace OSharp.Reflection.Tests
         public void GetAttributesTest()
         {
             Type type = GetType();
-            Assert.Equal(type.GetAttributes<DescriptionAttribute>().Length, 0);
+            Assert.Equal(0, type.GetAttributes<DescriptionAttribute>().Length);
         }
 
         [Fact()]

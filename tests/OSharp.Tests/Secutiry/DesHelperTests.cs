@@ -20,8 +20,8 @@ namespace OSharp.Secutiry.Tests
         [Fact()]
         public void DesHelperTest()
         {
-            Assert.Equal(new DesHelper(false).Key.Length, 8);
-            Assert.Equal(new DesHelper(true).Key.Length, 24);
+            Assert.Equal(8, new DesHelper(false).Key.Length);
+            Assert.Equal(24, new DesHelper(true).Key.Length);
         }
 
         [Fact()]
@@ -51,23 +51,23 @@ namespace OSharp.Secutiry.Tests
             string key = "12345678";
             string actual = "TMR29YtnGPI=";
             DesHelper des = new DesHelper(Encoding.UTF8.GetBytes(key));
-            Assert.Equal(des.Decrypt(actual), "admin");
-            Assert.Equal(DesHelper.Decrypt(actual, key), "admin");
+            Assert.Equal("admin", des.Decrypt(actual));
+            Assert.Equal("admin", DesHelper.Decrypt(actual, key));
 
 
             key = "!@#$%^&*QWERTYUI12345678";
             actual = "Qp4r67VJ8Z0=";
             des = new DesHelper(Encoding.UTF8.GetBytes(key));
-            Assert.Equal(des.Decrypt(actual), "admin");
-            Assert.Equal(DesHelper.Decrypt(actual, key), "admin");
+            Assert.Equal("admin", des.Decrypt(actual));
+            Assert.Equal("admin", DesHelper.Decrypt(actual, key));
         }
 
         public void EncryptAndDecryptTest()
         {
             DesHelper des = new DesHelper();
-            Assert.Equal(des.Decrypt(des.Encrypt("admin")), "admin");
+            Assert.Equal("admin", des.Decrypt(des.Encrypt("admin")));
             des = new DesHelper(true);
-            Assert.Equal(des.Decrypt(des.Encrypt("admin")), "admin");
+            Assert.Equal("admin", des.Decrypt(des.Encrypt("admin")));
         }
     }
 }

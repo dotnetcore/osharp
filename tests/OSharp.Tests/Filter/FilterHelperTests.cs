@@ -79,17 +79,17 @@ namespace OSharp.Filter.Tests
         [Fact()]
         public void ToOperateCodeTest()
         {
-            Assert.Equal(FilterOperate.And.ToOperateCode(), "and");
-            Assert.Equal(FilterOperate.Or.ToOperateCode(), "or");
-            Assert.Equal(FilterOperate.Equal.ToOperateCode(), "equal");
-            Assert.Equal(FilterOperate.NotEqual.ToOperateCode(), "notequal");
-            Assert.Equal(FilterOperate.Less.ToOperateCode(), "less");
-            Assert.Equal(FilterOperate.LessOrEqual.ToOperateCode(), "lessorequal");
-            Assert.Equal(FilterOperate.Greater.ToOperateCode(), "greater");
-            Assert.Equal(FilterOperate.GreaterOrEqual.ToOperateCode(), "greaterorequal");
-            Assert.Equal(FilterOperate.StartsWith.ToOperateCode(), "startswith");
-            Assert.Equal(FilterOperate.EndsWith.ToOperateCode(), "endswith");
-            Assert.Equal(FilterOperate.Contains.ToOperateCode(), "contains");
+            Assert.Equal("and", FilterOperate.And.ToOperateCode());
+            Assert.Equal("or", FilterOperate.Or.ToOperateCode());
+            Assert.Equal("equal", FilterOperate.Equal.ToOperateCode());
+            Assert.Equal("notequal", FilterOperate.NotEqual.ToOperateCode());
+            Assert.Equal("less", FilterOperate.Less.ToOperateCode());
+            Assert.Equal("lessorequal", FilterOperate.LessOrEqual.ToOperateCode());
+            Assert.Equal("greater", FilterOperate.Greater.ToOperateCode());
+            Assert.Equal("greaterorequal", FilterOperate.GreaterOrEqual.ToOperateCode());
+            Assert.Equal("startswith", FilterOperate.StartsWith.ToOperateCode());
+            Assert.Equal("endswith", FilterOperate.EndsWith.ToOperateCode());
+            Assert.Equal("contains", FilterOperate.Contains.ToOperateCode());
         }
 
         [Fact()]
@@ -98,17 +98,17 @@ namespace OSharp.Filter.Tests
             Assert.Throws<ArgumentNullException>(() => FilterHelper.GetFilterOperate(null));
             Assert.Throws<ArgumentException>(() => FilterHelper.GetFilterOperate(""));
 
-            Assert.Equal(FilterHelper.GetFilterOperate("and"), FilterOperate.And);
-            Assert.Equal(FilterHelper.GetFilterOperate("or"), FilterOperate.Or);
-            Assert.Equal(FilterHelper.GetFilterOperate("equal"), FilterOperate.Equal);
-            Assert.Equal(FilterHelper.GetFilterOperate("notequal"), FilterOperate.NotEqual);
-            Assert.Equal(FilterHelper.GetFilterOperate("less"), FilterOperate.Less);
-            Assert.Equal(FilterHelper.GetFilterOperate("lessorequal"), FilterOperate.LessOrEqual);
-            Assert.Equal(FilterHelper.GetFilterOperate("greater"), FilterOperate.Greater);
-            Assert.Equal(FilterHelper.GetFilterOperate("greaterorequal"), FilterOperate.GreaterOrEqual);
-            Assert.Equal(FilterHelper.GetFilterOperate("startswith"), FilterOperate.StartsWith);
-            Assert.Equal(FilterHelper.GetFilterOperate("endswith"), FilterOperate.EndsWith);
-            Assert.Equal(FilterHelper.GetFilterOperate("contains"), FilterOperate.Contains);
+            Assert.Equal(FilterOperate.And, FilterHelper.GetFilterOperate("and"));
+            Assert.Equal(FilterOperate.Or, FilterHelper.GetFilterOperate("or"));
+            Assert.Equal(FilterOperate.Equal, FilterHelper.GetFilterOperate("equal"));
+            Assert.Equal(FilterOperate.NotEqual, FilterHelper.GetFilterOperate("notequal"));
+            Assert.Equal(FilterOperate.Less, FilterHelper.GetFilterOperate("less"));
+            Assert.Equal(FilterOperate.LessOrEqual, FilterHelper.GetFilterOperate("lessorequal"));
+            Assert.Equal(FilterOperate.Greater, FilterHelper.GetFilterOperate("greater"));
+            Assert.Equal(FilterOperate.GreaterOrEqual, FilterHelper.GetFilterOperate("greaterorequal"));
+            Assert.Equal(FilterOperate.StartsWith, FilterHelper.GetFilterOperate("startswith"));
+            Assert.Equal(FilterOperate.EndsWith, FilterHelper.GetFilterOperate("endswith"));
+            Assert.Equal(FilterOperate.Contains, FilterHelper.GetFilterOperate("contains"));
         }
 
     }

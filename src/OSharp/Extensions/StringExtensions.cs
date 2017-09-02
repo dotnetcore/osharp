@@ -678,58 +678,7 @@ namespace OSharp
             }
             return bytes;
         }
-
-        /// <summary>
-        /// 获取中文字符串的首字母
-        /// </summary>
-        public static string GetChineseSpell(this string cnString)
-        {
-            cnString.CheckNotNull("cnString");
-            if (!cnString.IsMatch(@"[\u4E00-\u9FA5]"))
-            {
-                throw new ArgumentException("参数不是中文字符串", "cnString");
-            }
-            int length = cnString.Length;
-            string result = null;
-            for (int i = 0; i < length; i++)
-            {
-                result += GetChineseSpell(cnString[i]);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 获取单个中文字符的拼音首字母
-        /// </summary>
-        /// <param name="cnChar"></param>
-        /// <returns></returns>
-        public static string GetChineseSpell(this char cnChar)
-        {
-            byte[] bytes = Encoding.Default.GetBytes(cnChar.ToString());
-            if (bytes.Length > 1)
-            {
-                int area = (short)bytes[0];
-                int pos = (short)bytes[1];
-                int code = (area << 8) + pos;
-                int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
-
-                for (int i = 0; i < 26; i++)
-                {
-                    int max = 55290;
-                    if (i != 25)
-                    {
-                        max = areacode[i + 1];
-                    }
-                    if (areacode[i] <= code && code < max)
-                    {
-                        return Encoding.Default.GetString(new byte[] { (byte)(97 + i) }).ToUpper();
-                    }
-                }
-                return "*";
-            }
-            return cnChar.ToString();
-        }
-
+        
         /// <summary>
         /// 将字符串进行Unicode编码，变成形如“\u7f16\u7801”的形式
         /// </summary>

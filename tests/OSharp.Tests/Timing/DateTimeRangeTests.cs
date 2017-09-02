@@ -19,8 +19,8 @@ namespace OSharp.Timing.Tests
 
             DateTime now = new DateTime(2015, 8, 7, 11, 15, 22);
             range = new DateTimeRange(now.Date.AddDays(-1), now.Date.AddDays(2));
-            Assert.Equal(range.StartTime.Day, 6);
-            Assert.Equal(range.EndTime.Day, 9);
+            Assert.Equal(6, range.StartTime.Day);
+            Assert.Equal(9, range.EndTime.Day);
         }
 
         [Fact()]

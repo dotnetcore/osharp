@@ -10,9 +10,9 @@ namespace OSharp.Filter.Tests
         public void FilterGroupTest()
         {
             FilterGroup group = new FilterGroup();
-            Assert.Equal(group.Operate, FilterOperate.And);
-            Assert.NotEqual(group.Rules, null);
-            Assert.NotEqual(group.Groups, null);
+            Assert.Equal(FilterOperate.And, group.Operate);
+            Assert.NotNull(group.Rules);
+            Assert.NotNull(group.Groups);
         }
     }
 }

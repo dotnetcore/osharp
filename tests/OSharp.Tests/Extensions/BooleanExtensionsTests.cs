@@ -17,10 +17,10 @@ namespace OSharp.Extensions.Tests
         [Fact()]
         public void ToLowerTest()
         {
-            Assert.Equal(true.ToLower(), "true");
-            Assert.Equal(false.ToLower(), "false");
-            Assert.NotEqual(true.ToLower(), "True");
-            Assert.NotEqual(false.ToLower(), "False");
+            Assert.Equal("true", true.ToLower());
+            Assert.Equal("false", false.ToLower());
+            Assert.NotEqual("True", true.ToLower());
+            Assert.NotEqual("False", false.ToLower());
         }
     }
 }

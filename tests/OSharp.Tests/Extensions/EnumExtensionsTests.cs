@@ -19,10 +19,10 @@ namespace OSharp.Extensions.Tests
         public void ToDescriptionTest()
         {
             TestEnum value = TestEnum.EnumItemA;
-            Assert.Equal(value.ToDescription(), "枚举项A");
+            Assert.Equal("枚举项A", value.ToDescription());
 
             value = TestEnum.EnumItemB;
-            Assert.Equal(value.ToDescription(), "EnumItemB");
+            Assert.Equal("EnumItemB", value.ToDescription());
         }
 
 

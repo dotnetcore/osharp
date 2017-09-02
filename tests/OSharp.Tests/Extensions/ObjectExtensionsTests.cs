@@ -19,16 +19,16 @@ namespace OSharp.Extensions.Tests
         [Fact()]
         public void CastToTest()
         {
-            Assert.Equal(((object)null).CastTo<object>(), null);
-            Assert.Equal("123".CastTo<int>(), 123);
-            Assert.Equal(123.CastTo<string>(), "123");
-            Assert.Equal(true.CastTo<string>(), "True");
-            Assert.Equal("true".CastTo<bool>(), true);
+            Assert.Equal(null, ((object)null).CastTo<object>());
+            Assert.Equal(123, "123".CastTo<int>());
+            Assert.Equal("123", 123.CastTo<string>());
+            Assert.Equal("True", true.CastTo<string>());
+            Assert.Equal(true, "true".CastTo<bool>());
             Assert.Equal("56D768A3-3D74-43B4-BD7B-2871D675CC4B".CastTo<Guid>(), new Guid("56D768A3-3D74-43B4-BD7B-2871D675CC4B"));
-            Assert.Equal(1.CastTo<UriKind>(), UriKind.Absolute);
-            Assert.Equal("RelativeOrAbsolute".CastTo<UriKind>(), UriKind.RelativeOrAbsolute);
+            Assert.Equal(UriKind.Absolute, 1.CastTo<UriKind>());
+            Assert.Equal(UriKind.RelativeOrAbsolute, "RelativeOrAbsolute".CastTo<UriKind>());
 
-            Assert.Equal("abc".CastTo<int>(123), 123);
+            Assert.Equal(123, "abc".CastTo<int>(123));
 
             Assert.Throws<FormatException>(() => "abc".CastTo<int>());
         }
@@ -64,8 +64,8 @@ namespace OSharp.Extensions.Tests
         [Fact()]
         public void ToJsonStringTest()
         {
-            Assert.Equal("".ToJsonString(), "\"\"");
-            Assert.Equal(123.ToJsonString(), "123");
+            Assert.Equal("\"\"", "".ToJsonString());
+            Assert.Equal("123", 123.ToJsonString());
         }
     }
 }
