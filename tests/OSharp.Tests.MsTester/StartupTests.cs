@@ -12,7 +12,7 @@ namespace OSharp.Tests.MsTester
     {
         [TestMethod]
         public void StartupTest()
-        {
+        { 
             ServiceCollection services = new ServiceCollection();
             services.AddOSharp();
 
