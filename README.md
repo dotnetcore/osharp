@@ -91,6 +91,7 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
 - [ ] **OSharpNS Framework**
     - [ ] OSharp
         - [x] 添加常用Utility辅助工具类
+        - [x] 添加框架配置Options定义
         - [x] 定义Entity数据访问相关接口
         - [x] 定义依赖注入模块相关接口
         - [x] 实现依赖注入功能的ServiceCollection自动初始化
