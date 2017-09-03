@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
-    <VersionSuffixVersion>07</VersionSuffixVersion>
+    <VersionSuffixVersion>08</VersionSuffixVersion>
 		<Version>$(VersionPrefix)-$(VersionSuffix)$(VersionSuffixVersion)</Version>
 		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
 		<FileVersion>$(VersionPrefix).0</FileVersion>

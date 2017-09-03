@@ -15,12 +15,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Extensions;
+using OSharp.Options;
 
 
 namespace OSharp.Entity
@@ -59,7 +61,7 @@ namespace OSharp.Entity
             Type dbContextType = typeFinder.GetDbContextTypeForEntity(typeof(TEntity));
 
             DbContext dbContext;
-            OsharpDbContextConfig dbContextConfig = GetDbContextResolveOptionsConfig(dbContextType);
+            OSharpDbContextOptions dbContextConfig = GetDbContextResolveOptions(dbContextType);
             DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextConfig);
             IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
             ActiveTransactionInfo transInfo = ActiveTransactionInfos.GetOrDefault(resolveOptions.ConnectionString);
@@ -110,16 +112,16 @@ namespace OSharp.Entity
             }
         }
 
-        private OsharpDbContextConfig GetDbContextResolveOptionsConfig(Type dbContextType)
+        private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
         {
-            IOsharpConfigProvider osharpConfigProvider = _serviceProvider.GetService<IOsharpConfigProvider>();
-            OsharpConfig osharpConfig = osharpConfigProvider.Create();
-            OsharpDbContextConfig dbContextConfig = osharpConfig.DbContexts.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
-            if (dbContextConfig == null)
+            IOptions<OSharpOptions> osharpOptions = _serviceProvider.GetService<IOptions<OSharpOptions>>();
+            OSharpDbContextOptions dbContextOptions =
+                osharpOptions.Value.DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
+            if (dbContextOptions == null)
             {
                 throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
             }
-            return dbContextConfig;
+            return dbContextOptions;
         }
 
         /// <summary>释放对象.</summary>

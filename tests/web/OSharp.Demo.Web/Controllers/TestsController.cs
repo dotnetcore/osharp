@@ -45,6 +45,8 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
             sb.AppendLine($"IEntityTypeFinder: => {_provider.GetService<IEntityTypeFinder>().GetHashCode()}");
 
+            sb.AppendLine($"用户数量：{repository.Query().Count()}");
+
             return Content(sb.ToString());
         }
 

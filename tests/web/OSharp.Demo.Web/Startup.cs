@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
 
-using OSharp;
 using OSharp.AspNetCore.Mvc.ModelBinding;
 
 
@@ -30,7 +28,7 @@ namespace OSharp.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOSharp();
-            
+
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
@@ -64,7 +62,6 @@ namespace OSharp.Demo.Web
             });
 
             app.UseAutoMapper();
-
         }
     }
 }

@@ -40,7 +40,7 @@ namespace OSharp.Dependency
         protected override Type[] FindAllItems()
         {
             Type baseType = typeof(IScopeDependency);
-            Type[] types = AllAssemblyFinder.FindAll().SelectMany(assembly => assembly.GetTypes())
+            Type[] types = AllAssemblyFinder.FindAll(fromCache:true).SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
                 .ToArray();
             return types;

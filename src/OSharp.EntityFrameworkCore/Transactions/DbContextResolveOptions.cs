@@ -11,6 +11,7 @@ using System;
 using System.Data.Common;
 
 using OSharp.Data;
+using OSharp.Options;
 
 
 namespace OSharp.Entity.Transactions
@@ -29,11 +30,11 @@ namespace OSharp.Entity.Transactions
         /// <summary>
         /// 初始化一个<see cref="DbContextResolveOptions"/>类型的新实例
         /// </summary>
-        public DbContextResolveOptions(OsharpDbContextConfig config)
+        public DbContextResolveOptions(OSharpDbContextOptions options)
         {
-            DbContextType = config.DbContextType;
-            ConnectionString = config.ConnectionString;
-            DatabaseType = config.DatabaseType;
+            DbContextType = options.DbContextType;
+            ConnectionString = options.ConnectionString;
+            DatabaseType = options.DatabaseType;
         }
 
         /// <summary>

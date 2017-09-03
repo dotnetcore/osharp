@@ -11,6 +11,9 @@ using System;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using OSharp.Options;
 using OSharp.Reflection;
 
 namespace OSharp.Dependency
@@ -20,19 +23,19 @@ namespace OSharp.Dependency
     /// </summary>
     public class AppServiceAdder : IAppServiceAdder
     {
-        private readonly AppServiceAdderOptions _options;
+        private readonly AppServiceScanOptions _options;
 
         /// <summary>
         /// 初始化一个<see cref="AppServiceAdder"/>类型的新实例
         /// </summary>
         public AppServiceAdder()
-            : this(new AppServiceAdderOptions())
+            : this(new AppServiceScanOptions())
         { }
 
         /// <summary>
         /// 初始化一个<see cref="AppServiceAdder"/>类型的新实例
         /// </summary>
-        public AppServiceAdder(AppServiceAdderOptions options)
+        public AppServiceAdder(AppServiceScanOptions options)
         {
             _options = options;
         }
@@ -48,7 +51,7 @@ namespace OSharp.Dependency
             dependencyTypes = _options.ScopedTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Scoped);
 
-            //添加即时生命周期类型的服务
+            //添加单例生命周期类型的服务
             dependencyTypes = _options.SingletonTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Singleton);
 
@@ -73,12 +76,12 @@ namespace OSharp.Dependency
                 Type[] interfaceTypes = GetImplementedInterfaces(implementationType);
                 if (interfaceTypes.Length == 0)
                 {
-                    services.Add(new ServiceDescriptor(implementationType, implementationType, lifetime));
+                    services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime));
                     continue;
                 }
                 foreach (Type interfaceType in interfaceTypes)
                 {
-                    services.Add(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                    services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
                 }
             }
             return services;

@@ -12,6 +12,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Dependency;
+using OSharp.Options;
 
 
 namespace OSharp
@@ -21,21 +22,15 @@ namespace OSharp
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        private static readonly bool _added = false;
-
         /// <summary>
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceAdderOptions options = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceScanOptions options = null)
         {
-            if (_added)
-            {
-                throw new InvalidOperationException("services.AddAppServices 扩展方法只能调用1次，不能多次调用。");
-            }
             if (options == null)
             {
-                options = new AppServiceAdderOptions();
+                options = new AppServiceScanOptions();
             }
             return new AppServiceAdder(options).AddServices(services);
         }
@@ -44,17 +39,14 @@ namespace OSharp
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, IAppServiceAdder adder)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<OSharpOptions> configureOptions, AppServiceScanOptions options = null)
         {
-            if (_added)
-            {
-                throw new InvalidOperationException("services.AddAppServices 扩展方法只能调用1次，不能多次调用。");
-            }
-            if (adder == null)
-            {
-                adder = new AppServiceAdder();
-            }
-            return adder.AddServices(services);
+            Check.NotNull(services, nameof(services));
+            Check.NotNull(configureOptions, nameof(configureOptions));
+
+            services.AddOSharp(options);
+            services.Configure(configureOptions);
+            return services;
         }
     }
 }
