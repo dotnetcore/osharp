@@ -26,7 +26,7 @@ namespace OSharp.Entity
         private readonly IAllAssemblyFinder _allAssemblyFinder;
 
         /// <summary>
-        /// 初始化一个<see cref="EntityTypeFinder"/>类型的新实例
+        /// 初始化一个<see cref="OSharp.Entity.EntityTypeFinder"/>类型的新实例
         /// </summary>
         public EntityTypeFinder(IAllAssemblyFinder allAssemblyFinder)
         {

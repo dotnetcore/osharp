@@ -18,19 +18,12 @@ namespace OSharp.Tests.Dependency
         {
             ServiceCollection services = new ServiceCollection();
 
-            //services.AddTransient<ITestContract, TestService1>();
-            //services.AddTransient<ITestContract, TestService2>();
-            services.TryAddEnumerable(ServiceDescriptor.Transient<ITestContract, TestService1>());
-            services.TryAddEnumerable(ServiceDescriptor.Transient<ITestContract, TestService1>());
-            services.TryAddEnumerable(ServiceDescriptor.Transient<ITestContract, TestService2>());
-
-
-            Assert.Equal(2, services.Count);
+            services.AddTransient<ITestContract, TestService1>();
 
             IServiceProvider provider = services.BuildServiceProvider();
-            Assert.Equal(2, provider.GetServices<ITestContract>().Count());
-
-            Assert.IsAssignableFrom<TestService2>(provider.GetService<ITestContract>());
+            ITestContract contract = provider.GetService<ITestContract>();
+            Assert.NotNull(contract);
+            
         }
 
         private interface ITestContract { }
