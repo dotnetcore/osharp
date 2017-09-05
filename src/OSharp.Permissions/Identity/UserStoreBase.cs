@@ -22,7 +22,7 @@ using OSharp.Entity;
 
 namespace OSharp.Identity
 {
-    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TUserRole, TRoleKey>
+    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole>
         : IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
           IUserPasswordStore<TUser>,
@@ -40,6 +40,7 @@ namespace OSharp.Identity
         where TUserClaim : UserClaimBase<TUserKey>, new()
         where TUserLogin : UserLoginBase<TUserKey>, new()
         where TUserToken : UserTokenBase<TUserKey>, new()
+        where TRole : RoleBase<TRoleKey>
         where TUserRole : UserRoleBase<TUserKey, TRoleKey>, new()
         where TUserKey : IEquatable<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
@@ -48,6 +49,7 @@ namespace OSharp.Identity
         private readonly IRepository<TUserLogin, Guid> _userLoginRepository;
         private readonly IRepository<TUserClaim, int> _userClaimRepository;
         private readonly IRepository<TUserToken, Guid> _userTokenRepository;
+        private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUserRole, Guid> _userRoleRepository;
         private bool _disposed;
 
@@ -58,12 +60,14 @@ namespace OSharp.Identity
             IRepository<TUserLogin, Guid> userLoginRepository,
             IRepository<TUserClaim, int> userClaimRepository,
             IRepository<TUserToken, Guid> userTokenRepository,
+            IRepository<TRole, TRoleKey> roleRepository,
             IRepository<TUserRole, Guid> userRoleRepository)
         {
             _userRepository = userRepository;
             _userLoginRepository = userLoginRepository;
             _userClaimRepository = userClaimRepository;
             _userTokenRepository = userTokenRepository;
+            _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
         }
 
@@ -312,7 +316,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            IList<UserLoginInfo> loginInfos = _userLoginRepository.Query().Where(m => m.UserId.Equals(user.Id)).Select(m =>
+            IList<UserLoginInfo> loginInfos = _userLoginRepository.Query(m => m.UserId.Equals(user.Id)).Select(m =>
                 new UserLoginInfo(m.LoginProvider, m.ProviderKey, m.ProviderDisplayName)).ToList();
             return Task.FromResult(loginInfos);
         }
@@ -357,7 +361,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            IList<Claim> claims = _userClaimRepository.Query().Where(m => m.UserId.Equals(user.Id))
+            IList<Claim> claims = _userClaimRepository.Query(m => m.UserId.Equals(user.Id))
                 .Select(m => new Claim(m.ClaimType, m.ClaimValue)).ToList();
             return Task.FromResult(claims);
         }
@@ -432,7 +436,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(claim, nameof(claim));
 
-            TUserKey[] userIds = _userClaimRepository.Query().Where(m => m.ClaimType == claim.Type && m.ClaimValue == claim.Value)
+            TUserKey[] userIds = _userClaimRepository.Query(m => m.ClaimType == claim.Type && m.ClaimValue == claim.Value)
                 .Select(m => m.UserId).ToArray();
             IList<TUser> users = _userRepository.TrackQuery().Where(m => userIds.Contains(m.Id)).ToList();
             return Task.FromResult(users);
@@ -942,7 +946,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            string value = _userTokenRepository.Query().Where(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name)
+            string value = _userTokenRepository.Query(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name)
                 .Select(m => m.Value).FirstOrDefault();
             return Task.FromResult(value);
         }
@@ -1049,29 +1053,45 @@ namespace OSharp.Identity
         /// Add a the specified <paramref name="user" /> to the named role.
         /// </summary>
         /// <param name="user">The user to add to the named role.</param>
-        /// <param name="roleName">The name of the role to add the user to.</param>
+        /// <param name="normalizedRoleName">The name of the role to add the user to.</param>
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
-        public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+        public async Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
-            
+            Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
 
-            throw new NotImplementedException();
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
+            if (roleId.Equals(default(TRoleKey)))
+            {
+                throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
+            }
+            TUserRole userRole = new TUserRole() { RoleId = roleId, UserId = user.Id };
+            await _userRoleRepository.InsertAsync(userRole);
         }
 
         /// <summary>
         /// Add a the specified <paramref name="user" /> from the named role.
         /// </summary>
         /// <param name="user">The user to remove the named role from.</param>
-        /// <param name="roleName">The name of the role to remove.</param>
+        /// <param name="normalizedRoleName">The name of the role to remove.</param>
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
-        public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+        public async Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            Check.NotNull(user, nameof(user));
+            Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
+
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
+            if (roleId.Equals(default(TRoleKey)))
+            {
+                throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
+            }
+            await _userRoleRepository.DeleteAsync(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId));
         }
 
         /// <summary>
@@ -1082,7 +1102,18 @@ namespace OSharp.Identity
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing a list of role names.</returns>
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            Check.NotNull(user, nameof(user));
+
+            IList<string> list = new List<string>();
+            List<TRoleKey> roleIds = _userRoleRepository.Query(m => m.UserId.Equals(user.Id)).Select(m => m.RoleId).ToList();
+            if (roleIds.Count == 0)
+            {
+                return Task.FromResult(list);
+            }
+            list = _roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
+            return Task.FromResult(list);
         }
 
         /// <summary>
@@ -1097,7 +1128,17 @@ namespace OSharp.Identity
         /// </returns>
         public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            Check.NotNull(user, nameof(user));
+
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
+            if (roleId.Equals(default(TRoleKey)))
+            {
+                throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
+            }
+            bool exist = _userRoleRepository.Query(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId)).Any();
+            return Task.FromResult(exist);
         }
 
         /// <summary>
@@ -1110,7 +1151,18 @@ namespace OSharp.Identity
         /// </returns>
         public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            Check.NotNullOrEmpty(roleName, nameof(roleName));
+
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
+            if (roleId.Equals(default(TRoleKey)))
+            {
+                throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
+            }
+            List<TUserKey> userIds = _userRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.UserId).ToList();
+            IList<TUser> users = _userRepository.TrackQuery(m => userIds.Contains(m.Id)).ToList();
+            return Task.FromResult(users);
         }
 
         #endregion
