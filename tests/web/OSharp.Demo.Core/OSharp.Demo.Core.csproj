@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
   </ItemGroup>
 

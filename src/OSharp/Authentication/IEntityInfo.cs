@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Authentication
 {
     /// <summary>
     /// 定义数据实体信息

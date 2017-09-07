@@ -35,8 +35,10 @@ namespace OSharp.Entity
             {
                 if (_entityRegistersDict == null)
                 {
-                    FindAll(true);
+                    Type[] types = FindAll(true);
+                    EntityRegistersInit(types);
                 }
+
                 return _entityRegistersDict;
             }
         }
@@ -59,7 +61,6 @@ namespace OSharp.Entity
             Type[] types = _assemblyFinder.FindAll()
                 .SelectMany(assembly => assembly.GetTypes().Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract))
                 .ToArray();
-            EntityRegistersInit(types);
             return types;
         }
 
@@ -71,6 +72,10 @@ namespace OSharp.Entity
         {
             if (types.Length == 0)
             {
+                if (_entityRegistersDict == null)
+                {
+                    _entityRegistersDict = new Dictionary<Type, IEntityRegister[]>();
+                }
                 return;
             }
             List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance(type) as IEntityRegister).ToList();
@@ -113,6 +118,11 @@ namespace OSharp.Entity
         /// <returns>数据上下文类型</returns>
         public Type GetDbContextTypeForEntity(Type entityType)
         {
+            var dict = EntityRegistersDict;
+            if (dict.Count == 0)
+            {
+                throw new OsharpException($"未发现任何数据上下文实体映射配置，请通过对各个实体继承基类“EntityTypeConfigurationBase<TEntity, TKey>”以使实体加载到上下文中");
+            }
             foreach (var item in EntityRegistersDict)
             {
                 if (item.Value.Any(m => m.EntityType == entityType))
@@ -120,7 +130,7 @@ namespace OSharp.Entity
                     return item.Key;
                 }
             }
-            throw new OsharpException($"无法获取实体类“{entityType}”的所属上下上下文类型");
+            throw new OsharpException($"无法获取实体类“{entityType}”的所属上下文类型，请通过继承基类“EntityTypeConfigurationBase<TEntity, TKey>”配置实体加载到上下文中");
         }
     }
 }

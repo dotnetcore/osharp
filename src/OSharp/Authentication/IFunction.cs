@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Authentication
 {
     /// <summary>
     /// 定义最小功能信息
@@ -40,7 +40,7 @@ namespace OSharp.Secutiry
         /// <summary>
         /// 获取或设置 访问类型
         /// </summary>
-        AccessType AccessType { get; set; }
+        FunctionAccessType AccessType { get; set; }
 
         /// <summary>
         /// 获取或设置 访问类型是否理发，如为true，刷新功能时将忽略功能类型

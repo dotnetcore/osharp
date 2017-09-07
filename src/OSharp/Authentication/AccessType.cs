@@ -7,12 +7,12 @@
 //  <last-date>2017-09-04 8:14</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Secutiry
+namespace OSharp.Authentication
 {
     /// <summary>
     /// 功能访问类型
     /// </summary>
-    public enum AccessType
+    public enum FunctionAccessType
     {
         /// <summary>
         /// 匿名用户可访问

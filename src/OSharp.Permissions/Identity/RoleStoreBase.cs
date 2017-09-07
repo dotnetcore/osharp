@@ -42,6 +42,8 @@ namespace OSharp.Identity
         /// <summary>
         /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim}"/>类型的新实例
         /// </summary>
+        /// <param name="roleRepository">角色仓储</param>
+        /// <param name="roleClaimRepository">角色声明仓储</param>
         protected RoleStoreBase(
             IRepository<TRole, TRoleKey> roleRepository,
             IRepository<TRoleClaim, int> roleClaimRepository)

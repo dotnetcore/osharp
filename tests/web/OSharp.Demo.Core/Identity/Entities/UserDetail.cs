@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-18 12:34</last-date>
+//  <last-date>2017-09-06 7:59</last-date>
 // -----------------------------------------------------------------------
 
 using OSharp.Entity;
@@ -25,6 +25,6 @@ namespace OSharp.Demo.Identity.Entities
         /// <summary>
         /// 获取或设置 所属用户
         /// </summary>
-        public virtual User User { get; set; }
+        public virtual int UserId { get; set; }
     }
 }

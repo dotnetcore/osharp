@@ -22,15 +22,26 @@ using OSharp.Entity;
 
 namespace OSharp.Identity
 {
+    /// <summary>
+    /// 用户仓储基类
+    /// </summary>
+    /// <typeparam name="TUser">用户类型</typeparam>
+    /// <typeparam name="TUserKey">用户编号类型</typeparam>
+    /// <typeparam name="TUserClaim">用户声明类型</typeparam>
+    /// <typeparam name="TUserLogin">用户登录类型</typeparam>
+    /// <typeparam name="TUserToken">用户令牌类型</typeparam>
+    /// <typeparam name="TRole">角色类型</typeparam>
+    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
+    /// <typeparam name="TUserRole">用户角色类型</typeparam>
     public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole>
-        : IUserLoginStore<TUser>,
+        : IQueryableUserStore<TUser>,
+          IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
           IUserPasswordStore<TUser>,
           IUserSecurityStampStore<TUser>,
           IUserEmailStore<TUser>,
           IUserLockoutStore<TUser>,
           IUserPhoneNumberStore<TUser>,
-          IQueryableUserStore<TUser>,
           IUserTwoFactorStore<TUser>,
           IUserAuthenticationTokenStore<TUser>,
           IUserAuthenticatorKeyStore<TUser>,
@@ -54,9 +65,16 @@ namespace OSharp.Identity
         private bool _disposed;
 
         /// <summary>
-        /// 初始化一个<see cref="UserStoreBase"/>类型的新实例
+        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole}"/>类型的新实例
         /// </summary>
-        protected UserStoreBase(IRepository<TUser, TUserKey> userRepository,
+        /// <param name="userRepository">用户仓储</param>
+        /// <param name="userLoginRepository">用户登录仓储</param>
+        /// <param name="userClaimRepository">用户声明仓储</param>
+        /// <param name="userTokenRepository">用户令牌仓储</param>
+        /// <param name="roleRepository">角色仓储</param>
+        /// <param name="userRoleRepository">用户角色仓储</param>
+        protected UserStoreBase(
+            IRepository<TUser, TUserKey> userRepository,
             IRepository<TUserLogin, Guid> userLoginRepository,
             IRepository<TUserClaim, int> userClaimRepository,
             IRepository<TUserToken, Guid> userTokenRepository,
@@ -70,7 +88,6 @@ namespace OSharp.Identity
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
         }
-
 
         #region Implementation of IQueryableUserStore<TUser>
 
@@ -418,7 +435,8 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            await _userClaimRepository.DeleteAsync(m => m.UserId.Equals(user.Id) && claims.Any(n => n.Type == m.ClaimType && n.Value == m.ClaimValue));
+            await _userClaimRepository.DeleteAsync(m =>
+                m.UserId.Equals(user.Id) && claims.Any(n => n.Type == m.ClaimType && n.Value == m.ClaimValue));
         }
 
         /// <summary>

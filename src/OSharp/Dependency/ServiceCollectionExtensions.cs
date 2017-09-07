@@ -9,13 +9,12 @@
 
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
-
+using OSharp;
 using OSharp.Dependency;
 using OSharp.Options;
 
 
-namespace OSharp
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// ServiceCollection扩展类

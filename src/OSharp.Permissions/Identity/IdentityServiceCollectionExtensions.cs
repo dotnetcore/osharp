@@ -1,20 +1,19 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="User.cs" company="OSharp开源团队">
+//  <copyright file="IdentityServiceCollectionExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-06 7:58</last-date>
+//  <last-date>2017-09-06 17:21</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Identity;
-
-
-namespace OSharp.Demo.Identity.Entities
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// 实体类：用户信息
+    /// Identity服务添加扩展方法
     /// </summary>
-    public class User : UserBase<int>
-    { }
+    public static class IdentityServiceCollectionExtensions
+    {
+        
+    }
 }
