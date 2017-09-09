@@ -12,7 +12,8 @@
  - [项目进度](#04)
 
 ## <a id="01"/>OSharpNS简介
-OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.com/i66soft/osharp)的以`.NetStandard2.0`为目标框架，在`AspNetCore`的现有组件`Microsoft.Extensions.DependencyInjection`,`Microsoft.Extensions.Configuration`,`Microsoft.Extensions.Logging`,`Microsoft.Extensions.Caching`等 上进行构建的快速开发框架。
+OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.com/i66soft/osharp)的以`.NetStandard2.0`为目标框架，在`AspNetCore`的现有组件 `Microsoft.Extensions.DependencyInjection`,`Microsoft.Extensions.Configuration`,
+`Microsoft.Extensions.Logging`,`Microsoft.Extensions.Caching`等 上进行构建的快速开发框架。
 
 ### 框架组件组织
 * 框架核心组件[OSharp.dll]：框架的核心组件，包含一系列快速开发中经常用到的Utility辅助工具功能，框架各个组件的核心接口定义，部分核心功能的实现。
