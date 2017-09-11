@@ -143,6 +143,18 @@ namespace OSharp.Entity
             return _dbSet.Find(key);
         }
 
+        /// <summary>
+        /// 查找指定键的实体，支持复合键
+        /// </summary>
+        /// <param name="ids">键值</param>
+        /// <returns>符合主键的实体，不存在时返回null</returns>
+        public TEntity GetById(params object[] ids)
+        {
+            Check.NotNullOrEmpty(ids, nameof(ids));
+
+            return _dbSet.Find(ids);
+        }
+
         /// <inheritdoc />
         public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] propertySelectors)
         {

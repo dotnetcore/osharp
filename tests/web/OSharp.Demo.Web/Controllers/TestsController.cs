@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
@@ -85,8 +88,28 @@ namespace OSharp.Demo.Web.Controllers
 
             User user = dto.MapTo<User>();
             sb.AppendLine($"User: {user.ToJsonString()}");
-            
 
+
+
+            return Content(sb.ToString());
+        }
+        
+        public async Task<IActionResult> Test()
+        {
+            StringBuilder sb = new StringBuilder();
+            string token = DateTime.Now.ToString("HHmmss");
+            UserManager<User> userManager = _provider.GetService<UserManager<User>>();
+            User user = new User() { UserName = $"gmf520{token}", Email = $"gmf520{token}@yeah.net" };
+            IdentityResult result = await userManager.CreateAsync(user);
+            sb.AppendLine(result.ToJsonString());
+
+            RoleManager<Role> roleManager = _provider.GetService<RoleManager<Role>>();
+            Role role = new Role() { Name = $"角色{token}" };
+            result = await roleManager.CreateAsync(role);
+            sb.AppendLine(result.ToJsonString());
+
+            result = await userManager.AddToRoleAsync(user, role.Name);
+            sb.AppendLine(result.ToJsonString());
 
             return Content(sb.ToString());
         }

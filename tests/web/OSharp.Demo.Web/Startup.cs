@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.Mvc.ModelBinding;
 
 
@@ -32,6 +33,7 @@ namespace OSharp.Demo.Web
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
+                options.Filters.Add<UnitOfWorkAttribute>();
             });
             
             Services = services;

@@ -9,6 +9,7 @@
 
 using System;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using OSharp.Demo.Identity.Entities;
@@ -25,7 +26,7 @@ namespace OSharp.Demo.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<UserLogin> builder)
         {
-            builder.HasAlternateKey(m => new { m.LoginProvider, m.ProviderKey });
+            builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasName("UserLoginIndex").IsUnique();
         }
     }
 }

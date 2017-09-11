@@ -26,7 +26,7 @@ namespace OSharp.Demo.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasAlternateKey(m => new { m.UserId, m.RoleId });
+            builder.HasIndex(m => new { m.UserId, m.RoleId }).HasName("UserRoleIndex").IsUnique();
         }
     }
 }

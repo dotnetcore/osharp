@@ -91,6 +91,13 @@ namespace OSharp.Entity
         TEntity Get(TKey key);
 
         /// <summary>
+        /// 查找指定键的实体，支持复合键
+        /// </summary>
+        /// <param name="ids">键值</param>
+        /// <returns>符合主键的实体，不存在时返回null</returns>
+        TEntity GetById(params object[] ids);
+
+        /// <summary>
         /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
         /// </summary>
         /// <param name="propertySelectors">要Include操作的属性表达式</param>
