@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="T4\**" />
+    <EmbeddedResource Remove="T4\**" />
+    <None Remove="T4\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
@@ -13,35 +19,6 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="T4\ModelCodeScript.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelCodeScript.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="T4\EntityConfigurationTemplate.tt">
-      <Generator></Generator>
-    </None>
-    <None Update="T4\ModelCodeScript.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModelCodeScript.cs</LastGenOutput>
-      <LastOutputs>
-..\Identity\RoleClaimConfiguration.generated.cs
-..\Identity\RoleConfiguration.generated.cs
-..\Identity\UserClaimConfiguration.generated.cs
-..\Identity\UserConfiguration.generated.cs
-..\Identity\UserDetailConfiguration.generated.cs
-..\Identity\UserLoginConfiguration.generated.cs
-..\Identity\UserRoleConfiguration.generated.cs
-..\Identity\UserTokenConfiguration.generated.cs
-.\ModelCodeScript.cs
-</LastOutputs>
-    </None>
   </ItemGroup>
 
 </Project>

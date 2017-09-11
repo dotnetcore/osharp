@@ -11,9 +11,10 @@ using System;
 namespace OSharp.Demo.Web.Migrations
 {
     [DbContext(typeof(DesignTimeDefaultDbContext))]
-    partial class DesignTimeDefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170911084436_AddIdentityEntities")]
+    partial class AddIdentityEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
