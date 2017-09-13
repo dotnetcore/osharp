@@ -105,7 +105,6 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
     - [x] OSharp.AutoMapper
         - [x] 不同的映射类型，通过实现`Profile`来实现映射注册
         - [x] 实现通过遍历程序集，查找实现了`IMapTuple`接口的`Profile`来自动注册映射策略
-        - [x] 定义输入DTO到实体类的简单映射规则，命名规则为实体类`Entity`的输入DTO为`EntityInputDto`
-        - [x] 定义实体类到输出DTO的简单映射规则，命名规则为实体类`Entity`的输出DTO为`EntityOutputDto`
+        - [x] 定义`MapToAttribute`，`MapFromAttribute`类型，用以标注Mapping的Source与Target类型，使用时在要映射的类型上标注如`[MapTo(typeof(TTarget))]`或`[MapFrom(typeof(TSource))]`特性，框架初始化时自动查找相应的类型进行CreateMap映射注册
     - [ ] OSharp.AspNetCore
     - [ ] OSharp.Permissions
