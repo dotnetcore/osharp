@@ -283,7 +283,7 @@ namespace OSharp.Identity
             Check.NotNull(role, nameof(role));
             Check.NotNull(claim, nameof(claim));
 
-            return _roleClaimRepository.DeleteAsync(m => m.RoleId.Equals(role.Id) && m.ClaimValue == claim.Type && m.ClaimValue == claim.Value);
+            return _roleClaimRepository.DeleteBatchAsync(m => m.RoleId.Equals(role.Id) && m.ClaimValue == claim.Type && m.ClaimValue == claim.Value);
         }
 
         #endregion

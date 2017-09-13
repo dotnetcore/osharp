@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -36,19 +37,23 @@ namespace OSharp.Demo.Web.Controllers
         {
             StringBuilder sb = new StringBuilder();
 
-            var repository = _provider.GetService<IRepository<User, int>>();
-            sb.AppendLine($"IRepository<User, int>： => {repository.GetHashCode()}");
-            sb.AppendLine($"IRepository<User, int>.DbContext： => {repository.DbContext.GetHashCode()}");
+            var userRepository = _provider.GetService<IRepository<User, int>>();
+            sb.AppendLine($"IRepository<User, int>： => {userRepository.GetHashCode()}");
+            //sb.AppendLine($"IRepository<User, int>.DbContext： => {userRepository.DbContext.GetHashCode()}");
 
-            repository = _provider.GetService<IRepository<User, int>>();
-            sb.AppendLine($"IRepository<User, int>： => {repository.GetHashCode()}");
-            sb.AppendLine($"IRepository<User, int>.DbContext： => {repository.DbContext.GetHashCode()}");
+            userRepository = _provider.GetService<IRepository<User, int>>();
+            sb.AppendLine($"IRepository<User, int>： => {userRepository.GetHashCode()}");
+            //sb.AppendLine($"IRepository<User, int>.DbContext： => {userRepository.DbContext.GetHashCode()}");
+
+            var roleRepository = _provider.GetService<IRepository<Role, int>>();
+            sb.AppendLine($"IRepository<Role, int>： => {roleRepository.GetHashCode()}");
+            //sb.AppendLine($"IRepository<Role, int>.DbContext： => {roleRepository.DbContext.GetHashCode()}");
 
             sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
             sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
             sb.AppendLine($"IEntityTypeFinder: => {_provider.GetService<IEntityTypeFinder>().GetHashCode()}");
 
-            sb.AppendLine($"用户数量：{repository.Query().Count()}");
+            sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
 
             return Content(sb.ToString());
         }
@@ -57,7 +62,7 @@ namespace OSharp.Demo.Web.Controllers
         {
             var services = Startup.Services;
             var sb = new StringBuilder();
-            foreach (var item in services.Where(m => !m.ServiceType.FullName.StartsWith("System") && !m.ServiceType.FullName.StartsWith("Microsoft"))
+            foreach (var item in services.Where(m => m.ImplementationType != null && !m.ImplementationType.FullName.StartsWith("System") && !m.ImplementationType.FullName.StartsWith("Microsoft"))
                 .OrderBy(m => m.Lifetime).ThenBy(m => m.ImplementationType.FullName))
             {
                 string line = $"{item.ImplementationType.FullName}\t{item.ServiceType.FullName}\t{item.Lifetime}";
@@ -103,14 +108,14 @@ namespace OSharp.Demo.Web.Controllers
             IdentityResult result = await userManager.CreateAsync(user);
             sb.AppendLine(result.ToJsonString());
 
-            RoleManager<Role> roleManager = _provider.GetService<RoleManager<Role>>();
-            Role role = new Role() { Name = $"角色{token}" };
-            result = await roleManager.CreateAsync(role);
-            sb.AppendLine(result.ToJsonString());
+            //RoleManager<Role> roleManager = _provider.GetService<RoleManager<Role>>();
+            //Role role = new Role() { Name = $"角色{token}" };
+            //result = await roleManager.CreateAsync(role);
+            //sb.AppendLine(result.ToJsonString());
 
-            result = await userManager.AddToRoleAsync(user, role.Name);
-            sb.AppendLine(result.ToJsonString());
-
+            //result = await userManager.AddToRoleAsync(user, role.Name);
+            //sb.AppendLine(result.ToJsonString());
+            
             return Content(sb.ToString());
         }
     }

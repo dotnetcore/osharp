@@ -16,6 +16,9 @@
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <Compile Remove="ServiceCollectionExtensions1.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />

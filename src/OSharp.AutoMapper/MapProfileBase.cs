@@ -26,7 +26,7 @@ namespace OSharp.AutoMapper
         where TTargetTypeFinder : IMapTargetTypeFinder
     {
         /// <summary>
-        /// 初始化一个<see cref="MapProfileBase"/>类型的新实例
+        /// 初始化一个<see cref="MapProfileBase{TSourceTypeFinder,TTargetTypeFinder}"/>类型的新实例
         /// </summary>
         protected MapProfileBase(TSourceTypeFinder sourceTypeFinder, TTargetTypeFinder targetTypeFinder)
         {
@@ -44,6 +44,9 @@ namespace OSharp.AutoMapper
         /// </summary>
         public TTargetTypeFinder TargetTypeFinder { get; set; }
 
+        /// <summary>
+        /// 执行对象映射构造
+        /// </summary>
         public void Build()
         {
             Type[] sourceTypes = SourceTypeFinder.FindAll();
@@ -63,7 +66,7 @@ namespace OSharp.AutoMapper
                 }
             }
         }
-        
+
         /// <summary>
         /// 重写以定义源类型与目标类型的匹配规则
         /// </summary>

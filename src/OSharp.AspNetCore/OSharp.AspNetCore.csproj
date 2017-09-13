@@ -12,10 +12,16 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AspNetCore.xml</DocumentationFile>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <Compile Remove="Mvc\Extensions\**" />
+    <EmbeddedResource Remove="Mvc\Extensions\**" />
+    <None Remove="Mvc\Extensions\**" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.0" />
@@ -23,10 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mvc\Extensions\" />
   </ItemGroup>
 
 </Project>

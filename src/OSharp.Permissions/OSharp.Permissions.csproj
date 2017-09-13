@@ -18,13 +18,14 @@
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
-
   <ItemGroup>
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    <Compile Remove="Authentication\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <None Remove="Authentication\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\" />
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

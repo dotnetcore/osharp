@@ -13,11 +13,9 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
@@ -33,7 +31,6 @@ namespace OSharp.Entity
     public class UnitOfWork : IUnitOfWork, IScopeDependency
     {
         private readonly IServiceProvider _serviceProvider;
-        private List<DbContextResolveOptions> _optionsConfigs = new List<DbContextResolveOptions>();
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWork"/>类型的新实例
@@ -58,11 +55,12 @@ namespace OSharp.Entity
         public IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey> where TKey : IEquatable<TKey>
         {
             IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
-            Type dbContextType = typeFinder.GetDbContextTypeForEntity(typeof(TEntity));
+            Type entityType = typeof(TEntity);
+            Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
 
             DbContext dbContext;
-            OSharpDbContextOptions dbContextConfig = GetDbContextResolveOptions(dbContextType);
-            DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextConfig);
+            OSharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
+            DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextOptions);
             IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
             ActiveTransactionInfo transInfo = ActiveTransactionInfos.GetOrDefault(resolveOptions.ConnectionString);
             //连接字符串的事务不存在，添加起始上下文事务信息
@@ -77,6 +75,11 @@ namespace OSharp.Entity
             else
             {
                 resolveOptions.ExistingConnection = transInfo.DbContextTransaction.GetDbTransaction().Connection;
+                //相同连接串相同上下文类型并且已存在对象，直接返回上下文对象
+                if (transInfo.StarterDbContext.GetType() == resolveOptions.DbContextType)
+                {
+                    return transInfo.StarterDbContext as IDbContext;
+                }
                 dbContext = contextResolver.Resolve(resolveOptions);
                 if (dbContext.IsRelationalTransaction())
                 {
@@ -114,9 +117,9 @@ namespace OSharp.Entity
 
         private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
         {
-            IOptions<OSharpOptions> osharpOptions = _serviceProvider.GetService<IOptions<OSharpOptions>>();
+            IOptionsMonitor<OSharpOptions> osharpOptions = _serviceProvider.GetService<IOptionsMonitor<OSharpOptions>>();
             OSharpDbContextOptions dbContextOptions =
-                osharpOptions.Value.DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
+                osharpOptions.CurrentValue.DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
             if (dbContextOptions == null)
             {
                 throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");

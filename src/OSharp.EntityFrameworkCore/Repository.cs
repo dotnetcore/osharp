@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
+using Z.EntityFramework.Plus;
+
 
 namespace OSharp.Entity
 {
@@ -37,6 +39,7 @@ namespace OSharp.Entity
             UnitOfWork = unitOfWork;
             _dbContext = (DbContext)unitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
+            //DbContext = (IDbContext)_dbContext;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace OSharp.Entity
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
 
-        public IDbContext DbContext { get => _dbContext as IDbContext; }
+        //public IDbContext DbContext { get; }
 
         #region 同步方法
 
@@ -56,7 +59,6 @@ namespace OSharp.Entity
         public int Insert(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
-
             _dbSet.AddRange(entities);
             return _dbContext.SaveChanges();
         }
@@ -92,12 +94,11 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
-        public int Delete(Expression<Func<TEntity, bool>> predicate)
+        public int DeleteBatch(Expression<Func<TEntity, bool>> predicate)
         {
             Check.NotNull(predicate, nameof(predicate));
 
-            TEntity[] entities = _dbSet.Where(predicate).ToArray();
-            return Delete(entities);
+            return _dbSet.Where(predicate).Delete();
         }
 
         /// <summary>
@@ -111,6 +112,20 @@ namespace OSharp.Entity
 
             _dbSet.Update(entity);
             return _dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// 批量更新所有符合特定条件的实体
+        /// </summary>
+        /// <param name="predicate">查询条件的谓语表达式</param>
+        /// <param name="updateExpression">属性更新表达式</param>
+        /// <returns>操作影响的行数</returns>
+        public int UpdateBatch(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
+        {
+            Check.NotNull(predicate, nameof(predicate));
+            Check.NotNull(updateExpression, nameof(updateExpression));
+
+            return _dbSet.Where(predicate).Update(updateExpression);
         }
 
         /// <summary>
@@ -144,24 +159,27 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 查找指定键的实体，支持复合键
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件
         /// </summary>
-        /// <param name="ids">键值</param>
-        /// <returns>符合主键的实体，不存在时返回null</returns>
-        public TEntity GetById(params object[] ids)
+        /// <param name="predicate">数据过滤表达式</param>
+        /// <returns></returns>
+        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null)
         {
-            Check.NotNullOrEmpty(ids, nameof(ids));
-
-            return _dbSet.Find(ids);
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            if (predicate == null)
+            {
+                return query;
+            }
+            return query.Where(predicate);
         }
 
         /// <inheritdoc />
-        public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] propertySelectors)
+        public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
-            var query = _dbSet.AsQueryable();
-            if (propertySelectors != null && propertySelectors.Length > 0)
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            if (includePropertySelectors != null && includePropertySelectors.Length > 0)
             {
-                foreach (Expression<Func<TEntity, object>> selector in propertySelectors)
+                foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
                 {
                     query = query.Include(selector);
                 }
@@ -169,13 +187,28 @@ namespace OSharp.Entity
             return query.AsNoTracking();
         }
 
-        /// <inheritdoc />
-        public IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] propertySelectors)
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可附加过滤条件
+        /// </summary>
+        /// <param name="predicate">数据过滤表达式</param>
+        /// <returns></returns>
+        public IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate = null)
         {
-            var query = _dbSet.AsQueryable();
-            if (propertySelectors != null && propertySelectors.Length > 0)
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            if (predicate == null)
             {
-                foreach (Expression<Func<TEntity, object>> selector in propertySelectors)
+                return query;
+            }
+            return query.Where(predicate);
+        }
+
+        /// <inheritdoc />
+        public IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
+        {
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            if (includePropertySelectors != null && includePropertySelectors.Length > 0)
+            {
+                foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
                 {
                     query = query.Include(selector);
                 }
@@ -231,12 +264,11 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
-        public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<int> DeleteBatchAsync(Expression<Func<TEntity, bool>> predicate)
         {
             Check.NotNull(predicate, nameof(predicate));
 
-            TEntity[] entities = await _dbSet.Where(predicate).ToArrayAsync();
-            return await DeleteAsync(entities);
+            return await _dbSet.Where(predicate).DeleteAsync();
         }
 
         /// <summary>
@@ -250,6 +282,20 @@ namespace OSharp.Entity
 
             _dbSet.Update(entity);
             return await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 异步更新所有符合特定条件的实体
+        /// </summary>
+        /// <param name="predicate">查询条件谓语表达式</param>
+        /// <param name="updateExpression">实体更新表达式</param>
+        /// <returns>操作影响的行数</returns>
+        public async Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
+        {
+            Check.NotNull(predicate, nameof(predicate));
+            Check.NotNull(updateExpression, nameof(updateExpression));
+
+            return await _dbSet.Where(predicate).UpdateAsync(updateExpression);
         }
 
         /// <summary>

@@ -316,7 +316,7 @@ namespace OSharp.Identity
             Check.NotNullOrEmpty(loginProvider, nameof(loginProvider));
             Check.NotNullOrEmpty(providerKey, nameof(providerKey));
 
-            await _userLoginRepository.DeleteAsync(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.ProviderKey == providerKey);
+            await _userLoginRepository.DeleteBatchAsync(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.ProviderKey == providerKey);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            await _userClaimRepository.DeleteAsync(m =>
+            await _userClaimRepository.DeleteBatchAsync(m =>
                 m.UserId.Equals(user.Id) && claims.Any(n => n.Type == m.ClaimType && n.Value == m.ClaimValue));
         }
 
@@ -949,7 +949,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            await _userTokenRepository.DeleteAsync(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name);
+            await _userTokenRepository.DeleteBatchAsync(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name);
         }
 
         /// <summary>Returns the token value.</summary>
@@ -1109,7 +1109,7 @@ namespace OSharp.Identity
             {
                 throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
             }
-            await _userRoleRepository.DeleteAsync(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId));
+            await _userRoleRepository.DeleteBatchAsync(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId));
         }
 
         /// <summary>

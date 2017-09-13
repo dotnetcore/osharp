@@ -25,25 +25,25 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceScanOptions options = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceScanOptions scanOptions = null)
         {
-            if (options == null)
+            if (scanOptions == null)
             {
-                options = new AppServiceScanOptions();
+                scanOptions = new AppServiceScanOptions();
             }
-            return new AppServiceAdder(options).AddServices(services);
+            return new AppServiceAdder(scanOptions).AddServices(services);
         }
 
         /// <summary>
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 
         /// 检索程序集，查找实现了<see cref="ITransientDependency"/>，<see cref="IScopeDependency"/>，<see cref="ISingletonDependency"/> 接口的所有服务，分别按生命周期类型进行添加
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<OSharpOptions> configureOptions, AppServiceScanOptions options = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<OSharpOptions> configureOptions, AppServiceScanOptions scanOptions = null)
         {
             Check.NotNull(services, nameof(services));
             Check.NotNull(configureOptions, nameof(configureOptions));
 
-            services.AddOSharp(options);
+            services.AddOSharp(scanOptions);
             services.Configure(configureOptions);
             return services;
         }

@@ -22,6 +22,8 @@ namespace OSharp.Entity
         /// </summary>
         public DefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
             : base(options, typeFinder)
-        { }
+        {
+            
+        }
     }
 }

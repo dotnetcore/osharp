@@ -32,11 +32,8 @@ namespace OSharp.Entity
         /// 获取 当前单元操作对象
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
-        /// 获取 当前的数据上下文
-        /// </summary>
-        IDbContext DbContext { get; }
+        
+        //IDbContext DbContext { get; }
 
         #region 同步方法
 
@@ -62,12 +59,12 @@ namespace OSharp.Entity
         int Delete(TKey key);
 
         /// <summary>
-        /// 删除所有符合特定条件的实体
+        /// 批量删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
-        int Delete(Expression<Func<TEntity, bool>> predicate);
-
+        int DeleteBatch(Expression<Func<TEntity, bool>> predicate);
+        
         /// <summary>
         /// 更新实体对象
         /// </summary>
@@ -75,6 +72,14 @@ namespace OSharp.Entity
         /// <returns>操作影响的行数</returns>
         int Update(TEntity entity);
 
+        /// <summary>
+        /// 批量更新所有符合特定条件的实体
+        /// </summary>
+        /// <param name="predicate">查询条件的谓语表达式</param>
+        /// <param name="updateExpression">属性更新表达式</param>
+        /// <returns>操作影响的行数</returns>
+        int UpdateBatch(Expression<Func<TEntity, bool>>predicate, Expression<Func<TEntity, TEntity>>updateExpression);
+        
         /// <summary>
         /// 检查实体是否存在
         /// </summary>
@@ -91,25 +96,32 @@ namespace OSharp.Entity
         TEntity Get(TKey key);
 
         /// <summary>
-        /// 查找指定键的实体，支持复合键
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件
         /// </summary>
-        /// <param name="ids">键值</param>
-        /// <returns>符合主键的实体，不存在时返回null</returns>
-        TEntity GetById(params object[] ids);
+        /// <param name="predicate">数据过滤表达式</param>
+        /// <returns></returns>
+        IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null);
 
         /// <summary>
-        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可Include导航属性
         /// </summary>
-        /// <param name="propertySelectors">要Include操作的属性表达式</param>
+        /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
         /// <returns></returns>
-        IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] propertySelectors);
+        IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors);
 
         /// <summary>
-        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可附加过滤条件
         /// </summary>
-        /// <param name="propertySelectors">要Include操作的属性表达式</param>
+        /// <param name="predicate">数据过滤表达式</param>
         /// <returns></returns>
-        IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] propertySelectors);
+        IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>>predicate = null);
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可Include导航属性
+        /// </summary>
+        /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
+        /// <returns></returns>
+        IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors);
 
         #endregion
 
@@ -141,7 +153,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
-        Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<int> DeleteBatchAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 异步更新实体对象
@@ -149,6 +161,14 @@ namespace OSharp.Entity
         /// <param name="entity">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
         Task<int> UpdateAsync(TEntity entity);
+
+        /// <summary>
+        /// 异步更新所有符合特定条件的实体
+        /// </summary>
+        /// <param name="predicate">查询条件谓语表达式</param>
+        /// <param name="updateExpression">实体更新表达式</param>
+        /// <returns>操作影响的行数</returns>
+        Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity,TEntity>>updateExpression);
 
         /// <summary>
         /// 异步检查实体是否存在

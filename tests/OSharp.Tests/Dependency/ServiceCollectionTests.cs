@@ -16,7 +16,7 @@ namespace OSharp.Tests.Dependency
         [Fact]
         public void AddTest()
         {
-            ServiceCollection services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection();
 
             services.AddTransient<ITestContract, TestService1>();
 

@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="Startup.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2017-09-12 0:01</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.Mvc.ModelBinding;
+using OSharp.Demo.Identity;
+using OSharp.Demo.Identity.Entities;
 
 
 namespace OSharp.Demo.Web
@@ -20,7 +27,7 @@ namespace OSharp.Demo.Web
         {
             Configuration = configuration;
         }
-        
+
         public IConfiguration Configuration { get; }
 
         public static IServiceCollection Services { get; private set; }
@@ -29,15 +36,16 @@ namespace OSharp.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOSharp();
+            services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>();
 
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
                 options.Filters.Add<UnitOfWorkAttribute>();
             });
-            
-            Services = services;
+            services.AddLogging();
 
+            Services = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
