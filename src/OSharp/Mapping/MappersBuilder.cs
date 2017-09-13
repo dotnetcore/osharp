@@ -25,7 +25,7 @@ namespace OSharp.Mapping
         {
             foreach (IMapTuple mapTuple in mapTuples)
             {
-                mapTuple.Build();
+                mapTuple.CreateMap();
             }
         }
     }

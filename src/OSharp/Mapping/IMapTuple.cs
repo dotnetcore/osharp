@@ -17,6 +17,6 @@ namespace OSharp.Mapping
         /// <summary>
         /// 执行对象映射构造
         /// </summary>
-        void Build();
+        void CreateMap();
     }
 }
