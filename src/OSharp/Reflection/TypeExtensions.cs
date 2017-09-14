@@ -69,7 +69,7 @@ namespace OSharp.Reflection
         /// <param name="type">类型对象</param>
         /// <param name="inherit">是否搜索类型的继承链以查找描述特性</param>
         /// <returns>返回Description特性描述信息，如不存在则返回类型的全名</returns>
-        public static string ToDescription(this Type type, bool inherit = false)
+        public static string GetDescription(this Type type, bool inherit = false)
         {
             DescriptionAttribute desc = type.GetAttribute<DescriptionAttribute>(inherit);
             return desc == null ? type.FullName : desc.Description;
@@ -81,7 +81,7 @@ namespace OSharp.Reflection
         /// <param name="member">成员元数据对象</param>
         /// <param name="inherit">是否搜索成员的继承链以查找描述特性</param>
         /// <returns>返回Description特性描述信息，如不存在则返回成员的名称</returns>
-        public static string ToDescription(this MemberInfo member, bool inherit = false)
+        public static string GetDescription(this MemberInfo member, bool inherit = false)
         {
             DescriptionAttribute desc = member.GetAttribute<DescriptionAttribute>(inherit);
             if (desc != null)

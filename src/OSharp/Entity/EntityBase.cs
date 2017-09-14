@@ -26,7 +26,7 @@ namespace OSharp.Entity
         {
             if (typeof(TKey) == typeof(Guid))
             {
-                Id = CombHelper.NewComb().CastTo<TKey>();
+                Id = CombGuid.NewGuid().CastTo<TKey>();
             }
         }
 

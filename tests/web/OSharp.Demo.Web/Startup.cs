@@ -39,7 +39,7 @@ namespace OSharp.Demo.Web
             services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>();
 
             services.AddMvc(options =>
-            {
+            { 
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
                 options.Filters.Add<UnitOfWorkAttribute>();
             });
@@ -71,7 +71,7 @@ namespace OSharp.Demo.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseAutoMapper();
+            app.UseOSharp().UseAutoMapper();
         }
     }
 }

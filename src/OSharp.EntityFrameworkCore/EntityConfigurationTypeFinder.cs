@@ -11,9 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Finders;
+using OSharp.Infrastructure;
 
 
 namespace OSharp.Entity
@@ -59,7 +62,7 @@ namespace OSharp.Entity
         {
             Type baseType = typeof(IEntityRegister);
             Type[] types = _assemblyFinder.FindAll()
-                .SelectMany(assembly => assembly.GetTypes().Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract))
+                .SelectMany(assembly => assembly.GetTypes().Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract && type.IsPublic))
                 .ToArray();
             return types;
         }
@@ -81,9 +84,10 @@ namespace OSharp.Entity
             List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance(type) as IEntityRegister).ToList();
             Dictionary<Type, IEntityRegister[]> dict = new Dictionary<Type, IEntityRegister[]>();
             List<IGrouping<Type, IEntityRegister>> groups = registers.GroupBy(m => m.DbContextType).ToList();
+            Type key;
             foreach (IGrouping<Type, IEntityRegister> group in groups)
             {
-                Type key = group.Key ?? typeof(DefaultDbContext);
+                key = group.Key ?? typeof(DefaultDbContext);
                 List<IEntityRegister> list = new List<IEntityRegister>();
                 if (group.Key == null || group.Key == typeof(DefaultDbContext))
                 {
@@ -98,6 +102,19 @@ namespace OSharp.Entity
                     dict[key] = list.ToArray();
                 }
             }
+            //添加框架的一些默认实体的实体映射信息（如果不存在）
+            key = typeof(DefaultDbContext);
+            if (dict.ContainsKey(key))
+            {
+                List<IEntityRegister> list = dict[key].ToList();
+                if (!list.Any(m => m.EntityType.GetInterfaces().Contains(typeof(IEntityInfo))))
+                {
+                    list.Add(new EntityInfoConfiguration());
+                }
+
+                dict[key] = list.ToArray();
+            }
+
             _entityRegistersDict = dict;
         }
 
@@ -131,6 +148,17 @@ namespace OSharp.Entity
                 }
             }
             throw new OsharpException($"无法获取实体类“{entityType}”的所属上下文类型，请通过继承基类“EntityTypeConfigurationBase<TEntity, TKey>”配置实体加载到上下文中");
+        }
+
+
+        private class EntityInfoConfiguration : EntityTypeConfigurationBase<EntityInfo, Guid>
+        {
+            /// <summary>
+            /// 重写以实现实体类型各个属性的数据库配置
+            /// </summary>
+            /// <param name="builder">实体类型创建器</param>
+            public override void Configure(EntityTypeBuilder<EntityInfo> builder)
+            { }
         }
     }
 }

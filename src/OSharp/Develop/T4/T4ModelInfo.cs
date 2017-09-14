@@ -39,7 +39,7 @@ namespace OSharp.Develop.T4
                 ModuleName = @namespace.Match(moduleNamePattern);
             }
             Name = modelType.Name;
-            Description = modelType.ToDescription();
+            Description = modelType.GetDescription();
             Properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             PropertyInfo property = Properties.FirstOrDefault(m => m.HasAttribute<KeyAttribute>())
                 ?? Properties.FirstOrDefault(m => m.Name.ToUpper() == "ID")

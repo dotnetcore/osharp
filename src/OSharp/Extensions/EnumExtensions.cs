@@ -29,7 +29,7 @@ namespace OSharp
         {
             Type type = value.GetType();
             MemberInfo member = type.GetMember(value.ToString()).FirstOrDefault();
-            return member != null ? member.ToDescription() : value.ToString();
+            return member != null ? member.GetDescription() : value.ToString();
         }
     }
 }

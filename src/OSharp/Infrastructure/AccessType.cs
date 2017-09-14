@@ -7,7 +7,7 @@
 //  <last-date>2017-09-04 8:14</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authentication
+namespace OSharp
 {
     /// <summary>
     /// 功能访问类型

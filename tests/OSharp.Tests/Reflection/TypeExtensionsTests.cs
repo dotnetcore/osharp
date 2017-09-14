@@ -69,12 +69,12 @@ namespace OSharp.Reflection.Tests
         public void ToDescriptionTest()
         {
             Type type = typeof(TestEntity);
-            Assert.Equal("测试实体", type.ToDescription());
+            Assert.Equal("测试实体", type.GetDescription());
             PropertyInfo property = type.GetProperty("Id");
-            Assert.Equal("编号", property.ToDescription());
+            Assert.Equal("编号", property.GetDescription());
 
             type = GetType();
-            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", type.ToDescription());
+            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", type.GetDescription());
         }
 
         [Fact()]

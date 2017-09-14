@@ -9,18 +9,25 @@
 
 using System;
 
+using OSharp.Entity;
 
-namespace OSharp.Authentication
+
+namespace OSharp
 {
     /// <summary>
     /// 定义最小功能信息
     /// </summary>
-    public interface IFunction
+    public interface IFunction : ILockable
     {
         /// <summary>
         /// 获取或设置 功能编号
         /// </summary>
         Guid Id { get; set; }
+
+        /// <summary>
+        /// 获取或设置 功能名称
+        /// </summary>
+        string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 区域名称
@@ -33,7 +40,7 @@ namespace OSharp.Authentication
         string Controller { get; set; }
 
         /// <summary>
-        /// 获取或设置 功能名称
+        /// 获取或设置 控制器的功能名称
         /// </summary>
         string Action { get; set; }
 
