@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Entity;
 
@@ -24,21 +25,25 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
+        [Required]
         public string UserName { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的用户名
         /// </summary>
+        [Required]
         public string NormalizedUserName { get; set; }
 
         /// <summary>
         /// 获取或设置 电子邮箱
         /// </summary>
+        [Required]
         public string Email { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的电子邮箱
         /// </summary>
+        [Required]
         public string NormalizeEmail { get; set; }
 
         /// <summary>

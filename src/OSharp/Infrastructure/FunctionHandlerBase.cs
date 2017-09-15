@@ -219,7 +219,7 @@ namespace OSharp.Infrastructure
 
             //删除的功能
             TFunction[] removeItems = dbItems.Except(functions,
-                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Area)).ToArray();
+                EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action)).ToArray();
             int removeCount = removeItems.Length;
             //todo：由于外键关联不能物理删除的实体，需要实现逻辑删除
             repository.Delete(removeItems);
