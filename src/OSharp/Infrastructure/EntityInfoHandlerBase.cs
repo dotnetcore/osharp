@@ -21,18 +21,18 @@ namespace OSharp.Infrastructure
         where TEntityInfo : class, IEntityInfo, IEntity<Guid>, new()
     {
         private readonly IServiceScope _scope;
-        private readonly IServiceProvider _provider;
+        private readonly IServiceProvider _scopedServiceProvider;
         private readonly ILogger _logger;
         private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
-        protected EntityInfoHandlerBase(IServiceProvider serviceProvider)
+        protected EntityInfoHandlerBase(IServiceProvider applicationServiceProvider)
         {
-            _scope = serviceProvider.CreateScope();
-            _provider = _scope.ServiceProvider;
-            _logger = _provider.GetService<ILogger<TEntityInfoHandler>>();
+            _scope = applicationServiceProvider.CreateScope();
+            _scopedServiceProvider = _scope.ServiceProvider;
+            _logger = _scopedServiceProvider.GetService<ILogger<TEntityInfoHandler>>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace OSharp.Infrastructure
         /// </summary>
         public void Initialize()
         {
-            IEntityTypeFinder entityTypeFinder = _provider.GetService<IEntityTypeFinder>();
+            IEntityTypeFinder entityTypeFinder = _scopedServiceProvider.GetService<IEntityTypeFinder>();
             Type[] entityTypes = entityTypeFinder.FindAll(true);
 
             foreach (Type entityType in entityTypes)
@@ -100,7 +100,7 @@ namespace OSharp.Infrastructure
         /// </summary>
         protected virtual void SyncToDatabase(List<TEntityInfo> entityInfos)
         {
-            IRepository<TEntityInfo, Guid> repository = _provider.GetService<IRepository<TEntityInfo, Guid>>();
+            IRepository<TEntityInfo, Guid> repository = _scopedServiceProvider.GetService<IRepository<TEntityInfo, Guid>>();
             TEntityInfo[] dbItems = repository.TrackQuery().ToArray();
 
             //删除的实体信息
@@ -119,7 +119,11 @@ namespace OSharp.Infrastructure
             foreach (TEntityInfo item in dbItems.Except(removeItems))
             {
                 bool isUpdate = false;
-                TEntityInfo entityInfo = entityInfos.Single(m => m.ClassFullName == item.ClassFullName);
+                TEntityInfo entityInfo = entityInfos.SingleOrDefault(m => m.ClassFullName == item.ClassFullName);
+                if (entityInfo == null)
+                {
+                    continue;
+                }
                 if (item.Name != entityInfo.Name)
                 {
                     item.Name = entityInfo.Name;
@@ -137,7 +141,7 @@ namespace OSharp.Infrastructure
                 }
             }
             repository.UnitOfWork.Commit();
-            if (removeCount+addCount +updateCount > 0)
+            if (removeCount + addCount + updateCount > 0)
             {
                 string msg = "刷新实体信息";
                 if (addCount > 0)
@@ -162,7 +166,7 @@ namespace OSharp.Infrastructure
         /// <returns></returns>
         protected virtual TEntityInfo[] GetFromDatabase()
         {
-            IRepository<TEntityInfo, Guid> repository = _provider.GetService<IRepository<TEntityInfo, Guid>>();
+            IRepository<TEntityInfo, Guid> repository = _scopedServiceProvider.GetService<IRepository<TEntityInfo, Guid>>();
             return repository.Query().ToArray();
         }
 

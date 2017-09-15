@@ -43,8 +43,7 @@ namespace OSharp.Entity
             Type baseType = typeof(IEntity<>);
             Assembly[] assemblies = _allAssemblyFinder.FindAll(true);
             return assemblies.SelectMany(assembly => assembly.GetTypes())
-                .Where(type => baseType.IsGenericAssignableFrom(type) && !type.IsAbstract)
-                .Distinct().ToArray();
+                .Where(type => type.IsDeriveClassFrom(baseType)).Distinct().ToArray();
         }
     }
 }

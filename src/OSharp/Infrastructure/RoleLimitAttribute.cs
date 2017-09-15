@@ -1,17 +1,20 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityInfo.cs" company="OSharp开源团队">
+//  <copyright file="RoleLimitAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor></last-editor>
-//  <last-date>2017-09-14 15:31</last-date>
+//  <last-date>2017-09-15 2:45</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Infrastructure
+using System;
+
+
+namespace OSharp
 {
     /// <summary>
-    /// 实体类：实体信息类
+    /// 指定功能只允许特定角色可以访问
     /// </summary>
-    public class EntityInfo : EntityInfoBase
+    public class RoleLimitAttribute : Attribute
     { }
 }

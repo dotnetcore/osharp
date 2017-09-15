@@ -39,7 +39,7 @@ namespace OSharp.Demo.Web
             services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>();
 
             services.AddMvc(options =>
-            { 
+            {
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
                 options.Filters.Add<UnitOfWorkAttribute>();
             });
@@ -66,6 +66,10 @@ namespace OSharp.Demo.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

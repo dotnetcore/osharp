@@ -25,6 +25,25 @@ namespace OSharp.Reflection
     public static class TypeExtensions
     {
         /// <summary>
+        /// 判断当前类型是否可由指定类型派生
+        /// </summary>
+        public static bool IsDeriveClassFrom<TBaseType>(this Type type, bool canAbstract = false)
+        {
+            return IsDeriveClassFrom(type, typeof(TBaseType), canAbstract);
+        }
+
+        /// <summary>
+        /// 判断当前类型是否可由指定类型派生
+        /// </summary>
+        public static bool IsDeriveClassFrom(this Type type, Type baseType, bool canAbstract = false)
+        {
+            Check.NotNull(type, nameof(type));
+            Check.NotNull(baseType, nameof(baseType));
+
+            return type.IsClass && (!canAbstract && !type.IsAbstract) && type.IsBaseOn(baseType);
+        }
+
+        /// <summary>
         /// 判断类型是否为Nullable类型
         /// </summary>
         /// <param name="type"> 要处理的类型 </param>
@@ -209,7 +228,7 @@ namespace OSharp.Reflection
         /// <returns></returns>
         public static bool IsBaseOn(this Type type, Type baseType)
         {
-            if (type.IsGenericTypeDefinition)
+            if (baseType.IsGenericTypeDefinition)
             {
                 return baseType.IsGenericAssignableFrom(type);
             }

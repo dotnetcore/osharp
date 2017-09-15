@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,13 @@ namespace OSharp
         {
             IEntityInfoHandler entityInfoHandler = app.ApplicationServices.GetService<IEntityInfoHandler>();
             entityInfoHandler.Initialize();
+
+            IFunctionHandler[] functionHandlers = app.ApplicationServices.GetServices<IFunctionHandler>().ToArray();
+            foreach (IFunctionHandler functionHandler in functionHandlers)
+            {
+                functionHandler.Initialize();
+            }
+
             return app;
         }
     }

@@ -39,7 +39,7 @@ namespace OSharp.Mapping
         {
             Assembly[] assemblies = _allAssemblyFinder.FindAll(true);
             return assemblies.SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.HasAttribute<MapToAttribute>() && !type.IsAbstract)
+                .Where(type => type.IsClass && type.HasAttribute<MapToAttribute>() && !type.IsAbstract)
                 .Distinct().ToArray();
         }
     }
