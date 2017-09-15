@@ -97,6 +97,8 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
         - [x] 定义依赖注入模块相关接口
         - [x] 实现依赖注入功能的ServiceCollection自动初始化
         - [x] 定义Mapper对象映射模块相关接口
+        - [x] 定义实体信息EntityInfo及初始化，用于给各个实体进行数据日志审计配置及数据权限设计
+        - [x] 定义功能点信息Function及初始化，用于收集各个业务功能点（如MVC的Action），用于对功能进行缓存配置、操作日志审计、功能权限设计
         - [ ] 定义Permissions权限模块的相关接口
     - [x] OSharp.EntityFrameworkCore
         - [x] 实现运行时上下文类型初始化及自动加载相关实体类型的功能
