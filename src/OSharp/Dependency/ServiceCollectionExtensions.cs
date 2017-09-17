@@ -31,7 +31,9 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 scanOptions = new AppServiceScanOptions();
             }
-            return new AppServiceAdder(scanOptions).AddServices(services);
+            services = new AppServiceAdder(scanOptions).AddServices(services);
+            ServiceLocator.Instance.TrySetServiceCollection(services);
+            return services;
         }
 
         /// <summary>

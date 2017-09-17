@@ -1,7 +1,15 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="EntityInfoHandlerBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2017-09-15 20:53</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,10 +28,10 @@ namespace OSharp.Infrastructure
     public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler, IDisposable
         where TEntityInfo : class, IEntityInfo, IEntity<Guid>, new()
     {
+        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
+        private readonly ILogger _logger;
         private readonly IServiceScope _scope;
         private readonly IServiceProvider _scopedServiceProvider;
-        private readonly ILogger _logger;
-        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例

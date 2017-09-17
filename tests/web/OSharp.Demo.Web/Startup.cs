@@ -29,9 +29,7 @@ namespace OSharp.Demo.Web
         }
 
         public IConfiguration Configuration { get; }
-
-        public static IServiceCollection Services { get; private set; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -45,7 +43,12 @@ namespace OSharp.Demo.Web
             });
             services.AddLogging();
 
-            Services = services;
+            services.AddDistributedMemoryCache();
+            services.AddDistributedRedisCache(ops =>
+            {
+                ops.Configuration = "127.0.0.1:6379";
+                ops.InstanceName = "osharp.demo.web";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +77,7 @@ namespace OSharp.Demo.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
+            
             app.UseOSharp().UseAutoMapper();
         }
     }

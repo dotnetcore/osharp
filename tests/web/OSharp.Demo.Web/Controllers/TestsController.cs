@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -53,19 +55,25 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
             sb.AppendLine($"IEntityTypeFinder: => {_provider.GetService<IEntityTypeFinder>().GetHashCode()}");
 
-            sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
+            sb.AppendLine($"_provider.GetService<IHttpContextAccessor>: => {_provider.GetService<IHttpContextAccessor>().GetHashCode()}");
+            sb.AppendLine($"ServiceLocator.GetService<IHttpContextAccessor>: => {ServiceLocator.Instance.GetService<IHttpContextAccessor>().GetHashCode()}");
+            
+            sb.AppendLine($"_provider.GetService<IUnitOfWork>(): => {_provider.GetService<IUnitOfWork>().GetHashCode()}");
+            sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetScopedService<IUnitOfWork>().GetHashCode()}");
 
+            sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
+            
             return Content(sb.ToString());
         }
 
         public IActionResult AllServices([FromServices]IServiceProvider provider)
         {
-            var services = Startup.Services;
+            var services = ServiceLocator.Instance.GetServiceDescriptors();
             var sb = new StringBuilder();
-            foreach (var item in services.Where(m => m.ImplementationType != null && !m.ImplementationType.FullName.StartsWith("System") && !m.ImplementationType.FullName.StartsWith("Microsoft"))
-                .OrderBy(m => m.Lifetime).ThenBy(m => m.ImplementationType.FullName))
+            foreach (var item in services.Where(m => true)//m.ImplementationType != null && !m.ImplementationType.FullName.StartsWith("System") && !m.ImplementationType.FullName.StartsWith("Microsoft"))
+                )//.OrderBy(m => m.Lifetime)).ThenBy(m => m.ImplementationType.FullName))
             {
-                string line = $"{item.ImplementationType.FullName}\t{item.ServiceType.FullName}\t{item.Lifetime}";
+                string line = $"{item.ImplementationType?.FullName}\t{item.ServiceType.FullName}\t{item.Lifetime}";
                 try
                 {
                     var code = provider.GetServices(item.ServiceType).First().GetHashCode();

@@ -20,10 +20,14 @@ namespace OSharp
         /// </summary>
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
-            IEntityInfoHandler entityInfoHandler = app.ApplicationServices.GetService<IEntityInfoHandler>();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            //应用程序级别的服务定位器
+            ServiceLocator.Instance.TrySetApplicationServiceProvider(serviceProvider);
+
+            IEntityInfoHandler entityInfoHandler = serviceProvider.GetService<IEntityInfoHandler>();
             entityInfoHandler.Initialize();
 
-            IFunctionHandler[] functionHandlers = app.ApplicationServices.GetServices<IFunctionHandler>().ToArray();
+            IFunctionHandler[] functionHandlers = serviceProvider.GetServices<IFunctionHandler>().ToArray();
             foreach (IFunctionHandler functionHandler in functionHandlers)
             {
                 functionHandler.Initialize();
