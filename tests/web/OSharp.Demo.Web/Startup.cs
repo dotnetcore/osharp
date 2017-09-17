@@ -29,7 +29,7 @@ namespace OSharp.Demo.Web
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -41,7 +41,14 @@ namespace OSharp.Demo.Web
                 options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
                 options.Filters.Add<UnitOfWorkAttribute>();
             });
-            services.AddLogging();
+            services.AddLogging(builder =>
+            {
+                builder.AddFile(ops =>
+                {
+                    ops.FileName = "log-";
+                    ops.LogDirectory = "logs";
+                });
+            });
 
             services.AddDistributedMemoryCache();
             services.AddDistributedRedisCache(ops =>
@@ -77,7 +84,7 @@ namespace OSharp.Demo.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            
+
             app.UseOSharp().UseAutoMapper();
         }
     }
