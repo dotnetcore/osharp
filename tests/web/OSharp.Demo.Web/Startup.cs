@@ -46,7 +46,7 @@ namespace OSharp.Demo.Web
                 builder.AddFile(ops =>
                 {
                     ops.FileName = "log-";
-                    ops.LogDirectory = "logs";
+                    ops.LogDirectory = "log";
                 });
             });
 

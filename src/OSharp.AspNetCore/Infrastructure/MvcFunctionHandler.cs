@@ -90,7 +90,7 @@ namespace OSharp.AspNetCore.Infrastructure
                         : typeFunction.AccessType;
             Function function = new Function()
             {
-                Name = method.GetDescription(),
+                Name = $"{typeFunction.Name}-{method.GetDescription()}",
                 Area = typeFunction.Area,
                 Controller = typeFunction.Controller,
                 Action = method.Name,
