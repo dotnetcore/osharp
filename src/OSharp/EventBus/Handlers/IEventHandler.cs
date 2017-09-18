@@ -24,6 +24,7 @@ namespace OSharp.EventBus
     /// 定义泛型事件处理器
     /// </summary>
     /// <typeparam name="TEventData">事件源数据</typeparam>
+    [IgnoreDependency]
     public interface IEventHandler<in TEventData> : IEventHandler where TEventData : IEventData
     {
         /// <summary>

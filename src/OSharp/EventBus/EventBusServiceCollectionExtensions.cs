@@ -7,6 +7,8 @@
 //  <last-date>2017-09-18 21:48</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 using OSharp.EventBus;
 
 
@@ -22,7 +24,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IServiceCollection AddEventBus(this IServiceCollection services)
         {
-            services.AddSingleton<IEventBus>(provider => EventBus.Default);
+            services.AddSingleton<IEventBus>(provider =>
+            {
+                if (EventBus.Default.Logger == null)
+                {
+                    ILogger<EventBus> logger = provider.GetService<ILogger<EventBus>>();
+                    EventBus.Default.Logger = logger;
+                }
+                return EventBus.Default;
+            });
 
             return services;
         }

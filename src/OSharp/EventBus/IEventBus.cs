@@ -43,9 +43,9 @@ namespace OSharp.EventBus
         /// <summary>
         /// 将指定事件源数据与相应处理器注册到事件总线
         /// </summary>
-        /// <param name="eventDataType">事件源数据类型</param>
+        /// <param name="eventType">事件源数据类型</param>
         /// <param name="eventHandler">事件处理器实例</param>
-        void Register(Type eventDataType, IEventHandler eventHandler);
+        void Register(Type eventType, IEventHandler eventHandler);
         
         /// <summary>
         /// 遍历程序集类型，自动注册事件处理器及所属事件源数据到事件总线
@@ -86,12 +86,70 @@ namespace OSharp.EventBus
         /// <param name="eventType">事件源数据类型</param>
         void UnregisterAll(Type eventType);
 
+        #region Trigger
+
+        /// <summary>
+        /// 触发指定事件源数据的处理器
+        /// </summary>
+        /// <typeparam name="TEventData">事件源数据类型</typeparam>
+        /// <param name="eventData">事件源数据</param>
         void Trigger<TEventData>(TEventData eventData) where TEventData : IEventData;
 
-        void Trigger<TEventData>(Type handlerType, TEventData eventData) where TEventData : IEventData;
+        /// <summary>
+        /// 触发指定事件源数据的处理器
+        /// </summary>
+        /// <typeparam name="TEventData">事件源数据类型</typeparam>
+        /// <param name="eventSource">事件触发源</param>
+        /// <param name="eventData">事件源数据</param>
+        void Trigger<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData;
 
+        /// <summary>
+        /// 触发指定类型的事件
+        /// </summary>
+        /// <param name="eventType">事件类型</param>
+        /// <param name="eventData">事件源数据</param>
+        void Trigger(Type eventType, IEventData eventData);
+
+        /// <summary>
+        /// 触发指定类型的事件
+        /// </summary>
+        /// <param name="eventType">事件类型</param>
+        /// <param name="eventSource">事件触发源</param>
+        /// <param name="eventData">事件源数据</param>
+        void Trigger(Type eventType, object eventSource, IEventData eventData);
+
+        /// <summary>
+        /// 异步触发指定事件源数据的处理器
+        /// </summary>
+        /// <typeparam name="TEventData">事件源数据类型</typeparam>
+        /// <param name="eventData">事件源数据</param>
+        /// <returns></returns>
         Task TriggerAsync<TEventData>(TEventData eventData) where TEventData : IEventData;
 
-        Task TriggerAsync<TEventData>(Type handlerType, TEventData eventData) where TEventData : IEventData;
+        /// <summary>
+        /// 异步触发指定事件源数据的处理器
+        /// </summary>
+        /// <typeparam name="TEventData">事件源数据类型</typeparam>
+        /// <param name="eventSource">事件触发源</param>
+        /// <param name="eventData">事件源数据</param>
+        Task TriggerAsync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData;
+
+        /// <summary>
+        /// 异步触发指定类型的事件
+        /// </summary>
+        /// <param name="eventType">事件类型</param>
+        /// <param name="eventData">事件源数据</param>
+        Task TriggerAsync(Type eventType, IEventData eventData);
+
+        /// <summary>
+        /// 异步触发指定类型的事件
+        /// </summary>
+        /// <param name="eventType">事件类型</param>
+        /// <param name="eventSource">事件触发源</param>
+        /// <param name="eventData">事件源数据</param>
+        Task TriggerAsync(Type eventType, object eventSource, IEventData eventData);
+
+
+        #endregion
     }
 }

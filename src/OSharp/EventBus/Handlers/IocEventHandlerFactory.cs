@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-19 1:44</last-date>
+//  <last-date>2017-09-19 3:56</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -42,8 +42,6 @@ namespace OSharp.EventBus.Handlers
         /// </summary>
         /// <param name="handler"></param>
         public void ReleaseHandler(IEventHandler handler)
-        {
-            (handler as IDisposable)?.Dispose();
-        }
+        { }
     }
 }

@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 
@@ -50,6 +51,14 @@ namespace OSharp
                 e = e.InnerException;
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 将异常重新抛出
+        /// </summary>
+        public static void ReThrow(this Exception exception)
+        {
+            ExceptionDispatchInfo.Capture(exception).Throw();
         }
     }
 }

@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="logs\**" />
+    <Compile Remove="log\**" />
     <Content Remove="logs\**" />
+    <Content Remove="log\**" />
     <EmbeddedResource Remove="logs\**" />
+    <EmbeddedResource Remove="log\**" />
     <None Remove="logs\**" />
+    <None Remove="log\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +43,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Shared\" />

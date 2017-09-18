@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
+using OSharp.EventBus;
 using OSharp.Mapping;
 
 
@@ -55,14 +58,19 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"IIdentityContract: => {_provider.GetService<IIdentityContract>().GetHashCode()}");
             sb.AppendLine($"IEntityTypeFinder: => {_provider.GetService<IEntityTypeFinder>().GetHashCode()}");
 
+            sb.AppendLine($"ServiceLocator.Instance: => {ServiceLocator.Instance.GetHashCode()}");
+
             sb.AppendLine($"_provider.GetService<IHttpContextAccessor>: => {_provider.GetService<IHttpContextAccessor>().GetHashCode()}");
             sb.AppendLine($"ServiceLocator.GetService<IHttpContextAccessor>: => {ServiceLocator.Instance.GetService<IHttpContextAccessor>().GetHashCode()}");
-            
+
             sb.AppendLine($"_provider.GetService<IUnitOfWork>(): => {_provider.GetService<IUnitOfWork>().GetHashCode()}");
             sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetScopedService<IUnitOfWork>().GetHashCode()}");
 
+            sb.AppendLine($"_provider.GetService<IEventBus>(): => {_provider.GetService<IEventBus>().GetHashCode()}");
+            sb.AppendLine($"EventBus.Default: => {OSharp.EventBus.EventBus.Default.GetHashCode()}");
+
             sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
-            
+
             return Content(sb.ToString());
         }
 
@@ -106,7 +114,7 @@ namespace OSharp.Demo.Web.Controllers
 
             return Content(sb.ToString());
         }
-        
+
         public async Task<IActionResult> Test()
         {
             StringBuilder sb = new StringBuilder();
@@ -123,8 +131,39 @@ namespace OSharp.Demo.Web.Controllers
 
             //result = await userManager.AddToRoleAsync(user, role.Name);
             //sb.AppendLine(result.ToJsonString());
-            
+
             return Content(sb.ToString());
+        }
+
+        public void EventBus()
+        {
+            OSharp.EventBus.EventBus.Default.Trigger(this.GetType().Name, new TestEventData() { Name = "郭老板" });
+        }
+    }
+
+
+    public class TestEventData : EventData
+    {
+        public string Name { get; set; }
+    }
+
+
+    public class TestEventHandler : IEventHandler<TestEventData>
+    {
+        private readonly ILogger<TestEventHandler> _logger;
+
+        public TestEventHandler(ILogger<TestEventHandler> logger)
+        {
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// 事件处理
+        /// </summary>
+        /// <param name="eventData">事件源数据</param>
+        public void HandleEvent(TestEventData eventData)
+        {
+            _logger.LogInformation($"Hello {eventData.Name}, this is {eventData.EventSource}");
         }
     }
 }

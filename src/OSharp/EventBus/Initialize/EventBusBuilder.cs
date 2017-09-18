@@ -10,6 +10,8 @@
 using System;
 using System.Reflection;
 
+using Microsoft.Extensions.Logging;
+
 using OSharp.Dependency;
 using OSharp.Reflection;
 
