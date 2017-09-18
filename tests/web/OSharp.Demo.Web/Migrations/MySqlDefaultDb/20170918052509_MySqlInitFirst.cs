@@ -3,12 +3,51 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace OSharp.Demo.Web.Migrations
+namespace OSharp.Demo.Web.Migrations.MySqlDefaultDb
 {
-    public partial class InitFirst : Migration
+    public partial class MySqlInitFirst : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "EntityInfo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    ClassFullName = table.Column<string>(type: "varchar(127)", nullable: false),
+                    DataLogEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    PropertyNamesJson = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Function",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    AccessType = table.Column<int>(type: "int", nullable: false),
+                    Action = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Area = table.Column<string>(type: "varchar(127)", nullable: true),
+                    CacheExpirationSeconds = table.Column<int>(type: "int", nullable: false),
+                    Controller = table.Column<string>(type: "varchar(127)", nullable: true),
+                    DataLogEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    IsAccessTypeChanged = table.Column<bool>(type: "bit", nullable: false),
+                    IsAjax = table.Column<bool>(type: "bit", nullable: false),
+                    IsCacheSliding = table.Column<bool>(type: "bit", nullable: false),
+                    IsController = table.Column<bool>(type: "bit", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    OperateLogEnabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Function", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
@@ -21,9 +60,9 @@ namespace OSharp.Demo.Web.Migrations
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    NormalizedName = table.Column<string>(type: "varchar(127)", nullable: true),
-                    Remark = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    NormalizedName = table.Column<string>(type: "varchar(127)", nullable: false),
+                    Remark = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,18 +77,18 @@ namespace OSharp.Demo.Web.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
-                    Email = table.Column<string>(type: "longtext", nullable: true),
+                    Email = table.Column<string>(type: "longtext", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
-                    NormalizeEmail = table.Column<string>(type: "varchar(127)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "varchar(127)", nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "varchar(127)", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "varchar(127)", nullable: false),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
                     PhoneNumber = table.Column<string>(type: "longtext", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     SecurityStamp = table.Column<string>(type: "longtext", nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "longtext", nullable: true)
+                    UserName = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,6 +225,18 @@ namespace OSharp.Demo.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ClassFullNameIndex",
+                table: "EntityInfo",
+                column: "ClassFullName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "AreaControllerActionIndex",
+                table: "Function",
+                columns: new[] { "Area", "Controller", "Action" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "Role",
                 column: "NormalizedName",
@@ -249,6 +300,12 @@ namespace OSharp.Demo.Web.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "EntityInfo");
+
+            migrationBuilder.DropTable(
+                name: "Function");
+
             migrationBuilder.DropTable(
                 name: "RoleClaim");
 

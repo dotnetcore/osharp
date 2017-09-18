@@ -10,15 +10,15 @@ using OSharp.Reflection;
 
 namespace OSharp.Demo.Web.Startups
 {
-    public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DesignTimeDefaultDbContext>
+    public class MySqlDefaultDbContextFactory : IDesignTimeDbContextFactory<MySqlDefaultDbContext>
     {
-        public DesignTimeDefaultDbContext CreateDbContext(string[] args)
+        public MySqlDefaultDbContext CreateDbContext(string[] args)
         {
-            string connString = "Server=.;Database=osharp.demo.web;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connString = "Server=127.0.0.1;port=19021;UserId=root;Password=123456;Database=osharp2;charset='utf8';Allow User Variables=True";
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
-            builder.UseSqlServer(connString);
+            builder.UseMySql(connString);
             IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppDomainAllAssemblyFinder()));
-            return new DesignTimeDefaultDbContext(builder.Options, typeFinder);
+            return new MySqlDefaultDbContext(builder.Options, typeFinder);
         }
     }
 }
