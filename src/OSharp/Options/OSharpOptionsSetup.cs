@@ -52,11 +52,18 @@ namespace OSharp.Options
                 {
                     return;
                 }
+                //加载数据库类型
+                string databaseType = _configuration["OSharp:DbContexts:DefaultDbContext:DatabaseType"];
+                if (databaseType == null)
+                {
+                    return;
+                }
+
                 OSharpDbContextOptions dbContextOptions = new OSharpDbContextOptions()
                 {
                     DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
                     ConnectionString = connectionString,
-                    DatabaseType = DatabaseType.SqlServer
+                    DatabaseType = (DatabaseType)Enum.Parse(typeof(DatabaseType), databaseType, false)
                 };
                 options.DbContextOptionses.Add("DefaultDbContext", dbContextOptions);
                 return;

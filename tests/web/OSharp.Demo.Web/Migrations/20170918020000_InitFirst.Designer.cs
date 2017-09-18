@@ -11,15 +11,15 @@ using System;
 namespace OSharp.Demo.Web.Migrations
 {
     [DbContext(typeof(DesignTimeDefaultDbContext))]
-    [Migration("20170911084436_AddIdentityEntities")]
-    partial class AddIdentityEntities
+    [Migration("20170918020000_InitFirst")]
+    partial class InitFirst
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.Role", b =>
                 {
@@ -52,8 +52,7 @@ namespace OSharp.Demo.Web.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("Role");
                 });
@@ -117,8 +116,7 @@ namespace OSharp.Demo.Web.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("User");
                 });
@@ -164,21 +162,21 @@ namespace OSharp.Demo.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired();
+                    b.Property<string>("LoginProvider");
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("ProviderKey")
-                        .IsRequired();
+                    b.Property<string>("ProviderKey");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("LoginProvider", "ProviderKey");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("LoginProvider", "ProviderKey")
+                        .IsUnique()
+                        .HasName("UserLoginIndex");
 
                     b.ToTable("UserLogin");
                 });
@@ -194,9 +192,11 @@ namespace OSharp.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserId", "RoleId");
-
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId", "RoleId")
+                        .IsUnique()
+                        .HasName("UserRoleIndex");
 
                     b.ToTable("UserRole");
                 });
@@ -206,11 +206,9 @@ namespace OSharp.Demo.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired();
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<int>("UserId");
 
@@ -218,7 +216,9 @@ namespace OSharp.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserId", "LoginProvider", "Name");
+                    b.HasIndex("UserId", "LoginProvider", "Name")
+                        .IsUnique()
+                        .HasName("UserTokenIndex");
 
                     b.ToTable("UserToken");
                 });
