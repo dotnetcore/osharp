@@ -11,7 +11,7 @@ using System;
 
 namespace OSharp.Demo.Web.Migrations
 {
-    [DbContext(typeof(DesignTimeDefaultDbContext))]
+    [DbContext(typeof(SqlServerDesignTimeDefaultDbContext))]
     partial class DesignTimeDefaultDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

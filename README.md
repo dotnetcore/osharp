@@ -58,9 +58,9 @@ public void ConfigureServices(IServiceCollection services)
 继承`DefaultDbContext`的设计时数据上下文类型：
 ```csharp
 [IgnoreDependency]
-public class DesignTimeDefaultDbContext : DefaultDbContext
+public class SqlServerDesignTimeDefaultDbContext : DefaultDbContext
 {
-    public DesignTimeDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
+    public SqlServerDesignTimeDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
         : base(options, typeFinder)
     {
     }
@@ -68,9 +68,9 @@ public class DesignTimeDefaultDbContext : DefaultDbContext
 ```
 继承`IDesignTimeDbContextFactory<TEntity>`的设计时数据上下文对象创建工厂
 ```csharp
-public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DesignTimeDefaultDbContext>
+public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DesignTimeDefaultDbContext>
 {
-    public DesignTimeDefaultDbContext CreateDbContext(string[] args)
+    public SqlServerDesignTimeDefaultDbContext CreateDbContext(string[] args)
     {
         string connString = "数据库连接串";
         DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
@@ -83,7 +83,7 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
 
 #### 3.2 数据迁移命令，Add-Migration 命令时，使用`-context`参数指定上下文类型
 
-> Add-Migration MigrationName -context "OSharp.Demo.Web.DesignTimeDefaultDbContext"
+> Add-Migration MigrationName -context "OSharp.Demo.Web.SqlServerDesignTimeDefaultDbContext"
 
 > Update-Database
 
@@ -96,6 +96,7 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
         - [x] 定义Entity数据访问相关接口
         - [x] 定义依赖注入模块相关接口
         - [x] 实现依赖注入功能的ServiceCollection自动初始化
+        - [x] 实现EventBus事件总线的设计
         - [x] 定义Mapper对象映射模块相关接口
         - [x] 定义实体信息EntityInfo及初始化，用于给各个实体进行数据日志审计配置及数据权限设计
         - [x] 定义功能点信息Function及初始化，用于收集各个业务功能点（如MVC的Action），用于对功能进行缓存配置、操作日志审计、功能权限设计

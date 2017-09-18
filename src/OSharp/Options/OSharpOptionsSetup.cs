@@ -10,12 +10,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Exceptions;
 
 
 namespace OSharp.Options
@@ -63,6 +65,12 @@ namespace OSharp.Options
             }
             IDictionary<string, OSharpDbContextOptions> dict = new Dictionary<string, OSharpDbContextOptions>();
             section.Bind(dict);
+            var repeated = dict.Values.GroupBy(m => m.DbContextType).FirstOrDefault(m => m.Count() > 1);
+            if (repeated != null)
+            {
+                throw new OsharpException($"数据上下文配置中存在多个配置节点指向同一个上下文类型：{repeated.First().DbContextTypeName}");
+            }
+
             foreach (KeyValuePair<string, OSharpDbContextOptions> pair in dict)
             {
                 options.DbContextOptionses.Add(pair.Key, pair.Value);

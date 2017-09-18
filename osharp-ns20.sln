@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp.csproj", "{D1B8F25F-68ED-470B-B996-436FE321F74A}"
 EndProject
@@ -56,7 +56,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Core.Tests", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2E4D5838-1223-436B-893A-0E56A069F7AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{D3D42B73-445F-4B95-BDD6-9548D148F093}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{01974482-F9CA-41E7-A9EF-EB13C939570F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,10 +116,10 @@ Global
 		{D91ECDC8-1612-42F1-8820-AF99D0E6A16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D91ECDC8-1612-42F1-8820-AF99D0E6A16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D91ECDC8-1612-42F1-8820-AF99D0E6A16D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3D42B73-445F-4B95-BDD6-9548D148F093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3D42B73-445F-4B95-BDD6-9548D148F093}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3D42B73-445F-4B95-BDD6-9548D148F093}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3D42B73-445F-4B95-BDD6-9548D148F093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,7 +141,7 @@ Global
 		{186A8BDB-8A2D-4E16-9F7C-36F33960809D} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{D91ECDC8-1612-42F1-8820-AF99D0E6A16D} = {2E4D5838-1223-436B-893A-0E56A069F7AE}
 		{2E4D5838-1223-436B-893A-0E56A069F7AE} = {0E239259-0BC3-4521-AD60-07CB87263140}
-		{D3D42B73-445F-4B95-BDD6-9548D148F093} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
+		{01974482-F9CA-41E7-A9EF-EB13C939570F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

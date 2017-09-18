@@ -9,9 +9,9 @@ using OSharp.Entity;
 namespace OSharp.Demo.Web
 {
     [IgnoreDependency]
-    public class DesignTimeDefaultDbContext : DefaultDbContext
+    public class SqlServerDesignTimeDefaultDbContext : DefaultDbContext
     {
-        public DesignTimeDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
+        public SqlServerDesignTimeDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
             : base(options, typeFinder)
         {
         }

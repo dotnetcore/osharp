@@ -11,7 +11,7 @@ using System;
 
 namespace OSharp.Demo.Web.Migrations
 {
-    [DbContext(typeof(DesignTimeDefaultDbContext))]
+    [DbContext(typeof(SqlServerDesignTimeDefaultDbContext))]
     [Migration("20170914194154_First")]
     partial class First
     {
