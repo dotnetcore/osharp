@@ -310,7 +310,7 @@ namespace OSharp.Entity
 
             TKey defaultId = default(TKey);
             var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
-            bool exists = (!(typeof(TKey).IsValueType) && id.Equals(null)) || id.Equals(defaultId)
+            bool exists = !typeof(TKey).IsValueType && id.Equals(null) || id.Equals(defaultId)
                 ? entity != null
                 : entity != null && !entity.Id.Equals(id);
             return exists;

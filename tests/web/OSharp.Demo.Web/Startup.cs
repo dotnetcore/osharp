@@ -51,11 +51,6 @@ namespace OSharp.Demo.Web
             });
 
             services.AddDistributedMemoryCache();
-            services.AddDistributedRedisCache(ops =>
-            {
-                ops.Configuration = "127.0.0.1:6379";
-                ops.InstanceName = "osharp.demo.web";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

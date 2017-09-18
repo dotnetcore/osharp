@@ -7,6 +7,7 @@
 //  <last-date>2017-09-17 16:05</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,6 +37,23 @@ namespace OSharp
         }
 
         /// <summary>
+        /// 获取<see cref="ServiceLifetime.Scoped"/>生命周期的服务实例
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="serviceType">服务类型</param>
+        public static object GetScopedService(this ServiceLocator locator, Type serviceType)
+        {
+            Check.NotNull(locator, nameof(locator));
+
+            IHttpContextAccessor accessor = locator.GetService<IHttpContextAccessor>();
+            if (accessor != null)
+            {
+                return accessor.HttpContext.RequestServices.GetService(serviceType);
+            }
+            return locator.GetService(serviceType);
+        }
+
+        /// <summary>
         /// 获取<see cref="ServiceLifetime.Scoped"/>生命周期的服务的所有实例
         /// </summary>
         public static IEnumerable<T> GetScopedServices<T>(this ServiceLocator locator)
@@ -48,6 +66,23 @@ namespace OSharp
                 return accessor.HttpContext.RequestServices.GetServices<T>();
             }
             return locator.GetServices<T>();
+        }
+
+        /// <summary>
+        /// 获取<see cref="ServiceLifetime.Scoped"/>生命周期的服务的所有实例
+        /// </summary>
+        /// <param name="locator"></param>
+        /// <param name="serviceType">服务类型</param>
+        public static IEnumerable<object> GetScopedServices(this ServiceLocator locator, Type serviceType)
+        {
+            Check.NotNull(locator, nameof(locator));
+
+            IHttpContextAccessor accessor = locator.GetService<IHttpContextAccessor>();
+            if (accessor != null)
+            {
+                return accessor.HttpContext.RequestServices.GetServices(serviceType);
+            }
+            return locator.GetServices(serviceType);
         }
     }
 }

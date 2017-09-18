@@ -29,6 +29,12 @@ namespace OSharp
         private IServiceProvider _provider;
 
         /// <summary>
+        /// 初始化一个<see cref="ServiceLocator"/>类型的新实例
+        /// </summary>
+        private ServiceLocator()
+        { }
+
+        /// <summary>
         /// 获取 服务器定位器实例
         /// </summary>
         public static ServiceLocator Instance => InstanceLazy.Value;
@@ -87,6 +93,27 @@ namespace OSharp
         }
 
         /// <summary>
+        /// 解析指定类型的服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// </summary>
+        /// <param name="serviceType">服务类型</param>
+        public object GetService(Type serviceType)
+        {
+            Check.NotNull(_services, nameof(_services));
+            Check.NotNull(_provider, nameof(_provider));
+
+            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
+            if (descriptor == null)
+            {
+                return null;
+            }
+            if (descriptor.Lifetime == ServiceLifetime.Scoped)
+            {
+                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
+            }
+            return _provider.GetService(serviceType);
+        }
+
+        /// <summary>
         /// 解析指定类型的所有服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
         /// </summary>
         public IEnumerable<T> GetServices<T>()
@@ -100,6 +127,23 @@ namespace OSharp
                 throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
             }
             return _provider.GetServices<T>();
+        }
+
+        /// <summary>
+        /// 解析指定类型的所有服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// </summary>
+        /// <param name="serviceType">服务类型</param>
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            Check.NotNull(_services, nameof(_services));
+            Check.NotNull(_provider, nameof(_provider));
+
+            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
+            if (descriptor == null)
+            {
+                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
+            }
+            return _provider.GetServices(serviceType);
         }
     }
 }

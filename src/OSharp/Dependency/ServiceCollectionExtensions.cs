@@ -17,9 +17,9 @@ using OSharp.Options;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// ServiceCollection扩展类
+    /// OSharp服务注册扩展方法
     /// </summary>
-    public static class ServiceCollectionExtensions
+    public static class OSharpServiceCollectionExtensions
     {
         /// <summary>
         /// 将应用程序服务添加到<see cref="IServiceCollection"/> 

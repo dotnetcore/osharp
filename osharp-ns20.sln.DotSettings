@@ -137,6 +137,35 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=02472EBA0F60C944BE93EB74A87EDBEB/Shortcut/@EntryValue">ipropg</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=02472EBA0F60C944BE93EB74A87EDBEB/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=02472EBA0F60C944BE93EB74A87EDBEB/Text/@EntryValue">$type$ $property$ { get; }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Description/@EntryValue">ServiceCollection扩展方法</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Field/=Name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Field/=Name/Expression/@EntryValue">constant("Name")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Field/=Name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Shortcut/@EntryValue">sercol</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=11D9AF9BD26B754998ECEC3C6C22E4C3/Text/@EntryValue">namespace Microsoft.Extensions.DependencyInjection&#xD;
+{&#xD;
+    /// &lt;summary&gt;&#xD;
+    /// $Name$服务注册扩展方法&#xD;
+    /// &lt;/summary&gt;&#xD;
+    public static class $Name$ServiceCollectionExtensions&#xD;
+    {&#xD;
+        /// &lt;summary&gt;&#xD;
+        /// 将$Name$服务注册到&lt;see cref="IServiceCollection"/&gt;&#xD;
+        /// &lt;/summary&gt;&#xD;
+        public static IServiceCollection Add$Name$(this IServiceCollection services)&#xD;
+        {&#xD;
+			$END$&#xD;
+            return services;&#xD;
+        }&#xD;
+    }&#xD;
+}</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/Description/@EntryValue">Action-Post</s:String>

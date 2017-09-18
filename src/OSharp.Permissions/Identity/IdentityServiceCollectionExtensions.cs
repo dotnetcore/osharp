@@ -17,7 +17,7 @@ using OSharp.Identity;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Identity服务添加扩展方法
+    /// Identity服务注册扩展方法
     /// </summary>
     public static class IdentityServiceCollectionExtensions
     {

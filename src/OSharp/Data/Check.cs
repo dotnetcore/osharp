@@ -81,7 +81,7 @@ namespace OSharp
         /// <param name="value"></param>
         /// <param name="paramName">参数名称</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void NotNull<T>(T value, string paramName) where T : class
+        public static void NotNull<T>(T value, string paramName)
         {
             Require<ArgumentNullException>(value != null, string.Format(Resources.ParameterCheck_NotNull, paramName));
         }
