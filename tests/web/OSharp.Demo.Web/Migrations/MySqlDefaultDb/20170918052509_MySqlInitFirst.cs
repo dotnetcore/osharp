@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace OSharp.Demo.Web.Migrations
+namespace OSharp.Demo.Web.Migrations.MySqlDefaultDb
 {
-    public partial class First : Migration
+    public partial class MySqlInitFirst : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,11 +13,11 @@ namespace OSharp.Demo.Web.Migrations
                 name: "EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClassFullName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    ClassFullName = table.Column<string>(type: "varchar(127)", nullable: false),
                     DataLogEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PropertyNamesJson = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    PropertyNamesJson = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,19 +28,19 @@ namespace OSharp.Demo.Web.Migrations
                 name: "Function",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     AccessType = table.Column<int>(type: "int", nullable: false),
-                    Action = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Area = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Action = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Area = table.Column<string>(type: "varchar(127)", nullable: true),
                     CacheExpirationSeconds = table.Column<int>(type: "int", nullable: false),
-                    Controller = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Controller = table.Column<string>(type: "varchar(127)", nullable: true),
                     DataLogEnabled = table.Column<bool>(type: "bit", nullable: false),
                     IsAccessTypeChanged = table.Column<bool>(type: "bit", nullable: false),
                     IsAjax = table.Column<bool>(type: "bit", nullable: false),
                     IsCacheSliding = table.Column<bool>(type: "bit", nullable: false),
                     IsController = table.Column<bool>(type: "bit", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
                     OperateLogEnabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -53,16 +53,16 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    NormalizedName = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    NormalizedName = table.Column<string>(type: "varchar(127)", nullable: false),
+                    Remark = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,21 +74,21 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
+                    Email = table.Column<string>(type: "longtext", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    NormalizeEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "varchar(127)", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "varchar(127)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserName = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,9 +100,9 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -121,9 +121,9 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: false),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -142,8 +142,8 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Address = table.Column<string>(type: "longtext", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -161,10 +161,10 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(127)", nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true),
+                    ProviderKey = table.Column<string>(type: "varchar(127)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -182,7 +182,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -207,11 +207,11 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(127)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Value = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,15 +234,13 @@ namespace OSharp.Demo.Web.Migrations
                 name: "AreaControllerActionIndex",
                 table: "Function",
                 columns: new[] { "Area", "Controller", "Action" },
-                unique: true,
-                filter: "[Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "Role",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_RoleId",
@@ -258,8 +256,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserNameIndex",
                 table: "User",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
@@ -281,8 +278,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserLoginIndex",
                 table: "UserLogin",
                 columns: new[] { "LoginProvider", "ProviderKey" },
-                unique: true,
-                filter: "[LoginProvider] IS NOT NULL AND [ProviderKey] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
@@ -299,8 +295,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserTokenIndex",
                 table: "UserToken",
                 columns: new[] { "UserId", "LoginProvider", "Name" },
-                unique: true,
-                filter: "[LoginProvider] IS NOT NULL AND [Name] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
