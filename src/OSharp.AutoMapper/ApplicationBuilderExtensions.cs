@@ -21,7 +21,10 @@ using IMapper = OSharp.Mapping.IMapper;
 
 namespace Microsoft.AspNetCore.Builder
 {
-    public static class ApplicationBuilderExtensions
+    /// <summary>
+    /// AutoMapper的<see cref="IApplicationBuilder"/>扩展方法
+    /// </summary>
+    public static class AutoMapperApplicationBuilderExtensions
     {
         /// <summary>
         /// 启用AutoMapper
@@ -39,10 +42,10 @@ namespace Microsoft.AspNetCore.Builder
             IMapTuple[] tuples = app.ApplicationServices.GetServices<IMapTuple>().ToArray();
             foreach (IMapTuple mapTuple in tuples)
             {
-                mapTuple.Build();
+                mapTuple.CreateMap();
                 cfg.AddProfile(mapTuple as Profile);
             }
-            
+
             Mapper.Initialize(cfg);
 
             IMapper mapper = app.ApplicationServices.GetService<IMapper>();

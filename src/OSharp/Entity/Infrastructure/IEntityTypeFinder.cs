@@ -16,6 +16,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 定义实体类型查找器
     /// </summary>
-    public interface IEntityTypeFinder : IMapSourceTypeFinder, IMapTargetTypeFinder
+    public interface IEntityTypeFinder : ITypeFinder
     { }
 }

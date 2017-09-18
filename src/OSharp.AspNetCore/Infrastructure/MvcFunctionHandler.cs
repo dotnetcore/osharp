@@ -1,0 +1,126 @@
+﻿// -----------------------------------------------------------------------
+//  <copyright file="MvcFunctionHandler.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor></last-editor>
+//  <last-date>2017-09-15 3:08</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using OSharp.AspNetCore.Mvc;
+using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Dependency;
+using OSharp.Exceptions;
+using OSharp.Infrastructure;
+using OSharp.Reflection;
+
+
+namespace OSharp.AspNetCore.Infrastructure
+{
+    /// <summary>
+    /// MVC 功能处理器
+    /// </summary>
+    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>, ISingletonDependency
+    {
+        /// <summary>
+        /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例
+        /// </summary>
+        public MvcFunctionHandler(IServiceProvider applicationServiceProvider)
+            : base(applicationServiceProvider)
+        { }
+
+        /// <summary>
+        /// 获取 功能类型查找器
+        /// </summary>
+        public override IFunctionTypeFinder FunctionTypeFinder => new MvcControllerTypeFinder(AllAssemblyFinder);
+
+        /// <summary>
+        /// 获取 功能方法查找器
+        /// </summary>
+        public override IMethodInfoFinder MethodInfoFinder => new PublicInstanceMethodInfoFinder();
+
+        /// <summary>
+        /// 重写以实现从功能类型创建功能信息
+        /// </summary>
+        /// <param name="controllerType">功能类型</param>
+        /// <returns></returns>
+        protected override Function GetFunction(Type controllerType)
+        {
+            if (!controllerType.IsController())
+            {
+                throw new OsharpException($"类型“{controllerType.FullName}”不是MVC控制器类型");
+            }
+            FunctionAccessType accessType = controllerType.HasAttribute<LoginedAttribute>() || controllerType.HasAttribute<AuthorizeAttribute>()
+                ? FunctionAccessType.Logined
+                : controllerType.HasAttribute<RoleLimitAttribute>()
+                    ? FunctionAccessType.RoleLimit
+                    : FunctionAccessType.Anonymouse;
+            Function function = new Function()
+            {
+                Name = controllerType.GetDescription(),
+                Area = GetArea(controllerType),
+                Controller = controllerType.Name.Replace("Controller", string.Empty),
+                IsController = true,
+                AccessType = accessType
+            };
+            return function;
+        }
+
+        /// <summary>
+        /// 重写以实现从方法信息中创建功能信息
+        /// </summary>
+        /// <param name="typeFunction">类功能信息</param>
+        /// <param name="method">方法信息</param>
+        /// <returns></returns>
+        protected override Function GetFunction(Function typeFunction, MethodInfo method)
+        {
+            FunctionAccessType accessType = method.HasAttribute<LoginedAttribute>() || method.HasAttribute<AuthorizeAttribute>()
+                ? FunctionAccessType.Logined
+                : method.HasAttribute<AllowAnonymousAttribute>()
+                    ? FunctionAccessType.Anonymouse
+                    : method.HasAttribute<RoleLimitAttribute>()
+                        ? FunctionAccessType.RoleLimit
+                        : typeFunction.AccessType;
+            Function function = new Function()
+            {
+                Name = $"{typeFunction.Name}-{method.GetDescription()}",
+                Area = typeFunction.Area,
+                Controller = typeFunction.Controller,
+                Action = method.Name,
+                AccessType = accessType,
+                IsController = false,
+                IsAjax = method.HasAttribute<AjaxOnlyAttribute>()
+            };
+            return function;
+        }
+
+        /// <summary>
+        /// 重写以实现从类型中获取功能的区域信息
+        /// </summary>
+        protected override string GetArea(Type type)
+        {
+            AreaAttribute attribute = type.GetAttribute<AreaAttribute>(true);
+            return attribute?.RouteValue;
+        }
+
+        /// <summary>
+        /// 重写以实现是否忽略指定方法的功能信息
+        /// </summary>
+        /// <param name="action">要判断的功能信息</param>
+        /// <param name="method">功能相关的方法信息</param>
+        /// <param name="functions">已存在的功能信息集合</param>
+        /// <returns></returns>
+        protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
+        {
+            bool flag = base.IsIgnoreMethod(action, method, functions);
+            return flag && method.HasAttribute<HttpPostAttribute>();
+        }
+    }
+}

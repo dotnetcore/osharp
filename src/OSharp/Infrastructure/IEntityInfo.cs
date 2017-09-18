@@ -7,16 +7,22 @@
 //  <last-date>2017-09-04 9:18</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 
-namespace OSharp.Authentication
+namespace OSharp
 {
     /// <summary>
     /// 定义数据实体信息
     /// </summary>
     public interface IEntityInfo
     {
+        /// <summary>
+        /// 获取或设置 编号
+        /// </summary>
+        Guid Id { get; set; }
+
         /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
@@ -33,8 +39,19 @@ namespace OSharp.Authentication
         bool DataLogEnabled { get; set; }
 
         /// <summary>
+        /// 获取或设置 实体属性信息Json字符串
+        /// </summary>
+        string PropertyNamesJson { get; set; }
+
+        /// <summary>
         /// 获取 实体属性信息字典
         /// </summary>
         IDictionary<string, string> PropertyNames { get; }
+
+        /// <summary>
+        /// 从实体类型初始化实体信息
+        /// </summary>
+        /// <param name="entityType"></param>
+        void FromType(Type entityType);
     }
 }

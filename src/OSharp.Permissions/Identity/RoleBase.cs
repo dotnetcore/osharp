@@ -25,12 +25,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 角色名称
         /// </summary>
-        [Required, StringLength(50)]
+        [Required]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化角色名称
         /// </summary>
+        [Required]
         public string NormalizedName { get; set; }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 角色描述
         /// </summary>
-        [StringLength(500)]
+        [StringLength(512)]
         public string Remark { get; set; }
 
         /// <summary>

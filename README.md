@@ -97,6 +97,8 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
         - [x] 定义依赖注入模块相关接口
         - [x] 实现依赖注入功能的ServiceCollection自动初始化
         - [x] 定义Mapper对象映射模块相关接口
+        - [x] 定义实体信息EntityInfo及初始化，用于给各个实体进行数据日志审计配置及数据权限设计
+        - [x] 定义功能点信息Function及初始化，用于收集各个业务功能点（如MVC的Action），用于对功能进行缓存配置、操作日志审计、功能权限设计
         - [ ] 定义Permissions权限模块的相关接口
     - [x] OSharp.EntityFrameworkCore
         - [x] 实现运行时上下文类型初始化及自动加载相关实体类型的功能
@@ -105,7 +107,6 @@ public class DesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<Des
     - [x] OSharp.AutoMapper
         - [x] 不同的映射类型，通过实现`Profile`来实现映射注册
         - [x] 实现通过遍历程序集，查找实现了`IMapTuple`接口的`Profile`来自动注册映射策略
-        - [x] 定义输入DTO到实体类的简单映射规则，命名规则为实体类`Entity`的输入DTO为`EntityInputDto`
-        - [x] 定义实体类到输出DTO的简单映射规则，命名规则为实体类`Entity`的输出DTO为`EntityOutputDto`
+        - [x] 定义`MapToAttribute`，`MapFromAttribute`类型，用以标注Mapping的Source与Target类型，使用时在要映射的类型上标注如`[MapTo(typeof(TTarget))]`或`[MapFrom(typeof(TSource))]`特性，框架初始化时自动查找相应的类型进行CreateMap映射注册
     - [ ] OSharp.AspNetCore
     - [ ] OSharp.Permissions

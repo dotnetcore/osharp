@@ -40,8 +40,8 @@ namespace OSharp.Dependency
         protected override Type[] FindAllItems()
         {
             Type baseType = typeof(ISingletonDependency);
-            Type[] types = AllAssemblyFinder.FindAll(fromCache:true).SelectMany(assembly => assembly.GetTypes())
-                .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
+            Type[] types = AllAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract)
                 .ToArray();
             return types;
         }

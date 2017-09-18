@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using OSharp.Dependency;
+using OSharp.Finders;
 using OSharp.Mapping;
 using OSharp.Reflection;
 
@@ -21,7 +22,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类型查找器
     /// </summary>
-    public class EntityTypeFinder : IEntityTypeFinder, ISingletonDependency
+    public class EntityTypeFinder : FinderBase<Type>, IEntityTypeFinder, ISingletonDependency
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
 
@@ -34,28 +35,15 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 查找指定条件的项
+        /// 重写以实现所有项的查找
         /// </summary>
-        /// <param name="predicate">筛选条件</param>
-        /// <param name="fromCache">是否来自缓存</param>
         /// <returns></returns>
-        public Type[] Find(Func<Type, bool> predicate, bool fromCache = false)
-        {
-            return FindAll(fromCache).Where(predicate).ToArray();
-        }
-
-        /// <summary>
-        /// 查找所有项
-        /// </summary>
-        /// <param name="fromCache">是否来自缓存</param>
-        /// <returns></returns>
-        public Type[] FindAll(bool fromCache = false)
+        protected override Type[] FindAllItems()
         {
             Type baseType = typeof(IEntity<>);
-            Assembly[] assemblies = _allAssemblyFinder.FindAll(fromCache);
+            Assembly[] assemblies = _allAssemblyFinder.FindAll(true);
             return assemblies.SelectMany(assembly => assembly.GetTypes())
-                .Where(type => baseType.IsGenericAssignableFrom(type) && !type.IsAbstract)
-                .Distinct().ToArray();
+                .Where(type => type.IsDeriveClassFrom(baseType)).Distinct().ToArray();
         }
     }
 }

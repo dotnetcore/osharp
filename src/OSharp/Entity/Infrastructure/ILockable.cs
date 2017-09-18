@@ -15,7 +15,7 @@ namespace OSharp.Entity
     public interface ILockable
     {
         /// <summary>
-        /// 获取或设置 是否锁定，用户禁用当前信息
+        /// 获取或设置 是否锁定当前信息
         /// </summary>
         bool IsLocked { get; set; }
     }

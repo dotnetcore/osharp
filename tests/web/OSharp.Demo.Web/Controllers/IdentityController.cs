@@ -13,6 +13,7 @@ using System.Text;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Entities;
@@ -48,5 +49,4 @@ namespace OSharp.Demo.Web.Controllers
             return Content(sb.ToString());
         }
     }
-
 }

@@ -7,7 +7,9 @@
 //  <last-date>2017-09-01 13:50</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace OSharp.Demo.Identity.Dtos
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Identity.Dtos
     /// <summary>
     /// 输入DTO：用户信息
     /// </summary>
+    [MapTo(typeof(User))]
     public class UserInputDto : IInputDto<int>
     {
         /// <summary>

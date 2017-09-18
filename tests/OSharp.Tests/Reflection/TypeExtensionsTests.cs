@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
+using OSharp.Entity;
+using OSharp.Infrastructure;
+
 using Xunit;
 
 using OSharp.Reflection;
@@ -23,6 +26,13 @@ namespace OSharp.Reflection.Tests
 
     public class TypeExtensionsTests
     {
+        [Fact]
+        public void IsDeriveFromTest()
+        {
+            Assert.True(typeof(EntityInfo).IsDeriveClassFrom<IEntityInfo>());
+            Assert.True(typeof(EntityInfo).IsDeriveClassFrom(typeof(IEntity<>)));
+        }
+
         [Fact()]
         public void IsNullableTypeTest()
         {
@@ -69,12 +79,12 @@ namespace OSharp.Reflection.Tests
         public void ToDescriptionTest()
         {
             Type type = typeof(TestEntity);
-            Assert.Equal("测试实体", type.ToDescription());
+            Assert.Equal("测试实体", type.GetDescription());
             PropertyInfo property = type.GetProperty("Id");
-            Assert.Equal("编号", property.ToDescription());
+            Assert.Equal("编号", property.GetDescription());
 
             type = GetType();
-            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", type.ToDescription());
+            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", type.GetDescription());
         }
 
         [Fact()]
@@ -100,7 +110,7 @@ namespace OSharp.Reflection.Tests
         public void GetAttributesTest()
         {
             Type type = GetType();
-            Assert.Equal(0, type.GetAttributes<DescriptionAttribute>().Length);
+            Assert.Empty(type.GetAttributes<DescriptionAttribute>());
         }
 
         [Fact()]
