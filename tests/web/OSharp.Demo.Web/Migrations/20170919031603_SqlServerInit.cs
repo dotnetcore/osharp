@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace OSharp.Demo.Web.Migrations
 {
-    public partial class First : Migration
+    public partial class SqlServerInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,9 +60,9 @@ namespace OSharp.Demo.Web.Migrations
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    NormalizedName = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,18 +77,18 @@ namespace OSharp.Demo.Web.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    NormalizeEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,8 +241,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "RoleNameIndex",
                 table: "Role",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_RoleId",
@@ -258,8 +257,7 @@ namespace OSharp.Demo.Web.Migrations
                 name: "UserNameIndex",
                 table: "User",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",

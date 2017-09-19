@@ -670,7 +670,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            user.NormalizedUserName = normalizedEmail;
+            user.NormalizeEmail = normalizedEmail;
             return Task.CompletedTask;
         }
 
