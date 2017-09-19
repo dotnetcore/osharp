@@ -19,12 +19,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
-using OSharp.EventBus.Handlers;
-using OSharp.EventBus.Handlers.Internal;
+using OSharp.EventBuses.Handlers;
+using OSharp.EventBuses.Handlers.Internal;
 using OSharp.Reflection;
 
 
-namespace OSharp.EventBus
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 事件总线

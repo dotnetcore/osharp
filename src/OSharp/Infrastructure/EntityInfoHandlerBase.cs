@@ -53,7 +53,7 @@ namespace OSharp.Infrastructure
 
             foreach (Type entityType in entityTypes)
             {
-                if (_entityInfos.Exists(m => m.ClassFullName == entityType.FullName))
+                if (_entityInfos.Exists(m => m.TypeName == entityType.FullName))
                 {
                     continue;
                 }
@@ -78,8 +78,8 @@ namespace OSharp.Infrastructure
             {
                 RefreshCache();
             }
-            return _entityInfos.FirstOrDefault(m => m.ClassFullName == type.FullName)
-                ?? _entityInfos.FirstOrDefault(m => type.BaseType != null && m.ClassFullName == type.BaseType.FullName);
+            return _entityInfos.FirstOrDefault(m => m.TypeName == type.FullName)
+                ?? _entityInfos.FirstOrDefault(m => type.BaseType != null && m.TypeName == type.BaseType.FullName);
         }
 
         /// <summary>
@@ -112,13 +112,13 @@ namespace OSharp.Infrastructure
             TEntityInfo[] dbItems = repository.TrackQuery().ToArray();
 
             //删除的实体信息
-            TEntityInfo[] removeItems = dbItems.Except(entityInfos, EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassFullName)).ToArray();
+            TEntityInfo[] removeItems = dbItems.Except(entityInfos, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
             int removeCount = removeItems.Length;
             //todo：由于外键关联不能物理删除的实体，需要实现逻辑删除
             repository.Delete(removeItems);
 
             //处理新增的实体信息
-            TEntityInfo[] addItems = entityInfos.Except(dbItems, EqualityHelper<TEntityInfo>.CreateComparer(m => m.ClassFullName)).ToArray();
+            TEntityInfo[] addItems = entityInfos.Except(dbItems, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
             int addCount = addItems.Length;
             repository.Insert(addItems);
 
@@ -127,7 +127,7 @@ namespace OSharp.Infrastructure
             foreach (TEntityInfo item in dbItems.Except(removeItems))
             {
                 bool isUpdate = false;
-                TEntityInfo entityInfo = entityInfos.SingleOrDefault(m => m.ClassFullName == item.ClassFullName);
+                TEntityInfo entityInfo = entityInfos.SingleOrDefault(m => m.TypeName == item.TypeName);
                 if (entityInfo == null)
                 {
                     continue;

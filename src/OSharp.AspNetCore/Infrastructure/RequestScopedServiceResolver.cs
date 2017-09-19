@@ -23,6 +23,11 @@ namespace OSharp.AspNetCore.Infrastructure
         }
 
         /// <summary>
+        /// 获取 是否可解析
+        /// </summary>
+        public bool ResolveEnabled => _httpContextAccessor.HttpContext != null;
+
+        /// <summary>
         /// 获取指定服务类型的实例
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>

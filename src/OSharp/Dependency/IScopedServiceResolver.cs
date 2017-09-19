@@ -11,6 +11,11 @@ namespace OSharp.Dependency
     public interface IScopedServiceResolver
     {
         /// <summary>
+        /// 获取 是否可解析
+        /// </summary>
+        bool ResolveEnabled { get; }
+
+        /// <summary>
         /// 获取指定服务类型的实例
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>

@@ -234,19 +234,19 @@ namespace OSharp.Demo.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClassFullName")
-                        .IsRequired();
-
-                    b.Property<bool>("DataLogEnabled");
+                    b.Property<bool>("AuditEnabled");
 
                     b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<string>("PropertyNamesJson");
 
+                    b.Property<string>("TypeName")
+                        .IsRequired();
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassFullName")
+                    b.HasIndex("TypeName")
                         .IsUnique()
                         .HasName("ClassFullNameIndex");
 

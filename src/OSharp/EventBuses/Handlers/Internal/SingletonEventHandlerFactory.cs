@@ -7,7 +7,7 @@
 //  <last-date>2017-09-19 1:34</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBus.Handlers.Internal
+namespace OSharp.EventBuses.Handlers.Internal
 {
     /// <summary>
     /// 单例生命周期的事件处理器实例获取方式

@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.EventBus.Handlers.Internal
+namespace OSharp.EventBuses.Handlers.Internal
 {
     /// <summary>
     /// 支持<see cref="Action"/>的事件处理器

@@ -18,7 +18,7 @@ using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
-using OSharp.EventBus;
+using OSharp.EventBuses;
 using OSharp.Mapping;
 
 
@@ -67,7 +67,7 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetService<IUnitOfWork>().GetHashCode()}");
 
             sb.AppendLine($"_provider.GetService<IEventBus>(): => {_provider.GetService<IEventBus>().GetHashCode()}");
-            sb.AppendLine($"EventBus.Default: => {OSharp.EventBus.EventBus.Default.GetHashCode()}");
+            sb.AppendLine($"EventBus.Default: => {EventBus.Default.GetHashCode()}");
 
             sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
 
@@ -124,20 +124,20 @@ namespace OSharp.Demo.Web.Controllers
             IdentityResult result = await userManager.CreateAsync(user);
             sb.AppendLine(result.ToJsonString());
 
-            //RoleManager<Role> roleManager = _provider.GetService<RoleManager<Role>>();
-            //Role role = new Role() { Name = $"角色{token}" };
-            //result = await roleManager.CreateAsync(role);
-            //sb.AppendLine(result.ToJsonString());
+            RoleManager<Role> roleManager = _provider.GetService<RoleManager<Role>>();
+            Role role = new Role() { Name = $"角色{token}" };
+            result = await roleManager.CreateAsync(role);
+            sb.AppendLine(result.ToJsonString());
 
-            //result = await userManager.AddToRoleAsync(user, role.Name);
-            //sb.AppendLine(result.ToJsonString());
+            result = await userManager.AddToRoleAsync(user, role.Name);
+            sb.AppendLine(result.ToJsonString());
 
             return Content(sb.ToString());
         }
 
-        public void EventBus()
+        public void EventBusTest()
         {
-            OSharp.EventBus.EventBus.Default.Trigger(this.GetType().Name, new TestEventData() { Name = "郭老板" });
+            EventBus.Default.Trigger(this.GetType().Name, new TestEventData() { Name = "郭老板" });
         }
     }
 

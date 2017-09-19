@@ -9,7 +9,7 @@
 
 using Microsoft.Extensions.Logging;
 
-using OSharp.EventBus;
+using OSharp.EventBuses;
 
 
 namespace Microsoft.Extensions.DependencyInjection

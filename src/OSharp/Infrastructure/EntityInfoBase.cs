@@ -39,13 +39,13 @@ namespace OSharp.Infrastructure
         /// 获取或设置 实体类型名称
         /// </summary>
         [Required, DisplayName("实体类型名称")]
-        public string ClassFullName { get; set; }
+        public string TypeName { get; set; }
 
         /// <summary>
         /// 获取或设置 是否启用数据日志
         /// </summary>
         [DisplayName("是否启用数据日志")]
-        public bool DataLogEnabled { get; set; } = true;
+        public bool AuditEnabled { get; set; } = true;
 
         /// <summary>
         /// 获取 实体属性信息字典
@@ -70,9 +70,9 @@ namespace OSharp.Infrastructure
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            ClassFullName = entityType.FullName;
+            TypeName = entityType.FullName;
             Name = entityType.GetDescription();
-            DataLogEnabled = true;
+            AuditEnabled = true;
 
             IDictionary<string, string> propertyDict = new Dictionary<string, string>();
             PropertyInfo[] propertyInfos = entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);

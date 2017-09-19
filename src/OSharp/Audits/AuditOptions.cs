@@ -25,6 +25,6 @@ namespace OSharp.Audits
         /// <summary>
         /// 获取或设置 审计数据信息委托
         /// </summary>
-        public Func<AuditData> DataFactory { get; set; }
+        public Func<AuditEntity> DataFactory { get; set; }
     }
 }

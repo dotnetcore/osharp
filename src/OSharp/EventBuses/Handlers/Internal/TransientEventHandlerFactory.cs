@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.EventBus.Handlers.Internal
+namespace OSharp.EventBuses.Handlers.Internal
 {
     /// <summary>
     /// 即时生命周期的事件处理器实例获取方式

@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 
-namespace OSharp.EventBus
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 定义事件总线

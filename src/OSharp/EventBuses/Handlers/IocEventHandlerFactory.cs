@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.EventBus.Handlers
+namespace OSharp.EventBuses.Handlers
 {
     /// <summary>
     /// 依赖注入事件处理器实例获取方式

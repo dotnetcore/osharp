@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.EventBus
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 事件源数据信息

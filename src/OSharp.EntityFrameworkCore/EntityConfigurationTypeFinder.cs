@@ -165,7 +165,7 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<EntityInfo> builder)
             {
-                builder.HasIndex(m => m.ClassFullName).HasName("ClassFullNameIndex").IsUnique();
+                builder.HasIndex(m => m.TypeName).HasName("ClassFullNameIndex").IsUnique();
             }
         }
 

@@ -31,12 +31,12 @@ namespace OSharp
         /// <summary>
         /// 获取或设置 实体类型名称
         /// </summary>
-        string ClassFullName { get; set; }
+        string TypeName { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 是否允许审计
         /// </summary>
-        bool DataLogEnabled { get; set; }
+        bool AuditEnabled { get; set; }
 
         /// <summary>
         /// 获取或设置 实体属性信息Json字符串

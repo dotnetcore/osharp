@@ -14,10 +14,10 @@ namespace OSharp.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClassFullName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DataLogEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AuditEnabled = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PropertyNamesJson = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PropertyNamesJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,7 +227,7 @@ namespace OSharp.Demo.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
                 table: "EntityInfo",
-                column: "ClassFullName",
+                column: "TypeName",
                 unique: true);
 
             migrationBuilder.CreateIndex(

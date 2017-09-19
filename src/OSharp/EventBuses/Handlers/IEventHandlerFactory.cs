@@ -7,7 +7,7 @@
 //  <last-date>2017-09-19 1:27</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBus.Handlers
+namespace OSharp.EventBuses.Handlers
 {
     /// <summary>
     /// 定义获取<see cref="IEventHandler"/>实例的方式

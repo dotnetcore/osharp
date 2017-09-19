@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.EventBus
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 定义事件源数据，所有事件源都要实现该接口

@@ -12,7 +12,7 @@ using System;
 namespace OSharp.Demo.Web.Migrations
 {
     [DbContext(typeof(SqlServerDesignTimeDefaultDbContext))]
-    [Migration("20170919031603_SqlServerInit")]
+    [Migration("20170919171559_SqlServerInit")]
     partial class SqlServerInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,19 +235,19 @@ namespace OSharp.Demo.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClassFullName")
-                        .IsRequired();
-
-                    b.Property<bool>("DataLogEnabled");
+                    b.Property<bool>("AuditEnabled");
 
                     b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<string>("PropertyNamesJson");
 
+                    b.Property<string>("TypeName")
+                        .IsRequired();
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassFullName")
+                    b.HasIndex("TypeName")
                         .IsUnique()
                         .HasName("ClassFullNameIndex");
 

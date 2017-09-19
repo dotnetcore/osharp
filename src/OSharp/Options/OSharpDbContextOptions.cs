@@ -20,6 +20,14 @@ namespace OSharp.Options
     public class OSharpDbContextOptions
     {
         /// <summary>
+        /// 初始化一个<see cref="OSharpDbContextOptions"/>类型的新实例
+        /// </summary>
+        public OSharpDbContextOptions()
+        {
+            AuditEntityEnabled = true;
+        }
+
+        /// <summary>
         /// 获取 上下文类型
         /// </summary>
         public Type DbContextType => string.IsNullOrEmpty(DbContextTypeName) ? null : Type.GetType(DbContextTypeName);
@@ -38,5 +46,10 @@ namespace OSharp.Options
         /// 获取或设置 数据库类型
         /// </summary>
         public DatabaseType DatabaseType { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否允许审计实体
+        /// </summary>
+        public bool AuditEntityEnabled { get; set; }
     }
 }

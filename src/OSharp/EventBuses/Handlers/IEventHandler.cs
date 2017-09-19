@@ -10,7 +10,7 @@
 using OSharp.Dependency;
 
 
-namespace OSharp.EventBus
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 定义事件处理器，所有事件处理都要实现该接口

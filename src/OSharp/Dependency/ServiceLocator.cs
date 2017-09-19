@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using OSharp.Dependency;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp
@@ -81,19 +82,9 @@ namespace OSharp
             Check.NotNull(_provider, nameof(_provider));
 
             IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
-            if (scopedResolver != null)
+            if (scopedResolver != null && scopedResolver.ResolveEnabled)
             {
                 return scopedResolver.GetService<T>();
-            }
-
-            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == typeof(T));
-            if (descriptor == null)
-            {
-                return default(T);
-            }
-            if (descriptor.Lifetime == ServiceLifetime.Scoped)
-            {
-                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
             }
             return _provider.GetService<T>();
         }
@@ -108,19 +99,9 @@ namespace OSharp
             Check.NotNull(_provider, nameof(_provider));
 
             IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
-            if (scopedResolver != null)
+            if (scopedResolver != null && scopedResolver.ResolveEnabled)
             {
                 return scopedResolver.GetService(serviceType);
-            }
-
-            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
-            if (descriptor == null)
-            {
-                return null;
-            }
-            if (descriptor.Lifetime == ServiceLifetime.Scoped)
-            {
-                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
             }
             return _provider.GetService(serviceType);
         }
@@ -134,15 +115,9 @@ namespace OSharp
             Check.NotNull(_provider, nameof(_provider));
 
             IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
-            if (scopedResolver != null)
+            if (scopedResolver != null && scopedResolver.ResolveEnabled)
             {
                 return scopedResolver.GetServices<T>();
-            }
-
-            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == typeof(T));
-            if (descriptor == null)
-            {
-                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
             }
             return _provider.GetServices<T>();
         }
@@ -157,15 +132,9 @@ namespace OSharp
             Check.NotNull(_provider, nameof(_provider));
 
             IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
-            if (scopedResolver != null)
+            if (scopedResolver != null && scopedResolver.ResolveEnabled)
             {
                 return scopedResolver.GetServices(serviceType);
-            }
-
-            ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
-            if (descriptor == null)
-            {
-                throw new OsharpException($"不能从 root ServiceProvider 中解析 Scoped 类型的实例");
             }
             return _provider.GetServices(serviceType);
         }

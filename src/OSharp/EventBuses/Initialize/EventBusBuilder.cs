@@ -16,7 +16,7 @@ using OSharp.Dependency;
 using OSharp.Reflection;
 
 
-namespace OSharp.EventBus.Initialize
+namespace OSharp.EventBuses.Initialize
 {
     /// <summary>
     /// EventBus初始化
