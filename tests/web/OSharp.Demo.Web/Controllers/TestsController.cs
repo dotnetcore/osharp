@@ -64,7 +64,7 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"ServiceLocator.GetService<IHttpContextAccessor>: => {ServiceLocator.Instance.GetService<IHttpContextAccessor>().GetHashCode()}");
 
             sb.AppendLine($"_provider.GetService<IUnitOfWork>(): => {_provider.GetService<IUnitOfWork>().GetHashCode()}");
-            sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetScopedService<IUnitOfWork>().GetHashCode()}");
+            sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetService<IUnitOfWork>().GetHashCode()}");
 
             sb.AppendLine($"_provider.GetService<IEventBus>(): => {_provider.GetService<IEventBus>().GetHashCode()}");
             sb.AppendLine($"EventBus.Default: => {OSharp.EventBus.EventBus.Default.GetHashCode()}");

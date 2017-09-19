@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using OSharp.Dependency;
 using OSharp.Exceptions;
 
 
@@ -73,12 +73,18 @@ namespace OSharp
         }
 
         /// <summary>
-        /// 解析指定类型的服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// 解析指定类型的服务实例
         /// </summary>
         public T GetService<T>()
         {
             Check.NotNull(_services, nameof(_services));
             Check.NotNull(_provider, nameof(_provider));
+
+            IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
+            if (scopedResolver != null)
+            {
+                return scopedResolver.GetService<T>();
+            }
 
             ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == typeof(T));
             if (descriptor == null)
@@ -93,13 +99,19 @@ namespace OSharp
         }
 
         /// <summary>
-        /// 解析指定类型的服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// 解析指定类型的服务实例
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         public object GetService(Type serviceType)
         {
             Check.NotNull(_services, nameof(_services));
             Check.NotNull(_provider, nameof(_provider));
+
+            IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
+            if (scopedResolver != null)
+            {
+                return scopedResolver.GetService(serviceType);
+            }
 
             ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
             if (descriptor == null)
@@ -114,12 +126,18 @@ namespace OSharp
         }
 
         /// <summary>
-        /// 解析指定类型的所有服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// 解析指定类型的所有服务实例
         /// </summary>
         public IEnumerable<T> GetServices<T>()
         {
             Check.NotNull(_services, nameof(_services));
             Check.NotNull(_provider, nameof(_provider));
+
+            IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
+            if (scopedResolver != null)
+            {
+                return scopedResolver.GetServices<T>();
+            }
 
             ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == typeof(T));
             if (descriptor == null)
@@ -130,13 +148,19 @@ namespace OSharp
         }
 
         /// <summary>
-        /// 解析指定类型的所有服务实例，仅适用于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+        /// 解析指定类型的所有服务实例
         /// </summary>
         /// <param name="serviceType">服务类型</param>
         public IEnumerable<object> GetServices(Type serviceType)
         {
             Check.NotNull(_services, nameof(_services));
             Check.NotNull(_provider, nameof(_provider));
+
+            IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
+            if (scopedResolver != null)
+            {
+                return scopedResolver.GetServices(serviceType);
+            }
 
             ServiceDescriptor descriptor = _services.FirstOrDefault(m => m.ServiceType == serviceType);
             if (descriptor == null)
