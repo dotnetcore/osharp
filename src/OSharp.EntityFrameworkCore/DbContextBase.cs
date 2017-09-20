@@ -87,12 +87,8 @@ namespace OSharp.Entity
             int count = base.SaveChanges();
             if (count > 0 && auditEntities.Count > 0)
             {
-                IAuditStore auditStore = ServiceLocator.Instance.GetService<IAuditStore>();
-                if (auditStore != null)
-                {
-                    AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                    EventBus.Default.Trigger(this, eventData);
-                }
+                AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
+                EventBus.Default.Trigger(this, eventData);
             }
             return count;
         }
@@ -134,12 +130,8 @@ namespace OSharp.Entity
             int count = await base.SaveChangesAsync(cancellationToken);
             if (count > 0 && auditEntities.Count > 0)
             {
-                IAuditStore auditStore = ServiceLocator.Instance.GetService<IAuditStore>();
-                if (auditStore != null)
-                {
-                    AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                    await EventBus.Default.TriggerAsync(this, eventData);
-                }
+                AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
+                await EventBus.Default.TriggerAsync(this, eventData);
             }
             return count;
         }

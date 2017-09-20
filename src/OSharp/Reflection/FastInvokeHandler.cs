@@ -152,9 +152,10 @@ namespace OSharp.Reflection
                     return;
             }
 
+
             if (value > -129 && value < 128)
             {
-                il.Emit(OpCodes.Ldc_I4_S, (SByte)value);
+                il.Emit(OpCodes.Ldc_I4_S, (sbyte)value);
             }
             else
             {

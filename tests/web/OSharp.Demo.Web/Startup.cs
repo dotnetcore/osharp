@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.Mvc.ModelBinding;
@@ -43,6 +44,7 @@ namespace OSharp.Demo.Web
             });
             services.AddLogging(builder =>
             {
+                builder.SetMinimumLevel(LogLevel.Warning);
                 builder.AddFile(ops =>
                 {
                     ops.FileName = "log-";

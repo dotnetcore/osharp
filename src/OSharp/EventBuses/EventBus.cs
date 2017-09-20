@@ -33,6 +33,7 @@ namespace OSharp.EventBuses
     {
         private static readonly Lazy<EventBus> DefaultLazy = new Lazy<EventBus>(() => new EventBus());
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
+        private readonly ConcurrentDictionary<Type, MethodInfo> _handlerMethodCache;
 
         /// <summary>
         /// 初始化一个<see cref="EventBus"/>类型的新实例
@@ -40,6 +41,7 @@ namespace OSharp.EventBuses
         private EventBus()
         {
             _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
+            _handlerMethodCache = new ConcurrentDictionary<Type, MethodInfo>();
         }
 
         /// <summary>
@@ -308,21 +310,34 @@ namespace OSharp.EventBuses
                             exceptions.Add(new Exception($"注册的事件“{tuple.EventType.Name}”的处理器未实现接口“IEventHandler<{tuple.EventType.Name}>”"));
                             return;
                         }
-                        Type handlerType = typeof(IEventHandler<>).MakeGenericType(tuple.EventType);
-                        MethodInfo method = handlerType.GetMethod("HandleEvent", new[] { tuple.EventType });
-                        method.Invoke(handler, new object[] { eventData });
-                    }
-                    catch (TargetInvocationException ex)
-                    {
-                        exceptions.Add(ex.InnerException);
+                        //方法缓存
+                        MethodInfo method = _handlerMethodCache.GetOrAdd(tuple.EventType,
+                            type =>
+                            {
+                                Type handlerType = typeof(IEventHandler<>).MakeGenericType(type);
+                                return handlerType.GetMethod("HandleEvent", new[] { tuple.EventType });
+                            });
+                        Func<object, object[], object> fastMethod = FastInvokeHandler.Create(method);
+                        //异步方式执行EventHandler
+                        Task.Run(() =>
+                        {
+                            try
+                            {
+                                fastMethod.Invoke(handler, new object[] { eventData });
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.LogError(ex, ex.Message);
+                            }
+                            finally
+                            {
+                                handlerFactory.ReleaseHandler(handler);
+                            }
+                        });
                     }
                     catch (Exception ex)
                     {
                         exceptions.Add(ex);
-                    }
-                    finally
-                    {
-                        handlerFactory.ReleaseHandler(handler);
                     }
                 }
             }

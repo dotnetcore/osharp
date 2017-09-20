@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.EventBuses;
+using OSharp.Exceptions;
 using OSharp.Mapping;
 
 
@@ -135,9 +137,12 @@ namespace OSharp.Demo.Web.Controllers
             return Content(sb.ToString());
         }
 
-        public void EventBusTest()
+        public IActionResult EventBusTest()
         {
+            Stopwatch watch = Stopwatch.StartNew();
             EventBus.Default.Trigger(this.GetType().Name, new TestEventData() { Name = "郭老板" });
+            watch.Stop();
+            return Content(watch.Elapsed.ToString());
         }
     }
 
@@ -163,7 +168,10 @@ namespace OSharp.Demo.Web.Controllers
         /// <param name="eventData">事件源数据</param>
         public void HandleEvent(TestEventData eventData)
         {
-            _logger.LogInformation($"Hello {eventData.Name}, this is {eventData.EventSource}");
+            Stopwatch watch = Stopwatch.StartNew();
+            Thread.Sleep(5000);
+            watch.Stop(); 
+            _logger.LogWarning($"Hello {eventData.Name}, this is {eventData.EventSource}，耗时：{watch.Elapsed}");
         }
     }
 }
