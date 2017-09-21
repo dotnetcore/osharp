@@ -24,12 +24,12 @@ namespace OSharp.EventBuses.Initialize
     public class EventBusBuilder : IEventBusBuilder, ISingletonDependency
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
-        private readonly IEventBus _eventBus;
+        private readonly EventBus _eventBus;
 
         /// <summary>
         /// 初始化一个<see cref="EventBusBuilder"/>类型的新实例
         /// </summary>
-        public EventBusBuilder(IAllAssemblyFinder allAssemblyFinder, IEventBus eventBus)
+        public EventBusBuilder(IAllAssemblyFinder allAssemblyFinder, EventBus eventBus)
         {
             _allAssemblyFinder = allAssemblyFinder;
             _eventBus = eventBus;

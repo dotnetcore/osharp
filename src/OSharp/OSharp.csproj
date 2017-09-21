@@ -47,9 +47,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authentication\" />
-    <Folder Include="Net\Mail\" />
-  </ItemGroup>
-
 </Project>

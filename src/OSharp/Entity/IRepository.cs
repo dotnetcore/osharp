@@ -64,13 +64,13 @@ namespace OSharp.Entity
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <returns>操作影响的行数</returns>
         int DeleteBatch(Expression<Func<TEntity, bool>> predicate);
-        
+
         /// <summary>
         /// 更新实体对象
         /// </summary>
-        /// <param name="entity">更新后的实体对象</param>
+        /// <param name="entities">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
-        int Update(TEntity entity);
+        int Update(params TEntity[] entities);
 
         /// <summary>
         /// 批量更新所有符合特定条件的实体

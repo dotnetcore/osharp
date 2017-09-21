@@ -68,7 +68,7 @@ namespace OSharp.Demo.Web.Controllers
             sb.AppendLine($"_provider.GetService<IUnitOfWork>(): => {_provider.GetService<IUnitOfWork>().GetHashCode()}");
             sb.AppendLine($"ServiceLocator.GetScopedService<IUnitOfWork>: => {ServiceLocator.Instance.GetService<IUnitOfWork>().GetHashCode()}");
 
-            sb.AppendLine($"_provider.GetService<IEventBus>(): => {_provider.GetService<IEventBus>().GetHashCode()}");
+            sb.AppendLine($"_provider.GetService<EventBus>(): => {_provider.GetService<EventBus>().GetHashCode()}");
             sb.AppendLine($"EventBus.Default: => {EventBus.Default.GetHashCode()}");
 
             sb.AppendLine($"用户数量：{userRepository.Query().Count()}");
@@ -169,7 +169,6 @@ namespace OSharp.Demo.Web.Controllers
         public void HandleEvent(TestEventData eventData)
         {
             Stopwatch watch = Stopwatch.StartNew();
-            Thread.Sleep(5000);
             watch.Stop(); 
             _logger.LogWarning($"Hello {eventData.Name}, this is {eventData.EventSource}，耗时：{watch.Elapsed}");
         }

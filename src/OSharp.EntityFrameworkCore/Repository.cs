@@ -104,13 +104,13 @@ namespace OSharp.Entity
         /// <summary>
         /// 更新实体对象
         /// </summary>
-        /// <param name="entity">更新后的实体对象</param>
+        /// <param name="entities">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
-        public int Update(TEntity entity)
+        public int Update(params TEntity[] entities)
         {
-            Check.NotNull(entity, nameof(entity));
+            Check.NotNull(entities, nameof(entities));
 
-            _dbSet.Update(entity);
+            _dbSet.UpdateRange(entities);
             return _dbContext.SaveChanges();
         }
 

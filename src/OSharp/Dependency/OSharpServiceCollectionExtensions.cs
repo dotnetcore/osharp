@@ -32,7 +32,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 scanOptions = new AppServiceScanOptions();
             }
             services = new AppServiceAdder(scanOptions).AddServices(services);
-            services.AddEventBus();
             ServiceLocator.Instance.TrySetServiceCollection(services);
             return services;
         }

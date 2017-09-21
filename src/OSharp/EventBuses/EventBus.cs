@@ -18,7 +18,9 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using OSharp.Audits;
 using OSharp.Collections;
+using OSharp.Dependency;
 using OSharp.EventBuses.Handlers;
 using OSharp.EventBuses.Handlers.Internal;
 using OSharp.Reflection;
@@ -29,31 +31,27 @@ namespace OSharp.EventBuses
     /// <summary>
     /// 事件总线
     /// </summary>
-    public sealed class EventBus : IEventBus
+    public sealed class EventBus : ISingletonDependency
     {
-        private static readonly Lazy<EventBus> DefaultLazy = new Lazy<EventBus>(() => new EventBus());
-        private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
         private readonly ConcurrentDictionary<Type, MethodInfo> _handlerMethodCache;
+        private readonly IEventStore _eventStore;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="EventBus"/>类型的新实例
         /// </summary>
-        private EventBus()
+        public EventBus(IEventStore eventStore, ILogger<EventBus> logger)
         {
-            _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
+            _eventStore = eventStore;
+            _logger = logger;
             _handlerMethodCache = new ConcurrentDictionary<Type, MethodInfo>();
         }
 
         /// <summary>
         /// 获取 默认事件总线
         /// </summary>
-        public static EventBus Default => DefaultLazy.Value;
-
-        /// <summary>
-        /// 获取或设置 日志记录对象
-        /// </summary>
-        public ILogger Logger { get; set; }
-
+        public static EventBus Default => ServiceLocator.Instance.GetService<EventBus>();
+        
         /// <summary>
         /// 将指定事件源数据与相应处理器注册到事件总线
         /// </summary>
@@ -61,8 +59,7 @@ namespace OSharp.EventBuses
         /// <typeparam name="TEventHandler">事件处理器类型</typeparam>
         public void Register<TEventData, TEventHandler>() where TEventData : IEventData where TEventHandler : IEventHandler, new()
         {
-            IEventHandlerFactory factory = new TransientEventHandlerFactory<TEventHandler>();
-            GetOrCreateHandlerFactories(typeof(EventData)).Locking(factories => factories.AddIfNotExist(factory));
+            _eventStore.Add<TEventData, TEventHandler>();
         }
 
         /// <summary>
@@ -72,7 +69,8 @@ namespace OSharp.EventBuses
         /// <param name="action">处理器委托实现</param>
         public void Register<TEventData>(Action<TEventData> action) where TEventData : IEventData
         {
-            Register<TEventData>(new ActionEventHandler<TEventData>(action));
+            IEventHandler eventHandler = new ActionEventHandler<TEventData>(action);
+            Register<TEventData>(eventHandler);
         }
 
         /// <summary>
@@ -92,8 +90,7 @@ namespace OSharp.EventBuses
         /// <param name="eventHandler">事件处理器实例</param>
         public void Register(Type eventType, IEventHandler eventHandler)
         {
-            IEventHandlerFactory factory = new SingletonEventHandlerFactory(eventHandler);
-            GetOrCreateHandlerFactories(eventType).Locking(factories => factories.AddIfNotExist(factory));
+            _eventStore.Add(eventType, eventHandler);
         }
 
         /// <summary>
@@ -103,6 +100,10 @@ namespace OSharp.EventBuses
         public void RegisterAllEventHandlers(Assembly assembly)
         {
             Type[] handlerTypes = assembly.GetTypes().Where(type => type.IsDeriveClassFrom(typeof(IEventHandler<>))).ToArray();
+            if (handlerTypes.Length == 0)
+            {
+                return;
+            }
             foreach (Type handlerType in handlerTypes)
             {
                 Type handlerInterface = handlerType.GetInterface("IEventHandler`1");//获取该类实现的泛型接口
@@ -112,7 +113,7 @@ namespace OSharp.EventBuses
                 }
                 Type eventType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
                 IEventHandlerFactory factory = new IocEventHandlerFactory(handlerType);
-                GetOrCreateHandlerFactories(eventType).Locking(factories => factories.AddIfNotExist(factory));
+                _eventStore.Add(eventType, factory);
             }
         }
 
@@ -125,44 +126,27 @@ namespace OSharp.EventBuses
         {
             Check.NotNull(action, nameof(action));
 
-            GetOrCreateHandlerFactories(typeof(TEventData)).Locking(factories =>
-            {
-                factories.RemoveAll(factory =>
-                {
-                    if (!(factory is SingletonEventHandlerFactory singletonFactory))
-                    {
-                        return false;
-                    }
-                    if (!(singletonFactory.HandlerInstance is ActionEventHandler<TEventData> handler))
-                    {
-                        return false;
-                    }
-                    return handler.Action == action;
-                });
-            });
+            _eventStore.Remove(action);
         }
 
         /// <summary>
         /// 注销指定事件源数据的处理器委托实例
         /// </summary>
         /// <typeparam name="TEventData">事件源数据类型</typeparam>
-        /// <param name="handler">处理器委托实例</param>
-        public void Unregister<TEventData>(IEventHandler<TEventData> handler) where TEventData : IEventData
+        /// <param name="eventHandler">处理器委托实例</param>
+        public void Unregister<TEventData>(IEventHandler<TEventData> eventHandler) where TEventData : IEventData
         {
-            Unregister(typeof(TEventData), handler);
+            Unregister(typeof(TEventData), eventHandler);
         }
 
         /// <summary>
         /// 注销指定事件源数据的处理器委托实例
         /// </summary>
         /// <param name="eventType">事件源数据类型</param>
-        /// <param name="handler">处理器委托实例</param>
-        public void Unregister(Type eventType, IEventHandler handler)
+        /// <param name="eventHandler">处理器委托实例</param>
+        public void Unregister(Type eventType, IEventHandler eventHandler)
         {
-            GetOrCreateHandlerFactories(eventType).Locking(factories =>
-            {
-                factories.RemoveAll(factory => (factory as SingletonEventHandlerFactory)?.HandlerInstance == handler);
-            });
+            _eventStore.Remove(eventType, eventHandler);
         }
 
         /// <summary>
@@ -180,7 +164,7 @@ namespace OSharp.EventBuses
         /// <param name="eventType">事件源数据类型</param>
         public void UnregisterAll(Type eventType)
         {
-            GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Clear());
+            _eventStore.RemoveAll(eventType);
         }
 
         /// <summary>
@@ -283,23 +267,20 @@ namespace OSharp.EventBuses
                 }
                 catch (Exception e)
                 {
-                    Logger.LogWarning(e.Message, e);
+                    _logger.LogError(e.Message, e);
                 }
             });
             ExecutionContext.RestoreFlow();
             return task;
         }
 
-        private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)
-        {
-            return _handlerFactories.GetOrAdd(eventType, type => new List<IEventHandlerFactory>());
-        }
-
         private void TriggerHandlingException(Type eventType, object eventSource, IEventData eventData, List<Exception> exceptions)
         {
             eventData.EventSource = eventSource;
-            foreach ((Type EventType, List<IEventHandlerFactory> HandlerFactories) tuple in GetHandlerFactories(eventType))
+            var valueTuples = _eventStore.GetHandlers(eventType);
+            foreach (var valueTuple in valueTuples)
             {
+                var tuple = ((Type EventType, List<IEventHandlerFactory> HandlerFactories))valueTuple;
                 foreach (IEventHandlerFactory handlerFactory in tuple.HandlerFactories)
                 {
                     IEventHandler handler = handlerFactory.GetHandler();
@@ -327,7 +308,7 @@ namespace OSharp.EventBuses
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogError(ex, ex.Message);
+                                _logger.LogError(ex, ex.Message);
                             }
                             finally
                             {
@@ -341,16 +322,6 @@ namespace OSharp.EventBuses
                     }
                 }
             }
-        }
-
-        private IEnumerable<(Type EventType, List<IEventHandlerFactory> HandlerFactories)> GetHandlerFactories(Type eventType)
-        {
-            var list = new List<ValueTuple<Type, List<IEventHandlerFactory>>>();
-            foreach (var pair in _handlerFactories.Where(item => item.Key == eventType || item.Key.IsAssignableFrom(eventType)))
-            {
-                list.Add(new ValueTuple<Type, List<IEventHandlerFactory>>(pair.Key, pair.Value));
-            }
-            return list.ToArray();
         }
     }
 }
