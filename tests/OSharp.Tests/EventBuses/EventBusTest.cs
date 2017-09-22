@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.EventBuses;
+using OSharp.Maths;
 
 using Shouldly;
 
@@ -15,23 +16,17 @@ namespace OSharp.Tests.EventBuses
     public class EventBusTests
     {
         [Fact]
-        public void Default_Singleton_Test()
-        {
-            EventBus bus1 = EventBus.Default;
-            EventBus bus2 = EventBus.Default;
-            bus1.ShouldBe(bus2);
-        }
-
-        [Fact]
         public void Default_Ioc_Singleton_Test()
         {
             IServiceCollection services = new ServiceCollection();
             services.AddOSharp();
+            services.AddLogging();
             IServiceProvider provider = services.BuildServiceProvider();
-
+            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
             EventBus defaultBus = EventBus.Default;
             EventBus iocBus = provider.GetService<EventBus>();
             defaultBus.ShouldBe(iocBus);
         }
+        
     }
 }

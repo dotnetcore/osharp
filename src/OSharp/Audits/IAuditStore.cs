@@ -9,6 +9,8 @@
 
 using System.Collections.Generic;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Audits
 {
@@ -22,5 +24,21 @@ namespace OSharp.Audits
         /// </summary>
         /// <param name="auditDatas"></param>
         void SetAuditDatas(IEnumerable<AuditEntity> auditDatas);
+    }
+
+    public class NullAuditStore : IAuditStore, ISingletonDependency
+    {
+        #region Implementation of IAuditStore
+
+        /// <summary>
+        /// 设置实体审计数据
+        /// </summary>
+        /// <param name="auditDatas"></param>
+        public void SetAuditDatas(IEnumerable<AuditEntity> auditDatas)
+        {
+
+        }
+
+        #endregion
     }
 }

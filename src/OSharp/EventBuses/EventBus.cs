@@ -11,15 +11,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
-
-using OSharp.Audits;
-using OSharp.Collections;
 using OSharp.Dependency;
 using OSharp.EventBuses.Handlers;
 using OSharp.EventBuses.Handlers.Internal;
@@ -277,10 +273,9 @@ namespace OSharp.EventBuses
         private void TriggerHandlingException(Type eventType, object eventSource, IEventData eventData, List<Exception> exceptions)
         {
             eventData.EventSource = eventSource;
-            var valueTuples = _eventStore.GetHandlers(eventType);
-            foreach (var valueTuple in valueTuples)
+            IEnumerable<(Type EventType, IEnumerable<IEventHandlerFactory> HandlerFactories)> valueTuples = _eventStore.GetHandlers(eventType);
+            foreach (var tuple in valueTuples)
             {
-                var tuple = ((Type EventType, List<IEventHandlerFactory> HandlerFactories))valueTuple;
                 foreach (IEventHandlerFactory handlerFactory in tuple.HandlerFactories)
                 {
                     IEventHandler handler = handlerFactory.GetHandler();

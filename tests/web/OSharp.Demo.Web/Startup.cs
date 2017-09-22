@@ -1,26 +1,19 @@
-﻿// -----------------------------------------------------------------------
-//  <copyright file="Startup.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
-//  </copyright>
-//  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-12 0:01</last-date>
-// -----------------------------------------------------------------------
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.AspNetCore.Mvc.ModelBinding;
+using OSharp;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Entities;
 
 
-namespace OSharp.Demo.Web
+namespace OSharp_Demo_Web
 {
     public class Startup
     {
@@ -34,17 +27,11 @@ namespace OSharp.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddOSharp();
             services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>();
-
-            services.AddMvc(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider());
-                options.Filters.Add<UnitOfWorkAttribute>();
-            });
             services.AddLogging(builder =>
             {
-                builder.SetMinimumLevel(LogLevel.Warning);
                 builder.AddFile(ops =>
                 {
                     ops.FileName = "log-";
@@ -58,11 +45,13 @@ namespace OSharp.Demo.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            env.EnvironmentName = "Development";
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {
@@ -77,9 +66,14 @@ namespace OSharp.Demo.Web
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
 
             app.UseOSharp().UseAutoMapper();

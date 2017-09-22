@@ -16,7 +16,7 @@ namespace OSharp.EventBuses
     /// 定义事件处理器，所有事件处理都要实现该接口
     /// </summary>
     [IgnoreDependency]
-    public interface IEventHandler : IScopeDependency
+    public interface IEventHandler : ITransientDependency
     { }
 
 
