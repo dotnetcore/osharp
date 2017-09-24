@@ -3,18 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - OSharp_Demo_Web</title>
+    <title>@ViewData["Title"] - TestVuew</title>
     <base href="~/" />
 
-    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    <link rel="stylesheet" asp-append-version="true" href="~/dist/vendor.css" />
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
+        <link rel="stylesheet" asp-append-version="true" href="~/dist/site.css" />
     </environment>
 </head>
 <body>
     @RenderBody()
-
-    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script asp-append-version="true" src="~/dist/vendor.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

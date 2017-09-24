@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const bundleOutputDir = './wwwroot/dist';
+var path = require("path");
+var webpack = require("webpack");
+var outputDir = "./wwwroot/dist";
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CheckerPlugin = require("awesome-typescript-loader").CheckerPlugin;
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -10,42 +10,43 @@ module.exports = (env) => {
     return [{
         stats: { modules: false },
         context: __dirname,
-        resolve: { extensions: [ '.js', '.ts' ] },
-        entry: { 'main': './ClientApp/boot.ts' },
+        resolve: { extensions: [".js", ".ts", ".vue"] },
+        entry: { build: "./ClientApp/boot.ts" },
+        output: {
+            path: path.join(__dirname, outputDir),
+            filename: "[name].js",
+            publicPath: "dist/"
+        },
         module: {
             rules: [
-                { test: /\.vue\.html$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: { js: 'awesome-typescript-loader?silent=true' } } },
-                { test: /\.ts$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
-                { test: /\.css$/, use: isDevBuild ? [ 'style-loader', 'css-loader' ] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                { test: /\.vue\.html$/, include: /ClientApp/, loader: "vue-loader", options: { loaders: { js: "awesome-typescript-loader?silent=true" } } },
+                { test: /\.vue$/, include: /ClientApp/, loader: "vue-loader", options: { loaders: {} } },
+                { test: /\.ts$/, include: /ClientApp/, use: "awesome-typescript-loader?silent=true" },
+                { test: /\.css$/, include: /ClientApp/, use: isDevBuild ? ["style-loader", "css-loader"] : extractTextPlugin.extract({ use: "css-loader?minimize" }) },
+                { test: /\.(png|jpg|jpeg|gif|svg)$/, include: /ClientApp/, use: "url-loader?limit=25000" }
             ]
-        },
-        output: {
-            path: path.join(__dirname, bundleOutputDir),
-            filename: '[name].js',
-            publicPath: 'dist/'
         },
         plugins: [
             new CheckerPlugin(),
             new webpack.DefinePlugin({
                 'process.env': {
-                    NODE_ENV: JSON.stringify(isDevBuild ? 'development' : 'production')
+                    NODE_ENV: JSON.stringify(isDevBuild ? "development" : "production")
                 }
             }),
             new webpack.DllReferencePlugin({
                 context: __dirname,
-                manifest: require('./wwwroot/dist/vendor-manifest.json')
+                manifest: require("./wwwroot/dist/vendor-manifest.json")
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
             new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map', // Remove this line if you prefer inline source maps
-                moduleFilenameTemplate: path.relative(bundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+                filename: "[file].map", // Remove this line if you prefer inline source maps
+                moduleFilenameTemplate: path.relative(outputDir, "[resourcePath]") // Point sourcemap entries to the original file locations on disk
             })
         ] : [
-            // Plugins that apply in production builds only
-            new webpack.optimize.UglifyJsPlugin(),
-            new ExtractTextPlugin('site.css')
-        ])
+                // Plugins that apply in production builds only
+                new webpack.optimize.UglifyJsPlugin(),
+                new ExtractTextPlugin("site.css")
+            ])
     }];
 };

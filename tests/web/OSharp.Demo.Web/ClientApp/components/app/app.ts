@@ -6,5 +6,4 @@ import { Component } from 'vue-property-decorator';
         MenuComponent: require('../navmenu/navmenu.vue.html')
     }
 })
-export default class AppComponent extends Vue {
-}
+export default class AppCompponent extends Vue { }

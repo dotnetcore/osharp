@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,9 +9,9 @@ using OSharp.Entity;
 namespace OSharp.Demo.Web
 {
     [IgnoreDependency]
-    public class MySqlDefaultDbContext : DefaultDbContext
+    public class MySqlDesignTimeDefaultDbContext : DefaultDbContext
     {
-        public MySqlDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
+        public MySqlDesignTimeDefaultDbContext(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
             : base(options, typeFinder)
         {
         }
