@@ -85,7 +85,7 @@ public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFa
 
 > Add-Migration MigrationName -context "OSharp.Demo.Web.SqlServerDesignTimeDefaultDbContext"
 
-> Update-Database
+> Update-Database -context OSharp.Demo.Web.SqlServerDesignTimeDefaultDbContext
 
 ### 4.示例项目：OSharp.Demo.Web
 
