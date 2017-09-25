@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 		build\OSharp.Keys.snk = build\OSharp.Keys.snk
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
+		build\restore.cmd = build\restore.cmd
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
@@ -56,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2E4D5838
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{01974482-F9CA-41E7-A9EF-EB13C939570F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Web", "tests\web\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{34F0439B-03F3-434F-89AE-34F90E2865DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Web", "tests\web\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{34F0439B-03F3-434F-89AE-34F90E2865DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

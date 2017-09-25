@@ -87,6 +87,32 @@ public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFa
 
 > Update-Database
 
+### 4.示例项目：OSharp.Demo.Web
+
+示例项目是使用`asp.net core mvc` + `vue` + `typescript`来构建的，`vue`和`typescript`使用`webpack`来进行编译打包，所以，需要安装`NodeJS`才能把项目运行起来
+
+#### 4.1 安装NodeJS
+
+打开 NodeJS网站下载安装即可，网址：[https://nodejs.org/en/](https://nodejs.org/en/)
+
+#### 4.2 安装依赖JS包
+
+所有第三方JS包都通过 NodeJS 的`npm`来进行安装，首先要先还原 npm 包，在`OSharp.Demo.Web`根目录下执行如下命令，所有JS包都会被下载到`node_modules`目录中
+
+> npm install
+
+#### 4.3 编译打包不大需要更新的第三方JS包
+
+框架对那些平时不太需要更新的第三方JS包，比如 `jquery`, `bootstrap`, `vue` 等，进行了单独打包，避免每次前端编译都对这些包进行打包压缩，提高前端编译速度。对第三方引用包的打包配置文件为：`webpack.config.vendor.js`，当第一次运行，或者第三方包有更新时，可执行如下命令进行手动打包。在项目`OSharp.Demo.Web`目录下执行如下命令，输出目录为`wwwroot\dist`
+
+> webpack --config webpack.config.vendor.js
+
+#### 4.4 手动前端编译
+
+框架启动时会进行前端编译，当然，也可以手动执行`webpack`进行编译，在`OSharp.Demo.Web`根目录执行如下命令，默认会使用`webpack.config.js`配置文件进行编译打包，输出文件为`wwwroot\dist\build.js`
+
+> webpack
+
 ## <a id="04"/>项目开发进度
 
 - [ ] **OSharpNS Framework**
