@@ -26,7 +26,6 @@ module.exports = env => {
         output: {
             path: path.join(__dirname, outputDir),
             filename: "[name].js",
-            publicPath: "dist/",
             library: "[name]_[hash]"
         },
         module: {

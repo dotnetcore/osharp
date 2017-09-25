@@ -6,6 +6,6 @@ export default class CounterComponent extends Vue {
     currentcount: number = 0;
 
     incrementCounter() {
-        this.currentcount++;
+        this.currentcount = this.currentcount + 1;
     }
 }

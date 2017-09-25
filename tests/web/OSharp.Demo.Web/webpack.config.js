@@ -15,7 +15,7 @@ module.exports = (env) => {
         output: {
             path: path.join(__dirname, outputDir),
             filename: "[name].js",
-            publicPath: "dist/"
+            publicPath: "/dist/"
         },
         module: {
             rules: [
