@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OSharpOptionsSetup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -47,7 +47,7 @@ namespace OSharp.Options
         private void SetDbContextOptionses(OSharpOptions options)
         {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
-            if (section == null)
+            if (section?.Value == null)
             {
                 string connectionString = _configuration["ConnectionStrings:DefaultDbContext"];
                 if (connectionString == null)

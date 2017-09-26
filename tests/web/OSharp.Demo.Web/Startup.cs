@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,21 +24,23 @@ namespace OSharp.Demo.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddOSharp();
-            services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>();
-            services.AddLogging(builder =>
-            {
-                builder.AddFile(ops =>
+            services.AddOSharp(ops =>
                 {
-                    ops.FileName = "log-";
-                    ops.LogDirectory = "log";
-                });
-            });
-            services.AddDistributedMemoryCache();
+                    int count = ops.DbContextOptionses.Count;
+                })
+                .AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>()
+                .AddLogging(builder =>
+                {
+                    builder.AddFile(ops =>
+                    {
+                        ops.FileName = "log-";
+                        ops.LogDirectory = "log";
+                    });
+                })
+                .AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,10 +49,10 @@ namespace OSharp.Demo.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
-                //{
-                //    HotModuleReplacement = true
-                //});
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {

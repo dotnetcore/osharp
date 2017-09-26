@@ -1,9 +1,10 @@
 @{
-    ViewData["Title"] = "首页";
+    ViewData["Title"] = "Home Page";
 }
 
-<div id='app-root'>正在加载……</div>
+<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
 
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
 @section scripts {
-    <script asp-append-version="true" src="~/dist/build.js"></script>
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UnitOfWork.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -68,6 +69,14 @@ namespace OSharp.Entity
             {
                 resolveOptions.ExistingConnection = null;
                 dbContext = contextResolver.Resolve(resolveOptions);
+                RelationalDatabaseCreator dbCreator;
+                if ((dbCreator = dbContext.GetService<IDatabaseCreator>() as RelationalDatabaseCreator) != null)
+                {
+                    if (!dbCreator.Exists())
+                    {
+                        throw new OsharpException($"数据上下文“{dbContext.GetType().FullName}”的数据库不存在，请通过 Migration 功能进行数据迁移创建数据库。");
+                    }
+                }
                 IDbContextTransaction transaction = dbContext.Database.BeginTransaction();
                 transInfo = new ActiveTransactionInfo(transaction, dbContext);
                 ActiveTransactionInfos[resolveOptions.ConnectionString] = transInfo;
