@@ -5,9 +5,6 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <ApplicationIcon />
-    <OutputType>Exe</OutputType>
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ClientApp\dist\vendor-manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
@@ -33,10 +34,6 @@
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
     <ProjectReference Include="..\OSharp.Demo.Core\OSharp.Demo.Core.csproj" />
     <ProjectReference Include="..\OSharp.Demo.EntityConfiguration\OSharp.Demo.EntityConfiguration.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\dist\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

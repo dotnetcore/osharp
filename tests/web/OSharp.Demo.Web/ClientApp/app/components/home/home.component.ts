@@ -8,5 +8,5 @@ export class HomeComponent {
     constructor(){
         console.log("constructor: "+this.chsstr);
     }
-    chsstr: string = "TS输出的一串中文来捣乱的";
+    chsstr: string = "TS输出的一串中文来捣乱的？";
 }
