@@ -1,10 +1,4 @@
 {
-  "name": "OSharpNS",
-  "private": true,
-  "version": "0.0.1",
-  "scripts": {
-    "test": "karma start ClientApp/test/karma.conf.js"
-  },
   "dependencies": {
     "@angular/animations": "4.2.5",
     "@angular/common": "4.2.5",
@@ -29,22 +23,22 @@
     "es6-shim": "0.35.3",
     "event-source-polyfill": "0.0.9",
     "expose-loader": "0.7.3",
-    "extract-text-webpack-plugin":"3.0.0",
+    "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "0.11.2",
-    "html-loader": "0.5.1",
+    "html-loader": "0.4.5",
     "isomorphic-fetch": "2.2.1",
     "jquery": "3.2.1",
     "json-loader": "0.5.4",
-    "preboot": "5.0.0",
+    "preboot": "4.5.2",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.2",
     "style-loader": "0.18.2",
     "to-string-loader": "1.1.5",
-    "typescript": "2.5.2",
+    "typescript": "2.4.1",
     "url-loader": "0.5.9",
-    "webpack": "^3.6.0",
-    "webpack-hot-middleware": "^2.19.1",
+    "webpack": "2.5.1",
+    "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12"
   },
@@ -58,7 +52,12 @@
     "karma-chrome-launcher": "2.2.0",
     "karma-cli": "1.0.1",
     "karma-jasmine": "1.1.0",
-    "karma-webpack": "2.0.4"
-  }
+    "karma-webpack": "2.0.3"
+  },
+  "name": "osharpns",
+  "private": true,
+  "scripts": {
+    "test": "karma start ClientApp/test/karma.conf.js"
+  },
+  "version": "0.0.0"
 }
-
