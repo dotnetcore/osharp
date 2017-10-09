@@ -49,5 +49,20 @@ namespace OSharp
 
             return app;
         }
+
+        /// <summary>
+        /// 添加Area路由
+        /// </summary>
+        public static IApplicationBuilder UseMvcWithAreaRoute(this IApplicationBuilder app, bool area = true)
+        {
+            return app.UseMvc(builder =>
+            {
+                if (area)
+                {
+                    builder.MapRoute("admin", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                }
+                builder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
     }
 }

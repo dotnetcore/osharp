@@ -5,16 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace OSharp.Demo.Web.Controllers
+namespace OSharp.Demo.Web.Areas.Admin.Controllers
 {
-    [Description("网站-主页")]
+    [Area("Admin")]
+    [Description("管理-主页")]
     public class HomeController : Controller
     {
         [Description("首页")]
         public IActionResult Index()
         {
-            ViewBag.Content = "Home-Index";
-            return View();
+            return Content("Admin-Home-Index");
         }
     }
 }
