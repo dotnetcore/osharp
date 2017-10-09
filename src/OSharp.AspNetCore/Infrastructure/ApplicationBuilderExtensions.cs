@@ -51,7 +51,7 @@ namespace OSharp
         }
 
         /// <summary>
-        /// 添加Area路由
+        /// 添加MVC并Area路由支持
         /// </summary>
         public static IApplicationBuilder UseMvcWithAreaRoute(this IApplicationBuilder app, bool area = true)
         {
