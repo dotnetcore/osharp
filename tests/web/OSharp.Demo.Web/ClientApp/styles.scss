@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
+body{margin:0;}
+
+//material
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+// styles.scss
+@import "~@progress/kendo-theme-default/scss/all";
+//@import "~@progress/kendo-theme-material/scss/all";
+
+//global
+//html, body { overflow: hidden; }
+    //   body { font-family: "RobotoRegular",Helvetica,Arial,sans-serif; font-size: 14px; margin: 0; }
+    //  app-root { display: block; width: 100%; overflow: hidden; min-height: 80px; box-sizing: border-box; padding: 30px; }
+     app-root > .k-icon.k-i-loading { font-size: 64px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+      

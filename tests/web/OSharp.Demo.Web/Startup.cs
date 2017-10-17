@@ -42,8 +42,8 @@ namespace OSharp.Demo.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
             app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseMvcWithAreaRoute();
 
             app.UseOSharp().UseAutoMapper();
