@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 //material
 import { MatCommonModule, MatButtonModule, MatButtonToggleModule, MatIconModule, MatSidenavModule, MatAutocompleteModule, MatCheckboxModule } from "@angular/material";
@@ -25,4 +25,11 @@ import { MatCommonModule, MatButtonModule, MatButtonToggleModule, MatIconModule,
     ],
     providers: [],
 })
-export class MaterialSharedModule { }
+export class MaterialSharedModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: MaterialSharedModule,
+            providers: []
+        };
+    }
+}

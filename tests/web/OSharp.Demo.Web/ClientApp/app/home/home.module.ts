@@ -1,20 +1,20 @@
 import { NgModule, } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { KendouiSharedModule } from "../shared/kendoui.shared.module";
+
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule, } from './home.routing';
 import { TranslateModule, } from '@ngx-translate/core';
 
-// TODO: import components and services
-// import { DemoComponent } from './demo/demo.component';
-// import { DemoService } from './demo/demo.service';
-
 @NgModule({
     declarations: [
         HomeComponent,
-        // TODO: add components
-        // DemoComponent
     ],
     imports: [
         TranslateModule,
+        CommonModule,
+        KendouiSharedModule,
         HomeRoutingModule,
     ],
     providers: [

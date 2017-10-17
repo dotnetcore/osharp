@@ -7,6 +7,7 @@ import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 
 //shared
+import { AngleSharedModule } from "./shared/angle.shared.module";
 import { MaterialSharedModule } from './shared/material.shared.module';
 import { KendouiSharedModule } from "./shared/kendoui.shared.module";
 
@@ -14,9 +15,13 @@ import { KendouiSharedModule } from "./shared/kendoui.shared.module";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from "./app.routing";
 import { HomeModule } from './home/home.module';
+import { Demo01Module } from "./demo01/demo01.module";
+import { LoggingService } from './shared/services/logging.services';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -25,13 +30,20 @@ import { HomeModule } from './home/home.module';
     HttpModule,
     RouterModule,
 
-    MaterialSharedModule,
-    KendouiSharedModule,
+    //shared
+    AngleSharedModule.forRoot(),
+    MaterialSharedModule.forRoot(),
+    KendouiSharedModule.forRoot(),
 
+    //app
+    AppRoutingModule,
     HomeModule,
-    AppRoutingModule
+    Demo01Module
   ],
-  providers: [],
+  exports: [],
+  providers: [
+    LoggingService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }  
