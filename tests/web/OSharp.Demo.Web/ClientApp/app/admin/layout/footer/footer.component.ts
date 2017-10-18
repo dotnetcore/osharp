@@ -13,7 +13,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class FooterComponent implements OnInit, OnDestroy {
 
-    constructor(private logger: LoggingService) {
+    constructor(
+        private settings: SettingsService,
+        private logger: LoggingService) {
         logger.info("admin-layout footer ctor call");
     }
 

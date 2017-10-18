@@ -1,10 +1,12 @@
 import { NgModule, } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { TranslateModule, } from '@ngx-translate/core';
 
 //app
 import { LayoutRoutingModule } from "./layout.routing";
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent } from "./header/header.component";
+import { NavsearchComponent } from "./header/navsearch/navsearch.component";
 import { OffsidebarComponent } from './offsidebar/offsidebar.component';
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { FooterComponent } from './footer/footer.component';
@@ -24,6 +26,7 @@ import { FooterComponent } from './footer/footer.component';
         // DemoComponent
     ],
     imports: [
+        CommonModule,
         TranslateModule,
         LayoutRoutingModule
     ],
