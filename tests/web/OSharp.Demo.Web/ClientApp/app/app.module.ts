@@ -3,8 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
+import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 //shared
 import { AngleSharedModule } from "./shared/angle.shared.module";
@@ -18,6 +21,10 @@ import { HomeModule } from './home/home.module';
 import { Demo01Module } from "./demo01/demo01.module";
 import { LoggingService } from './shared/services/logging.services';
 
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -26,9 +33,17 @@ import { LoggingService } from './shared/services/logging.services';
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
+    HttpClientModule,
     FormsModule,
     HttpModule,
     RouterModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
 
     //shared
     AngleSharedModule.forRoot(),
@@ -42,6 +57,8 @@ import { LoggingService } from './shared/services/logging.services';
   ],
   exports: [],
   providers: [
+    HttpClient,
+    TranslateService,
     LoggingService
   ],
   bootstrap: [AppComponent]
