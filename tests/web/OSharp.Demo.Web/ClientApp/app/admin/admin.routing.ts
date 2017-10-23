@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from "./layout/layout.component";
 import { HomeComponent } from './home/home.component';
+import { MenuService } from "./angle/menu/menu.service";
 
 // TODO: import components
 // import { DemoComponent } from './demo/demo.component';
@@ -19,8 +20,17 @@ const routes: Routes = [
     }
 ];
 
+//default menu
+const home = { text: '主页', link: './home', icon: 'icon-home' };
+const headingMain = { text: '导航菜单', heading: true };
+export const mainMenu = [headingMain, home];
+
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {
+    constructor(public menuService: MenuService) {
+        menuService.addMenu(mainMenu);
+    }
+}

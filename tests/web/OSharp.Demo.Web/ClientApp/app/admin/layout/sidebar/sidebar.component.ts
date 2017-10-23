@@ -8,6 +8,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoggingService } from '../../../shared/services/logging.services';
 import { SettingsService } from "../../angle/settings/settings.service";
+import { MenuService } from '../../angle/menu/menu.service';
+import { menuItem } from '../../angle/menu/menu-item';
 
 @Component({
     selector: 'app-sidebar',
@@ -16,16 +18,17 @@ import { SettingsService } from "../../angle/settings/settings.service";
 })
 export class SidebarComponent implements OnInit {
 
-    menuItems: Array<any>;
+    menuItems: Array<menuItem>;
     router: Router;
 
     constructor(
         private logger: LoggingService,
+        public menuService: MenuService,
         public settings: SettingsService,
         public injector: Injector
     ) {
         logger.info("admin-layout sidebar ctor call");
-        //todo:初始化menuItems
+        this.menuItems = menuService.getMenu();
     }
 
     ngOnInit() {

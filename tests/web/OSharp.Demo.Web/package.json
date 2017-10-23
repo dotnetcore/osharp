@@ -52,6 +52,7 @@
     "jquery-sparkline": "2.4.0",
     "jquery.browser": "0.1.0",
     "jquery.flot.tooltip": "github:krzysu/flot.tooltip",
+    "linqts": "^1.10.0",
     "moment": "^2.19.1",
     "ngx-bootstrap": "^1.9.3",
     "rxjs": "^5.4.2",

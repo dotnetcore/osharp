@@ -5,7 +5,6 @@ import { AdminRoutingModule, } from './admin.routing';
 import { AngleModule } from "./angle/angle.module";
 import { LayoutModule } from "./layout/layout.module";
 import { HomeModule } from './home/home.module';
-import { TranslatorService } from './angle/translator/translator.service';
 
 @NgModule({
     declarations: [],
@@ -16,8 +15,6 @@ import { TranslatorService } from './angle/translator/translator.service';
         LayoutModule,
         HomeModule
     ],
-    providers: [
-        TranslatorService
-    ]
+    providers: []
 })
 export class AdminModule { }
