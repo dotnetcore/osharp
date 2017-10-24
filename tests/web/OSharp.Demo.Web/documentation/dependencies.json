@@ -12,6 +12,9 @@
         "name": "AdminRoutingModule"
       },
       {
+        "name": "AngleModule"
+      },
+      {
         "name": "LayoutModule"
       },
       {
@@ -22,63 +25,69 @@
     "bootstrap": [],
     "__raw": [
       {
-        "pos": 271,
-        "end": 292,
+        "pos": 323,
+        "end": 344,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 271,
-          "end": 288,
+          "pos": 323,
+          "end": 340,
           "flags": 0,
           "escapedText": "declarations"
         },
         "initializer": {
-          "pos": 289,
-          "end": 292,
+          "pos": 341,
+          "end": 344,
           "flags": 0,
           "kind": 177,
           "elements": []
         }
       },
       {
-        "pos": 293,
-        "end": 408,
+        "pos": 345,
+        "end": 481,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 293,
-          "end": 305,
+          "pos": 345,
+          "end": 357,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 306,
-          "end": 408,
+          "pos": 358,
+          "end": 481,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 308,
-              "end": 332,
+              "pos": 360,
+              "end": 384,
               "flags": 0,
               "escapedText": "TranslateModule"
             },
             {
-              "pos": 333,
-              "end": 360,
+              "pos": 385,
+              "end": 412,
               "flags": 0,
               "escapedText": "AdminRoutingModule"
             },
             {
-              "pos": 361,
-              "end": 382,
+              "pos": 413,
+              "end": 433,
+              "flags": 0,
+              "escapedText": "AngleModule"
+            },
+            {
+              "pos": 434,
+              "end": 455,
               "flags": 0,
               "escapedText": "LayoutModule"
             },
             {
-              "pos": 383,
-              "end": 402,
+              "pos": 456,
+              "end": 475,
               "flags": 0,
               "escapedText": "HomeModule"
             }
@@ -86,22 +95,21 @@
         }
       },
       {
-        "pos": 409,
-        "end": 462,
+        "pos": 482,
+        "end": 500,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 409,
-          "end": 423,
+          "pos": 482,
+          "end": 496,
           "flags": 0,
           "escapedText": "providers"
         },
         "initializer": {
-          "pos": 424,
-          "end": 462,
+          "pos": 497,
+          "end": 500,
           "flags": 0,
           "kind": 177,
-          "multiLine": true,
           "elements": []
         }
       }
@@ -126,49 +134,49 @@
     "bootstrap": [],
     "__raw": [
       {
-        "pos": 642,
-        "end": 687,
+        "pos": 877,
+        "end": 922,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 642,
-          "end": 654,
+          "pos": 877,
+          "end": 889,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 655,
-          "end": 687,
+          "pos": 890,
+          "end": 922,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 657,
-              "end": 686,
+              "pos": 892,
+              "end": 921,
               "flags": 0,
               "kind": 181,
               "expression": {
-                "pos": 657,
-                "end": 678,
+                "pos": 892,
+                "end": 913,
                 "flags": 0,
                 "kind": 179,
                 "expression": {
-                  "pos": 657,
-                  "end": 669,
+                  "pos": 892,
+                  "end": 904,
                   "flags": 0,
                   "escapedText": "RouterModule"
                 },
                 "name": {
-                  "pos": 670,
-                  "end": 678,
+                  "pos": 905,
+                  "end": 913,
                   "flags": 0,
                   "escapedText": "forChild"
                 }
               },
               "arguments": [
                 {
-                  "pos": 679,
-                  "end": 685,
+                  "pos": 914,
+                  "end": 920,
                   "flags": 0,
                   "escapedText": "routes"
                 }
@@ -178,25 +186,25 @@
         }
       },
       {
-        "pos": 688,
-        "end": 716,
+        "pos": 923,
+        "end": 951,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 688,
-          "end": 700,
+          "pos": 923,
+          "end": 935,
           "flags": 0,
           "escapedText": "exports"
         },
         "initializer": {
-          "pos": 701,
-          "end": 716,
+          "pos": 936,
+          "end": 951,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 703,
-              "end": 715,
+              "pos": 938,
+              "end": 950,
               "flags": 0,
               "escapedText": "RouterModule"
             }
@@ -211,6 +219,12 @@
     "providers": [
       {
         "name": "SettingsService"
+      },
+      {
+        "name": "TranslatorService"
+      },
+      {
+        "name": "MenuService"
       }
     ],
     "declarations": [],
@@ -223,44 +237,44 @@
     "bootstrap": [],
     "__raw": [
       {
-        "pos": 166,
-        "end": 187,
+        "pos": 286,
+        "end": 307,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 166,
-          "end": 183,
+          "pos": 286,
+          "end": 303,
           "flags": 0,
           "escapedText": "declarations"
         },
         "initializer": {
-          "pos": 184,
-          "end": 187,
+          "pos": 304,
+          "end": 307,
           "flags": 0,
           "kind": 177,
           "elements": []
         }
       },
       {
-        "pos": 188,
-        "end": 216,
+        "pos": 308,
+        "end": 336,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 188,
-          "end": 200,
+          "pos": 308,
+          "end": 320,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 201,
-          "end": 216,
+          "pos": 321,
+          "end": 336,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 203,
-              "end": 215,
+              "pos": 323,
+              "end": 335,
               "flags": 0,
               "escapedText": "CommonModule"
             }
@@ -268,47 +282,59 @@
         }
       },
       {
-        "pos": 217,
-        "end": 233,
+        "pos": 337,
+        "end": 353,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 217,
-          "end": 229,
+          "pos": 337,
+          "end": 349,
           "flags": 0,
           "escapedText": "exports"
         },
         "initializer": {
-          "pos": 230,
-          "end": 233,
+          "pos": 350,
+          "end": 353,
           "flags": 0,
           "kind": 177,
           "elements": []
         }
       },
       {
-        "pos": 234,
-        "end": 281,
+        "pos": 354,
+        "end": 449,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 234,
-          "end": 248,
+          "pos": 354,
+          "end": 368,
           "flags": 0,
           "escapedText": "providers"
         },
         "initializer": {
-          "pos": 249,
-          "end": 281,
+          "pos": 369,
+          "end": 449,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 251,
-              "end": 275,
+              "pos": 371,
+              "end": 395,
               "flags": 0,
               "escapedText": "SettingsService"
+            },
+            {
+              "pos": 396,
+              "end": 422,
+              "flags": 0,
+              "escapedText": "TranslatorService"
+            },
+            {
+              "pos": 423,
+              "end": 443,
+              "flags": 0,
+              "escapedText": "MenuService"
             }
           ]
         }
@@ -565,7 +591,11 @@
   {
     "name": "LayoutModule",
     "file": "admin/layout/layout.module.ts",
-    "providers": [],
+    "providers": [
+      {
+        "name": "UserblockService"
+      }
+    ],
     "declarations": [
       {
         "name": "LayoutComponent",
@@ -580,63 +610,63 @@
         ],
         "__raw": [
           {
-            "pos": 130,
-            "end": 157,
+            "pos": 241,
+            "end": 268,
             "flags": 0,
             "kind": 261,
             "name": {
-              "pos": 130,
-              "end": 143,
+              "pos": 241,
+              "end": 254,
               "flags": 0,
               "escapedText": "selector"
             },
             "initializer": {
-              "pos": 144,
-              "end": 157,
+              "pos": 255,
+              "end": 268,
               "flags": 0,
               "kind": 9,
               "text": "app-layout"
             }
           },
           {
-            "pos": 158,
-            "end": 201,
+            "pos": 269,
+            "end": 312,
             "flags": 0,
             "kind": 261,
             "name": {
-              "pos": 158,
-              "end": 174,
+              "pos": 269,
+              "end": 285,
               "flags": 0,
               "escapedText": "templateUrl"
             },
             "initializer": {
-              "pos": 175,
-              "end": 201,
+              "pos": 286,
+              "end": 312,
               "flags": 0,
               "kind": 9,
               "text": "./layout.component.html"
             }
           },
           {
-            "pos": 202,
-            "end": 243,
+            "pos": 313,
+            "end": 354,
             "flags": 0,
             "kind": 261,
             "name": {
-              "pos": 202,
-              "end": 216,
+              "pos": 313,
+              "end": 327,
               "flags": 0,
               "escapedText": "styleUrls"
             },
             "initializer": {
-              "pos": 217,
-              "end": 243,
+              "pos": 328,
+              "end": 354,
               "flags": 0,
               "kind": 177,
               "elements": [
                 {
-                  "pos": 219,
-                  "end": 242,
+                  "pos": 330,
+                  "end": 353,
                   "flags": 0,
                   "kind": 9,
                   "text": "layout.component.scss"
@@ -645,9 +675,261 @@
             }
           }
         ]
+      },
+      {
+        "name": "HeaderComponent",
+        "file": "layout/header/header.component.ts",
+        "selector": "app-header",
+        "providers": [],
+        "templateUrl": [
+          "header.component.html"
+        ],
+        "styleUrls": [
+          "header.component.scss"
+        ],
+        "__raw": [
+          {
+            "pos": 454,
+            "end": 481,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 454,
+              "end": 467,
+              "flags": 0,
+              "escapedText": "selector"
+            },
+            "initializer": {
+              "pos": 468,
+              "end": 481,
+              "flags": 0,
+              "kind": 9,
+              "text": "app-header"
+            }
+          },
+          {
+            "pos": 482,
+            "end": 525,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 482,
+              "end": 498,
+              "flags": 0,
+              "escapedText": "templateUrl"
+            },
+            "initializer": {
+              "pos": 499,
+              "end": 525,
+              "flags": 0,
+              "kind": 9,
+              "text": "./header.component.html"
+            }
+          },
+          {
+            "pos": 526,
+            "end": 569,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 526,
+              "end": 540,
+              "flags": 0,
+              "escapedText": "styleUrls"
+            },
+            "initializer": {
+              "pos": 541,
+              "end": 569,
+              "flags": 0,
+              "kind": 177,
+              "elements": [
+                {
+                  "pos": 543,
+                  "end": 568,
+                  "flags": 0,
+                  "kind": 9,
+                  "text": "./header.component.scss"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "NavsearchComponent",
+        "file": "header/navsearch/navsearch.component.ts",
+        "selector": "app-navsearch",
+        "providers": [],
+        "templateUrl": [
+          "navsearch.component.html"
+        ],
+        "styleUrls": [
+          "navsearch.component.scss"
+        ],
+        "__raw": [
+          {
+            "pos": 150,
+            "end": 180,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 150,
+              "end": 163,
+              "flags": 0,
+              "escapedText": "selector"
+            },
+            "initializer": {
+              "pos": 164,
+              "end": 180,
+              "flags": 0,
+              "kind": 9,
+              "text": "app-navsearch"
+            }
+          },
+          {
+            "pos": 181,
+            "end": 227,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 181,
+              "end": 197,
+              "flags": 0,
+              "escapedText": "templateUrl"
+            },
+            "initializer": {
+              "pos": 198,
+              "end": 227,
+              "flags": 0,
+              "kind": 9,
+              "text": "./navsearch.component.html"
+            }
+          },
+          {
+            "pos": 228,
+            "end": 274,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 228,
+              "end": 242,
+              "flags": 0,
+              "escapedText": "styleUrls"
+            },
+            "initializer": {
+              "pos": 243,
+              "end": 274,
+              "flags": 0,
+              "kind": 177,
+              "elements": [
+                {
+                  "pos": 245,
+                  "end": 273,
+                  "flags": 0,
+                  "kind": 9,
+                  "text": "./navsearch.component.scss"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "OffsidebarComponent"
+      },
+      {
+        "name": "SidebarComponent"
+      },
+      {
+        "name": "UserblockComponent"
+      },
+      {
+        "name": "FooterComponent",
+        "file": "layout/footer/footer.component.ts",
+        "selector": "app-footer",
+        "providers": [],
+        "templateUrl": [
+          "footer.component.html"
+        ],
+        "styleUrls": [
+          "footer.component.scss"
+        ],
+        "__raw": [
+          {
+            "pos": 348,
+            "end": 375,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 348,
+              "end": 361,
+              "flags": 0,
+              "escapedText": "selector"
+            },
+            "initializer": {
+              "pos": 362,
+              "end": 375,
+              "flags": 0,
+              "kind": 9,
+              "text": "app-footer"
+            }
+          },
+          {
+            "pos": 376,
+            "end": 419,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 376,
+              "end": 392,
+              "flags": 0,
+              "escapedText": "templateUrl"
+            },
+            "initializer": {
+              "pos": 393,
+              "end": 419,
+              "flags": 0,
+              "kind": 9,
+              "text": "./footer.component.html"
+            }
+          },
+          {
+            "pos": 420,
+            "end": 463,
+            "flags": 0,
+            "kind": 261,
+            "name": {
+              "pos": 420,
+              "end": 434,
+              "flags": 0,
+              "escapedText": "styleUrls"
+            },
+            "initializer": {
+              "pos": 435,
+              "end": 463,
+              "flags": 0,
+              "kind": 177,
+              "elements": [
+                {
+                  "pos": 437,
+                  "end": 462,
+                  "flags": 0,
+                  "kind": 9,
+                  "text": "./footer.component.scss"
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "imports": [
+      {
+        "name": "CommonModule"
+      },
+      {
+        "name": "FormsModule"
+      },
       {
         "name": "TranslateModule"
       },
@@ -659,59 +941,107 @@
     "bootstrap": [],
     "__raw": [
       {
-        "pos": 375,
-        "end": 483,
+        "pos": 810,
+        "end": 1022,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 375,
-          "end": 392,
+          "pos": 810,
+          "end": 827,
           "flags": 0,
           "escapedText": "declarations"
         },
         "initializer": {
-          "pos": 393,
-          "end": 483,
+          "pos": 828,
+          "end": 1022,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 395,
-              "end": 419,
+              "pos": 830,
+              "end": 854,
               "flags": 0,
               "escapedText": "LayoutComponent"
+            },
+            {
+              "pos": 855,
+              "end": 879,
+              "flags": 0,
+              "escapedText": "HeaderComponent"
+            },
+            {
+              "pos": 880,
+              "end": 907,
+              "flags": 0,
+              "escapedText": "NavsearchComponent"
+            },
+            {
+              "pos": 908,
+              "end": 936,
+              "flags": 0,
+              "escapedText": "OffsidebarComponent"
+            },
+            {
+              "pos": 937,
+              "end": 962,
+              "flags": 0,
+              "escapedText": "SidebarComponent"
+            },
+            {
+              "pos": 963,
+              "end": 990,
+              "flags": 0,
+              "escapedText": "UserblockComponent"
+            },
+            {
+              "pos": 991,
+              "end": 1015,
+              "flags": 0,
+              "escapedText": "FooterComponent"
             }
           ]
         }
       },
       {
-        "pos": 484,
-        "end": 559,
+        "pos": 1023,
+        "end": 1140,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 484,
-          "end": 496,
+          "pos": 1023,
+          "end": 1035,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 497,
-          "end": 559,
+          "pos": 1036,
+          "end": 1140,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 499,
-              "end": 523,
+              "pos": 1038,
+              "end": 1059,
+              "flags": 0,
+              "escapedText": "CommonModule"
+            },
+            {
+              "pos": 1060,
+              "end": 1080,
+              "flags": 0,
+              "escapedText": "FormsModule"
+            },
+            {
+              "pos": 1081,
+              "end": 1105,
               "flags": 0,
               "escapedText": "TranslateModule"
             },
             {
-              "pos": 524,
-              "end": 552,
+              "pos": 1106,
+              "end": 1134,
               "flags": 0,
               "escapedText": "LayoutRoutingModule"
             }
@@ -719,23 +1049,30 @@
         }
       },
       {
-        "pos": 560,
-        "end": 636,
+        "pos": 1141,
+        "end": 1189,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 560,
-          "end": 574,
+          "pos": 1141,
+          "end": 1155,
           "flags": 0,
           "escapedText": "providers"
         },
         "initializer": {
-          "pos": 575,
-          "end": 636,
+          "pos": 1156,
+          "end": 1189,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
-          "elements": []
+          "elements": [
+            {
+              "pos": 1158,
+              "end": 1183,
+              "flags": 0,
+              "escapedText": "UserblockService"
+            }
+          ]
         }
       }
     ]
@@ -759,49 +1096,49 @@
     "bootstrap": [],
     "__raw": [
       {
-        "pos": 459,
-        "end": 504,
+        "pos": 515,
+        "end": 560,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 459,
-          "end": 471,
+          "pos": 515,
+          "end": 527,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 472,
-          "end": 504,
+          "pos": 528,
+          "end": 560,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 474,
-              "end": 503,
+              "pos": 530,
+              "end": 559,
               "flags": 0,
               "kind": 181,
               "expression": {
-                "pos": 474,
-                "end": 495,
+                "pos": 530,
+                "end": 551,
                 "flags": 0,
                 "kind": 179,
                 "expression": {
-                  "pos": 474,
-                  "end": 486,
+                  "pos": 530,
+                  "end": 542,
                   "flags": 0,
                   "escapedText": "RouterModule"
                 },
                 "name": {
-                  "pos": 487,
-                  "end": 495,
+                  "pos": 543,
+                  "end": 551,
                   "flags": 0,
                   "escapedText": "forChild"
                 }
               },
               "arguments": [
                 {
-                  "pos": 496,
-                  "end": 502,
+                  "pos": 552,
+                  "end": 558,
                   "flags": 0,
                   "escapedText": "routes"
                 }
@@ -811,25 +1148,25 @@
         }
       },
       {
-        "pos": 505,
-        "end": 533,
+        "pos": 561,
+        "end": 589,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 505,
-          "end": 517,
+          "pos": 561,
+          "end": 573,
           "flags": 0,
           "escapedText": "exports"
         },
         "initializer": {
-          "pos": 518,
-          "end": 533,
+          "pos": 574,
+          "end": 589,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 520,
-              "end": 532,
+              "pos": 576,
+              "end": 588,
               "flags": 0,
               "escapedText": "RouterModule"
             }
@@ -842,6 +1179,12 @@
     "name": "AppModule",
     "file": "ClientApp/app/app.module.ts",
     "providers": [
+      {
+        "name": "HttpClient"
+      },
+      {
+        "name": "TranslateService"
+      },
       {
         "name": "LoggingService"
       }
@@ -938,6 +1281,9 @@
         "name": "CommonModule"
       },
       {
+        "name": "HttpClientModule"
+      },
+      {
         "name": "FormsModule"
       },
       {
@@ -945,6 +1291,10 @@
       },
       {
         "name": "RouterModule"
+      },
+      {
+        "ns": "TranslateModule",
+        "name": "TranslateModule.forRoot(args)"
       },
       {
         "ns": "AngleSharedModule",
@@ -976,26 +1326,26 @@
     ],
     "__raw": [
       {
-        "pos": 895,
-        "end": 937,
+        "pos": 1255,
+        "end": 1297,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 895,
-          "end": 911,
+          "pos": 1255,
+          "end": 1271,
           "flags": 0,
           "escapedText": "declarations"
         },
         "initializer": {
-          "pos": 912,
-          "end": 937,
+          "pos": 1272,
+          "end": 1297,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 914,
-              "end": 932,
+              "pos": 1274,
+              "end": 1292,
               "flags": 0,
               "escapedText": "AppComponent"
             }
@@ -1003,78 +1353,208 @@
         }
       },
       {
-        "pos": 938,
-        "end": 1274,
+        "pos": 1298,
+        "end": 1832,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 938,
-          "end": 949,
+          "pos": 1298,
+          "end": 1309,
           "flags": 0,
           "escapedText": "imports"
         },
         "initializer": {
-          "pos": 950,
-          "end": 1274,
+          "pos": 1310,
+          "end": 1832,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 952,
-              "end": 971,
+              "pos": 1312,
+              "end": 1331,
               "flags": 0,
               "escapedText": "BrowserModule"
             },
             {
-              "pos": 972,
-              "end": 1001,
+              "pos": 1332,
+              "end": 1361,
               "flags": 0,
               "escapedText": "BrowserAnimationsModule"
             },
             {
-              "pos": 1002,
-              "end": 1020,
+              "pos": 1362,
+              "end": 1380,
               "flags": 0,
               "escapedText": "CommonModule"
             },
             {
-              "pos": 1021,
-              "end": 1038,
+              "pos": 1381,
+              "end": 1403,
+              "flags": 0,
+              "escapedText": "HttpClientModule"
+            },
+            {
+              "pos": 1404,
+              "end": 1421,
               "flags": 0,
               "escapedText": "FormsModule"
             },
             {
-              "pos": 1039,
-              "end": 1055,
+              "pos": 1422,
+              "end": 1438,
               "flags": 0,
               "escapedText": "HttpModule"
             },
             {
-              "pos": 1056,
-              "end": 1074,
+              "pos": 1439,
+              "end": 1457,
               "flags": 0,
               "escapedText": "RouterModule"
             },
             {
-              "pos": 1075,
-              "end": 1124,
+              "pos": 1458,
+              "end": 1632,
               "flags": 0,
               "kind": 181,
               "expression": {
-                "pos": 1075,
-                "end": 1122,
+                "pos": 1458,
+                "end": 1487,
                 "flags": 0,
                 "kind": 179,
                 "expression": {
-                  "pos": 1075,
-                  "end": 1114,
+                  "pos": 1458,
+                  "end": 1479,
+                  "flags": 0,
+                  "escapedText": "TranslateModule"
+                },
+                "name": {
+                  "pos": 1480,
+                  "end": 1487,
+                  "flags": 0,
+                  "escapedText": "forRoot"
+                }
+              },
+              "arguments": [
+                {
+                  "pos": 1488,
+                  "end": 1631,
+                  "flags": 0,
+                  "kind": 178,
+                  "multiLine": true,
+                  "properties": [
+                    {
+                      "pos": 1489,
+                      "end": 1624,
+                      "flags": 0,
+                      "kind": 261,
+                      "name": {
+                        "pos": 1489,
+                        "end": 1503,
+                        "flags": 0,
+                        "escapedText": "loader"
+                      },
+                      "initializer": {
+                        "pos": 1504,
+                        "end": 1624,
+                        "flags": 0,
+                        "kind": 178,
+                        "multiLine": true,
+                        "properties": [
+                          {
+                            "pos": 1506,
+                            "end": 1540,
+                            "flags": 0,
+                            "kind": 261,
+                            "name": {
+                              "pos": 1506,
+                              "end": 1523,
+                              "flags": 0,
+                              "escapedText": "provide"
+                            },
+                            "initializer": {
+                              "pos": 1524,
+                              "end": 1540,
+                              "flags": 0,
+                              "escapedText": "TranslateLoader"
+                            }
+                          },
+                          {
+                            "pos": 1541,
+                            "end": 1586,
+                            "flags": 0,
+                            "kind": 261,
+                            "name": {
+                              "pos": 1541,
+                              "end": 1561,
+                              "flags": 0,
+                              "escapedText": "useFactory"
+                            },
+                            "initializer": {
+                              "pos": 1562,
+                              "end": 1586,
+                              "flags": 0,
+                              "kind": 185,
+                              "expression": {
+                                "pos": 1564,
+                                "end": 1585,
+                                "flags": 0,
+                                "escapedText": "createTranslateLoader"
+                              }
+                            }
+                          },
+                          {
+                            "pos": 1587,
+                            "end": 1615,
+                            "flags": 0,
+                            "kind": 261,
+                            "name": {
+                              "pos": 1587,
+                              "end": 1601,
+                              "flags": 0,
+                              "escapedText": "deps"
+                            },
+                            "initializer": {
+                              "pos": 1602,
+                              "end": 1615,
+                              "flags": 0,
+                              "kind": 177,
+                              "elements": [
+                                {
+                                  "pos": 1604,
+                                  "end": 1614,
+                                  "flags": 0,
+                                  "escapedText": "HttpClient"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "pos": 1633,
+              "end": 1682,
+              "flags": 0,
+              "kind": 181,
+              "expression": {
+                "pos": 1633,
+                "end": 1680,
+                "flags": 0,
+                "kind": 179,
+                "expression": {
+                  "pos": 1633,
+                  "end": 1672,
                   "flags": 0,
                   "escapedText": "AngleSharedModule"
                 },
                 "name": {
-                  "pos": 1115,
-                  "end": 1122,
+                  "pos": 1673,
+                  "end": 1680,
                   "flags": 0,
                   "escapedText": "forRoot"
                 }
@@ -1082,24 +1562,24 @@
               "arguments": []
             },
             {
-              "pos": 1125,
-              "end": 1161,
+              "pos": 1683,
+              "end": 1719,
               "flags": 0,
               "kind": 181,
               "expression": {
-                "pos": 1125,
-                "end": 1159,
+                "pos": 1683,
+                "end": 1717,
                 "flags": 0,
                 "kind": 179,
                 "expression": {
-                  "pos": 1125,
-                  "end": 1151,
+                  "pos": 1683,
+                  "end": 1709,
                   "flags": 0,
                   "escapedText": "MaterialSharedModule"
                 },
                 "name": {
-                  "pos": 1152,
-                  "end": 1159,
+                  "pos": 1710,
+                  "end": 1717,
                   "flags": 0,
                   "escapedText": "forRoot"
                 }
@@ -1107,24 +1587,24 @@
               "arguments": []
             },
             {
-              "pos": 1162,
-              "end": 1197,
+              "pos": 1720,
+              "end": 1755,
               "flags": 0,
               "kind": 181,
               "expression": {
-                "pos": 1162,
-                "end": 1195,
+                "pos": 1720,
+                "end": 1753,
                 "flags": 0,
                 "kind": 179,
                 "expression": {
-                  "pos": 1162,
-                  "end": 1187,
+                  "pos": 1720,
+                  "end": 1745,
                   "flags": 0,
                   "escapedText": "KendouiSharedModule"
                 },
                 "name": {
-                  "pos": 1188,
-                  "end": 1195,
+                  "pos": 1746,
+                  "end": 1753,
                   "flags": 0,
                   "escapedText": "forRoot"
                 }
@@ -1132,20 +1612,20 @@
               "arguments": []
             },
             {
-              "pos": 1198,
-              "end": 1233,
+              "pos": 1756,
+              "end": 1791,
               "flags": 0,
               "escapedText": "AppRoutingModule"
             },
             {
-              "pos": 1234,
-              "end": 1250,
+              "pos": 1792,
+              "end": 1808,
               "flags": 0,
               "escapedText": "HomeModule"
             },
             {
-              "pos": 1251,
-              "end": 1269,
+              "pos": 1809,
+              "end": 1827,
               "flags": 0,
               "escapedText": "Demo01Module"
             }
@@ -1153,45 +1633,57 @@
         }
       },
       {
-        "pos": 1275,
-        "end": 1290,
+        "pos": 1833,
+        "end": 1848,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 1275,
-          "end": 1286,
+          "pos": 1833,
+          "end": 1844,
           "flags": 0,
           "escapedText": "exports"
         },
         "initializer": {
-          "pos": 1287,
-          "end": 1290,
+          "pos": 1845,
+          "end": 1848,
           "flags": 0,
           "kind": 177,
           "elements": []
         }
       },
       {
-        "pos": 1291,
-        "end": 1332,
+        "pos": 1849,
+        "end": 1930,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 1291,
-          "end": 1304,
+          "pos": 1849,
+          "end": 1862,
           "flags": 0,
           "escapedText": "providers"
         },
         "initializer": {
-          "pos": 1305,
-          "end": 1332,
+          "pos": 1863,
+          "end": 1930,
           "flags": 0,
           "kind": 177,
           "multiLine": true,
           "elements": [
             {
-              "pos": 1307,
-              "end": 1327,
+              "pos": 1865,
+              "end": 1881,
+              "flags": 0,
+              "escapedText": "HttpClient"
+            },
+            {
+              "pos": 1882,
+              "end": 1904,
+              "flags": 0,
+              "escapedText": "TranslateService"
+            },
+            {
+              "pos": 1905,
+              "end": 1925,
               "flags": 0,
               "escapedText": "LoggingService"
             }
@@ -1199,25 +1691,25 @@
         }
       },
       {
-        "pos": 1333,
-        "end": 1362,
+        "pos": 1931,
+        "end": 1960,
         "flags": 0,
         "kind": 261,
         "name": {
-          "pos": 1333,
-          "end": 1346,
+          "pos": 1931,
+          "end": 1944,
           "flags": 0,
           "escapedText": "bootstrap"
         },
         "initializer": {
-          "pos": 1347,
-          "end": 1362,
+          "pos": 1945,
+          "end": 1960,
           "flags": 0,
           "kind": 177,
           "elements": [
             {
-              "pos": 1349,
-              "end": 1361,
+              "pos": 1947,
+              "end": 1959,
               "flags": 0,
               "escapedText": "AppComponent"
             }

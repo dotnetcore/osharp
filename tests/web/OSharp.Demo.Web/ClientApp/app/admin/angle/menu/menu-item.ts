@@ -8,5 +8,5 @@ export class menuItem {
     link?: string;
     icon?: string;
     alert?: string;
-    subMenus?: Array<menuItem>;
+    submenu?: Array<menuItem>;
 }

@@ -1,7 +1,7 @@
 import { NgModule, } from '@angular/core';
 import { TranslateModule, } from '@ngx-translate/core';
 
-import { AdminRoutingModule, } from './admin.routing';
+import { AdminRoutingModule } from "./routing/admin.routing";
 import { AngleModule } from "./angle/angle.module";
 import { LayoutModule } from "./layout/layout.module";
 import { HomeModule } from './home/home.module';

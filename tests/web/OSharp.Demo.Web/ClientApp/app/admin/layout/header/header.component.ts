@@ -10,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoggingService } from '../../../shared/services/logging.services';
 import { SettingsService } from '../../angle/settings/settings.service';
+import { UserblockService } from '../sidebar/userblock/userblock.service';
 
 @Component({
     selector: 'app-header',
@@ -25,7 +26,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private logger: LoggingService,
-        public settings: SettingsService
+        public settings: SettingsService,
+        public userblockService: UserblockService
     ) {
         logger.info("admin-layout header ctor call");
     }
@@ -39,7 +41,7 @@ export class HeaderComponent implements OnInit {
 
     toggleUserBlock(event) {
         event.preventDefault();
-        //this.userblockService.toggleVisibility();
+        this.userblockService.toggleVisibility();
     }
 
     openNavSearch(event) {
