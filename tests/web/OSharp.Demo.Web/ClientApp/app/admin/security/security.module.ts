@@ -1,25 +1,45 @@
 import { NgModule, } from '@angular/core';
-import { SecurityComponent } from './security.component';
 import { SecurityRoutingModule, } from './security.routing';
 import { TranslateModule, } from '@ngx-translate/core';
 
-// TODO: import components and services
-// import { DemoComponent } from './demo/demo.component';
-// import { DemoService } from './demo/demo.service';
+import { ModuleComponent } from './module/module.component';
+import { ModuleService } from './module/module.service';
+import { FunctionComponent } from "./function/function.component";
+import { FunctionService } from "./function/function.service";
+import { RoleFunctionComponent } from './role-function/role-function.component';
+import { RoleFunctionService } from './role-function/role-function.service';
+import { UserFunctionComponent } from './user-function/user-function.component';
+import { UserFunctionService } from "./user-function/user-function.service";
+import { EntityinfoComponent } from "./entityinfo/entityinfo.component";
+import { EntityinfoService } from "./entityinfo/entityinfo.service";
+import { RoleEntityinfoComponent } from "./role-entityinfo/role-entityinfo.component";
+import { RoleEntityinfoService } from "./role-entityinfo/role-entityinfo.service";
+import { UserEntityinfoComponent } from "./user-entityinfo/user-entityinfo.component";
+import { UserEntityinfoService } from "./user-entityinfo/user-entityinfo.service";
+
 
 @NgModule({
     declarations: [
-        SecurityComponent,
-        // TODO: add components
-        // DemoComponent
+        ModuleComponent,
+        FunctionComponent,
+        RoleFunctionComponent,
+        UserFunctionComponent,
+        EntityinfoComponent,
+        RoleEntityinfoComponent,
+        UserEntityinfoComponent
     ],
     imports: [
         TranslateModule,
         SecurityRoutingModule,
     ],
     providers: [
-        // TODO: and services
-        // DemoService
+        ModuleService,
+        FunctionService,
+        RoleFunctionService,
+        UserFunctionService,
+        EntityinfoService,
+        RoleEntityinfoService,
+        UserEntityinfoService
     ]
 })
 export class SecurityModule { }

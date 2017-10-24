@@ -12,7 +12,9 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: HomeComponent },
-            { path: 'identity', loadChildren: '../identity/identity.module#IdentityModule' }
+            { path: 'identity', loadChildren: '../identity/identity.module#IdentityModule' },
+            { path: 'security', loadChildren: '../security/security.module#SecurityModule' },
+            { path: 'system', loadChildren: '../system/system.module#SystemModule' }
         ]
     }
 ];
