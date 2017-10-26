@@ -39,5 +39,13 @@ namespace OSharp.Filter
         /// 获取或设置 总记录数
         /// </summary>
         public int Total { get; set; }
+
+        /// <summary>
+        /// 转换为分页数据
+        /// </summary>
+        public PageData<T> ToPageData()
+        {
+            return new PageData<T>(Data, Total);
+        }
     }
 }

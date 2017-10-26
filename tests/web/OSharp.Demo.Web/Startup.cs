@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
+using Newtonsoft.Json.Serialization;
+
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Entities;
 
@@ -41,12 +43,13 @@ namespace OSharp.Demo.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler();
+            }
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-            app.UseMvcWithAreaRoute();
-
-            app.UseOSharp().UseAutoMapper();
+            app.UseStatusCodePages().UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute()
+                .UseOSharp().UseAutoMapper();
         }
     }
 }

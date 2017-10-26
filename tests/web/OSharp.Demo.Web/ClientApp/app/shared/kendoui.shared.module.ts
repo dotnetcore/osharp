@@ -1,5 +1,4 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 //kendoui
 import { GridModule as KendoGridModule } from '@progress/kendo-angular-grid';

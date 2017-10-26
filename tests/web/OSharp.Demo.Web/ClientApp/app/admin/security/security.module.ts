@@ -1,4 +1,5 @@
 import { NgModule, } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { SecurityRoutingModule, } from './security.routing';
 import { TranslateModule, } from '@ngx-translate/core';
 
@@ -31,6 +32,7 @@ import { UserEntityinfoService } from "./user-entityinfo/user-entityinfo.service
     imports: [
         TranslateModule,
         SecurityRoutingModule,
+        CommonModule
     ],
     providers: [
         ModuleService,

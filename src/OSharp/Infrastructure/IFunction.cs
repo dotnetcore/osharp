@@ -65,14 +65,14 @@ namespace OSharp
         bool IsAccessTypeChanged { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用操作日志
+        /// 获取或设置 是否启用操作审计
         /// </summary>
-        bool OperateLogEnabled { get; set; }
+        bool AuditOperationEnabled { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 是否启用数据审计
         /// </summary>
-        bool DataLogEnabled { get; set; }
+        bool AuditEntityEnabled { get; set; }
 
         /// <summary>
         /// 获取或设置 数据缓存时间（秒）

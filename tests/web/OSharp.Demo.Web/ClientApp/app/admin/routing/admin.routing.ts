@@ -11,7 +11,7 @@ const routes: Routes = [
         path: '', component: LayoutComponent,
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: HomeComponent },
+            { path: 'dashboard', component: HomeComponent, data: { title: '信息汇总 - 管理' } },
             { path: 'identity', loadChildren: '../identity/identity.module#IdentityModule' },
             { path: 'security', loadChildren: '../security/security.module#SecurityModule' },
             { path: 'system', loadChildren: '../system/system.module#SystemModule' }

@@ -13,13 +13,13 @@ import { UserEntityinfoComponent } from "./user-entityinfo/user-entityinfo.compo
 // import { DemoComponent } from './demo/demo.component';
 
 const routes: Routes = [
-    { path: 'module', component: ModuleComponent },
-    { path: 'function', component: FunctionComponent },
-    { path: 'role-function', component: RoleFunctionComponent },
-    { path: 'user-function', component: UserFunctionComponent },
-    { path: 'entityinfo', component: EntityinfoComponent },
-    { path: 'role-entityinfo', component: RoleEntityinfoComponent },
-    { path: 'user-entityinfo', component: UserEntityinfoComponent }
+    { path: 'module', component: ModuleComponent, data: { title: '模块信息 - 管理' } },
+    { path: 'function', component: FunctionComponent, data: { title: '功能信息 - 管理' } },
+    { path: 'role-function', component: RoleFunctionComponent, data: { title: '角色功能信息 - 管理' } },
+    { path: 'user-function', component: UserFunctionComponent, data: { title: '用户功能信息 - 管理' } },
+    { path: 'entityinfo', component: EntityinfoComponent, data: { title: '实体信息 - 管理' } },
+    { path: 'role-entityinfo', component: RoleEntityinfoComponent, data: { title: '角色实体信息 - 管理' } },
+    { path: 'user-entityinfo', component: UserEntityinfoComponent, data: { title: '用户实体信息 - 管理' } }
 ];
 
 @NgModule({

@@ -9,9 +9,9 @@ import { UserRoleComponent } from './user-role/user-role.component';
 // import { DemoComponent } from './demo/demo.component';
 
 const routes: Routes = [
-    { path: 'user', component: UserComponent },
-    { path: 'role', component: RoleComponent },
-    { path: 'user-role', component: UserRoleComponent },
+    { path: 'user', component: UserComponent, data: { title: '用户信息 - 管理' } },
+    { path: 'role', component: RoleComponent, data: { title: '角色信息 - 管理' } },
+    { path: 'user-role', component: UserRoleComponent, data: { title: '用户角色信息 - 管理' } },
 ];
 
 @NgModule({

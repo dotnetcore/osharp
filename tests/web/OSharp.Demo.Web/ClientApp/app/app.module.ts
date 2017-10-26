@@ -20,6 +20,8 @@ import { AppRoutingModule } from "./app.routing";
 import { HomeModule } from './home/home.module';
 import { Demo01Module } from "./demo01/demo01.module";
 import { LoggingService } from './shared/services/logging.services';
+import { OsharpModule } from './shared/osharp/osharp.module';
+import { OsharpService } from './shared/osharp/osharp.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
     AngleSharedModule.forRoot(),
     MaterialSharedModule.forRoot(),
     KendouiSharedModule.forRoot(),
+    OsharpModule,
 
     //app
     AppRoutingModule,

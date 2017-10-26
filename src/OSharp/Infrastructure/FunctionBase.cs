@@ -60,14 +60,14 @@ namespace OSharp.Infrastructure
         public bool IsAccessTypeChanged { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用操作日志
+        /// 获取或设置 是否启用操作审计
         /// </summary>
-        public bool OperateLogEnabled { get; set; }
+        public bool AuditOperationEnabled { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 是否启用数据审计
         /// </summary>
-        public bool DataLogEnabled { get; set; }
+        public bool AuditEntityEnabled { get; set; }
 
         /// <summary>
         /// 获取或设置 数据缓存时间（秒）
