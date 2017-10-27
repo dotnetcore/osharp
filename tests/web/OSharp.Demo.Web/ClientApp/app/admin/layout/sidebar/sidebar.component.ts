@@ -7,9 +7,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoggingService } from '../../../shared/services/logging.services';
-import { SettingsService } from "../../angle/settings/settings.service";
-import { MenuService } from '../../angle/menu/menu.service';
-import { menuItem } from '../../angle/menu/menu-item';
+import { SettingsService } from "../../../shared/angle/core/settings/settings.service";
+import { MenuService } from '../../../shared/angle/core/menu/menu.service';
+import { menuItem } from '../../../shared/angle/core/menu/menu-item';
 
 @Component({
     selector: 'app-sidebar',

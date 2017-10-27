@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { TranslateModule, } from '@ngx-translate/core';
 
 //app
+import { AngleModule } from "../../shared/angle/angle.module";
 import { LayoutRoutingModule } from "./layout.routing";
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent } from "./header/header.component";
@@ -28,6 +29,7 @@ import { FooterComponent } from './footer/footer.component';
         CommonModule,
         FormsModule,
         TranslateModule,
+        AngleModule,
         LayoutRoutingModule
     ],
     providers: [

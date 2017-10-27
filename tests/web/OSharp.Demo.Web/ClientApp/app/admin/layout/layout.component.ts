@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 declare var $: any;
 
-import { SettingsService } from "../angle/settings/settings.service";
+import { SettingsService } from "../../shared/angle/core/settings/settings.service";
 import { LoggingService } from "../../shared/services/logging.services";
 
 @Component({

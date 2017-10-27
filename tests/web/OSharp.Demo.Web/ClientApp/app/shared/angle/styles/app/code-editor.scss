@@ -1,0 +1,77 @@
+/* ========================================================================
+   Component: code-editor
+ ========================================================================== */
+
+$toolbar-hg:                  50px;
+$toolbar-bg:                  #fff;
+$toolbar-border-color:        $gray;
+
+$codefiles-bg:                $gray-lighter;
+$codefiles-border-color:      $gray;
+
+$codefiles-item-color:        $gray-dark;
+$codefiles-item-hover-bg:     $gray-light;
+$codefiles-item-active-bg:    $brand-info;
+$codefiles-item-active-color: #fff;
+
+
+.code-container {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+.code-files {
+  border-right: 1px solid $codefiles-border-color;
+  background-color: $codefiles-bg;
+  
+  .nav.nav-pills {
+    padding: 10px;
+    overflow: hidden;
+    > li > a {
+      color: $codefiles-item-color;
+      &:hover {
+        background-color: $codefiles-item-hover-bg;
+      }
+    }
+    > li.active > a {
+      background-color: $codefiles-item-active-bg;
+      color: $codefiles-item-active-color;
+    }
+  }
+}
+
+.code-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $toolbar-hg;
+  margin: 0;
+  border-bottom: 1px solid $toolbar-border-color;
+  background: $toolbar-bg;
+  z-index: 5;
+}
+
+.code-editor {
+  position: relative;
+  padding-top: $toolbar-hg;
+  
+  // a bit of hack
+  .CodeMirror  {
+
+    @media only screen and (min-width: $mq-mobile) {
+      max-height: 100%;
+      min-height: 180px;
+      height: 100%;      
+    }
+
+    .CodeMirror-scroll {
+      height: 100%;
+    }
+    .CodeMirror-gutters {
+      min-height: 100%;
+    }
+  }
+
+}

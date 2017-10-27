@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { SecurityRoutingModule, } from './security.routing';
 import { TranslateModule, } from '@ngx-translate/core';
 
+import { GridModule } from "@progress/kendo-angular-grid";
+
 import { ModuleComponent } from './module/module.component';
 import { ModuleService } from './module/module.service';
 import { FunctionComponent } from "./function/function.component";
@@ -18,7 +20,6 @@ import { RoleEntityinfoService } from "./role-entityinfo/role-entityinfo.service
 import { UserEntityinfoComponent } from "./user-entityinfo/user-entityinfo.component";
 import { UserEntityinfoService } from "./user-entityinfo/user-entityinfo.service";
 
-
 @NgModule({
     declarations: [
         ModuleComponent,
@@ -32,7 +33,8 @@ import { UserEntityinfoService } from "./user-entityinfo/user-entityinfo.service
     imports: [
         TranslateModule,
         SecurityRoutingModule,
-        CommonModule
+        CommonModule,
+        GridModule
     ],
     providers: [
         ModuleService,

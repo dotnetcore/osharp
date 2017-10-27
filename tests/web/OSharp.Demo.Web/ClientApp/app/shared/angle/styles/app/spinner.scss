@@ -1,0 +1,112 @@
+/* ========================================================================
+   Component: spinner
+ ========================================================================== */
+
+body {
+
+  // Loader.CSS
+  // -----------------------------------
+
+  // Global background override
+  .ball-pulse > div,
+  .ball-grid-pulse > div,
+  .square-spin > div,
+  .ball-pulse-rise > div,
+  .ball-rotate > div,
+  .ball-rotate > div:before, .ball-rotate > div:after,
+  .cube-transition > div,
+  .ball-zig-zag > div,
+  .ball-zig-zag-deflect > div,
+  .ball-triangle-path > div,
+  .ball-scale > div,
+  .line-scale > div,
+  .line-scale-party > div,
+  .ball-scale-multiple > div,
+  .ball-pulse-sync > div,
+  .ball-beat > div,
+  .line-scale-pulse-out > div,
+  .line-scale-pulse-out-rapid > div,
+  .ball-spin-fade-loader > div,
+  .line-spin-fade-loader > div,
+  .triangle-skew-spin > div,
+  .ball-grid-beat > div,
+  .semi-circle-spin > div {
+    background-color: $brand-primary;
+  }
+
+  // custom override
+  .ball-clip-rotate-multiple {
+    width: 1px;
+    > div {
+      border-color: $brand-primary transparent $brand-primary transparent;
+      &:last-child {
+        border-color: transparent  $brand-primary transparent $brand-primary;
+      }
+    }
+  }
+  .ball-clip-rotate > div {
+    border-color: $brand-primary;
+    border-bottom-color: transparent;
+  }
+  .ball-clip-rotate-pulse > div {
+    &:first-child {
+      background-color: $brand-primary;
+      top: 5px;
+      left: -8px;
+    }
+    &:last-child {
+      border-color: $brand-primary transparent $brand-primary transparent;
+    }
+  }
+  .square-spin > div,
+  .ball-scale-ripple > div,
+  .ball-scale-ripple-multiple > div {
+    border-color: $brand-primary;
+  }
+  .pacman > div:first-of-type {
+    border-top-color: $brand-primary;
+    border-left-color: $brand-primary;
+    border-bottom-color: $brand-primary;
+  }
+  .pacman > div:nth-child(2) {
+    border-top-color: $brand-primary;
+    border-left-color: $brand-primary;
+    border-bottom-color: $brand-primary;
+  }
+  .pacman > div:nth-child(3), .pacman > div:nth-child(4), .pacman > div:nth-child(5), .pacman > div:nth-child(6) {
+    background-color: $brand-primary;
+  }
+
+
+  // Spin Kit
+  // -----------------------------------
+
+  .sk-rotating-plane.sk-spinner,
+  .sk-double-bounce .sk-double-bounce1, .sk-double-bounce .sk-double-bounce2,
+  .sk-wave .sk-rect,
+  .sk-wandering-cubes .sk-cube1, .sk-wandering-cubes .sk-cube2,
+  .sk-chasing-dots .sk-dot1, .sk-chasing-dots .sk-dot2,
+  .sk-three-bounce div,
+  .sk-circle .sk-child:before,
+  .sk-cube-grid .sk-cube,
+  .sk-fading-circle .sk-circle:before,
+  .sk-spinner-pulse.sk-spinner,
+  .sk-rotating-plane {
+    background-color: $brand-primary !important;
+  }
+
+  .sk-wordpress .sk-inner-circle {
+    background-color: #fff;
+  }
+
+
+}
+
+/* just for loaders.css demo */
+.loader-demo {
+  height: 150px;
+  text-align: center;
+  > div {
+    display: inline-block;
+  }
+}

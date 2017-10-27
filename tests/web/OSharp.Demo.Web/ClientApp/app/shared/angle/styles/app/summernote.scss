@@ -1,0 +1,43 @@
+// Summernote
+
+.summernote {
+    + .note-editor {
+        background-image: none !important;
+        &.note-frame {
+            border-color: $gray-light;
+            &.fullscreen {
+                margin-top: 0;
+                @media only screen and (min-width: $mq-tablet) {
+                    top: $navbar-hg;
+                    left: $aside-wd;
+                    right: 0;
+                    width: auto !important;
+                }
+            }
+        }
+    }
+}
+// Summernote fullscreen layout support
+.aside-collapsed  {
+    .summernote + .note-editor.note-frame.fullscreen {
+        @media only screen and (min-width: $mq-tablet) {
+            left: $aside-wd-collapsed;
+        }
+    }
+}
+
+.aside-collapsed-text  {
+    .summernote + .note-editor.note-frame.fullscreen {
+        @media only screen and (min-width: $mq-tablet) {
+            left: $aside-wd-collapsed-text;
+        }
+    }
+}
+
+.aside-float  {
+    .summernote + .note-editor.note-frame.fullscreen {
+        @media only screen and (min-width: $mq-tablet) {
+            margin-left: 30px;
+        }
+    }
+}

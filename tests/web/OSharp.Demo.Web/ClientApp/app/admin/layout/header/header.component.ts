@@ -9,7 +9,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoggingService } from '../../../shared/services/logging.services';
-import { SettingsService } from '../../angle/settings/settings.service';
+import { SettingsService } from '../../../shared/angle/core/settings/settings.service';
+import { MenuService } from "../../../shared/angle/core/menu/menu.service";
 import { UserblockService } from '../sidebar/userblock/userblock.service';
 
 @Component({
@@ -18,18 +19,18 @@ import { UserblockService } from '../sidebar/userblock/userblock.service';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-    navCollapsed = true;
-    menuItems = [];
+
+    navCollapsed = true; // for horizontal layout
+    menuItems = []; // for horizontal layout
 
     isNavSearchVisible: boolean;
-    @ViewChild('fsbutton') fsbutton;
+    @ViewChild('fsbutton') fsbutton;  // the fullscreen button
 
-    constructor(
-        private logger: LoggingService,
-        public settings: SettingsService,
-        public userblockService: UserblockService
-    ) {
-        logger.info("admin-layout header ctor call");
+    constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService) {
+
+        // show only a few items on demo
+        this.menuItems = menu.getMenu().slice(0, 4); // for horizontal layout
+
     }
 
     ngOnInit() {

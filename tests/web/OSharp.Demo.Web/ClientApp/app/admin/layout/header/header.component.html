@@ -2,12 +2,12 @@
 <nav class="navbar topnavbar" role="navigation">
     <!-- START navbar header-->
     <div class="navbar-header">
-        <a href="#/" class="navbar-brand">
+        <a class="navbar-brand" href="#/">
             <div class="brand-logo">
-                <img src="assets/img/logo.png" alt="App Logo" class="img-responsive" />
+                <img class="img-responsive" src="assets/img/logo.png" alt="App Logo" />
             </div>
             <div class="brand-logo-collapsed">
-                <img src="assets/img/logo-single.png" alt="App Logo" class="img-responsive" />
+                <img class="img-responsive" src="assets/img/logo-single.png" alt="App Logo" />
             </div>
         </a>
     </div>
@@ -133,5 +133,8 @@
         <!-- END Right Navbar-->
     </div>
     <!-- END Nav wrapper-->
+
+    <app-navsearch [visible]="getNavSearchVisible()" (onclose)="setNavSearchVisible(false)"></app-navsearch>
+
 </nav>
 <!-- END Top Navbar-->

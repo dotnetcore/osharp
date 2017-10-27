@@ -1,33 +1,40 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //kendoui
-import { GridModule as KendoGridModule } from '@progress/kendo-angular-grid';
-import { ChartsModule as KendoChartsModule } from '@progress/kendo-angular-charts';
-import { DialogModule as KendoDialogModule } from '@progress/kendo-angular-dialog';
-import { InputsModule as KendoInputsModule } from '@progress/kendo-angular-inputs';
-import { ButtonsModule as KendoButtonsModule } from '@progress/kendo-angular-buttons';
-import { LayoutModule as KendoLayoutModule } from '@progress/kendo-angular-layout';
-import { RippleModule as KendoRippleModule } from '@progress/kendo-angular-ripple';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { ChartsModule } from '@progress/kendo-angular-charts';
+import { DialogModule } from '@progress/kendo-angular-dialog';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { LayoutModule } from '@progress/kendo-angular-layout';
+import { RippleModule } from '@progress/kendo-angular-ripple';
+
 
 @NgModule({
     declarations: [],
     imports: [
-        KendoGridModule,
-        KendoChartsModule,
-        KendoDialogModule,
-        KendoInputsModule,
-        KendoButtonsModule,
-        KendoLayoutModule,
-        KendoRippleModule
+        BrowserModule,
+        BrowserAnimationsModule,
+        GridModule,
+        ChartsModule,
+        DialogModule,
+        InputsModule,
+        ButtonsModule,
+        LayoutModule,
+        RippleModule,
     ],
     exports: [
-        KendoGridModule,
-        KendoChartsModule,
-        KendoDialogModule,
-        KendoInputsModule,
-        KendoButtonsModule,
-        KendoLayoutModule,
-        KendoRippleModule
+        BrowserModule,
+        BrowserAnimationsModule,
+        GridModule,
+        ChartsModule,
+        DialogModule,
+        InputsModule,
+        ButtonsModule,
+        LayoutModule,
+        RippleModule,
     ],
     providers: []
 })

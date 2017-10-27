@@ -19,10 +19,12 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "app/shared/angle/core/preloader/preloader.scss",
         "styles.scss"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.js"
+        "../node_modules/jquery/dist/jquery.js",
+        "app/shared/angle/core/preloader/preloader.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

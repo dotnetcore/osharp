@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { MenuService } from '../angle/menu/menu.service';
+import { MenuService } from '../../shared/angle/core/menu/menu.service';
 import { menu } from "./menu";
 import { LayoutComponent } from '../layout/layout.component';
 import { HomeComponent } from '../home/home.component';

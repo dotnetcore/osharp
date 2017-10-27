@@ -3,6 +3,8 @@ import { Observable, } from 'rxjs/Observable';
 import { URLSearchParams, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+import { DataResult, DataSourceRequestState, toDataSourceRequestString, translateAggregateResults, translateDataSourceResultGroups, } from "@progress/kendo-data-query";
+import { GridDataResult, DataStateChangeEvent } from "@progress/kendo-angular-grid";
 import { EntityServiceBase, PageData } from '../../../shared/osharp/osharp.models';
 
 
@@ -27,8 +29,8 @@ export class Function {
 export class FunctionService extends EntityServiceBase<Function> {
 
     /** 读取列表数据 */
-    Read(): Promise<PageData<Function>> {
+    Read(state?: DataSourceRequestState): Observable<DataResult> {
         var url = "api/admin/function/read";
-        return this.http.get(url).toPromise().then(res => res.json() as PageData<Function>);
+        return this.ReadInternal(url, state);
     }
 }

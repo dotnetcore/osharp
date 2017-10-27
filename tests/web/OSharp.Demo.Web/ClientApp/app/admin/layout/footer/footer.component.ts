@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
-import { SettingsService } from "../../angle/settings/settings.service";
+import { SettingsService } from "../../../shared/angle/core/settings/settings.service";
 import { LoggingService } from '../../../shared/services/logging.services';
 
 import 'rxjs/add/operator/debounceTime';

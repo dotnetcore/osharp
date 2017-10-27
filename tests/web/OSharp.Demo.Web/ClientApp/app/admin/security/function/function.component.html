@@ -1,0 +1,12 @@
+<!-- <div class="content-heading">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/admin">主页</a>
+        </li>
+        <li class="active">{{title}}</li>
+    </ul>
+</div> -->
+<kendo-grid [data]="gridData" [height]="500">
+    <kendo-grid-column field="id" title="编号" width="40"></kendo-grid-column>
+    <kendo-grid-column field="name" title="名称" width="200"></kendo-grid-column>
+</kendo-grid>

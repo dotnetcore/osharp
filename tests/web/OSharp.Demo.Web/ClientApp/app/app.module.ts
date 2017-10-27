@@ -10,7 +10,8 @@ import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 //shared
-import { AngleSharedModule } from "./shared/angle.shared.module";
+import { AngleCoreModule } from './shared/angle/core/angle.core.module';
+import { AngleModule } from "./shared/angle/angle.module";
 import { MaterialSharedModule } from './shared/material.shared.module';
 import { KendouiSharedModule } from "./shared/kendoui.shared.module";
 
@@ -48,7 +49,8 @@ export function createTranslateLoader(http: HttpClient) {
     }),
 
     //shared
-    AngleSharedModule.forRoot(),
+    AngleCoreModule,
+    AngleModule.forRoot(),
     MaterialSharedModule.forRoot(),
     KendouiSharedModule.forRoot(),
     OsharpModule,
@@ -58,7 +60,16 @@ export function createTranslateLoader(http: HttpClient) {
     HomeModule,
     Demo01Module
   ],
-  exports: [],
+  exports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    AngleModule,
+    AngleCoreModule,
+    MaterialSharedModule,
+    KendouiSharedModule,
+    OsharpModule
+  ],
   providers: [
     HttpClient,
     TranslateService,

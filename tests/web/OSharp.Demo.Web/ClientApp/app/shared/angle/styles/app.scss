@@ -2,7 +2,7 @@
  *
  * Angle - Bootstrap Admin App + AngularJS
  *
- * Version: 3.7
+ * Version: 3.7.5
  * Author: @themicon_co
  * Website: http://themicon.co
  * License: https://wrapbootstrap.com/help/licenses
@@ -24,7 +24,7 @@
 @import "app/bootstrap-reset";
 
 // Typography
-@import "app/typo";
+//@import "app/typo";
 
 // Layout
 @import "app/layout";
@@ -35,6 +35,7 @@
 @import "app/offsidebar";
 
 // Components
+// @import "app/preloader";
 @import "app/breadcrumbs";
 @import "app/loading-bar";
 @import "app/animate";
@@ -42,42 +43,42 @@
 @import "app/placeholder";
 @import "app/panels";
 @import "app/progress-extra";
-// @import "app/radial-bar";
+@import "app/radial-bar";
 @import "app/user-block";
 @import "app/circles";
-// @import "app/timeline";
+@import "app/timeline";
 @import "app/dropdown-extra";
 @import "app/row-extra";
 @import "app/half-float";
-// @import "app/masonry-grid";
+@import "app/masonry-grid";
 @import "app/widget";
-// @import "app/typeahead";
+@import "app/typeahead";
 @import "app/table-grid";
 @import "app/todo";
-// @import "app/file-upload";
+@import "app/file-upload";
 
-// @import "app/chart-flot";
-// @import "app/chart-easypie";
+@import "app/chart-flot";
+@import "app/chart-easypie";
 @import "app/form-elements";
 
-// @import "app/summernote";
-// @import "app/code-editor";
+@import "app/summernote";
+@import "app/code-editor";
 
 // Tables
 @import "app/table-extras";
-// @import "app/table-angulargrid";
+@import "app/table-angulargrid";
 // Plugins
 @import "app/slim-scroll";
-// @import "app/calendar";
-// @import "app/spinner";
-// @import "app/gmap";
-// @import "app/vector-map";
+@import "app/calendar";
+@import "app/spinner";
+@import "app/gmap";
+@import "app/vector-map";
 
 // Mailbox
-// @import "app/mailbox";
+@import "app/mailbox";
 
 // Plans
-// @import "app/plans";
+@import "app/plans";
 
 // Utilities
 @import "app/utils";

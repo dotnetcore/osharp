@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -32,6 +32,16 @@ import { ScrollableDirective } from './directives/scrollable/scrollable.directiv
 import { JqcloudDirective } from './directives/jqcloud/jqcloud.directive';
 
 @NgModule({
+    declarations: [
+        FlotDirective,
+        SparklineDirective,
+        EasypiechartDirective,
+        CheckallDirective,
+        VectormapDirective,
+        NowDirective,
+        ScrollableDirective,
+        JqcloudDirective
+    ],
     imports: [
         CommonModule,
         FormsModule,
@@ -53,19 +63,6 @@ import { JqcloudDirective } from './directives/jqcloud/jqcloud.directive';
         TooltipModule.forRoot(),
         TypeaheadModule.forRoot(),
         ToasterModule
-    ],
-    providers: [
-        ColorsService
-    ],
-    declarations: [
-        FlotDirective,
-        SparklineDirective,
-        EasypiechartDirective,
-        CheckallDirective,
-        VectormapDirective,
-        NowDirective,
-        ScrollableDirective,
-        JqcloudDirective
     ],
     exports: [
         CommonModule,
@@ -97,13 +94,15 @@ import { JqcloudDirective } from './directives/jqcloud/jqcloud.directive';
         NowDirective,
         ScrollableDirective,
         JqcloudDirective
-    ]
+    ],
+    providers: [
+        ColorsService,
+    ],
 })
-
-export class AngleSharedModule {
+export class AngleModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: AngleSharedModule,
+            ngModule: AngleModule,
             providers: []
         };
     }
