@@ -12,9 +12,10 @@ using System;
 namespace OSharp.Demo.Web.Migrations
 {
     [DbContext(typeof(SqlServerDesignTimeDefaultDbContext))]
-    partial class SqlServerDesignTimeDefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171029043314_AddOrg")]
+    partial class AddOrg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

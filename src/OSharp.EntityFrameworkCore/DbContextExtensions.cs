@@ -36,6 +36,17 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 获取迁移记录并提交迁移
+        /// </summary>
+        public static void CheckAndMigration(this DbContext dbContext)
+        {
+            if (dbContext.Database.GetPendingMigrations().Any())
+            {
+                dbContext.Database.Migrate();
+            }
+        }
+
+        /// <summary>
         /// 获取上下文实体审计数据
         /// </summary>
         public static IList<AuditEntity> GetAuditEntities(this DbContext context)

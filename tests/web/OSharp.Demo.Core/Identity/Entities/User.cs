@@ -16,5 +16,10 @@ namespace OSharp.Demo.Identity.Entities
     /// 实体类：用户信息
     /// </summary>
     public class User : UserBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 备注
+        /// </summary>
+        public string Remark { get; set; }
+    }
 }

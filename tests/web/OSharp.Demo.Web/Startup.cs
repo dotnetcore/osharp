@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-using Newtonsoft.Json.Serialization;
-
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.Web.Startups;
+using OSharp.Entity;
 
 
 namespace OSharp.Demo.Web
@@ -50,6 +50,11 @@ namespace OSharp.Demo.Web
 
             app.UseStatusCodePages().UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute()
                 .UseOSharp().UseAutoMapper();
+
+            //¼ì²â²¢Ç¨ÒÆ
+            SqlServerDesignTimeDefaultDbContextFactory dbContextFactory = new SqlServerDesignTimeDefaultDbContextFactory();
+            var dbContext = dbContextFactory.CreateDbContext(new string[0]);
+            dbContext.CheckAndMigration();
         }
     }
 }

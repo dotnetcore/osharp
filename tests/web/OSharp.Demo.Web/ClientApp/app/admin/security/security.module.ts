@@ -4,6 +4,7 @@ import { SecurityRoutingModule, } from './security.routing';
 import { TranslateModule, } from '@ngx-translate/core';
 
 import { GridModule } from "@progress/kendo-angular-grid";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
 
 import { ModuleComponent } from './module/module.component';
 import { ModuleService } from './module/module.service';
@@ -47,14 +48,3 @@ import { UserEntityinfoService } from "./user-entityinfo/user-entityinfo.service
     ]
 })
 export class SecurityModule { }
-
-/*
-请到 app.routing.ts 中添加如下路由（放在 { path: '**', redirectTo: 'layout/optimus-prime' } 之前）：
-
-{
-    path: 'security',
-    loadChildren: './security/security.module#SecurityModule',
-    canActivate: [AuthGuard]
-},
-
- */

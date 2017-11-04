@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp.csproj", "{D1B8F25F-68ED-470B-B996-436FE321F74A}"
 EndProject
@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2E4D5838
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{01974482-F9CA-41E7-A9EF-EB13C939570F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.Web", "tests\web\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{E1169EB5-224E-40F3-929C-E27CDDA537E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Web", "tests\web\OSharp.Demo.Web\OSharp.Demo.Web.csproj", "{E1169EB5-224E-40F3-929C-E27CDDA537E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

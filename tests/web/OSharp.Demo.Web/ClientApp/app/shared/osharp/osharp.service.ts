@@ -24,6 +24,6 @@ export class OsharpService {
             })
             .filter(route => route.outlet == 'primary')
             .mergeMap(route => route.data)
-            .subscribe(event => this.titleService.setTitle(event['title'] ? event['title'] + ' - ' + name : name));
+            .subscribe(event => this.titleService.setTitle(event['title'] ? event['title'] + ' | ' + name : name));
     }
 }
