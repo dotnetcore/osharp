@@ -1,0 +1,6 @@
+<div v-if="page">
+    <p>{{page.total}}</p>
+    <ul>
+        <li v-for="row in page.rows">{{row.name}}</li>
+    </ul>
+</div>

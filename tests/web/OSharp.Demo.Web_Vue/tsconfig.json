@@ -1,0 +1,30 @@
+{
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "module": "es2015",
+        "target": "es5",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "isolatedModules": true,
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "types": [
+            "node"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "sourceMap": true,
+        "pretty": true
+    }
+}
