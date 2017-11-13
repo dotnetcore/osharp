@@ -1,7 +1,7 @@
 <template>
     <mu-drawer @hide="handleHide" @close="handleClose" :open="open" :docked="docked" :overlay="docked" class="admin-drawer" :zDepth="1">
         <mu-appbar :zDepth="0" class="admin-nav-appbar">
-            <a @click="handleMenuChange('/admin/index.html#/')" href="/admin/index.html#/" class="admin-appbar-title">OSharpNS</a>
+            <a href="/admin/index.html#/dashboard" class="admin-appbar-title">OSharpNS</a>
         </mu-appbar>
         <mu-divider/>
         <div class="admin-drawer-content">
@@ -9,9 +9,9 @@
               <div v-for="(menu,index) in menus" :key="'menu-item-'+index">
                 <mu-divider v-if="menu.heading && index!=0"/>
                 <mu-sub-header v-if="menu.heading">{{menu.text}}</mu-sub-header>
-                <mu-list-item v-if="!menu.heading" :title="menu.text" :toggleNested="menu.submenus!=null" :value="menu.link">
+                <mu-list-item v-if="!menu.heading" :title="menu.text" :toggleNested="menu.submenus!=null" :value="'#/'+menu.link">
                   <mu-icon v-if="menu.icon!=null" slot="left" :value="menu.icon"></mu-icon>
-                  <mu-list-item v-for="(submenu,subindex) in menu.submenus" :key="'sub-menu'+subindex" slot="nested" :title="submenu.text" :value="submenu.link">
+                  <mu-list-item v-for="(submenu,subindex) in menu.submenus" :key="'sub-menu'+subindex" slot="nested" :title="submenu.text" :value="'#/'+submenu.link">
                     <mu-icon v-if="submenu.icon!=null" slot="left" :value="submenu.icon"></mu-icon>
                   </mu-list-item>
                 </mu-list-item>
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       menus: [],
-      hash: null
+      hash: "#/"
     };
   },
   methods: {

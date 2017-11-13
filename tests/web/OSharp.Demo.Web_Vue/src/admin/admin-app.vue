@@ -19,7 +19,7 @@ import { osharp } from "../shared/osharp";
 export default {
   name: "admin-app",
   data() {
-    const desktop = isDesktop();
+    const desktop: Boolean = isDesktop();
     return {
       open: desktop,
       docked: desktop,
@@ -97,6 +97,9 @@ function isDesktop() {
 
 <style lang="less">
 @import "../../node_modules/muse-ui/src/styles/import.less";
+@import "../../node_modules/@progress/kendo-theme-default/dist/all.css";
+//@import "../../node_modules/@progress/kendo-theme-material/dist/all.css";
+
 .admin-appbar {
   position: fixed;
   left: 256px;
@@ -144,5 +147,14 @@ function isDesktop() {
   .admin-content {
     transition-duration: 0s;
   }
+}
+.k-header > .k-grid-filter,
+.k-header > .k-header-column-menu {
+  float: left;
+  padding: 0.5em 0.1em 0.4em 0.1em;
+}
+.k-grid-header .k-header > .k-link {
+  margin: -0.5em -0.6em -0.4em 0;
+  padding: 0.5em 0.6em 0.4em 0;
 }
 </style>
