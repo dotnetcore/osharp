@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import { List } from "linqts";
+import $ from "jquery";
+import Bus from "../shared/eventBus";
 import AdminNav from "./layout/admin-nav.vue";
 import { MenuItem, menuItems } from "./layout/admin-menus";
 import { osharp } from "../shared/osharp";
@@ -30,11 +32,8 @@ export default {
   mounted() {
     this.routes = this.$router.options.routes;
     this.setTitle();
-    this.resizeNav();
-    this.handleResize = () => {
-      this.resizeNav();
-    };
-    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+    window.addEventListener("resize", () => this.handleResize());
     window.addEventListener("hashchange", () => {
       this.setTitle();
     });
@@ -62,6 +61,9 @@ export default {
   methods: {
     toggleNav() {
       this.open = !this.open;
+    },
+    handleResize() {
+      this.resizeNav();
     },
     resizeNav() {
       const desktop = isDesktop();
@@ -103,6 +105,10 @@ function isDesktop() {
 //@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-material.min.css");
 //@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common.min.css");
 //@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.material.min.css");
+
+#admin-app {
+  height: 100%;
+}
 
 .admin-appbar {
   position: fixed;

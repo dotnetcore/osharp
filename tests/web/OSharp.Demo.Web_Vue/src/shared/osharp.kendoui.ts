@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { List } from "linqts"
 import $ from 'jquery'
 import { osharp } from "./osharp"
+import Bus from './eventBus'
 
 export namespace kendoui {
 
@@ -15,15 +16,23 @@ export namespace kendoui {
             super();
         }
 
+        CreatedBase() {
+            this.GetGridOptions();
+        }
+        MountedBase() {
+            this.$grid = $((<any>this.$refs.grid).$el).data("kendoGrid");
+            this.ResizeGrid(true);
+            window.addEventListener('keydown', e => this.KeyDownEvent(e));
+            window.addEventListener('resize', e => this.ResizeGrid(false));
+            //Bus.$on('admin-content-resize', height => this.ResizeGrid(height));
+        }
+
         GetGridOptions() {
             var dataSourceOptions = this.GetDataSourceOptionsInternal(this.dataSourceOptions);
             var dataSource = new kendo.data.DataSource(dataSourceOptions);
             this.$emit('DataSourceCreated', dataSource);
             this.gridOptions = this.GetGridOptionsInternal(dataSource);
-
-            document.addEventListener('keydown', e => this.KeyDownEvent(e));
         }
-
         protected GetDataSourceOptionsInternal(options?: DataSourceOptions): kendo.data.DataSourceOptions {
             if (!options.fieldReplace) {
                 options.fieldReplace = field => field;
@@ -80,7 +89,6 @@ export namespace kendoui {
                 dataSource: dataSource,
                 toolbar: ['create', 'save', 'cancel'],
                 columns: this.GetGridColumns(),
-                height: 300,
                 navigatable: true,
                 filterable: true,
                 resizable: true,
@@ -102,6 +110,13 @@ export namespace kendoui {
 
         /**重写以获取Grid的列设置Columns */
         protected abstract GetGridColumns(): kendo.ui.GridColumn[];
+
+        ResizeGrid(init: boolean) {
+            var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth < 480 ? 57 : 65;;
+            var $content = $("#grid-box .k-grid-content");
+            var otherHeight = $("#grid-box").height() - $content.height();
+            $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 20));
+        }
 
         private RequestEnd(e) {
             if (!e.response) {

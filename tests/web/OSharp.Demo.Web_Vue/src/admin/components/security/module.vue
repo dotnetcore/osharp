@@ -35,7 +35,7 @@ export default class ModuleComponent extends kendoui.GridVueBase {
     this.GetGridOptions();
   }
   mounted() {
-    this.$grid = $((<any>this.$refs.grid).$el).data("kendoGrid");
+    super.MountedBase();
   }
 }
 </script>

@@ -71,10 +71,10 @@ export default class FunctionComponent extends kendoui.GridVueBase {
   }
 
   created() {
-    this.GetGridOptions();
+    super.CreatedBase();
   }
   mounted() {
-    this.$grid = $((<any>this.$refs.grid).$el).data("kendoGrid");
+    super.MountedBase();
   }
 }
 </script>
