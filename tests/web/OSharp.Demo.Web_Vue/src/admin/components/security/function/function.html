@@ -1,8 +1,0 @@
-<div id="function">
-    <kendo-data-source :options="dataSourceOptions" ref="functionDataSource" v-model="dataSource"></kendo-data-source>
-    <kendo-grid :data-source-ref="'functionDataSource'" :data-source="dataSource" :sortable="{mode:'multiple',allowUnsort:true,showIndexes:true }"
-        :filterable="true" :pageable-refresh="true" :pageable-page-sizes="true" :pageable-button-count="5">
-        <kendo-grid-column field="name" title="功能名称"></kendo-grid-column>
-        <kendo-grid-column field="accessType" title="访问类型"></kendo-grid-column>
-    </kendo-grid>
-</div>

@@ -1,20 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Dashboard from '../components/dashboard.vue'
-import IdentityUser from '../components/identity/user.vue'
-import IdentityRole from '../components/identity/role.vue'
-import IdentityUserRole from '../components/identity/user-role.vue'
-import SecurityModule from '../components/security/module.vue'
-//import SecurityFunction from '../components/security/function.vue'
-import { FunctionComponent } from '../components/security/function/function.component'
-
-import SecurityRoleFunction from '../components/security/role-function.vue'
-import SecurityUserFunction from '../components/security/user-function.vue'
-import SecurityEntityInfo from '../components/security/entityinfo.vue'
-import SecurityRoleEntityInfo from '../components/security/role-entityinfo.vue'
-import SecurityUserEntityInfo from '../components/security/user-entityinfo.vue'
-import SystemSettings from '../components/system/settings.vue'
+import Dashboard from '@admin/components/dashboard.vue'
+import IdentityUser from '@admin/components/identity/user.vue'
+import IdentityRole from '@admin/components/identity/role.vue'
+import IdentityUserRole from '@admin/components/identity/user-role.vue'
+import SecurityModule from '@admin/components/security/module.vue'
+import SecurityFunction from '@admin/components/security/function.vue'
+import SecurityRoleFunction from '@admin/components/security/role-function.vue'
+import SecurityUserFunction from '@admin/components/security/user-function.vue'
+import SecurityEntityInfo from '@admin/components/security/entityinfo.vue'
+import SecurityRoleEntityInfo from '@admin/components/security/role-entityinfo.vue'
+import SecurityUserEntityInfo from '@admin/components/security/user-entityinfo.vue'
+import SystemSettings from '@admin/components/system/settings.vue'
 
 Vue.use(Router)
 
@@ -25,7 +23,7 @@ const routes = [
     { path: '/identity/role', component: IdentityRole },
     { path: '/identity/user-role', component: IdentityUserRole },
     { path: '/security/module', component: SecurityModule },
-    { path: '/security/function', component: FunctionComponent },
+    { path: '/security/function', component: SecurityFunction },
     { path: '/security/role-function', component: SecurityRoleFunction },
     { path: '/security/user-function', component: SecurityUserFunction },
     { path: '/security/entityinfo', component: SecurityEntityInfo },

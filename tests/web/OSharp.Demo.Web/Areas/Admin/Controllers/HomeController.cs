@@ -1,9 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="HomeController.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2017-11-16 11:56</last-date>
+// -----------------------------------------------------------------------
+
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
 {

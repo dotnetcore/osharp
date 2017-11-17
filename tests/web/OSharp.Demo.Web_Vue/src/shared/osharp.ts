@@ -1,5 +1,7 @@
+import Vue from 'vue'
 import '@progress/kendo-ui'
 import { isFunction } from 'util';
+import toastr from 'toastr'
 
 export namespace osharp {
     /** 分页数据 */
@@ -53,6 +55,36 @@ export namespace osharp {
             link.href = URL.createObjectURL(blob);
             link.dispatchEvent(evt);
         }
+    }
+
+    export class Tip {
+        static success(msg) {
+            Tip.msg(msg, "success");
+        }
+        static info(msg) {
+            Tip.msg(msg, "info");
+        }
+        static warning(msg) {
+            Tip.msg(msg, "warning");
+        }
+        static error(msg) {
+            Tip.msg(msg, "error");
+        }
+        static msg(msg, type) {
+            type = type || 'info';
+            toastr.options = {
+                timeOut: type == 'error' ? '6000' : '3000',
+                positionClass: "toast-top-center",
+                closeButton: true,
+                newestOnTop: false
+            }
+            toastr[type](msg, "")
+        }
+    }
+
+    export class Data {
+        static AccessTypes = [{ id: 0, text: "匿名访问" }, { id: 1, text: "登录访问" }, { id: 2, text: "角色访问" }]
+        static stringFilterable = { operators: { string: { contains: "包含", eq: "等于", neq: "不等于", startswith: "开始于", endswith: "结束于", doesnotcontain: "不包含" } } }
     }
 }
 

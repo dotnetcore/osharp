@@ -23,6 +23,14 @@ namespace OSharp.Identity
         where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
+        /// 初始化一个<see cref="RoleBase"/>类型的新实例
+        /// </summary>
+        protected RoleBase()
+        {
+            CreatedTime = DateTime.Now;
+        }
+
+        /// <summary>
         /// 获取或设置 角色名称
         /// </summary>
         [Required]

@@ -7,6 +7,8 @@
 //  <last-date>2017-09-06 7:52</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Identity;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Identity.Entities
     /// <summary>
     /// 实体类：用户的身份认证令牌
     /// </summary>
+    [Description("用户的身份认证令牌")]
     public class UserToken : UserTokenBase<int>
     { }
 }

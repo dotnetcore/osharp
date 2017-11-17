@@ -11,9 +11,11 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Entity;
 
 
@@ -38,6 +40,14 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <inheritdoc />
         public override void OnResultExecuted(ResultExecutedContext context)
         {
+            if (context.Result is JsonResult result)
+            {
+                if (result.Value is AjaxResult ajax && ajax.Type == "Error")
+                {
+                    return;
+                }
+            }
+
             _unitOfWork.Commit();
         }
     }

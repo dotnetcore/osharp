@@ -7,11 +7,15 @@
 //  <last-date>2017-09-14 15:31</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
+
 namespace OSharp.Infrastructure
 {
     /// <summary>
     /// 实体类：实体信息类
     /// </summary>
+    [Description("实体信息类")]
     public class EntityInfo : EntityInfoBase
     { }
 }

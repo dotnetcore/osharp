@@ -7,6 +7,8 @@
 //  <last-date>2017-08-18 14:48</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 
@@ -18,14 +20,20 @@ namespace OSharp.Demo.Identity
     /// </summary>
     public partial class IdentityService : IIdentityContract
     {
-        private readonly IRepository<User, int> _useRepository;
+        private readonly IRepository<User, int> _userRepository;
+        private readonly IRepository<Role, int> _roleRepository;
+        private readonly IRepository<UserRole, Guid> _userRoleRepository;
 
         /// <summary>
         /// 初始化一个<see cref="IdentityService"/>类型的新实例
         /// </summary>
-        public IdentityService(IRepository<User, int> useRepository)
+        public IdentityService(IRepository<User, int> userRepository,
+            IRepository<Role, int> roleRepository,
+            IRepository<UserRole, Guid> userRoleRepository)
         {
-            _useRepository = useRepository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
+            _userRoleRepository = userRoleRepository;
         }
     }
 }

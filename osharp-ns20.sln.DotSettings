@@ -1020,6 +1020,53 @@ public override int GetHashCode()&#xD;
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=50C1B3A73748EC4A9E8A9C79858FCCF4/Shortcut/@EntryValue">prop</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=50C1B3A73748EC4A9E8A9C79858FCCF4/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=50C1B3A73748EC4A9E8A9C79858FCCF4/Text/@EntryValue">public $TYPE$ $NAME$ { get; set; }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Description/@EntryValue">admin-controller-template</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=_5B9E_4F53/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=_5B9E_4F53/Expression/@EntryValue">constant("实体")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=_5B9E_4F53/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=Entity/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=Entity/Expression/@EntryValue">constant("Entity")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Field/=Entity/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Shortcut/@EntryValue">adminctrl</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5165F08CBA63FA4FBED9B1FFB482840D/Text/@EntryValue">[Description("管理-$实体$信息")]&#xD;
+[Area("Admin")]&#xD;
+[Route("api/[area]/[controller]/[action]")]&#xD;
+public class $Entity$Controller : Controller&#xD;
+{&#xD;
+    [Description("读取")]&#xD;
+    public IActionResult Read()&#xD;
+    {&#xD;
+        throw new NotImplementedException();&#xD;
+    }&#xD;
+&#xD;
+    [HttpPost]&#xD;
+    [Description("新增")]&#xD;
+    public async Task&lt;IActionResult&gt; Create($Entity$InputDto[] dtos)&#xD;
+    {&#xD;
+        throw new NotImplementedException();&#xD;
+    }&#xD;
+&#xD;
+    [HttpPost]&#xD;
+    [Description("更新")]&#xD;
+    public async Task&lt;IActionResult&gt; Update($Entity$InputDto[] dtos)&#xD;
+    {&#xD;
+        throw new NotImplementedException();&#xD;
+    }&#xD;
+&#xD;
+    [HttpPost]&#xD;
+    [Description("删除")]&#xD;
+    public async Task&lt;IActionResult&gt; Delete(int[] ids)&#xD;
+    {&#xD;
+        throw new NotImplementedException();&#xD;
+    }&#xD;
+}</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=520ED668623B004894103358E0628DE4/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=520ED668623B004894103358E0628DE4/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=520ED668623B004894103358E0628DE4/Categories/=Imported_00202016_002F10_002F25/@EntryIndexedValue">Imported 2016/10/25</s:String>

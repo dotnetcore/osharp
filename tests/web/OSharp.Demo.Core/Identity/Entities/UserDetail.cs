@@ -7,6 +7,8 @@
 //  <last-date>2017-09-06 7:59</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Entity;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Identity.Entities
     /// <summary>
     /// 实体类：用户详细信息
     /// </summary>
+    [Description("用户详细信息")]
     public class UserDetail : EntityBase<int>
     {
         /// <summary>

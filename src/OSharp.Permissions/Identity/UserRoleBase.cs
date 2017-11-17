@@ -19,10 +19,18 @@ namespace OSharp.Identity
     /// </summary>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class UserRoleBase<TUserKey, TRoleKey> : EntityBase<Guid>
+    public abstract class UserRoleBase<TUserKey, TRoleKey> : EntityBase<Guid>,ICreatedTime,ILockable
         where TUserKey : IEquatable<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
+        /// <summary>
+        /// 初始化一个<see cref="UserRoleBase"/>类型的新实例
+        /// </summary>
+        protected UserRoleBase()
+        {
+            CreatedTime = DateTime.Now;
+        }
+
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
@@ -32,5 +40,15 @@ namespace OSharp.Identity
         /// 获取或设置 角色编号
         /// </summary>
         public TRoleKey RoleId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定当前信息
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }

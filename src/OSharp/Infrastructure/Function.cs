@@ -7,11 +7,15 @@
 //  <last-date>2017-09-14 20:13</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
+
 namespace OSharp.Infrastructure
 {
     /// <summary>
     /// 实体类：功能信息
     /// </summary>
+    [Description("功能信息")]
     public class Function : FunctionBase
     { }
 }

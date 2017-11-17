@@ -19,9 +19,17 @@ namespace OSharp.Identity
     /// 用户信息基类
     /// </summary>
     /// <typeparam name="TUserKey"></typeparam>
-    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>
+    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime
         where TUserKey : IEquatable<TUserKey>
     {
+        /// <summary>
+        /// 初始化一个<see cref="UserBase"/>类型的新实例
+        /// </summary>
+        protected UserBase()
+        {
+            CreatedTime = DateTime.Now;
+        }
+
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
@@ -96,10 +104,16 @@ namespace OSharp.Identity
         /// </summary>
         public int AccessFailedCount { get; set; }
 
+        /// <summary>
+        /// 获取或设置 创建时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
+
         /// <inheritdoc />
         public override string ToString()
         {
             return UserName;
         }
+
     }
 }

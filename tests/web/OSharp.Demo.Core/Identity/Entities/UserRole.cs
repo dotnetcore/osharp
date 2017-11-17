@@ -7,6 +7,8 @@
 //  <last-date>2017-09-06 7:57</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Identity;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Identity.Entities
     /// <summary>
     /// 实体类：用户角色信息
     /// </summary>
+    [Description("用户角色信息")]
     public class UserRole : UserRoleBase<int, int>
     { }
 }

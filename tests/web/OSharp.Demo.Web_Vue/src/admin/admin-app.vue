@@ -96,9 +96,13 @@ function isDesktop() {
 </script>
 
 <style lang="less">
-@import "../../node_modules/muse-ui/src/styles/import.less";
-@import "../../node_modules/@progress/kendo-theme-default/dist/all.css";
+@import url("../../node_modules/muse-ui/src/styles/import.less");
+@import url("../../node_modules/@progress/kendo-theme-default/dist/all.css");
+//@import "../../node_modules/@progress/kendo-theme-bootstrap/dist/all.css";
 //@import "../../node_modules/@progress/kendo-theme-material/dist/all.css";
+//@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-material.min.css");
+//@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common.min.css");
+//@import url("https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.material.min.css");
 
 .admin-appbar {
   position: fixed;
@@ -148,13 +152,32 @@ function isDesktop() {
     transition-duration: 0s;
   }
 }
+.k-grid-header .k-grid-filter {
+  margin: -4px -1px -4px -5px;
+}
 .k-header > .k-grid-filter,
 .k-header > .k-header-column-menu {
   float: left;
-  padding: 0.5em 0.1em 0.4em 0.1em;
+  padding: 0.5em 0.2em 0.4em 0.1em;
+  width: 16px;
+  height: 28px;
 }
 .k-grid-header .k-header > .k-link {
   margin: -0.5em -0.6em -0.4em 0;
-  padding: 0.5em 0.6em 0.4em 0;
+  padding: 0.5em 0.6em 0.4em 1.2em;
+  overflow: visible;
 }
+.k-header .k-with-icon {
+  padding-left: 6px;
+  margin-left: -6px;
+}
+.k-grid-header .k-header > .k-link > .k-icon.k-i-sort-asc-sm,
+.k-grid-header .k-header > .k-link > .k-icon.k-i-sort-desc-sm {
+  margin-left: 0;
+}
+// .k-grid-header .k-grid-filter,
+// .k-grid-header .k-header-column-menu {
+//   padding: 0.714em 0;
+//   margin: -0.786em -0.6em -0.786em -0.5em;
+// }
 </style>

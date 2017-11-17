@@ -31,8 +31,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="TUserKey">用户编号类型</typeparam>
         /// <typeparam name="TRoleKey">角色编号类型</typeparam>
         /// <param name="services">服务信任</param>
+        /// <param name="setupAction">选项</param>
         /// <returns></returns>
-        public static IServiceCollection AddOSharpIdentity<TUserStore, TRoleStore, TUser, TRole, TUserKey, TRoleKey>(this IServiceCollection services)
+        public static IdentityBuilder AddOSharpIdentity<TUserStore, TRoleStore, TUser, TRole, TUserKey, TRoleKey>(this IServiceCollection services, Action<IdentityOptions>setupAction = null)
             where TUserStore : class, IUserStore<TUser>
             where TRoleStore : class, IRoleStore<TRole>
             where TUser : UserBase<TUserKey>
@@ -40,10 +41,10 @@ namespace Microsoft.Extensions.DependencyInjection
             where TUserKey : IEquatable<TUserKey>
             where TRoleKey : IEquatable<TRoleKey>
         {
-            services.AddIdentity<TUser, TRole>();
             services.AddScoped<IUserStore<TUser>, TUserStore>();
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
-            return services;
+
+            return services.AddIdentity<TUser, TRole>(setupAction);
         }
     }
 }

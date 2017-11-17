@@ -113,4 +113,9 @@ export default {
   transform: translateZ(0);
   visibility: visible;
 }
+.admin-drawer-content .mu-item {
+  min-height: 30px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
 </style>

@@ -4,12 +4,10 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-18 14:47</last-date>
+//  <last-date>2017-11-16 14:54</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 using OSharp.Demo.Identity.Entities;
 
@@ -18,10 +16,12 @@ namespace OSharp.Demo.Identity
 {
     public partial class IdentityService
     {
-        /// <inheritdoc />
-        public IQueryable<User> Users(params Expression<Func<User, object>>[] propertySelectors)
+        /// <summary>
+        /// 获取 用户信息查询数据集
+        /// </summary>
+        public IQueryable<User> Users
         {
-            return _useRepository.Query(propertySelectors);
+            get { return _userRepository.Query(); }
         }
     }
 }

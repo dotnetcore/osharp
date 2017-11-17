@@ -23,8 +23,6 @@ namespace OSharp.Demo.Web.Controllers
         [Description("首页")]
         public IActionResult Index()
         {
-            int count = _identityContract.Users().Count();
-            ViewBag.Content = $"Home-Index - {count}";
             return View();
         }
     }

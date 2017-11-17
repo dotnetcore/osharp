@@ -33,6 +33,11 @@ module.exports = merge(baseWebpackConfig, {
     //   inject: true,
     //   chunks: ['app']
     // }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    //new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery'
+    })
   ].concat(utils.getHtmlPlugins('./src/**/index.html', true))
 })

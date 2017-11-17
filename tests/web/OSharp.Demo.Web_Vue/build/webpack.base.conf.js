@@ -24,9 +24,10 @@ module.exports = {
     extensions: ['.js', '.vue', '.json', '.ts', '.tsx', '.html', '.less'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      'static': path.resolve(__dirname, '../static'),
-      'app': path.resolve(__dirname, '../src/app'),
-      'admin': path.resolve(__dirname, '../src/admin')
+      '@static': path.resolve(__dirname, '../static'),
+      '@shared': path.resolve(__dirname, '../src/shared'),
+      '@app': path.resolve(__dirname, '../src/app'),
+      '@admin': path.resolve(__dirname, '../src/admin')
     }
   },
   module: {

@@ -7,6 +7,8 @@
 //  <last-date>2017-10-29 12:31</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Entity;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Identity.Entities
     /// <summary>
     /// 实体类：组织机构
     /// </summary>
+    [Description("组织机构信息")]
     public class Organization : EntityBase<int>
     {
         /// <summary>

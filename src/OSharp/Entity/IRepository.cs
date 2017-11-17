@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using OSharp.Data;
 using OSharp.Dependency;
 
 
@@ -24,7 +25,7 @@ namespace OSharp.Entity
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TKey">主键类型</typeparam>
-    public interface IRepository<TEntity, in TKey> : IScopeDependency
+    public interface IRepository<TEntity, TKey> : IScopeDependency
         where TEntity : IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -45,6 +46,19 @@ namespace OSharp.Entity
         int Insert(params TEntity[] entities);
 
         /// <summary>
+        /// 以DTO为载体批量插入实体
+        /// </summary>
+        /// <typeparam name="TInputDto">添加DTO类型</typeparam>
+        /// <param name="dtos">添加DTO信息集合</param>
+        /// <param name="checkAction">添加信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        OperationResult Insert<TInputDto>(ICollection<TInputDto> dtos,
+            Action<TInputDto> checkAction = null,
+            Func<TInputDto, TEntity, TEntity> updateFunc = null)
+            where TInputDto : IInputDto<TKey>;
+
+        /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entities">实体对象集合</param>
@@ -59,6 +73,15 @@ namespace OSharp.Entity
         int Delete(TKey key);
 
         /// <summary>
+        /// 以标识集合批量删除实体
+        /// </summary>
+        /// <param name="ids">标识集合</param>
+        /// <param name="checkAction">删除前置检查委托</param>
+        /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
+        /// <returns>业务操作结果</returns>
+        OperationResult Delete(ICollection<TKey> ids, Action<TEntity> checkAction = null, Func<TEntity, TEntity> deleteFunc = null);
+
+        /// <summary>
         /// 批量删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
@@ -71,6 +94,19 @@ namespace OSharp.Entity
         /// <param name="entities">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
         int Update(params TEntity[] entities);
+
+        /// <summary>
+        /// 以DTO为载体批量更新实体
+        /// </summary>
+        /// <typeparam name="TEditDto">更新DTO类型</typeparam>
+        /// <param name="dtos">更新DTO信息集合</param>
+        /// <param name="checkAction">更新信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        OperationResult Update<TEditDto>(ICollection<TEditDto> dtos,
+            Action<TEditDto, TEntity> checkAction = null,
+            Func<TEditDto, TEntity, TEntity> updateFunc = null)
+            where TEditDto : IInputDto<TKey>;
 
         /// <summary>
         /// 批量更新所有符合特定条件的实体
@@ -135,6 +171,19 @@ namespace OSharp.Entity
         Task<int> InsertAsync(params TEntity[] entities);
 
         /// <summary>
+        /// 异步以DTO为载体批量插入实体
+        /// </summary>
+        /// <typeparam name="TInputDto">添加DTO类型</typeparam>
+        /// <param name="dtos">添加DTO信息集合</param>
+        /// <param name="checkAction">添加信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
+            Func<TInputDto, Task> checkAction = null,
+            Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null)
+            where TInputDto : IInputDto<TKey>;
+
+        /// <summary>
         /// 异步删除实体
         /// </summary>
         /// <param name="entities">实体对象集合</param>
@@ -149,6 +198,15 @@ namespace OSharp.Entity
         Task<int> DeleteAsync(TKey key);
 
         /// <summary>
+        /// 异步以标识集合批量删除实体
+        /// </summary>
+        /// <param name="ids">标识集合</param>
+        /// <param name="checkAction">删除前置检查委托</param>
+        /// <param name="deleteFunc">删除委托，用于删除关联信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> DeleteAsync(ICollection<TKey> ids, Func<TEntity, Task> checkAction = null, Func<TEntity, Task<TEntity>> deleteFunc = null);
+
+        /// <summary>
         /// 异步删除所有符合特定条件的实体
         /// </summary>
         /// <param name="predicate">查询条件谓语表达式</param>
@@ -161,6 +219,19 @@ namespace OSharp.Entity
         /// <param name="entity">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
         Task<int> UpdateAsync(TEntity entity);
+
+        /// <summary>
+        /// 异步以DTO为载体批量更新实体
+        /// </summary>
+        /// <typeparam name="TEditDto">更新DTO类型</typeparam>
+        /// <param name="dtos">更新DTO信息集合</param>
+        /// <param name="checkAction">更新信息合法性检查委托</param>
+        /// <param name="updateFunc">由DTO到实体的转换委托</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> UpdateAsync<TEditDto>(ICollection<TEditDto> dtos,
+            Func<TEditDto, TEntity, Task> checkAction = null,
+            Func<TEditDto, TEntity, Task<TEntity>> updateFunc = null)
+            where TEditDto : IInputDto<TKey>;
 
         /// <summary>
         /// 异步更新所有符合特定条件的实体

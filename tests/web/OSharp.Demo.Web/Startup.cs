@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Demo.Identity;
@@ -23,17 +24,17 @@ namespace OSharp.Demo.Web
         {
             services.AddMvc();
 
-            services.AddOSharp()
-                .AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>()
-                .AddDistributedMemoryCache()
-                .AddLogging(builder =>
+            services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>()
+                .AddDefaultTokenProviders();
+
+            services.AddOSharp().AddDistributedMemoryCache().AddLogging(builder =>
+            {
+                builder.AddFile(ops =>
                 {
-                    builder.AddFile(ops =>
-                    {
-                        ops.FileName = "log-";
-                        ops.LogDirectory = "log";
-                    });
+                    ops.FileName = "log-";
+                    ops.LogDirectory = "log";
                 });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
