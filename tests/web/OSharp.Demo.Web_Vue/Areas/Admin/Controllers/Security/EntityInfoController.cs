@@ -1,9 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="EntityInfoController.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2017-11-18 16:06</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
@@ -38,13 +46,15 @@ namespace OSharp.Demo.Web_Vue.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
             Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
-            var page = _securityManager.EntityInfos.ToPage(predicate, request.PageCondition, m => new
-            {
-                Id = m.Id.ToString("N"),
-                m.Name,
-                m.TypeName,
-                m.AuditEnabled
-            });
+            var page = _securityManager.EntityInfos.ToPage(predicate,
+                request.PageCondition,
+                m => new
+                {
+                    Id = m.Id.ToString("N"),
+                    m.Name,
+                    m.TypeName,
+                    m.AuditEnabled
+                });
             return Json(page.ToPageData());
         }
 

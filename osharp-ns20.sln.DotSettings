@@ -1194,6 +1194,38 @@ public void $MethodName$Test()&#xD;
 {&#xD;
 	$END$&#xD;
 }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Description/@EntryValue">Entity-Configuration</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=_5B9E_4F53/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=_5B9E_4F53/Expression/@EntryValue">constant("实体")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=_5B9E_4F53/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=Entity/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=Entity/Expression/@EntryValue">constant("Entity")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=Entity/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=EntityKey/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=EntityKey/Expression/@EntryValue">constant("int")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Field/=EntityKey/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Shortcut/@EntryValue">entityconfig</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5E85CC12A04CC54BBC62D0776295F962/Text/@EntryValue">/// &lt;summary&gt;&#xD;
+/// $实体$信息映射配置类&#xD;
+/// &lt;/summary&gt;&#xD;
+public class $Entity$Configuration : EntityTypeConfigurationBase&lt;$Entity$, $EntityKey$&gt;&#xD;
+{&#xD;
+    /// &lt;summary&gt;&#xD;
+    /// 重写以实现实体类型各个属性的数据库配置&#xD;
+    /// &lt;/summary&gt;&#xD;
+    /// &lt;param name="builder"&gt;实体类型创建器&lt;/param&gt;&#xD;
+    public override void Configure(EntityTypeBuilder&lt;$Entity$&gt; builder)&#xD;
+    {&#xD;
+        $END$&#xD;
+    }&#xD;
+}</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5F22693109D3B24C82FA8726CEA44489/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5F22693109D3B24C82FA8726CEA44489/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5F22693109D3B24C82FA8726CEA44489/Description/@EntryValue">xunit的测试类</s:String>
