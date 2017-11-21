@@ -17,7 +17,11 @@ export default class FunctionComponent extends kendoui.GridVueBase {
   protected moduleName = "function";
 
   constructor() {
-    super({
+    super();
+  }
+
+  protected GetModel() {
+    return {
       model: {
         id: "Id",
         fields: {
@@ -34,9 +38,8 @@ export default class FunctionComponent extends kendoui.GridVueBase {
           Action: { type: "string", editable: false }
         }
       }
-    });
+    };
   }
-
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
       {
@@ -99,10 +102,10 @@ export default class FunctionComponent extends kendoui.GridVueBase {
     ];
   }
 
-  protected GetGridOptionsInternal(
+  protected GetGridOptions(
     dataSource: kendo.data.DataSource
   ): kendo.ui.GridOptions {
-    var options = super.GetGridOptionsInternal(dataSource);
+    var options = super.GetGridOptions(dataSource);
     options.columnMenu = { sortable: false };
     options.toolbar = ["save", "cancel"];
     return options;

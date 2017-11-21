@@ -20,6 +20,7 @@ using OSharp.Data;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
+using OSharp.Entity;
 using OSharp.Filter;
 
 
@@ -49,7 +50,7 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
                 m.ParentId,
                 m.OrderCode,
                 m.Remark
-            });
+            }).ToList();
             return Json(modules);
         }
 

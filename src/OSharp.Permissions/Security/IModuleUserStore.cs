@@ -12,6 +12,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Security
 {
@@ -19,6 +21,7 @@ namespace OSharp.Security
     /// 模块用户信息存储
     /// </summary>
     /// <typeparam name="TModuleUser"></typeparam>
+    [IgnoreDependency]
     public interface IModuleUserStore<TModuleUser>
     {
         #region 模块用户信息业务

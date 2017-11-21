@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 
 
@@ -21,6 +22,7 @@ namespace OSharp.Security
     /// <summary>
     /// 定义模块信息的存储
     /// </summary>
+    [IgnoreDependency]
     public interface IModuleStore<TModule, in TModuleInputDto, in TModuleKey>
         where TModule : ModuleBase<TModuleKey>, IEntity<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>

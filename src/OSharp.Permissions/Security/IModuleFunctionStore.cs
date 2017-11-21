@@ -12,12 +12,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Security
 {
     /// <summary>
     /// 定义模块功能存储
     /// </summary>
+    [IgnoreDependency]
     public interface IModuleFunctionStore<TModuleFunction>
     {
         #region 模块功能信息业务

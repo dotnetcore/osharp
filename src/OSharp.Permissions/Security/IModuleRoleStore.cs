@@ -12,12 +12,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Security
 {
     /// <summary>
     /// 定义模块角色信息存储
     /// </summary>
+    [IgnoreDependency]
     public interface IModuleRoleStore<TModuleRole>
     {
         #region 模块角色信息业务

@@ -12,80 +12,25 @@ export namespace kendoui {
         public gridOptions: kendo.ui.GridOptions = null;
         public $grid: kendo.ui.Grid = null;
 
-        constructor(private dataSourceOptions: DataSourceOptions) {
+        constructor() {
             super();
         }
 
-        CreatedBase() {
-            this.GetGridOptions();
+        protected CreatedBase() {
+            var dataSourceOptions = this.GetDataSourceOptions();
+            var dataSource = new kendo.data.DataSource(dataSourceOptions);
+            this.$emit("DataSourceCreated", dataSource);
+            this.gridOptions = this.GetGridOptions(dataSource);
         }
-        MountedBase() {
+        protected MountedBase() {
             this.$grid = $((<any>this.$refs.grid).$el).data("kendoGrid");
             this.ResizeGrid(true);
             window.addEventListener('keydown', e => this.KeyDownEvent(e));
             window.addEventListener('resize', e => this.ResizeGrid(false));
-            //Bus.$on('admin-content-resize', height => this.ResizeGrid(height));
         }
 
-        GetGridOptions() {
-            var dataSourceOptions = this.GetDataSourceOptionsInternal(this.dataSourceOptions);
-            var dataSource = new kendo.data.DataSource(dataSourceOptions);
-            this.$emit('DataSourceCreated', dataSource);
-            this.gridOptions = this.GetGridOptionsInternal(dataSource);
-        }
-        protected GetDataSourceOptionsInternal(options?: DataSourceOptions): kendo.data.DataSourceOptions {
-            if (!options.fieldReplace) {
-                options.fieldReplace = field => field;
-            }
-            if (!options.url) {
-                options.url = {
-                    read: "/api/admin/" + this.moduleName + "/read",
-                    create: "/api/admin/" + this.moduleName + "/create",
-                    update: "/api/admin/" + this.moduleName + "/update",
-                    destroy: "/api/admin/" + this.moduleName + "/delete"
-                }
-            }
-            var dataSourceOptions: kendo.data.DataSourceOptions = {
-                transport: {
-                    read: { url: options.url.read, type: 'post' },
-                    create: { url: options.url.create, type: 'post' },
-                    update: { url: options.url.update, type: 'post' },
-                    destroy: { url: options.url.destroy, type: 'post' },
-                    parameterMap: (opts, operation) => {
-                        if (operation == 'read') {
-                            return osharp.kendo.Grid.readParameterMap(opts, options.fieldReplace);
-                        }
-                        if (operation == 'create' || operation == 'update') {
-                            return { dtos: opts.models };
-                        }
-                        if (operation == 'destroy' && opts.models.length) {
-                            var ids = new List(opts.models).Select(m => {
-                                return m['Id'];
-                            }).ToArray();
-                            return { ids: ids };
-                        }
-                        return {};
-                    }
-                },
-                group: options.group || [],
-                schema: {
-                    model: options.model,
-                    data: d => d.Rows,
-                    total: d => d.Total
-                },
-                aggregate: options.aggregate || [],
-                batch: options.batch != null ? options.batch : true,
-                pageSize: options.pageSize || 20,
-                serverPaging: true,
-                serverSorting: true,
-                serverFiltering: true,
-                requestEnd: e => this.RequestEnd(e),
-                change: options.change || function () { }
-            }
-            return dataSourceOptions;
-        }
-        protected GetGridOptionsInternal(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-            var gridOptions: kendo.ui.GridOptions = {
+        protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
+            var options: kendo.ui.GridOptions = {
                 dataSource: dataSource,
                 toolbar: ['create', 'save', 'cancel'],
                 columns: this.GetGridColumns(),
@@ -105,41 +50,67 @@ export namespace kendoui {
                     }
                 }
             };
-            return gridOptions;
+            return options;
         }
 
+        protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+            var options: kendo.data.DataSourceOptions = {
+                transport: {
+                    read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
+                    create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post' },
+                    update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post' },
+                    destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+                    parameterMap: (opts, operation) => {
+                        if (operation == 'read') {
+                            return osharp.kendo.Grid.readParameterMap(opts, this.FieldReplace);
+                        }
+                        if (operation == 'create' || operation == 'update') {
+                            return { dtos: opts.models };
+                        }
+                        if (operation == 'destroy' && opts.models.length) {
+                            var ids = new List(opts.models).Select(m => {
+                                return m['Id'];
+                            }).ToArray();
+                            return { ids: ids };
+                        }
+                        return {};
+                    }
+                },
+                group: [],
+                schema: {
+                    model: this.GetModel(),
+                    data: d => d.Rows,
+                    total: d => d.Total
+                },
+                aggregate: [],
+                batch: true,
+                pageSize: 20,
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                requestEnd: e => osharp.Tools.ajaxResult(e.response, () => this.$grid.options.dataSource.read(), null),
+                change: function () { }
+            };
+
+            return options;
+        }
+
+        protected FieldReplace(field: string): string {
+            return field;
+        }
+
+        /**重写以获取Grid的模型设置Model */
+        protected abstract GetModel(): any;
         /**重写以获取Grid的列设置Columns */
         protected abstract GetGridColumns(): kendo.ui.GridColumn[];
 
-        ResizeGrid(init: boolean) {
+        protected ResizeGrid(init: boolean) {
             var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth < 480 ? 57 : 65;;
             var $content = $("#grid-box .k-grid-content");
             var otherHeight = $("#grid-box").height() - $content.height();
             $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 20));
         }
 
-        private RequestEnd(e) {
-            if (!e.response) {
-                return;
-            }
-            var data = e.response;
-            if (!data.Type) {
-                return;
-            }
-            if (data.Type == 'Error') {
-                osharp.Tip.error(data.Content);
-                return;
-            }
-            if (data.Type == 'Info') {
-                osharp.Tip.info(data.Content);
-            }
-            if (data.Type == 'Success') {
-                osharp.Tip.success(data.Content);
-            }
-            if (this.$grid && this.$grid.options) {
-                this.$grid.options.dataSource.read();
-            }
-        }
         private KeyDownEvent(e) {
             if (!this.$grid) {
                 return;
@@ -158,23 +129,58 @@ export namespace kendoui {
         }
     }
 
-    export interface DataSourceOptions {
-        url?: GridUrl;
-        fieldReplace?(field: string): string;
-        group?: kendo.data.DataSourceGroupItem[];
-        model: any;
-        aggregate?: kendo.data.DataSourceAggregateItem[];
-        batch?: boolean;
-        pageSize?: number;
-        change?(e: kendo.data.DataSourceChangeEvent): void;
-        requestEnd?(e: kendo.data.DataSourceRequestEndEvent): void;
-    }
+    export abstract class TreeListVueBase extends Vue {
 
-    interface GridUrl {
-        read: string;
-        create?: string;
-        update?: string;
-        destroy?: string;
+        protected moduleName: string = null;
+        public treelistOptions: kendo.ui.TreeListOptions = null;
+        public $treelist: kendo.ui.TreeList = null;
+
+        constructor() {
+            super();
+        }
+
+        protected CreatedBase() {
+            var dataSourceOptions = this.GetDataSourceOptions();
+            var dataSource = new kendo.data.TreeListDataSource(dataSourceOptions);
+            this.$emit("DataSourceCreated", dataSource);
+            this.treelistOptions = this.GetTreeListOptions(dataSource);
+        }
+        protected MountedBase() {
+            this.$treelist = $((<any>this.$refs.treelist).$el).data("kendoTreeList");
+        }
+
+        protected GetTreeListOptions(dataSource: kendo.data.TreeListDataSource): kendo.ui.TreeListOptions {
+            var options: kendo.ui.TreeListOptions = {
+                dataSource: dataSource,
+                columns: this.GetTreeListColumns(),
+                selectable: true,
+                resizable: true,
+                editable: { move: true }
+            };
+
+            return options;
+        }
+        protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+            var options: kendo.data.DataSourceOptions = {
+                transport: {
+                    read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
+                    create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post' },
+                    update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post' },
+                    destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+                },
+                schema: {
+                    model: this.GetModel()
+                },
+                requestEnd: e => osharp.Tools.ajaxResult(e.response)
+            };
+
+            return options;
+        }
+        protected FieldReplace(field: string): string {
+            return field;
+        }
+        protected abstract GetModel(): any;
+        protected abstract GetTreeListColumns(): kendo.ui.TreeListColumn[];
     }
 
     export class Controls {
@@ -186,6 +192,16 @@ export namespace kendoui {
             var guid = kendo.guid();
             $('<input class="k-checkbox" type="checkbox" id="' + guid + '" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
             $('<label class="k-checkbox-label" for="' + guid + '"></label>').appendTo(container);
+        }
+
+        static NumberEditor(container, options, decimals, step?) {
+            var input = $('<input/>');
+            input.attr('name', options.field);
+            input.appendTo(container);
+            input.kendoNumericTextBox({
+                format: '{0:' + decimals + '}',
+                step: step || 0.01
+            });
         }
 
         static DropDownList(element, dataSource, textField = 'text', valueField = 'id') {

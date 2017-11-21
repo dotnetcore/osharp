@@ -55,6 +55,35 @@ export namespace osharp {
             link.href = URL.createObjectURL(blob);
             link.dispatchEvent(evt);
         }
+        /**处理AjaxResult */
+        static ajaxResult(result, onSuccess?, onFail?) {
+            if (!result || !result.Type) {
+                return;
+            }
+            var type = result.Type;
+            var content = result.Content;
+            if (type === "Error") {
+                osharp.Tip.error(content);
+                if (onFail && typeof onFail === "function") {
+                    onFail();
+                }
+                return;
+            }
+            if (type === "Warning") {
+                osharp.Tip.warning(content);
+                return;
+            }
+            if (type === "Info") {
+                osharp.Tip.info(content);
+                return;
+            }
+            if (type === "Success") {
+                osharp.Tip.success(content);
+                if (onSuccess && typeof onSuccess === "function") {
+                    onSuccess();
+                }
+            }
+        }
     }
 
     export class Tip {

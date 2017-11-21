@@ -13,11 +13,15 @@ import { osharp } from "../../../shared/osharp";
 import { kendoui } from "../../../shared/osharp.kendoui";
 
 @Component({})
-export default class FunctionComponent extends kendoui.GridVueBase {
+export default class UserRoleComponent extends kendoui.GridVueBase {
   protected moduleName = "userrole";
 
   constructor() {
-    super({
+    super();
+  }
+
+  protected GetModel() {
+    return {
       model: {
         id: "Id",
         fields: {
@@ -29,9 +33,8 @@ export default class FunctionComponent extends kendoui.GridVueBase {
           CreatedTime: { type: "date", editable: false }
         }
       }
-    });
+    };
   }
-
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
       {
@@ -61,10 +64,10 @@ export default class FunctionComponent extends kendoui.GridVueBase {
     ];
   }
 
-  protected GetGridOptionsInternal(
+  protected GetGridOptions(
     dataSource: kendo.data.DataSource
   ): kendo.ui.GridOptions {
-    var options = super.GetGridOptionsInternal(dataSource);
+    var options = super.GetGridOptions(dataSource);
     //options.columnMenu = { sortable: false };
     options.toolbar = ["save", "cancel"];
     return options;

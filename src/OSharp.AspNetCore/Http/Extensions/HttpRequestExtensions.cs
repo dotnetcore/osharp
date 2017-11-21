@@ -46,7 +46,11 @@ namespace OSharp.AspNetCore.Http
             {
                 return request.Query[key];
             }
-            return request.Form[key];
+            if (request.HasFormContentType)
+            {
+                return request.Form[key];
+            }
+            return null;
         }
     }
 }
