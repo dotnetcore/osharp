@@ -83,7 +83,23 @@ export default class ModuleComponent extends kendoui.TreeListVueBase {
       }
     ];
   }
-
+  protected GetTreeListOptions(
+    dataSource: kendo.data.TreeListDataSource
+  ): kendo.ui.TreeListOptions {
+    var options: kendo.ui.TreeListOptions = super.GetTreeListOptions(
+      dataSource
+    );
+    options.toolbar = () => {
+      var html =
+        '<button class="k-button k-button-icontext" @click="TreeRefresh()">刷新</botton>';
+      html += '<button class="k-button k-button-icontext">收起</button>';
+      return html;
+    };
+    return options;
+  }
+  public TreeRefresh() {
+    console.log("Tree Refresh");
+  }
   private ResizeSplitter() {
     if ((<any>this.$splitter)._size.width < 1150) {
       this.$splitter.collapse(".k-pane:last");
