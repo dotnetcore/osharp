@@ -27,7 +27,7 @@ namespace OSharp.Data
             DateTime dtNow = DateTime.Now;
             //获取用于生成byte字符串的天数与毫秒数
             TimeSpan days = new TimeSpan(dtNow.Ticks - dtBase.Ticks);
-            TimeSpan msecs = new TimeSpan(dtNow.Ticks - (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day).Ticks));
+            TimeSpan msecs = new TimeSpan(dtNow.Ticks - new DateTime(dtNow.Year, dtNow.Month, dtNow.Day).Ticks);
             //转换成byte数组
             //注意SqlServer的时间计数只能精确到1/300秒
             byte[] daysArray = BitConverter.GetBytes(days.Days);

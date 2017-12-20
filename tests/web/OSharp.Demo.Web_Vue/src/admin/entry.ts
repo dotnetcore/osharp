@@ -21,8 +21,8 @@ Vue.use(KendoGridInstaller)
 
 new Vue({
     el: '#admin-app',
-    render: h => h(AdminApp),
+    //render: h => h(AdminApp),
     router,
     template: '<AdminApp/>',
-    components: {}
+    components: { AdminApp }
 })
