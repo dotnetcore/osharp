@@ -16,7 +16,7 @@ using OSharp.Properties;
 namespace OSharp.Secutiry
 {
     /// <summary>
-    /// 结合RSA，DES的通信传输加密解密操作类
+    /// 结合RSA，AES的通信传输加密解密操作类，使用AES对数据进行对称加密，使用RSA加密AES的密钥，并对数据进行签名校验，保证数据传输安全与完整性
     /// </summary>
     public class TransmissionCryptor
     {
