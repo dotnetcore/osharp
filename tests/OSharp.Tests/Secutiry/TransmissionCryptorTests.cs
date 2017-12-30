@@ -13,7 +13,7 @@ namespace OSharp.Secutiry.Tests
     public class TransmissionCryptorTests
     {
         [Fact]
-        public void Test()
+        public void Trans_Test()
         {
             string source = "client send";
 
@@ -35,6 +35,28 @@ namespace OSharp.Secutiry.Tests
             enStr = server.Encrypt(source);
             deStr = client.Decrypt(enStr);
             deStr.ShouldBe(source);
+        }
+
+        [Fact]
+        public void VerifyError_Test()
+        {
+            string source = "admin";
+            Client client = new Client();
+            string enStr = client.Encrypt(source);
+            //搞个破坏
+            enStr += "A";
+            Server server = new Server(client.PublicKey);
+            Assert.Throws<FormatException>(() =>
+            {
+                server.Decrypt(enStr);
+            });
+
+            enStr = server.Encrypt(source);
+            enStr += "A";
+            Assert.Throws<FormatException>(() =>
+            {
+                client.Decrypt(enStr);
+            });
         }
 
         /// <summary>
