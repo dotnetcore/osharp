@@ -90,41 +90,43 @@ namespace OSharp.IO
         /// <returns> 32位MD5 </returns>
         public static string GetFileMd5(string fileName)
         {
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            const int bufferSize = 1024 * 1024;
-            byte[] buffer = new byte[bufferSize];
-
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            md5.Initialize();
-
-            long offset = 0;
-            while (offset < fs.Length)
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                long readSize = bufferSize;
-                if (offset + readSize > fs.Length)
+                const int bufferSize = 1024 * 1024;
+                byte[] buffer = new byte[bufferSize];
+                using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
                 {
-                    readSize = fs.Length - offset;
+                    md5.Initialize();
+                    long offset = 0;
+                    while (offset < fs.Length)
+                    {
+                        long readSize = bufferSize;
+                        if (offset + readSize > fs.Length)
+                        {
+                            readSize = fs.Length - offset;
+                        }
+                        fs.Read(buffer, 0, (int)readSize);
+                        if (offset + readSize < fs.Length)
+                        {
+                            md5.TransformBlock(buffer, 0, (int)readSize, buffer, 0);
+                        }
+                        else
+                        {
+                            md5.TransformFinalBlock(buffer, 0, (int)readSize);
+                        }
+                        offset += bufferSize;
+                    }
+                    fs.Close();
+                    byte[] result = md5.Hash;
+                    md5.Clear();
+                    StringBuilder sb = new StringBuilder(32);
+                    foreach (byte b in result)
+                    {
+                        sb.Append(b.ToString("X2"));
+                    }
+                    return sb.ToString();
                 }
-                fs.Read(buffer, 0, (int)readSize);
-                if (offset + readSize < fs.Length)
-                {
-                    md5.TransformBlock(buffer, 0, (int)readSize, buffer, 0);
-                }
-                else
-                {
-                    md5.TransformFinalBlock(buffer, 0, (int)readSize);
-                }
-                offset += bufferSize;
             }
-            fs.Close();
-            byte[] result = md5.Hash;
-            md5.Clear();
-            StringBuilder sb = new StringBuilder(32);
-            foreach (byte b in result)
-            {
-                sb.Append(b.ToString("X2"));
-            }
-            return sb.ToString();
         }
     }
 }

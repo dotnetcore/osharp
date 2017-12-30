@@ -365,23 +365,5 @@ namespace OSharp.Properties {
                 return ResourceManager.GetString("QueryCacheExtensions_TypeNotEntityType", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   查找类似 参数key的长度必须为8或24，当前为{0}。 的本地化字符串。
-        /// </summary>
-        internal static string Security_DES_KeyLenght {
-            get {
-                return ResourceManager.GetString("Security_DES_KeyLenght", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 参数hashType必须为MD5或SHA1 的本地化字符串。
-        /// </summary>
-        internal static string Security_RSA_Sign_HashType {
-            get {
-                return ResourceManager.GetString("Security_RSA_Sign_HashType", resourceCulture);
-            }
-        }
     }
 }

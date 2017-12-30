@@ -220,10 +220,4 @@
   <data name="QueryCacheExtensions_TypeNotEntityType" xml:space="preserve">
     <value>类型“{0}”不是实体类型</value>
   </data>
-  <data name="Security_DES_KeyLenght" xml:space="preserve">
-    <value>参数key的长度必须为8或24，当前为{0}。</value>
-  </data>
-  <data name="Security_RSA_Sign_HashType" xml:space="preserve">
-    <value>参数hashType必须为MD5或SHA1</value>
-  </data>
 </root>
