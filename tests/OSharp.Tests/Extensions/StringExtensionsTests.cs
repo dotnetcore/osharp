@@ -30,8 +30,8 @@ namespace OSharp.Extensions.Tests
         public void MatchesTest()
         {
             const string pattern = @"\d";
-            Assert.Equal(0, ((string)null).Matches(pattern).Count());
-            Assert.Equal(0, "abc".Matches(pattern).Count());
+            Assert.Empty(((string)null).Matches(pattern));
+            Assert.Empty("abc".Matches(pattern));
             Assert.Equal(3, "abc123".Matches(pattern).Count());
         }
 
@@ -175,6 +175,8 @@ namespace OSharp.Extensions.Tests
             Assert.True(value.IsIdentityCardId());
             value = "37132819810401652x";
             Assert.True(value.IsIdentityCardId());
+            value = "37132819810401653x";
+            Assert.False(value.IsIdentityCardId());
         }
         
         [Fact()]

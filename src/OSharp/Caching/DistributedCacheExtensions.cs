@@ -84,6 +84,10 @@ namespace OSharp.Caching
         public static T Get<T>(this IDistributedCache cache, string key)
         {
             string json = cache.GetString(key);
+            if (json == null)
+            {
+                return default(T);
+            }
             return json.FromJsonString<T>();
         }
 

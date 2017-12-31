@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-19 23:56</last-date>
+//  <last-date>2017-12-31 1:26</last-date>
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -26,19 +26,17 @@ namespace OSharp.Audits
         void SetAuditDatas(IEnumerable<AuditEntity> auditDatas);
     }
 
+
+    /// <summary>
+    /// 空的Audit存储，什么也不做
+    /// </summary>
     public class NullAuditStore : IAuditStore, ISingletonDependency
     {
-        #region Implementation of IAuditStore
-
         /// <summary>
         /// 设置实体审计数据
         /// </summary>
         /// <param name="auditDatas"></param>
         public void SetAuditDatas(IEnumerable<AuditEntity> auditDatas)
-        {
-
-        }
-
-        #endregion
+        { }
     }
 }
