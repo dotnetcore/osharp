@@ -36,7 +36,7 @@ namespace OSharp.Data
 
 
     /// <summary>
-    /// 提供一个字典容器，按类型装载所有<see cref="Singleton&lt;T&gt;"/>的单例实例
+    /// 提供一个字典容器，按类型装载所有<see cref="Singleton{T}"/>的单例实例
     /// </summary>
     public class Singleton
     {

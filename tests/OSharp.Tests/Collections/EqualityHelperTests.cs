@@ -29,6 +29,9 @@ namespace OSharp.Collections.Tests
             Assert.Equal(50, list4.Count);
             Assert.Equal(0, list4.Min());
             Assert.Equal(49, list4.Max());
+
+            EqualityHelper<int>.CreateComparer(m => m, comparer);
+
         }
 
     }

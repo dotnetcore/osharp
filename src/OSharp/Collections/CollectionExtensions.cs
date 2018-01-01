@@ -24,7 +24,7 @@ namespace OSharp.Collections
         /// <summary>
         /// 如果不为空，添加项
         /// </summary>
-        public static void AddIfNotNull<T>(this ICollection<T>collection, T value)
+        public static void AddIfNotNull<T>(this ICollection<T> collection, T value) where T : class
         {
             Check.NotNull(collection, nameof(collection));
             if (value != null)

@@ -13,6 +13,7 @@ using System.ComponentModel;
 namespace OSharp.UnitTest.Infrastructure
 {
     [Description("测试实体")]
+    [Serializable]
     public class TestEntity
     {
         public TestEntity()

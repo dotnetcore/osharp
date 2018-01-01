@@ -6,6 +6,8 @@
 //  <last-date>2015-07-26 14:38</last-date>
 // -----------------------------------------------------------------------
 
+using Shouldly;
+
 using Xunit;
 
 
@@ -21,23 +23,39 @@ namespace OSharp.DataAnnotations.Tests
             {
                 RequiredLength = 6,
                 CanOnlyDigit = true,
-                RequiredDigit = true,
+                RequiredDigit = false,
                 RequiredLowercase = false,
                 RequiredUppercase = false
             };
-            Assert.True(attr.IsValid(null));
-            Assert.False(attr.IsValid("213"));
-            Assert.True(attr.IsValid("123456"));
+            string name = "name";
+
+            attr.IsValid(null).ShouldBeTrue();
+            attr.IsValid("123").ShouldBeFalse();
+            attr.FormatErrorMessage(name).ShouldContain("必须大于");
+            attr.IsValid("123456").ShouldBeTrue();
+            attr.IsValid("abcabc").ShouldBeTrue();
+
+            attr.RequiredDigit = true;
+            attr.IsValid("abcabc").ShouldBeFalse();
+            attr.FormatErrorMessage(name).ShouldContain("必须包含数字");
+            attr.IsValid("123456").ShouldBeTrue();
+            attr.IsValid("abcabc").ShouldBeFalse();
+            
             attr.CanOnlyDigit = false;
-            Assert.False(attr.IsValid("12356"));
-            Assert.True(attr.IsValid("123abc"));
+            attr.IsValid("123456").ShouldBeFalse();
+            attr.FormatErrorMessage(name).ShouldContain("不允许是全是数字");
+            attr.IsValid("123abc").ShouldBeTrue();
+
             attr.RequiredLowercase = true;
-            Assert.False(attr.IsValid("123ABC"));
-            Assert.True(attr.IsValid("123abc"));
+            attr.IsValid("123ABC").ShouldBeFalse();
+            attr.FormatErrorMessage(name).ShouldContain("包含小写");
+            attr.IsValid("123ABc").ShouldBeTrue();
+            attr.IsValid("123abc").ShouldBeTrue();
+
             attr.RequiredUppercase = true;
-            Assert.False(attr.IsValid("123abc"));
-            Assert.False(attr.IsValid("123ABC"));
-            Assert.True(attr.IsValid("123AbC"));
+            attr.IsValid("abc123").ShouldBeFalse();
+            attr.FormatErrorMessage(name).ShouldContain("包含大写");
+            attr.IsValid("123abC").ShouldBeTrue();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace OSharp.Collections
     /// 相等比较辅助类，用于快速创建<see cref="IEqualityComparer{T}"/>的实例
     /// </summary>
     /// <example>
-    /// var equalityComparer1 = EqualityHelper{Person}.CreateComparer(p => p.ID);
+    /// var equalityComparer1 = EqualityHelper[Person].CreateComparer(p => p.ID);
     /// var equalityComparer2 = EqualityHelper[Person].CreateComparer(p => p.Name);
     /// var equalityComparer3 = EqualityHelper[Person].CreateComparer(p => p.Birthday.Year);
     /// </example>

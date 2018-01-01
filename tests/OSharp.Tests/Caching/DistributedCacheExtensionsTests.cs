@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
+using OSharp.Infrastructure;
 using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;
@@ -33,13 +30,49 @@ namespace OSharp.Caching.Tests
         [Fact]
         public void Set_Get_Test()
         {
-            string key = "test-key";
+            string key = "key001";
             TestEntity entity = new TestEntity(){Name = "osharp", IsDeleted = true, AddDate = DateTime.Now, Id = 1};
             _cache.Set(key, entity);
             TestEntity newEntity = _cache.Get<TestEntity>(key);
             newEntity.ShouldNotBeNull();
             newEntity.Name.ShouldBe(entity.Name);
             newEntity.AddDate.ShouldBe(entity.AddDate);
+            _cache.Remove(key);
+            _cache.Get<TestEntity>(key).ShouldBeNull();
+
+            key = "key002";
+            _cache.Set(key, entity, 5);
+            newEntity = _cache.Get<TestEntity>(key);
+            newEntity.ShouldNotBeNull();
+            newEntity.Name.ShouldBe(entity.Name);
+            _cache.Remove(key);
+            _cache.Get<TestEntity>(key).ShouldBeNull();
+
+            IFunction function = new Function(){CacheExpirationSeconds = 10, IsCacheSliding = false};
+            key = "key003";
+            _cache.Set(key, entity, function);
+            newEntity = _cache.Get<TestEntity>(key);
+            newEntity.ShouldNotBeNull();
+            newEntity.Name.ShouldBe(entity.Name);
+            _cache.Remove(key);
+            _cache.Get<TestEntity>(key).ShouldBeNull();
+
+            function.CacheExpirationSeconds = 0; //过期时间为0不缓存
+            _cache.Set(key, entity, function);
+            newEntity = _cache.Get<TestEntity>(key);
+            newEntity.ShouldBeNull();
+
+            key = "key004";
+            newEntity = _cache.Get(key, () => entity, 10);
+            newEntity.ShouldNotBeNull();
+            newEntity.Name.ShouldBe(entity.Name);
+            _cache.Remove(key);
+            _cache.Get<TestEntity>(key).ShouldBeNull();
+
+            key = "key005";
+            newEntity = _cache.Get(key, () => entity, function);
+            newEntity.ShouldNotBeNull();
+            newEntity.Name.ShouldBe(entity.Name);
             _cache.Remove(key);
             _cache.Get<TestEntity>(key).ShouldBeNull();
         }

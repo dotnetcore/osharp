@@ -79,15 +79,23 @@ namespace OSharp.DataAnnotations
                 return false;
             }
             _value = input;
-            if (input.Length < RequiredLength
-                || RequiredDigit && !input.IsMatch(@"[0-9]")
-                || CanOnlyDigit && !input.IsMatch(@"^[0-9]+$")
-                || RequiredLowercase && !input.IsMatch(@"[a-z]")
-                || RequiredUppercase && !input.IsMatch(@"[A-Z]"))
+            if (input.Length < RequiredLength)
             {
                 return false;
             }
-            return true;
+            if (RequiredDigit && !input.IsMatch(@"[0-9]"))
+            {
+                return false;
+            }
+            if (!CanOnlyDigit && input.IsMatch(@"^[0-9]+$"))
+            {
+                return false;
+            }
+            if (RequiredLowercase && !input.IsMatch(@"[a-z]"))
+            {
+                return false;
+            }
+            return !RequiredUppercase || input.IsMatch(@"[A-Z]");
         }
 
         /// <summary>
@@ -108,7 +116,7 @@ namespace OSharp.DataAnnotations
             {
                 return "{0} 必须包含数字".FormatWith(name);
             }
-            if (CanOnlyDigit && _value.IsMatch(@"^[0-9]+$"))
+            if (!CanOnlyDigit && _value.IsMatch(@"^[0-9]+$"))
             {
                 return "{0} 不允许是全是数字";
             }

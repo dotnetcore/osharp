@@ -42,7 +42,7 @@ namespace OSharp.Data
         public static T FromBinary<T>(byte[] bytes)
         {
             bytes.CheckNotNullOrEmpty("bytes");
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(bytes))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (T)formatter.Deserialize(ms);
@@ -52,10 +52,10 @@ namespace OSharp.Data
         /// <summary>
         /// 将数据序列化为二进制数组并写入文件中
         /// </summary>
-        public static void ToBinaryFile(object data, string fileName)
+        public static void ToBinaryFile(string fileName, object data)
         {
+            fileName.CheckNotNull("fileName");
             data.CheckNotNull("data");
-            fileName.CheckFileExists("fileName");
             using (FileStream fs = new FileStream(fileName, FileMode.Create))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -112,10 +112,10 @@ namespace OSharp.Data
         /// <summary>
         /// 将数据序列化为XML并写入文件
         /// </summary>
-        public static void ToXmlFile(object data, string fileName)
+        public static void ToXmlFile(string fileName, object data)
         {
+            fileName.CheckNotNull("fileName" );
             data.CheckNotNull("data");
-            fileName.CheckNotNullOrEmpty("fileName");
             using (FileStream fs = new FileStream(fileName, FileMode.Create))
             {
                 XmlSerializer serializer = new XmlSerializer(data.GetType());

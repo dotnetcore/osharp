@@ -19,7 +19,7 @@ namespace OSharp.Collections
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             return source.OrderBy(m => Guid.NewGuid());
         }
@@ -167,7 +167,6 @@ namespace OSharp.Collections
             string propertyName,
             ListSortDirection sortDirection = ListSortDirection.Ascending)
         {
-            source.CheckNotNull("source");
             propertyName.CheckNotNullOrEmpty("propertyName");
 
             return CollectionPropertySorter<T>.ThenBy(source, propertyName, sortDirection);
@@ -182,7 +181,6 @@ namespace OSharp.Collections
         /// <returns></returns>
         public static IOrderedEnumerable<T> ThenBy<T>(this IOrderedEnumerable<T> source, SortCondition sortCondition)
         {
-            source.CheckNotNull("source");
             sortCondition.CheckNotNull("sortCondition");
 
             return source.ThenBy(sortCondition.SortField, sortCondition.ListSortDirection);

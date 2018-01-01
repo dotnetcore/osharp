@@ -446,6 +446,21 @@ sealed class $name$Attribute : System.Attribute&#xD;
         }&#xD;
     }&#xD;
 }</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Field/=ArgumentException/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Field/=ArgumentException/Expression/@EntryValue">constant("ArgumentException")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Field/=ArgumentException/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Shortcut/@EntryValue">assertThrow</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1269EAABC9ACA94DA48B0B09BCBCEBDC/Text/@EntryValue">Assert.Throws&lt;$ArgumentException$&gt;(() =&gt;&#xD;
+{&#xD;
+	$END$         &#xD;
+});</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=156041A3C8FCFB4688FB9A12A6B52F69/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=156041A3C8FCFB4688FB9A12A6B52F69/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=156041A3C8FCFB4688FB9A12A6B52F69/Categories/=Imported_00202016_002F10_002F25/@EntryIndexedValue">Imported 2016/10/25</s:String>

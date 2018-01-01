@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Shouldly;
+
 using Xunit;
 
 namespace OSharp.Data.Tests
@@ -13,6 +17,7 @@ namespace OSharp.Data.Tests
         public void CompressTest()
         {
             string value = "admin";
+
             string temp = Compression.Compress(value);
             string result = Compression.Decompress(temp);
             Assert.Equal(value, result);

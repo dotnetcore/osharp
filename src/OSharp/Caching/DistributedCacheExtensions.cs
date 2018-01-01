@@ -55,6 +55,8 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0, true);
+
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
@@ -81,20 +83,20 @@ namespace OSharp.Caching
         /// <summary>
         /// 获取指定键的缓存项
         /// </summary>
-        public static T Get<T>(this IDistributedCache cache, string key)
+        public static TResult Get<TResult>(this IDistributedCache cache, string key)
         {
             string json = cache.GetString(key);
             if (json == null)
             {
-                return default(T);
+                return default(TResult);
             }
-            return json.FromJsonString<T>();
+            return json.FromJsonString<TResult>();
         }
 
         /// <summary>
         /// 获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
         /// </summary>
-        public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult>getFunc, int cacheSeconds)
+        public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, int cacheSeconds)
         {
             TResult result = cache.Get<TResult>(key);
             if (result != null)
@@ -150,7 +152,7 @@ namespace OSharp.Caching
             string key = GetKey(source, pridicate, pageCondition, selector, keyParams);
             return cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), function);
         }
-        
+
         /// <summary>
         /// 将结果转换为缓存的列表，如缓存存在，直接返回，否则从数据源查询，并存入缓存中再返回
         /// </summary>
