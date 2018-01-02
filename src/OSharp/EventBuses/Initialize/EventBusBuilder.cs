@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+﻿ // -----------------------------------------------------------------------
 //  <copyright file="EventBusBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -9,8 +9,6 @@
 
 using System;
 using System.Reflection;
-
-using Microsoft.Extensions.Logging;
 
 using OSharp.Dependency;
 using OSharp.Reflection;

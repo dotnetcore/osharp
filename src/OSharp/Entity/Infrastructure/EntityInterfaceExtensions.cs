@@ -30,6 +30,8 @@ namespace OSharp.Entity
             where TEntity : class, ICreatedTime
             where TKey : IEquatable<TKey>
         {
+            Check.NotNull(entity, nameof(entity));
+            
             entity.CreatedTime = DateTime.Now;
             return entity;
         }

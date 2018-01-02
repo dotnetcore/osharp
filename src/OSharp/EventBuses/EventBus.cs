@@ -155,7 +155,7 @@ namespace OSharp.EventBuses
         }
 
         /// <summary>
-        /// 注销指定事件源数据的所有处理器
+        /// 注销指定事件源数据的所有处理器 
         /// </summary>
         /// <param name="eventType">事件源数据类型</param>
         public void UnregisterAll(Type eventType)
