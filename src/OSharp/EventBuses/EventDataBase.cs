@@ -15,15 +15,21 @@ namespace OSharp.EventBuses
     /// <summary>
     /// 事件源数据信息
     /// </summary>
-    public class EventData : IEventData
+    public abstract class EventDataBase : IEventData
     {
         /// <summary>
-        /// 初始化一个<see cref="EventData"/>类型的新实例
+        /// 初始化一个<see cref="EventDataBase"/>类型的新实例
         /// </summary>
-        public EventData()
+        protected EventDataBase()
         {
+            Id = Guid.NewGuid();
             EventTime = DateTime.Now;
         }
+
+        /// <summary>
+        /// 获取 事件编号
+        /// </summary>
+        public Guid Id { get; }
 
         /// <summary>
         /// 获取 事件发生时间

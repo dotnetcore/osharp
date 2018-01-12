@@ -1,32 +1,28 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IocEventHandlerFactory.cs" company="OSharp开源团队">
+//  <copyright file="SingletonEventHandlerFactory.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-19 3:56</last-date>
+//  <last-date>2017-09-19 1:34</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-
-namespace OSharp.EventBuses.Handlers
+namespace OSharp.EventBuses.Internal
 {
     /// <summary>
-    /// 依赖注入事件处理器实例获取方式
+    /// 单例生命周期的事件处理器实例获取方式
     /// </summary>
-    public class IocEventHandlerFactory : IEventHandlerFactory
+    internal class SingletonEventHandlerFactory : IEventHandlerFactory
     {
-        private readonly Type _handlerType;
-
         /// <summary>
-        /// 初始化一个<see cref="IocEventHandlerFactory"/>类型的新实例
+        /// 初始化一个<see cref="SingletonEventHandlerFactory"/>类型的新实例
         /// </summary>
-        /// <param name="handlerType">事件处理器类型</param>
-        public IocEventHandlerFactory(Type handlerType)
+        public SingletonEventHandlerFactory(IEventHandler handler)
         {
-            _handlerType = handlerType;
+            HandlerInstance = handler;
         }
+
+        public IEventHandler HandlerInstance { get; }
 
         /// <summary>
         /// 获取事件处理器实例
@@ -34,7 +30,7 @@ namespace OSharp.EventBuses.Handlers
         /// <returns></returns>
         public IEventHandler GetHandler()
         {
-            return ServiceLocator.Instance.GetService(_handlerType) as IEventHandler;
+            return HandlerInstance;
         }
 
         /// <summary>

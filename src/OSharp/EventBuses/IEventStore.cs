@@ -11,8 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using OSharp.EventBuses.Handlers;
-
 
 namespace OSharp.EventBuses
 {
@@ -61,11 +59,12 @@ namespace OSharp.EventBuses
         /// </summary>
         /// <param name="eventType">事件源类型</param>
         void RemoveAll(Type eventType);
-
+        
         /// <summary>
-        /// 获取指定事件源的所有处理器工厂
+        /// 获取指定事件类型的所有事件处理器工厂
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<(Type EventType, IEnumerable<IEventHandlerFactory> HandlerFactories)> GetHandlers(Type eventType);
+        /// <param name="eventType">事件类型</param>
+        /// <returns>指定事件类型及其派生事件类型的处理器集合的字典</returns>
+        IDictionary<Type, IEventHandlerFactory[]> GetHandlers(Type eventType);
     }
 }

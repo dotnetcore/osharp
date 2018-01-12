@@ -7,7 +7,7 @@
 //  <last-date>2017-09-19 1:54</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp
+namespace OSharp.EventBuses
 {
     /// <summary>
     /// 定义事件总线构建器

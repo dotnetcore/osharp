@@ -13,11 +13,11 @@ using Shouldly;
 
 using Xunit;
 
-namespace OSharp.Tests.EventBuses
+namespace OSharp.Tests.IEventBuses
 {
-    public class EventBusTests
+    public class IEventBusTests
     {
-        public EventBusTests()
+        public IEventBusTests()
         {
             IServiceCollection services = new ServiceCollection();
             services.AddOSharp();
@@ -27,50 +27,53 @@ namespace OSharp.Tests.EventBuses
         }
         
         [Fact]
-        public void Register_Test()
+        public void Subscribe_Test()
         {
-            EventBus.Default.UnregisterAll<HelloEventData>();
+            IEventBus bus = ServiceLocator.Instance.GetService<IEventBus>();
 
-            EventBus.Default.Register<HelloEventData, HelloEventHandler>();
+            bus.UnsubscribeAll<HelloEventData>();
+
+            bus.Subscribe<HelloEventData, HelloEventHandler>();
             HelloEventData data = new HelloEventData("hello world");
-            EventBus.Default.Trigger(data);
+            bus.Publish(data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
-            EventBus.Default.UnregisterAll<HelloEventData>();
+            bus.UnsubscribeAll<HelloEventData>();
 
             Action<HelloEventData> action = m => m.List.Add(m.Message);
-            EventBus.Default.Register<HelloEventData>(action);
-            EventBus.Default.Trigger(data);
+            bus.Subscribe<HelloEventData>(action);
+            bus.Publish(data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
-            EventBus.Default.Unregister(action);
+            bus.Unsubscribe(action);
 
             IEventHandler<HelloEventData> handler = new HelloEventHandler();
-            EventBus.Default.Register<HelloEventData>(handler);
-            EventBus.Default.Trigger(typeof(HelloEventData), (IEventData)data);
+            bus.Subscribe<HelloEventData>(handler);
+            bus.Publish(typeof(HelloEventData), (IEventData)data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
-            EventBus.Default.Unregister(handler);
+            bus.Unsubscribe(handler);
         }
 
         [Fact]
-        public async Task TriggerAsync_Test()
+        public async Task PublishAsync_Test()
         {
-            EventBus.Default.UnregisterAll<HelloEventData>();
+            IEventBus bus = ServiceLocator.Instance.GetService<IEventBus>();
+            bus.UnsubscribeAll<HelloEventData>();
 
-            EventBus.Default.Register<HelloEventData, HelloEventHandler>();
+            bus.Subscribe<HelloEventData, HelloEventHandler>();
             HelloEventData data = new HelloEventData("hello world");
-            await EventBus.Default.TriggerAsync(data);
-            Thread.Sleep(50);
-            data.List.ShouldContain(data.Message);
-            data.List.Clear();
-            EventBus.Default.UnregisterAll<HelloEventData>();
+            await bus.PublishAsync(data);
+            //Thread.Sleep(50);
+            //data.List.ShouldContain(data.Message);
+            //data.List.Clear();
+            //bus.UnsubscribeAll<HelloEventData>();
         }
 
-        private class HelloEventData : EventData
+        private class HelloEventData : EventDataBase
         {
             /// <summary>
             /// 初始化一个<see cref="HelloEventData"/>类型的新实例
@@ -87,15 +90,26 @@ namespace OSharp.Tests.EventBuses
         }
 
 
-        private class HelloEventHandler : IEventHandler<HelloEventData>
+        private class HelloEventHandler : EventHandlerBase<HelloEventData>
         {
             /// <summary>
             /// 事件处理
             /// </summary>
             /// <param name="eventData">事件源数据</param>
-            public void HandleEvent(HelloEventData eventData)
+            public override void Handle(HelloEventData eventData)
             {
                 eventData.List.Add(eventData.Message);
+            }
+
+            /// <summary>
+            /// 异步事件处理
+            /// </summary>
+            /// <param name="eventData">事件源数据</param>
+            /// <param name="cancelToken">异步取消标识</param>
+            /// <returns>是否成功</returns>
+            public override Task HandleAsync(HelloEventData eventData, CancellationToken cancelToken = default(CancellationToken))
+            {
+                return Task.Run(() => Handle(eventData), cancelToken);
             }
         }
     }

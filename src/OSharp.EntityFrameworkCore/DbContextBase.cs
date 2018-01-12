@@ -88,7 +88,8 @@ namespace OSharp.Entity
             if (count > 0 && auditEntities.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                EventBus.Default.Trigger(this, eventData);
+                IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
+                eventBus.Publish(this, eventData);
             }
             return count;
         }
@@ -131,7 +132,8 @@ namespace OSharp.Entity
             if (count > 0 && auditEntities.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                await EventBus.Default.TriggerAsync(this, eventData);
+                IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
+                await eventBus.PublishAsync(this, eventData);
             }
             return count;
         }

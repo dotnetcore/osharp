@@ -17,7 +17,7 @@ namespace OSharp.Audits
     /// <summary>
     /// <see cref="AuditEntity"/>事件源
     /// </summary>
-    public class AuditEntityEventData : EventData
+    public class AuditEntityEventData : EventDataBase
     {
         /// <summary>
         /// 初始化一个<see cref="AuditEntityEventData"/>类型的新实例

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 using OSharp.EventBuses;
 
@@ -10,7 +12,7 @@ namespace OSharp.Audits
     /// <summary>
     /// 数据审计存储处理器
     /// </summary>
-    public class AuditEntityStoreEventHandler : IEventHandler<AuditEntityEventData>
+    public class AuditEntityStoreEventHandler : EventHandlerBase<AuditEntityEventData>
     {
         private readonly IAuditStore _auditStore;
 
@@ -21,14 +23,29 @@ namespace OSharp.Audits
         {
             _auditStore = auditStore;
         }
-
+        
         /// <summary>
         /// 事件处理
         /// </summary>
         /// <param name="eventData">事件源数据</param>
-        public void HandleEvent(AuditEntityEventData eventData)
+        public override void Handle(AuditEntityEventData eventData)
         {
+            eventData.CheckNotNull("eventData");
             _auditStore.SetAuditDatas(eventData.AuditEntities);
         }
+
+        /// <summary>
+        /// 异步事件处理
+        /// </summary>
+        /// <param name="eventData">事件源数据</param>
+        /// <param name="cancelToken">异步取消标识</param>
+        /// <returns>是否成功</returns>
+        public override Task HandleAsync(AuditEntityEventData eventData, CancellationToken cancelToken = default(CancellationToken))
+        {
+            eventData.CheckNotNull("eventData" );
+            cancelToken.ThrowIfCancellationRequested();
+            return _auditStore.SetAuditDatasAsync(eventData.AuditEntities, cancelToken);
+        }
+
     }
 }

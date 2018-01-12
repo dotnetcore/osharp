@@ -87,5 +87,21 @@ namespace OSharp.Data
             bytes = Decompress(bytes);
             return Encoding.UTF8.GetString(bytes);
         }
+
+        /// <summary>
+        /// 将文件夹压缩成zip文件
+        /// </summary>
+        public static void Zip(string sourceDir, string zipFile)
+        {
+            ZipFile.CreateFromDirectory(sourceDir, zipFile);
+        }
+
+        /// <summary>
+        /// 将zip文件解压到指定文件夹
+        /// </summary>
+        public static void UnZip(string zipFile, string targetDir)
+        {
+            ZipFile.ExtractToDirectory(zipFile, targetDir);
+        }
     }
 }

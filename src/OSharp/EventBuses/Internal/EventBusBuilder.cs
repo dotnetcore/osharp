@@ -7,27 +7,26 @@
 //  <last-date>2017-09-18 18:29</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Reflection;
 
 using OSharp.Dependency;
 using OSharp.Reflection;
 
 
-namespace OSharp.EventBuses.Initialize
+namespace OSharp.EventBuses.Internal
 {
     /// <summary>
     /// EventBus初始化
     /// </summary>
-    public class EventBusBuilder : IEventBusBuilder, ISingletonDependency
+    internal class EventBusBuilder : IEventBusBuilder, ISingletonDependency
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
-        private readonly EventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// 初始化一个<see cref="EventBusBuilder"/>类型的新实例
         /// </summary>
-        public EventBusBuilder(IAllAssemblyFinder allAssemblyFinder, EventBus eventBus)
+        public EventBusBuilder(IAllAssemblyFinder allAssemblyFinder, IEventBus eventBus)
         {
             _allAssemblyFinder = allAssemblyFinder;
             _eventBus = eventBus;
@@ -41,7 +40,7 @@ namespace OSharp.EventBuses.Initialize
             Assembly[] assemblies = _allAssemblyFinder.FindAll(true);
             foreach (Assembly assembly in assemblies)
             {
-                _eventBus.RegisterAllEventHandlers(assembly);
+                _eventBus.SubscribeAll(assembly);
             }
         }
     }

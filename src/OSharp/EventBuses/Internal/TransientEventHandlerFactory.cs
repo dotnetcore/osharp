@@ -1,29 +1,39 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IEventHandlerFactory.cs" company="OSharp开源团队">
+//  <copyright file="TransientEventHandlerFactory.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-19 1:27</last-date>
+//  <last-date>2017-09-19 1:31</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBuses.Handlers
+using System;
+
+
+namespace OSharp.EventBuses.Internal
 {
     /// <summary>
-    /// 定义获取<see cref="IEventHandler"/>实例的方式
+    /// 即时生命周期的事件处理器实例获取方式
     /// </summary>
-    public interface IEventHandlerFactory
+    internal class TransientEventHandlerFactory<TEventHandler> : IEventHandlerFactory
+        where TEventHandler : IEventHandler, new()
     {
         /// <summary>
         /// 获取事件处理器实例
         /// </summary>
         /// <returns></returns>
-        IEventHandler GetHandler();
+        public IEventHandler GetHandler()
+        {
+            return new TEventHandler();
+        }
 
         /// <summary>
         /// 释放事件处理器实例
         /// </summary>
         /// <param name="handler"></param>
-        void ReleaseHandler(IEventHandler handler);
+        public void ReleaseHandler(IEventHandler handler)
+        {
+            (handler as IDisposable)?.Dispose();
+        }
     }
 }

@@ -14,12 +14,11 @@ using System.Linq;
 
 using OSharp.Collections;
 using OSharp.Dependency;
-using OSharp.EventBuses.Handlers;
-using OSharp.EventBuses.Handlers.Internal;
+using OSharp.EventBuses.Internal;
 using OSharp.Reflection;
 
 
-namespace OSharp.EventBuses.Stores.Internal
+namespace OSharp.EventBuses.Internal
 {
     /// <summary>
     /// 内存事件存储
@@ -126,10 +125,10 @@ namespace OSharp.EventBuses.Stores.Internal
         /// 获取指定事件源的所有处理器工厂
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<(Type EventType, IEnumerable<IEventHandlerFactory> HandlerFactories)> GetHandlers(Type eventType)
+        public IDictionary<Type, IEventHandlerFactory[]> GetHandlers(Type eventType)
         {
             return _handlerFactories.Where(item => item.Key == eventType || item.Key.IsAssignableFrom(eventType))
-                .Select(item => new ValueTuple<Type, IEnumerable<IEventHandlerFactory>>(item.Key, item.Value));
+                .ToDictionary(item => item.Key, item => item.Value.ToArray());
         }
 
         private List<IEventHandlerFactory> GetOrCreateHandlerFactories(Type eventType)

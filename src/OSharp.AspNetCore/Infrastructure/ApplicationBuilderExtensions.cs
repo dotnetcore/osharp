@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.EventBuses;
 using OSharp.Infrastructure;
 
 

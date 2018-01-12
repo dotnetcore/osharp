@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 using OSharp.Dependency;
 
@@ -22,8 +24,16 @@ namespace OSharp.Audits
         /// <summary>
         /// 设置实体审计数据
         /// </summary>
-        /// <param name="auditDatas"></param>
+        /// <param name="auditDatas">实体审计数据</param>
         void SetAuditDatas(IEnumerable<AuditEntity> auditDatas);
+
+        /// <summary>
+        /// 异步设置实体审计数据
+        /// </summary>
+        /// <param name="auditDatas">实体审计数据</param>
+        /// <param name="cancelToken">异步取消标识</param>
+        /// <returns></returns>
+        Task SetAuditDatasAsync(IEnumerable<AuditEntity>auditDatas, CancellationToken cancelToken = default(CancellationToken));
     }
 
 
@@ -38,5 +48,16 @@ namespace OSharp.Audits
         /// <param name="auditDatas"></param>
         public void SetAuditDatas(IEnumerable<AuditEntity> auditDatas)
         { }
+
+        /// <summary>
+        /// 异步设置实体审计数据
+        /// </summary>
+        /// <param name="auditDatas">实体审计数据</param>
+        /// <param name="cancelToken">异步取消标识</param>
+        /// <returns></returns>
+        public Task SetAuditDatasAsync(IEnumerable<AuditEntity> auditDatas, CancellationToken cancelToken = default(CancellationToken))
+        {
+            return Task.FromResult(0);
+        }
     }
 }
