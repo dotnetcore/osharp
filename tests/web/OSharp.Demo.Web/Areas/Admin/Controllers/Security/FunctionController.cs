@@ -19,20 +19,20 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
     [Route("api/[area]/[controller]/[action]")]
     public class FunctionController : Controller
     {
-        private readonly ISecurityContract _securityContract;
+        private readonly SecurityManager _securityManager;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionController"/>类型的新实例
         /// </summary>
-        public FunctionController(ISecurityContract securityContract)
+        public FunctionController(SecurityManager securityManager)
         {
-            _securityContract = securityContract;
+            _securityManager = securityManager;
         }
 
         [Description("读取")]
         public IActionResult Read()
         {
-            var page = _securityContract.Functions.ToPage(m => true,
+            var page = _securityManager.Functions.ToPage(m => true,
                 1,
                 10000,
                 new SortCondition[0],
