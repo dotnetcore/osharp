@@ -60,7 +60,7 @@ namespace OSharp
             {
                 if (area)
                 {
-                    builder.MapRoute("admin", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    builder.MapRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 }
                 builder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });

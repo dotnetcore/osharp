@@ -44,7 +44,7 @@ namespace OSharp.Demo.Web
                 app.UseExceptionHandler();
             }
 
-            app.UseStatusCodePages().UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute()
+            app.UseStatusCodePages().UseStaticFiles().UseMvcWithAreaRoute()
                 .UseOSharp().UseAutoMapper();
 
             //¼ì²â²¢Ç¨ÒÆ
