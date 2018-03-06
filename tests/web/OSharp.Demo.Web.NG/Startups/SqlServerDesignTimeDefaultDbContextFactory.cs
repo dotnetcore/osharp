@@ -14,7 +14,7 @@ namespace OSharp.Demo.Web.Startups
     {
         public SqlServerDesignTimeDefaultDbContext CreateDbContext(string[] args)
         {
-            string connString = "Server=.;Database=osharp.demo.web;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connString = "Server=.;Database=osharp.demo.web.ng;Trusted_Connection=True;MultipleActiveResultSets=true";
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
             builder.UseSqlServer(connString);
             IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppDomainAllAssemblyFinder()));

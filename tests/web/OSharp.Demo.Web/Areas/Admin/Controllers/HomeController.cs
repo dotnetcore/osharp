@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-主页")]
     public class HomeController : Controller
     {

@@ -16,7 +16,6 @@ namespace OSharp.Demo.Web.Areas.Admin.Controllers
 {
     [Description("管理-权限安全")]
     [Area("Admin")]
-    [Route("api/[area]/[controller]/[action]")]
     public class FunctionController : Controller
     {
         private readonly SecurityManager _securityManager;

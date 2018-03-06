@@ -14,6 +14,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 //shared
+import { AngleCoreModule } from "./shared/angle/core/angle.core.module";
+import { AngleModule } from "./shared/angle/angle.module";
 import { LoggingService } from './shared/services/logging.services';
 
 //app
@@ -34,6 +36,10 @@ import { HomeModule } from "./home/home.module";
     FormsModule,
     HttpModule,
     RouterModule,
+
+    //shared
+    AngleCoreModule,
+    AngleModule.forRoot(),
 
     //app
     AppRoutingModule,

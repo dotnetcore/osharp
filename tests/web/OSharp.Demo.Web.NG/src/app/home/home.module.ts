@@ -2,6 +2,7 @@ import { NgModule, } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { TranslateModule, } from '@ngx-translate/core';
 
+import { AngleModule } from "../shared/angle/angle.module";
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule, } from './home.routing';
 
@@ -19,6 +20,7 @@ import { HomeRoutingModule, } from './home.routing';
         CommonModule,
         TranslateModule,
         HomeRoutingModule,
+        AngleModule
     ],
     providers: [
         // TODO: and services

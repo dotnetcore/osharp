@@ -1,0 +1,50 @@
+/* ========================================================================
+     Component: row-extra
+ ========================================================================== */
+ 
+
+// Different container size to wrap content
+
+.container-sm {
+  max-width: $container-sm;
+  width: auto;
+}
+.container-md {
+  max-width: $container-md;
+  width: auto;
+}
+.container-lg {
+  max-width: $container-lg;
+  width: auto;
+}
+//
+// Utilities to manage bootstrap rows and cols 
+// with more flexibility
+// Use in conjunction with .row
+// ---------------------------------------------
+
+// Display a row using table layout
+// allows to have vertically aligned elements
+
+.row-table {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  
+  > [class*="col-"] {
+    display: table-cell;
+    float: none;
+    table-layout: fixed;
+    vertical-align: middle;
+  }
+}
+
+// Remove padding and collapse columns
+.row-flush {
+  > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

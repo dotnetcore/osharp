@@ -1,0 +1,122 @@
+/* ========================================================================
+     Component: panels
+ ========================================================================== */
+ 
+
+//
+// Adds support to use more components inside panels
+//
+
+
+.panel {
+  .table {
+    margin-bottom: 0;
+    border: 0;
+  }
+  &.panel-transparent {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0 #000;
+    .panel-heading,
+    .panel-body {
+      background-color: transparent;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.panel-flat {
+  margin: 0 !important;
+  border: 0;
+}
+
+.panel-group {
+  .panel-flat {
+    box-shadow: 0 0 0 #000;
+    &:first-child {
+      border-radius: 4px 4px 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 4px 4px;
+    }
+  }
+}
+
+.panel-heading {
+  paneltool > a {
+    display: inline-block;
+    color: #fff;
+    width: 2em;
+    text-align: center;
+  }
+
+  .panel-default & {
+    paneltool > a {
+      color: #c1c2c3;
+    }
+  }
+  
+  // right floated labels adjust position
+  > .label.pull-right {
+    margin-top: 3px;
+    + .label.pull-right {
+      margin-right: 10px;
+    }
+  }
+  &.panel-heading-collapsed {
+    border-radius: $panel-border-radius - 1;
+  }
+}
+
+.panel-footer {
+  .pagination {
+    margin: 0;
+  }
+  .radial-bar {
+    margin-bottom: 0;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+// Active class for collapse elements 
+.panel-heading-active {
+  background-color: $brand-success !important;
+  font-weight: bold;
+  font-size: 16px;
+  > a {
+    padding: 15px 0;  // Adding padding here improves mobile touch
+    color: #fff !important;
+    @include transition(padding .5s ease);
+  }
+  + .panel-collapse:after {
+    content: "";
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+    height: 0;
+    border-bottom: 1px solid #e1e2e3;
+  }
+}
+
+.panel-inverse {
+  @include panel-variant($panel-global-border, #fff, $brand-inverse, $brand-inverse);
+}
+
+.panel-green {
+  @include panel-variant($panel-global-border, #fff, $brand-green, $brand-green);
+}
+
+.panel-pink {
+  @include panel-variant($panel-global-border, #fff, $brand-pink, $brand-pink);
+}
+
+.panel-purple {
+  @include panel-variant($panel-global-border, #fff, $brand-purple, $brand-purple);
+}
+
+.panel-dark {
+  @include panel-variant($panel-global-border, #fff, $brand-dark, $brand-dark);
+}

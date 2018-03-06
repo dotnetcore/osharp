@@ -1,4 +1,4 @@
-import toastr from 'toastr'
+import { ToasterService } from "angular2-toaster";
 
 export namespace osharp {
     /** 分页数据 */
@@ -102,13 +102,23 @@ export namespace osharp {
         }
         static msg(msg, type) {
             type = type || 'info';
-            toastr.options = {
-                timeOut: type == 'error' ? '6000' : '3000',
+            var config = {
+                timeOut: type == "error" ? 6000 : 3000,
                 positionClass: "toast-top-center",
                 closeButton: true,
-                newestOnTop: false
-            }
-            toastr[type](msg, "")
+                newestOnTop: false,
+                type: type
+            };
+            var toastr = new ToasterService();
+            toastr.pop(config);
+
+            // toastr.options = {
+            //     timeOut: type == 'error' ? '6000' : '3000',
+            //     positionClass: "toast-top-center",
+            //     closeButton: true,
+            //     newestOnTop: false
+            // }
+            //toastr[type](msg, "")
         }
     }
 
