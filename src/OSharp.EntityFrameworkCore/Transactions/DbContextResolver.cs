@@ -23,7 +23,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 数据上下文对象解析器
     /// </summary>
-    public class DbContextResolver : IDbContextResolver, IScopeDependency
+    public class DbContextResolver : IDbContextResolver
     {
         private readonly IServiceProvider _serviceProvider;
 

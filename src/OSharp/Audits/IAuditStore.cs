@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using OSharp.Dependency;
-
 
 namespace OSharp.Audits
 {
@@ -40,7 +38,7 @@ namespace OSharp.Audits
     /// <summary>
     /// 空的Audit存储，什么也不做
     /// </summary>
-    public class NullAuditStore : IAuditStore, ISingletonDependency
+    public class NullAuditStore : IAuditStore
     {
         /// <summary>
         /// 设置实体审计数据

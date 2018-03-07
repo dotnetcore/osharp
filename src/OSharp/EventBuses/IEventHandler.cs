@@ -20,7 +20,7 @@ namespace OSharp.EventBuses
     /// EventBus中，Handler的调用是同步执行的，如果需要触发就不管的异步执行，可以在实现EventHandler的Handle逻辑时使用Task.Run
     /// </summary>
     [IgnoreDependency]
-    public interface IEventHandler : ITransientDependency
+    public interface IEventHandler
     {
         /// <summary>
         /// 是否可处理指定事件

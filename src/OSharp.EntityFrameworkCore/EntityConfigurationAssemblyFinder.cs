@@ -11,7 +11,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using OSharp.Dependency;
 using OSharp.Finders;
 using OSharp.Reflection;
 
@@ -21,7 +20,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体映射程序集查找器
     /// </summary>
-    public class EntityConfigurationAssemblyFinder : FinderBase<Assembly>, IEntityConfigurationAssemblyFinder, ISingletonDependency
+    public class EntityConfigurationAssemblyFinder : FinderBase<Assembly>, IEntityConfigurationAssemblyFinder
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
 

@@ -19,7 +19,7 @@ using OSharp.Reflection;
 namespace OSharp.Mapping
 {
     /// <inheritdoc cref="IMapFromAttributeTypeFinder" />
-    public class MapFromAttributeTypeFinder : FinderBase<Type>, IMapFromAttributeTypeFinder, ISingletonDependency
+    public class MapFromAttributeTypeFinder : FinderBase<Type>, IMapFromAttributeTypeFinder
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
 

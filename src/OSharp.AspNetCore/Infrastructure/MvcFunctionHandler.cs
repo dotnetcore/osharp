@@ -27,7 +27,7 @@ namespace OSharp.AspNetCore.Infrastructure
     /// <summary>
     /// MVC 功能处理器
     /// </summary>
-    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>, ISingletonDependency
+    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>
     {
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例

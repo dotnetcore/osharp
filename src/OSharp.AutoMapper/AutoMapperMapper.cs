@@ -24,7 +24,7 @@ namespace OSharp.AutoMapper
     /// <summary>
     /// AutoMapper映射执行类
     /// </summary>
-    public class AutoMapperMapper : IMapper, ISingletonDependency
+    public class AutoMapperMapper : IMapper
     {
         /// <summary>
         /// 将对象映射为指定类型

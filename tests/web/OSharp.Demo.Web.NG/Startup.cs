@@ -45,7 +45,7 @@ namespace OSharp.Demo.Web
             }
 
             app.UseStatusCodePages().UseStaticFiles().UseMvcWithAreaRoute()
-                .UseOSharp().UseAutoMapper();
+                .UseOSharp();//.UseAutoMapper();
 
             //¼ì²â²¢Ç¨ÒÆ
             SqlServerDesignTimeDefaultDbContextFactory dbContextFactory = new SqlServerDesignTimeDefaultDbContextFactory();

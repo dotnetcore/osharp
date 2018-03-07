@@ -22,7 +22,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类型查找器
     /// </summary>
-    public class EntityTypeFinder : FinderBase<Type>, IEntityTypeFinder, ISingletonDependency
+    public class EntityTypeFinder : FinderBase<Type>, IEntityTypeFinder
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
 

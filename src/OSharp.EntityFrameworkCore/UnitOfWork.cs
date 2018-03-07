@@ -17,7 +17,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -29,7 +28,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 业务单元操作
     /// </summary>
-    public class UnitOfWork : IUnitOfWork, IScopeDependency
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly IServiceProvider _serviceProvider;
 

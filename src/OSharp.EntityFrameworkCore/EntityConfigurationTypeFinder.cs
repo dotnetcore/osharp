@@ -14,7 +14,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Finders;
 using OSharp.Core;
@@ -26,7 +25,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类配置类型查找器
     /// </summary>
-    public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder, ISingletonDependency
+    public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder
     {
         private readonly IEntityConfigurationAssemblyFinder _assemblyFinder;
         private Dictionary<Type, IEntityRegister[]> _entityRegistersDict;

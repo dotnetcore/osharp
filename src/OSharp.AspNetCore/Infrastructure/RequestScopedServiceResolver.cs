@@ -1,16 +1,27 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="RequestScopedServiceResolver.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-03-07 20:59</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Dependency;
+
 
 namespace OSharp.AspNetCore.Infrastructure
 {
     /// <summary>
     /// Request的<see cref="ServiceLifetime.Scoped"/>服务解析器
     /// </summary>
-    public class RequestScopedServiceResolver : IScopedServiceResolver, ISingletonDependency
+    public class RequestScopedServiceResolver : IScopedServiceResolver
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

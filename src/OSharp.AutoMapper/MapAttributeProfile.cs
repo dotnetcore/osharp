@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="MapAttributeProfile.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-14 1:10</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-03-07 21:20</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using OSharp.Collections;
-using OSharp.Dependency;
 using OSharp.Mapping;
 using OSharp.Reflection;
 
@@ -21,7 +20,7 @@ using OSharp.Reflection;
 namespace OSharp.AutoMapper
 {
     /// <inheritdoc cref="IMapTuple" />
-    public class MapAttributeProfile : Profile, IMapTuple, ISingletonDependency
+    public class MapAttributeProfile : Profile, IMapTuple
     {
         private readonly IMapFromAttributeTypeFinder _mapFromAttributeTypeFinder;
         private readonly IMapToAttributeTypeFinder _mapToAttributeTypeFinder;

@@ -25,7 +25,7 @@ namespace OSharp.Options
     /// <summary>
     /// OSharp配置选项创建器
     /// </summary>
-    public class OSharpOptionsSetup : IConfigureOptions<OSharpOptions>, ISingletonDependency
+    public class OSharpOptionsSetup : IConfigureOptions<OSharpOptions>
     {
         private readonly IConfiguration _configuration;
 

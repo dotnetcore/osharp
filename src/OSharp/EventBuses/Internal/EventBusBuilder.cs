@@ -18,7 +18,7 @@ namespace OSharp.EventBuses.Internal
     /// <summary>
     /// EventBus初始化
     /// </summary>
-    internal class EventBusBuilder : IEventBusBuilder, ISingletonDependency
+    internal class EventBusBuilder : IEventBusBuilder
     {
         private readonly IAllAssemblyFinder _allAssemblyFinder;
         private readonly IEventBus _eventBus;

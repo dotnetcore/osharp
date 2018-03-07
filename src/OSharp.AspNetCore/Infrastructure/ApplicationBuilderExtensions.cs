@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.EventBuses;
 using OSharp.Core;
+using OSharp.Core.Modules;
 
 
 namespace OSharp
@@ -30,23 +31,9 @@ namespace OSharp
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
-            //应用程序级别的服务定位器
-            ServiceLocator.Instance.TrySetApplicationServiceProvider(serviceProvider);
 
-            //事件总线
-            IEventBusBuilder eventBusBuilder = serviceProvider.GetService<IEventBusBuilder>();
-            eventBusBuilder.Build();
-
-            //实体信息初始化
-            IEntityInfoHandler entityInfoHandler = serviceProvider.GetService<IEntityInfoHandler>();
-            entityInfoHandler.Initialize();
-
-            //功能信息初始化
-            IFunctionHandler[] functionHandlers = serviceProvider.GetServices<IFunctionHandler>().ToArray();
-            foreach (IFunctionHandler functionHandler in functionHandlers)
-            {
-                functionHandler.Initialize();
-            }
+            OSharpModuleManager moduleManager = serviceProvider.GetService<OSharpModuleManager>();
+            moduleManager.UseModules(serviceProvider);
 
             return app;
         }
