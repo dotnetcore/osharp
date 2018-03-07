@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.EventBuses;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp

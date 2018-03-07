@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.Entity;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp.Demo.Web.Areas.Api.Controllers

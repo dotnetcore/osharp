@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.Reflection;
 
 using OSharp.Entity;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 using Xunit;
 

@@ -18,7 +18,7 @@ using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Dependency;
 using OSharp.Exceptions;
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.Reflection;
 
 

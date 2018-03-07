@@ -12,7 +12,7 @@ using System;
 using OSharp.Dependency;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
     /// 实体信息处理器

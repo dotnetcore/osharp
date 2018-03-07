@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using OSharp.Audits;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp.Entity

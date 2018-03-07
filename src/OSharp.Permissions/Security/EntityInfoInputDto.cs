@@ -7,7 +7,7 @@
 //  <last-date>2017-11-15 17:26</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.Mapping;
 
 

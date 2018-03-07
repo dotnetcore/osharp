@@ -17,7 +17,7 @@ using OSharp.Entity;
 using OSharp.Reflection;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
     /// 实体信息基类

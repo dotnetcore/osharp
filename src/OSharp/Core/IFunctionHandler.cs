@@ -7,7 +7,7 @@
 //  <last-date>2017-09-14 20:10</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
     /// 定义功能信息处理器

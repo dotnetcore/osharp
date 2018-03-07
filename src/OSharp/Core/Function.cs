@@ -1,20 +1,21 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IFunctionTypeFinder.cs" company="OSharp开源团队">
+//  <copyright file="Function.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-14 12:43</last-date>
+//  <last-editor></last-editor>
+//  <last-date>2017-09-14 20:13</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Reflection;
+using System.ComponentModel;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
-    /// 定义功能信息类型查找器
+    /// 实体类：功能信息
     /// </summary>
-    public interface IFunctionTypeFinder : ITypeFinder
+    [Description("功能信息")]
+    public class Function : FunctionBase
     { }
 }

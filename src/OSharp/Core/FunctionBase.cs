@@ -12,7 +12,7 @@ using System;
 using OSharp.Entity;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
     /// 功能信息基类

@@ -1,21 +1,21 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="Function.cs" company="OSharp开源团队">
+//  <copyright file="EntityInfo.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor></last-editor>
-//  <last-date>2017-09-14 20:13</last-date>
+//  <last-date>2017-09-14 15:31</last-date>
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
-    /// 实体类：功能信息
+    /// 实体类：实体信息类
     /// </summary>
-    [Description("功能信息")]
-    public class Function : FunctionBase
+    [Description("实体信息类")]
+    public class EntityInfo : EntityInfoBase
     { }
 }

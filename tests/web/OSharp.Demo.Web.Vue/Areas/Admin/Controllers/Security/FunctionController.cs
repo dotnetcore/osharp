@@ -19,7 +19,7 @@ using OSharp.Data;
 using OSharp.Demo.Security;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.Security;
 
 

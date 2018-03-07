@@ -20,7 +20,7 @@ using OSharp.Entity;
 using OSharp.Reflection;
 
 
-namespace OSharp.Infrastructure
+namespace OSharp.Core
 {
     /// <summary>
     /// 功能信息处理基类

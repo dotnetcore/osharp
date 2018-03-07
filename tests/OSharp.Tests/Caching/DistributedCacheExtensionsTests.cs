@@ -3,7 +3,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;

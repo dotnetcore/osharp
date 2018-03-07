@@ -13,7 +13,7 @@ using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.Security;
 
 

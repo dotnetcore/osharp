@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.Demo.Security;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp.Demo.Web.Areas.Admin.Controllers

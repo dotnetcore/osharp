@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp.Demo.EntityConfiguration.Security

@@ -13,7 +13,7 @@ using System.Reflection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Finders;
-using OSharp.Infrastructure;
+using OSharp.Core;
 using OSharp.Reflection;
 
 

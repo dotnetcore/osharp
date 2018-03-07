@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Infrastructure;
+using OSharp.Core;
 
 
 namespace OSharp.Security
