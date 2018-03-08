@@ -19,9 +19,6 @@ namespace OSharp.Demo.Web
         {
             services.AddMvc();
 
-            services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>()
-                .AddDefaultTokenProviders();
-
             services.AddOSharp().AddDistributedMemoryCache().AddLogging(builder =>
             {
                 builder.AddFile(ops =>

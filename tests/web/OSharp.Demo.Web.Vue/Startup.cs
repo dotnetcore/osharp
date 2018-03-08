@@ -38,9 +38,6 @@ namespace OSharp.Demo.Web
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
 
-            services.AddOSharpIdentity<UserStore, RoleStore, User, Role, int, int>()
-                .AddDefaultTokenProviders();
-
             services.AddOSharp().AddDistributedMemoryCache().AddLogging(builder =>
                 {
                     builder.AddFile(ops =>
