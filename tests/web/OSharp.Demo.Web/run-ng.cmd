@@ -1,1 +1,0 @@
-ng server --proxy-config proxy.config.json
