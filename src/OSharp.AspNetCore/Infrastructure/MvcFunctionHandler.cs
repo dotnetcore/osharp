@@ -34,17 +34,20 @@ namespace OSharp.AspNetCore.Infrastructure
         /// </summary>
         public MvcFunctionHandler(IServiceProvider applicationServiceProvider)
             : base(applicationServiceProvider)
-        { }
+        {
+            FunctionTypeFinder = new MvcControllerTypeFinder(AllAssemblyFinder);
+            MethodInfoFinder = new PublicInstanceMethodInfoFinder();
+        }
 
         /// <summary>
         /// 获取 功能类型查找器
         /// </summary>
-        public override IFunctionTypeFinder FunctionTypeFinder => new MvcControllerTypeFinder(AllAssemblyFinder);
+        public override IFunctionTypeFinder FunctionTypeFinder { get; }
 
         /// <summary>
         /// 获取 功能方法查找器
         /// </summary>
-        public override IMethodInfoFinder MethodInfoFinder => new PublicInstanceMethodInfoFinder();
+        public override IMethodInfoFinder MethodInfoFinder { get; }
 
         /// <summary>
         /// 重写以实现从功能类型创建功能信息

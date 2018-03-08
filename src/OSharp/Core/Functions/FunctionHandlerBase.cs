@@ -89,7 +89,10 @@ namespace OSharp.Core
             {
                 RefreshCache();
             }
-            return _functions.FirstOrDefault(m => m.Area == area && m.Controller == controller && m.Action == action);
+            return _functions.FirstOrDefault(m =>
+                string.Equals(m.Area, area, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Controller, controller, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Action, action, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -161,23 +164,29 @@ namespace OSharp.Core
         /// <returns></returns>
         protected virtual bool HasPickup(List<TFunction> functions, TFunction function)
         {
-            return functions.Any(m => m.Area == function.Area && m.Controller == function.Controller
-                && m.Action == function.Action && m.Name == function.Name);
+            return functions.Any(m =>
+                string.Equals(m.Area, function.Area, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Controller, function.Controller, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Action, function.Action, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Name, function.Name, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
         /// 重写以实现功能信息查找
         /// </summary>
         /// <param name="functions">功能信息集合</param>
-        /// <param name="action">方法名称</param>
-        /// <param name="controller">类型名称</param>
         /// <param name="area">区域名称</param>
+        /// <param name="controller">类型名称</param>
+        /// <param name="action">方法名称</param>
         /// <param name="name">功能名称</param>
         /// <returns></returns>
-        protected virtual TFunction GetFunction(IEnumerable<TFunction> functions, string action, string controller, string area, string name)
+        protected virtual TFunction GetFunction(IEnumerable<TFunction> functions, string area, string controller, string action, string name)
         {
-            return functions.FirstOrDefault(m => m.Action == action && m.Controller == controller
-                && m.Area == area && m.Name == name);
+            return functions.FirstOrDefault(m =>
+                string.Equals(m.Area, area, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Controller, controller, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Action, action, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -189,7 +198,7 @@ namespace OSharp.Core
         /// <returns></returns>
         protected virtual bool IsIgnoreMethod(TFunction action, MethodInfo method, IEnumerable<TFunction> functions)
         {
-            TFunction exist = GetFunction(functions, action.Action, action.Controller, action.Area, action.Name);
+            TFunction exist = GetFunction(functions, action.Area, action.Controller, action.Action, action.Name);
             return exist != null;
         }
 
@@ -235,12 +244,15 @@ namespace OSharp.Core
             foreach (TFunction item in dbItems.Except(removeItems))
             {
                 bool isUpdate = false;
-                TFunction function = functions.Single(m => m.Area == item.Area && m.Controller == item.Controller && m.Action == item.Action);
+                TFunction function = functions.Single(m =>
+                    string.Equals(m.Area, item.Area, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Controller, item.Controller, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(m.Action, item.Action, StringComparison.OrdinalIgnoreCase));
                 if (function == null)
                 {
                     continue;
                 }
-                if (item.Name != function.Name)
+                if (!string.Equals(item.Name, function.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     item.Name = function.Name;
                     isUpdate = true;

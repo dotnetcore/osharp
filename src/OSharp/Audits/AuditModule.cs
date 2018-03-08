@@ -10,6 +10,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Modules;
 using OSharp.EventBuses;
 
 
@@ -18,6 +19,7 @@ namespace OSharp.Audits
     /// <summary>
     /// 审计模块
     /// </summary>
+    [DependsOnModules(typeof(EventBusModule))]
     public class AuditModule : OSharpModule
     {
         /// <summary>

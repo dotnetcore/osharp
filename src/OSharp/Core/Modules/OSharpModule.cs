@@ -33,7 +33,7 @@ namespace OSharp.Core
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public virtual void UseServices(IServiceProvider provider)
+        public virtual void UseModule(IServiceProvider provider)
         { }
     }
 }

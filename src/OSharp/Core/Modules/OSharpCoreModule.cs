@@ -44,7 +44,7 @@ namespace OSharp.Core
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseServices(IServiceProvider provider)
+        public override void UseModule(IServiceProvider provider)
         {
             //应用程序级别的服务定位器
             ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);

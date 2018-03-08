@@ -18,7 +18,7 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServerEntityFrameworkCore模块
     /// </summary>
-    [DependsOn(typeof(EntityFrameworkCoreModule))]
+    [DependsOnModules(typeof(EntityFrameworkCoreModule))]
     public class SqlServerEntityFrameworkCoreModule : OSharpModule
     {
         /// <summary>

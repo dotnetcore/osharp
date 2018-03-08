@@ -28,7 +28,7 @@ namespace OSharp
         /// <summary>
         /// OSharp框架初始化
         /// </summary>
-        public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
+        public static IApplicationBuilder UseOSharpMvc(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
 

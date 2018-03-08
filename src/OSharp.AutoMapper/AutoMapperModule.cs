@@ -35,6 +35,8 @@ namespace OSharp.AutoMapper
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddSingleton<MapperConfigurationExpression>(new MapperConfigurationExpression());
+
             services.AddSingleton<IMapFromAttributeTypeFinder, MapFromAttributeTypeFinder>();
             services.AddSingleton<IMapToAttributeTypeFinder, MapToAttributeTypeFinder>();
             services.AddSingleton<IMapTuple, MapAttributeProfile>();
@@ -47,9 +49,9 @@ namespace OSharp.AutoMapper
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseServices(IServiceProvider provider)
+        public override void UseModule(IServiceProvider provider)
         {
-            MapperConfigurationExpression cfg = new MapperConfigurationExpression();
+            MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>() ?? new MapperConfigurationExpression();
 
             //获取已注册到IoC的所有Profile
             IMapTuple[] tuples = provider.GetServices<IMapTuple>().ToArray();

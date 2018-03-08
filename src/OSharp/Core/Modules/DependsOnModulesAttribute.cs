@@ -15,12 +15,12 @@ namespace OSharp.Core.Modules
     /// <summary>
     /// 定义OSharp模块依赖
     /// </summary>
-    public class DependsOnAttribute : Attribute
+    public class DependsOnModulesAttribute : Attribute
     {
         /// <summary>
-        /// 初始化一个 OSharp模块依赖<see cref="DependsOnAttribute"/>类型的新实例
+        /// 初始化一个 OSharp模块依赖<see cref="DependsOnModulesAttribute"/>类型的新实例
         /// </summary>
-        public DependsOnAttribute(params Type[] dependedModuleTypes)
+        public DependsOnModulesAttribute(params Type[] dependedModuleTypes)
         {
             DependedModuleTypes = dependedModuleTypes;
         }

@@ -71,7 +71,7 @@ namespace OSharp.Core.Modules
         {
             foreach (OSharpModule module in Modules)
             {
-                module.UseServices(provider);
+                module.UseModule(provider);
             }
         }
 

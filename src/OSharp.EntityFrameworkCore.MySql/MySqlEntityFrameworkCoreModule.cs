@@ -18,7 +18,7 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySqlEntityFrameworkCore模块
     /// </summary>
-    [DependsOn(typeof(EntityFrameworkCoreModule))]
+    [DependsOnModules(typeof(EntityFrameworkCoreModule))]
     public class MySqlEntityFrameworkCoreModule : OSharpModule
     {
         /// <summary>
