@@ -11,9 +11,10 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core.Builders;
 using OSharp.Core.Modules;
+using OSharp.Core.Options;
 using OSharp.Dependency;
-using OSharp.Options;
 using OSharp.Reflection;
 
 
@@ -25,34 +26,29 @@ namespace OSharp
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// 将模块服务注册到依赖注入容器中
+        /// 将OSharp服务添加到容器
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, AppServiceScanOptions scanOptions = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null, AppServiceScanOptions scanOptions = null)
         {
+            Check.NotNull(services, nameof(services));
+
+            IOSharpBuilder builder = new OSharpBuilder();
+            if (builderAction != null)
+            {
+                builderAction(builder);
+            }
+            OSharpModuleManager manager = new OSharpModuleManager(builder, new AppDomainAllAssemblyFinder());
+            manager.LoadModules(services);
+            services.AddSingleton(provider => manager);
             if (scanOptions == null)
             {
                 scanOptions = new AppServiceScanOptions();
             }
             services = new AppServiceAdder(scanOptions).AddServices(services);
-
-            OSharpModuleManager moduleManager = new OSharpModuleManager(new AppDomainAllAssemblyFinder());
-            moduleManager.LoadModules(services);
-            services.AddSingleton(provider => moduleManager);
-
-            ServiceLocator.Instance.TrySetServiceCollection(services);
-            return services;
-        }
-
-        /// <summary>
-        /// 将模块服务注册到依赖注入容器中
-        /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<OSharpOptions> configureOptions, AppServiceScanOptions scanOptions = null)
-        {
-            Check.NotNull(services, nameof(services));
-            Check.NotNull(configureOptions, nameof(configureOptions));
-
-            services.AddOSharp(scanOptions);
-            services.Configure(configureOptions);
+            if (builder.OptionsAction != null)
+            {
+                services.Configure(builder.OptionsAction);
+            }
             return services;
         }
     }

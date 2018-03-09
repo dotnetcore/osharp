@@ -7,11 +7,15 @@
 //  <last-date>2017-09-14 20:10</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core
+using OSharp.Dependency;
+
+
+namespace OSharp.Core.Functions
 {
     /// <summary>
     /// 定义功能信息处理器
     /// </summary>
+    [IgnoreDependency]
     public interface IFunctionHandler
     {
         /// <summary>

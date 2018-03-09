@@ -11,10 +11,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-using OSharp.Options;
 
-
-namespace OSharp
+namespace OSharp.Core.Options
 {
     /// <summary>
     /// OSharp框架配置选项信息
@@ -28,7 +26,7 @@ namespace OSharp
         {
             DbContextOptionses = new ConcurrentDictionary<string, OSharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
         }
-        
+
         /// <summary>
         /// 获取 数据上下文配置信息
         /// </summary>

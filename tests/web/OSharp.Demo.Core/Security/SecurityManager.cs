@@ -14,6 +14,8 @@ using OSharp.Demo.Security.Entities;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Core;
+using OSharp.Core.EntityInfos;
+using OSharp.Core.Functions;
 using OSharp.Security;
 
 

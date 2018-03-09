@@ -10,7 +10,7 @@
 using System.ComponentModel;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
     /// 实体类：实体信息类

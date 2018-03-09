@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Modules;
 
 
 namespace OSharp.Identity

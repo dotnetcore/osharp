@@ -10,7 +10,7 @@
 using System.ComponentModel;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.Functions
 {
     /// <summary>
     /// 实体类：功能信息

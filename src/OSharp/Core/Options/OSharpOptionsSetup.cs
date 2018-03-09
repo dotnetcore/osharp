@@ -7,20 +7,17 @@
 //  <last-date>2017-09-03 12:32</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 
 
-namespace OSharp.Options
+namespace OSharp.Core.Options
 {
     /// <summary>
     /// OSharp配置选项创建器

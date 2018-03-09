@@ -1,20 +1,18 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AppServiceLocator.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="ServiceLocator.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-17 13:05</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-03-09 21:57</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Dependency;
-using OSharp.Exceptions;
-using OSharp.Reflection;
 
 
 namespace OSharp
@@ -25,9 +23,9 @@ namespace OSharp
     public sealed class ServiceLocator
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
+        private IServiceProvider _provider;
 
         private IServiceCollection _services;
-        private IServiceProvider _provider;
 
         /// <summary>
         /// 初始化一个<see cref="ServiceLocator"/>类型的新实例

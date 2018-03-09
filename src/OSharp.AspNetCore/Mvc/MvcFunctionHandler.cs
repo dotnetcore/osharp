@@ -14,20 +14,19 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Dependency;
-using OSharp.Exceptions;
 using OSharp.Core;
+using OSharp.Core.Functions;
+using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
-namespace OSharp.AspNetCore.Infrastructure
+namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
     /// MVC 功能处理器
     /// </summary>
-    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>
+    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>, IMvcFunctionHandler
     {
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例

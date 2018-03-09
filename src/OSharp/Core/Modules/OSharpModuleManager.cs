@@ -13,7 +13,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Dependency;
+using OSharp.Core.Builders;
 using OSharp.Reflection;
 
 
@@ -24,25 +24,34 @@ namespace OSharp.Core.Modules
     /// </summary>
     public class OSharpModuleManager
     {
-        private List<OSharpModule> _modules = new List<OSharpModule>();
+        private readonly IOSharpBuilder _builder;
         private readonly OSharpModuleTypeFinder _typeFinder;
+        private readonly List<OSharpModule> _sourceModules;
 
         /// <summary>
         /// 初始化一个<see cref="OSharpModuleManager"/>类型的新实例
         /// </summary>
-        public OSharpModuleManager(IAllAssemblyFinder allAssemblyFinder)
+        public OSharpModuleManager(IOSharpBuilder builder, IAllAssemblyFinder allAssemblyFinder)
         {
+            _builder = builder;
             _typeFinder = new OSharpModuleTypeFinder(allAssemblyFinder);
+            _sourceModules = new List<OSharpModule>();
+            LoadedModules = new List<OSharpModule>();
         }
 
         /// <summary>
-        /// 获取 所有模块信息
+        /// 获取 自动检索到的所有模块信息
         /// </summary>
-        public IReadOnlyList<OSharpModule> Modules
+        public IEnumerable<OSharpModule> SourceModules
         {
-            get { return _modules.AsReadOnly(); }
+            get { return _sourceModules; }
         }
 
+        /// <summary>
+        /// 获取 加载的模块信息集合
+        /// </summary>
+        public IEnumerable<OSharpModule> LoadedModules { get; private set; }
+        
         /// <summary>
         /// 加载模块服务
         /// </summary>
@@ -51,11 +60,25 @@ namespace OSharp.Core.Modules
         public IServiceCollection LoadModules(IServiceCollection services)
         {
             Type[] moduleTypes = _typeFinder.FindAll();
-            List<OSharpModule> modules = moduleTypes.Select(m => Activator.CreateInstance(m) as OSharpModule).ToList();
+            _sourceModules.Clear();
+            _sourceModules.AddRange(moduleTypes.Select(m => Activator.CreateInstance(m) as OSharpModule));
+            List<OSharpModule> modules;
+            if (_builder.Modules.Any())
+            {
+                modules = _sourceModules.Where(m => m.IsAutoLoad)
+                    .Union(_sourceModules.Where(m => _builder.Modules.Contains(m.GetType()))).Distinct().ToList();
+                IEnumerable<Type> dependModuleTypes = modules.SelectMany(m => m.GetDependModuleTypes());
+                modules = modules.Union(_sourceModules.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
+                modules = modules.OrderByDescending(m => m.IsAutoLoad).ToList();
+            }
+            else
+            {
+                modules = _sourceModules.OrderByDescending(m => m.IsAutoLoad).ToList();
+            }
             EnsureCoreModuleToBeFirst(modules);
-            _modules = modules;
+            LoadedModules = modules;
 
-            foreach (OSharpModule module in modules)
+            foreach (OSharpModule module in LoadedModules)
             {
                 services = module.AddServices(services);
             }
@@ -69,13 +92,13 @@ namespace OSharp.Core.Modules
         /// <param name="provider">服务提供者</param>
         public void UseModules(IServiceProvider provider)
         {
-            foreach (OSharpModule module in Modules)
+            foreach (OSharpModule module in LoadedModules)
             {
                 module.UseModule(provider);
             }
         }
 
-        private void EnsureCoreModuleToBeFirst(List<OSharpModule> modules)
+        private static void EnsureCoreModuleToBeFirst(List<OSharpModule> modules)
         {
             int index = modules.FindIndex(m => m.GetType() == typeof(OSharpCoreModule));
             if (index <= 0)

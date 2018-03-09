@@ -11,13 +11,12 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using OSharp.AspNetCore.Mvc;
+using OSharp.Core.Functions;
 using OSharp.Finders;
-using OSharp.Core;
 using OSharp.Reflection;
 
 
-namespace OSharp.AspNetCore
+namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
     /// MVC控制器类型查找器

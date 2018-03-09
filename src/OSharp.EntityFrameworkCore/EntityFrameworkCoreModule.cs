@@ -7,9 +7,12 @@
 //  <last-date>2018-03-07 21:30</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Modules;
 
 using Remotion.Linq.Clauses;
 

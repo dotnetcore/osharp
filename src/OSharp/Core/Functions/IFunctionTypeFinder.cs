@@ -10,7 +10,7 @@
 using OSharp.Reflection;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.Functions
 {
     /// <summary>
     /// 定义功能信息类型查找器

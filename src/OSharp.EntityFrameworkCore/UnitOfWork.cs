@@ -17,10 +17,10 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using OSharp.Core.Options;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Extensions;
-using OSharp.Options;
 
 
 namespace OSharp.Entity

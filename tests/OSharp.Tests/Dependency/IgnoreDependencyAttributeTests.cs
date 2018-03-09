@@ -4,8 +4,6 @@ using System.Text;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Options;
-
 using Shouldly;
 
 using Xunit;

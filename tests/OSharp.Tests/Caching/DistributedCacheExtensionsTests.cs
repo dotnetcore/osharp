@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Functions;
 using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;

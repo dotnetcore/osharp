@@ -11,7 +11,7 @@ using OSharp.Dependency;
 using OSharp.Reflection;
 
 
-namespace OSharp.Options
+namespace OSharp.Core.Options
 {
     /// <summary>
     /// OSharp依赖注入类型扫描配置信息

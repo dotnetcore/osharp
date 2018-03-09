@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;

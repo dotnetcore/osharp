@@ -16,8 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
+using OSharp.Core.Options;
 using OSharp.EventBuses;
-using OSharp.Options;
 
 
 namespace OSharp.Entity

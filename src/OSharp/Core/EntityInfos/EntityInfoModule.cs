@@ -1,33 +1,27 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EventBusModule.cs" company="OSharp开源团队">
+//  <copyright file="EntityInfoModule.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-07 19:51</last-date>
+//  <last-date>2018-03-09 21:30</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
 using OSharp.Core.Modules;
-using OSharp.EventBuses.Internal;
+using OSharp.Entity;
 
 
-namespace OSharp.EventBuses
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
-    /// 事件总线模块
+    /// 实体信息模块
     /// </summary>
-    public class EventBusModule : OSharpModule
+    public class EntityInfoModule : OSharpModule
     {
-        /// <summary>
-        /// 获取 是否内部模块，内部模块将自动加载
-        /// </summary>
-        public override bool IsAutoLoad => true;
-
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
@@ -35,11 +29,8 @@ namespace OSharp.EventBuses
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IEventSubscriber, PassThroughEventBus>();
-            services.AddSingleton<IEventPublisher, PassThroughEventBus>();
-            services.AddSingleton<IEventBus, PassThroughEventBus>();
-            services.AddSingleton<IEventStore, InMemoryEventStore>();
-            services.AddSingleton<IEventBusBuilder, EventBusBuilder>();
+            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
+            services.AddSingleton<IEntityInfoHandler, EntityInfoHandler>();
 
             return services;
         }
@@ -50,8 +41,8 @@ namespace OSharp.EventBuses
         /// <param name="provider"></param>
         public override void UseModule(IServiceProvider provider)
         {
-            IEventBusBuilder builder = provider.GetService<IEventBusBuilder>();
-            builder.Build();
+            IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
+            handler.Initialize();
             IsEnabled = true;
         }
     }

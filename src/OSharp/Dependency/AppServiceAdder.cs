@@ -13,7 +13,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using OSharp.Options;
+using OSharp.Core.Options;
 using OSharp.Reflection;
 
 namespace OSharp.Dependency

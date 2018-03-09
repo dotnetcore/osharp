@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OSharp.Exceptions;
 using OSharp.Finders;
 using OSharp.Core;
+using OSharp.Core.EntityInfos;
+using OSharp.Core.Functions;
 using OSharp.Reflection;
 
 

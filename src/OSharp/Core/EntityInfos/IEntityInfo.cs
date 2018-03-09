@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace OSharp
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
     /// 定义数据实体信息

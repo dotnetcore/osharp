@@ -17,10 +17,11 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.Functions
 {
     /// <summary>
     /// 功能信息处理基类
@@ -222,7 +223,7 @@ namespace OSharp.Core
             IRepository<TFunction, Guid> repository = ScopedServiceProvider.GetService<IRepository<TFunction, Guid>>();
             if (repository == null)
             {
-                return;
+                throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
             }
             TFunction[] dbItems = repository.TrackQuery().ToArray();
 

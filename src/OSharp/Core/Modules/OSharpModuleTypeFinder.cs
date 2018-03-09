@@ -14,7 +14,7 @@ using OSharp.Reflection;
 using OSharp.Finders;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.Modules
 {
     /// <summary>
     /// OSharp模块类型查找器

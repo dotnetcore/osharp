@@ -12,7 +12,7 @@ using System;
 using OSharp.Entity;
 
 
-namespace OSharp
+namespace OSharp.Core.Functions
 {
     /// <summary>
     /// 定义功能信息

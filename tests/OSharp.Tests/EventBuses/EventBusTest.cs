@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Maths;
 
@@ -25,7 +26,7 @@ namespace OSharp.Tests.IEventBuses
             IServiceProvider provider = services.BuildServiceProvider();
             ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
         }
-        
+
         [Fact]
         public void Subscribe_Test()
         {
@@ -90,7 +91,7 @@ namespace OSharp.Tests.IEventBuses
         }
 
 
-        private class HelloEventHandler : EventHandlerBase<HelloEventData>
+        private class HelloEventHandler : EventHandlerBase<HelloEventData>, ITransientDependency
         {
             /// <summary>
             /// 事件处理

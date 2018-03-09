@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 using OSharp.Audits;
 using OSharp.Core;
+using OSharp.Core.EntityInfos;
 
 
 namespace OSharp.Entity

@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Web.Vue", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Demo.Web.NG", "tests\web\OSharp.Demo.Web.NG\OSharp.Demo.Web.NG.csproj", "{B76D4667-4CCC-4375-8456-90D872E12633}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Demo.WebApi", "tests\web\OSharp.Demo.WebApi\OSharp.Demo.WebApi.csproj", "{8A545353-11E2-49F8-9DE0-AB564E2F2055}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{B76D4667-4CCC-4375-8456-90D872E12633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B76D4667-4CCC-4375-8456-90D872E12633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B76D4667-4CCC-4375-8456-90D872E12633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A545353-11E2-49F8-9DE0-AB564E2F2055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A545353-11E2-49F8-9DE0-AB564E2F2055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A545353-11E2-49F8-9DE0-AB564E2F2055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A545353-11E2-49F8-9DE0-AB564E2F2055}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{01974482-F9CA-41E7-A9EF-EB13C939570F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{644048C5-F15E-4A8B-9C9D-9B403618A4B2} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{B76D4667-4CCC-4375-8456-90D872E12633} = {0E239259-0BC3-4521-AD60-07CB87263140}
+		{8A545353-11E2-49F8-9DE0-AB564E2F2055} = {0E239259-0BC3-4521-AD60-07CB87263140}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

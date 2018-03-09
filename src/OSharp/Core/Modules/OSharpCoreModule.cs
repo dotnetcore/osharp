@@ -13,12 +13,13 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using OSharp.Core.EntityInfos;
+using OSharp.Core.Functions;
+using OSharp.Core.Options;
 using OSharp.Entity;
-using OSharp.Options;
-using OSharp.Reflection;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.Modules
 {
     /// <summary>
     /// OSharp核心模块
@@ -26,16 +27,19 @@ namespace OSharp.Core
     public class OSharpCoreModule : OSharpModule
     {
         /// <summary>
+        /// 获取 是否内部模块，内部模块将自动加载
+        /// </summary>
+        public override bool IsAutoLoad => true;
+
+        /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
         /// <param name="services">依赖注入服务容器</param>
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
             services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
-
-            services.AddSingleton<IEntityInfoHandler, EntityInfoHandler>();
+            ServiceLocator.Instance.TrySetServiceCollection(services);
 
             return services;
         }
@@ -48,17 +52,8 @@ namespace OSharp.Core
         {
             //应用程序级别的服务定位器
             ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
-
-            //实体信息初始化
-            IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
-            entityInfoHandler.Initialize();
-
-            //功能信息初始化
-            IFunctionHandler[] functionHandlers = provider.GetServices<IFunctionHandler>().ToArray();
-            foreach (IFunctionHandler functionHandler in functionHandlers)
-            {
-                functionHandler.Initialize();
-            }
+            
+            IsEnabled = true;
         }
     }
 }

@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Core;
+using OSharp.Core.EntityInfos;
 using OSharp.Mapping;
 
 

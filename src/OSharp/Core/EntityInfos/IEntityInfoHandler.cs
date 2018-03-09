@@ -12,7 +12,7 @@ using System;
 using OSharp.Entity;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
     /// 实体信息处理器

@@ -16,6 +16,7 @@ using AutoMapper.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Modules;
 using OSharp.Mapping;
 
 using IMapper = OSharp.Mapping.IMapper;
@@ -65,6 +66,8 @@ namespace OSharp.AutoMapper
 
             IMapper mapper = provider.GetService<IMapper>();
             MapperExtensions.SetMapper(mapper);
+
+            IsEnabled = true;
         }
     }
 }

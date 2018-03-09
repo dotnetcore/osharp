@@ -12,7 +12,7 @@ using System;
 using OSharp.Entity;
 
 
-namespace OSharp.Options
+namespace OSharp.Core.Options
 {
     /// <summary>
     /// 数据上下文配置节点

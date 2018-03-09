@@ -10,8 +10,7 @@
 using System;
 using System.Data.Common;
 
-using OSharp.Data;
-using OSharp.Options;
+using OSharp.Core.Options;
 
 
 namespace OSharp.Entity.Transactions

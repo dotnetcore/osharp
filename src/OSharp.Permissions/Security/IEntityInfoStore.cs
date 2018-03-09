@@ -9,6 +9,7 @@ using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Core;
+using OSharp.Core.EntityInfos;
 
 
 namespace OSharp.Security

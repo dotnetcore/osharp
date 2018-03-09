@@ -1,19 +1,16 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="UnitOfWorkAttribute.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-11 22:33</last-date>
+//  <last-date>2018-03-09 22:07</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.UI;
 using OSharp.Entity;
@@ -32,9 +29,9 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkAttribute"/>类型的新实例
         /// </summary>
-        public UnitOfWorkAttribute(IUnitOfWork unitOfWork)
+        public UnitOfWorkAttribute()
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
         }
 
         /// <inheritdoc />
@@ -47,8 +44,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                     return;
                 }
             }
-
-            _unitOfWork.Commit();
+            _unitOfWork?.Commit();
         }
     }
 }

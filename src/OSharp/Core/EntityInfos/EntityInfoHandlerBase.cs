@@ -16,9 +16,10 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Entity;
+using OSharp.Exceptions;
 
 
-namespace OSharp.Core
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
     /// 实体信息处理基类
@@ -109,6 +110,10 @@ namespace OSharp.Core
         protected virtual void SyncToDatabase(List<TEntityInfo> entityInfos)
         {
             IRepository<TEntityInfo, Guid> repository = _scopedServiceProvider.GetService<IRepository<TEntityInfo, Guid>>();
+            if (repository == null)
+            {
+                throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+            }
             TEntityInfo[] dbItems = repository.TrackQuery().ToArray();
 
             //删除的实体信息
