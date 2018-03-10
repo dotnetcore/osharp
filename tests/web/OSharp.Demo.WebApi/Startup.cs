@@ -19,7 +19,6 @@ using OSharp.Audits;
 using OSharp.AutoMapper;
 using OSharp.Demo.Identity;
 using OSharp.Entity;
-using OSharp.Entity.SqlServer;
 
 
 namespace OSharp.Demo.WebApi
@@ -44,16 +43,7 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp(
-            //    builder =>
-            //{
-            //    builder.AddModule<AutoMapperModule>()
-            //        .AddModule<AuditModule>()
-            //        .AddModule<EntityFrameworkCoreModule>()
-            //        .AddModule<IdentityModule>();
-
-            //}
-            ).AddDistributedMemoryCache().AddLogging(builder =>
+            services.AddOSharp().AddDistributedMemoryCache().AddLogging(builder =>
             {
                 builder.AddFile(options =>
                 {

@@ -7,6 +7,8 @@
 //  <last-date>2017-11-18 14:53</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Security;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Security.Entities
     /// <summary>
     /// 实体类：模块信息
     /// </summary>
+    [Description("模块信息")]
     public class Module : ModuleBase<int>
     { }
 }
