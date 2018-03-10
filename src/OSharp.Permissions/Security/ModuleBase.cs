@@ -47,6 +47,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
         /// </summary>
+        [DisplayName("父节点树形路径")]
         public string TreePathString { get; set; }
 
         /// <summary>
@@ -67,6 +68,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
+        [DisplayName("父模块编号")]
         public TModuleKey? ParentId { get; set; }
     }
 }

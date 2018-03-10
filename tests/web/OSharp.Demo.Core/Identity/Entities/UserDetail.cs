@@ -23,11 +23,13 @@ namespace OSharp.Demo.Identity.Entities
         /// <summary>
         /// 获取或设置 地址
         /// </summary>
+        [DisplayName("地址")]
         public string Address { get; set; }
 
         /// <summary>
-        /// 获取或设置 所属用户
+        /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public virtual int UserId { get; set; }
     }
 }

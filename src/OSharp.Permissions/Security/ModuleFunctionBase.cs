@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Entity;
 
@@ -22,11 +23,13 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 模块编号
         /// </summary>
+        [DisplayName("模块编号")]
         public TModuleKey ModuleId { get; set; }
 
         /// <summary>
         /// 获取或设置 功能编号
         /// </summary>
+        [DisplayName("功能编号")]
         public Guid FunctionId { get; set; }
     }
 }

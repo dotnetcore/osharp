@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
@@ -26,17 +27,20 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 声明类型
         /// </summary>
         [Required]
+        [DisplayName("声明类型")]
         public string ClaimType { get; set; }
 
         /// <summary>
         /// 获取或设置 声明值
         /// </summary>
+        [DisplayName("声明值")]
         public string ClaimValue { get; set; }
 
         /// <summary>

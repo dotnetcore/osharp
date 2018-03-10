@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Data;
 
@@ -33,6 +34,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取或设置 编号
         /// </summary>
+        [DisplayName("编号")]
         public TKey Id { get; set; }
 
         /// <summary>

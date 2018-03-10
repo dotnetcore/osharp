@@ -25,11 +25,6 @@ namespace OSharp.Core.EntityInfos
     public abstract class EntityInfoBase : EntityBase<Guid>, IEntityInfo
     {
         /// <summary>
-        /// 获取或设置 实体属性信息Json字符串
-        /// </summary>
-        public string PropertyNamesJson { get; set; }
-
-        /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
         [Required, DisplayName("实体名称")]
@@ -46,6 +41,12 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         [DisplayName("是否启用数据日志")]
         public bool AuditEnabled { get; set; } = true;
+
+        /// <summary>
+        /// 获取或设置 实体属性信息Json字符串
+        /// </summary>
+        [Required, DisplayName("实体属性信息Json字符串")]
+        public string PropertyNamesJson { get; set; }
 
         /// <summary>
         /// 获取 实体属性信息字典

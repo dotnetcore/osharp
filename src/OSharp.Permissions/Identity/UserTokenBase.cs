@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Entity;
 
@@ -24,21 +25,25 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 当前用户标识的登录提供者
         /// </summary>
+        [DisplayName("登录提供者")]
         public string LoginProvider { get; set; }
 
         /// <summary>
         /// 获取或设置 令牌名称
         /// </summary>
+        [DisplayName("令牌名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 令牌值
         /// </summary>
+        [DisplayName("令牌值")]
         public string Value { get; set; }
     }
 }

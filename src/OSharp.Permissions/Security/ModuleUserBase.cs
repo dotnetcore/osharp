@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 using OSharp.Entity;
@@ -17,11 +18,13 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 模块编号
         /// </summary>
+        [DisplayName("模块编号")]
         public TModuleKey ModuleId { get; set; }
 
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
     }
 }

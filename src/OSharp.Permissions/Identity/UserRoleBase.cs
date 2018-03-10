@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Entity;
 
@@ -34,21 +35,25 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
+        [DisplayName("角色编号")]
         public TRoleKey RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 创建时间
         /// </summary>
+        [DisplayName("创建时间")]
         public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定当前信息
         /// </summary>
+        [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace OSharp.Demo.Identity.Entities
         /// <summary>
         /// 获取或设置 备注
         /// </summary>
+        [DisplayName("备注")]
         public string Remark { get; set; }
     }
 }

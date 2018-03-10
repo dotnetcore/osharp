@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 using OSharp.Entity;
@@ -17,11 +18,13 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 模块编号
         /// </summary>
+        [DisplayName("模块编号")]
         public TModuleKey ModuleId { get; set; }
 
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
+        [DisplayName("角色编号")]
         public TRoleKey RoleId { get; set; }
     }
 }

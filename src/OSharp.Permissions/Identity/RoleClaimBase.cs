@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Security.Claims;
 
 using OSharp.Entity;
@@ -25,16 +26,19 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
+        [DisplayName("角色编号")]
         public TRoleKey RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 声明类型
         /// </summary>
+        [DisplayName("声明类型")]
         public string ClaimType { get; set; }
 
         /// <summary>
         /// 获取或设置 声明值
         /// </summary>
+        [DisplayName("声明值")]
         public string ClaimValue { get; set; }
 
         /// <summary>
