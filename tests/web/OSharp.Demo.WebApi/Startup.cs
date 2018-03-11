@@ -18,7 +18,9 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Audits;
 using OSharp.AutoMapper;
 using OSharp.Demo.Identity;
+using OSharp.Demo.WebApi.Controllers;
 using OSharp.Entity;
+using OSharp.Entity.SqlServer;
 
 
 namespace OSharp.Demo.WebApi
@@ -43,14 +45,16 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp().AddDistributedMemoryCache().AddLogging(builder =>
-            {
-                builder.AddFile(options =>
+            services.AddOSharp()
+                .AddDistributedMemoryCache()
+                .AddLogging(builder =>
                 {
-                    options.FileName = "log-";
-                    options.LogDirectory = "log";
+                    builder.AddFile(options =>
+                    {
+                        options.FileName = "log-";
+                        options.LogDirectory = "log";
+                    });
                 });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

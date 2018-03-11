@@ -57,7 +57,7 @@ namespace OSharp.Dependency
 
             return services;
         }
-        
+
         /// <summary>
         /// 以类型实现的接口进行服务添加，需排除
         /// <see cref="IDisposable"/>等非业务接口，如无接口则注册自身
@@ -79,9 +79,24 @@ namespace OSharp.Dependency
                     services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime));
                     continue;
                 }
-                foreach (Type interfaceType in interfaceTypes)
+                for (int i = 0; i < interfaceTypes.Length; i++)
                 {
-                    services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                    Type interfaceType = interfaceTypes[i];
+                    if (lifetime == ServiceLifetime.Transient)
+                    {
+                        services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                        continue;
+                    }
+                    if (i == 0)
+                    {
+                        services.TryAdd(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                    }
+                    else
+                    {
+                        //有多个接口时，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一个实例
+                        Type firstInterfaceType = interfaceTypes[0];
+                        services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
+                    }
                 }
             }
             return services;

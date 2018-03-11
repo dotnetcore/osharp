@@ -25,9 +25,8 @@ namespace OSharp.Demo.Security
     /// 权限安全管理器
     /// </summary>
     public class SecurityManager
-        : SecurityManagerBase<Function, FunctionInputDto, EntityInfo, EntityInfoInputDto, Module, ModuleInputDto, int, ModuleFunction, ModuleRole,
-              ModuleUser, int, int>,
-          IScopeDependency
+        : SecurityManagerBase<Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
+            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
     {
         /// <summary>
         /// 初始化一个<see cref="SecurityManager"/>类型的新实例
