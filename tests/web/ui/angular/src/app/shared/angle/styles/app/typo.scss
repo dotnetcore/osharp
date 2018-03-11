@@ -1,0 +1,20 @@
+/* ========================================================================
+     Component: typo
+ ========================================================================== */
+ 
+/* Roboto @font-face */
+@import url(http://fonts.googleapis.com/css?family=Roboto:400italic,300,700,300italic,400);
+
+body {
+  font-family: "Roboto", sans-serif;
+  color: rgba(0,0,0,0.8);
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
+}
+
+.article {
+  font-size: 20px;
+  line-height: 32px;
+}

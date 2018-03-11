@@ -1,0 +1,40 @@
+/* ========================================================================
+   Component: datepicker
+ ========================================================================== */
+
+.ui-datepicker {
+  display: inline-block;
+  max-width: 100%;
+  overflow: auto;
+  background-color: #fff;
+  table {
+    width: 100%;
+  }
+  button {
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0 0 #000 !important;
+
+    &.btn-info.active, &.active {
+      background-color: $brand-purple !important;
+      > span {
+        color: #fff !important;
+      }
+    }
+
+    .text-info {
+      color: $brand-purple;
+      border-bottom: 1px solid;
+    }
+  }
+  .well {
+    margin-bottom: 0;
+  }
+  .card {
+    box-shadow: 0 0 0 #000 !important;
+  }
+}
+// workaround for datepicker color styles
+[class] .btn-info[class] span.text-muted[class] {
+    color: #fff !important;
+}

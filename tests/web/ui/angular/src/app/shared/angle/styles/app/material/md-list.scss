@@ -1,0 +1,65 @@
+
+.mda-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 16px;
+  > .mda-list-item {
+    @include clearfix;
+    
+
+    > .mda-list-item-img,
+    > .mda-list-item-icon,
+    > .mda-list-item-initial {
+      float: left;
+      width: 48px;
+      height: 48px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      margin-right: 16px;
+      border-radius: 50%;
+    }
+    > .mda-list-item-icon {
+      line-height: 42px;
+      text-align: center;
+      > em, > i { line-height: inherit; }
+    }
+    > .mda-list-item-initial {
+      line-height: 50px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 300;
+    }
+
+    > .mda-list-item-text {
+      float: left;
+      padding: 20px 0;
+      &.mda-2-line {
+        padding-top: 26px;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: .01em;
+        margin: 0 0 6px;
+        line-height: .75em;
+      }
+      h4 {
+        font-size: 14px;
+        letter-spacing: .01em;
+        font-weight: 400;
+        margin: 10px 0 5px;
+        line-height: .75em;
+      }
+      p {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.6em
+      }
+
+    }
+ 
+  }
+
+}

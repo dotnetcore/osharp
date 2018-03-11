@@ -1,0 +1,68 @@
+/* ========================================================================
+     Component: dropdown-extras
+ ========================================================================== */
+ 
+// 
+// Dropdopwn extras
+// 
+// ------------------------------
+
+.dropdown-menu {
+  @include box-shadow(0 2px 6px rgba(0,0,0,0.15));
+  @media only screen and (min-width: $mq-tablet) {
+    top: 4px;
+  }
+}
+
+// place components with more space
+.dropdown-lg > .dropdown-menu {
+  min-width: 200px;
+}
+
+// Allows to mix list group inside dropdowns
+.dropdown-list {
+  
+  > .dropdown-menu {
+    padding: 0;
+    min-width: 220px;
+  }
+
+  .list-group {
+    margin: 0;
+  }
+
+  .list-group-item {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    &:first-child {
+      border-top: 0;
+    }
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+// Labels inside dropdowns
+.dropdown {
+  > a {
+    position: relative;
+    > .label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 2px 5px;
+      @media only screen and (min-width: $mq-tablet) {
+        top: 10px;
+      }
+    }
+  }
+}
+
+// Dropdown header
+.dropdown-menu-header {
+  padding: 10px 15px;
+  background-color: #fafafa;
+  border-bottom: 1px solid $dropdown-border;
+}

@@ -1,0 +1,108 @@
+
+.mda-checkbox,
+.mda-radio {
+  position: relative;
+  display: inline-block;
+  padding-left: 20px;
+  margin: 0;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    margin-left: -20px;
+    cursor: pointer;
+    opacity: 0;
+    &:checked + em:before {
+      background-color: inherit;
+      border-width: 0;
+    }
+
+    &:checked + span .active {
+      display: inherit;
+    }
+  }
+
+  // Checkbox
+  input[type="checkbox"]:checked + em:after {
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    display: table;
+    width: 6px;
+    height: 12px;
+    border: 2px solid;
+    border-top: 0;
+    border-left: 0;
+    content: ' ';
+    @include rotate(45deg);
+  }
+  // Radio
+  input[type="radio"]:checked + em:after {
+    content: ' ';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: table;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+
+  input[type="radio"]+em,
+  input[type="radio"]+em:before {
+    border-radius: 50%;
+  }
+}
+
+// Disable states
+.mda-checkbox input[disabled]+em:before,
+fieldset[disabled] .mda-checkbox input+em:before,
+.mda-radio input[disabled]+em:before,
+fieldset[disabled] .mda-radio input+em:before {
+  border-color: rgba(0,0,0,0.26);
+}
+// disable background color for icon
+.mda-checkbox input[disabled]:checked+em,
+.mda-radio input[disabled]:checked+em {
+  background-color: rgba(0,0,0,0.26);
+}
+
+.mda-radio input[disabled]:checked+em:after {
+  background-color: transparent;
+}
+
+.mda-checkbox input[disabled]:checked+em:before {
+  background-color: rgba(0,0,0,0.26);
+}
+
+// Icon style
+.mda-checkbox > em,
+.mda-radio > em {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 18px;
+  margin-top: -2px;
+  margin-right: 28px;
+  margin-left: -20px;
+  line-height: 1;
+  vertical-align: middle;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 100%;
+    border: 2px solid rgba(0,0,0,0.54);
+    border-radius: 2px;
+    @include transition(all .2s);
+  }
+  // Empty box with not icons
+  &.empty:after {
+    display: none !important;
+  }
+}

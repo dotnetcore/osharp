@@ -1,0 +1,666 @@
+/*
+  Google material colors
+ */ 
+
+//## Red
+$mdc-red-50:   #FFEBEE;
+$mdc-red-100:  #FFCDD2;
+$mdc-red-200:  #EF9A9A;
+$mdc-red-300:  #E57373;
+$mdc-red-400:  #EF5350;
+$mdc-red-500:  #F44336;
+$mdc-red-600:  #E53935;
+$mdc-red-700:  #D32F2F;
+$mdc-red-800:  #C62828;
+$mdc-red-900:  #B71C1C;
+$mdc-red-A100: #FF8A80;
+$mdc-red-A200: #FF5252;
+$mdc-red-A400: #FF1744;
+$mdc-red-A700: #D50000;
+
+//## Pink
+$mdc-pink-50:   #FCE4EC;
+$mdc-pink-100:  #F8BBD0;
+$mdc-pink-200:  #F48FB1;
+$mdc-pink-300:  #F06292;
+$mdc-pink-400:  #EC407A;
+$mdc-pink-500:  #E91E63;
+$mdc-pink-600:  #D81B60;
+$mdc-pink-700:  #C2185B;
+$mdc-pink-800:  #AD1457;
+$mdc-pink-900:  #880E4F;
+$mdc-pink-A100: #FF80AB;
+$mdc-pink-A200: #FF4081;
+$mdc-pink-A400: #F50057;
+$mdc-pink-A700: #C51162;
+
+//## Purple
+$mdc-purple-50:   #F3E5F5;
+$mdc-purple-100:  #E1BEE7;
+$mdc-purple-200:  #CE93D8;
+$mdc-purple-300:  #BA68C8;
+$mdc-purple-400:  #AB47BC;
+$mdc-purple-500:  #9C27B0;
+$mdc-purple-600:  #8E24AA;
+$mdc-purple-700:  #7B1FA2;
+$mdc-purple-800:  #6A1B9A;
+$mdc-purple-900:  #4A148C;
+$mdc-purple-A100: #EA80FC;
+$mdc-purple-A200: #E040FB;
+$mdc-purple-A400: #D500F9;
+$mdc-purple-A700: #AA00FF;
+
+//## Deep Purple
+$mdc-deep-purple-50:   #EDE7F6;
+$mdc-deep-purple-100:  #D1C4E9;
+$mdc-deep-purple-200:  #B39DDB;
+$mdc-deep-purple-300:  #9575CD;
+$mdc-deep-purple-400:  #7E57C2;
+$mdc-deep-purple-500:  #673AB7;
+$mdc-deep-purple-600:  #5E35B1;
+$mdc-deep-purple-700:  #512DA8;
+$mdc-deep-purple-800:  #4527A0;
+$mdc-deep-purple-900:  #311B92;
+$mdc-deep-purple-A100: #B388FF;
+$mdc-deep-purple-A200: #7C4DFF;
+$mdc-deep-purple-A400: #651FFF;
+$mdc-deep-purple-A700: #6200EA;
+
+//## Indigo
+$mdc-indigo-50:   #E8EAF6;
+$mdc-indigo-100:  #C5CAE9;
+$mdc-indigo-200:  #9FA8DA;
+$mdc-indigo-300:  #7986CB;
+$mdc-indigo-400:  #5C6BC0;
+$mdc-indigo-500:  #3F51B5;
+$mdc-indigo-600:  #3949AB;
+$mdc-indigo-700:  #303F9F;
+$mdc-indigo-800:  #283593;
+$mdc-indigo-900:  #1A237E;
+$mdc-indigo-A100: #8C9EFF;
+$mdc-indigo-A200: #536DFE;
+$mdc-indigo-A400: #3D5AFE;
+$mdc-indigo-A700: #304FFE;
+
+//## Blue
+$mdc-blue-50:   #E3F2FD;
+$mdc-blue-100:  #BBDEFB;
+$mdc-blue-200:  #90CAF9;
+$mdc-blue-300:  #64B5F6;
+$mdc-blue-400:  #42A5F5;
+$mdc-blue-500:  #2196F3;
+$mdc-blue-600:  #1E88E5;
+$mdc-blue-700:  #1976D2;
+$mdc-blue-800:  #1565C0;
+$mdc-blue-900:  #0D47A1;
+$mdc-blue-A100: #82B1FF;
+$mdc-blue-A200: #448AFF;
+$mdc-blue-A400: #2979FF;
+$mdc-blue-A700: #2962FF;
+
+//## Light Blue
+$mdc-light-blue-50:   #E1F5FE;
+$mdc-light-blue-100:  #B3E5FC;
+$mdc-light-blue-200:  #81D4FA;
+$mdc-light-blue-300:  #4FC3F7;
+$mdc-light-blue-400:  #29B6F6;
+$mdc-light-blue-500:  #03A9F4;
+$mdc-light-blue-600:  #039BE5;
+$mdc-light-blue-700:  #0288D1;
+$mdc-light-blue-800:  #0277BD;
+$mdc-light-blue-900:  #01579B;
+$mdc-light-blue-A100: #80D8FF;
+$mdc-light-blue-A200: #40C4FF;
+$mdc-light-blue-A400: #00B0FF;
+$mdc-light-blue-A700: #0091EA;
+
+//## Cyan
+$mdc-cyan-50:   #E0F7FA;
+$mdc-cyan-100:  #B2EBF2;
+$mdc-cyan-200:  #80DEEA;
+$mdc-cyan-300:  #4DD0E1;
+$mdc-cyan-400:  #26C6DA;
+$mdc-cyan-500:  #00BCD4;
+$mdc-cyan-600:  #00ACC1;
+$mdc-cyan-700:  #0097A7;
+$mdc-cyan-800:  #00838F;
+$mdc-cyan-900:  #006064;
+$mdc-cyan-A100: #84FFFF;
+$mdc-cyan-A200: #18FFFF;
+$mdc-cyan-A400: #00E5FF;
+$mdc-cyan-A700: #00B8D4;
+
+//## Teal
+$mdc-teal-50:   #E0F2F1;
+$mdc-teal-100:  #B2DFDB;
+$mdc-teal-200:  #80CBC4;
+$mdc-teal-300:  #4DB6AC;
+$mdc-teal-400:  #26A69A;
+$mdc-teal-500:  #009688;
+$mdc-teal-600:  #00897B;
+$mdc-teal-700:  #00796B;
+$mdc-teal-800:  #00695C;
+$mdc-teal-900:  #004D40;
+$mdc-teal-A100: #A7FFEB;
+$mdc-teal-A200: #64FFDA;
+$mdc-teal-A400: #1DE9B6;
+$mdc-teal-A700: #00BFA5;
+
+//## Green
+$mdc-green-50:   #E8F5E9;
+$mdc-green-100:  #C8E6C9;
+$mdc-green-200:  #A5D6A7;
+$mdc-green-300:  #81C784;
+$mdc-green-400:  #66BB6A;
+$mdc-green-500:  #4CAF50;
+$mdc-green-600:  #43A047;
+$mdc-green-700:  #388E3C;
+$mdc-green-800:  #2E7D32;
+$mdc-green-900:  #1B5E20;
+$mdc-green-A100: #B9F6CA;
+$mdc-green-A200: #69F0AE;
+$mdc-green-A400: #00E676;
+$mdc-green-A700: #00C853;
+
+//## Light Green
+$mdc-light-green-50:   #F1F8E9;
+$mdc-light-green-100:  #DCEDC8;
+$mdc-light-green-200:  #C5E1A5;
+$mdc-light-green-300:  #AED581;
+$mdc-light-green-400:  #9CCC65;
+$mdc-light-green-500:  #8BC34A;
+$mdc-light-green-600:  #7CB342;
+$mdc-light-green-700:  #689F38;
+$mdc-light-green-800:  #558B2F;
+$mdc-light-green-900:  #33691E;
+$mdc-light-green-A100: #CCFF90;
+$mdc-light-green-A200: #B2FF59;
+$mdc-light-green-A400: #76FF03;
+$mdc-light-green-A700: #64DD17;
+
+//## Lime
+$mdc-lime-50:   #F9FBE7;
+$mdc-lime-100:  #F0F4C3;
+$mdc-lime-200:  #E6EE9C;
+$mdc-lime-300:  #DCE775;
+$mdc-lime-400:  #D4E157;
+$mdc-lime-500:  #CDDC39;
+$mdc-lime-600:  #C0CA33;
+$mdc-lime-700:  #AFB42B;
+$mdc-lime-800:  #9E9D24;
+$mdc-lime-900:  #827717;
+$mdc-lime-A100: #F4FF81;
+$mdc-lime-A200: #EEFF41;
+$mdc-lime-A400: #C6FF00;
+$mdc-lime-A700: #AEEA00;
+
+//## Yellow
+$mdc-yellow-50:   #FFFDE7;
+$mdc-yellow-100:  #FFF9C4;
+$mdc-yellow-200:  #FFF59D;
+$mdc-yellow-300:  #FFF176;
+$mdc-yellow-400:  #FFEE58;
+$mdc-yellow-500:  #FFEB3B;
+$mdc-yellow-600:  #FDD835;
+$mdc-yellow-700:  #FBC02D;
+$mdc-yellow-800:  #F9A825;
+$mdc-yellow-900:  #F57F17;
+$mdc-yellow-A100: #FFFF8D;
+$mdc-yellow-A200: #FFFF00;
+$mdc-yellow-A400: #FFEA00;
+$mdc-yellow-A700: #FFD600;
+
+//## Amber
+$mdc-amber-50:   #FFF8E1;
+$mdc-amber-100:  #FFECB3;
+$mdc-amber-200:  #FFE082;
+$mdc-amber-300:  #FFD54F;
+$mdc-amber-400:  #FFCA28;
+$mdc-amber-500:  #FFC107;
+$mdc-amber-600:  #FFB300;
+$mdc-amber-700:  #FFA000;
+$mdc-amber-800:  #FF8F00;
+$mdc-amber-900:  #FF6F00;
+$mdc-amber-A100: #FFE57F;
+$mdc-amber-A200: #FFD740;
+$mdc-amber-A400: #FFC400;
+$mdc-amber-A700: #FFAB00;
+
+//## Orange
+$mdc-orange-50:   #FFF3E0;
+$mdc-orange-100:  #FFE0B2;
+$mdc-orange-200:  #FFCC80;
+$mdc-orange-300:  #FFB74D;
+$mdc-orange-400:  #FFA726;
+$mdc-orange-500:  #FF9800;
+$mdc-orange-600:  #FB8C00;
+$mdc-orange-700:  #F57C00;
+$mdc-orange-800:  #EF6C00;
+$mdc-orange-900:  #E65100;
+$mdc-orange-A100: #FFD180;
+$mdc-orange-A200: #FFAB40;
+$mdc-orange-A400: #FF9100;
+$mdc-orange-A700: #FF6D00;
+
+//## Deep Orange
+$mdc-deep-orange-50:   #FBE9E7;
+$mdc-deep-orange-100:  #FFCCBC;
+$mdc-deep-orange-200:  #FFAB91;
+$mdc-deep-orange-300:  #FF8A65;
+$mdc-deep-orange-400:  #FF7043;
+$mdc-deep-orange-500:  #FF5722;
+$mdc-deep-orange-600:  #F4511E;
+$mdc-deep-orange-700:  #E64A19;
+$mdc-deep-orange-800:  #D84315;
+$mdc-deep-orange-900:  #BF360C;
+$mdc-deep-orange-A100: #FF9E80;
+$mdc-deep-orange-A200: #FF6E40;
+$mdc-deep-orange-A400: #FF3D00;
+$mdc-deep-orange-A700: #DD2C00;
+
+//## Brown
+$mdc-brown-50:   #EFEBE9;
+$mdc-brown-100:  #D7CCC8;
+$mdc-brown-200:  #BCAAA4;
+$mdc-brown-300:  #A1887F;
+$mdc-brown-400:  #8D6E63;
+$mdc-brown-500:  #795548;
+$mdc-brown-600:  #6D4C41;
+$mdc-brown-700:  #5D4037;
+$mdc-brown-800:  #4E342E;
+$mdc-brown-900:  #3E2723;
+
+//## Grey
+$mdc-grey-50:   #FAFAFA;
+$mdc-grey-100:  #F5F5F5;
+$mdc-grey-200:  #EEEEEE;
+$mdc-grey-300:  #E0E0E0;
+$mdc-grey-400:  #BDBDBD;
+$mdc-grey-500:  #9E9E9E;
+$mdc-grey-600:  #757575;
+$mdc-grey-700:  #616161;
+$mdc-grey-800:  #424242;
+$mdc-grey-900:  #212121;
+
+//## Blue Grey
+$mdc-blue-grey-50:   #ECEFF1;
+$mdc-blue-grey-100:  #CFD8DC;
+$mdc-blue-grey-200:  #B0BEC5;
+$mdc-blue-grey-300:  #90A4AE;
+$mdc-blue-grey-400:  #78909C;
+$mdc-blue-grey-500:  #607D8B;
+$mdc-blue-grey-600:  #546E7A;
+$mdc-blue-grey-700:  #455A64;
+$mdc-blue-grey-800:  #37474F;
+$mdc-blue-grey-900:  #263238;
+
+//== Alpha values for grey text, icons, and dividers
+
+//## White
+$mdc-white-lighter: rgba(255,255,255,.12); // Dividers
+$mdc-white-light:   rgba(255,255,255,.30); // Disabled / Hint Text
+$mdc-white-dark:    rgba(255,255,255,.70); // Secondary Text
+$mdc-white-darker:  rgba(255,255,255, 1);  // Text / Icons
+
+//## Black
+$mdc-black-lighter: rgba(0,0,0,.12); // Dividers
+$mdc-black-light:   rgba(0,0,0,.26); // Disabled / Hint Text
+$mdc-black-dark:    rgba(0,0,0,.54); // Secondary text / Icons
+$mdc-black-darker:  rgba(0,0,0,.87); // Text
+
+
+// Material color background generation
+
+// Colors list 
+$md-colors: (
+  //## Red
+  'red-50':   $mdc-red-50,
+  'red-100':  $mdc-red-100,
+  'red-200':  $mdc-red-200,
+  'red-300':  $mdc-red-300,
+  'red-400':  $mdc-red-400,
+  'red-500':  $mdc-red-500,
+  'red-600':  $mdc-red-600,
+  'red-700':  $mdc-red-700,
+  'red-800':  $mdc-red-800,
+  'red-900':  $mdc-red-900,
+  'red-A100': $mdc-red-A100,
+  'red-A200': $mdc-red-A200,
+  'red-A400': $mdc-red-A400,
+  'red-A700': $mdc-red-A700,
+
+  //## Pink
+  'pink-50':   $mdc-pink-50,
+  'pink-100':  $mdc-pink-100,
+  'pink-200':  $mdc-pink-200,
+  'pink-300':  $mdc-pink-300,
+  'pink-400':  $mdc-pink-400,
+  'pink-500':  $mdc-pink-500,
+  'pink-600':  $mdc-pink-600,
+  'pink-700':  $mdc-pink-700,
+  'pink-800':  $mdc-pink-800,
+  'pink-900':  $mdc-pink-900,
+  'pink-A100': $mdc-pink-A100,
+  'pink-A200': $mdc-pink-A200,
+  'pink-A400': $mdc-pink-A400,
+  'pink-A700': $mdc-pink-A700,
+
+  //## Purple
+  'purple-50':   $mdc-purple-50,
+  'purple-100':  $mdc-purple-100,
+  'purple-200':  $mdc-purple-200,
+  'purple-300':  $mdc-purple-300,
+  'purple-400':  $mdc-purple-400,
+  'purple-500':  $mdc-purple-500,
+  'purple-600':  $mdc-purple-600,
+  'purple-700':  $mdc-purple-700,
+  'purple-800':  $mdc-purple-800,
+  'purple-900':  $mdc-purple-900,
+  'purple-A100': $mdc-purple-A100,
+  'purple-A200': $mdc-purple-A200,
+  'purple-A400': $mdc-purple-A400,
+  'purple-A700': $mdc-purple-A700,
+
+  //## Deep Purple
+  'deep-purple-50':   $mdc-deep-purple-50,
+  'deep-purple-100':  $mdc-deep-purple-100,
+  'deep-purple-200':  $mdc-deep-purple-200,
+  'deep-purple-300':  $mdc-deep-purple-300,
+  'deep-purple-400':  $mdc-deep-purple-400,
+  'deep-purple-500':  $mdc-deep-purple-500,
+  'deep-purple-600':  $mdc-deep-purple-600,
+  'deep-purple-700':  $mdc-deep-purple-700,
+  'deep-purple-800':  $mdc-deep-purple-800,
+  'deep-purple-900':  $mdc-deep-purple-900,
+  'deep-purple-A100': $mdc-deep-purple-A100,
+  'deep-purple-A200': $mdc-deep-purple-A200,
+  'deep-purple-A400': $mdc-deep-purple-A400,
+  'deep-purple-A700': $mdc-deep-purple-A700,
+
+  //## Indigo
+  'indigo-50':   $mdc-indigo-50,
+  'indigo-100':  $mdc-indigo-100,
+  'indigo-200':  $mdc-indigo-200,
+  'indigo-300':  $mdc-indigo-300,
+  'indigo-400':  $mdc-indigo-400,
+  'indigo-500':  $mdc-indigo-500,
+  'indigo-600':  $mdc-indigo-600,
+  'indigo-700':  $mdc-indigo-700,
+  'indigo-800':  $mdc-indigo-800,
+  'indigo-900':  $mdc-indigo-900,
+  'indigo-A100': $mdc-indigo-A100,
+  'indigo-A200': $mdc-indigo-A200,
+  'indigo-A400': $mdc-indigo-A400,
+  'indigo-A700': $mdc-indigo-A700,
+
+  //## Blue
+  'blue-50':   $mdc-blue-50,
+  'blue-100':  $mdc-blue-100,
+  'blue-200':  $mdc-blue-200,
+  'blue-300':  $mdc-blue-300,
+  'blue-400':  $mdc-blue-400,
+  'blue-500':  $mdc-blue-500,
+  'blue-600':  $mdc-blue-600,
+  'blue-700':  $mdc-blue-700,
+  'blue-800':  $mdc-blue-800,
+  'blue-900':  $mdc-blue-900,
+  'blue-A100': $mdc-blue-A100,
+  'blue-A200': $mdc-blue-A200,
+  'blue-A400': $mdc-blue-A400,
+  'blue-A700': $mdc-blue-A700,
+
+  //## Light Blue
+  'light-blue-50':   $mdc-light-blue-50,
+  'light-blue-100':  $mdc-light-blue-100,
+  'light-blue-200':  $mdc-light-blue-200,
+  'light-blue-300':  $mdc-light-blue-300,
+  'light-blue-400':  $mdc-light-blue-400,
+  'light-blue-500':  $mdc-light-blue-500,
+  'light-blue-600':  $mdc-light-blue-600,
+  'light-blue-700':  $mdc-light-blue-700,
+  'light-blue-800':  $mdc-light-blue-800,
+  'light-blue-900':  $mdc-light-blue-900,
+  'light-blue-A100': $mdc-light-blue-A100,
+  'light-blue-A200': $mdc-light-blue-A200,
+  'light-blue-A400': $mdc-light-blue-A400,
+  'light-blue-A700': $mdc-light-blue-A700,
+
+  //## Cyan
+  'cyan-50':   $mdc-cyan-50,
+  'cyan-100':  $mdc-cyan-100,
+  'cyan-200':  $mdc-cyan-200,
+  'cyan-300':  $mdc-cyan-300,
+  'cyan-400':  $mdc-cyan-400,
+  'cyan-500':  $mdc-cyan-500,
+  'cyan-600':  $mdc-cyan-600,
+  'cyan-700':  $mdc-cyan-700,
+  'cyan-800':  $mdc-cyan-800,
+  'cyan-900':  $mdc-cyan-900,
+  'cyan-A100': $mdc-cyan-A100,
+  'cyan-A200': $mdc-cyan-A200,
+  'cyan-A400': $mdc-cyan-A400,
+  'cyan-A700': $mdc-cyan-A700,
+
+  //## Teal
+  'teal-50':   $mdc-teal-50,
+  'teal-100':  $mdc-teal-100,
+  'teal-200':  $mdc-teal-200,
+  'teal-300':  $mdc-teal-300,
+  'teal-400':  $mdc-teal-400,
+  'teal-500':  $mdc-teal-500,
+  'teal-600':  $mdc-teal-600,
+  'teal-700':  $mdc-teal-700,
+  'teal-800':  $mdc-teal-800,
+  'teal-900':  $mdc-teal-900,
+  'teal-A100': $mdc-teal-A100,
+  'teal-A200': $mdc-teal-A200,
+  'teal-A400': $mdc-teal-A400,
+  'teal-A700': $mdc-teal-A700,
+
+  //## Green
+  'green-50':   $mdc-green-50,
+  'green-100':  $mdc-green-100,
+  'green-200':  $mdc-green-200,
+  'green-300':  $mdc-green-300,
+  'green-400':  $mdc-green-400,
+  'green-500':  $mdc-green-500,
+  'green-600':  $mdc-green-600,
+  'green-700':  $mdc-green-700,
+  'green-800':  $mdc-green-800,
+  'green-900':  $mdc-green-900,
+  'green-A100': $mdc-green-A100,
+  'green-A200': $mdc-green-A200,
+  'green-A400': $mdc-green-A400,
+  'green-A700': $mdc-green-A700,
+
+  //## Light Green
+  'light-green-50':   $mdc-light-green-50,
+  'light-green-100':  $mdc-light-green-100,
+  'light-green-200':  $mdc-light-green-200,
+  'light-green-300':  $mdc-light-green-300,
+  'light-green-400':  $mdc-light-green-400,
+  'light-green-500':  $mdc-light-green-500,
+  'light-green-600':  $mdc-light-green-600,
+  'light-green-700':  $mdc-light-green-700,
+  'light-green-800':  $mdc-light-green-800,
+  'light-green-900':  $mdc-light-green-900,
+  'light-green-A100': $mdc-light-green-A100,
+  'light-green-A200': $mdc-light-green-A200,
+  'light-green-A400': $mdc-light-green-A400,
+  'light-green-A700': $mdc-light-green-A700,
+
+  //## Lime
+  'lime-50':   $mdc-lime-50,
+  'lime-100':  $mdc-lime-100,
+  'lime-200':  $mdc-lime-200,
+  'lime-300':  $mdc-lime-300,
+  'lime-400':  $mdc-lime-400,
+  'lime-500':  $mdc-lime-500,
+  'lime-600':  $mdc-lime-600,
+  'lime-700':  $mdc-lime-700,
+  'lime-800':  $mdc-lime-800,
+  'lime-900':  $mdc-lime-900,
+  'lime-A100': $mdc-lime-A100,
+  'lime-A200': $mdc-lime-A200,
+  'lime-A400': $mdc-lime-A400,
+  'lime-A700': $mdc-lime-A700,
+
+  //## Yellow
+  'yellow-50':   $mdc-yellow-50,
+  'yellow-100':  $mdc-yellow-100,
+  'yellow-200':  $mdc-yellow-200,
+  'yellow-300':  $mdc-yellow-300,
+  'yellow-400':  $mdc-yellow-400,
+  'yellow-500':  $mdc-yellow-500,
+  'yellow-600':  $mdc-yellow-600,
+  'yellow-700':  $mdc-yellow-700,
+  'yellow-800':  $mdc-yellow-800,
+  'yellow-900':  $mdc-yellow-900,
+  'yellow-A100': $mdc-yellow-A100,
+  'yellow-A200': $mdc-yellow-A200,
+  'yellow-A400': $mdc-yellow-A400,
+  'yellow-A700': $mdc-yellow-A700,
+
+  //## Amber
+  'amber-50':   $mdc-amber-50,
+  'amber-100':  $mdc-amber-100,
+  'amber-200':  $mdc-amber-200,
+  'amber-300':  $mdc-amber-300,
+  'amber-400':  $mdc-amber-400,
+  'amber-500':  $mdc-amber-500,
+  'amber-600':  $mdc-amber-600,
+  'amber-700':  $mdc-amber-700,
+  'amber-800':  $mdc-amber-800,
+  'amber-900':  $mdc-amber-900,
+  'amber-A100': $mdc-amber-A100,
+  'amber-A200': $mdc-amber-A200,
+  'amber-A400': $mdc-amber-A400,
+  'amber-A700': $mdc-amber-A700,
+
+  //## Orange
+  'orange-50':   $mdc-orange-50,
+  'orange-100':  $mdc-orange-100,
+  'orange-200':  $mdc-orange-200,
+  'orange-300':  $mdc-orange-300,
+  'orange-400':  $mdc-orange-400,
+  'orange-500':  $mdc-orange-500,
+  'orange-600':  $mdc-orange-600,
+  'orange-700':  $mdc-orange-700,
+  'orange-800':  $mdc-orange-800,
+  'orange-900':  $mdc-orange-900,
+  'orange-A100': $mdc-orange-A100,
+  'orange-A200': $mdc-orange-A200,
+  'orange-A400': $mdc-orange-A400,
+  'orange-A700': $mdc-orange-A700,
+
+  //## Deep Orange
+  'deep-orange-50':   $mdc-deep-orange-50,
+  'deep-orange-100':  $mdc-deep-orange-100,
+  'deep-orange-200':  $mdc-deep-orange-200,
+  'deep-orange-300':  $mdc-deep-orange-300,
+  'deep-orange-400':  $mdc-deep-orange-400,
+  'deep-orange-500':  $mdc-deep-orange-500,
+  'deep-orange-600':  $mdc-deep-orange-600,
+  'deep-orange-700':  $mdc-deep-orange-700,
+  'deep-orange-800':  $mdc-deep-orange-800,
+  'deep-orange-900':  $mdc-deep-orange-900,
+  'deep-orange-A100': $mdc-deep-orange-A100,
+  'deep-orange-A200': $mdc-deep-orange-A200,
+  'deep-orange-A400': $mdc-deep-orange-A400,
+  'deep-orange-A700': $mdc-deep-orange-A700,
+
+  //## Brown
+  'brown-50':   $mdc-brown-50,
+  'brown-100':  $mdc-brown-100,
+  'brown-200':  $mdc-brown-200,
+  'brown-300':  $mdc-brown-300,
+  'brown-400':  $mdc-brown-400,
+  'brown-500':  $mdc-brown-500,
+  'brown-600':  $mdc-brown-600,
+  'brown-700':  $mdc-brown-700,
+  'brown-800':  $mdc-brown-800,
+  'brown-900':  $mdc-brown-900,
+
+  //## Grey
+  'grey-50':   $mdc-grey-50,
+  'grey-100':  $mdc-grey-100,
+  'grey-200':  $mdc-grey-200,
+  'grey-300':  $mdc-grey-300,
+  'grey-400':  $mdc-grey-400,
+  'grey-500':  $mdc-grey-500,
+  'grey-600':  $mdc-grey-600,
+  'grey-700':  $mdc-grey-700,
+  'grey-800':  $mdc-grey-800,
+  'grey-900':  $mdc-grey-900,
+
+  //## Blue Grey
+  'blue-grey-50':   $mdc-blue-grey-50,
+  'blue-grey-100':  $mdc-blue-grey-100,
+  'blue-grey-200':  $mdc-blue-grey-200,
+  'blue-grey-300':  $mdc-blue-grey-300,
+  'blue-grey-400':  $mdc-blue-grey-400,
+  'blue-grey-500':  $mdc-blue-grey-500,
+  'blue-grey-600':  $mdc-blue-grey-600,
+  'blue-grey-700':  $mdc-blue-grey-700,
+  'blue-grey-800':  $mdc-blue-grey-800,
+  'blue-grey-900':  $mdc-blue-grey-900,
+
+  //== Alpha values for grey text, icons, and dividers
+
+  //## White
+  'white-lighter':  $mdc-white-lighter, // Dividers
+  'white-light':    $mdc-white-light, // Disabled / Hint Text
+  'white-dark':     $mdc-white-dark, // Secondary Text
+  'white-darker':   $mdc-white-darker,  // Text / Icons
+
+  //## Black
+  'black-lighter': $mdc-black-lighter, // Dividers
+  'black-light':   $mdc-black-light, // Disabled / Hint Text
+  'black-dark':    $mdc-black-dark, // Secondary text / Icons
+  'black-darker':  $mdc-black-darker // Text
+);
+
+//= Mixins
+
+@function mdcolor($key) {
+  @return map-get($md-colors, $key);
+}
+
+
+@each $name, $color in $md-colors {
+  .bg-#{$name} {
+    background-color: $color;
+  }
+}
+
+
+// White color for some backgrounds
+.bg-red-800,.bg-red-900,
+.bg-pink-700,.bg-pink-800,.bg-pink-900, 
+.bg-purple,.bg-purple-500,.bg-purple-600,.bg-purple-700,.bg-purple-800,.bg-purple-900,
+.bg-deep-purple,.bg-deep-purple-500,.bg-deep-purple-600,.bg-deep-purple-700,.bg-deep-purple-800,.bg-deep-purple-900,.bg-deep-purple-A400,.bg-deep-purple-A700,
+.bg-indigo,.bg-indigo-500,.bg-indigo-600,.bg-indigo-700,.bg-indigo-800,.bg-indigo-900,.bg-indigo-A700,.bg-blue-800,
+.bg-blue-900,.bg-light-blue-900,
+.bg-cyan-900,.bg-teal-800,.bg-teal-900,
+.bg-green-800,.bg-green-900,
+.bg-brown,.bg-brown-500,.bg-brown-600,.bg-brown-700,.bg-brown-800,.bg-brown-900,.bg-blue-grey-600,
+.bg-blue-grey-700,.bg-blue-grey-800,.bg-blue-grey-900,.bg-grey-600,
+.bg-grey-700,.bg-grey-800,.bg-grey-900 {
+  color: rgba(255,255,255,0.87);
+}
+
+.bg-red,.bg-red-500,.bg-red-600,.bg-red-700,.bg-red-A200,.bg-red-A400,.bg-red-A700,.bg-pink,
+.bg-pink-500,.bg-pink-600,.bg-pink-A200,.bg-pink-A400,.bg-pink-A700,.bg-purple-300,
+.bg-purple-400,.bg-purple-A200,.bg-purple-A400,.bg-purple-A700,.bg-deep-purple-300,
+.bg-deep-purple-400,.bg-deep-purple-A200,
+.bg-indigo-300,.bg-indigo-400,.bg-indigo-A200,.bg-indigo-A400,.bg-blue,
+.bg-blue-500,.bg-blue-600,.bg-blue-700,.bg-blue-A200,.bg-blue-A400,.bg-blue-A700,.bg-light-blue,
+.bg-light-blue-500,.bg-light-blue-600,.bg-light-blue-700,.bg-light-blue-800,.bg-light-blue-A700,.bg-cyan,
+.bg-cyan-500,.bg-cyan-600,.bg-cyan-700,.bg-cyan-800,.bg-teal,
+.bg-teal-500,.bg-teal-600,.bg-teal-700,
+.bg-green,.bg-green-500,.bg-green-600,.bg-green-700,.bg-light-green-800,.bg-light-green-900,
+.bg-lime-900,.bg-orange-800,.bg-orange-900,
+.bg-deep-orange,.bg-deep-orange-500,.bg-deep-orange-600,.bg-deep-orange-700,.bg-deep-orange-800,.bg-deep-orange-900,.bg-deep-orange-A400,.bg-deep-orange-A700,.bg-brown-300,
+.bg-brown-400,.bg-blue-grey,.bg-blue-grey-400,.bg-blue-grey-500 {
+  color: #fff;
+}

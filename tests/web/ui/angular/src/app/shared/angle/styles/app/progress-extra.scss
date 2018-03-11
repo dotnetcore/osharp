@@ -1,0 +1,47 @@
+/* ========================================================================
+     Component: progress-extra
+ ========================================================================== */
+
+// Different size of Progress bars
+
+$progress-height-sm: 15px;
+$progress-height-xs: 8px;
+
+.progress-sm.progress,
+.progress-sm .progress {
+  height: $progress-height-sm;
+}
+
+.progress-xs.progress,
+.progress-xs .progress {
+  height: $progress-height-xs;
+}
+
+.m0 .progress {
+    margin: 0;
+}
+// Progress color variants
+
+.progress-bar-purple {
+  @include progress-bar-variant($brand-purple);
+}
+.progress-bar-inverse {
+  @include progress-bar-variant($brand-inverse);
+}
+.progress-bar-green {
+  @include progress-bar-variant($brand-green);
+}
+.progress-bar-pink {
+  @include progress-bar-variant($brand-pink);
+}
+.progress-bar-yellow {
+  @include progress-bar-variant($brand-yellow);
+}
+
+// progress-% classes for simple usage
+
+@for $i from 1 through 100 {
+  .progress-#{$i} {
+    width: percentage($i/100);
+  }
+}

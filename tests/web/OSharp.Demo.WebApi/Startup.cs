@@ -45,8 +45,9 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp()
-                .AddDistributedMemoryCache()
+            services.AddOSharp();
+
+            services.AddDistributedMemoryCache()
                 .AddLogging(builder =>
                 {
                     builder.AddFile(options =>

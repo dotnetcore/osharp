@@ -1,0 +1,65 @@
+
+#bottomsheetcontainer {
+  position: relative;
+  overflow: hidden;
+  .md-inline-list-icon-label {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: -10px;
+    height: 24px;
+    vertical-align: middle; 
+  }
+  .md-grid-item-content {
+    height: 96px; 
+    md-icon {
+      height: 48px;
+      width: 48px; 
+    }
+  }
+  .md-grid-text {
+    padding-bottom: 5px; 
+  }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container,
+.md-autocomplete-suggestions {
+  z-index: 200;
+}
+
+md-backdrop.md-dialog-backdrop {
+  z-index: 179;
+}
+.md-dialog-container {
+  z-index: 180;
+}
+
+md-backdrop.md-select-backdrop {
+  z-index: 181;
+}
+
+.md-select-menu-container {
+  z-index: 199;
+}
+
+.sidenav-wrapper {
+  overflow: hidden;
+}
+
+body > md-toast {
+  position: fixed;
+}
+md-toast {
+  z-index: 290;
+}
+
+md-tooltip {
+  z-index: 200;
+}
+
+md-toolbar > md-tabs.md-default-theme, md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
+    color: rgb(197,202,233) !important;
+}
+md-tabs.md-default-theme, md-tabs .md-tab.md-active, md-tabs.md-default-theme, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme, md-tabs .md-tab.md-focused, md-tabs.md-default-theme, md-tabs .md-tab.md-focused md-icon {
+    color: rgb(63,81,181) !important;
+}

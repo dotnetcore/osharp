@@ -1,0 +1,147 @@
+
+.mda-form-group {
+    position: relative;
+    padding: 18px 0 24px 0
+}
+
+.mda-form-control {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 34px;
+  padding: 2px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid $input-border;
+  border-radius: 0;
+  box-shadow: none;
+
+  &:focus,
+  &.focus {
+    padding-bottom: 1px;
+    border-color: $brand-primary;
+    border-bottom-width: 2px;
+
+    &~label {
+      top: 0!important;
+      font-size: .85em!important;
+      color: $brand-primary;
+      opacity: 1;
+    }
+  }
+
+  ~label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: inline-block;
+    font-size: .85em;
+    opacity: .5;
+    @include transition(all .2s ease);
+  }
+
+  &.disabled,
+  &[disabled] {
+    opacity: .5;
+  }
+
+  // variant for dark background
+  &.mda-form-light:focus,
+  &.mda-form-light.focus {
+    border-color: #fff;
+    &:focus~label,
+    &.focus~label {
+        color: #fff;
+    }
+  }
+
+}
+
+// text area
+textarea.mda-form-control {
+    height: auto;
+}
+
+// Input messages
+.mda-form-msg {
+  position: absolute;
+  bottom: 0;
+  font-size: .85em;
+  line-height: 24px;
+  font-weight: 300;
+  color: #90A4AE;
+  &.right {
+    right: 0
+  }
+}
+
+// Form validation
+
+.form-validate {
+  .mda-form-control {
+
+    // Invalid input
+    &.ng-dirty.ng-invalid {
+      border-color: $brand-danger;
+      &:focus~label,
+      &.focus~label,
+      &~.mda-form-msg {
+          color: $brand-danger;
+      }
+    }
+    // Valid input
+    &.ng-dirty.ng-valid,
+    &.ng-dirty.ng-valid:focus {
+        border-color: $brand-success;
+        &:focus~label,
+        &.focus~label {
+            color: $brand-success;
+        }
+    }
+
+  }
+}
+
+// Float label
+.float-label  {
+  .mda-form-control~label {
+    top: 20px;
+    font-size: 1em;
+  }
+  .mda-form-control.ng-not-empty~label,
+  .mda-form-control.ng-dirty~label,
+  .mda-form-control.has-value~label {
+    top: 0;
+    font-size: .85em;
+  }
+
+}
+
+// Icons support
+.mda-input-group {
+  position: relative;
+  > input {
+    padding-left: 36px;
+  }
+  > .mda-input-group-addon {
+    position: absolute;
+    top: 20px;
+    left: 2px;
+  }
+  > label {
+    margin-left: 36px;
+  }
+}
+
+code {
+  margin-left: 1px;
+  margin-right: 1px;
+  -webkit-font-smoothing: auto;
+  padding: 0.125em 0.35em;
+  border-radius: 2px;
+  font-size: 1.4rem;
+  background: rgba(0, 0, 0, 0.065);
+  color: #106CC8;
+}

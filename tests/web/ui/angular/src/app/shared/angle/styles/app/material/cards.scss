@@ -1,0 +1,113 @@
+
+// Cards works similar to panels
+.card {
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 20px;
+  @include material-shadow();
+
+  .card-heading {
+    padding: 20px 22px;
+    > .card-title {
+      margin: 0;
+      font-size: 18px;
+    }
+    > .card-icon {
+      float: right;
+      color: rgba(255,255,255,.87);
+      font-size: 20px;
+    }
+  }
+  .card-body {
+    position: relative;
+    padding: 20px 22px
+  }
+  .card-item {
+    position: relative;
+    min-height: 120px;
+    > p {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.15);
+      margin: 0;
+    }
+  }
+  .card-offset {
+    position: relative;
+    z-index: 1;
+    > * {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      @include translate(0, -50%);
+    }
+  }
+
+  .card-toolbar {
+    position: relative;
+    width: 100%;
+    min-height: 64px;
+    font-size: 18px;
+    line-height: 64px;
+    padding-left: 22px;
+    z-index: 2;
+  }
+  .card-subheader {
+    padding: 16px 0 16px 16px;
+    line-height: .75em;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .01em;
+    color: rgba(0,0,0,0.54);
+    // Adjustmen for list next to subheader
+    + .mda-list > .mda-list-item:first-child {
+      > .mda-list-item-text {
+        padding-top: 16px;
+      }
+      > .mda-list-item-img,
+      > .mda-list-item-icon,
+      > .mda-list-item-initial {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .card-footer {
+    padding: 10px 22px;
+  }
+
+
+  .card-divider {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .ui-datepicker {
+    width: 100%;
+    @include box-shadow(0 0 0 #000);
+    margin: 0;
+    > table {
+      width: 100%;
+    }
+  }
+
+
+  &.card-map {
+
+    min-height: 280px;
+    .card-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: 0;
+      background-color: transparent;
+    }
+  }
+
+
+}

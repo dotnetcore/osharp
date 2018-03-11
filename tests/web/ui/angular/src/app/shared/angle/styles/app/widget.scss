@@ -1,0 +1,36 @@
+/* ========================================================================
+     Component: widget
+ ========================================================================== */
+ 
+//
+// Extras styles to use panel as widgets
+// -------------------------------------
+
+$widget-margin: 20px;
+
+.widget {
+
+  margin-bottom: $widget-margin;
+  border: 0;
+
+  &.panel,
+  & .panel {
+      overflow: hidden;
+  }
+  
+
+  .lateral-picture {
+    position: relative;
+    display: block;
+    height: 240px;
+    width: auto;
+    overflow: hidden;
+    > img {
+      position: absolute;
+      top: 0; left: 0;
+      max-height: 100%;
+      width: auto;
+    }
+  }
+}
+

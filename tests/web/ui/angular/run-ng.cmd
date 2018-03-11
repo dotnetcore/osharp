@@ -1,0 +1,1 @@
+ng server --port 4200 --proxy-config proxy.config.json --open
