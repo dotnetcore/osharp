@@ -39,8 +39,7 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             List<string> list = new List<string>();
 
-            list.Add($"functionStore:{_functionStore.GetType()}, hashCode:{_functionStore.GetHashCode()}");
-            list.Add($"moduleStore:{_moduleStore.GetType()}, hashCode:{_moduleStore.GetHashCode()}");
+            list.Add("WebApi网络服务已启动");
 
             return Content(list.ExpandAndToString("\n\r"));
         }

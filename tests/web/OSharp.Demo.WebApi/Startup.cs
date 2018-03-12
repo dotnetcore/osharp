@@ -15,12 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Audits;
-using OSharp.AutoMapper;
-using OSharp.Demo.Identity;
-using OSharp.Demo.WebApi.Controllers;
 using OSharp.Entity;
-using OSharp.Entity.SqlServer;
 
 
 namespace OSharp.Demo.WebApi
