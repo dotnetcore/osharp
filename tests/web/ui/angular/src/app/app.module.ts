@@ -8,9 +8,11 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppComponent } from './app.component';
 
 import { AngleCoreModule } from "./shared/angle/core/angle.core.module";
-import { LayoutModule } from './layout/layout.module';
 import { AngleModule } from './shared/angle/angle.module';
+import { SharedModule } from "./shared/shared.module";
+import { LayoutModule } from './layout/layout.module';
 import { RoutesModule } from './routes/routes.module';
+import { AdminModule } from "./admin/admin.module";
 
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
@@ -25,9 +27,10 @@ export function createTranslateLoader(http: HttpClient) {
         HttpClientModule,
         BrowserAnimationsModule, // required for ng2-tag-input
         AngleCoreModule,
-        LayoutModule,
         AngleModule.forRoot(),
+        SharedModule,
         RoutesModule,
+        LayoutModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
