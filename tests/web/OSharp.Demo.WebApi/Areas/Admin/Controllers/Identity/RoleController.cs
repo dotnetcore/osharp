@@ -28,8 +28,9 @@ using OSharp.Mapping;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Description("管理-角色信息")]
-    public class RoleController : AdminController
+    public class RoleController : AreaApiController
     {
         private readonly RoleManager<Role> _roleManager;
 

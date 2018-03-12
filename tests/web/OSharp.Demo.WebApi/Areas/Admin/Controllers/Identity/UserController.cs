@@ -30,8 +30,9 @@ using OSharp.Mapping;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Description("管理-用户信息")]
-    public class UserController : AdminController
+    public class UserController : AreaApiController
     {
         private readonly UserManager<User> _userManager;
         private readonly IIdentityContract _identityContract;

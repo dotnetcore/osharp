@@ -2,12 +2,6 @@
 <nav class="navbar topnavbar" role="navigation">
     <!-- START navbar header-->
     <div class="navbar-header">
-        <button class="navbar-toggle collapsed" type="button" (click)="navCollapsed = !navCollapsed">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
         <a class="navbar-brand" href="#/">
             <div class="brand-logo">
                 <img class="img-responsive" src="assets/img/logo.png" alt="App Logo" />
@@ -19,29 +13,27 @@
     </div>
     <!-- END navbar header-->
     <!-- START Nav wrapper-->
-    <div class="collapse navbar-collapse" [collapse]="navCollapsed">
-        <!-- Navbar Menu -->
+    <div class="nav-wrapper">
+        <!-- START Left navbar-->
         <ul class="nav navbar-nav">
-            <li *ngFor="let item of menuItems" [ngClass]="{'dropdown': item.submenu}" dropdown>
-                <a *ngIf="!item.heading && !item.submenu" [routerLink]="item.link" [title]="item.text">
-                    <span>{{(item.translate | translate) || item.text}}</span>
+            <li>
+                <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+                <a class="hidden-xs" trigger-resize="" (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
+                    <em class="fa fa-navicon"></em>
                 </a>
-                <a dropdownToggle *ngIf="item.submenu">
-                    <span>{{(item.translate | translate) || item.text}}</span>
+                <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
+                <a class="visible-xs sidebar-toggle" (click)="settings.layout.asideToggled =! settings.layout.asideToggled; $event.stopPropagation()">
+                    <em class="fa fa-navicon"></em>
                 </a>
-                <!-- START Dropdown menu-->
-                <ul *dropdownMenu class="dropdown-menu animated fadeInUp">
-                    <li *ngFor="let subitem of item.submenu">
-                        <a [routerLink]="subitem.link" [title]="subitem.text">
-                            <span>{{(subitem.translate | translate) || subitem.text}}</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
-        </ul>
-        <!-- End Navbar Menu-->
-        <!-- START Right Navbar-->
-        <ul class="nav navbar-nav navbar-right">
+            <!-- START User avatar toggle-->
+            <li>
+                <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+                <a (click)="toggleUserBlock($event)">
+                    <em class="icon-user"></em>
+                </a>
+            </li>
+            <!-- END User avatar toggle-->
             <!-- START lock screen-->
             <li>
                 <a title="Lock screen" [routerLink]="'/lock'">
@@ -49,6 +41,10 @@
                 </a>
             </li>
             <!-- END lock screen-->
+        </ul>
+        <!-- END Left navbar-->
+        <!-- START Right Navbar-->
+        <ul class="nav navbar-nav navbar-right">
             <!-- Search icon-->
             <li>
                 <a (click)="openNavSearch($event)">
@@ -128,7 +124,7 @@
             <!-- END Alert menu-->
             <!-- START Offsidebar button-->
             <li>
-                <a (click)="toggleOffsidebar()">
+                <a (click)="toggleOffsidebar(); $event.stopPropagation()">
                     <em class="icon-notebook"></em>
                 </a>
             </li>
@@ -137,6 +133,8 @@
         <!-- END Right Navbar-->
     </div>
     <!-- END Nav wrapper-->
+
     <admin-navsearch [visible]="getNavSearchVisible()" (onclose)="setNavSearchVisible(false)"></admin-navsearch>
+
 </nav>
 <!-- END Top Navbar-->

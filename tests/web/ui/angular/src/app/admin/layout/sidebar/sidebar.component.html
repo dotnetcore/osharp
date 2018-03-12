@@ -18,20 +18,20 @@
                 <a mat-ripple *ngIf="!item.heading && !item.submenu && item.elink" [attr.target]="item.target" [attr.href]="item.elink" title="{{item.text}}">
                     <span class="pull-right" *ngIf="item.alert" [ngClass]="item.label || 'label label-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                    <span>{{(item.translate | translate) || item.text}}</span>
+                    <span style="font-weight:bold;">{{(item.translate | translate) || item.text}}</span>
                 </a>
                 <!-- single menu item -->
                 <a mat-ripple *ngIf="!item.heading && !item.submenu && !item.elink" [routerLink]="item.link" [attr.route]="item.link" title="{{item.text}}"
                     (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
                     <span class="pull-right" *ngIf="item.alert" [ngClass]="item.label || 'label label-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                    <span>{{(item.translate | translate) || item.text}}</span>
+                    <span style="font-weight:bold;">{{(item.translate | translate) || item.text}}</span>
                 </a>
                 <!-- has submenu -->
                 <a mat-ripple *ngIf="!item.heading && item.submenu" title="{{item.text}}" (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
                     <span class="pull-right" *ngIf="item.alert" [ngClass]="item.label || 'label label-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                    <span>{{(item.translate | translate) || item.text}}</span>
+                    <span style="font-weight:bold;">{{(item.translate | translate) || item.text}}</span>
                 </a>
                 <!-- SUBLEVEL -->
                 <ul *ngIf="item.submenu" class="nav sidebar-subnav" [routerLinkActive]="['opening']">

@@ -25,8 +25,9 @@ using OSharp.Filter;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Description("管理-用户角色信息")]
-    public class UserRoleController : AdminController
+    public class UserRoleController : AreaApiController
     {
         private readonly IIdentityContract _identityContract;
 

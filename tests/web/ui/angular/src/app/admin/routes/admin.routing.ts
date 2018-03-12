@@ -15,7 +15,8 @@ const routes: Routes = [
             { path: 'dashboard', component: DashboardComponent, data: { title: '信息汇总 - 管理' } },
             { path: 'identity', loadChildren: '../identity/identity.module#IdentityModule' },
             { path: 'security', loadChildren: '../security/security.module#SecurityModule' },
-            { path: 'system', loadChildren: '../system/system.module#SystemModule' }
+            { path: 'system', loadChildren: '../system/system.module#SystemModule' },
+            { path: 'material', loadChildren: '../material/material.module#MaterialModule' },
         ]
     }
 ];

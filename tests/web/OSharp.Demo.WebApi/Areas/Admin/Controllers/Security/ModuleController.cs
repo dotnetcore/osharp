@@ -25,8 +25,9 @@ using OSharp.Filter;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Description("管理-模块信息")]
-    public class ModuleController : AdminController
+    public class ModuleController : AreaApiController
     {
         private readonly SecurityManager _securityManager;
 

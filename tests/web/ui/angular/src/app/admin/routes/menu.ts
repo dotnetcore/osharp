@@ -50,6 +50,27 @@ const System = {
     ]
 };
 
+//Metrial
+const Other = {
+    text: '其他',
+    heading: true
+};
+const Material = {
+    text: "Material",
+    link: "/material",
+    icon: "fa fa-shield",
+    submenu: [
+        { text: "Widgets", link: "./material/widgets" },
+        { text: "Cards", link: "./material/cards" },
+        { text: "Forms", link: "./material/forms" },
+        { text: "Inputs", link: "./material/inputs" },
+        { text: "Lists", link: "./material/lists" },
+        { text: "Whiteframe", link: "./material/whiteframe" },
+        { text: "Colors", link: "./material/colors" },
+        { text: "ng2Material", link: "./material/ngmaterial" }
+    ],
+};
+
 export const menu = [
     headingMain,
     Home,
@@ -57,5 +78,7 @@ export const menu = [
     Identity,
     Security,
     headingSystem,
-    System
+    System,
+    Other,
+    Material
 ];

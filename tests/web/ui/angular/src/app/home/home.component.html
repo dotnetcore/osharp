@@ -1,0 +1,8 @@
+<p>
+    <a [routerLink]="['/users']">Users</a>
+    <a [routerLink]="['/admin']">Admin</a>
+</p>
+<p>Hello, HomeComponent Page</p>
+<ul *ngFor="let item of apiValues">
+    <li>{{item}}</li>
+</ul>

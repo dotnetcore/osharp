@@ -5,13 +5,14 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from './app.component';
 
 import { AngleCoreModule } from "./shared/angle/core/angle.core.module";
 import { AngleModule } from './shared/angle/angle.module';
 import { SharedModule } from "./shared/shared.module";
 import { LayoutModule } from './layout/layout.module';
-import { RoutesModule } from './routes/routes.module';
+import { HomeModule } from "./home/home.module";
 import { AdminModule } from "./admin/admin.module";
 
 // https://github.com/ocombe/ng2-translate/issues/218
@@ -29,7 +30,8 @@ export function createTranslateLoader(http: HttpClient) {
         AngleCoreModule,
         AngleModule.forRoot(),
         SharedModule,
-        RoutesModule,
+        AppRoutingModule,
+        HomeModule,
         LayoutModule,
         TranslateModule.forRoot({
             loader: {

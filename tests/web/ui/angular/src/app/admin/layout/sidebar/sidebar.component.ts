@@ -20,7 +20,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     constructor(public menu: MenuService, public settings: SettingsService, public injector: Injector) {
 
         this.menuItems = menu.getMenu();
-        console.log(this.menuItems);
+
     }
 
     ngOnInit() {

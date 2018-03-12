@@ -12,8 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    /// <summary>
+    /// WebApi的区域控制器基类
+    /// </summary>
     [Route("api/[area]/[controller]/[action]")]
-    public abstract class AdminController : Controller
+    public abstract class AreaApiController : Controller
     { }
 }

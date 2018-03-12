@@ -3,11 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 
 import { LoggingService } from './services/logging.service';
+import { OsharpModule } from './osharp/osharp.module';
 
 @NgModule({
     declarations: [],
-    imports: [CommonModule, FormsModule],
-    exports: [CommonModule, FormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        OsharpModule
+    ],
+    exports: [
+        CommonModule,
+        FormsModule
+    ],
     providers: [LoggingService],
 })
 export class SharedModule { }

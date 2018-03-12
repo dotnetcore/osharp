@@ -25,8 +25,9 @@ using OSharp.Security;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Description("管理-实体信息")]
-    public class EntityInfoController : AdminController
+    public class EntityInfoController : AreaApiController
     {
         private readonly SecurityManager _securityManager;
 
