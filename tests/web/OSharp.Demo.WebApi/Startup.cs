@@ -14,7 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Serialization;
 
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Audits;
+using OSharp.AutoMapper;
 using OSharp.Entity;
 
 
@@ -40,7 +43,10 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp();
+            services.AddOSharp(builder =>
+            {
+                //builder.AddModule<AutoMapperModule>().AddModule<AuditModule>();
+            });
 
             services.AddDistributedMemoryCache()
                 .AddLogging(builder =>
@@ -65,7 +71,7 @@ namespace OSharp.Demo.WebApi
                 app.UseExceptionHandler();
             }
 
-            app.UseMvcWithAreaRoute().UseOSharpMvc();
+            app.UseStaticFiles().UseMvcWithAreaRoute().UseOSharpMvc();
 
             //数据库迁移
             SqlServerDesignTimeDefaultDbContextFactory dbContextFactory = new SqlServerDesignTimeDefaultDbContextFactory();

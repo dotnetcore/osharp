@@ -1,0 +1,48 @@
+﻿@using OSharp.Core.Modules
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container">
+    <h1>OSharp Framework WebApi 服务已启动</h1>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">模块列表</div>
+            <div class="panel-body">
+                <table class="table table-responsive table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td>名称</td>
+                        <td>路径</td>
+                        <td>自动加载</td>
+                        <td>已启用</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (OSharpModule module in ViewBag.Modules)
+                    {
+                        <text>
+                            <tr>
+                                <td>@module.GetType().Name</td>
+                                <td>@module.GetType().FullName</td>
+                                <td>@module.IsAutoLoad</td>
+                                <td>@module.IsEnabled</td>
+                            </tr>
+                        </text>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="list-group">
+            @foreach (string line in ViewBag.Lines)
+            {
+                <li class="list-group-item">@line</li>
+            }
+        </ul>
+    </div>
+</div>

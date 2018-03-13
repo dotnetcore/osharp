@@ -7,13 +7,16 @@
 //  <last-date>2018-03-10 16:05</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.Collections;
 using OSharp.Core.Functions;
+using OSharp.Core.Modules;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Security;
@@ -24,24 +27,23 @@ namespace OSharp.Demo.WebApi.Controllers
     [Description("网站-主页")]
     public class HomeController : Controller
     {
-        private readonly IFunctionStore<Function, FunctionInputDto> _functionStore;
-        private readonly IModuleStore<Module, ModuleInputDto, int> _moduleStore;
+        private readonly OSharpModuleManager _moduleManager;
 
-        public HomeController(IFunctionStore<Function, FunctionInputDto> functionStore,
-            IModuleStore<Module, ModuleInputDto, int> moduleStore)
+        public HomeController(OSharpModuleManager moduleManager)
         {
-            _functionStore = functionStore;
-            _moduleStore = moduleStore;
+            _moduleManager = moduleManager;
         }
 
         [Description("首页")]
         public IActionResult Index()
         {
-            List<string> list = new List<string>();
+            List<string> lines = new List<string>();
+            lines.Add("WebApi网络服务已启动");
+            ViewBag.Lines = lines;
 
-            list.Add("WebApi网络服务已启动");
+            ViewBag.Modules = _moduleManager.SourceModules.OrderByDescending(m=>m.IsAutoLoad);
 
-            return Content(list.ExpandAndToString("\n\r"));
+            return View();
         }
     }
 }
