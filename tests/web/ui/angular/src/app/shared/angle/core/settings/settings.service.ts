@@ -13,16 +13,16 @@ export class SettingsService {
         // User Settings
         // -----------------------------------
         this.user = {
-            name: 'John',
-            job: 'ng-developer',
+            name: 'gmf520',
+            job: 'osharp-developer',
             picture: 'assets/img/user/02.jpg'
         };
 
         // App Settings
         // -----------------------------------
         this.app = {
-            name: 'Angle',
-            description: 'Angular Bootstrap Admin Template',
+            name: 'osharpns',
+            description: 'osharp framework with .NetStandard2.0',
             year: ((new Date()).getFullYear())
         };
 
