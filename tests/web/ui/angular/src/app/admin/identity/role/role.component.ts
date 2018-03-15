@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, NgZone, ElementRef, AfterViewInit, } from
 
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from '../../../shared/osharp';
+import { ToasterService } from 'angular2-toaster/src/toaster.service';
 
 @Component({
     selector: 'identity-role',

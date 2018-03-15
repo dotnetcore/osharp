@@ -1,5 +1,6 @@
 import { ToasterService } from "angular2-toaster";
 import { isFunction } from "util";
+declare var layer: any;
 
 export namespace osharp {
     /** 分页数据 */
@@ -103,23 +104,10 @@ export namespace osharp {
         }
         static msg(msg, type) {
             type = type || 'info';
-            var config = {
-                timeOut: type == "error" ? 6000 : 3000,
-                positionClass: "toast-top-center",
-                closeButton: true,
-                newestOnTop: false,
-                type: type
-            };
-            var toastr = new ToasterService();
-            toastr.pop(config);
-
-            // toastr.options = {
-            //     timeOut: type == 'error' ? '6000' : '3000',
-            //     positionClass: "toast-top-center",
-            //     closeButton: true,
-            //     newestOnTop: false
-            // }
-            //toastr[type](msg, "")
+            let time = type == "error" ? 6000 : 3000;
+            let icon = type == "warning" ? 0 : type == "success" ? 1 : type == "error" ? 2 : 6;
+            //layer.msg(msg);
+            layer.msg(msg, { time: time, icon: icon, offset: 't' });
         }
     }
 

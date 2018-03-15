@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding, } from '@angular/core';
 import { SettingsService } from '../../shared/angle/core/settings/settings.service';
+import { osharp } from '../../shared/osharp';
 declare var $: any;
 
 @Component({
@@ -20,7 +21,8 @@ export class LayoutComponent implements OnInit {
     @HostBinding('class.aside-toggled') get asideToggled() { return this.settings.layout.asideToggled; };
     @HostBinding('class.aside-collapsed-text') get isCollapsedText() { return this.settings.layout.isCollapsedText; };
 
-    constructor(public settings: SettingsService) { }
+    constructor(public settings: SettingsService) {
+    }
 
     ngOnInit() {
         $(document).on('click', '[href="#"]', e => e.preventDefault());

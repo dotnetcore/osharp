@@ -20,12 +20,14 @@
       "prefix": "app",
       "styles": [
         "app/shared/angle/core/preloader/preloader.scss",
-        "styles.scss"
+        "styles.scss",
+        "./assets/layer/theme/default/layer.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "app/shared/angle/core/preloader/preloader.js",
-        "../node_modules/jquery-sparkline/jquery.sparkline.js"
+        "../node_modules/jquery-sparkline/jquery.sparkline.js",
+        "./assets/layer/layer.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
