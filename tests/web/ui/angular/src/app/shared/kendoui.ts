@@ -105,12 +105,7 @@ export namespace kendoui {
         /**重置Grid高度 */
         protected ResizeGrid(init: boolean) {
             var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth >= 1114 ? 80 : winWidth >= 768 ? 64 : 145;
-            console.log(winWidth);
-            console.log(winHeight);
             var $content = $("#grid-box .k-grid-content");
-            console.log($("#grid-box").height());
-            console.log($content.height());
-
             var otherHeight = $("#grid-box").height() - $content.height();
             $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
         }
@@ -126,6 +121,48 @@ export namespace kendoui {
                 this.grid.dataSource.read();
             }
         }
+    }
 
+    export class Controls {
+        static Boolean(value: boolean) {
+            return value ? '是' : '否';
+        }
+
+        static BooleanEditor(container, options) {
+            var guid = kendo.guid();
+            $('<input class="k-checkbox" type="checkbox" id="' + guid + '" name="' + options.field + '" data-type="boolean" data-bind="checked:' + options.field + '">').appendTo(container);
+            $('<label class="k-checkbox-label" for="' + guid + '"></label>').appendTo(container);
+        }
+
+        static NumberEditor(container, options, decimals, step?) {
+            var input = $('<input/>');
+            input.attr('name', options.field);
+            input.appendTo(container);
+            input.kendoNumericTextBox({
+                format: '{0:' + decimals + '}',
+                step: step || 0.01
+            });
+        }
+
+        static DropDownList(element, dataSource, textField = 'text', valueField = 'id') {
+            element.kendoDropDownList({
+                autoBind: true,
+                dataTextField: textField || "text",
+                dataValueField: valueField || "id",
+                dataSource: dataSource
+            });
+        }
+
+        static DropDownListEditor(container, options, dataSource, textField = 'text', valueField = 'id') {
+            var input = $('<input/>');
+            input.attr('name', options.field);
+            input.appendTo(container);
+            new kendo.ui.DropDownList(input, {
+                autoBind: true,
+                dataTextField: textField,
+                dataValueField: valueField,
+                dataSource: dataSource
+            });
+        }
     }
 }

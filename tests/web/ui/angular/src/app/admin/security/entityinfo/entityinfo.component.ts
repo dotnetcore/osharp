@@ -1,22 +1,70 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
-import { EntityinfoService, } from './entityinfo.service';
+import { Component, OnInit, OnDestroy, NgZone, ElementRef, AfterViewInit, } from '@angular/core';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
+import { kendoui } from '../../../shared/kendoui';
+import { osharp } from '../../../shared/osharp';
 
 @Component({
     selector: 'security-entityinfo',
-    templateUrl: './entityinfo.component.html',
-    styleUrls: ['./entityinfo.component.css']
+    template: `<div id="grid-box"></div>`
 })
-export class EntityinfoComponent implements OnInit, OnDestroy {
+export class EntityinfoComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
 
-    constructor(private _service: EntityinfoService) { }
-
-    ngOnInit() {
+    constructor(protected zone: NgZone, protected el: ElementRef) {
+        super(zone, el);
+        this.moduleName = "entityinfo";
     }
 
-    ngOnDestroy() {
+    ngOnInit() {
+        super.InitBase();
+    }
+
+    ngAfterViewInit() {
+        super.ViewInitBase();
+    }
+
+    protected GetModel() {
+        return {
+            model: {
+                id: "Id",
+                fields: {
+                    Name: { type: "string", editable: false },
+                    TypeName: { type: "string", editable: false },
+                    AuditEnabled: { type: "boolean" }
+                }
+            }
+        };
+    }
+
+    protected GetGridColumns(): kendo.ui.GridColumn[] {
+        return [
+            {
+                field: "Name",
+                title: "实体名称",
+                width: 150,
+                filterable: osharp.Data.stringFilterable
+            },
+            {
+                field: "TypeName",
+                title: "实体类型",
+                width: 250,
+                filterable: osharp.Data.stringFilterable
+            },
+            {
+                field: "AuditEnabled",
+                title: "数据审计",
+                width: 95,
+                template: d => kendoui.Controls.Boolean(d.AuditEnabled)
+            }
+        ];
+    }
+
+    protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
+        var options = super.GetGridOptions(dataSource);
+        options.columnMenu = { sortable: false };
+        options.toolbar = ["save", "cancel"];
+        return options;
     }
 }
