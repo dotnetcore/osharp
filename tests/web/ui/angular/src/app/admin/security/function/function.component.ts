@@ -28,21 +28,19 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
 
     protected GetModel() {
         return {
-            model: {
-                id: "Id",
-                fields: {
-                    Id: { type: "number", editable: false },
-                    UserName: { type: "string", validation: { required: true } },
-                    Email: { type: "string", validation: { required: true } },
-                    EmailConfirmed: { type: "boolean" },
-                    PhoneNumber: { type: "string" },
-                    PhoneNumberConfirmed: { type: "boolean" },
-                    LockoutEnabled: { type: "boolean" },
-                    LockoutEnd: { type: "date", editable: false },
-                    AccessFailedCount: { type: "number", editable: false },
-                    CreatedTime: { type: "date", editable: false },
-                    Roles: { editable: false }
-                }
+            id: "Id",
+            fields: {
+                Name: { type: "string", editable: false },
+                AccessType: { type: "number" },
+                CacheExpirationSeconds: { type: "number" },
+                AuditOperationEnabled: { type: "boolean" },
+                AuditEntityEnabled: { type: "boolean" },
+                IsCacheSliding: { type: "boolean" },
+                IsLocked: { type: "boolean" },
+                IsAjax: { type: "boolean", editable: false },
+                Area: { type: "string", editable: false },
+                Controller: { type: "string", editable: false },
+                Action: { type: "string", editable: false }
             }
         };
     }
@@ -98,7 +96,14 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
     protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
         var options = super.GetGridOptions(dataSource);
         options.columnMenu = { sortable: false };
-        options.toolbar = ["save", "cancel"];
+        options.toolbar = [{ name: 'save' }, { name: 'cancel' }];
+        return options;
+    }
+
+    protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+        var options = super.GetDataSourceOptions();
+        delete options.transport.create;
+        delete options.transport.destroy;
         return options;
     }
 }

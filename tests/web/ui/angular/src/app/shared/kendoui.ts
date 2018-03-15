@@ -20,17 +20,19 @@ export namespace kendoui {
         }
 
         protected ViewInitBase() {
-            let $grid = $($(this.element.nativeElement).find("#grid-box"));
-            this.grid = new kendo.ui.Grid($grid, this.gridOptions);
-            this.ResizeGrid(true);
-            window.addEventListener('keydown', e => this.KeyDownEvent(e));
-            window.addEventListener('resize', e => this.ResizeGrid(false));
+            this.zone.runOutsideAngular(() => {
+                let $grid = $($(this.element.nativeElement).find("#grid-box"));
+                this.grid = new kendo.ui.Grid($grid, this.gridOptions);
+                this.ResizeGrid(true);
+                window.addEventListener('keydown', e => this.KeyDownEvent(e));
+                window.addEventListener('resize', e => this.ResizeGrid(false));
+            });
         }
 
         protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
             var options: kendo.ui.GridOptions = {
                 dataSource: dataSource,
-                toolbar: ['create', 'save', 'cancel'],
+                toolbar: [{ name: 'create' }, { name: 'save' }, { name: 'cancel' }],
                 columns: this.GetGridColumns(),
                 navigatable: true,
                 filterable: true,

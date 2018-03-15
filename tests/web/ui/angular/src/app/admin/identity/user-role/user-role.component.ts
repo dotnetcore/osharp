@@ -11,7 +11,7 @@ export class UserRoleComponent extends kendoui.GridComponentBase implements OnIn
 
     constructor(protected zone: NgZone, protected el: ElementRef) {
         super(zone, el);
-        this.moduleName = "user";
+        this.moduleName = "userrole";
     }
 
     ngOnInit() {
@@ -24,16 +24,14 @@ export class UserRoleComponent extends kendoui.GridComponentBase implements OnIn
 
     protected GetModel() {
         return {
-            model: {
-                id: "Id",
-                fields: {
-                    UserId: { type: "number", editable: false },
-                    RoleId: { type: "number", editable: false },
-                    UserName: { type: "string", validation: { required: true } },
-                    RoleName: { type: "string", validation: { required: true } },
-                    IsLocked: { type: "boolean" },
-                    CreatedTime: { type: "date", editable: false }
-                }
+            id: "Id",
+            fields: {
+                UserId: { type: "number", editable: false },
+                RoleId: { type: "number", editable: false },
+                UserName: { type: "string", validation: { required: true } },
+                RoleName: { type: "string", validation: { required: true } },
+                IsLocked: { type: "boolean" },
+                CreatedTime: { type: "date", editable: false }
             }
         };
     }
@@ -68,8 +66,13 @@ export class UserRoleComponent extends kendoui.GridComponentBase implements OnIn
 
     protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
         var options = super.GetGridOptions(dataSource);
-        //options.columnMenu = { sortable: false };
-        options.toolbar = ["save", "cancel"];
+        options.toolbar = [{ name: 'save' }, { name: 'cancel' }];
+        return options;
+    }
+
+    protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+        var options = super.GetDataSourceOptions();
+        delete options.transport.destroy;
         return options;
     }
 

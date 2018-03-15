@@ -24,21 +24,19 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
 
     protected GetModel() {
         return {
-            model: {
-                id: "Id",
-                fields: {
-                    Id: { type: "number", editable: false },
-                    UserName: { type: "string", validation: { required: true } },
-                    Email: { type: "string", validation: { required: true } },
-                    EmailConfirmed: { type: "boolean" },
-                    PhoneNumber: { type: "string" },
-                    PhoneNumberConfirmed: { type: "boolean" },
-                    LockoutEnabled: { type: "boolean" },
-                    LockoutEnd: { type: "date", editable: false },
-                    AccessFailedCount: { type: "number", editable: false },
-                    CreatedTime: { type: "date", editable: false },
-                    Roles: { editable: false }
-                }
+            id: "Id",
+            fields: {
+                Id: { type: "number", editable: false },
+                UserName: { type: "string", validation: { required: true } },
+                Email: { type: "string", validation: { required: true } },
+                EmailConfirmed: { type: "boolean" },
+                PhoneNumber: { type: "string" },
+                PhoneNumberConfirmed: { type: "boolean" },
+                LockoutEnabled: { type: "boolean" },
+                LockoutEnd: { type: "date", editable: false },
+                AccessFailedCount: { type: "number", editable: false },
+                CreatedTime: { type: "date", editable: false },
+                Roles: { editable: false }
             }
         };
     }
@@ -112,12 +110,4 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
             }
         ];
     }
-
-    protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-        var options = super.GetGridOptions(dataSource);
-        //options.columnMenu = { sortable: false };
-        options.toolbar = ["create", "save", "cancel"];
-        return options;
-    }
-
 }

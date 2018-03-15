@@ -24,18 +24,16 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
 
     protected GetModel() {
         return {
-            model: {
-                id: "Id",
-                fields: {
-                    Id: { type: "number", editable: false },
-                    Name: { type: "string", validation: { required: true } },
-                    Remark: { type: "string" },
-                    IsAdmin: { type: "boolean" },
-                    IsDefault: { type: "boolean" },
-                    IsLocked: { type: "boolean" },
-                    IsSystem: { type: "boolean", editable: false },
-                    CreatedTime: { type: "date", editable: false }
-                }
+            id: "Id",
+            fields: {
+                Id: { type: "number", editable: false },
+                Name: { type: "string", validation: { required: true } },
+                Remark: { type: "string" },
+                IsAdmin: { type: "boolean" },
+                IsDefault: { type: "boolean" },
+                IsLocked: { type: "boolean" },
+                IsSystem: { type: "boolean", editable: false },
+                CreatedTime: { type: "date", editable: false }
             }
         };
     }
@@ -75,12 +73,5 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
             },
             { field: "CreatedTime", title: "注册时间", width: 130, format: "{0:yy-MM-dd HH:mm}" }
         ];
-    }
-
-    protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-        var options = super.GetGridOptions(dataSource);
-        //options.columnMenu = { sortable: false };
-        options.toolbar = ["create", "save", "cancel"];
-        return options;
     }
 }

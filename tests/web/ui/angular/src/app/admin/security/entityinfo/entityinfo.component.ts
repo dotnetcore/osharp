@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone, ElementRef, AfterViewInit, } from '@angular/core';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinctUntilChanged';
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from '../../../shared/osharp';
 
@@ -27,44 +24,34 @@ export class EntityinfoComponent extends kendoui.GridComponentBase implements On
 
     protected GetModel() {
         return {
-            model: {
-                id: "Id",
-                fields: {
-                    Name: { type: "string", editable: false },
-                    TypeName: { type: "string", editable: false },
-                    AuditEnabled: { type: "boolean" }
-                }
+            id: "Id",
+            fields: {
+                Name: { type: "string", editable: false },
+                TypeName: { type: "string", editable: false },
+                AuditEnabled: { type: "boolean" }
             }
         };
     }
 
     protected GetGridColumns(): kendo.ui.GridColumn[] {
         return [
-            {
-                field: "Name",
-                title: "实体名称",
-                width: 150,
-                filterable: osharp.Data.stringFilterable
-            },
-            {
-                field: "TypeName",
-                title: "实体类型",
-                width: 250,
-                filterable: osharp.Data.stringFilterable
-            },
-            {
-                field: "AuditEnabled",
-                title: "数据审计",
-                width: 95,
-                template: d => kendoui.Controls.Boolean(d.AuditEnabled)
-            }
+            { field: "Name", title: "实体名称", width: 150, filterable: osharp.Data.stringFilterable },
+            { field: "TypeName", title: "实体类型", width: 250, filterable: osharp.Data.stringFilterable },
+            { field: "AuditEnabled", title: "数据审计", width: 95, template: d => kendoui.Controls.Boolean(d.AuditEnabled) }
         ];
     }
 
     protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
         var options = super.GetGridOptions(dataSource);
         options.columnMenu = { sortable: false };
-        options.toolbar = ["save", "cancel"];
+        options.toolbar = [{ name: 'save' }, { name: 'cancel' }];
+        return options;
+    }
+
+    protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+        var options = super.GetDataSourceOptions();
+        delete options.transport.create;
+        delete options.transport.destroy;
         return options;
     }
 }

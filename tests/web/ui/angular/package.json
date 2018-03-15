@@ -35,7 +35,7 @@
     "@angular/router": "5.1.1",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "2.0.0",
-    "@progress/kendo-ui": "^2017.3.1026",
+    "@progress/kendo-ui": "^2018.1.312",
     "@swimlane/ngx-datatable": "11.1.2",
     "ag-grid": "14.2.0",
     "ag-grid-angular": "14.2.0",
