@@ -20,14 +20,10 @@ using OSharp.Dependency;
 
 namespace OSharp.Demo.WebApi.Controllers
 {
-    [Description("网站-控制器")]
+    [Description("网站-测试")]
     public class TestController : Controller
     {
-        public TestController()
-        {
-
-        }
-
+        [Description("首页")]
         public IActionResult Index()
         {
             List<string> list = new List<string>();

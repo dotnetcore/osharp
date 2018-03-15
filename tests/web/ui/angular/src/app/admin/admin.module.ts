@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import '@progress/kendo-ui'
+import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN'
+import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN'
 
 import { AdminRoutingModule } from './routes/admin.routing';
 import { LayoutModule } from './layout/layout.module';

@@ -30,6 +30,11 @@
 
 //== Bootstrap
 @import "./app/shared/angle/styles/bootstrap.scss";
+
+//== kendo ui
+@import "../node_modules/@progress/kendo-ui/css/web/kendo.common.css";
+@import "../node_modules/@progress/kendo-ui/css/web/kendo.Material.css";
+
 //== Application
 @import "./app/shared/angle/styles/app.scss";
 
