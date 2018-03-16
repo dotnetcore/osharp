@@ -76,7 +76,7 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
                 template: d => kendoui.Controls.Boolean(d.IsSystem),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
-            { field: "CreatedTime", title: "注册时间", width: 130, format: "{0:yy-MM-dd HH:mm}" }
+            { field: "CreatedTime", title: "注册时间", width: 115, format: "{0:yy-MM-dd HH:mm}" }
         ];
     }
 }

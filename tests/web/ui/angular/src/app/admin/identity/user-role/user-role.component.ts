@@ -58,7 +58,7 @@ export class UserRoleComponent extends kendoui.GridComponentBase implements OnIn
             {
                 field: "CreatedTime",
                 title: "注册时间",
-                width: 130,
+                width: 115,
                 format: "{0:yy-MM-dd HH:mm}"
             }
         ];

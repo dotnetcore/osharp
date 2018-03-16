@@ -128,7 +128,7 @@ export namespace kendoui {
     export class Controls {
         static Boolean(value: boolean) {
             let html = value ? '<input type="checkbox" checked="checked"/>' : '<input type="checkbox"/>';
-            return '<div class="checkbox c-checkbox" style="margin-top:0;margin-bottom:0;margin-left:4px;"><label>' + html + '<span class="fa fa-check" style="width:17px;height:17px;"></span></label></div>';
+            return '<div class="checkbox c-checkbox"><label>' + html + '<span class="fa fa-check"></span></label></div>';
         }
 
         static BooleanEditor(container, options) {

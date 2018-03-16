@@ -71,7 +71,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
             {
                 field: "PhoneNumber",
                 title: "手机号",
-                width: 95,
+                width: 105,
                 filterable: osharp.Data.stringFilterable
             },
             {
@@ -97,7 +97,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
             {
                 field: "LockoutEnd",
                 title: "锁时间",
-                width: 110,
+                width: 115,
                 format: "{0:yy-MM-dd HH:mm}"
             },
             {
@@ -108,7 +108,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
             {
                 field: "CreatedTime",
                 title: "注册时间",
-                width: 110,
+                width: 115,
                 format: "{0:yy-MM-dd HH:mm}"
             }
         ];
