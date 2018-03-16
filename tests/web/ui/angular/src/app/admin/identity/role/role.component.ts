@@ -58,19 +58,23 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
             },
             {
                 field: "IsAdmin", title: "管理", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsAdmin)
+                template: d => kendoui.Controls.Boolean(d.IsAdmin),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsDefault", title: "默认", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsDefault)
+                template: d => kendoui.Controls.Boolean(d.IsDefault),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsLocked", title: "锁定", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsLocked)
+                template: d => kendoui.Controls.Boolean(d.IsLocked),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsSystem", title: "系统", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsSystem)
+                template: d => kendoui.Controls.Boolean(d.IsSystem),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             { field: "CreatedTime", title: "注册时间", width: 130, format: "{0:yy-MM-dd HH:mm}" }
         ];

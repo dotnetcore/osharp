@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 
 using OSharp.Collections;
 using OSharp.Filter;
+using OSharp.Mapping;
 using OSharp.Properties;
 
 
@@ -119,15 +120,14 @@ namespace OSharp.Entity
             SortCondition[] sortConditions)
             where TOutputDto : IOutputDto
         {
-            throw new NotImplementedException();
-            //source.CheckNotNull("source");
-            //predicate.CheckNotNull("predicate");
-            //pageIndex.CheckGreaterThan("pageIndex", 0);
-            //pageSize.CheckGreaterThan("pageSize", 0);
+            source.CheckNotNull("source");
+            predicate.CheckNotNull("predicate");
+            pageIndex.CheckGreaterThan("pageIndex", 0);
+            pageSize.CheckGreaterThan("pageSize", 0);
 
-            //int total;
-            //TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out total, sortConditions).ToOutput<TOutputDto>().ToArray();
-            //return new PageResult<TOutputDto>() { Total = total, Data = data };
+            int total;
+            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out total, sortConditions).ToOutput<TOutputDto>().ToArray();
+            return new PageResult<TOutputDto>() { Total = total, Data = data };
         }
 
         /// <summary>

@@ -11,11 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Collections;
-using OSharp.Demo.WebApi.Areas.Admin.Controllers;
-using OSharp.Dependency;
 
 
 namespace OSharp.Demo.WebApi.Controllers

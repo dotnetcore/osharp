@@ -84,7 +84,7 @@ export namespace kendoui {
                 },
                 aggregate: [],
                 batch: true,
-                pageSize: 20,
+                pageSize: 24,
                 serverPaging: true,
                 serverSorting: true,
                 serverFiltering: true,
@@ -127,7 +127,8 @@ export namespace kendoui {
 
     export class Controls {
         static Boolean(value: boolean) {
-            return value ? '是' : '否';
+            let html = value ? '<input type="checkbox" checked="checked"/>' : '<input type="checkbox"/>';
+            return '<div class="checkbox c-checkbox" style="margin-top:0;margin-bottom:0;margin-left:4px;"><label>' + html + '<span class="fa fa-check" style="width:17px;height:17px;"></span></label></div>';
         }
 
         static BooleanEditor(container, options) {

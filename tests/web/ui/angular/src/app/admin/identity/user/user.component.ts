@@ -65,7 +65,8 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 field: "EmailConfirmed",
                 title: "邮箱确认",
                 width: 95,
-                template: d => kendoui.Controls.Boolean(d.EmailConfirmed)
+                template: d => kendoui.Controls.Boolean(d.EmailConfirmed),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "PhoneNumber",
@@ -77,7 +78,8 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 field: "PhoneNumberConfirmed",
                 title: "手机确认",
                 width: 95,
-                template: d => kendoui.Controls.Boolean(d.PhoneNumberConfirmed)
+                template: d => kendoui.Controls.Boolean(d.PhoneNumberConfirmed),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "Roles",
@@ -89,7 +91,8 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 field: "LockoutEnabled",
                 title: "启用锁",
                 width: 95,
-                template: d => kendoui.Controls.Boolean(d.LockoutEnabled)
+                template: d => kendoui.Controls.Boolean(d.LockoutEnabled),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "LockoutEnd",

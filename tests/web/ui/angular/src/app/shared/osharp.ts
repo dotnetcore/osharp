@@ -104,10 +104,12 @@ export namespace osharp {
         }
         static msg(msg, type) {
             type = type || 'info';
-            let time = type == "error" ? 6000 : 3000;
-            let icon = type == "warning" ? 0 : type == "success" ? 1 : type == "error" ? 2 : 6;
-            //layer.msg(msg);
-            layer.msg(msg, { time: time, icon: icon, offset: 't' });
+            if (type == "error") {
+                layer.alert(msg, { icon: 2, title: "" });
+                return;
+            }
+            let icon = type == "warning" ? 0 : type == "success" ? 1 : 6;
+            layer.msg(msg, { time: 3000, icon: icon, offset: 't' });
         }
     }
 

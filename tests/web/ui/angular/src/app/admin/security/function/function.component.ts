@@ -8,7 +8,8 @@ import { element } from 'protractor';
 
 @Component({
     selector: 'security-function',
-    template: `<div id="grid-box"></div>`
+    template: `<div id="grid-box"></div>`,
+    styleUrls: ['./function.component.scss']
 })
 
 export class FunctionComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
@@ -60,23 +61,28 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
             { field: "CacheExpirationSeconds", title: "缓存秒数", width: 95 },
             {
                 field: "AuditOperationEnabled", title: "操作审计", width: 95,
-                template: d => kendoui.Controls.Boolean(d.AuditOperationEnabled)
+                template: d => kendoui.Controls.Boolean(d.AuditOperationEnabled),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "AuditEntityEnabled", title: "数据审计", width: 95,
-                template: d => kendoui.Controls.Boolean(d.AuditEntityEnabled)
+                template: d => kendoui.Controls.Boolean(d.AuditEntityEnabled),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsCacheSliding", title: "滑动过期", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsCacheSliding)
+                template: d => kendoui.Controls.Boolean(d.IsCacheSliding),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsLocked", title: "已锁定", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsLocked)
+                template: d => kendoui.Controls.Boolean(d.IsLocked),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "IsAjax", title: "Ajax访问", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsAjax)
+                template: d => kendoui.Controls.Boolean(d.IsAjax),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             {
                 field: "Area", title: "区域", width: 100, hidden: true,

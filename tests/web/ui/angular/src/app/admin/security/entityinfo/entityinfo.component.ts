@@ -37,7 +37,11 @@ export class EntityinfoComponent extends kendoui.GridComponentBase implements On
         return [
             { field: "Name", title: "实体名称", width: 150, filterable: osharp.Data.stringFilterable },
             { field: "TypeName", title: "实体类型", width: 250, filterable: osharp.Data.stringFilterable },
-            { field: "AuditEnabled", title: "数据审计", width: 95, template: d => kendoui.Controls.Boolean(d.AuditEnabled) }
+            {
+                field: "AuditEnabled", title: "数据审计", width: 95,
+                template: d => kendoui.Controls.Boolean(d.AuditEnabled),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
+            }
         ];
     }
 
