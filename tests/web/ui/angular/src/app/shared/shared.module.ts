@@ -10,7 +10,7 @@ import { OsharpModule } from './osharp/osharp.module';
     imports: [
         CommonModule,
         FormsModule,
-        OsharpModule
+        OsharpModule,
     ],
     exports: [
         CommonModule,

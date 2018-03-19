@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -50,6 +51,56 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 m.Remark
             }).ToList();
             return Json(modules);
+        }
+
+        [Description("读取模块[用户]树数据")]
+        public IActionResult ReadUserModules(int userId)
+        {
+            Check.GreaterThan(userId, nameof(userId), 0);
+            int[] checkedModuleIds = _securityManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
+
+            int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            var result = GetModulesWithChecked(rootIds, checkedModuleIds);
+            return Json(result);
+        }
+
+        [Description("读取模块[角色]树数据")]
+        public ActionResult ReadRoleModules(int roleId)
+        {
+            Check.GreaterThan(roleId, nameof(roleId), 0);
+            int[] checkedModuleIds = _securityManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
+
+            int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            var result = GetModulesWithChecked(rootIds, checkedModuleIds);
+            return Json(result);
+        }
+
+        private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
+        {
+            var modules = _securityManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
+            {
+                m.Id,
+                m.Name,
+                m.OrderCode,
+                m.Remark,
+                ChildIds = _securityManager.Modules.Where(n => n.ParentId == m.Id).OrderBy(n => n.OrderCode).Select(n => n.Id).ToList()
+            }).ToList();
+            List<object> nodes = new List<object>();
+            foreach (var item in modules)
+            {
+                var node = new
+                {
+                    item.Id,
+                    item.Name,
+                    item.OrderCode,
+                    IsChecked = checkedModuleIds.Contains(item.Id),
+                    IsExpanded = item.ChildIds.Count > 0,
+                    item.Remark,
+                    Items = item.ChildIds.Count > 0 ? GetModulesWithChecked(item.ChildIds.ToArray(), checkedModuleIds) : new List<object>()
+                };
+                nodes.Add(node);
+            }
+            return nodes;
         }
 
         [HttpPost]

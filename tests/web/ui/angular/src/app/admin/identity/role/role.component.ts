@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone, ElementRef, AfterViewInit, } from '@angular/core';
+declare var $: any;
 
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from '../../../shared/osharp';
@@ -6,13 +7,23 @@ import { ToasterService } from 'angular2-toaster/src/toaster.service';
 
 @Component({
     selector: 'identity-role',
-    template: `<div id="grid-box"></div>`
+    templateUrl: `./role.component.html`
 })
 export class RoleComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
+
+    windowOptions: kendo.ui.WindowOptions;
+    window: kendo.ui.Window;
+    moduleTreeOptions: kendo.ui.TreeViewOptions;
+    moduleTree: kendo.ui.TreeView;
 
     constructor(protected zone: NgZone, protected el: ElementRef) {
         super(zone, el);
         this.moduleName = "role";
+        this.windowOptions = {
+            visible: false, width: 500, height: 620, modal: true, title: "角色权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
+            resize: e => this.onWinResize(e)
+        };
+        this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e), dataBound: e => this.onTreeDataBound(e) };
     }
 
     ngOnInit() {
@@ -22,6 +33,8 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
     ngAfterViewInit() {
         super.ViewInitBase();
     }
+
+    //#region GridBase
 
     protected GetModel() {
         return {
@@ -43,9 +56,10 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
         return [
             {
                 command: [
+                    { name: "permission", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
                     { name: "destroy", iconClass: "k-icon k-i-delete", text: "" }
                 ],
-                width: 50
+                width: 100
             },
             { field: "Id", title: "编号", width: 70 },
             {
@@ -79,4 +93,35 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
             { field: "CreatedTime", title: "注册时间", width: 115, format: "{0:yy-MM-dd HH:mm}" }
         ];
     }
+
+    //#endregion
+
+    //#region Window
+
+    private onWinInit(win) {
+        this.window = win;
+    }
+    private windowOpen(e) {
+        e.preventDefault();
+        var tr = $(e.target).closest("tr");
+        var data: any = this.grid.dataItem(tr);
+        this.window.title("角色权限设置-" + data.Name).open().center().resize();
+        //设置树数据
+        this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/module/ReadRoleModules?roleId=" + data.Id } } }));
+    }
+    private onWinResize(e) {
+        $(".win-content .k-tabstrip .k-content").height(e.height - 140);
+    }
+    private onWinClose(wine) { }
+    private onWinSubmit(win) { }
+    //#endregion
+
+    //#region Tree
+
+    private onModuleTreeInit(tree) {
+        this.moduleTree = tree;
+    }
+
+    //#endregion
+
 }

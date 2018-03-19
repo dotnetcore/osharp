@@ -39,6 +39,9 @@ export namespace osharp {
         /**展开集合拼接字符串 */
         static expandAndToString(array: Array<any>, separator: string = ',') {
             var result = '';
+            if (!array || !array.length) {
+                return result;
+            }
             array.forEach(item => {
                 result = result + item.toString() + separator;
             });

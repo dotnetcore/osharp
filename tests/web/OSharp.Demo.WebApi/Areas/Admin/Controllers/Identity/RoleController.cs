@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
@@ -33,10 +35,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     public class RoleController : AreaApiController
     {
         private readonly RoleManager<Role> _roleManager;
+        private readonly IIdentityContract _identityContract;
 
-        public RoleController(RoleManager<Role>roleManager)
+        public RoleController(RoleManager<Role> roleManager, IIdentityContract identityContract)
         {
             _roleManager = roleManager;
+            _identityContract = identityContract;
         }
 
         [Description("读取")]
@@ -57,6 +61,32 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             });
 
             return Json(page.ToPageData());
+        }
+
+        [Description("读取节点")]
+        public IActionResult ReadNode()
+        {
+            var nodes = _roleManager.Roles.Unlocked().OrderBy(m => m.Name).Select(m => new
+            {
+                RoleId = m.Id,
+                RoleName = m.Name
+            });
+            return Json(nodes);
+        }
+
+        [Description("读取角色[用户]树数据")]
+        public IActionResult ReadUserRoles(int userId)
+        {
+            Check.GreaterThan(userId, nameof(userId), 0);
+            
+            int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
+            var nodes = _identityContract.Roles.OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).Select(m => new
+            {
+                m.Id,
+                m.Name,
+                IsChecked = checkRoleIds.Contains(m.Id)
+            }).ToList();
+            return Json(nodes);
         }
 
         [HttpPost]
@@ -86,6 +116,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (RoleInputDto dto in dtos)
             {
+                if (dto.Id == 1 || dto.Name == "系统管理员")
+                {
+                    return Json(new AjaxResult("系统管理员 角色不能更新", AjaxResultType.Error));
+                }
                 Role role = await _roleManager.FindByIdAsync(dto.Id.ToString());
                 role = dto.MapTo(role);
                 IdentityResult result = await _roleManager.UpdateAsync(role);
@@ -106,6 +140,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (int id in ids)
             {
+                if (id == 1)
+                {
+                    return Json(new AjaxResult("系统管理员 角色不能删除", AjaxResultType.Error));
+                }
                 Role role = await _roleManager.FindByIdAsync(id.ToString());
                 IdentityResult result = await _roleManager.DeleteAsync(role);
                 if (!result.Succeeded)

@@ -10,10 +10,12 @@ import { UserblockService } from './sidebar/userblock/userblock.service';
 import { FooterComponent } from './footer/footer.component';
 
 import { AngleModule } from '../../shared/angle/angle.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     imports: [
-        AngleModule
+        AngleModule,
+        SharedModule,
     ],
     providers: [
         UserblockService

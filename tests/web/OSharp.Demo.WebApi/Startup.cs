@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore;
+using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Audits;
 using OSharp.AutoMapper;
@@ -38,15 +39,13 @@ namespace OSharp.Demo.WebApi
             services.AddMvc(options =>
             {
                 options.Filters.Add<UnitOfWorkAttribute>();
+                options.Conventions.Add(new DashedRoutingConvention());
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp(builder =>
-            {
-                //builder.AddModule<AutoMapperModule>().AddModule<AuditModule>();
-            });
+            services.AddOSharp();
 
             services.AddDistributedMemoryCache()
                 .AddLogging(builder =>

@@ -15,6 +15,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     /// <summary>
     /// WebApi的区域控制器基类
     /// </summary>
+    [Area("Admin")]
     [Route("api/[area]/[controller]/[action]")]
     public abstract class AreaApiController : Controller
     { }

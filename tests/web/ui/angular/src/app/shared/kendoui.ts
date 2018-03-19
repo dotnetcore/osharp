@@ -123,6 +123,94 @@ export namespace kendoui {
                 this.grid.dataSource.read();
             }
         }
+
+        //#region 树功能
+
+        protected onTreeDataBound(e) {
+            e.sender.dataSource.view().forEach(item => {
+                item.set("checked", item.IsChecked);
+            });
+        }
+
+        protected onTreeNodeSelect(e) {
+            var item = e.sender.dataItem(e.node);
+            item.set("checked", !item.checked);
+            e.preventDefault();
+        }
+
+        //#endregion
+    }
+
+    export abstract class TreeListComponentBase {
+
+        protected moduleName: string = null;
+        protected treeListOptions: kendo.ui.TreeListOptions = null;
+        protected treeList: kendo.ui.TreeList = null;
+
+        constructor(protected zone: NgZone, protected element: ElementRef) { }
+
+        protected InitBase() {
+            var dataSourceOptions = this.GetDataSourceOptions();
+            var dataSource = new kendo.data.TreeListDataSource(dataSourceOptions);
+            this.treeListOptions = this.GetTreeListOptions(dataSource);
+        }
+
+        protected ViewInitBase() {
+            this.zone.runOutsideAngular(() => {
+                let $tree = $($(this.element.nativeElement).find("#tree-list-box"));
+                this.treeList = new kendo.ui.TreeList($tree, this.treeListOptions);
+                //this.ResizeGrid(true);
+                window.addEventListener('keydown', e => this.KeyDownEvent(e));
+                // window.addEventListener('resize', e => this.ResizeGrid(false));
+            });
+        }
+
+        protected GetTreeListOptions(dataSource: kendo.data.TreeListDataSource): kendo.ui.TreeListOptions {
+            var options: kendo.ui.TreeListOptions = {
+                dataSource: dataSource,
+                columns: this.GetTreeListColumns(),
+                selectable: true,
+                resizable: true,
+                editable: { move: true }
+            };
+
+            return options;
+        }
+        protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+            var options: kendo.data.DataSourceOptions = {
+                transport: {
+                    read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
+                    create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post' },
+                    update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post' },
+                    destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+                },
+                schema: {
+                    model: this.GetModel()
+                },
+                requestEnd: e => osharp.Tools.ajaxResult(e.response)
+            };
+
+            return options;
+        }
+        protected FieldReplace(field: string): string {
+            return field;
+        }
+
+        protected abstract GetModel(): any;
+        protected abstract GetTreeListColumns(): kendo.ui.TreeListColumn[];
+
+        private KeyDownEvent(e) {
+            if (!this.treeList) {
+                return;
+            }
+            var key = e.keyCode;
+            if (key === 83 && e.altKey) {
+                this.treeList.saveRow();
+            } else if (key === 65 && e.altKey) {
+                this.treeList.dataSource.read();
+            }
+        }
+
     }
 
     export class Controls {

@@ -60,6 +60,5 @@ namespace OSharp.Demo.Identity
         Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid));
         
         #endregion
-
     }
 }

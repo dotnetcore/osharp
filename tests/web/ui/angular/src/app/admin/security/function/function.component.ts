@@ -1,18 +1,16 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ElementRef, } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ElementRef, AfterContentInit, } from '@angular/core';
 declare var $: any;
 
-import { KendouiModule } from "../../../shared/kendoui/kendoui.module";
 import { osharp } from "../../../shared/osharp";
 import { kendoui } from "../../../shared/kendoui";
 import { element } from 'protractor';
 
 @Component({
     selector: 'security-function',
-    template: `<div id="grid-box"></div>`,
-    styleUrls: ['./function.component.scss']
+    template: `<div id="grid-box"></div>`
 })
 
-export class FunctionComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
+export class FunctionComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit, AfterContentInit {
 
     constructor(protected zone: NgZone, protected el: ElementRef) {
         super(zone, el);
@@ -22,9 +20,11 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
     ngOnInit() {
         super.InitBase();
     }
-
-    ngAfterViewInit() {
+    ngAfterContentInit(): void {
         super.ViewInitBase();
+    }
+    ngAfterViewInit() {
+        //super.ViewInitBase();
     }
 
     protected GetModel() {
@@ -108,6 +108,7 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
 
     protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
         var options = super.GetDataSourceOptions();
+        options.group = [{ field: "Area" }, { field: "Controller" }];
         delete options.transport.create;
         delete options.transport.destroy;
         return options;

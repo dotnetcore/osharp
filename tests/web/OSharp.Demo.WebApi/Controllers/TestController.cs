@@ -24,7 +24,7 @@ namespace OSharp.Demo.WebApi.Controllers
         public IActionResult Index()
         {
             List<string> list = new List<string>();
-
+            list.Add("test");
             return Content(list.ExpandAndToString("\r\n"));
         }
     }

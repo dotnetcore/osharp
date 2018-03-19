@@ -10,10 +10,12 @@ import { UserblockService } from './sidebar/userblock/userblock.service';
 import { FooterComponent } from './footer/footer.component';
 
 import { AngleModule } from '../shared/angle/angle.module';
+import { KendouiModule } from '../shared/kendoui/kendoui.module';
 
 @NgModule({
     imports: [
-        AngleModule
+        AngleModule,
+        KendouiModule
     ],
     providers: [
         UserblockService

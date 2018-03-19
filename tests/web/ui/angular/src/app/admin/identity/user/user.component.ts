@@ -1,17 +1,32 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ElementRef } from '@angular/core';
+declare var $: any;
 
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from '../../../shared/osharp';
 
 @Component({
     selector: 'identity-user',
-    template: `<div id="grid-box"></div>`
+    templateUrl: './user.component.html'
 })
 export class UserComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
+
+    window: kendo.ui.Window;
+    windowOptions: kendo.ui.WindowOptions;
+    tabstripOptions: kendo.ui.TabStripOptions;
+    roleTreeOptions: kendo.ui.TreeViewOptions;
+    roleTree: kendo.ui.TreeView;
+    moduleTreeOptions: kendo.ui.TreeViewOptions;
+    moduleTree: kendo.ui.TreeView;
 
     constructor(protected zone: NgZone, protected el: ElementRef) {
         super(zone, el);
         this.moduleName = "user";
+        this.windowOptions = {
+            visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
+            resize: e => this.onWinResize(e)
+        };
+        this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e), dataBound: e => this.onTreeDataBound(e) };
+        this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e), dataBound: e => this.onTreeDataBound(e) };
     }
 
     ngOnInit() {
@@ -21,6 +36,8 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
     ngAfterViewInit() {
         super.ViewInitBase();
     }
+
+    //#region GridBase
 
     protected GetModel() {
         return {
@@ -44,9 +61,10 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
         return [
             {
                 command: [
+                    { name: "permission", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
                     { name: "destroy", iconClass: "k-icon k-i-delete", text: "" }
                 ],
-                width: 50
+                width: 100
             },
             { field: "Id", title: "编号", width: 70 },
             {
@@ -54,58 +72,49 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 title: "用户名",
                 width: 150,
                 filterable: osharp.Data.stringFilterable
-            },
-            {
+            }, {
                 field: "Email",
                 title: "邮箱",
                 width: 200,
                 filterable: osharp.Data.stringFilterable
-            },
-            {
+            }, {
                 field: "EmailConfirmed",
                 title: "邮箱确认",
                 width: 95,
                 template: d => kendoui.Controls.Boolean(d.EmailConfirmed),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
+            }, {
                 field: "PhoneNumber",
                 title: "手机号",
                 width: 105,
                 filterable: osharp.Data.stringFilterable
-            },
-            {
+            }, {
                 field: "PhoneNumberConfirmed",
                 title: "手机确认",
                 width: 95,
                 template: d => kendoui.Controls.Boolean(d.PhoneNumberConfirmed),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
+            }, {
                 field: "Roles",
                 title: "角色",
                 width: 180,
                 template: d => osharp.Tools.expandAndToString(d.Roles)
-            },
-            {
+            }, {
                 field: "LockoutEnabled",
                 title: "启用锁",
                 width: 95,
                 template: d => kendoui.Controls.Boolean(d.LockoutEnabled),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
+            }, {
                 field: "LockoutEnd",
                 title: "锁时间",
                 width: 115,
                 format: "{0:yy-MM-dd HH:mm}"
-            },
-            {
+            }, {
                 field: "AccessFailedCount",
                 title: "登录错误",
                 width: 95
-            },
-            {
+            }, {
                 field: "CreatedTime",
                 title: "注册时间",
                 width: 115,
@@ -113,4 +122,44 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
             }
         ];
     }
+
+    //#endregion
+
+    //#region Window
+
+    private windowOpen(e) {
+        e.preventDefault();
+        var tr = $(e.target).closest("tr");
+        var data: any = this.grid.dataItem(tr);
+        this.window.title("用户权限设置-" + data.UserName).open().center().resize();
+        //设置树数据
+        this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + data.Id } } }));
+        this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/module/ReadUserModules?userId=" + data.Id } } }));
+    }
+    private onWinInit(win) {
+        this.window = win;
+    }
+    private onWinClose(win) {
+        console.log("close111");
+    }
+    private onWinSubmit(win) {
+        console.log("submit111");
+    }
+    private onWinResize(e) {
+        $(".win-content .k-tabstrip .k-content").height(e.height - 140);
+    }
+
+    //#endregion
+
+    //#region Tree
+
+    private onRoleTreeInit(tree) {
+        this.roleTree = tree;
+    }
+    private onModuleTreeInit(tree) {
+        this.moduleTree = tree;
+    }
+
+    //#endregion
+
 }
