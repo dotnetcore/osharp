@@ -22,14 +22,15 @@ namespace OSharp.Core.Modules
     public abstract class OSharpModule
     {
         /// <summary>
-        /// 获取 是否内部模块，内部模块将自动加载
-        /// </summary>
-        public virtual bool IsAutoLoad => false;
-
-        /// <summary>
-        /// 获取 模块级别
+        /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public virtual ModuleLevel Level => ModuleLevel.Business;
+
+        /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
+        /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
+        /// </summary>
+        public virtual int Order => 0;
 
         /// <summary>
         /// 获取 是否已可用

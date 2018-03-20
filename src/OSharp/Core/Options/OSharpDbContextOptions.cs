@@ -24,7 +24,8 @@ namespace OSharp.Core.Options
         /// </summary>
         public OSharpDbContextOptions()
         {
-            AuditEntityEnabled = true;
+            AuditEntityEnabled = false;
+            AutoMigrationEnabled = true;
         }
 
         /// <summary>
@@ -51,5 +52,10 @@ namespace OSharp.Core.Options
         /// 获取或设置 是否允许审计实体
         /// </summary>
         public bool AuditEntityEnabled { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否自动迁移
+        /// </summary>
+        public bool AutoMigrationEnabled { get; set; }
     }
 }

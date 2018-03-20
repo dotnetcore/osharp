@@ -17,7 +17,7 @@
                         <td>名称</td>
                         <td>路径</td>
                         <td>级别</td>
-                        <td>自动加载</td>
+                        <td>层次</td>
                         <td>已启用</td>
                     </tr>
                     </thead>
@@ -25,13 +25,13 @@
                     @foreach (OSharpModule module in ViewBag.Modules)
                     {
                         <text>
-                        <tr>
-                            <td>@module.GetType().Name</td>
-                            <td>@module.GetType().FullName</td>
-                            <td>@module.Level</td>
-                            <td>@module.IsAutoLoad</td>
-                            <td>@module.IsEnabled</td>
-                        </tr>
+                            <tr>
+                                <td>@module.GetType().Name</td>
+                                <td>@module.GetType().FullName</td>
+                                <td>@module.Level</td>
+                                <td>@module.Order</td>
+                                <td>@module.IsEnabled</td>
+                            </tr>
                         </text>
                     }
                     </tbody>

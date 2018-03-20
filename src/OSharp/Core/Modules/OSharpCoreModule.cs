@@ -8,15 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Functions;
 using OSharp.Core.Options;
-using OSharp.Entity;
 
 
 namespace OSharp.Core.Modules
@@ -26,11 +22,6 @@ namespace OSharp.Core.Modules
     /// </summary>
     public class OSharpCoreModule : OSharpModule
     {
-        /// <summary>
-        /// 获取 是否内部模块，内部模块将自动加载
-        /// </summary>
-        public override bool IsAutoLoad => true;
-
         /// <summary>
         /// 获取 模块级别
         /// </summary>
@@ -57,7 +48,7 @@ namespace OSharp.Core.Modules
         {
             //应用程序级别的服务定位器
             ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
-            
+
             IsEnabled = true;
         }
     }

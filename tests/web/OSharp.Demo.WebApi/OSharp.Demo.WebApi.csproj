@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Compile Include="Startups\SqlServerDesignTimeDefaultDbContextFactory.cs" />
+    <Compile Include="Startups\SqlServerEntityFrameworkCoreMigrationModule.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+
+using OSharp.Entity;
 
 
 namespace OSharp.Core.Options
@@ -31,5 +34,13 @@ namespace OSharp.Core.Options
         /// 获取 数据上下文配置信息
         /// </summary>
         public IDictionary<string, OSharpDbContextOptions> DbContextOptionses { get; }
+
+        /// <summary>
+        /// 获取指定上下文类和指定数据库类型的上下文配置信息
+        /// </summary>
+        public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)
+        {
+            return DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
+        }
     }
 }

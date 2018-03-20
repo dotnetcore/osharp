@@ -15,7 +15,6 @@ using AutoMapper.Configuration;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Mapping;
 

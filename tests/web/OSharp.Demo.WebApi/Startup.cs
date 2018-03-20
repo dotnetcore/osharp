@@ -23,6 +23,8 @@ using OSharp.Audits;
 using OSharp.AutoMapper;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Options;
+using OSharp.Demo.Identity;
+using OSharp.Demo.Security;
 using OSharp.Entity;
 
 
@@ -51,7 +53,7 @@ namespace OSharp.Demo.WebApi
 
             services.AddOSharp(builder =>
             {
-                //builder.ExceptModule<EntityInfoModule>().ExceptModule<MvcFunctionModule>();
+                //builder.ExceptModule<IdentityModule>();
             });
              
             services.AddDistributedMemoryCache()
@@ -68,6 +70,11 @@ namespace OSharp.Demo.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            IConfiguration cfg = app.ApplicationServices.GetService<IConfiguration>();
+            var section = cfg.GetSection("Logging");
+            //var opt = section.Get<OSharpOptions>();
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -41,6 +41,12 @@ namespace OSharp.Core.Options
             SetDbContextOptionses(options);
         }
 
+        /// <summary>
+        /// 初始化上下文配置信息，首先以OSharp配置节点中的为准，
+        /// 不存在OSharp节点，才使用ConnectionStrings的数据连接串来构造SqlServer的配置，
+        /// 保证同一上下文类型只有一个配置节点
+        /// </summary>
+        /// <param name="options"></param>
         private void SetDbContextOptionses(OSharpOptions options)
         {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");

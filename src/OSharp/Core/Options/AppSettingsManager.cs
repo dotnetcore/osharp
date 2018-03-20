@@ -23,29 +23,14 @@ namespace OSharp.Core.Options
 
         static AppSettingsManager()
         {
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-            JsonFileName = file;
-            BuildConfiguration(file);
+            BuildConfiguration();
         }
 
-        /// <summary>
-        /// 获取 配置文件路径
-        /// </summary>
-        public static string JsonFileName { get; private set; }
-
-        private static void BuildConfiguration(string file)
+        private static void BuildConfiguration()
         {
-            var builder = new ConfigurationBuilder().AddJsonFile(file);
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json").AddJsonFile("appsettings.Development.json");
             _configuration = builder.Build();
-        }
-
-        /// <summary>
-        /// 设置配置文件路径
-        /// </summary>
-        public static void SetFilePath(string file)
-        {
-            BuildConfiguration(file);
-            JsonFileName = file;
         }
 
         /// <summary>

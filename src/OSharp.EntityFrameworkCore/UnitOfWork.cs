@@ -9,13 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 using OSharp.Core.Options;
 using OSharp.Entity.Transactions;
@@ -122,9 +119,7 @@ namespace OSharp.Entity
 
         private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
         {
-            IOptionsMonitor<OSharpOptions> osharpOptions = _serviceProvider.GetService<IOptionsMonitor<OSharpOptions>>();
-            OSharpDbContextOptions dbContextOptions =
-                osharpOptions.CurrentValue.DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
+            OSharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
             if (dbContextOptions == null)
             {
                 throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");

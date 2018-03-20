@@ -61,21 +61,21 @@ namespace OSharp.Core.Modules
         {
             Type[] moduleTypes = _typeFinder.FindAll();
             _sourceModules.Clear();
-            _sourceModules.AddRange(moduleTypes.Select(m => Activator.CreateInstance(m) as OSharpModule));
+            _sourceModules.AddRange(moduleTypes.Select(m => (OSharpModule)Activator.CreateInstance(m)));
             List<OSharpModule> modules;
             if (_builder.AddModules.Any())
             {
-                modules = _sourceModules.Where(m => m.IsAutoLoad)
+                modules = _sourceModules.Where(m => m.Level == ModuleLevel.Core)
                     .Union(_sourceModules.Where(m => _builder.AddModules.Contains(m.GetType()))).Distinct().ToList();
                 IEnumerable<Type> dependModuleTypes = modules.SelectMany(m => m.GetDependModuleTypes());
                 modules = modules.Union(_sourceModules.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
-                modules = modules.OrderByDescending(m => m.IsAutoLoad).ThenBy(m => m.Level).ToList();
+                modules = modules.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             }
             else
             {
-                modules = _sourceModules;
+                modules = _sourceModules.ToList();
                 modules.RemoveAll(m => _builder.ExceptModules.Contains(m.GetType()));
-                modules = modules.OrderBy(m => m.Level).ThenByDescending(m => m.IsAutoLoad).ToList();
+                modules = modules.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             }
             EnsureCoreModuleToBeFirst(modules);
             LoadedModules = modules;

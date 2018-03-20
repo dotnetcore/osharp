@@ -51,8 +51,8 @@ namespace OSharp.Entity
             }
             DbContextOptions options = builderCreator.Create(resolveOptions.ConnectionString, resolveOptions.ExistingConnection).Options;
 
-            DbContext context = ActivatorUtilities.CreateInstance(_serviceProvider, dbContextType, options) as DbContext;
-            if (context == null)
+            //创建上下文实例
+            if (!(ActivatorUtilities.CreateInstance(_serviceProvider, dbContextType, options) is DbContext context))
             {
                 throw new OsharpException($"实例化数据上下文“{dbContextType.AssemblyQualifiedName}”失败");
             }

@@ -12,7 +12,7 @@ using System;
 namespace OSharp.Demo.WebApi.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20180320061234_Init")]
+    [Migration("20180320133228_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

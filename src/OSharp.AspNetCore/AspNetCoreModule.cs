@@ -22,14 +22,14 @@ namespace OSharp.AspNetCore
     public class AspNetCoreModule : OSharpModule
     {
         /// <summary>
-        /// 获取 是否内部模块，内部模块将自动加载
-        /// </summary>
-        public override bool IsAutoLoad => true;
-
-        /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Framework;
+        public override ModuleLevel Level => ModuleLevel.Core;
+
+        /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
+        /// </summary>
+        public override int Order => 1;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中

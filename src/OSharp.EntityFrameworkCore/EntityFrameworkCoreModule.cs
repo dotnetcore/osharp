@@ -7,14 +7,9 @@
 //  <last-date>2018-03-07 21:30</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
 using OSharp.Core.Modules;
-
-using Remotion.Linq.Clauses;
 
 
 namespace OSharp.Entity
@@ -25,9 +20,9 @@ namespace OSharp.Entity
     public class EntityFrameworkCoreModule : OSharpModule
     {
         /// <summary>
-        /// 获取 模块级别
+        /// 获取 模块级别，级别越小越先启动
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Core;
+        public override ModuleLevel Level => ModuleLevel.Framework;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中

@@ -8,10 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 using OSharp.Core;
 using OSharp.Core.Modules;
@@ -32,6 +34,11 @@ namespace OSharp.Entity.SqlServer
         public override ModuleLevel Level => ModuleLevel.Framework;
 
         /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
+        /// </summary>
+        public override int Order => 1;
+
+        /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
         /// <param name="services">依赖注入服务容器</param>
@@ -40,38 +47,6 @@ namespace OSharp.Entity.SqlServer
         {
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             return services;
-        }
-
-        /// <summary>
-        /// 使用模块服务
-        /// </summary>
-        /// <param name="provider"></param>
-        public override void UseModule(IServiceProvider provider)
-        {
-            using (provider.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                DefaultDbContext context = CreateDbContext(provider);
-                //context?.CheckAndMigration();
-            }
-
-            IsEnabled = true;
-        }
-
-        private static DefaultDbContext CreateDbContext(IServiceProvider provider)
-        {
-            string connString = AppSettingsManager.Get("OSharp:DbContexts:SqlServer:ConnectionString")
-                ?? AppSettingsManager.Get("ConnectionStrings:DefaultDbContext");
-            if (connString == null)
-            {
-                return null;
-            }
-            DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
-            string entryAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
-            builder.UseSqlServer(connString, b => b.MigrationsAssembly(entryAssemblyName));
-            IEntityConfigurationTypeFinder typeFinder = provider.GetService<IEntityConfigurationTypeFinder>();
-
-            DefaultDbContext context = new DefaultDbContext(builder.Options, typeFinder);
-            return context;
         }
     }
 }
