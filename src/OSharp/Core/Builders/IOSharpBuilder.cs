@@ -24,7 +24,12 @@ namespace OSharp.Core.Builders
         /// <summary>
         /// 获取 加载的模块集合
         /// </summary>
-        IEnumerable<Type> Modules { get; }
+        IEnumerable<Type> AddModules { get; }
+
+        /// <summary>
+        /// 获取 排除的模块集合
+        /// </summary>
+        IEnumerable<Type> ExceptModules { get; }
 
         /// <summary>
         /// 获取 OSharp选项配置委托
@@ -36,6 +41,13 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <typeparam name="TModule">要添加的模块类型</typeparam>
         IOSharpBuilder AddModule<TModule>() where TModule : OSharpModule;
+
+        /// <summary>
+        /// 移除指定模块
+        /// </summary>
+        /// <typeparam name="TModule"></typeparam>
+        /// <returns></returns>
+        IOSharpBuilder ExceptModule<TModule>() where TModule : OSharpModule;
 
         /// <summary>
         /// 添加OSharp选项配置

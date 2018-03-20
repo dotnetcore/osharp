@@ -11,15 +11,13 @@ using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
 
-using OSharp.Dependency;
-
 
 namespace OSharp.Entity.SqlServer
 {
     /// <summary>
     /// SqlServer的<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
-    public class SqlServerDbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
+    public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等

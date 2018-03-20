@@ -98,10 +98,10 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
 
     //#region Window
 
-    private onWinInit(win) {
+    onWinInit(win) {
         this.window = win;
     }
-    private windowOpen(e) {
+    windowOpen(e) {
         e.preventDefault();
         var tr = $(e.target).closest("tr");
         var data: any = this.grid.dataItem(tr);
@@ -112,13 +112,13 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
     private onWinResize(e) {
         $(".win-content .k-tabstrip .k-content").height(e.height - 140);
     }
-    private onWinClose(wine) { }
-    private onWinSubmit(win) { }
+    onWinClose(wine) { }
+    onWinSubmit(win) { }
     //#endregion
 
     //#region Tree
 
-    private onModuleTreeInit(tree) {
+    onModuleTreeInit(tree) {
         this.moduleTree = tree;
     }
 

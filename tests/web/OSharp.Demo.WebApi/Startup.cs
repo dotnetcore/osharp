@@ -9,16 +9,20 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore;
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Audits;
 using OSharp.AutoMapper;
+using OSharp.Core.EntityInfos;
+using OSharp.Core.Options;
 using OSharp.Entity;
 
 
@@ -45,8 +49,11 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp();
-
+            services.AddOSharp(builder =>
+            {
+                //builder.ExceptModule<EntityInfoModule>().ExceptModule<MvcFunctionModule>();
+            });
+             
             services.AddDistributedMemoryCache()
                 .AddLogging(builder =>
                 {
@@ -70,12 +77,7 @@ namespace OSharp.Demo.WebApi
                 app.UseExceptionHandler();
             }
 
-            app.UseStaticFiles().UseMvcWithAreaRoute().UseOSharpMvc();
-
-            //数据库迁移
-            SqlServerDesignTimeDefaultDbContextFactory dbContextFactory = new SqlServerDesignTimeDefaultDbContextFactory();
-            var dbContext = dbContextFactory.CreateDbContext(new string[0]);
-            dbContext.CheckAndMigration();
+            app.UseStaticFiles().UseStatusCodePages().UseMvcWithAreaRoute().UseOSharpMvc();
         }
     }
 }

@@ -27,6 +27,11 @@ namespace OSharp.Core.Modules
         public virtual bool IsAutoLoad => false;
 
         /// <summary>
+        /// 获取 模块级别
+        /// </summary>
+        public virtual ModuleLevel Level => ModuleLevel.Business;
+
+        /// <summary>
         /// 获取 是否已可用
         /// </summary>
         public bool IsEnabled { get; protected set; }

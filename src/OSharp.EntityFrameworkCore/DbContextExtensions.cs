@@ -37,7 +37,15 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 获取迁移记录并提交迁移
+        /// 检测关系型数据库是否存在
+        /// </summary>
+        public static bool ExistsRelationalDatabase(this DbContext context)
+        {
+            return context.Database.GetService<IDatabaseCreator>() is RelationalDatabaseCreator creator && creator.Exists();
+        }
+
+        /// <summary>
+        /// 获取未提交的迁移记录并提交迁移
         /// </summary>
         public static void CheckAndMigration(this DbContext dbContext)
         {

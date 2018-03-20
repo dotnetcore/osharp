@@ -20,13 +20,19 @@ namespace OSharp.Core.Builders
         /// </summary>
         public OSharpBuilder()
         {
-            Modules = new List<Type>();
+            AddModules = new List<Type>();
+            ExceptModules = new List<Type>();
         }
 
         /// <summary>
         /// 获取 加载的模块集合
         /// </summary>
-        public IEnumerable<Type> Modules { get; private set; }
+        public IEnumerable<Type> AddModules { get; private set; }
+
+        /// <summary>
+        /// 获取 排除的模块集合
+        /// </summary>
+        public IEnumerable<Type> ExceptModules { get; private set; }
 
         /// <summary>
         /// 获取 OSharp选项配置委托
@@ -34,14 +40,27 @@ namespace OSharp.Core.Builders
         public Action<OSharpOptions> OptionsAction { get; private set; }
 
         /// <summary>
-        /// 添加指定模块
+        /// 添加指定模块，执行此功能后将仅加载指定的模块
         /// </summary>
         /// <typeparam name="TModule">要添加的模块类型</typeparam>
         public IOSharpBuilder AddModule<TModule>() where TModule : OSharpModule
         {
-            List<Type> list = Modules.ToList();
+            List<Type> list = AddModules.ToList();
             list.AddIfNotExist(typeof(TModule));
-            Modules = list;
+            AddModules = list;
+            return this;
+        }
+
+        /// <summary>
+        /// 移除指定模块，执行此功能以从自动加载的模块中排除指定模块
+        /// </summary>
+        /// <typeparam name="TModule"></typeparam>
+        /// <returns></returns>
+        public IOSharpBuilder ExceptModule<TModule>() where TModule : OSharpModule
+        {
+            List<Type> list = ExceptModules.ToList();
+            list.AddIfNotExist(typeof(TModule));
+            ExceptModules = list;
             return this;
         }
 

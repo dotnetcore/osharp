@@ -136,13 +136,13 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
         this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + data.Id } } }));
         this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/module/ReadUserModules?userId=" + data.Id } } }));
     }
-    private onWinInit(win) {
+    onWinInit(win) {
         this.window = win;
     }
-    private onWinClose(win) {
+    onWinClose(win) {
         console.log("close111");
     }
-    private onWinSubmit(win) {
+    onWinSubmit(win) {
         console.log("submit111");
     }
     private onWinResize(e) {
@@ -153,10 +153,10 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
 
     //#region Tree
 
-    private onRoleTreeInit(tree) {
+    onRoleTreeInit(tree) {
         this.roleTree = tree;
     }
-    private onModuleTreeInit(tree) {
+    onModuleTreeInit(tree) {
         this.moduleTree = tree;
     }
 

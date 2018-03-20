@@ -8,6 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
@@ -35,5 +38,41 @@ namespace OSharp.Demo.Identity
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
         }
+
+        /// <summary>
+        /// 获取 角色信息查询数据集
+        /// </summary>
+        public IQueryable<Role> Roles
+        {
+            get { return _roleRepository.Query(); }
+        }
+        
+        /// <summary>
+        /// 获取 用户信息查询数据集
+        /// </summary>
+        public IQueryable<User> Users
+        {
+            get { return _userRepository.Query(); }
+        }
+
+        /// <summary>
+        /// 获取 用户角色信息查询数据集
+        /// </summary>
+        public IQueryable<UserRole> UserRoles
+        {
+            get { return _userRoleRepository.Query(); }
+        }
+
+        /// <summary>
+        /// 检查用户角色信息信息是否存在
+        /// </summary>
+        /// <param name="predicate">检查谓语表达式</param>
+        /// <param name="id">更新的用户角色信息编号</param>
+        /// <returns>用户角色信息是否存在</returns>
+        public Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid))
+        {
+            return _userRoleRepository.CheckExistsAsync(predicate, id);
+        }
+
     }
 }

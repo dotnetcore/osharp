@@ -6,16 +6,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using OSharp.Core.Functions;
-using OSharp.Demo.WebApi;
+using OSharp.Entity;
 using System;
 
 namespace OSharp.Demo.WebApi.Migrations
 {
-    [DbContext(typeof(SqlServerDesignTimeDefaultDbContext))]
-    [Migration("20180310073412_Init")]
-    partial class Init
+    [DbContext(typeof(DefaultDbContext))]
+    partial class DefaultDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +31,8 @@ namespace OSharp.Demo.WebApi.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("PropertyNamesJson");
+                    b.Property<string>("PropertyNamesJson")
+                        .IsRequired();
 
                     b.Property<string>("TypeName")
                         .IsRequired();
@@ -92,7 +92,8 @@ namespace OSharp.Demo.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int?>("ParentId");
 

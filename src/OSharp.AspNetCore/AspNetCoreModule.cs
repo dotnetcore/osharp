@@ -27,6 +27,11 @@ namespace OSharp.AspNetCore
         public override bool IsAutoLoad => true;
 
         /// <summary>
+        /// 获取 模块级别
+        /// </summary>
+        public override ModuleLevel Level => ModuleLevel.Framework;
+
+        /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
         /// <param name="services">依赖注入服务容器</param>

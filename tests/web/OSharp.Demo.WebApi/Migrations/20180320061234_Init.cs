@@ -16,7 +16,7 @@ namespace OSharp.Demo.WebApi.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     AuditEnabled = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    PropertyNamesJson = table.Column<string>(nullable: true),
+                    PropertyNamesJson = table.Column<string>(nullable: false),
                     TypeName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -77,7 +77,7 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     ParentId = table.Column<int>(nullable: true),
                     Remark = table.Column<string>(nullable: true)
                 },

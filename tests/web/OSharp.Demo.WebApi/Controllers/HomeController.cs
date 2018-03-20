@@ -41,7 +41,7 @@ namespace OSharp.Demo.WebApi.Controllers
             lines.Add("WebApi网络服务已启动");
             ViewBag.Lines = lines;
 
-            ViewBag.Modules = _moduleManager.SourceModules.OrderByDescending(m=>m.IsAutoLoad);
+            ViewBag.Modules = _moduleManager.SourceModules.OrderBy(m => m.Level).ThenByDescending(m => m.IsAutoLoad);
 
             return View();
         }

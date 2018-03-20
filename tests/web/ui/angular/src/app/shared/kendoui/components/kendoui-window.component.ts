@@ -50,12 +50,12 @@ export class KendouiWindowComponent implements OnInit {
         $($(this.$element).find(".win-content")).height(e.height - 70);
     }
 
-    private cancel() {
+    cancel() {
         this.closing.emit(this.window);
         this.window.close();
     }
 
-    private submit() {
+    submit() {
         this.submited.emit(this.window);
     }
 }

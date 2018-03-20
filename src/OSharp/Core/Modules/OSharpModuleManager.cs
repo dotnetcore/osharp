@@ -51,7 +51,7 @@ namespace OSharp.Core.Modules
         /// 获取 加载的模块信息集合
         /// </summary>
         public IEnumerable<OSharpModule> LoadedModules { get; private set; }
-        
+
         /// <summary>
         /// 加载模块服务
         /// </summary>
@@ -63,17 +63,19 @@ namespace OSharp.Core.Modules
             _sourceModules.Clear();
             _sourceModules.AddRange(moduleTypes.Select(m => Activator.CreateInstance(m) as OSharpModule));
             List<OSharpModule> modules;
-            if (_builder.Modules.Any())
+            if (_builder.AddModules.Any())
             {
                 modules = _sourceModules.Where(m => m.IsAutoLoad)
-                    .Union(_sourceModules.Where(m => _builder.Modules.Contains(m.GetType()))).Distinct().ToList();
+                    .Union(_sourceModules.Where(m => _builder.AddModules.Contains(m.GetType()))).Distinct().ToList();
                 IEnumerable<Type> dependModuleTypes = modules.SelectMany(m => m.GetDependModuleTypes());
                 modules = modules.Union(_sourceModules.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
-                modules = modules.OrderByDescending(m => m.IsAutoLoad).ToList();
+                modules = modules.OrderByDescending(m => m.IsAutoLoad).ThenBy(m => m.Level).ToList();
             }
             else
             {
-                modules = _sourceModules.OrderByDescending(m => m.IsAutoLoad).ToList();
+                modules = _sourceModules;
+                modules.RemoveAll(m => _builder.ExceptModules.Contains(m.GetType()));
+                modules = modules.OrderBy(m => m.Level).ThenByDescending(m => m.IsAutoLoad).ToList();
             }
             EnsureCoreModuleToBeFirst(modules);
             LoadedModules = modules;

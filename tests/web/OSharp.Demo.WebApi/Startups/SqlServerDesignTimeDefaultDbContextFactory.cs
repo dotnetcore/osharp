@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+
+using OSharp.Core.Options;
 using OSharp.Entity;
 using OSharp.Reflection;
 
 namespace OSharp.Demo.WebApi
 {
-    public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<SqlServerDesignTimeDefaultDbContext>
+    public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFactory<DefaultDbContext>
     {
-        public SqlServerDesignTimeDefaultDbContext CreateDbContext(string[] args)
+        public DefaultDbContext CreateDbContext(string[] args)
         {
-            string connString = "Server=.;Database=osharp.demo.webapi;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connString = AppSettingsManager.Get("OSharp:DbContexts:SqlServer:ConnectionString")
+                ?? AppSettingsManager.Get("ConnectionStrings:DefaultDbContext");
+
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
-            builder.UseSqlServer(connString);
+            string entryAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
+            builder.UseSqlServer(connString, b => b.MigrationsAssembly(entryAssemblyName));
             IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppDomainAllAssemblyFinder()));
-            return new SqlServerDesignTimeDefaultDbContext(builder.Options, typeFinder);
+            return new DefaultDbContext(builder.Options, typeFinder);
         }
     }
 }
