@@ -7,7 +7,7 @@ namespace OSharp.Demo.WebApi.Startups
     /// <summary>
     /// SqlServer-DefaultDbContext迁移模块
     /// </summary>
-    public class SqlServerEntityFrameworkCoreMigrationModule : SqlServerMigrationModuleBase<DefaultDbContext>
+    public class SqlServerDefaultDbContextMigrationModule : SqlServerMigrationModuleBase<DefaultDbContext>
     {
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
