@@ -71,7 +71,7 @@ namespace OSharp.Demo.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             IConfiguration cfg = app.ApplicationServices.GetService<IConfiguration>();
-            var section = cfg.GetSection("Logging");
+            var section = cfg.GetSection("OSharp");
             //var opt = section.Get<OSharpOptions>();
 
 

@@ -50,7 +50,8 @@ namespace OSharp.Core.Options
         private void SetDbContextOptionses(OSharpOptions options)
         {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
-            if (section?.Value == null)
+            IDictionary<string, OSharpDbContextOptions> dict = section.Get<Dictionary<string, OSharpDbContextOptions>>();
+            if (dict == null || dict.Count == 0)
             {
                 string connectionString = _configuration["ConnectionStrings:DefaultDbContext"];
                 if (connectionString == null)
@@ -66,8 +67,6 @@ namespace OSharp.Core.Options
                 options.DbContextOptionses.Add("DefaultDbContext", dbContextOptions);
                 return;
             }
-            IDictionary<string, OSharpDbContextOptions> dict = new Dictionary<string, OSharpDbContextOptions>();
-            section.Bind(dict);
             var repeated = dict.Values.GroupBy(m => m.DbContextType).FirstOrDefault(m => m.Count() > 1);
             if (repeated != null)
             {
