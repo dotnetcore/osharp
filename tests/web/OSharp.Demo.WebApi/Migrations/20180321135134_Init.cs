@@ -124,6 +124,8 @@ namespace OSharp.Demo.WebApi.Migrations
                     CreatedTime = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     EmailConfirmed = table.Column<bool>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    IsSystem = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizeEmail = table.Column<string>(nullable: false),

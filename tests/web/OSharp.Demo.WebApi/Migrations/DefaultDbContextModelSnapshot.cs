@@ -177,6 +177,10 @@ namespace OSharp.Demo.WebApi.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("IsLocked");
+
+                    b.Property<bool>("IsSystem");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");

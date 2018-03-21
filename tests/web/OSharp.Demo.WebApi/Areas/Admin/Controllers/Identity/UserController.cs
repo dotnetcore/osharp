@@ -61,6 +61,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                     m.LockoutEnabled,
                     m.LockoutEnd,
                     m.AccessFailedCount,
+                    m.IsLocked,
                     m.CreatedTime,
                     Roles = _identityContract.UserRoles.Where(n => n.UserId == m.Id)
                         .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))

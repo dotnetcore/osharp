@@ -36,12 +36,12 @@ namespace OSharp.Entity.SqlServer
         /// <param name="provider">服务提供者</param>
         public override void UseModule(IServiceProvider provider)
         {
-            using (provider.GetService<IServiceScopeFactory>().CreateScope())
+            using (IServiceScope scope = provider.CreateScope())
             {
-                TDbContext context = CreateDbContext(provider);
+                TDbContext context = CreateDbContext(scope.ServiceProvider);
                 if (context != null)
                 {
-                    OSharpOptions options = provider.GetOSharpOptions();
+                    OSharpOptions options = scope.ServiceProvider.GetOSharpOptions();
                     OSharpDbContextOptions contextOptions = options.GetDbContextOptions(context.GetType());
                     if (contextOptions != null)
                     {
@@ -61,10 +61,10 @@ namespace OSharp.Entity.SqlServer
         }
 
         /// <summary>
-        /// 获取
+        /// 重写实现获取数据上下文实例
         /// </summary>
-        /// <param name="provider"></param>
+        /// <param name="scopedProvider">服务提供者</param>
         /// <returns></returns>
-        protected abstract TDbContext CreateDbContext(IServiceProvider provider);
+        protected abstract TDbContext CreateDbContext(IServiceProvider scopedProvider);
     }
 }

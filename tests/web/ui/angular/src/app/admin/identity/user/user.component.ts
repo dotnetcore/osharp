@@ -101,7 +101,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 template: d => osharp.Tools.expandAndToString(d.Roles)
             }, {
                 field: "LockoutEnabled",
-                title: "启用锁",
+                title: "是否登录锁",
                 width: 95,
                 template: d => kendoui.Controls.Boolean(d.LockoutEnabled),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
@@ -114,6 +114,12 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 field: "AccessFailedCount",
                 title: "登录错误",
                 width: 95
+            }, {
+                field: "Locked",
+                title: "是否锁定",
+                width: 95,
+                template: d => kendoui.Controls.Boolean(d.Locked),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             }, {
                 field: "CreatedTime",
                 title: "注册时间",

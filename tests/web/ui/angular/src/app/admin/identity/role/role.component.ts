@@ -46,7 +46,6 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
                 IsAdmin: { type: "boolean" },
                 IsDefault: { type: "boolean" },
                 IsLocked: { type: "boolean" },
-                IsSystem: { type: "boolean", editable: false },
                 CreatedTime: { type: "date", editable: false }
             }
         };
@@ -65,29 +64,20 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
             {
                 field: "Name", title: "角色名", width: 150,
                 filterable: osharp.Data.stringFilterable
-            },
-            {
+            }, {
                 field: "Remark", title: "备注", width: 250,
                 filterable: osharp.Data.stringFilterable
-            },
-            {
+            }, {
                 field: "IsAdmin", title: "管理", width: 95,
                 template: d => kendoui.Controls.Boolean(d.IsAdmin),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
+            }, {
                 field: "IsDefault", title: "默认", width: 95,
                 template: d => kendoui.Controls.Boolean(d.IsDefault),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
+            }, {
                 field: "IsLocked", title: "锁定", width: 95,
                 template: d => kendoui.Controls.Boolean(d.IsLocked),
-                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            },
-            {
-                field: "IsSystem", title: "系统", width: 95,
-                template: d => kendoui.Controls.Boolean(d.IsSystem),
                 editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             },
             { field: "CreatedTime", title: "注册时间", width: 115, format: "{0:yy-MM-dd HH:mm}" }

@@ -55,7 +55,6 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 m.Remark,
                 m.IsAdmin,
                 m.IsDefault,
-                m.IsSystem,
                 m.IsLocked,
                 m.CreatedTime
             });
@@ -116,10 +115,6 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (RoleInputDto dto in dtos)
             {
-                if (dto.Id == 1 || dto.Name == "系统管理员")
-                {
-                    return Json(new AjaxResult("系统管理员 角色不能更新", AjaxResultType.Error));
-                }
                 Role role = await _roleManager.FindByIdAsync(dto.Id.ToString());
                 role = dto.MapTo(role);
                 IdentityResult result = await _roleManager.UpdateAsync(role);
@@ -140,10 +135,6 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (int id in ids)
             {
-                if (id == 1)
-                {
-                    return Json(new AjaxResult("系统管理员 角色不能删除", AjaxResultType.Error));
-                }
                 Role role = await _roleManager.FindByIdAsync(id.ToString());
                 IdentityResult result = await _roleManager.DeleteAsync(role);
                 if (!result.Succeeded)

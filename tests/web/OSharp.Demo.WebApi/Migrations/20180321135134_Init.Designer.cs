@@ -12,7 +12,7 @@ using System;
 namespace OSharp.Demo.WebApi.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20180320150734_Init")]
+    [Migration("20180321135134_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,10 @@ namespace OSharp.Demo.WebApi.Migrations
                         .IsRequired();
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("IsLocked");
+
+                    b.Property<bool>("IsSystem");
 
                     b.Property<bool>("LockoutEnabled");
 

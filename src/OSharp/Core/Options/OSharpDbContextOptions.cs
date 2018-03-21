@@ -25,7 +25,7 @@ namespace OSharp.Core.Options
         public OSharpDbContextOptions()
         {
             AuditEntityEnabled = false;
-            AutoMigrationEnabled = true;
+            AutoMigrationEnabled = false;
         }
 
         /// <summary>

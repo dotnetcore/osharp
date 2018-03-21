@@ -26,22 +26,20 @@ namespace OSharp.Core.EntityInfos
     /// </summary>
     /// <typeparam name="TEntityInfo"></typeparam>
     /// <typeparam name="TEntityInfoHandler"></typeparam>
-    public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler, IDisposable
+    public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler
         where TEntityInfo : class, IEntityInfo, IEntity<Guid>, new()
     {
         private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
+        private readonly IServiceProvider _provider;
         private readonly ILogger _logger;
-        private readonly IServiceScope _scope;
-        private readonly IServiceProvider _scopedServiceProvider;
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
         protected EntityInfoHandlerBase(IServiceProvider applicationServiceProvider)
         {
-            _scope = applicationServiceProvider.CreateScope();
-            _scopedServiceProvider = _scope.ServiceProvider;
-            _logger = _scopedServiceProvider.GetService<ILogger<TEntityInfoHandler>>();
+            _provider = applicationServiceProvider;
+            _logger = applicationServiceProvider.GetService<ILogger<TEntityInfoHandler>>();
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void Initialize()
         {
-            IEntityTypeFinder entityTypeFinder = _scopedServiceProvider.GetService<IEntityTypeFinder>();
+            IEntityTypeFinder entityTypeFinder = _provider.GetService<IEntityTypeFinder>();
             Type[] entityTypes = entityTypeFinder.FindAll(true);
 
             foreach (Type entityType in entityTypes)
@@ -63,7 +61,11 @@ namespace OSharp.Core.EntityInfos
                 _entityInfos.Add(entityInfo);
             }
 
-            SyncToDatabase(_entityInfos);
+            using (IServiceScope scope = _provider.CreateScope())
+            {
+                SyncToDatabase(scope.ServiceProvider, _entityInfos);
+            }
+
             RefreshCache();
         }
 
@@ -100,16 +102,19 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void RefreshCache()
         {
-            _entityInfos.Clear();
-            _entityInfos.AddRange(GetFromDatabase());
+            using (IServiceScope scope = _provider.CreateScope())
+            {
+                _entityInfos.Clear();
+                _entityInfos.AddRange(GetFromDatabase(scope.ServiceProvider));
+            }
         }
 
         /// <summary>
         /// 将从程序集获取的实体信息同步到数据库
         /// </summary>
-        protected virtual void SyncToDatabase(List<TEntityInfo> entityInfos)
+        protected virtual void SyncToDatabase(IServiceProvider scopedProvider, List<TEntityInfo> entityInfos)
         {
-            IRepository<TEntityInfo, Guid> repository = _scopedServiceProvider.GetService<IRepository<TEntityInfo, Guid>>();
+            IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
                 throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
@@ -177,29 +182,11 @@ namespace OSharp.Core.EntityInfos
         /// 从数据库获取最新实体信息
         /// </summary>
         /// <returns></returns>
-        protected virtual TEntityInfo[] GetFromDatabase()
+        protected virtual TEntityInfo[] GetFromDatabase(IServiceProvider scopedProvider)
         {
-            IRepository<TEntityInfo, Guid> repository = _scopedServiceProvider.GetService<IRepository<TEntityInfo, Guid>>();
+            IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             return repository.Query().ToArray();
         }
 
-        #region IDisposable
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _scope?.Dispose();
-            }
-        }
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

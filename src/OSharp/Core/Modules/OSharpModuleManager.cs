@@ -69,15 +69,13 @@ namespace OSharp.Core.Modules
                     .Union(_sourceModules.Where(m => _builder.AddModules.Contains(m.GetType()))).Distinct().ToList();
                 IEnumerable<Type> dependModuleTypes = modules.SelectMany(m => m.GetDependModuleTypes());
                 modules = modules.Union(_sourceModules.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
-                modules = modules.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             }
             else
             {
                 modules = _sourceModules.ToList();
                 modules.RemoveAll(m => _builder.ExceptModules.Contains(m.GetType()));
-                modules = modules.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             }
-            EnsureCoreModuleToBeFirst(modules);
+            modules = modules.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             LoadedModules = modules;
 
             foreach (OSharpModule module in LoadedModules)
@@ -98,18 +96,6 @@ namespace OSharp.Core.Modules
             {
                 module.UseModule(provider);
             }
-        }
-
-        private static void EnsureCoreModuleToBeFirst(List<OSharpModule> modules)
-        {
-            int index = modules.FindIndex(m => m.GetType() == typeof(OSharpCoreModule));
-            if (index <= 0)
-            {
-                return;
-            }
-            OSharpModule coreModule = modules[index];
-            modules.RemoveAt(index);
-            modules.Insert(0, coreModule);
         }
     }
 }

@@ -44,7 +44,7 @@ const headingSystem = {
 };
 const System = {
     text: '系统管理',
-    icon: 'icon-globe',
+    icon: 'fa fa-desktop',
     submenu: [
         { text: '系统设置', link: './system/settings', icon: 'icon-settings' }
     ]

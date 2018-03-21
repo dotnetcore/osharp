@@ -20,7 +20,7 @@ namespace OSharp.Identity
     /// 用户信息基类
     /// </summary>
     /// <typeparam name="TUserKey"></typeparam>
-    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime
+    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime, ILockable
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
@@ -110,7 +110,7 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 指示用户是否可以被锁定的标志。
         /// </summary>
-        [DisplayName("是否可锁定")]
+        [DisplayName("是否登录锁")]
         public bool LockoutEnabled { get; set; }
 
         /// <summary>
@@ -118,6 +118,16 @@ namespace OSharp.Identity
         /// </summary>
         [DisplayName("登录失败次数")]
         public int AccessFailedCount { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否系统用户
+        /// </summary>
+        public bool IsSystem { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定当前信息
+        /// </summary>
+        public bool IsLocked { get; set; }
 
         /// <summary>
         /// 获取或设置 创建时间

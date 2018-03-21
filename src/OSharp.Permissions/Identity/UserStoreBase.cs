@@ -234,6 +234,10 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
+            if (user.IsSystem)
+            {
+                return new IdentityResult().Failed($"用户“{user.UserName}”是系统用户，不能删除");
+            }
             await _userRepository.DeleteAsync(user);
             return IdentityResult.Success;
         }
@@ -1104,12 +1108,16 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
             Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
 
-            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            TRole role = _roleRepository.Query(m => m.NormalizedName == normalizedRoleName).FirstOrDefault();
+            if (role == null)
             {
                 throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
             }
-            await _userRoleRepository.DeleteBatchAsync(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId));
+            if (user.IsSystem && role.IsSystem)
+            {
+                throw new InvalidOperationException($"系统用户“{user.UserName}”的系统角色“{role.Name}”不能移除");
+            }
+            await _userRoleRepository.DeleteBatchAsync(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(role.Id));
         }
 
         /// <summary>

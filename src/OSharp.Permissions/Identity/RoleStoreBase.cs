@@ -102,6 +102,10 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(role, nameof(role));
 
+            if (role.IsSystem)
+            {
+                return new IdentityResult().Failed($"角色“{role.Name}”是系统角色，不能更新");
+            }
             await _roleRepository.UpdateAsync(role);
             return IdentityResult.Success;
         }
@@ -118,6 +122,10 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(role, nameof(role));
 
+            if (role.IsSystem)
+            {
+                return new IdentityResult().Failed($"角色“{role.Name}”是系统角色，不能删除");
+            }
             await _roleRepository.DeleteAsync(role);
             return IdentityResult.Success;
         }

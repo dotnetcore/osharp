@@ -26,28 +26,22 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 功能信息处理基类
     /// </summary>
-    public abstract class FunctionHandlerBase<TFunction, TFunctionHandler> : IFunctionHandler, IDisposable
+    public abstract class FunctionHandlerBase<TFunction, TFunctionHandler> : IFunctionHandler
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
-        private readonly IServiceScope _scope;
-        private readonly ILogger<TFunctionHandler> _logger;
         private readonly List<TFunction> _functions = new List<TFunction>();
+        private readonly IServiceProvider _provider;
+        private readonly ILogger<TFunctionHandler> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例
         /// </summary>
         protected FunctionHandlerBase(IServiceProvider applicationServiceProvider)
         {
-            _scope = applicationServiceProvider.CreateScope();
-            ScopedServiceProvider = _scope.ServiceProvider;
-            AllAssemblyFinder = ScopedServiceProvider.GetService<IAllAssemblyFinder>();
-            _logger = ScopedServiceProvider.GetService<ILogger<TFunctionHandler>>();
+            _provider = applicationServiceProvider;
+            _logger = applicationServiceProvider.GetService<ILogger<TFunctionHandler>>();
+            AllAssemblyFinder = applicationServiceProvider.GetService<IAllAssemblyFinder>();
         }
-
-        /// <summary>
-        /// 获取 局部服务提供者
-        /// </summary>
-        protected IServiceProvider ScopedServiceProvider { get; }
 
         /// <summary>
         /// 获取 所有程序集查找器
@@ -73,7 +67,12 @@ namespace OSharp.Core.Functions
 
             Type[] functionTypes = FunctionTypeFinder.FindAll(true);
             TFunction[] functions = GetFunctions(functionTypes);
-            SyncToDatabase(functions);
+
+            using (IServiceScope scope = _provider.CreateScope())
+            {
+                SyncToDatabase(scope.ServiceProvider, functions);
+            }
+            
             RefreshCache();
         }
 
@@ -101,8 +100,11 @@ namespace OSharp.Core.Functions
         /// </summary>
         public void RefreshCache()
         {
-            _functions.Clear();
-            _functions.AddRange(GetFromDatabase());
+            using (IServiceScope scope = _provider.CreateScope())
+            {
+                _functions.Clear();
+                _functions.AddRange(GetFromDatabase(scope.ServiceProvider)); 
+            }
         }
 
         /// <summary>
@@ -211,8 +213,9 @@ namespace OSharp.Core.Functions
         /// <summary>
         /// 将从程序集获取的功能信息同步到数据库中
         /// </summary>
+        /// <param name="scopedProvider">局部服务程序提供者</param>
         /// <param name="functions">程序集获取的功能信息</param>
-        protected virtual void SyncToDatabase(TFunction[] functions)
+        protected virtual void SyncToDatabase(IServiceProvider scopedProvider, TFunction[] functions)
         {
             Check.NotNull(functions, nameof(functions));
             if (functions.Length == 0)
@@ -220,7 +223,7 @@ namespace OSharp.Core.Functions
                 return;
             }
 
-            IRepository<TFunction, Guid> repository = ScopedServiceProvider.GetService<IRepository<TFunction, Guid>>();
+            IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
             if (repository == null)
             {
                 throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
@@ -298,29 +301,11 @@ namespace OSharp.Core.Functions
         /// 从数据库获取最新功能信息
         /// </summary>
         /// <returns></returns>
-        protected virtual TFunction[] GetFromDatabase()
+        protected virtual TFunction[] GetFromDatabase(IServiceProvider scopedProvider)
         {
-            IRepository<TFunction, Guid> repository = ScopedServiceProvider.GetService<IRepository<TFunction, Guid>>();
+            IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
             return repository.Query().ToArray();
         }
 
-        #region IDisposable
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _scope?.Dispose();
-            }
-        }
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }
