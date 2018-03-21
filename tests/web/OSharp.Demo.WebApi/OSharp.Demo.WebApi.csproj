@@ -5,25 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Startups\**" />
-    <Content Remove="Startups\**" />
-    <EmbeddedResource Remove="Startups\**" />
-    <None Remove="Startups\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Startups\SqlServerDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Include="Startups\SqlServerDefaultDbContextMigrationModule.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Folder Include="Controllers\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +22,10 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\index.html" />
   </ItemGroup>
 
   <ItemGroup>

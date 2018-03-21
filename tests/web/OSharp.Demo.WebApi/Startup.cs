@@ -55,7 +55,7 @@ namespace OSharp.Demo.WebApi
             {
                 //builder.ExceptModule<IdentityModule>();
             });
-             
+
             services.AddDistributedMemoryCache()
                 .AddLogging(builder =>
                 {
@@ -70,11 +70,6 @@ namespace OSharp.Demo.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IConfiguration cfg = app.ApplicationServices.GetService<IConfiguration>();
-            var section = cfg.GetSection("OSharp");
-            //var opt = section.Get<OSharpOptions>();
-
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -84,7 +79,7 @@ namespace OSharp.Demo.WebApi
                 app.UseExceptionHandler();
             }
 
-            app.UseStaticFiles().UseStatusCodePages().UseMvcWithAreaRoute().UseOSharpMvc();
+            app.UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute().UseOSharpMvc();
         }
     }
 }

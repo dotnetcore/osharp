@@ -2,16 +2,17 @@ import { Component, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 @Component({
     selector: 's-home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-    apiValues = [];
+    startupInfo: any = null;
 
     constructor(private http: HttpClient) {
 
     }
 
     ngOnInit() {
-        this.http.get<string[]>("api/admin/test/getlines").subscribe(res => this.apiValues = res);
+        this.http.get("api/admin/system/info").subscribe(res => this.startupInfo = res);
     }
 }
