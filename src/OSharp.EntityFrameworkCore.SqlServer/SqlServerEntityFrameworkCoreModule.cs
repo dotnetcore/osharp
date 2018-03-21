@@ -7,17 +7,9 @@
 //  <last-date>2018-03-07 21:53</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Reflection;
-
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
-using OSharp.Core;
 using OSharp.Core.Modules;
-using OSharp.Core.Options;
 
 
 namespace OSharp.Entity.SqlServer

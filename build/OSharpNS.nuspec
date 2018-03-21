@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>0.1.0-alpha08</version>
+    <version>0.1.0-alpha09</version>
     <title>OSharpFramework(.NetStandard2.0)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
@@ -11,15 +11,15 @@
     <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OSharp Framework with .NetStandard2.0，此Package包含了OSharpNS的所有组件</description>
-    <copyright>Copyright © 66SOFT 2014-2017</copyright>
+    <copyright>Copyright © 66SOFT 2014-2018</copyright>
     <tags>osharp</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="OSharpNS.Core" version="0.1.0-alpha08" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="0.1.0-alpha08" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.1.0-alpha08" />
-        <dependency id="OSharpNS.AutoMapper" version="0.1.0-alpha08" />
-        <dependency id="OSharpNS.AspNetCore" version="0.1.0-alpha08" />
+        <dependency id="OSharpNS.Core" version="0.1.0-alpha09" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="0.1.0-alpha09" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.1.0-alpha09" />
+        <dependency id="OSharpNS.AutoMapper" version="0.1.0-alpha09" />
+        <dependency id="OSharpNS.AspNetCore" version="0.1.0-alpha09" />
       </group>
     </dependencies>
   </metadata>

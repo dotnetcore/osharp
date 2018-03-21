@@ -17,7 +17,7 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySql上下文选项建立者创建器
     /// </summary>
-    public class MySqlDbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
+    public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
