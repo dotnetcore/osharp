@@ -25,6 +25,7 @@ using OSharp.Core.EntityInfos;
 using OSharp.Core.Options;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Security;
+using OSharp.Demo.WebApi.Filters;
 using OSharp.Entity;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
@@ -47,6 +48,7 @@ namespace OSharp.Demo.WebApi
             {
                 options.Filters.Add<UnitOfWorkAttribute>();
                 options.Conventions.Add(new DashedRoutingConvention());
+                options.Filters.Add<HttpGlobalExceptionFilter>();
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
