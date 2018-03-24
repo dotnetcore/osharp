@@ -83,6 +83,8 @@ public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFa
 
 #### 3.2 数据迁移命令，Add-Migration 命令时，使用`-context`参数指定上下文类型
 
+默认项目切换到OSharp.Demo.WebApi
+
 > Add-Migration MigrationName -context "OSharp.Entity.DefaultDbContext"
 
 > Update-Database -context OSharp.Entity.DefaultDbContext
