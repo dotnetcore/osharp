@@ -83,9 +83,9 @@ public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFa
 
 #### 3.2 数据迁移命令，Add-Migration 命令时，使用`-context`参数指定上下文类型
 
-> Add-Migration MigrationName -context "OSharp.Demo.Web.SqlServerDesignTimeDefaultDbContext"
+> Add-Migration MigrationName -context "OSharp.Entity.DefaultDbContext"
 
-> Update-Database -context OSharp.Demo.Web.SqlServerDesignTimeDefaultDbContext
+> Update-Database -context OSharp.Entity.DefaultDbContext
 
 ### 4.示例项目：OSharp.Demo.Web
 
@@ -108,6 +108,14 @@ public class SqlServerDesignTimeDefaultDbContextFactory : IDesignTimeDbContextFa
 > webpack --config webpack.config.vendor.js
 
 #### 4.4 手动前端编译
+
+运行开发测试环境
+
+>  npm run dev 
+
+构建前端代码
+ 
+> npm run build
 
 框架启动时会进行前端编译，当然，也可以手动执行`webpack`进行编译，在`OSharp.Demo.Web`根目录执行如下命令，默认会使用`webpack.config.js`配置文件进行编译打包，输出文件为`wwwroot\dist\build.js`
 
