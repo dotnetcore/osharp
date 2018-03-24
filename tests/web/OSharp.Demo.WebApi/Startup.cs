@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore;
@@ -26,7 +26,8 @@ using OSharp.Core.Options;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Security;
 using OSharp.Entity;
-
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace OSharp.Demo.WebApi
 {
@@ -65,6 +66,15 @@ namespace OSharp.Demo.WebApi
                         options.LogDirectory = "log";
                     });
                 });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "OSharp.Demo.WebApi", Version = "v1" });
+
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                c.IncludeXmlComments(Path.Combine(basePath, "OSharp.Demo.Core.xml"));
+                c.IncludeXmlComments(Path.Combine(basePath, "OSharp.Demo.WebApi.xml"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +90,13 @@ namespace OSharp.Demo.WebApi
             }
 
             app.UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute().UseOSharpMvc();
+
+            app.UseMvcWithDefaultRoute();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharp.Demo.WebApi V1");
+            });
         }
     }
 }

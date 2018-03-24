@@ -20,6 +20,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     [Description("管理-测试")]
     public class TestController : AreaApiController
     {
+        [HttpGet]
         public string[] GetLines()
         {
             return GetType().Namespace.Split('.').Concat(new[] { DateTime.Now.ToJsGetTime() }).ToArray();

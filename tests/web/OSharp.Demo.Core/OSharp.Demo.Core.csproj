@@ -5,6 +5,14 @@
     <RootNamespace>OSharp.Demo</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\OSharp.Demo.WebApi\bin\Debug\netstandard2.0\OSharp.Demo.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>..\OSharp.Demo.WebApi\bin\Debug\netstandard2.0\publish\OSharp.Demo.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />

@@ -37,6 +37,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [HttpPost]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -53,6 +54,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(modules);
         }
 
+        [HttpPost]
         [Description("读取模块[用户]树数据")]
         public IActionResult ReadUserModules(int userId)
         {
@@ -64,6 +66,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result);
         }
 
+        [HttpPost]
         [Description("读取模块[角色]树数据")]
         public ActionResult ReadRoleModules(int roleId)
         {

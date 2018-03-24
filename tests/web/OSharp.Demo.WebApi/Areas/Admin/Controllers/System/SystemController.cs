@@ -32,6 +32,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _provider = provider;
         }
 
+        [HttpPost]
         [Description("信息")]
         public IActionResult Info()
         {

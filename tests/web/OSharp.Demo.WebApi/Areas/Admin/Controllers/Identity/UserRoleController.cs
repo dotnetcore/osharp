@@ -36,6 +36,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        [HttpPost]
         [Description("读取")]
         public IActionResult Read()
         {

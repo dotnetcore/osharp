@@ -43,6 +43,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        [HttpPost]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -62,6 +63,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(page.ToPageData());
         }
 
+        [HttpPost]
         [Description("读取节点")]
         public IActionResult ReadNode()
         {
@@ -73,6 +75,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(nodes);
         }
 
+        [HttpPost]
         [Description("读取角色[用户]树数据")]
         public IActionResult ReadUserRoles(int userId)
         {

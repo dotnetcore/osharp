@@ -29,6 +29,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [HttpPost]
         [Description("读取")]
         public IActionResult Read()
         {
