@@ -5,8 +5,8 @@
   "scripts": {
     "ng": "ng",
     "install": "npm run napa",
-    "start": "ng serve",
-    "build": "ng build --prod",
+    "start": "ng server --port 4200 --proxy-config proxy.config.json --open",
+    "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
     "modernizr": "modernizr -c modernizr-config.json -d src/modernizr.js",

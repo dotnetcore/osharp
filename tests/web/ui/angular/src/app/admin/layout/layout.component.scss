@@ -16,3 +16,10 @@
 ::ng-deep .k-window .win-content{overflow: auto;}
 ::ng-deep .k-tabstrip > .k-content, ::ng-deep.k-panelbar .k-tabstrip > .k-content{margin: 0 1px 1px;}
 ::ng-deep .k-tabstrip-items .k-state-active{background-color: #7282dc}
+
+//Grid工具栏右侧
+::ng-deep .k-grid-toolbar .toolbar-right{float: right; margin: 0; padding: 0;}
+::ng-deep .k-grid-toolbar .toolbar-right li{margin:0 5px; list-style: none;}
+::ng-deep .k-grid-toolbar .toolbar-right a{color:white; padding: 5px;}
+::ng-deep .k-grid-toolbar .toolbar-right a>em{padding: 6px;}
+::ng-deep .k-grid-toolbar .toolbar-right a:hover{color:#252f69; }

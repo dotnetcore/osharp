@@ -49,7 +49,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 EmailConfirmed: { type: "boolean" },
                 PhoneNumber: { type: "string" },
                 PhoneNumberConfirmed: { type: "boolean" },
-                LockoutEnabled: { type: "boolean" },
+                LockoutEnabled: { type: "boolean", editable: false },
                 LockoutEnd: { type: "date", editable: false },
                 AccessFailedCount: { type: "number", editable: false },
                 CreatedTime: { type: "date", editable: false },
@@ -100,11 +100,16 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 width: 180,
                 template: d => osharp.Tools.expandAndToString(d.Roles)
             }, {
+                field: "Locked",
+                title: "是否锁定",
+                width: 95,
+                template: d => kendoui.Controls.Boolean(d.Locked),
+                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
+            }, {
                 field: "LockoutEnabled",
                 title: "是否登录锁",
                 width: 95,
                 template: d => kendoui.Controls.Boolean(d.LockoutEnabled),
-                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
             }, {
                 field: "LockoutEnd",
                 title: "锁时间",
@@ -115,12 +120,6 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
                 title: "登录错误",
                 width: 95
             }, {
-                field: "Locked",
-                title: "是否锁定",
-                width: 95,
-                template: d => kendoui.Controls.Boolean(d.Locked),
-                editor: (container, options) => kendoui.Controls.BooleanEditor(container, options)
-            }, {
                 field: "CreatedTime",
                 title: "注册时间",
                 width: 115,
@@ -129,6 +128,35 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
         ];
     }
 
+    protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
+        var options = super.GetGridOptions(dataSource);
+        options.toolbar = [
+            { name: 'create' },
+            { name: 'save' },
+            { name: 'cancel' },
+            {
+                name: 'fullscreen', template: function () {
+                    return `
+<ul class="toolbar-right">
+    <li><a (click)="toggleGridFullScreen($event)"><em class="fa fa-expand"></em></a></li>
+</ul>
+`;
+                }
+            }
+        ];
+        return options;
+    }
+
+    //#endregion
+
+    //#region Grid
+    public toggleGridFullScreen(e) {
+        console.log("grid-full-screen");
+    }
+
+    public toggleGridFullScreen1(e) {
+        console.log("toggleGridFullScreen1");
+    }
     //#endregion
 
     //#region Window

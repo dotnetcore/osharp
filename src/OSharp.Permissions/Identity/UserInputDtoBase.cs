@@ -55,5 +55,10 @@ namespace OSharp.Identity
         /// 获取或设置 手机号码是否已确认
         /// </summary>
         public bool PhoneNumberConfirmed { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }

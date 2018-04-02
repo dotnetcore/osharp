@@ -210,7 +210,6 @@ export namespace kendoui {
                 this.treeList.dataSource.read();
             }
         }
-
     }
 
     export class Controls {
