@@ -48,24 +48,22 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage(predicate,
-                request.PageCondition,
-                m => new
-                {
-                    m.Id,
-                    m.UserName,
-                    m.Email,
-                    m.EmailConfirmed,
-                    m.PhoneNumber,
-                    m.PhoneNumberConfirmed,
-                    m.LockoutEnabled,
-                    m.LockoutEnd,
-                    m.AccessFailedCount,
-                    m.IsLocked,
-                    m.CreatedTime,
-                    Roles = _identityContract.UserRoles.Where(n => n.UserId == m.Id)
-                        .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))
-                });
+            var page = _userManager.Users.ToPage(predicate, request.PageCondition, m => new
+            {
+                m.Id,
+                m.UserName,
+                m.Email,
+                m.EmailConfirmed,
+                m.PhoneNumber,
+                m.PhoneNumberConfirmed,
+                m.LockoutEnabled,
+                m.LockoutEnd,
+                m.AccessFailedCount,
+                m.IsLocked,
+                m.CreatedTime,
+                Roles = _identityContract.UserRoles.Where(n => n.UserId == m.Id)
+                    .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))
+            });
 
             return Json(page.ToPageData());
         }
