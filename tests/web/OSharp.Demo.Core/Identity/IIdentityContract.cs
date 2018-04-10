@@ -58,7 +58,15 @@ namespace OSharp.Demo.Identity
         /// <param name="id">更新的用户角色信息编号</param>
         /// <returns>用户角色信息是否存在</returns>
         Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid));
-        
+
+        /// <summary>
+        /// 设置用户的角色
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <param name="roleIds">角色编号集合</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> SetUserRoles(int userId, int[] roleIds);
+
         #endregion
     }
 }

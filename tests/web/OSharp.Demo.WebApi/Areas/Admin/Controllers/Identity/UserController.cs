@@ -19,9 +19,12 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.Security;
+using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -35,11 +38,13 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     public class UserController : AreaApiController
     {
         private readonly UserManager<User> _userManager;
+        private readonly SecurityManager _securityManager;
         private readonly IIdentityContract _identityContract;
 
-        public UserController(UserManager<User> userManager, IIdentityContract identityContract)
+        public UserController(UserManager<User> userManager, SecurityManager securityManager, IIdentityContract identityContract)
         {
             _userManager = userManager;
+            _securityManager = securityManager;
             _identityContract = identityContract;
         }
 
@@ -126,6 +131,32 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 names.Add(user.UserName);
             }
             return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”删除成功", AjaxResultType.Success));
+        }
+
+        [HttpPost]
+        [Description("设置权限")]
+        public async Task<IActionResult> SetPermission([FromBody]UserSetPermissionModel model)
+        {
+            OperationResult result1 = await _identityContract.SetUserRoles(model.UserId, model.RoleIds);
+            string msg = $"设置角色：{result1.Message}<hr/>";
+            OperationResult result2 = await _securityManager.SetUserModules(model.UserId, model.ModuleIds);
+            msg += $"模块设置：{result2.Message}";
+
+            AjaxResultType type;
+            if (result1.ResultType == OperationResultType.NoChanged && result2.ResultType == OperationResultType.NoChanged)
+            {
+                type = AjaxResultType.Info;
+            }
+            else if (new[] { result1.ResultType, result2.ResultType }.Contains(OperationResultType.Success))
+            {
+                type = AjaxResultType.Success;
+            }
+            else
+            {
+                type = AjaxResultType.Error;
+            }
+
+            return Json(new AjaxResult(msg, type));
         }
     }
 }

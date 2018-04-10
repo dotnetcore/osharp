@@ -94,7 +94,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                     item.Name,
                     item.OrderCode,
                     IsChecked = checkedModuleIds.Contains(item.Id),
-                    IsExpanded = item.ChildIds.Count > 0,
+                    HasChildren = item.ChildIds.Count > 0,
                     item.Remark,
                     Items = item.ChildIds.Count > 0 ? GetModulesWithChecked(item.ChildIds.ToArray(), checkedModuleIds) : new List<object>()
                 };

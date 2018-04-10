@@ -31,7 +31,7 @@ namespace OSharp.Data
         /// <summary>
         ///   操作取消或操作没引发任何变化
         /// </summary>
-        [Description("操作没有引发任何变化，提交取消。")]
+        [Description("操作没有引发任何变化。")]
         NoChanged,
 
         /// <summary>

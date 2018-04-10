@@ -8,12 +8,18 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Identity;
+
+using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
+using OSharp.Identity;
 
 
 namespace OSharp.Demo.Identity
@@ -23,19 +29,19 @@ namespace OSharp.Demo.Identity
     /// </summary>
     public partial class IdentityService : IIdentityContract
     {
-        private readonly IRepository<User, int> _userRepository;
-        private readonly IRepository<Role, int> _roleRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
 
         /// <summary>
         /// 初始化一个<see cref="IdentityService"/>类型的新实例
         /// </summary>
-        public IdentityService(IRepository<User, int> userRepository,
-            IRepository<Role, int> roleRepository,
+        public IdentityService(UserManager<User> userManager,
+            RoleManager<Role> roleManager,
             IRepository<UserRole, Guid> userRoleRepository)
         {
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _userRoleRepository = userRoleRepository;
         }
 
@@ -44,15 +50,15 @@ namespace OSharp.Demo.Identity
         /// </summary>
         public IQueryable<Role> Roles
         {
-            get { return _roleRepository.Query(); }
+            get { return _roleManager.Roles; }
         }
-        
+
         /// <summary>
         /// 获取 用户信息查询数据集
         /// </summary>
         public IQueryable<User> Users
         {
-            get { return _userRepository.Query(); }
+            get { return _userManager.Users; }
         }
 
         /// <summary>
@@ -74,5 +80,40 @@ namespace OSharp.Demo.Identity
             return _userRoleRepository.CheckExistsAsync(predicate, id);
         }
 
+        /// <summary>
+        /// 设置用户的角色
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <param name="roleIds">角色编号集合</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> SetUserRoles(int userId, int[] roleIds)
+        {
+            User user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return new OperationResult(OperationResultType.QueryNull, $"编号为“{userId}”的用户不存在");
+            }
+            IList<string> roleNames = _roleManager.Roles.Where(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
+            IList<string> existRoleNames = await _userManager.GetRolesAsync(user);
+            string[] addRoleNames = roleNames.Except(existRoleNames).ToArray();
+            string[] removeRoleNames = existRoleNames.Except(roleNames).ToArray();
+
+            if (!addRoleNames.Union(removeRoleNames).Any())
+            {
+                return OperationResult.NoChanged;
+            }
+
+            IdentityResult result = await _userManager.AddToRolesAsync(user, addRoleNames);
+            if (!result.Succeeded)
+            {
+                return result.ToOperationResult();
+            }
+            result = await _userManager.RemoveFromRolesAsync(user, removeRoleNames);
+            if (!result.Succeeded)
+            {
+                return result.ToOperationResult();
+            }
+            return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”添加角色“{addRoleNames.ExpandAndToString()}”，移除角色“{removeRoleNames.ExpandAndToString()}”操作成功");
+        }
     }
 }

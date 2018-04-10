@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ElementRef } from '@angular/core';
+import { List } from "linqts";
+import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
 import { kendoui } from '../../../shared/kendoui';
@@ -18,15 +20,15 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
   moduleTreeOptions: kendo.ui.TreeViewOptions;
   moduleTree: kendo.ui.TreeView;
 
-  constructor(protected zone: NgZone, protected el: ElementRef) {
+  constructor(protected zone: NgZone, protected el: ElementRef, private http: HttpClient) {
     super(zone, el);
     this.moduleName = "user";
     this.windowOptions = {
       visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
       resize: e => this.onWinResize(e)
     };
-    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e), dataBound: e => this.onTreeDataBound(e) };
-    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e), dataBound: e => this.onTreeDataBound(e) };
+    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e) };
+    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e) };
   }
 
   ngOnInit() {
@@ -35,9 +37,6 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
 
   ngAfterViewInit() {
     super.ViewInitBase();
-
-    // let $toolbarRight = $($(this.element.nativeElement).find(".toolbar-right"));
-    // $toolbarRight.on("click", ".fullscreen", e => this.toggleGridFullScreen(e));
   }
 
   //#region GridBase
@@ -135,24 +134,45 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
 
   //#region Window
 
+  private winUser: any;
+
   private windowOpen(e) {
     e.preventDefault();
     var tr = $(e.target).closest("tr");
-    var data: any = this.grid.dataItem(tr);
-    this.window.title("用户权限设置-" + data.UserName).open().center().resize();
+    this.winUser = this.grid.dataItem(tr);
+    this.window.title("用户权限设置-" + this.winUser.UserName).open().center().resize();
     //设置树数据
-    this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + data.Id } } }));
-    this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/module/ReadUserModules?userId=" + data.Id } } }));
+    this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + this.winUser.Id } } }));
+    this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({
+      transport: { read: { url: "/api/admin/module/ReadUserModules?userId=" + this.winUser.Id } },
+      schema: { model: { children: "Items" } },
+      requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
+    }));
   }
   onWinInit(win) {
     this.window = win;
   }
   onWinClose(win) {
-    console.log("close111");
+
   }
   onWinSubmit(win) {
-    console.log("submit111");
+    var roles = this.roleTree.dataSource.data();
+    var checkRoleIds = new List(roles.slice(0)).Where(m => m.checked).Select(m => m.Id).ToArray();
+
+    var moduleRoot = this.moduleTree.dataSource.data()[0];
+    var modules = [];
+    osharp.Tools.getTreeChecks(moduleRoot, modules);
+    var checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
+    var params = { userId: this.winUser.Id, roleIds: checkRoleIds, moduleIds: checkModuleIds };
+
+    this.http.post("/api/admin/user/setpermission", params).subscribe(res => {
+      osharp.Tools.ajaxResult(res, () => {
+        this.grid.dataSource.read();
+        this.window.close();
+      });
+    });
   }
+
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
   }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Data;
 using OSharp.Dependency;
 
 
@@ -21,7 +22,7 @@ namespace OSharp.Security
     /// 定义模块角色信息存储
     /// </summary>
     [IgnoreDependency]
-    public interface IModuleRoleStore<TModuleRole>
+    public interface IModuleRoleStore<TModuleRole, in TRoleKey, in TModuleKey>
     {
         #region 模块角色信息业务
 
@@ -37,6 +38,14 @@ namespace OSharp.Security
         /// <param name="id">更新的模块角色信息编号</param>
         /// <returns>模块角色信息是否存在</returns>
         Task<bool> CheckModuleRoleExists(Expression<Func<TModuleRole, bool>> predicate, Guid id = default(Guid));
+
+        /// <summary>
+        /// 设置角色的可访问模块
+        /// </summary>
+        /// <param name="roleId">角色编号</param>
+        /// <param name="moduleIds">要赋予的模块编号集合</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> SetRoleModules(TRoleKey roleId, TModuleKey[] moduleIds);
 
         #endregion
     }

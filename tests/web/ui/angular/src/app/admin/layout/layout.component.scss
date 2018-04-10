@@ -1,11 +1,11 @@
 .wrapper > section{margin-bottom: 0px !important;}
-.wrapper > section .content-wrapper{padding: 5px;} 
+.wrapper > section .content-wrapper{padding: 5px;}
 
 ::ng-deep .k-grid .c-checkbox span, .c-radio span{width:17px;height: 17px;}
-::ng-deep .k-grid-header th.k-header, 
+::ng-deep .k-grid-header th.k-header,
 ::ng-deep .k-filter-row th{padding-left: .1em;}
 ::ng-deep .k-grid-header th.k-with-icon .k-link{margin-right: 0;overflow: visible;}
-::ng-deep .k-header > .k-grid-filter, 
+::ng-deep .k-header > .k-grid-filter,
 ::ng-deep .k-header > .k-header-column-menu{float: left;margin-right: -0.2em;}
 ::ng-deep .k-grid .c-checkbox input[type=checkbox]:checked + span{border-width: 0; background-color: rgb(170, 170, 170)}
 ::ng-deep .k-grid .c-checkbox{margin: 0 0 0 4px;}

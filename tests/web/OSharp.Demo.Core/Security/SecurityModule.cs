@@ -9,6 +9,7 @@
 
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
+using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Security;

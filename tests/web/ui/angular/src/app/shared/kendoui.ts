@@ -2,6 +2,7 @@ import { NgZone, ElementRef } from "@angular/core";
 import { osharp } from "./osharp";
 import { List } from "linqts";
 import { element } from "protractor";
+import { stat } from "fs";
 declare var $: any;
 
 export namespace kendoui {
@@ -155,12 +156,6 @@ export namespace kendoui {
 
     //#region 树功能
 
-    protected onTreeDataBound(e) {
-      e.sender.dataSource.view().forEach(item => {
-        item.set("checked", item.IsChecked);
-      });
-    }
-
     protected onTreeNodeSelect(e) {
       var item = e.sender.dataItem(e.node);
       item.set("checked", !item.checked);
@@ -216,7 +211,7 @@ export namespace kendoui {
         schema: {
           model: this.GetModel()
         },
-        requestEnd: e => osharp.Tools.ajaxResult(e.response)
+        requestEnd: e => osharp.Tools.ajaxResult(e.response, () => this.treeList.dataSource.read())
       };
 
       return options;
@@ -282,6 +277,26 @@ export namespace kendoui {
         dataValueField: valueField,
         dataSource: dataSource
       });
+    }
+  }
+
+  export class Tools {
+
+    /**初始化树数据 */
+    static TreeDataInit(nodes: Array<any>): any {
+      if (!nodes.length) {
+        return nodes;
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        node.checked = node.IsChecked;
+        node.expanded = node.HasChildren;
+        nodes[i] = node;
+        if (node.Items) {
+          node.Items = kendoui.Tools.TreeDataInit(node.Items);
+        }
+      }
+      return nodes;
     }
   }
 }

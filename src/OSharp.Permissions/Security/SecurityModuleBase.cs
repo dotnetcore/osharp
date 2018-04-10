@@ -15,6 +15,7 @@ using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Entity;
+using OSharp.Identity;
 
 
 namespace OSharp.Security
@@ -28,8 +29,8 @@ namespace OSharp.Security
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
         IModuleFunctionStore<TModuleFunction>,
-        IModuleRoleStore<TModuleRole>,
-        IModuleUserStore<TModuleUser>
+        IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
+        IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
         where TFunction : IFunction, IEntity<Guid>
         where TFunctionInputDto : FunctionInputDtoBase
         where TEntityInfo : IEntityInfo, IEntity<Guid>
@@ -40,6 +41,8 @@ namespace OSharp.Security
         where TModuleRole : ModuleRoleBase<TModuleKey, TRoleKey>
         where TModuleUser : ModuleUserBase<TModuleKey, TUserKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
         /// 获取 模块级别
@@ -59,8 +62,8 @@ namespace OSharp.Security
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleStore<TModule, TModuleInputDto, TModuleKey>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleFunctionStore<TModuleFunction>), provider => provider.GetService<TSecurityManager>());
-            services.AddScoped(typeof(IModuleRoleStore<TModuleRole>), provider => provider.GetService<TSecurityManager>());
-            services.AddScoped(typeof(IModuleUserStore<TModuleUser>), provider => provider.GetService<TSecurityManager>());
+            services.AddScoped(typeof(IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
+            services.AddScoped(typeof(IModuleUserStore<TModuleUser, TUserKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
 
             return services;
         }

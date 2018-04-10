@@ -19,9 +19,12 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.Security;
+using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -35,11 +38,15 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     public class RoleController : AreaApiController
     {
         private readonly RoleManager<Role> _roleManager;
+        private readonly SecurityManager _securityManager;
         private readonly IIdentityContract _identityContract;
 
-        public RoleController(RoleManager<Role> roleManager, IIdentityContract identityContract)
+        public RoleController(RoleManager<Role> roleManager, 
+            SecurityManager securityManager, 
+            IIdentityContract identityContract)
         {
             _roleManager = roleManager;
+            _securityManager = securityManager;
             _identityContract = identityContract;
         }
 
@@ -77,7 +84,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         public IActionResult ReadUserRoles(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
-            
+
             int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
             var nodes = _identityContract.Roles.OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).Select(m => new
             {
@@ -144,6 +151,14 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 names.Add(role.Name);
             }
             return Json(new AjaxResult($"角色“{names.ExpandAndToString()}”删除成功", AjaxResultType.Success));
+        }
+
+        [HttpPost]
+        [Description("权限设置")]
+        public async Task<ActionResult> SetPermission([FromBody]RoleSetPermissionModel model)
+        {
+            OperationResult result = await _securityManager.SetRoleModules(model.RoleId, model.ModuleIds);
+            return Json(result.ToAjaxResult());
         }
     }
 }

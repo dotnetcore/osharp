@@ -14,6 +14,7 @@ using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
+using OSharp.Demo.Identity.Entities;
 using OSharp.Security;
 
 
@@ -24,7 +25,7 @@ namespace OSharp.Demo.Security
     /// </summary>
     public class SecurityManager
         : SecurityManagerBase<Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
-            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
+            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, Role, int, User, int>
     {
         /// <summary>
         /// 初始化一个<see cref="SecurityManager"/>类型的新实例
@@ -35,8 +36,10 @@ namespace OSharp.Demo.Security
             IRepository<Module, int> moduleRepository,
             IRepository<ModuleFunction, Guid> moduleFunctionRepository,
             IRepository<ModuleRole, Guid> moduleRoleRepository,
-            IRepository<ModuleUser, Guid> moduleUserRepository)
-            : base(functionRepository, entityInfoRepository, moduleRepository, moduleFunctionRepository, moduleRoleRepository, moduleUserRepository)
+            IRepository<ModuleUser, Guid> moduleUserRepository,
+            IRepository<Role, int> roleRepository,
+            IRepository<User, int> userRepository)
+            : base(functionRepository, entityInfoRepository, moduleRepository, moduleFunctionRepository, moduleRoleRepository, moduleUserRepository, roleRepository, userRepository)
         { }
     }
 }
