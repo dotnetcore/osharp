@@ -142,7 +142,10 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
     this.winUser = this.grid.dataItem(tr);
     this.window.title("用户权限设置-" + this.winUser.UserName).open().center().resize();
     //设置树数据
-    this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({ transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + this.winUser.Id } } }));
+    this.roleTree.setDataSource(new kendo.data.HierarchicalDataSource({
+      transport: { read: { url: "/api/admin/role/ReadUserRoles?userId=" + this.winUser.Id } },
+      requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
+    }));
     this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({
       transport: { read: { url: "/api/admin/module/ReadUserModules?userId=" + this.winUser.Id } },
       schema: { model: { children: "Items" } },

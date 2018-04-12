@@ -44,7 +44,7 @@ namespace OSharp.Demo.WebApi
         {
             services.AddMvc(options =>
             {
-                options.Filters.Add<UnitOfWorkAttribute>();
+                //options.Filters.Add<UnitOfWorkAttribute>();
                 options.Conventions.Add(new DashedRoutingConvention());
             }).AddJsonOptions(options =>
             {

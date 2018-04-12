@@ -2,7 +2,6 @@ import { NgZone, ElementRef } from "@angular/core";
 import { osharp } from "./osharp";
 import { List } from "linqts";
 import { element } from "protractor";
-import { stat } from "fs";
 declare var $: any;
 
 export namespace kendoui {
@@ -197,7 +196,6 @@ export namespace kendoui {
         resizable: true,
         editable: { move: true }
       };
-
       return options;
     }
     protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
@@ -220,8 +218,17 @@ export namespace kendoui {
       return field;
     }
 
+    /**重写以获取Model */
     protected abstract GetModel(): any;
     protected abstract GetTreeListColumns(): kendo.ui.TreeListColumn[];
+
+    /**重置Grid高度 */
+    protected ResizeGrid(init: boolean) {
+      var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth >= 1114 ? 80 : winWidth >= 768 ? 64 : 145;
+      var $content = $("#tree-list-box .k-grid-content");
+      var otherHeight = $("#tree-list-box").height() - $content.height();
+      $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
+    }
 
     private KeyDownEvent(e) {
       if (!this.treeList) {
@@ -297,6 +304,21 @@ export namespace kendoui {
         }
       }
       return nodes;
+    }
+
+    static queryOptions(source, options) {
+      var sopts = source.options;
+      var opts = {
+        filter: options.filter || null,
+        aggregate: sopts.aggregate || [],
+        group: sopts.group || [],
+        page: sopts.page || 1,
+        pageSize: sopts.pageSize || 20,
+        sort: options.sort || sopts.sort,
+        take: sopts.pageSize,
+        skip: sopts.pageSize * (sopts.page - 1)
+      };
+      return opts;
     }
   }
 }

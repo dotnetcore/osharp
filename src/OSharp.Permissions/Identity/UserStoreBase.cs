@@ -203,6 +203,15 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             await _userRepository.InsertAsync(user);
+
+            //默认角色
+            TRole defaultRole = _roleRepository.Query(m => m.IsDefault).FirstOrDefault();
+            if (defaultRole != null)
+            {
+                TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = defaultRole.Id};
+                await _userRoleRepository.InsertAsync(userRole);
+            }
+
             return IdentityResult.Success;
         }
 
@@ -217,6 +226,15 @@ namespace OSharp.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
+
+            if (user.Email.IsMissing())
+            {
+                user.EmailConfirmed = false;
+            }
+            if (user.PhoneNumber.IsMissing())
+            {
+                user.PhoneNumberConfirmed = false;
+            }
 
             await _userRepository.UpdateAsync(user);
             return IdentityResult.Success;

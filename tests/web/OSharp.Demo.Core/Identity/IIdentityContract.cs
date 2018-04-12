@@ -60,6 +60,13 @@ namespace OSharp.Demo.Identity
         Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid));
 
         /// <summary>
+        /// 更新用户角色信息
+        /// </summary>
+        /// <param name="dtos">用户角色信息集合</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos);
+
+        /// <summary>
         /// 设置用户的角色
         /// </summary>
         /// <param name="userId">用户编号</param>

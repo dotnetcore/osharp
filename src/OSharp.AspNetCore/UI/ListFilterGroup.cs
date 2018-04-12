@@ -17,7 +17,7 @@ using OSharp.Json;
 namespace OSharp.AspNetCore.UI
 {
     /// <summary>
-    /// 初始化一个<see cref="ListFilterGroup"/>类型的新实例
+    /// 不分页的列表筛选条件组
     /// </summary>
     public class ListFilterGroup : FilterGroup
     {

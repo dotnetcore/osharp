@@ -33,5 +33,10 @@ namespace OSharp.Identity
         /// 获取或设置 主键，唯一标识
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        public bool IsLocked { get; set; }
     }
 }

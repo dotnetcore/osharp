@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Identity;
@@ -27,7 +28,7 @@ namespace OSharp.Demo.Identity
     /// <summary>
     /// 业务实现：身份认证模块
     /// </summary>
-    public partial class IdentityService : IIdentityContract
+    public class IdentityService : IIdentityContract
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
@@ -81,6 +82,16 @@ namespace OSharp.Demo.Identity
         }
 
         /// <summary>
+        /// 更新用户角色信息
+        /// </summary>
+        /// <param name="dtos">用户角色信息集合</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
+        {
+            return _userRoleRepository.UpdateAsync(dtos);
+        }
+
+        /// <summary>
         /// 设置用户的角色
         /// </summary>
         /// <param name="userId">用户编号</param>
@@ -103,15 +114,22 @@ namespace OSharp.Demo.Identity
                 return OperationResult.NoChanged;
             }
 
-            IdentityResult result = await _userManager.AddToRolesAsync(user, addRoleNames);
-            if (!result.Succeeded)
+            try
             {
-                return result.ToOperationResult();
+                IdentityResult result = await _userManager.AddToRolesAsync(user, addRoleNames);
+                if (!result.Succeeded)
+                {
+                    return result.ToOperationResult();
+                }
+                result = await _userManager.RemoveFromRolesAsync(user, removeRoleNames);
+                if (!result.Succeeded)
+                {
+                    return result.ToOperationResult();
+                }
             }
-            result = await _userManager.RemoveFromRolesAsync(user, removeRoleNames);
-            if (!result.Succeeded)
+            catch (InvalidOperationException ex)
             {
-                return result.ToOperationResult();
+                return new OperationResult(OperationResultType.Error, ex.Message);
             }
             return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”添加角色“{addRoleNames.ExpandAndToString()}”，移除角色“{removeRoleNames.ExpandAndToString()}”操作成功");
         }

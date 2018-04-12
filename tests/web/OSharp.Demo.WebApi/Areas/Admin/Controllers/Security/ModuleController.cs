@@ -16,11 +16,14 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
+using OSharp.Entity;
 using OSharp.Filter;
 
 
@@ -103,7 +106,31 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return nodes;
         }
 
+        [Description("读取模块功能")]
+        public IActionResult ReadFunctions()
+        {
+            ListFilterGroup group = new ListFilterGroup(Request);
+            if (group.Rules.Count == 0)
+            {
+                return Json(new List<object>());
+            }
+            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(group);
+            int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
+            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).ToArray();
+            if (functionIds.Length == 0)
+            {
+                return Json(new PageData<object>());
+            }
+            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
+                1,
+                10000,
+                new[] { new SortCondition("Name", ListSortDirection.Ascending) },
+                m => new { m.Id, m.Name, m.AccessType });
+            return Json(page.ToPageData());
+        }
+
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public async Task<IActionResult> Create(ModuleInputDto dto)
         {
@@ -114,6 +141,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(ModuleInputDto dto)
         {
@@ -128,6 +156,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -139,6 +168,25 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 
             OperationResult result = await _securityManager.DeleteModule(id);
             return Json(result.ToAjaxResult());
+        }
+
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("测试")]
+        public async Task<IActionResult> Build()
+        {
+            List<string>msgs = new List<string>();
+            foreach (Module module in _securityManager.Modules)
+            {
+                msgs.Add((await _securityManager.UpdateModule(new ModuleInputDto()
+                {
+                    Id = module.Id,
+                    Name = module.Name,
+                    OrderCode = module.OrderCode,
+                    Remark = module.Remark,
+                    ParentId = module.ParentId == null ? 0 : module.ParentId.Value
+                })).Message);
+            }
+            return Json(new AjaxResult(msgs.ExpandAndToString("<br/>"), AjaxResultType.Success));
         }
     }
 }

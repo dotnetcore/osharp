@@ -86,6 +86,14 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(role, nameof(role));
 
+            if (role.IsDefault)
+            {
+                string defaultRole = _roleRepository.Query(m => m.IsDefault).Select(m => m.Name).FirstOrDefault();
+                if (defaultRole != null)
+                {
+                    return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole}”，不能重复添加");
+                }
+            }
             await _roleRepository.InsertAsync(role);
             return IdentityResult.Success;
         }
@@ -105,6 +113,14 @@ namespace OSharp.Identity
             if (role.IsSystem)
             {
                 return new IdentityResult().Failed($"角色“{role.Name}”是系统角色，不能更新");
+            }
+            if (role.IsDefault)
+            {
+                var defaultRole = _roleRepository.Query(m => m.IsDefault).Select(m => new { m.Id, m.Name }).FirstOrDefault();
+                if (defaultRole !=null && !defaultRole.Id.Equals(role.Id))
+                {
+                    return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole.Name}”，不能重复添加");
+                }
             }
             await _roleRepository.UpdateAsync(role);
             return IdentityResult.Success;

@@ -29,7 +29,8 @@ namespace OSharp.Identity
         {
             return identityResult.Succeeded
                 ? new OperationResult(OperationResultType.Success)
-                : new OperationResult(OperationResultType.Error, identityResult.Errors.Select(m => $"{m.Code}:{m.Description}").ExpandAndToString());
+                : new OperationResult(OperationResultType.Error,
+                    identityResult.Errors.Select(m => m.Code.IsMissing() ? m.Description : $"{m.Code}:{m.Description}").ExpandAndToString());
         }
 
         /// <summary>

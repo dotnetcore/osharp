@@ -196,6 +196,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateModule(TModuleInputDto dto)
         {
+            const string treePathItemFormat = "${0}$";
             Check.NotNull(dto, nameof(dto));
             var exist = Modules.Where(m => m.Name == dto.Name && m.ParentId != null && m.ParentId.Equals(dto.ParentId))
                 .SelectMany(m => Modules.Where(n => n.Id.Equals(m.ParentId)).Select(n => n.Name)).FirstOrDefault();
@@ -217,7 +218,8 @@ namespace OSharp.Security
                 entity.OrderCode = maxCode + 1;
             }
             //父模块
-            if (!dto.ParentId.Equals(default(TModuleKey)))
+            string parentTreePathString = null;
+            if (!Equals(dto.ParentId, default(TModuleKey)))
             {
                 var parent = Modules.Where(m => m.Id.Equals(dto.ParentId)).Select(m => new { m.Id, m.TreePathString }).FirstOrDefault();
                 if (parent == null)
@@ -225,15 +227,21 @@ namespace OSharp.Security
                     return new OperationResult(OperationResultType.Error, $"编号为“{dto.ParentId}”的父模块信息不存在");
                 }
                 entity.ParentId = dto.ParentId;
-                entity.TreePathString = GetModuleTreePath(parent.Id, parent.TreePathString);
+                parentTreePathString = parent.TreePathString;
             }
             else
             {
                 entity.ParentId = null;
             }
-            return await _moduleRepository.InsertAsync(entity) > 0
-                ? new OperationResult(OperationResultType.Success, $"模块“{dto.Name}”创建成功")
-                : OperationResult.NoChanged;
+            if (await _moduleRepository.InsertAsync(entity) > 0)
+            {
+                entity.TreePathString = entity.ParentId == null
+                    ? treePathItemFormat.FormatWith(entity.Id)
+                    : GetModuleTreePath(entity.Id, parentTreePathString, treePathItemFormat);
+                await _moduleRepository.UpdateAsync(entity);
+                return new OperationResult(OperationResultType.Success, $"模块“{dto.Name}”创建成功");
+            }
+            return OperationResult.NoChanged;
         }
 
         /// <summary>
@@ -243,6 +251,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateModule(TModuleInputDto dto)
         {
+            const string treePathItemFormat = "${0}$";
             Check.NotNull(dto, nameof(dto));
             var exist = Modules.Where(m => m.Name == dto.Name && m.ParentId != null && m.ParentId.Equals(dto.ParentId) && !m.Id.Equals(dto.Id))
                 .SelectMany(m => Modules.Where(n => n.Id.Equals(m.ParentId)).Select(n => new { n.Id, n.Name })).FirstOrDefault();
@@ -256,7 +265,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.Error, $"编号为“{dto.Id}”的模块信息不存在。");
             }
             entity = dto.MapTo(entity);
-            if (!dto.ParentId.Equals(default(TModuleKey)))
+            if (!Equals(dto.ParentId, default(TModuleKey)))
             {
                 if (!entity.ParentId.Equals(dto.ParentId))
                 {
@@ -266,12 +275,13 @@ namespace OSharp.Security
                         return new OperationResult(OperationResultType.Error, $"编号为“{dto.ParentId}”的父模块信息不存在");
                     }
                     entity.ParentId = dto.ParentId;
-                    entity.TreePathString = GetModuleTreePath(parent.Id, parent.TreePathString);
+                    entity.TreePathString = GetModuleTreePath(entity.Id, parent.TreePathString, treePathItemFormat);
                 }
             }
             else
             {
                 entity.ParentId = null;
+                entity.TreePathString = treePathItemFormat.FormatWith(entity.Id);
             }
             return await _moduleRepository.UpdateAsync(entity) > 0
                 ? new OperationResult(OperationResultType.Success, $"模块“{dto.Name}”更新成功")
@@ -304,14 +314,9 @@ namespace OSharp.Security
                 : OperationResult.NoChanged;
         }
 
-        private string GetModuleTreePath(TModuleKey parentId, string parentTreePath)
+        private static string GetModuleTreePath(TModuleKey currentId, string parentTreePath, string treePathItemFormat)
         {
-            const string treePathItemFormat = "${0}$";
-            if (parentTreePath == null)
-            {
-                return null;
-            }
-            return treePathItemFormat + treePathItemFormat.FormatWith(parentId);
+            return $"{parentTreePath},{treePathItemFormat.FormatWith(currentId)}";
         }
 
         #endregion

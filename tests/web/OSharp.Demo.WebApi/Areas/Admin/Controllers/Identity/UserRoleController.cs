@@ -14,8 +14,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
@@ -56,24 +57,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Description("新增")]
-        public async Task<IActionResult> Create(UserRoleInputDto[] dtos)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(UserRoleInputDto[] dtos)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpPost]
-        [Description("删除")]
-        public async Task<IActionResult> Delete(int[] ids)
-        {
-            throw new NotImplementedException();
+            OperationResult result = await _identityContract.UpdateUserRoles(dtos);
+            return Json(result.ToAjaxResult());
         }
     }
 }

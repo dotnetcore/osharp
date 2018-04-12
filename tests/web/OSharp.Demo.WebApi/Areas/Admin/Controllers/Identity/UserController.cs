@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Data;
@@ -74,6 +74,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public async Task<IActionResult> Create(UserInputDto[] dtos)
         {
@@ -95,6 +96,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(UserInputDto[] dtos)
         {
@@ -115,6 +117,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete(int[] ids)
         {
@@ -134,11 +137,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置权限")]
         public async Task<IActionResult> SetPermission([FromBody]UserSetPermissionModel model)
         {
             OperationResult result1 = await _identityContract.SetUserRoles(model.UserId, model.RoleIds);
-            string msg = $"设置角色：{result1.Message}<hr/>";
+            string msg = $"设置角色：{result1.Message}<br/>";
             OperationResult result2 = await _securityManager.SetUserModules(model.UserId, model.ModuleIds);
             msg += $"模块设置：{result2.Message}";
 

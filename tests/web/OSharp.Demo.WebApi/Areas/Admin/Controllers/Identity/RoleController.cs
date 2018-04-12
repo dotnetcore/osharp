@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Data;
@@ -96,6 +96,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public async Task<IActionResult> Create(RoleInputDto[] dtos)
         {
@@ -115,6 +116,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(RoleInputDto[] dtos)
         {
@@ -135,6 +137,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete(int[] ids)
         {
@@ -154,6 +157,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("权限设置")]
         public async Task<ActionResult> SetPermission([FromBody]RoleSetPermissionModel model)
         {
