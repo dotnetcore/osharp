@@ -152,16 +152,6 @@ export namespace kendoui {
         osharp.Tools.exitFullscreen();
       }
     }
-
-    //#region 树功能
-
-    protected onTreeNodeSelect(e) {
-      var item = e.sender.dataItem(e.node);
-      item.set("checked", !item.checked);
-      e.preventDefault();
-    }
-
-    //#endregion
   }
 
   export abstract class TreeListComponentBase {
@@ -319,6 +309,12 @@ export namespace kendoui {
         skip: sopts.pageSize * (sopts.page - 1)
       };
       return opts;
+    }
+
+    static OnTreeNodeSelect(e) {
+      var item = e.sender.dataItem(e.node);
+      item.set("checked", !item.checked);
+      e.preventDefault();
     }
   }
 }

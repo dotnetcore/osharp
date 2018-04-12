@@ -25,7 +25,7 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
       visible: false, width: 500, height: 620, modal: true, title: "角色权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
       resize: e => this.onWinResize(e)
     };
-    this.moduleTreeOptions = { autoBind: true, checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e) };
+    this.moduleTreeOptions = { autoBind: true, checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => kendoui.Tools.OnTreeNodeSelect(e) };
   }
 
   ngOnInit() {
@@ -109,11 +109,10 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
   }
-  onWinClose(wine) { }
   onWinSubmit(win) {
     var moduleRoot = this.moduleTree.dataSource.data()[0];
     var modules = [];
-    osharp.Tools.getTreeChecks(moduleRoot, modules);
+    osharp.Tools.getTreeNodes(moduleRoot, modules);
     var checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
     var body = { roleId: this.winRole.Id, moduleIds: checkModuleIds };
     this.http.post("/api/admin/role/setpermission", body).subscribe(res => {

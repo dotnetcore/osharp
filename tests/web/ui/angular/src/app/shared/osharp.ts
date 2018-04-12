@@ -112,13 +112,13 @@ export namespace osharp {
         doc.webkitExitFullscreen();
       }
     }
-    /**获取树选择节点 */
-    static getTreeChecks(root: any, array: Array<any>) {
+    /**获取树节点集合 */
+    static getTreeNodes(root: any, array: Array<any>) {
       array.push(root);
       if (root.hasChildren) {
         for (let i = 0; i < root.Items.length; i++) {
           const item = root.Items[i];
-          this.getTreeChecks(item, array);
+          this.getTreeNodes(item, array);
         }
       }
     }

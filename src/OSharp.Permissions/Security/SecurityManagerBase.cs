@@ -34,7 +34,7 @@ namespace OSharp.Security
         : IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
-        IModuleFunctionStore<TModuleFunction>,
+        IModuleFunctionStore<TModuleFunction, TModuleKey>,
         IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
         IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
         where TFunction : IFunction, IEntity<Guid>
@@ -43,7 +43,7 @@ namespace OSharp.Security
         where TEntityInfoInputDto : EntityInfoInputDtoBase
         where TModule : ModuleBase<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>
-        where TModuleFunction : ModuleFunctionBase<TModuleKey>
+        where TModuleFunction : ModuleFunctionBase<TModuleKey>, new()
         where TModuleRole : ModuleRoleBase<TModuleKey, TRoleKey>, new()
         where TModuleUser : ModuleUserBase<TModuleKey, TUserKey>, new()
         where TModuleKey : struct, IEquatable<TModuleKey>
@@ -340,6 +340,62 @@ namespace OSharp.Security
         public virtual Task<bool> CheckModuleFunctionExists(Expression<Func<TModuleFunction, bool>> predicate, Guid id = default(Guid))
         {
             return _moduleFunctionRepository.CheckExistsAsync(predicate, id);
+        }
+
+        /// <summary>
+        /// 设置模块的功能信息
+        /// </summary>
+        /// <param name="moduleId">模块编号</param>
+        /// <param name="functionIds">要设置的功能编号</param>
+        /// <returns>业务操作结果</returns>
+        public virtual async Task<OperationResult> SetModuleFunctions(TModuleKey moduleId, Guid[] functionIds)
+        {
+            TModule module = await _moduleRepository.GetAsync(moduleId);
+            if (module == null)
+            {
+                return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
+            }
+
+            Guid[] existFunctionIds = _moduleFunctionRepository.Query(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
+            Guid[] addFunctionIds = functionIds.Except(existFunctionIds).ToArray();
+            Guid[] removeFunctionIds = existFunctionIds.Except(functionIds).ToArray();
+            List<string> addNames = new List<string>(), removeNames = new List<string>();
+            int count = 0;
+
+            foreach (Guid functionId in addFunctionIds)
+            {
+                TFunction function = await _functionRepository.GetAsync(functionId);
+                if (function == null)
+                {
+                    continue;
+                }
+                TModuleFunction moduleFunction = new TModuleFunction() { ModuleId = moduleId, FunctionId = functionId };
+                count = count + await _moduleFunctionRepository.InsertAsync(moduleFunction);
+                addNames.Add(function.Name);
+            }
+            foreach (Guid functionId in removeFunctionIds)
+            {
+                TFunction function = await _functionRepository.GetAsync(functionId);
+                if (function == null)
+                {
+                    continue;
+                }
+                TModuleFunction moduleFunction = _moduleFunctionRepository.Query(m => m.ModuleId.Equals(moduleId) && m.FunctionId == functionId)
+                    .FirstOrDefault();
+                if (moduleFunction == null)
+                {
+                    continue;
+                }
+                count = count + await _moduleFunctionRepository.DeleteAsync(moduleFunction);
+                removeNames.Add(function.Name);
+            }
+
+            if (count > 0)
+            {
+                return new OperationResult(OperationResultType.Success,
+                    $"模块“{module.Name}”添加功能“{addNames.ExpandAndToString()}”，移除功能“{removeNames.ExpandAndToString()}”操作成功");
+            }
+            return OperationResult.NoChanged;
         }
 
         #endregion

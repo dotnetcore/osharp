@@ -2,3 +2,6 @@
   <div id="tree-list-box"></div>
   <admin-module-function [ModuleId]="selectedModuleId"></admin-module-function>
 </kendoui-splitter>
+<kendoui-window [options]="windowOptions" (init)="onWindowInit($event)" (submited)="onWindowSubmit($event)">
+  <kendoui-treeview [options]="functionTreeOptions" (init)="onFunctionTreeInit($event)"></kendoui-treeview>
+</kendoui-window>

@@ -27,8 +27,8 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
       visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
       resize: e => this.onWinResize(e)
     };
-    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e) };
-    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.onTreeNodeSelect(e) };
+    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => kendoui.Tools.OnTreeNodeSelect(e) };
+    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => kendoui.Tools.OnTreeNodeSelect(e) };
   }
 
   ngOnInit() {
@@ -164,7 +164,7 @@ export class UserComponent extends kendoui.GridComponentBase implements OnInit, 
 
     var moduleRoot = this.moduleTree.dataSource.data()[0];
     var modules = [];
-    osharp.Tools.getTreeChecks(moduleRoot, modules);
+    osharp.Tools.getTreeNodes(moduleRoot, modules);
     var checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
     var params = { userId: this.winUser.Id, roleIds: checkRoleIds, moduleIds: checkModuleIds };
 

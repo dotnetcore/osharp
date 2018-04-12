@@ -7,6 +7,9 @@
 //  <last-date>2018-04-09 21:01</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+
 namespace OSharp.Demo.WebApi.Areas.Admin.ViewModels
 {
     public class UserSetPermissionModel
@@ -24,5 +27,13 @@ namespace OSharp.Demo.WebApi.Areas.Admin.ViewModels
         public int RoleId { get; set; }
 
         public int[] ModuleIds { get; set; }
+    }
+
+
+    public class ModuleSetFunctionsModel
+    {
+        public int ModuleId { get; set; }
+
+        public Guid[] FunctionIds { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Data;
 using OSharp.Dependency;
 
 
@@ -21,7 +22,7 @@ namespace OSharp.Security
     /// 定义模块功能存储
     /// </summary>
     [IgnoreDependency]
-    public interface IModuleFunctionStore<TModuleFunction>
+    public interface IModuleFunctionStore<TModuleFunction, in TModuleKey>
     {
         #region 模块功能信息业务
 
@@ -37,6 +38,14 @@ namespace OSharp.Security
         /// <param name="id">更新的模块功能信息编号</param>
         /// <returns>模块功能信息是否存在</returns>
         Task<bool> CheckModuleFunctionExists(Expression<Func<TModuleFunction, bool>> predicate, Guid id = default(Guid));
+
+        /// <summary>
+        /// 设置模块的功能信息
+        /// </summary>
+        /// <param name="moduleId">模块编号</param>
+        /// <param name="functionIds">要设置的功能编号</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> SetModuleFunctions(TModuleKey moduleId, Guid[] functionIds);
 
         #endregion
     }

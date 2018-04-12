@@ -23,6 +23,7 @@ using OSharp.Data;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
+using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 
@@ -112,7 +113,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             ListFilterGroup group = new ListFilterGroup(Request);
             if (group.Rules.Count == 0)
             {
-                return Json(new List<object>());
+                return Json(new PageData<object>());
             }
             Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(group);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
@@ -131,7 +132,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("新增")]
+        [Description("新增子节点")]
         public async Task<IActionResult> Create(ModuleInputDto dto)
         {
             Check.NotNull(dto, nameof(dto));
@@ -170,11 +171,20 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result.ToAjaxResult());
         }
 
+        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("设置功能")]
+        public async Task<IActionResult> SetFunctions([FromBody]ModuleSetFunctionsModel model)
+        {
+            OperationResult result = await _securityManager.SetModuleFunctions(model.ModuleId, model.FunctionIds);
+            return Json(result.ToAjaxResult());
+        }
+
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("测试")]
         public async Task<IActionResult> Build()
         {
-            List<string>msgs = new List<string>();
+            List<string> msgs = new List<string>();
             foreach (Module module in _securityManager.Modules)
             {
                 msgs.Add((await _securityManager.UpdateModule(new ModuleInputDto()

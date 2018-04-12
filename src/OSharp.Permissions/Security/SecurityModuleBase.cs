@@ -28,7 +28,7 @@ namespace OSharp.Security
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
-        IModuleFunctionStore<TModuleFunction>,
+        IModuleFunctionStore<TModuleFunction, TModuleKey>,
         IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
         IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
         where TFunction : IFunction, IEntity<Guid>
@@ -61,7 +61,7 @@ namespace OSharp.Security
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleStore<TModule, TModuleInputDto, TModuleKey>), provider => provider.GetService<TSecurityManager>());
-            services.AddScoped(typeof(IModuleFunctionStore<TModuleFunction>), provider => provider.GetService<TSecurityManager>());
+            services.AddScoped(typeof(IModuleFunctionStore<TModuleFunction, TModuleKey>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleUserStore<TModuleUser, TUserKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
 

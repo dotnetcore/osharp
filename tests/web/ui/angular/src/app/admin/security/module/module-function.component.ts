@@ -28,8 +28,8 @@ export class ModuleFunctionComponent extends kendoui.GridComponentBase implement
     return {
       id: "Id",
       fields: {
-        Name: { type: "string" },
-        AccessType: { type: "number" }
+        Name: { type: "string", editable: false },
+        AccessType: { type: "number", editable: false }
       }
     };
   }
@@ -41,7 +41,8 @@ export class ModuleFunctionComponent extends kendoui.GridComponentBase implement
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     var options = super.GetGridOptions(dataSource);
-    options.toolbar = [{ template: '<span style="line-height:30px;">模块功能列表</span>' }];
+    options.toolbar = [{ template: '<span style="line-height:30px;">模块功能列表</span>' },
+    { name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` }];
     options.pageable = false;
     return options;
   }
@@ -57,7 +58,17 @@ export class ModuleFunctionComponent extends kendoui.GridComponentBase implement
     var otherHeight = $("#grid-box").height() - $content.height() + 50;
     $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
   }
+  protected ToolbarInit() {
+    let $toolbar = $(this.grid.element).find(".k-grid-toolbar");
+    if (!$toolbar) {
+      return;
+    }
+    $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
+  }
   private GetFunctions() {
+    if (!this.grid) {
+      return;
+    }
     var options = {
       filter: {
         logic: "and",
