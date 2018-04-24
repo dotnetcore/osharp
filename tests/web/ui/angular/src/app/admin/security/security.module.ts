@@ -10,35 +10,31 @@ import { RoleEntityinfoComponent } from './role-entityinfo/role-entityinfo.compo
 import { UserEntityinfoComponent } from './user-entityinfo/user-entityinfo.component';
 import { RoleFunctionComponent } from './role-function/role-function.component';
 import { UserFunctionComponent } from './user-function/user-function.component';
-import { ModuleService } from './module/module.service';
 import { RoleEntityinfoService } from './role-entityinfo/role-entityinfo.service';
 import { UserEntityinfoService } from './user-entityinfo/user-entityinfo.service';
-import { RoleFunctionService } from './role-function/role-function.service';
 import { UserFunctionService } from './user-function/user-function.service';
 import { ModuleFunctionComponent } from './module/module-function.component';
 
 @NgModule({
-    declarations: [
-        ModuleComponent,
-        ModuleFunctionComponent,
-        EntityinfoComponent,
-        FunctionComponent,
-        RoleEntityinfoComponent,
-        UserEntityinfoComponent,
-        RoleFunctionComponent,
-        UserFunctionComponent
-    ],
-    imports: [
-        TranslateModule,
-        SecurityRoutingModule,
-        KendouiModule
-    ],
-    providers: [
-        ModuleService,
-        RoleEntityinfoService,
-        UserEntityinfoService,
-        RoleFunctionService,
-        UserFunctionService
-    ]
+  declarations: [
+    ModuleComponent,
+    ModuleFunctionComponent,
+    EntityinfoComponent,
+    FunctionComponent,
+    RoleEntityinfoComponent,
+    UserEntityinfoComponent,
+    RoleFunctionComponent,
+    UserFunctionComponent
+  ],
+  imports: [
+    TranslateModule,
+    SecurityRoutingModule,
+    KendouiModule
+  ],
+  providers: [
+    RoleEntityinfoService,
+    UserEntityinfoService,
+    UserFunctionService
+  ]
 })
 export class SecurityModule { }

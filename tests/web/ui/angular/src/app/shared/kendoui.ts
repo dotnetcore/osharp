@@ -279,6 +279,15 @@ export namespace kendoui {
 
   export class Tools {
 
+    /**获取TreeView树数据源 */
+    static CreateHierarchicalDataSource(url: string): kendo.data.HierarchicalDataSource {
+      return new kendo.data.HierarchicalDataSource({
+        transport: { read: { url: url } },
+        schema: { model: { children: "Items", hasChildren: "HasChildren" } },
+        requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
+      });
+    }
+
     /**初始化树数据 */
     static TreeDataInit(nodes: Array<any>): any {
       if (!nodes.length) {

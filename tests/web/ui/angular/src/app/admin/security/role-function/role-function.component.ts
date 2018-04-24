@@ -1,22 +1,31 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
-import { RoleFunctionService, } from './role-function.service';
+import { Component, OnInit, AfterViewInit, NgZone, ElementRef, } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { osharp } from "../../../shared/osharp";
+import { kendoui } from '../../../shared/kendoui';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
-    selector: 'security-role-function',
-    templateUrl: './role-function.component.html',
-    styleUrls: ['./role-function.component.css']
+  selector: 'security-role-function',
+  templateUrl: './role-function.component.html'
 })
-export class RoleFunctionComponent implements OnInit, OnDestroy {
+export class RoleFunctionComponent extends kendoui.TreeListComponentBase implements OnInit, AfterViewInit {
 
-    constructor(private _service: RoleFunctionService) { }
+  constructor(protected zone: NgZone, protected element: ElementRef, private http: HttpClient) {
+    super(zone, element);
+  }
 
-    ngOnInit() {
-    }
+  protected GetModel() {
+    throw new Error("Method not implemented.");
+  }
+  protected GetTreeListColumns(): kendo.ui.TreeListColumn[] {
+    throw new Error("Method not implemented.");
+  }
 
-    ngOnDestroy() {
-    }
+  ngOnInit() {
+    super.InitBase();
+  }
+
+  ngAfterViewInit(): void {
+    super.ViewInitBase();
+  }
 }

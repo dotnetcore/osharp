@@ -117,7 +117,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             }
             Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(group);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
-            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).ToArray();
+            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+                .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
                 return Json(new PageData<object>());

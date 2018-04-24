@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -19,6 +20,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using OSharp.Audits;
 using OSharp.Core;
 using OSharp.Core.EntityInfos;
+using OSharp.Exceptions;
 
 
 namespace OSharp.Entity
@@ -53,6 +55,30 @@ namespace OSharp.Entity
             {
                 dbContext.Database.Migrate();
             }
+        }
+
+        /// <summary>
+        /// 执行指定的Sql语句
+        /// </summary>
+        public static int ExecuteSqlCommand(this IDbContext dbContext, string sql, params object[] parameters)
+        {
+            if (!(dbContext is DbContext context))
+            {
+                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+            }
+            return context.Database.ExecuteSqlCommand(new RawSqlString(sql), parameters);
+        }
+
+        /// <summary>
+        /// 异步执行指定的Sql语句
+        /// </summary>
+        public static Task<int> ExecuteSqlCommandAsync(this IDbContext dbContext, string sql, params object [] parameters)
+        {
+            if (!(dbContext is DbContext context))
+            {
+                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+            }
+            return context.Database.ExecuteSqlCommandAsync(new RawSqlString(sql), parameters);
         }
 
         /// <summary>

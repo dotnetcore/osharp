@@ -100,11 +100,7 @@ export class RoleComponent extends kendoui.GridComponentBase implements OnInit, 
     this.winRole = this.grid.dataItem(tr);
     this.window.title("角色权限设置-" + this.winRole.Name).open().center().resize();
     //设置树数据
-    this.moduleTree.setDataSource(new kendo.data.HierarchicalDataSource({
-      transport: { read: { url: "/api/admin/module/ReadRoleModules?roleId=" + this.winRole.Id } },
-      schema: { model: { children: "Items", hasChildren: "HasChildren" } },
-      requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
-    }));
+    this.moduleTree.setDataSource(kendoui.Tools.CreateHierarchicalDataSource("/api/admin/module/ReadRoleModules?roleId=" + this.winRole.Id));
   }
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);

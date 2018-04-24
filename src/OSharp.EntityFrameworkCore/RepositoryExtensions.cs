@@ -8,8 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
+using OSharp.Exceptions;
 
 using Z.EntityFramework.Plus;
 
@@ -95,6 +100,22 @@ namespace OSharp.Entity
             where TKey : IEquatable<TKey>
         {
             return await repository.TrackQuery(predicate).UpdateAsync(updateExpression, interceptAction);
+        }
+
+        /// <summary>
+        /// 执行SQL查询获取数据
+        /// </summary>
+        public static IEnumerable<TEntity> FromSql<TEntity, TKey>(this IRepository<TEntity, TKey> repository, string sql, params object[] parameters)
+            where TEntity : class, IEntity<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            IUnitOfWork uow = repository.UnitOfWork;
+            IDbContext dbContext = uow.GetDbContext<TEntity, TKey>();
+            if (!(dbContext is DbContext context))
+            {
+                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+            }
+            return context.Set<TEntity>().FromSql(new RawSqlString(sql), parameters);
         }
     }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, ElementRef, AfterViewInit, NgZone } from '@angular/c
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
 
-import { ModuleService, } from './module.service';
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from "../../../shared/osharp";
 import { List } from 'linqts';
@@ -80,9 +79,27 @@ export class ModuleComponent extends kendoui.TreeListComponentBase implements On
   protected GetTreeListOptions(dataSource: kendo.data.TreeListDataSource): kendo.ui.TreeListOptions {
     var options = super.GetTreeListOptions(dataSource);
     options.toolbar = [{ name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh", click: e => this.treeList.dataSource.read() }];
-    options.change = e => { var row = this.treeList.select(); if (row) { var data: any = this.treeList.dataItem(row); this.selectedModuleId = data.Id; } }
+    options.change = e => { var row = this.treeList.select(); if (row) { var data: any = this.treeList.dataItem(row); this.selectedModuleId = data.Id; } };
+    options.remove = e => {
+      var model: any = e.model;
+      if (!model.ParentId) {
+        osharp.Tip.error('“' + model.Name + '”是根结点，禁止删除');
+        e.preventDefault();
+        return;
+      }
+      if (model.hasChildren) {
+        osharp.Tip.error('“' + model.Name + '”包含子节点，不能删除');
+        e.preventDefault();
+        return;
+      }
+      if (!confirm('是否删除模块“' + model.Name + '”？')) {
+        e.preventDefault();
+        return;
+      }
+    };
     return options;
   }
+
   //#endregion
 
   //#region Window
@@ -98,11 +115,7 @@ export class ModuleComponent extends kendoui.TreeListComponentBase implements On
     this.window.title("模块功能设置-" + this.winModule.Name).open().center().resize();
     this.treeList.select(tr);
     //设置树数据
-    this.functionTree.setDataSource(new kendo.data.HierarchicalDataSource({
-      transport: { read: { url: "/api/admin/function/ReadTreeNode?moduleId=" + this.winModule.Id } },
-      schema: { model: { children: "Items", hasChildren: "HasChildren" } },
-      requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
-    }));
+    this.functionTree.setDataSource(kendoui.Tools.CreateHierarchicalDataSource("/api/admin/function/ReadTreeNode?moduleId=" + this.winModule.Id));
   }
   private onWindowResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
