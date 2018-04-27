@@ -22,7 +22,7 @@ namespace OSharp.Security
     /// 定义模块角色信息存储
     /// </summary>
     [IgnoreDependency]
-    public interface IModuleRoleStore<TModuleRole, in TRoleKey, in TModuleKey>
+    public interface IModuleRoleStore<TModuleRole, in TRoleKey, TModuleKey>
     {
         #region 模块角色信息业务
 
@@ -46,6 +46,13 @@ namespace OSharp.Security
         /// <param name="moduleIds">要赋予的模块编号集合</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> SetRoleModules(TRoleKey roleId, TModuleKey[] moduleIds);
+
+        /// <summary>
+        /// 获取角色可访问模块编号
+        /// </summary>
+        /// <param name="roleId">角色编号</param>
+        /// <returns>模块编号集合</returns>
+        TModuleKey[] GetRoleModuleIds(TRoleKey roleId);
 
         #endregion
     }

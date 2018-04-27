@@ -25,7 +25,7 @@ namespace OSharp.Demo.Security
     /// </summary>
     public class SecurityManager
         : SecurityManagerBase<Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
-            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, Role, int, User, int>
+            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, UserRole, Role, int, User, int>
     {
         /// <summary>
         /// 初始化一个<see cref="SecurityManager"/>类型的新实例
@@ -38,8 +38,17 @@ namespace OSharp.Demo.Security
             IRepository<ModuleRole, Guid> moduleRoleRepository,
             IRepository<ModuleUser, Guid> moduleUserRepository,
             IRepository<Role, int> roleRepository,
-            IRepository<User, int> userRepository)
-            : base(functionRepository, entityInfoRepository, moduleRepository, moduleFunctionRepository, moduleRoleRepository, moduleUserRepository, roleRepository, userRepository)
+            IRepository<User, int> userRepository,
+            IRepository<UserRole, Guid>userRoleRepository)
+            : base(functionRepository,
+                entityInfoRepository,
+                moduleRepository,
+                moduleFunctionRepository,
+                moduleRoleRepository,
+                moduleUserRepository,
+                roleRepository,
+                userRepository,
+                userRoleRepository)
         { }
     }
 }

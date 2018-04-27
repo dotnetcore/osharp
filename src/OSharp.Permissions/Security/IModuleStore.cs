@@ -23,7 +23,7 @@ namespace OSharp.Security
     /// 定义模块信息的存储
     /// </summary>
     [IgnoreDependency]
-    public interface IModuleStore<TModule, in TModuleInputDto, in TModuleKey>
+    public interface IModuleStore<TModule, in TModuleInputDto, TModuleKey>
         where TModule : ModuleBase<TModuleKey>, IEntity<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
@@ -63,6 +63,13 @@ namespace OSharp.Security
         /// <param name="id">要删除的模块信息编号</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> DeleteModule(TModuleKey id);
+
+        /// <summary>
+        /// 获取树节点及其子节点的所有模块编号
+        /// </summary>
+        /// <param name="rootIds">树节点</param>
+        /// <returns>模块编号集合</returns>
+        TModuleKey[] GetModuleTreeIds(params TModuleKey[] rootIds);
 
         #endregion
     }

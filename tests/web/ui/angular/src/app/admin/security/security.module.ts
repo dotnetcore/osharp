@@ -12,13 +12,10 @@ import { RoleFunctionComponent } from './role-function/role-function.component';
 import { UserFunctionComponent } from './user-function/user-function.component';
 import { RoleEntityinfoService } from './role-entityinfo/role-entityinfo.service';
 import { UserEntityinfoService } from './user-entityinfo/user-entityinfo.service';
-import { UserFunctionService } from './user-function/user-function.service';
-import { ModuleFunctionComponent } from './module/module-function.component';
 
 @NgModule({
   declarations: [
     ModuleComponent,
-    ModuleFunctionComponent,
     EntityinfoComponent,
     FunctionComponent,
     RoleEntityinfoComponent,
@@ -34,7 +31,6 @@ import { ModuleFunctionComponent } from './module/module-function.component';
   providers: [
     RoleEntityinfoService,
     UserEntityinfoService,
-    UserFunctionService
   ]
 })
 export class SecurityModule { }

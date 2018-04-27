@@ -48,7 +48,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 {
                     new SortCondition("Area"),
                     new SortCondition("Controller"),
-                    new SortCondition("Action")
+                    //new SortCondition("Action")
                 };
             }
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);

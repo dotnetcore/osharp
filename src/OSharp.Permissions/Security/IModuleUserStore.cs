@@ -22,7 +22,7 @@ namespace OSharp.Security
     /// 模块用户信息存储
     /// </summary>
     [IgnoreDependency]
-    public interface IModuleUserStore<TModuleUser, in TUserKey, in TModuleKey>
+    public interface IModuleUserStore<TModuleUser, in TUserKey, TModuleKey>
     {
         #region 模块用户信息业务
 
@@ -46,6 +46,20 @@ namespace OSharp.Security
         /// <param name="moduleIds">要赋给用户的模块编号集合</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> SetUserModules(TUserKey userId, TModuleKey[] moduleIds);
+
+        /// <summary>
+        /// 获取用户自己的可访问模块编号
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>模块编号集合</returns>
+        TModuleKey[] GetUserSelfModuleIds(TUserKey userId);
+
+        /// <summary>
+        /// 获取用户及其拥有角色可访问模块编号
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>模块编号集合</returns>
+        TModuleKey[] GetUserWithRoleModuleIds(TUserKey userId);
 
         #endregion
     }

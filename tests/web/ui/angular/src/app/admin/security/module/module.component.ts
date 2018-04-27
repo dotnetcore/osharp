@@ -79,7 +79,13 @@ export class ModuleComponent extends kendoui.TreeListComponentBase implements On
   protected GetTreeListOptions(dataSource: kendo.data.TreeListDataSource): kendo.ui.TreeListOptions {
     var options = super.GetTreeListOptions(dataSource);
     options.toolbar = [{ name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh", click: e => this.treeList.dataSource.read() }];
-    options.change = e => { var row = this.treeList.select(); if (row) { var data: any = this.treeList.dataItem(row); this.selectedModuleId = data.Id; } };
+    options.change = e => {
+      var row = this.treeList.select();
+      if (row) {
+        var data: any = this.treeList.dataItem(row);
+        this.selectedModuleId = data.Id;
+      }
+    };
     options.remove = e => {
       var model: any = e.model;
       if (!model.ParentId) {
@@ -98,6 +104,19 @@ export class ModuleComponent extends kendoui.TreeListComponentBase implements On
       }
     };
     return options;
+  }
+
+  onModuleSelectedChange(functionGrid: kendo.ui.Grid) {
+    var options = {
+      filter: {
+        logic: "and",
+        filters: [
+          { field: "TreePathString", operator: "contains", value: "$" + this.selectedModuleId + "$" }
+        ]
+      }
+    };
+    options = kendoui.Tools.queryOptions(functionGrid.dataSource, options);
+    functionGrid.dataSource.query(options);
   }
 
   //#endregion

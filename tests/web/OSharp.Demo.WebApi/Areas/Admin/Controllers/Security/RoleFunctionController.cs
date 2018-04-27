@@ -7,11 +7,19 @@
 //  <last-date>2018-04-13 2:03</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.AspNetCore.UI;
+using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
+using OSharp.Demo.Security.Entities;
+using OSharp.Entity;
 using OSharp.Filter;
 
 
@@ -22,16 +30,53 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     public class RoleFunctionController : AreaApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RoleFunctionController(SecurityManager securityManager)
+        public RoleFunctionController(SecurityManager securityManager, RoleManager<Role>roleManager)
         {
             _securityManager = securityManager;
+            _roleManager = roleManager;
         }
 
         [Description("读取")]
         public IActionResult Read()
         {
-            return Json(new PageData<object>());
+            PageRequest request = new PageRequest(Request);
+            request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
+            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
+            var page = _roleManager.Roles.ToPage(predicate,
+                request.PageCondition,
+                m => new
+                {
+                    m.Id,
+                    m.Name,
+                    m.Remark,
+                    m.IsAdmin
+                });
+            return Json(page.ToPageData());
+        }
+
+        [Description("读取功能")]
+        public IActionResult ReadFunctions(int roleId)
+        {
+            if (roleId == 0)
+            {
+                return Json(new PageData<object>());
+            }
+            int[] moduleIds = _securityManager.GetRoleModuleIds(roleId);
+            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+                .ToArray();
+            if (functionIds.Length == 0)
+            {
+                return Json(new PageData<object>());
+            }
+
+            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
+                1,
+                10000,
+                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+                m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
+            return Json(page.ToPageData());
         }
     }
 }

@@ -4,27 +4,30 @@ import { KendouiSplitterComponent } from './components/kendoui-splitter.componen
 import { KendouiWindowComponent } from './components/kendoui-window.component';
 import { KendouiTabstripComponent } from './components/kendoui-tabstrip.component';
 import { KendouiTreeviewComponent } from './components/kendoui-treeview.component';
+import { KendouiFunctionComponent } from './components/kendoui-function.component';
 
 @NgModule({
-    declarations: [
-        KendouiSplitterComponent,
-        KendouiWindowComponent,
-        KendouiTabstripComponent,
-        KendouiTreeviewComponent
-    ],
-    imports: [CommonModule],
-    exports: [
-        KendouiSplitterComponent,
-        KendouiWindowComponent,
-        KendouiTabstripComponent,
-        KendouiTreeviewComponent
-    ],
-    providers: [],
+  declarations: [
+    KendouiSplitterComponent,
+    KendouiWindowComponent,
+    KendouiTabstripComponent,
+    KendouiTreeviewComponent,
+    KendouiFunctionComponent
+  ],
+  imports: [CommonModule],
+  exports: [
+    KendouiSplitterComponent,
+    KendouiWindowComponent,
+    KendouiTabstripComponent,
+    KendouiTreeviewComponent,
+    KendouiFunctionComponent
+  ],
+  providers: [],
 })
 export class KendouiModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: KendouiModule
-        };
-    }
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: KendouiModule
+    };
+  }
 }

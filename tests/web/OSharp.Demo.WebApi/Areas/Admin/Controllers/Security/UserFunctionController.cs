@@ -7,10 +7,21 @@
 //  <last-date>2018-04-13 2:09</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using OSharp.AspNetCore.UI;
+using OSharp.Demo.Identity.Dtos;
+using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.Security;
+using OSharp.Entity;
+using OSharp.Filter;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -19,10 +30,55 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
     [Description("管理-用户功能")]
     public class UserFunctionController : AreaApiController
     {
+        private readonly SecurityManager _securityManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
+
+        public UserFunctionController(SecurityManager securityManager, UserManager<User>userManager, RoleManager<Role>roleManager)
+        {
+            _securityManager = securityManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
         [Description("读取")]
         public IActionResult Read()
         {
-            return Json(new List<object>());
+            PageRequest request = new PageRequest(Request);
+            request.FilterGroup.Rules.Add(new FilterRule("IsLocked",false, FilterOperate.Equal));
+            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
+            var page = _userManager.Users.ToPage(predicate,
+                request.PageCondition,
+                m => new
+                {
+                    m.Id,
+                    m.UserName,
+                    m.Email
+                });
+            return Json(page.ToPageData());
+        }
+
+        [Description("读取功能")]
+        public IActionResult ReadFunctions(int userId)
+        {
+            if (userId == 0)
+            {
+                return Json(new PageData<object>());
+            }
+            int[] moduleIds = _securityManager.GetUserWithRoleModuleIds(userId);
+            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+                .ToArray();
+            if (functionIds.Length == 0)
+            {
+                return Json(new PageData<object>());
+            }
+
+            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
+                1,
+                10000,
+                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+                m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
+            return Json(page.ToPageData());
         }
     }
 }

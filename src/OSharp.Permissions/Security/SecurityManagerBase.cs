@@ -13,8 +13,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Logging.Abstractions;
-
 using OSharp.Collections;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
@@ -30,7 +28,7 @@ namespace OSharp.Security
     /// 权限安全管理器基类
     /// </summary>
     public abstract class SecurityManagerBase<TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,
-        TModuleFunction, TModuleRole, TModuleUser, TRole, TRoleKey, TUser, TUserKey>
+        TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey>
         : IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
@@ -47,6 +45,7 @@ namespace OSharp.Security
         where TModuleRole : ModuleRoleBase<TModuleKey, TRoleKey>, new()
         where TModuleUser : ModuleUserBase<TModuleKey, TUserKey>, new()
         where TModuleKey : struct, IEquatable<TModuleKey>
+        where TUserRole : UserRoleBase<TUserKey, TRoleKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
@@ -60,6 +59,7 @@ namespace OSharp.Security
         private readonly IRepository<TModuleUser, Guid> _moduleUserRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUser, TUserKey> _userRepository;
+        private readonly IRepository<TUserRole, Guid> _userRoleRepository;
 
         /// <summary>
         /// 初始化一个<see cref="SecurityManagerBase"/>类型的新实例
@@ -72,7 +72,8 @@ namespace OSharp.Security
             IRepository<TModuleRole, Guid> moduleRoleRepository,
             IRepository<TModuleUser, Guid> moduleUserRepository,
             IRepository<TRole, TRoleKey> roleRepository,
-            IRepository<TUser, TUserKey> userRepository
+            IRepository<TUser, TUserKey> userRepository,
+            IRepository<TUserRole,Guid>userRoleRepository
             )
         {
             _functionRepository = functionRepository;
@@ -83,6 +84,7 @@ namespace OSharp.Security
             _moduleUserRepository = moduleUserRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _userRoleRepository = userRoleRepository;
         }
 
         #region Implementation of IFunctionStore<TFunction,in TFunctionInputDto>
@@ -314,6 +316,16 @@ namespace OSharp.Security
                 : OperationResult.NoChanged;
         }
 
+        /// <summary>
+        /// 获取树节点及其子节点的所有模块编号
+        /// </summary>
+        /// <param name="rootIds">树节点</param>
+        /// <returns>模块编号集合</returns>
+        public virtual TModuleKey[] GetModuleTreeIds(params TModuleKey[] rootIds)
+        {
+            return rootIds.SelectMany(m => _moduleRepository.Query(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct().ToArray();
+        }
+
         private static string GetModuleTreePath(TModuleKey currentId, string parentTreePath, string treePathItemFormat)
         {
             return $"{parentTreePath},{treePathItemFormat.FormatWith(currentId)}";
@@ -477,6 +489,17 @@ namespace OSharp.Security
             return OperationResult.NoChanged;
         }
 
+        /// <summary>
+        /// 获取角色可访问模块编号
+        /// </summary>
+        /// <param name="roleId">角色编号</param>
+        /// <returns>模块编号集合</returns>
+        public virtual TModuleKey[] GetRoleModuleIds(TRoleKey roleId)
+        {
+            TModuleKey[] moduleIds = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).Distinct().ToArray();
+            return GetModuleTreeIds(moduleIds);
+        }
+
         #endregion
 
         #region Implementation of IModuleUserStore<TModuleUser>
@@ -553,6 +576,34 @@ namespace OSharp.Security
                     $"用户“{user.UserName}”添加模块“{addNames.ExpandAndToString()}”，移除模块“{removeNames.ExpandAndToString()}”操作成功");
             }
             return OperationResult.NoChanged;
+        }
+
+        /// <summary>
+        /// 获取用户自己的可访问模块编号
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>模块编号集合</returns>
+        public virtual TModuleKey[] GetUserSelfModuleIds(TUserKey userId)
+        {
+            TModuleKey[] moduleIds = _moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+            return GetModuleTreeIds(moduleIds);
+        }
+
+        /// <summary>
+        /// 获取用户及其拥有角色可访问模块编号
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>模块编号集合</returns>
+        public virtual TModuleKey[] GetUserWithRoleModuleIds(TUserKey userId)
+        {
+            TModuleKey[] selfModuleIds = GetUserSelfModuleIds(userId);
+
+            TRoleKey[] roleIds = _userRoleRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
+            TModuleKey[] roleModuleIds = roleIds.SelectMany(m => _moduleRoleRepository.Query(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
+                .Distinct().ToArray();
+            roleModuleIds = GetModuleTreeIds(roleModuleIds);
+
+            return roleModuleIds.Union(selfModuleIds).Distinct().ToArray();
         }
 
         #endregion

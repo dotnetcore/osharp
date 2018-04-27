@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 declare var $: any;
 
 import { osharp } from "../../osharp";
@@ -11,6 +11,8 @@ import { kendoui } from '../../kendoui';
 export class KendouiFunctionComponent extends kendoui.GridComponentBase implements OnInit, AfterViewInit {
 
   @Input() ReadUrl: string;
+  @Input() TypeId: any;
+  @Output() TypeIdChange: EventEmitter<kendo.ui.Grid> = new EventEmitter<kendo.ui.Grid>();
 
   constructor(protected zone: NgZone, protected element: ElementRef) {
     super(zone, element);
@@ -22,7 +24,11 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
   ngAfterViewInit(): void {
     super.ViewInitBase();
   }
-  ngOnChanges(): void { }
+  ngOnChanges(): void {
+    if (this.grid) {
+      this.TypeIdChange.emit(this.grid);
+    }
+  }
 
   protected GetModel() {
     return {
@@ -35,8 +41,8 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
   }
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
-      { field: "Name", title: "功能名称", width: 300 },
-      { field: "AccessType", title: "功能类型", width: 100, template: d => osharp.Tools.valueToText(d.AccessType, osharp.Data.AccessTypes) }
+      { field: "Name", title: "功能名称", width: 300, filterable: false, sortable: false },
+      { field: "AccessType", title: "功能类型", width: 100, filterable: false, sortable: false, template: d => osharp.Tools.valueToText(d.AccessType, osharp.Data.AccessTypes) }
     ];
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
@@ -48,8 +54,17 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     var options = super.GetDataSourceOptions();
-    options.transport.read = { url: "/api/admin/module/readfunctions", type: "post" };
+    options.transport.read = { url: this.ReadUrl, type: "post" };
     options.transport.create = options.transport.update = options.transport.destroy = null;
+    options.group = [{ field: "Area" }, { field: "Controller" }];
+    options.filter = false;
     return options;
+  }
+  protected ToolbarInit() {
+    let $toolbar = $(this.grid.element).find(".k-grid-toolbar");
+    if (!$toolbar) {
+      return;
+    }
+    $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
   }
 }

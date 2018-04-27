@@ -126,8 +126,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
                 1,
                 10000,
-                new[] { new SortCondition("Name", ListSortDirection.Ascending) },
-                m => new { m.Id, m.Name, m.AccessType });
+                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+                m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
             return Json(page.ToPageData());
         }
 
