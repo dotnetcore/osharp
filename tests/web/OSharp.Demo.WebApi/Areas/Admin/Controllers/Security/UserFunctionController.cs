@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
+using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
@@ -34,7 +35,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
 
-        public UserFunctionController(SecurityManager securityManager, UserManager<User>userManager, RoleManager<Role>roleManager)
+        public UserFunctionController(SecurityManager securityManager, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             _securityManager = securityManager;
             _userManager = userManager;
@@ -45,7 +46,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         public IActionResult Read()
         {
             PageRequest request = new PageRequest(Request);
-            request.FilterGroup.Rules.Add(new FilterRule("IsLocked",false, FilterOperate.Equal));
+            request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage(predicate,
                 request.PageCondition,
@@ -65,6 +66,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             {
                 return Json(new PageData<object>());
             }
+
             int[] moduleIds = _securityManager.GetUserWithRoleModuleIds(userId);
             Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
@@ -73,10 +75,16 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 return Json(new PageData<object>());
             }
 
-            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
-                1,
-                10000,
-                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+            PageRequest request = new PageRequest(Request);
+            Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
+            funcExp = funcExp.And(m => functionIds.Contains(m.Id));
+            if (request.PageCondition.SortConditions.Length == 0)
+            {
+                request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
+            }
+
+            var page = _securityManager.Functions.ToPage(funcExp,
+                request.PageCondition,
                 m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
             return Json(page.ToPageData());
         }

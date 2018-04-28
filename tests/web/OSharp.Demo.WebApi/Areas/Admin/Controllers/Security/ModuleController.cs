@@ -110,12 +110,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [Description("读取模块功能")]
         public IActionResult ReadFunctions()
         {
-            ListFilterGroup group = new ListFilterGroup(Request);
-            if (group.Rules.Count == 0)
+            PageRequest request = new PageRequest(Request);
+            if (request.FilterGroup.Rules.Count == 0)
             {
                 return Json(new PageData<object>());
             }
-            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(group);
+            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
@@ -123,10 +123,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             {
                 return Json(new PageData<object>());
             }
+            if (request.PageCondition.SortConditions.Length == 0)
+            {
+                request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
+            }
             var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
-                1,
-                10000,
-                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+                request.PageCondition,
                 m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
             return Json(page.ToPageData());
         }

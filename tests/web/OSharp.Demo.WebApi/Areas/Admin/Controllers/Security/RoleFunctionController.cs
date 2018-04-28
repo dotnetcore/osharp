@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.UI;
+using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Entities;
@@ -32,7 +33,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         private readonly SecurityManager _securityManager;
         private readonly RoleManager<Role> _roleManager;
 
-        public RoleFunctionController(SecurityManager securityManager, RoleManager<Role>roleManager)
+        public RoleFunctionController(SecurityManager securityManager, RoleManager<Role> roleManager)
         {
             _securityManager = securityManager;
             _roleManager = roleManager;
@@ -71,10 +72,16 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 return Json(new PageData<object>());
             }
 
-            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
-                1,
-                10000,
-                new[] { new SortCondition("Area"), new SortCondition("Controller") },
+            PageRequest request = new PageRequest(Request);
+            Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
+            funcExp = funcExp.And(m => functionIds.Contains(m.Id));
+            if (request.PageCondition.SortConditions.Length == 0)
+            {
+                request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
+            }
+
+            var page = _securityManager.Functions.ToPage(funcExp,
+                request.PageCondition,
                 m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
             return Json(page.ToPageData());
         }

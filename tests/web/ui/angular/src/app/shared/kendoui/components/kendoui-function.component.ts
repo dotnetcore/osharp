@@ -49,7 +49,7 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
     var options = super.GetGridOptions(dataSource);
     options.toolbar = [{ template: '<span style="line-height:30px;">功能列表</span>' },
     { name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` }];
-    options.pageable = false;
+    // options.pageable = false;
     return options;
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
@@ -57,6 +57,7 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
     options.transport.read = { url: this.ReadUrl, type: "post" };
     options.transport.create = options.transport.update = options.transport.destroy = null;
     options.group = [{ field: "Area" }, { field: "Controller" }];
+    options.pageSize = 15;
     options.filter = false;
     return options;
   }
@@ -66,5 +67,17 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
       return;
     }
     $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
+  }
+  protected ResizeGrid(init: boolean) {
+    //console.log($("kendoui-function").length);
+
+    // var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth >= 1114 ? 80 : winWidth >= 768 ? 64 : 145;
+    // var $grid = $("kendoui-function #grid-box");
+    // console.log($grid.height());
+    var $content = $("kendoui-function #grid-box .k-grid-content");
+    // var otherHeight = $grid.height() - $content.height();
+    // otherHeight = otherHeight - 800;
+    //$content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
+    $content.height(740);
   }
 }
