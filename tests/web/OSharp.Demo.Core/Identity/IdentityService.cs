@@ -19,7 +19,9 @@ using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.Identity.Events;
 using OSharp.Entity;
+using OSharp.EventBuses;
 using OSharp.Identity;
 
 
@@ -28,10 +30,11 @@ namespace OSharp.Demo.Identity
     /// <summary>
     /// 业务实现：身份认证模块
     /// </summary>
-    public class IdentityService : IIdentityContract
+    public partial class IdentityService : IIdentityContract
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly IEventBus _eventBus;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
 
         /// <summary>
@@ -39,10 +42,12 @@ namespace OSharp.Demo.Identity
         /// </summary>
         public IdentityService(UserManager<User> userManager,
             RoleManager<Role> roleManager,
+            IEventBus eventBus,
             IRepository<UserRole, Guid> userRoleRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _eventBus = eventBus;
             _userRoleRepository = userRoleRepository;
         }
 
@@ -63,75 +68,70 @@ namespace OSharp.Demo.Identity
         }
 
         /// <summary>
-        /// 获取 用户角色信息查询数据集
+        /// 使用账号登录
         /// </summary>
-        public IQueryable<UserRole> UserRoles
-        {
-            get { return _userRoleRepository.Query(); }
-        }
-
-        /// <summary>
-        /// 检查用户角色信息信息是否存在
-        /// </summary>
-        /// <param name="predicate">检查谓语表达式</param>
-        /// <param name="id">更新的用户角色信息编号</param>
-        /// <returns>用户角色信息是否存在</returns>
-        public Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid))
-        {
-            return _userRoleRepository.CheckExistsAsync(predicate, id);
-        }
-
-        /// <summary>
-        /// 更新用户角色信息
-        /// </summary>
-        /// <param name="dtos">用户角色信息集合</param>
+        /// <param name="dto">登录信息</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
+        public async Task<OperationResult<User>> Login(LoginDto dto)
         {
-            return _userRoleRepository.UpdateAsync(dtos);
-        }
-
-        /// <summary>
-        /// 设置用户的角色
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <param name="roleIds">角色编号集合</param>
-        /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> SetUserRoles(int userId, int[] roleIds)
-        {
-            User user = await _userManager.FindByIdAsync(userId.ToString());
+            User user = await FindUserByAccount(dto.Account);
             if (user == null)
             {
-                return new OperationResult(OperationResultType.QueryNull, $"编号为“{userId}”的用户不存在");
+                return new OperationResult<User>(OperationResultType.Error, "用户不存在");
             }
-            IList<string> roleNames = _roleManager.Roles.Where(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
-            IList<string> existRoleNames = await _userManager.GetRolesAsync(user);
-            string[] addRoleNames = roleNames.Except(existRoleNames).ToArray();
-            string[] removeRoleNames = existRoleNames.Except(roleNames).ToArray();
-
-            if (!addRoleNames.Union(removeRoleNames).Any())
+            if (user.IsLocked)
             {
-                return OperationResult.NoChanged;
+                return new OperationResult<User>(OperationResultType.Error, "用户已被冻结，无法登录");
             }
-
-            try
+            if (await _userManager.IsLockedOutAsync(user))
             {
-                IdentityResult result = await _userManager.AddToRolesAsync(user, addRoleNames);
-                if (!result.Succeeded)
+                return new OperationResult<User>(OperationResultType.Error, $"用户因密码错误次数过多而被锁定 {_userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes} 分钟，请稍后重试");
+            }
+            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
+            {
+                if (await _userManager.GetLockoutEnabledAsync(user))
                 {
-                    return result.ToOperationResult();
+                    await _userManager.AccessFailedAsync(user);
+                    if (await _userManager.IsLockedOutAsync(user))
+                    {
+                        return new OperationResult<User>(OperationResultType.Error, $"用户因密码错误次数过多而被锁定 {_userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes} 分钟，请稍后重试");
+                    }
+                    return new OperationResult<User>(OperationResultType.Error, $"用户名或密码错误，您还有 {_userManager.Options.Lockout.MaxFailedAccessAttempts - await _userManager.GetAccessFailedCountAsync(user)} 次机会");
                 }
-                result = await _userManager.RemoveFromRolesAsync(user, removeRoleNames);
-                if (!result.Succeeded)
-                {
-                    return result.ToOperationResult();
-                }
+                return new OperationResult<User>(OperationResultType.Error, "用户名或密码错误");
             }
-            catch (InvalidOperationException ex)
+            //触发登录成功事件
+            LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
+            _eventBus.PublishSync(loginEventData);
+
+            return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
+        }
+
+        /// <summary>
+        /// 依次按用户名，Email，手机查找用户
+        /// </summary>
+        /// <param name="account">账号</param>
+        /// <returns></returns>
+        private async Task<User> FindUserByAccount(string account)
+        {
+            User user = await _userManager.FindByNameAsync(account);
+            if (user != null)
             {
-                return new OperationResult(OperationResultType.Error, ex.Message);
+                return user;
             }
-            return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”添加角色“{addRoleNames.ExpandAndToString()}”，移除角色“{removeRoleNames.ExpandAndToString()}”操作成功");
+            if (account.IsEmail())
+            {
+                user = await _userManager.FindByEmailAsync(account);
+                if (user != null)
+                {
+                    return user;
+                }
+            }
+            if (account.IsMobileNumber())
+            {
+                user = _userManager.Users.FirstOrDefault(m => m.PhoneNumber == account);
+            }
+            return user;
         }
     }
 }

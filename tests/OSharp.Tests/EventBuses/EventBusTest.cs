@@ -36,7 +36,7 @@ namespace OSharp.Tests.IEventBuses
 
             bus.Subscribe<HelloEventData, HelloEventHandler>();
             HelloEventData data = new HelloEventData("hello world");
-            bus.Publish(data);
+            bus.PublishSync(data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
@@ -44,7 +44,7 @@ namespace OSharp.Tests.IEventBuses
 
             Action<HelloEventData> action = m => m.List.Add(m.Message);
             bus.Subscribe<HelloEventData>(action);
-            bus.Publish(data);
+            bus.PublishSync(data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
@@ -52,7 +52,7 @@ namespace OSharp.Tests.IEventBuses
 
             IEventHandler<HelloEventData> handler = new HelloEventHandler();
             bus.Subscribe<HelloEventData>(handler);
-            bus.Publish(typeof(HelloEventData), (IEventData)data);
+            bus.PublishSync(typeof(HelloEventData), (IEventData)data);
             Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();

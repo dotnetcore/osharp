@@ -172,43 +172,43 @@ namespace OSharp.EventBuses
         #region Implementation of IEventPublisher
 
         /// <summary>
-        /// 发布指定事件
+        /// 同步发布指定事件
         /// </summary>
         /// <typeparam name="TEventData">事件数据类型</typeparam>
         /// <param name="eventData">事件数据</param>
-        public virtual void Publish<TEventData>(TEventData eventData) where TEventData : IEventData
+        public virtual void PublishSync<TEventData>(TEventData eventData) where TEventData : IEventData
         {
-            Publish<TEventData>(null, eventData);
+            PublishSync<TEventData>(null, eventData);
         }
 
         /// <summary>
-        /// 发布指定事件，并指定事件源
+        /// 同步发布指定事件，并指定事件源
         /// </summary>
         /// <typeparam name="TEventData">事件数据类型</typeparam>
         /// <param name="eventSource">事件源，触发事件的对象</param>
         /// <param name="eventData">事件数据</param>
-        public virtual void Publish<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
+        public virtual void PublishSync<TEventData>(object eventSource, TEventData eventData) where TEventData : IEventData
         {
-            Publish(typeof(TEventData), eventSource, eventData);
+            PublishSync(typeof(TEventData), eventSource, eventData);
         }
 
         /// <summary>
-        /// 发布指定事件
+        /// 同步发布指定事件
         /// </summary>
         /// <param name="eventType">事件数据类型</param>
         /// <param name="eventData">事件数据</param>
-        public virtual void Publish(Type eventType, IEventData eventData)
+        public virtual void PublishSync(Type eventType, IEventData eventData)
         {
-            Publish(eventType, null, eventData);
+            PublishSync(eventType, null, eventData);
         }
 
         /// <summary>
-        /// 发布指定事件，并指定事件源
+        /// 同步发布指定事件，并指定事件源
         /// </summary>
         /// <param name="eventType">事件数据类型</param>
         /// <param name="eventSource">事件源，触发事件的对象</param>
         /// <param name="eventData">事件数据</param>
-        public virtual void Publish(Type eventType, object eventSource, IEventData eventData)
+        public virtual void PublishSync(Type eventType, object eventSource, IEventData eventData)
         {
             eventData.EventSource = eventSource;
 
@@ -274,7 +274,7 @@ namespace OSharp.EventBuses
         }
 
         /// <summary>
-        /// 重写以实现触发事件的执行
+        /// 重写以实现触发事件的执行，默认使用同步执行
         /// </summary>
         /// <param name="factory">事件处理器工厂</param>
         /// <param name="eventType">事件类型</param>
@@ -286,26 +286,23 @@ namespace OSharp.EventBuses
             {
                 return;
             }
-            Task.Run(() =>
+            try
             {
-                try
-                {
-                    handler.Handle(eventData);
-                }
-                catch (Exception ex)
-                {
-                    string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
-                    _Logger.LogError(ex, msg);
-                }
-                finally
-                {
-                    factory.ReleaseHandler(handler);
-                }
-            });
+                handler.Handle(eventData);
+            }
+            catch (Exception ex)
+            {
+                string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
+                _Logger.LogError(ex, msg);
+            }
+            finally
+            {
+                factory.ReleaseHandler(handler);
+            }
         }
 
         /// <summary>
-        /// 重写以实现异步触发事件的执行
+        /// 重写以实现异步触发事件的执行，默认异步执行将只触发事件启动
         /// </summary>
         /// <param name="factory">事件处理器工厂</param>
         /// <param name="eventType">事件类型</param>

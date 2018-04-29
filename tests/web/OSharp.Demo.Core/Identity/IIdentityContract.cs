@@ -12,6 +12,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Identity;
+
 using OSharp.Data;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
@@ -73,6 +75,17 @@ namespace OSharp.Demo.Identity
         /// <param name="roleIds">角色编号集合</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult> SetUserRoles(int userId, int[] roleIds);
+
+        #endregion
+
+        #region 身份认证
+
+        /// <summary>
+        /// 使用账号登录
+        /// </summary>
+        /// <param name="dto">登录信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult<User>> Login(LoginDto dto);
 
         #endregion
     }

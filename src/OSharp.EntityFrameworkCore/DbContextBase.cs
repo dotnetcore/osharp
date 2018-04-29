@@ -89,7 +89,7 @@ namespace OSharp.Entity
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
-                eventBus.Publish(this, eventData);
+                eventBus.PublishSync(this, eventData);
             }
             return count;
         }

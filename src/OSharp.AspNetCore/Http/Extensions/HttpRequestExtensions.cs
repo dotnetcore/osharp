@@ -7,13 +7,17 @@
 //  <last-date>2017-09-01 18:11</last-date>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 
 
 namespace OSharp.AspNetCore.Http
 {
-    public static class HttpRequestExtensions
+    /// <summary>
+    /// HttpContext扩展方法
+    /// </summary>
+    public static class HttpContextExtensions
     {
         /// <summary>
         /// 确定指定的 HTTP 请求是否为 AJAX 请求。
@@ -51,6 +55,19 @@ namespace OSharp.AspNetCore.Http
                 return request.Form[key];
             }
             return null;
+        }
+
+        /// <summary>
+        /// 获取客户端IP地址
+        /// </summary>
+        public static string GetClientIp(this HttpContext context)
+        {
+            string ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
         }
     }
 }

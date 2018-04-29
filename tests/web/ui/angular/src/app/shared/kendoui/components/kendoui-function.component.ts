@@ -69,15 +69,7 @@ export class KendouiFunctionComponent extends kendoui.GridComponentBase implemen
     $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
   }
   protected ResizeGrid(init: boolean) {
-    //console.log($("kendoui-function").length);
-
-    // var winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth >= 1114 ? 80 : winWidth >= 768 ? 64 : 145;
-    // var $grid = $("kendoui-function #grid-box");
-    // console.log($grid.height());
     var $content = $("kendoui-function #grid-box .k-grid-content");
-    // var otherHeight = $grid.height() - $content.height();
-    // otherHeight = otherHeight - 800;
-    //$content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
     $content.height(740);
   }
 }
