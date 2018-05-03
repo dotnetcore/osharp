@@ -1211,6 +1211,8 @@ namespace OSharp.Identity
 
         #endregion
 
+        #region Other
+
         /// <summary>
         /// Converts the provided <paramref name="id"/> to a strongly typed key object.
         /// </summary>
@@ -1249,5 +1251,7 @@ namespace OSharp.Identity
                 throw new ObjectDisposedException(GetType().Name);
             }
         }
+
+        #endregion
     }
 }

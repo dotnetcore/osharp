@@ -14,34 +14,36 @@ import { SharedModule } from "./shared/shared.module";
 import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from "./home/home.module";
 import { AdminModule } from "./admin/admin.module";
+import { IdentityModule } from './identity/identity.module';
 
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        HttpClientModule,
-        BrowserAnimationsModule, // required for ng2-tag-input
-        AngleCoreModule,
-        AngleModule.forRoot(),
-        SharedModule,
-        AppRoutingModule,
-        HomeModule,
-        LayoutModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
-                deps: [HttpClient]
-            }
-        })
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    HttpClientModule,
+    BrowserAnimationsModule, // required for ng2-tag-input
+    AngleCoreModule,
+    AngleModule.forRoot(),
+    SharedModule,
+    AppRoutingModule,
+    HomeModule,
+    IdentityModule,
+    LayoutModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

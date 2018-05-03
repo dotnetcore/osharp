@@ -81,12 +81,27 @@ namespace OSharp.Demo.Identity
         #region 身份认证
 
         /// <summary>
+        /// 注册账号
+        /// </summary>
+        /// <param name="dto">注册信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> Register(RegisterDto dto);
+
+        /// <summary>
         /// 使用账号登录
         /// </summary>
         /// <param name="dto">登录信息</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult<User>> Login(LoginDto dto);
 
+        /// <summary>
+        /// 账号退出
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> Logout(int userId);
+
         #endregion
+
     }
 }

@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Data;
@@ -34,21 +35,30 @@ namespace OSharp.Demo.Identity
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEventBus _eventBus;
+        private ILogger<IdentityService> _logger;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
+        private readonly IRepository<UserDetail, int> _userDetailRepository;
 
         /// <summary>
         /// 初始化一个<see cref="IdentityService"/>类型的新实例
         /// </summary>
         public IdentityService(UserManager<User> userManager,
             RoleManager<Role> roleManager,
+            SignInManager<User> signInManager,
             IEventBus eventBus,
-            IRepository<UserRole, Guid> userRoleRepository)
+            ILoggerFactory loggerFactory,
+            IRepository<UserRole, Guid> userRoleRepository,
+            IRepository<UserDetail, int> userDetailRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _eventBus = eventBus;
+            _logger = loggerFactory.CreateLogger<IdentityService>();
             _userRoleRepository = userRoleRepository;
+            _userDetailRepository = userDetailRepository;
         }
 
         /// <summary>
@@ -68,12 +78,35 @@ namespace OSharp.Demo.Identity
         }
 
         /// <summary>
+        /// 注册账号
+        /// </summary>
+        /// <param name="dto">注册信息</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> Register(RegisterDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            User user = new User() { UserName = dto.UserName, NickName = dto.NickName ?? dto.UserName };
+
+            IdentityResult result = dto.Password == null ? await _userManager.CreateAsync(user) : await _userManager.CreateAsync(user, dto.Password);
+            if (!result.Succeeded)
+            {
+                return result.ToOperationResult();
+            }
+            UserDetail detail = new UserDetail() { RegisterIp = dto.RegisterIp, UserId = user.Id };
+            int count = await _userDetailRepository.InsertAsync(detail);
+            return count > 0 ? new OperationResult(OperationResultType.Success, "用户注册成功") : OperationResult.NoChanged;
+        }
+
+        /// <summary>
         /// 使用账号登录
         /// </summary>
         /// <param name="dto">登录信息</param>
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult<User>> Login(LoginDto dto)
         {
+            Check.NotNull(dto, nameof(dto));
+
             User user = await FindUserByAccount(dto.Account);
             if (user == null)
             {
@@ -83,28 +116,31 @@ namespace OSharp.Demo.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, "用户已被冻结，无法登录");
             }
-            if (await _userManager.IsLockedOutAsync(user))
+            SignInResult signInResult = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, dto.Remember, true);
+            OperationResult<User> result = ToOperationResult(signInResult, user);
+            if (!result.Successed)
             {
-                return new OperationResult<User>(OperationResultType.Error, $"用户因密码错误次数过多而被锁定 {_userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes} 分钟，请稍后重试");
+                return result;
             }
-            if (!await _userManager.CheckPasswordAsync(user, dto.Password))
-            {
-                if (await _userManager.GetLockoutEnabledAsync(user))
-                {
-                    await _userManager.AccessFailedAsync(user);
-                    if (await _userManager.IsLockedOutAsync(user))
-                    {
-                        return new OperationResult<User>(OperationResultType.Error, $"用户因密码错误次数过多而被锁定 {_userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes} 分钟，请稍后重试");
-                    }
-                    return new OperationResult<User>(OperationResultType.Error, $"用户名或密码错误，您还有 {_userManager.Options.Lockout.MaxFailedAccessAttempts - await _userManager.GetAccessFailedCountAsync(user)} 次机会");
-                }
-                return new OperationResult<User>(OperationResultType.Error, "用户名或密码错误");
-            }
+            _logger.LogInformation(1, $"用户 {user.Id} 使用账号登录系统成功");
+
             //触发登录成功事件
             LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
             _eventBus.PublishSync(loginEventData);
 
-            return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
+            return result;
+        }
+
+        /// <summary>
+        /// 账号退出
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> Logout(int userId)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation(4,$"用户 {userId} 登出系统");
+            return OperationResult.Success;
         }
 
         /// <summary>
@@ -132,6 +168,39 @@ namespace OSharp.Demo.Identity
                 user = _userManager.Users.FirstOrDefault(m => m.PhoneNumber == account);
             }
             return user;
+        }
+
+        private OperationResult<User> ToOperationResult(SignInResult result, User user)
+        {
+            if (result.IsNotAllowed)
+            {
+                if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
+                {
+                    _logger.LogWarning(2, $"用户 {user.Id} 因邮箱未验证而不允许登录");
+                    return new OperationResult<User>(OperationResultType.Error, "用户邮箱未验证，请到邮箱收邮件进行确认后再登录");
+                }
+                if (_userManager.Options.SignIn.RequireConfirmedPhoneNumber && !user.PhoneNumberConfirmed)
+                {
+                    _logger.LogWarning(2, $"用户 {user.Id} 因手机号未验证而不允许登录");
+                    return new OperationResult<User>(OperationResultType.Error, "用户手机号未验证，请接收手机验证码验证之后再登录");
+                }
+                return new OperationResult<User>(OperationResultType.Error, "用户未满足登录条件，不允许登录");
+            }
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning(2, $"用户 {user.Id} 因密码错误次数过多被锁定，解锁时间：{user.LockoutEnd}");
+                return new OperationResult<User>(OperationResultType.Error, $"用户因密码错误次数过多而被锁定 {_userManager.Options.Lockout.DefaultLockoutTimeSpan.TotalMinutes} 分钟，请稍后重试");
+            }
+            if (result.RequiresTwoFactor)
+            {
+                return new OperationResult<User>(OperationResultType.Error, "用户登录需要二元验证");
+            }
+            if (!result.Succeeded)
+            {
+                return new OperationResult<User>(OperationResultType.Error, result.ToString());
+            }
+            
+            return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
         }
     }
 }

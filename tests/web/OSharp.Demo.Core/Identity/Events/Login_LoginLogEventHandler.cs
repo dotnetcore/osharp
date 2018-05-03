@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="LoginLogEventHandler.cs" company="OSharp开源团队">
+//  <copyright file="LoginLoginLogEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-04-30 0:41</last-date>
+//  <last-date>2018-05-03 1:19</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -19,14 +19,17 @@ using OSharp.EventBuses;
 
 namespace OSharp.Demo.Identity.Events
 {
-    public class LoginLogEventHandler : EventHandlerBase<LoginEventData>, ITransientDependency
+    /// <summary>
+    /// 用户登录事件：登录日志
+    /// </summary>
+    public class LoginLoginLogEventHandler : EventHandlerBase<LoginEventData>, ITransientDependency
     {
         private readonly IRepository<LoginLog, Guid> _loginLogRepository;
 
         /// <summary>
-        /// 初始化一个<see cref="LoginLogEventHandler"/>类型的新实例
+        /// 初始化一个<see cref="LoginLoginLogEventHandler"/>类型的新实例
         /// </summary>
-        public LoginLogEventHandler(IRepository<LoginLog, Guid> loginLogRepository)
+        public LoginLoginLogEventHandler(IRepository<LoginLog, Guid> loginLogRepository)
         {
             _loginLogRepository = loginLogRepository;
         }
@@ -54,7 +57,7 @@ namespace OSharp.Demo.Identity.Events
         /// <returns>是否成功</returns>
         public override Task HandleAsync(LoginEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
-            throw new NotSupportedException("日志记录不支持异步");
+            throw new NotSupportedException("不支持异步操作");
         }
     }
 }

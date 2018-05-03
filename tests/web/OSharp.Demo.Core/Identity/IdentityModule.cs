@@ -4,6 +4,7 @@ using System.Text;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Demo.Identity.Entities;
 using OSharp.Identity;
@@ -35,12 +36,29 @@ namespace OSharp.Demo.Identity
         }
 
         /// <summary>
+        /// 重写以实现<see cref="IdentityOptions"/>的配置
+        /// </summary>
+        /// <returns></returns>
+        protected override Action<IdentityOptions> SetupAction()
+        {
+            return options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            };
+        }
+
+        /// <summary>
         /// 重写以实现 AddIdentity 之后的构建逻辑
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
         protected override IdentityBuilder OnIdentityBuild(IdentityBuilder builder)
         {
+            builder.AddUserValidator<UserNickNameValidator<User, int>>();
             return builder.AddDefaultTokenProviders();
         }
     }

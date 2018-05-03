@@ -46,6 +46,12 @@ namespace OSharp.Identity
         public string NormalizedUserName { get; set; }
 
         /// <summary>
+        /// 获取或设置 用户昵称
+        /// </summary>
+        [DisplayName("用户昵称")]
+        public string NickName { get; set; }
+
+        /// <summary>
         /// 获取或设置 电子邮箱
         /// </summary>
         [Required]
@@ -70,6 +76,12 @@ namespace OSharp.Identity
         /// </summary>
         [DisplayName("密码哈希值")]
         public string PasswordHash { get; set; }
+
+        /// <summary>
+        /// 获取或设置 用户头像
+        /// </summary>
+        [DisplayName("用户头像")]
+        public string HeadImg { get; set; }
 
         /// <summary>
         /// 获取或设置 每当用户凭据发生变化（密码更改、登录删除）时必须更改的随机值。

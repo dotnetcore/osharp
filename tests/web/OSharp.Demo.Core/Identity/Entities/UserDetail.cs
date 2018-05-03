@@ -21,10 +21,9 @@ namespace OSharp.Demo.Identity.Entities
     public class UserDetail : EntityBase<int>
     {
         /// <summary>
-        /// 获取或设置 地址
+        /// 获取或设置 注册IP
         /// </summary>
-        [DisplayName("地址")]
-        public string Address { get; set; }
+        public string RegisterIp { get; set; }
 
         /// <summary>
         /// 获取或设置 用户编号

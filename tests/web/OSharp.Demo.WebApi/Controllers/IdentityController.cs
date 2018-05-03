@@ -24,6 +24,7 @@ using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Identity;
 
 
 namespace OSharp.Demo.WebApi.Controllers
@@ -49,23 +50,37 @@ namespace OSharp.Demo.WebApi.Controllers
         [Description("用户注册")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            
-            return Json("");
-        }
+            Check.NotNull(dto, nameof(dto));
 
-
-        [HttpPost]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("用户登录")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
             if (!ModelState.IsValid)
             {
                 return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
             }
             if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
             {
-                return Json(new AjaxResult("验证码错误，请刷新重试"));
+                return Json(new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error));
+            }
+            dto.RegisterIp = HttpContext.GetClientIp();
+
+            OperationResult result = await _identityContract.Register(dto);
+
+            return Json(result.ToAjaxResult());
+        }
+        
+        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("用户登录")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
+            }
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
+            {
+                return Json(new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error));
             }
 
             dto.Ip = HttpContext.GetClientIp();
@@ -85,6 +100,39 @@ namespace OSharp.Demo.WebApi.Controllers
                 SessionId = HttpContext.Session.Id
             };
             return Json(new AjaxResult("登录成功", AjaxResultType.Success, data));
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("修改密码")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+            if (user == null)
+            {
+                return Json(new AjaxResult($"编号为“{dto.UserId}”的用户信息不存在", AjaxResultType.Error));
+            }
+            IdentityResult result = await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+            return Json(result.ToOperationResult().ToAjaxResult());
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("重置密码")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+            if (user == null)
+            {
+                return Json(new AjaxResult($"编号为“{dto.UserId}”的用户信息不存在", AjaxResultType.Error));
+            }
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+
+            return Json(result.ToOperationResult().ToAjaxResult());
         }
     }
 }
