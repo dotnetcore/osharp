@@ -20,7 +20,7 @@ namespace OSharp.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
-        [Required]
+        [Required, StringLength(30, MinimumLength = 3, ErrorMessage = "{0} 应在 {2}~{1} 个字符以内")]
         public string UserName { get; set; }
 
         /// <summary>
@@ -40,6 +40,12 @@ namespace OSharp.Demo.Identity.Dtos
         /// </summary>
         [StringLength(20, MinimumLength = 3, ErrorMessage = "{0} 应在 {2}~{1} 个字符以内")]
         public string NickName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 电子邮箱
+        /// </summary>
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         /// <summary>
         /// 获取或设置 注册IP

@@ -37,6 +37,8 @@ namespace OSharp.Demo.Identity
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEventBus _eventBus;
+        private readonly IRepository<User, int> _userRepository;
+        private readonly IRepository<Role, int> _roleRepository;
         private ILogger<IdentityService> _logger;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly IRepository<UserDetail, int> _userDetailRepository;
@@ -49,6 +51,8 @@ namespace OSharp.Demo.Identity
             SignInManager<User> signInManager,
             IEventBus eventBus,
             ILoggerFactory loggerFactory,
+            IRepository<User, int> userRepository,
+            IRepository<Role, int> roleRepository,
             IRepository<UserRole, Guid> userRoleRepository,
             IRepository<UserDetail, int> userDetailRepository)
         {
@@ -56,6 +60,8 @@ namespace OSharp.Demo.Identity
             _roleManager = roleManager;
             _signInManager = signInManager;
             _eventBus = eventBus;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _logger = loggerFactory.CreateLogger<IdentityService>();
             _userRoleRepository = userRoleRepository;
             _userDetailRepository = userDetailRepository;
@@ -139,7 +145,7 @@ namespace OSharp.Demo.Identity
         public async Task<OperationResult> Logout(int userId)
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4,$"用户 {userId} 登出系统");
+            _logger.LogInformation(4, $"用户 {userId} 登出系统");
             return OperationResult.Success;
         }
 
@@ -199,7 +205,7 @@ namespace OSharp.Demo.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, result.ToString());
             }
-            
+
             return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
         }
     }

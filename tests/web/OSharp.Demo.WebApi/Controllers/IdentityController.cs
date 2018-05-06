@@ -30,7 +30,7 @@ using OSharp.Identity;
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-身份认证")]
-    public class IdentityController : Controller
+    public class IdentityController : ApiController
     {
         private readonly IIdentityContract _identityContract;
         private readonly UserManager<User> _userManager;
@@ -43,6 +43,27 @@ namespace OSharp.Demo.WebApi.Controllers
             _identityContract = identityContract;
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+
+        [Description("用户名是否存在")]
+        public IActionResult CheckUserNameExists(string userName)
+        {
+            bool exists = _userManager.Users.Any(m => m.NormalizedUserName == _userManager.NormalizeKey(userName));
+            return Json(exists);
+        }
+
+        [Description("用户Email是否存在")]
+        public IActionResult CheckEmailExists(string email)
+        {
+            bool exists = _userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
+            return Json(exists);
+        }
+
+        [Description("用户昵称是否存在")]
+        public IActionResult CheckNickNameExists(string nickName)
+        {
+            bool exists = _userManager.Users.Any(m => m.NickName == nickName);
+            return Json(exists);
         }
 
         [HttpPost]
