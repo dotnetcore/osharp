@@ -92,7 +92,7 @@ namespace OSharp.Demo.Identity
         {
             Check.NotNull(dto, nameof(dto));
 
-            User user = new User() { UserName = dto.UserName, NickName = dto.NickName ?? dto.UserName };
+            User user = new User() { UserName = dto.UserName, NickName = dto.NickName ?? dto.UserName, Email = dto.Email };
 
             IdentityResult result = dto.Password == null ? await _userManager.CreateAsync(user) : await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
@@ -101,7 +101,15 @@ namespace OSharp.Demo.Identity
             }
             UserDetail detail = new UserDetail() { RegisterIp = dto.RegisterIp, UserId = user.Id };
             int count = await _userDetailRepository.InsertAsync(detail);
-            return count > 0 ? new OperationResult(OperationResultType.Success, "用户注册成功") : OperationResult.NoChanged;
+
+            //触发注册成功事件
+            if (count > 0)
+            {
+                RegisterEventData eventData = new RegisterEventData(){RegisterDto = dto, User = user};
+                _eventBus.PublishSync(eventData);
+                return new OperationResult(OperationResultType.Success, "用户注册成功");
+            }
+            return OperationResult.NoChanged;
         }
 
         /// <summary>

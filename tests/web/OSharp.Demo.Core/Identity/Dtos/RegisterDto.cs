@@ -55,7 +55,6 @@ namespace OSharp.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 验证码
         /// </summary>
-        [Required]
         public string VerifyCode { get; set; }
     }
 }

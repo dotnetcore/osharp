@@ -36,6 +36,11 @@ namespace OSharp.Core.Options
         public IDictionary<string, OSharpDbContextOptions> DbContextOptionses { get; }
 
         /// <summary>
+        /// 获取或设置 邮件发送选项
+        /// </summary>
+        public MailSenderOptions MailSender { get; set; }
+
+        /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
         public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)

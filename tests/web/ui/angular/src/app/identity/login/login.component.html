@@ -49,50 +49,13 @@
         </div>
       </div>
     </div>
+    <div class="form-group">
+      <button class="btn btn-primary col-sm-offset-5 col-sm-2" [disabled]="!loginForm.form.valid" type="submit">登 录</button>
+    </div>
   </form>
   <p class="text-center">
     还没有账号？
     <a [routerLink]="'/identity/register'">注册新账号</a>
   </p>
+  <p class="text-center text-danger" *ngIf="message"> {{message}}</p>
 </div>
-
-<!-- <h4 class="text-center pv">用户登录</h4>
-<form class="form-validate mb-lg" role="form" name="loginForm" novalidate (submit)="onSubmitForm($event)" #loginForm="ngForm">
-  <div class="form-group">
-    <label for="account">登录账号</label>
-    <input [(ngModel)]="loginDto.Account" type="text" class="form-control" id="account" name="account" placeholder="请输入登录用户名/邮箱/手机号"
-      required #spy #Account="ngModel" />
-    <div *ngIf="Account.errors && (Account.dirty || Account.touched)">
-      <span class="text-danger" [hidden]="!Account.errors.required">登录账号不能为空</span>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="password">登录密码：</label>
-    <input [(ngModel)]="loginDto.Password" type="text" class="form-control" id="password" name="password" placeholder="请输入登录密码"
-      required #spy #Password="ngModel" />
-    <div *ngIf="Password.errors && (Password.dirty || Password.touched)">
-      <span class="text-danger" [hidden]="!Password.errors.required">登录密码不能为空</span>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="verifyCode">验证码：</label>
-    <div>
-      <input [(ngModel)]="loginDto.VerifyCode" type="text" class="form-control col-4" id="verifycode" name="verifycode" verifycode="ngModel">
-      <img id="verifyCode" title="点击刷新验证码" style="cursor: pointer;" src="" (click)="onVerifyCodeClick($event)" />
-    </div>
-  </div>
-  <div class="clearfix">
-    <div class="checkbox c-checkbox pull-left mt0">
-      <label>
-        <input [(ngModel)]="loginDto.Remember" type="checkbox" name="remember" />
-        <span class="fa fa-check"></span>记住登录</label>
-    </div>
-    <div class="pull-right">
-      <a class="text-muted" [routerLink]="'/recover'">忘记密码？</a>
-    </div>
-  </div>
-  <button class="btn btn-block btn-primary mt-lg" [disabled]="!loginForm.form.valid" type="submit">登录</button>
-</form>
-<p class="text-center">还没有账号？
-  <a [routerLink]="'/identity/register'">注册新账号</a>
-</p> -->

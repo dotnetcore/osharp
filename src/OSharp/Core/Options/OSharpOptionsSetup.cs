@@ -39,6 +39,14 @@ namespace OSharp.Core.Options
         public void Configure(OSharpOptions options)
         {
             SetDbContextOptionses(options);
+
+            //MailSender
+            IConfigurationSection section = _configuration.GetSection("OSharp:MailSender");
+            MailSenderOptions sender = section.Get<MailSenderOptions>();
+            if (sender != null)
+            {
+                options.MailSender = sender;
+            }
         }
 
         /// <summary>

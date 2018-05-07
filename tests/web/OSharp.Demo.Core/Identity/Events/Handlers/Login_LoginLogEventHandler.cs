@@ -17,7 +17,7 @@ using OSharp.Entity;
 using OSharp.EventBuses;
 
 
-namespace OSharp.Demo.Identity.Events
+namespace OSharp.Demo.Identity.Events.Handlers
 {
     /// <summary>
     /// 用户登录事件：登录日志
