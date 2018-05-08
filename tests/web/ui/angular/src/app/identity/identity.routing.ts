@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { IdentityComponent, } from './identity.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 // TODO: import components
 // import { DemoComponent } from './demo/demo.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent, data: { title: '用户登录' } },
       { path: 'register', component: RegisterComponent, data: { title: '新用户注册' } },
+      { path: 'confirm-email', component: ConfirmEmailComponent, data: { title: '注册邮箱激活' } }
     ]
   }
 ];

@@ -13,6 +13,7 @@ export class LoginComponent {
 
   loginDto: LoginDto = new LoginDto();
   message: string;
+  canSubmit: boolean = true;
   verifyCodeUrl: string = "common/verifycode"
 
   constructor(public settings: SettingsService, private http: HttpClient, private router: Router) {
@@ -24,8 +25,9 @@ export class LoginComponent {
 
   onSubmit($event) {
     $event.preventDefault();
-    this.http.post("/api/identity/login", this.loginDto).subscribe(response => {
-      var res: any = response;
+    this.canSubmit = false;
+    this.http.post("/api/identity/login", this.loginDto).subscribe((res: any) => {
+      this.canSubmit = true;
       if (res.Type == "Success") {
         this.message = "用户登录成功";
         this.router.navigateByUrl('/home');

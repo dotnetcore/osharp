@@ -6,7 +6,7 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-user"></span>
+            <span class="icon-user"></span>
           </span>
           <input [(ngModel)]="loginDto.Account" type="text" class="form-control" name="account" id="account" placeholder="账号/邮箱/手机号"
             required #spy #Account="ngModel">
@@ -21,9 +21,9 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-lock"></span>
+            <span class="icon-lock"></span>
           </span>
-          <input [(ngModel)]="loginDto.Password" type="text" class="form-control" name="password" id="password" placeholder="请输入密码"
+          <input [(ngModel)]="loginDto.Password" type="password" class="form-control" name="password" id="password" placeholder="请输入密码"
             required #spy #Password="ngModel">
         </div>
         <div *ngIf="Password.errors && (Password.dirty || Password.touched)">
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary col-sm-offset-5 col-sm-2" [disabled]="!loginForm.form.valid" type="submit">登 录</button>
+      <button class="btn btn-primary col-sm-offset-5 col-sm-2" [disabled]="!loginForm.form.valid && canSubmit" type="submit">登 录</button>
     </div>
   </form>
   <p class="text-center">

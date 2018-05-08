@@ -6,7 +6,7 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-user"></span>
+            <span class="icon-user"></span>
           </span>
           <input [(ngModel)]="registerDto.UserName" type="text" class="form-control" name="userName" id="userName" placeholder="请输入用户名"
             required [rangeLength]="[5,30]" [remote]="'/api/identity/CheckUserNameExists?userName=:value'" #spy #UserName="ngModel">
@@ -23,9 +23,9 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-lock"></span>
+            <span class="icon-lock-open"></span>
           </span>
-          <input [(ngModel)]="registerDto.Password" type="text" class="form-control" name="password" id="password" placeholder="请输入密码"
+          <input [(ngModel)]="registerDto.Password" type="password" class="form-control" name="password" id="password" placeholder="请输入密码"
             required [minlength]="6" #spy #Password="ngModel">
         </div>
         <div *ngIf="Password.errors && (Password.dirty || Password.touched)">
@@ -39,9 +39,9 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-lock"></span>
+            <span class="icon-lock"></span>
           </span>
-          <input [(ngModel)]="registerDto.ConfirmPassword" type="text" class="form-control" name="confirmPassword" id="confirmPassword"
+          <input [(ngModel)]="registerDto.ConfirmPassword" type="password" class="form-control" name="confirmPassword" id="confirmPassword"
             placeholder="请输入确认密码" required [equalTo]="Password" #spy #ConfirmPassword="ngModel">
         </div>
         <div *ngIf="ConfirmPassword.errors && (ConfirmPassword.dirty || ConfirmPassword.touched)">
@@ -55,7 +55,7 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-user"></span>
+            <span class="icon-people"></span>
           </span>
           <input [(ngModel)]="registerDto.NickName" type="text" class="form-control" name="nickName" id="nickName" placeholder="请输入用户昵称"
             required [rangeLength]="[3,20]" [remote]="'/api/identity/CheckNickNameExists?nickName=:value'" #spy #NickName="ngModel">
@@ -72,7 +72,7 @@
       <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
-            <span class="fa fa-user"></span>
+            <span class="icon-envelope"></span>
           </span>
           <input [(ngModel)]="registerDto.Email" type="text" class="form-control" name="email" id="email" placeholder="请输入电子邮箱" required
             email [remote]="'/api/identity/CheckEmailExists?email=:value'" #spy #Email="ngModel">
@@ -85,7 +85,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary col-sm-offset-5 col-sm-2" [disabled]="!registerForm.form.valid" type="submit">注 册</button>
+      <button class="btn btn-primary col-sm-offset-5 col-sm-2" [disabled]="!registerForm.form.valid && canSubmit" type="submit">注 册</button>
     </div>
   </form>
   <p class="text-center">

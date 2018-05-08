@@ -7,12 +7,14 @@ import { SharedModule } from "../shared/shared.module";
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
     IdentityComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     TranslateModule,

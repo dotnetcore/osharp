@@ -85,7 +85,7 @@ namespace OSharp.Demo.Identity
         /// </summary>
         /// <param name="dto">注册信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> Register(RegisterDto dto);
+        Task<OperationResult<User>> Register(RegisterDto dto);
 
         /// <summary>
         /// 使用账号登录

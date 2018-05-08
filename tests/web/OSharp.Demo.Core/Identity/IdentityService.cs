@@ -88,7 +88,7 @@ namespace OSharp.Demo.Identity
         /// </summary>
         /// <param name="dto">注册信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> Register(RegisterDto dto)
+        public async Task<OperationResult<User>> Register(RegisterDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -97,7 +97,7 @@ namespace OSharp.Demo.Identity
             IdentityResult result = dto.Password == null ? await _userManager.CreateAsync(user) : await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {
-                return result.ToOperationResult();
+                return result.ToOperationResult(user);
             }
             UserDetail detail = new UserDetail() { RegisterIp = dto.RegisterIp, UserId = user.Id };
             int count = await _userDetailRepository.InsertAsync(detail);
@@ -107,9 +107,9 @@ namespace OSharp.Demo.Identity
             {
                 RegisterEventData eventData = new RegisterEventData(){RegisterDto = dto, User = user};
                 _eventBus.PublishSync(eventData);
-                return new OperationResult(OperationResultType.Success, "用户注册成功");
+                return new OperationResult<User>(OperationResultType.Success, "用户注册成功", user);
             }
-            return OperationResult.NoChanged;
+            return new OperationResult<User>(OperationResultType.NoChanged);
         }
 
         /// <summary>

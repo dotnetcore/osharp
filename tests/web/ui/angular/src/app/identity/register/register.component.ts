@@ -13,14 +13,17 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
 
   registerDto: RegisterDto = new RegisterDto();
+  canSubmit: boolean = true;
   message: string;
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
   onSubmit(e) {
     e.preventDefault();
-    this.http.post("/api/identity/register", this.registerDto).subscribe(response => {
-      var res: any = response;
+    this.canSubmit = false;
+    this.http.post("/api/identity/register", this.registerDto).subscribe((res: any) => {
+      this.canSubmit = true;
       if (res.Type == "Success") {
         this.message = "用户注册成功";
         this.router.navigateByUrl('/home');
