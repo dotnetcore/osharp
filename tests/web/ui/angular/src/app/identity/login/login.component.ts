@@ -27,12 +27,14 @@ export class LoginComponent {
     $event.preventDefault();
     this.canSubmit = false;
     this.http.post("/api/identity/login", this.loginDto).subscribe((res: any) => {
-      this.canSubmit = true;
       if (res.Type == "Success") {
         this.message = "用户登录成功";
-        this.router.navigateByUrl('/home');
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+        }, 1000);
         return;
       }
+      this.canSubmit = true;
       this.message = "登录失败：" + res.Content;
     });
   }

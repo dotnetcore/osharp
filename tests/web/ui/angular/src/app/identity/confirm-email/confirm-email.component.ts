@@ -1,19 +1,23 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { URLSearchParams } from "@angular/http";
 import { HttpClient } from "@angular/common/http";
+import { osharp } from '../../shared/osharp';
+import { ConfirmEmailDto } from '../identity.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'identity-confirm-email',
-  template: `<p>{{message}}</p>`,
+  template: `
+  <div class="text-center">{{message}}</div>
+  `,
   styles: [``]
 })
 export class ConfirmEmailComponent implements OnInit, AfterViewInit {
 
+  confirmEmailDto: ConfirmEmailDto = new ConfirmEmailDto();
   message: string = "正在激活注册邮箱，请稍候……";
-  userId: string;
-  code: string;
+  messageType: string = "success";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public router: Router) { }
 
   ngOnInit(): void {
     this.getUrlParams();
@@ -24,20 +28,26 @@ export class ConfirmEmailComponent implements OnInit, AfterViewInit {
   }
 
   private getUrlParams() {
-    let hash = window.location.hash;
-    let index = hash.indexOf("?") + 1;
-    if (index == 0) {
-      return;
-    }
-    let query = hash.substr(index, hash.length - index);
-    let params = new URLSearchParams(query);
-    this.userId = (params.get('userId'));
-    this.code = (params.get('code'));
+    let url = window.location.hash;
+    this.confirmEmailDto.UserId = osharp.Tools.getHashURLSearchParams(url, "userId");
+    this.confirmEmailDto.Code = osharp.Tools.getHashURLSearchParams(url, "code");
   }
 
   private confirmEmail() {
-    this.http.post("/api/identity/ConfirmEmail", { userId: this.userId, code: this.code }).subscribe((res: any) => {
+    this.http.post("/api/identity/ConfirmEmail", this.confirmEmailDto).subscribe((res: any) => {
       this.message = res.Content;
+      if (res.Type == "Error") {
+        this.messageType = "danger";
+      } else if (res.Type == "Info") {
+        this.messageType = "info";
+      }
+      else {
+        this.message = "注册邮箱激活成功";
+        this.messageType = "success";
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+        }, 3000);
+      }
     });
   }
 }

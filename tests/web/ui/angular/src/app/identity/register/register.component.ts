@@ -23,12 +23,14 @@ export class RegisterComponent {
     e.preventDefault();
     this.canSubmit = false;
     this.http.post("/api/identity/register", this.registerDto).subscribe((res: any) => {
-      this.canSubmit = true;
       if (res.Type == "Success") {
         this.message = "用户注册成功";
-        this.router.navigateByUrl('/home');
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+        }, 2000);
         return;
       }
+      this.canSubmit = true;
       this.message = "用户注册失败：" + res.Content;
     });
   }

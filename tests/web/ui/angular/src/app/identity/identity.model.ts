@@ -16,12 +16,25 @@ export class RegisterDto {
 }
 
 export class ChangePasswordDto {
-  constructor(public UserId: number,
-    public OldPassword: string,
-    public NewPassword: string,
-    public ConfirmNewPassword: string) { }
+  UserId: string;
+  OldPassword: string;
+  NewPassword: string;
+  ConfirmPassword: string;
+}
+
+export class ConfirmEmailDto {
+  UserId: string;
+  Code: string;
+}
+
+export class SendMailDto{
+  Email:string;
+  VerifyCode:string;
 }
 
 export class ResetPasswordDto {
-  constructor(public UserId: number, public Token: string, public NewPassword: string) { }
+  UserId: string;
+  Token: string;
+  NewPassword: string;
+  ConfirmPassword: string;
 }

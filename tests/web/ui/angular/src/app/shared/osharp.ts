@@ -17,12 +17,34 @@ export namespace osharp {
   /**辅助操作工具类 */
   export class Tools {
     /**URL编码 */
-    static urlEncode(url: string) {
+    static urlEncode(url: string): string {
       return encodeURIComponent(url);
     }
     /**URL解码 */
-    static urlDecode(url: string) {
+    static urlDecode(url: string): string {
       return decodeURIComponent(url);
+    }
+    /**获取URL中Hash串中的查询参数值 */
+    static getHashURLSearchParams(url: string, name: string): string {
+      if (url.indexOf("#") >= 0) {
+        url = osharp.Tools.subStr(url, "#");
+      }
+      if (url.indexOf("?") >= 0) {
+        url = osharp.Tools.subStr(url, "?");
+      }
+      let params = new URLSearchParams(url);
+      return params.get(name);
+    }
+    /**提供首尾字符串截取中间的字符串 */
+    static subStr(str: string, start: string = null, end: string = null): string {
+      let startIndex = 0, endIndex = str.length;
+      if (start) {
+        startIndex = str.indexOf(start) + start.length;
+      }
+      if (end) {
+        endIndex = str.indexOf(end);
+      }
+      return str.substr(startIndex, endIndex - startIndex);
     }
     /**值转文字 */
     static valueToText(id: number, array: Array<ListNode>, defaultText: string = null) {

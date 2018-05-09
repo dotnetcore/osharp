@@ -7,6 +7,9 @@
 //  <last-date>2018-05-02 19:54</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
+
 namespace OSharp.Demo.Identity.Dtos
 {
     /// <summary>
@@ -17,6 +20,7 @@ namespace OSharp.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [Required]
         public int UserId { get; set; }
 
         /// <summary>
@@ -27,6 +31,14 @@ namespace OSharp.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 新密码
         /// </summary>
+        [Required]
         public string NewPassword { get; set; }
+
+        /// <summary>
+        /// 获取或设置 确认密码
+        /// </summary>
+        [Compare("NewPassword", ErrorMessage = "新密码与确认密码不匹配")]
+        public string ConfirmPassword { get; set; }
+
     }
 }

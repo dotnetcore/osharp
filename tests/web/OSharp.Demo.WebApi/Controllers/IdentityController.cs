@@ -24,6 +24,7 @@ using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Identity;
+using OSharp.Mapping;
 using OSharp.Net;
 
 
@@ -59,6 +60,13 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json(exists);
         }
 
+        [Description("用户Email是否不存在")]
+        public IActionResult CheckEmailNotExists(string email)
+        {
+            bool exists = !_userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
+            return Json(exists);
+        }
+
         [Description("用户昵称是否存在")]
         public IActionResult CheckNickNameExists(string nickName)
         {
@@ -77,10 +85,8 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
             }
-            //if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
-            //{
-            //    return Json(new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error));
-            //}
+            //todo: 校验验证码
+
             dto.RegisterIp = HttpContext.GetClientIp();
 
             OperationResult<User> result = await _identityContract.Register(dto);
@@ -89,12 +95,14 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 User user = result.Data;
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
                 string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
                 string body =
-                    $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，你好！<br>欢迎注册，激活邮箱请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
-                    + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>{url}<br>祝您使用愉快！";
-                await sender.SendEmailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
+                    $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
+                    + $"欢迎注册，激活邮箱请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
+                    + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>"
+                    + $"{url}<br>"
+                    + $"祝您使用愉快！";
+                await SendMailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
             }
 
             return Json(result.ToAjaxResult());
@@ -111,10 +119,7 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
             }
-            //if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
-            //{
-            //    return Json(new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error));
-            //}
+            //todo: 校验验证码
 
             dto.Ip = HttpContext.GetClientIp();
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
@@ -151,10 +156,40 @@ namespace OSharp.Demo.WebApi.Controllers
             }
             if (user.EmailConfirmed)
             {
-                return Json(new AjaxResult("注册邮箱已激活，操作取消", AjaxResultType.Error));
+                return Json(new AjaxResult("注册邮箱已激活，操作取消", AjaxResultType.Info));
             }
-            await _userManager.ConfirmEmailAsync(user, dto.Code);
-            return Json(new AjaxResult("注册邮箱激活成功", AjaxResultType.Success));
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, dto.Code);
+            return Json(result.ToOperationResult().ToAjaxResult());
+        }
+
+        [HttpPost]
+        [Description("发送激活Email邮件")]
+        public async Task<IActionResult> SendConfirmMail([FromBody]SendMailDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
+            }
+
+            User user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+            {
+                return Json(new AjaxResult("发送激活邮件失败：用户不存在", AjaxResultType.Error));
+            }
+            if (user.EmailConfirmed)
+            {
+                return Json(new AjaxResult("Email已激活，无需再次激活", AjaxResultType.Info));
+            }
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
+            string body =
+                $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，你好！<br>"
+                + $"欢迎注册，激活邮箱请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
+                + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>"
+                + $"{url}<br>"
+                + $"祝您使用愉快！";
+            await SendMailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
+            return Json(new AjaxResult("激活Email邮件发送成功", AjaxResultType.Success));
         }
 
         [HttpPost]
@@ -174,24 +209,36 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json(result.ToOperationResult().ToAjaxResult());
         }
 
+        [HttpPost]
         [Description("发送重置邮件")]
-        public async Task<IActionResult> SendResetPasswordMail(string email)
+        public async Task<IActionResult> SendResetPasswordMail([FromBody]SendMailDto dto)
         {
-            User user = await _userManager.FindByEmailAsync(email);
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResult("提交数据验证失败", AjaxResultType.Error));
+            }
+            //todo: 校验验证码
+            User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
                 return Json(new AjaxResult("用户不存在", AjaxResultType.Error));
             }
-            string code = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-
-            return Json("");
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
+            string url = $"{Request.Scheme}://{Request.Host}/#/identity/reset-password?userId={user.Id}&token={token}";
+            string body = $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
+                + $"欢迎使用柳柳软件账户密码重置功能，请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
+                + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>"
+                + $"{url}<br>"
+                + $"祝您使用愉快！";
+            await sender.SendEmailAsync(user.Email, "柳柳软件 重置密码邮件", body);
+            return Json(new AjaxResult("密码重置邮件发送成功", AjaxResultType.Success));
         }
 
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("重置密码")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+        [Description("重置登录密码")]
+        public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -205,7 +252,7 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json(result.ToOperationResult().ToAjaxResult());
         }
 
-        private async Task SendMail(string email, string subject, string body)
+        private static async Task SendMailAsync(string email, string subject, string body)
         {
             IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
             await sender.SendEmailAsync(email, subject, body);
