@@ -12,9 +12,10 @@ using System;
 namespace OSharp.Demo.WebApi.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    partial class DefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180510175541_ModuleUser_Disabled")]
+    partial class ModuleUser_Disabled
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
