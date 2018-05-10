@@ -24,14 +24,14 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 初始化一个<see cref="AjaxResult"/>类型的新实例
         /// </summary>
-        public AjaxResult(string content, AjaxResultType type = AjaxResultType.Info, object data = null)
+        public AjaxResult(string content, AjaxResultType type = AjaxResultType.Success, object data = null)
             : this(content, data, type)
         { }
 
         /// <summary>
         /// 初始化一个<see cref="AjaxResult"/>类型的新实例
         /// </summary>
-        public AjaxResult(string content, object data, AjaxResultType type = AjaxResultType.Info)
+        public AjaxResult(string content, object data, AjaxResultType type = AjaxResultType.Success)
         {
             Type = type.ToString();
             Content = content;

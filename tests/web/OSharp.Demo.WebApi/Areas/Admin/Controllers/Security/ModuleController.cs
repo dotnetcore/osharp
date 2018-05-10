@@ -152,7 +152,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             Check.NotNull(dto, nameof(dto));
             if (dto.Id == 1)
             {
-                return Json(new AjaxResult("根节点不能编辑", AjaxResultType.Warning));
+                return Json(new AjaxResult("根节点不能编辑", AjaxResultType.Error));
             }
 
             OperationResult result = await _securityManager.UpdateModule(dto);
@@ -167,7 +167,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             Check.NotNull(id, nameof(id));
             if (id == 1)
             {
-                return Json(new AjaxResult("根节点不能删除", AjaxResultType.Warning));
+                return Json(new AjaxResult("根节点不能删除", AjaxResultType.Error));
             }
 
             OperationResult result = await _securityManager.DeleteModule(id);

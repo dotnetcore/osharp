@@ -31,6 +31,7 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
     return {
       id: "Id",
       fields: {
+        Id: { type: "string", editable: false },
         Name: { type: "string", editable: false },
         AccessType: { type: "number" },
         CacheExpirationSeconds: { type: "number" },
@@ -50,6 +51,9 @@ export class FunctionComponent extends kendoui.GridComponentBase implements OnIn
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
       {
+        field: "Id", title: "编号", width: 200, hidden: true,
+        filterable: osharp.Data.stringFilterable
+      }, {
         field: "Name", title: "功能名称", width: 200,
         filterable: osharp.Data.stringFilterable
       }, {

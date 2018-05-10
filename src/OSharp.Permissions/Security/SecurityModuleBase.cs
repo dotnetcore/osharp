@@ -15,7 +15,7 @@ using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Entity;
-using OSharp.Identity;
+using OSharp.Secutiry;
 
 
 namespace OSharp.Security
@@ -23,7 +23,7 @@ namespace OSharp.Security
     /// <summary>
     /// 权限安全模块基类
     /// </summary>
-    public abstract class SecurityModuleBase<TSecurityManager, TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto,
+    public abstract class SecurityModuleBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto,
         TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OSharpModule
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
@@ -31,6 +31,8 @@ namespace OSharp.Security
         IModuleFunctionStore<TModuleFunction, TModuleKey>,
         IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
         IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
+        where TFunctionAuthorization : IFunctionAuthorization
+        where TFunctionAuthCache : IFunctionAuthCache
         where TFunction : IFunction, IEntity<Guid>
         where TFunctionInputDto : FunctionInputDtoBase
         where TEntityInfo : IEntityInfo, IEntity<Guid>
@@ -57,6 +59,9 @@ namespace OSharp.Security
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<TSecurityManager>();
+
+            services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
+            services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
 
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TSecurityManager>());

@@ -7,8 +7,11 @@
 //  <last-date>2017-08-15 23:40</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 
 
 namespace OSharp.Secutiry.Claims
@@ -21,18 +24,98 @@ namespace OSharp.Secutiry.Claims
         /// <summary>
         /// 获取指定类型的Claim值
         /// </summary>
-        public static string GetClaimValueFirstOrDefault(this ClaimsIdentity identity, string type)
+        public static string GetClaimValueFirstOrDefault(this IIdentity identity, string type)
         {
-            Claim claim = identity.Claims.FirstOrDefault(m => m.Type == type);
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            Claim claim = claimsIdentity.Claims.FirstOrDefault(m => m.Type == type);
             return claim?.Value;
         }
 
         /// <summary>
         /// 获取指定类型的所有Claim值
         /// </summary>
-        public static string[] GetClaimValues(this ClaimsIdentity identity, string type)
+        public static string[] GetClaimValues(this IIdentity identity, string type)
         {
-            return identity.Claims.Where(m => m.Type == type).Select(m => m.Value).ToArray();
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.Claims.Where(m => m.Type == type).Select(m => m.Value).ToArray();
+        }
+
+        /// <summary>
+        /// 获取用户ID
+        /// </summary>
+        public static T GetUserId<T>(this IIdentity identity) where T : IConvertible
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return default(T);
+            }
+            string value = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (value == null)
+            {
+                return default(T);
+            }
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        /// <summary>
+        /// 获取用户名
+        /// </summary>
+        public static string GetUserName(this IIdentity identity)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+        }
+
+        /// <summary>
+        /// 获取Email
+        /// </summary>
+        public static string GetEmail(this IIdentity identity)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+        }
+
+        /// <summary>
+        /// 获取昵称
+        /// </summary>
+        public static string GetNickName(this IIdentity identity)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+        }
+
+        /// <summary>
+        /// 获取所有角色
+        /// </summary>
+        public static IEnumerable<string> GetRoles(this IIdentity identity)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.FindAll(ClaimTypes.Role).Select(m => m.Value);
         }
     }
 }

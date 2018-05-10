@@ -14,6 +14,7 @@ export class LoginComponent {
   loginDto: LoginDto = new LoginDto();
   message: string;
   canSubmit: boolean = true;
+  resendConfirmMail: boolean = false;
   verifyCodeUrl: string = "common/verifycode"
 
   constructor(public settings: SettingsService, private http: HttpClient, private router: Router) {
@@ -36,6 +37,9 @@ export class LoginComponent {
       }
       this.canSubmit = true;
       this.message = "登录失败：" + res.Content;
+      if ((<string>res.Content).indexOf("邮箱未验证") > -1) {
+        this.resendConfirmMail = true;
+      }
     });
   }
 }

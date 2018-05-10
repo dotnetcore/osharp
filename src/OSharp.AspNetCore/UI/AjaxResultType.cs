@@ -17,21 +17,26 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 消息结果类型
         /// </summary>
-        Info,
+        Info = 203,
 
         /// <summary>
         /// 成功结果类型
         /// </summary>
-        Success,
-
-        /// <summary>
-        /// 警告结果类型
-        /// </summary>
-        Warning,
+        Success = 200,
 
         /// <summary>
         /// 异常结果类型
         /// </summary>
-        Error
+        Error = 500,
+
+        /// <summary>
+        /// 用户未登录
+        /// </summary>
+        UnAuth = 401,
+
+        /// <summary>
+        /// 已登录，但权限不足
+        /// </summary>
+        Forbidden = 403
     }
 }

@@ -60,4 +60,7 @@
     <a [routerLink]="'/identity/register'">注册新账号</a>
   </p>
   <p class="text-center text-danger" *ngIf="message"> {{message}}</p>
+  <p class="text-center">
+    <a *ngIf="resendConfirmMail" href="/#/identity/send-confirm-mail">重发激活邮件</a>
+  </p>
 </div>

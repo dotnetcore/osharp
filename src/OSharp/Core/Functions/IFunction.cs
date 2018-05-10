@@ -20,11 +20,6 @@ namespace OSharp.Core.Functions
     public interface IFunction : ILockable
     {
         /// <summary>
-        /// 获取或设置 功能编号
-        /// </summary>
-        Guid Id { get; set; }
-
-        /// <summary>
         /// 获取或设置 功能名称
         /// </summary>
         string Name { get; set; }

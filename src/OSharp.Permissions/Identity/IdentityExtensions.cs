@@ -7,7 +7,11 @@
 //  <last-date>2017-11-16 11:53</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -53,5 +57,6 @@ namespace OSharp.Identity
             identityErrors = identityErrors.Union(errors.Select(m => new IdentityError() { Description = m }));
             return IdentityResult.Failed(identityErrors.ToArray());
         }
+
     }
 }

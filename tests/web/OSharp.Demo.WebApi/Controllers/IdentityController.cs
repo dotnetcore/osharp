@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
@@ -18,14 +19,13 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
-using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Identity;
-using OSharp.Mapping;
 using OSharp.Net;
+using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Demo.WebApi.Controllers
@@ -134,10 +134,30 @@ namespace OSharp.Demo.WebApi.Controllers
             IList<string> roles = await _userManager.GetRolesAsync(user);
             var data = new
             {
-                User = new { UserId = user.Id, user.UserName, user.Email, UserRole = roles.ExpandAndToString() },
+                User = new { UserId = user.Id, user.UserName, user.NickName, user.Email, Roles = roles },
                 SessionId = HttpContext.Session.Id
             };
             return Json(new AjaxResult("登录成功", AjaxResultType.Success, data));
+        }
+
+        [Description("用户信息")]
+        public IActionResult UserProfile()
+        {
+            if (!User.Identity.IsAuthenticated || !(User.Identity is ClaimsIdentity identity))
+            {
+                return Json(null);
+            }
+            int userId = identity.GetUserId<int>();
+            string userName = identity.GetUserName();
+            string email = identity.GetEmail();
+            string nickName = identity.GetNickName();
+            string[] roles = identity.GetRoles().ToArray();
+            var data = new
+            {
+                User = new { UserId = userId, UserName = userName, NickName = nickName, Email = email, Roles = roles },
+                SessionId = HttpContext.Session.Id
+            };
+            return Json(data);
         }
 
         [HttpPost]

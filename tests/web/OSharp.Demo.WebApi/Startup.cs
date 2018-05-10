@@ -51,6 +51,8 @@ namespace OSharp.Demo.WebApi
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
+            services.AddSession();
+
             services.AddOSharp(builder =>
             {
                 //builder.ExceptModule<IdentityModule>();
@@ -73,13 +75,22 @@ namespace OSharp.Demo.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler();
             }
 
-            app.UseDefaultFiles().UseStaticFiles().UseMvcWithAreaRoute().UseOSharpMvc();
+            app.UseExceptionHandler(builder =>
+            {
+                builder.Use(async (context, next) =>
+                {
+                    
+                });
+            });
+
+            app.UseDefaultFiles().UseStaticFiles().UseAuthentication().UseSession().UseMvcWithAreaRoute().UseOSharpMvc();
         }
     }
 }

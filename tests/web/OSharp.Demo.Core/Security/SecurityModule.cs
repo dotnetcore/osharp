@@ -7,12 +7,13 @@
 //  <last-date>2018-03-11 10:46</last-date>
 // -----------------------------------------------------------------------
 
+
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
-using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Security;
+using OSharp.Secutiry;
 
 
 namespace OSharp.Demo.Security
@@ -21,7 +22,7 @@ namespace OSharp.Demo.Security
     /// 权限安全模块
     /// </summary>
     public class SecurityModule
-        : SecurityModuleBase<SecurityManager, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
+        : SecurityModuleBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
             Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
     {
         /// <summary>
