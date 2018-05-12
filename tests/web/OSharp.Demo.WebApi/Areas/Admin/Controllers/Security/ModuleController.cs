@@ -199,7 +199,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                     ParentId = module.ParentId == null ? 0 : module.ParentId.Value
                 })).Message);
             }
-            return Json(new AjaxResult(msgs.ExpandAndToString("<br/>"), AjaxResultType.Success));
+            return Json(new AjaxResult(msgs.ExpandAndToString("<br/>")));
         }
     }
 }

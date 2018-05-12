@@ -13,12 +13,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Core;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
@@ -31,6 +33,7 @@ using OSharp.Secutiry.Claims;
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-身份认证")]
+    [FunctionAuthorize]
     public class IdentityController : ApiController
     {
         private readonly IIdentityContract _identityContract;
@@ -209,7 +212,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 + $"{url}<br>"
                 + $"祝您使用愉快！";
             await SendMailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
-            return Json(new AjaxResult("激活Email邮件发送成功", AjaxResultType.Success));
+            return Json(new AjaxResult("激活Email邮件发送成功"));
         }
 
         [HttpPost]
@@ -252,7 +255,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 + $"{url}<br>"
                 + $"祝您使用愉快！";
             await sender.SendEmailAsync(user.Email, "柳柳软件 重置密码邮件", body);
-            return Json(new AjaxResult("密码重置邮件发送成功", AjaxResultType.Success));
+            return Json(new AjaxResult("密码重置邮件发送成功"));
         }
 
         [HttpPost]

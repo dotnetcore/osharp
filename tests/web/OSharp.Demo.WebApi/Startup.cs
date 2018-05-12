@@ -7,6 +7,8 @@
 //  <last-date>2018-03-08 19:55</last-date>
 // -----------------------------------------------------------------------
 
+using System.Spatial;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +46,6 @@ namespace OSharp.Demo.WebApi
         {
             services.AddMvc(options =>
             {
-                //options.Filters.Add<UnitOfWorkAttribute>();
                 options.Conventions.Add(new DashedRoutingConvention());
             }).AddJsonOptions(options =>
             {
@@ -82,15 +83,8 @@ namespace OSharp.Demo.WebApi
                 app.UseExceptionHandler();
             }
 
-            app.UseExceptionHandler(builder =>
-            {
-                builder.Use(async (context, next) =>
-                {
-                    
-                });
-            });
-
             app.UseDefaultFiles().UseStaticFiles().UseAuthentication().UseSession().UseMvcWithAreaRoute().UseOSharpMvc();
+            app.UseMiddleware<JsonExceptionHandlerMiddleware>();
         }
     }
 }

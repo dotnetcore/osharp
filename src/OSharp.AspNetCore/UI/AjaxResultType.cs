@@ -37,6 +37,16 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 已登录，但权限不足
         /// </summary>
-        Forbidden = 403
+        Forbidden = 403,
+
+        /// <summary>
+        /// 资源未找到
+        /// </summary>
+        NoFound = 404,
+
+        /// <summary>
+        /// 资源被锁定
+        /// </summary>
+        Locked = 423
     }
 }

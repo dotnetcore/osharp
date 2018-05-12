@@ -26,11 +26,14 @@ namespace OSharp.Secutiry
     public abstract class FunctionAuthorizationBase<TFunction> : IFunctionAuthorization
         where TFunction : class, IFunction, IEntity<Guid>
     {
+        protected readonly IFunctionAuthCache FunctionAuthCache;
+
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthorizationBase{TFunction}"/>类型的新实例
         /// </summary>
-        protected FunctionAuthorizationBase()
+        protected FunctionAuthorizationBase(IFunctionAuthCache functionAuthCache)
         {
+            FunctionAuthCache = functionAuthCache;
             SuperRoleName = "系统管理员";
         }
 
@@ -38,11 +41,6 @@ namespace OSharp.Secutiry
         /// 获取 超级管理员角色
         /// </summary>
         protected virtual string SuperRoleName { get; }
-
-        /// <summary>
-        /// 获取或设置 功能权限信息缓存
-        /// </summary>
-        public IFunctionAuthCache FunctionAuthCache { get; set; }
 
         /// <summary>
         /// 检查当前用户是否有执行指定功能的权限

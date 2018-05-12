@@ -32,7 +32,6 @@ namespace OSharp.AspNetCore.Mvc.Filters
         public UnitOfWorkAttribute()
         {
             _unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
-            System.Diagnostics.Debug.WriteLine($"_unitOfWork: {_unitOfWork.GetHashCode()}");
         }
 
         /// <inheritdoc />

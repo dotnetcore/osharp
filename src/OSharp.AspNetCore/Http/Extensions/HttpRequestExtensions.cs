@@ -7,9 +7,12 @@
 //  <last-date>2017-09-01 18:11</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Linq;
 
 using Microsoft.AspNetCore.Http;
+
+using OSharp.Extensions;
 
 
 namespace OSharp.AspNetCore.Http
@@ -31,11 +34,17 @@ namespace OSharp.AspNetCore.Http
         public static bool IsAjaxRequest(this HttpRequest request)
         {
             Check.NotNull(request, nameof(request));
-            if (request.Headers != null)
-            {
-                return request.Headers["X-Requested-With"] == "XMLHttpRequest";
-            }
-            return false;
+            bool? flag = request.Headers?["X-Requested-With"].ToString()?.Equals("XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
+            return flag.HasValue && flag.Value;
+        }
+
+        /// <summary>
+        /// 确定指定的 HTTP 请求的 ContextType 是否为 Json 方式
+        /// </summary>
+        public static bool IsJsonContextType(this HttpRequest request)
+        {
+            Check.NotNull(request, nameof(request));
+            return request.Headers?["Content-Type"].ToString()?.IndexOf("application/json", StringComparison.OrdinalIgnoreCase) > -1;
         }
 
         /// <summary>

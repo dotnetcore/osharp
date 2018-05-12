@@ -16,5 +16,12 @@ namespace OSharp.Secutiry
     /// 功能权限验证类
     /// </summary>
     public class FunctionAuthorization : FunctionAuthorizationBase<Function>
-    { }
+    {
+        /// <summary>
+        /// 初始化一个<see cref="FunctionAuthorizationBase{TFunction}"/>类型的新实例
+        /// </summary>
+        public FunctionAuthorization(IFunctionAuthCache functionAuthCache)
+            : base(functionAuthCache)
+        { }
+    }
 }

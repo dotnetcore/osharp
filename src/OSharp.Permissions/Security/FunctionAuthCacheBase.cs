@@ -105,23 +105,24 @@ namespace OSharp.Security
         {
             string key = $"Security_FunctionRoles_{functionId}";
             string[] roleNames = _cache.Get<string[]>(key);
-            if (roleNames == null)
+            if (roleNames != null)
             {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    IServiceProvider scopedProvider = scope.ServiceProvider;
-                    IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
-                    TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
-                        .ToArray();
-                    IRepository<TModuleRole, Guid> moduleRoleRepository = scopedProvider.GetService<IRepository<TModuleRole, Guid>>();
-                    TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
-                    IRepository<TRole, TRoleKey> roleRepository = scopedProvider.GetService<IRepository<TRole, TRoleKey>>();
-                    roleNames = roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
-                }
-                if (roleNames.Length > 0)
-                {
-                    _cache.Set(key, roleNames);
-                }
+                return roleNames;
+            }
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                IServiceProvider scopedProvider = scope.ServiceProvider;
+                IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
+                TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
+                    .ToArray();
+                IRepository<TModuleRole, Guid> moduleRoleRepository = scopedProvider.GetService<IRepository<TModuleRole, Guid>>();
+                TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+                IRepository<TRole, TRoleKey> roleRepository = scopedProvider.GetService<IRepository<TRole, TRoleKey>>();
+                roleNames = roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
+            }
+            if (roleNames.Length > 0)
+            {
+                _cache.Set(key, roleNames);
             }
             return roleNames;
         }
@@ -135,29 +136,30 @@ namespace OSharp.Security
         {
             string key = $"Security_UserFunctions_{userName}";
             Guid[] functionIds = _cache.Get<Guid[]>(key);
-            if (functionIds == null)
+            if (functionIds != null)
             {
-                using (var scope = _serviceProvider.CreateScope())
+                return functionIds;
+            }
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                IServiceProvider scopedProvider = scope.ServiceProvider;
+                IRepository<TUser, TUserKey> userRepository = scopedProvider.GetService<IRepository<TUser, TUserKey>>();
+                TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
+                if (userId.Equals(default(TUserKey)))
                 {
-                    IServiceProvider scopedProvider = scope.ServiceProvider;
-                    IRepository<TUser, TUserKey> userRepository = scopedProvider.GetService<IRepository<TUser, TUserKey>>();
-                    TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
-                    if (userId.Equals(default(TUserKey)))
-                    {
-                        return new Guid[0];
-                    }
-                    IRepository<TModuleUser, Guid> moduleUserRepository = scopedProvider.GetService<IRepository<TModuleUser, Guid>>();
-                    TModuleKey[] moduleIds = moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
-                    IRepository<TModule, TModuleKey> moduleRepository = scopedProvider.GetService<IRepository<TModule, TModuleKey>>();
-                    moduleIds = moduleIds.Select(m => moduleRepository.Query(n => n.TreePathString.Contains("$" + m + "$"))
-                        .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
-                    IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
-                    functionIds = moduleFunctionRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
+                    return new Guid[0];
                 }
-                if (functionIds.Length > 0)
-                {
-                    _cache.Set(key, functionIds);
-                }
+                IRepository<TModuleUser, Guid> moduleUserRepository = scopedProvider.GetService<IRepository<TModuleUser, Guid>>();
+                TModuleKey[] moduleIds = moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+                IRepository<TModule, TModuleKey> moduleRepository = scopedProvider.GetService<IRepository<TModule, TModuleKey>>();
+                moduleIds = moduleIds.Select(m => moduleRepository.Query(n => n.TreePathString.Contains("$" + m + "$"))
+                    .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
+                IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
+                functionIds = moduleFunctionRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
+            }
+            if (functionIds.Length > 0)
+            {
+                _cache.Set(key, functionIds);
             }
             return functionIds;
         }

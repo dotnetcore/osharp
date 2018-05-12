@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Core;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
@@ -34,6 +35,8 @@ using OSharp.Mapping;
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [RoleLimit]
+    [FunctionAuthorize]
     [Description("管理-用户信息")]
     public class UserController : AreaApiController
     {
@@ -92,7 +95,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 }
                 names.Add(user.UserName);
             }
-            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”创建成功", AjaxResultType.Success));
+            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”创建成功"));
         }
 
         [HttpPost]
@@ -113,7 +116,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 }
                 names.Add(user.UserName);
             }
-            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”更新成功", AjaxResultType.Success));
+            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”更新成功"));
         }
 
         [HttpPost]
@@ -133,7 +136,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 }
                 names.Add(user.UserName);
             }
-            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”删除成功", AjaxResultType.Success));
+            return Json(new AjaxResult($"用户“{names.ExpandAndToString()}”删除成功"));
         }
 
         [HttpPost]
