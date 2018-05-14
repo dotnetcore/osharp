@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, Input } from '@angular/core';
-declare var $: any;
+
 
 @Component({
     selector: 'kendoui-tabstrip',

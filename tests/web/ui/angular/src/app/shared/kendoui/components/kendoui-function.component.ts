@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-declare var $: any;
+
 
 import { osharp } from "../../osharp";
 import { kendoui } from '../../kendoui';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { SendMailDto } from '../identity.model';
+import { SendMailDto } from '../../shared/osharp/osharp.model';
 import { ContentType } from '@angular/http/src/enums';
 
 @Component({

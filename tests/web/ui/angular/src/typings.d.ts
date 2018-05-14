@@ -4,3 +4,4 @@ interface NodeModule {
   id: string;
 }
 declare var System: any;
+declare var $: any;

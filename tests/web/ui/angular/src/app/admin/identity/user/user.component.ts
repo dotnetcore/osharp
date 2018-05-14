@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ElementRef } from '@angular/core';
 import { List } from "linqts";
 import { HttpClient } from '@angular/common/http';
-declare var $: any;
 
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from '../../../shared/osharp';

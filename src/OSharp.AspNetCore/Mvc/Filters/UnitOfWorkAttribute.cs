@@ -39,7 +39,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
         {
             if (context.Result is JsonResult result)
             {
-                if (result.Value is AjaxResult ajax && ajax.Type == "Error")
+                if (result.Value is AjaxResult ajax && ajax.Error())
                 {
                     return;
                 }

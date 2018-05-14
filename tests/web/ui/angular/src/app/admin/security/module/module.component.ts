@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-declare var $: any;
+
 
 import { kendoui } from '../../../shared/kendoui';
 import { osharp } from "../../../shared/osharp";

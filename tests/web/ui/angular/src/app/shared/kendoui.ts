@@ -2,6 +2,7 @@ import { NgZone, ElementRef } from "@angular/core";
 import { osharp } from "./osharp";
 import { List } from "linqts";
 import { element } from "protractor";
+import { AjaxResult } from "./osharp/osharp.model";
 declare var $: any;
 
 export namespace kendoui {
@@ -86,9 +87,7 @@ export namespace kendoui {
               return { dtos: opts.models };
             }
             if (operation == 'destroy' && opts.models.length) {
-              var ids = new List(opts.models).Select(m => {
-                return m['Id'];
-              }).ToArray();
+              var ids = new List(opts.models).Select(m => m['Id']).ToArray();
               return { ids: ids };
             }
             return {};
@@ -106,7 +105,12 @@ export namespace kendoui {
         serverPaging: true,
         serverSorting: true,
         serverFiltering: true,
-        requestEnd: e => osharp.Tools.ajaxResult(e.response, () => this.grid.options.dataSource.read(), null),
+        requestEnd: e => {
+          if (e.type == "read" && !e.response.Type) {
+            return;
+          }
+          osharp.Tools.ajaxResult(e.response, () => this.grid.options.dataSource.read(), null);
+        },
         change: function () { }
       };
 
@@ -284,7 +288,13 @@ export namespace kendoui {
       return new kendo.data.HierarchicalDataSource({
         transport: { read: { url: url } },
         schema: { model: { children: "Items", hasChildren: "HasChildren" } },
-        requestEnd: e => e.response = kendoui.Tools.TreeDataInit(e.response)
+        requestEnd: e => {
+          if (e.type == "read" && e.response.Type) {
+            osharp.Tools.ajaxResult(e.response);
+            return;
+          }
+          e.response = kendoui.Tools.TreeDataInit(e.response);
+        }
       });
     }
 

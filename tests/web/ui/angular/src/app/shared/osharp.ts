@@ -1,19 +1,9 @@
 import { ToasterService } from "angular2-toaster";
 import { isFunction } from "util";
+import { Rule, Group, ListNode, AjaxResult, AjaxResultType } from "./osharp/osharp.model";
 declare var layer: any;
 
 export namespace osharp {
-  /** 分页数据 */
-  export class PageData<T>{
-    rows: T[] = [];
-    total: 0;
-  }
-
-  export class ListNode {
-    id: number;
-    text: string;
-  }
-
   /**辅助操作工具类 */
   export class Tools {
     /**URL编码 */
@@ -83,33 +73,40 @@ export namespace osharp {
       saveLink.dispatchEvent(ev);
     }
     /**处理AjaxResult */
-    static ajaxResult(result, onSuccess?, onFail?) {
-      if (!result || !result.Type) {
+    static ajaxResult(res, onSuccess?, onFail?) {
+      if (!res || !res.Type) {
         return;
       }
+      var result = <AjaxResult>res;
       var type = result.Type;
       var content = result.Content;
-      if (type === "Error") {
-        osharp.Tip.error(content);
-        if (onFail && typeof onFail === "function") {
-          onFail();
-        }
-        return;
+      switch (type) {
+        case AjaxResultType.Error:
+        case AjaxResultType.Locked:
+        case AjaxResultType.Forbidden:
+          osharp.Tip.error(content);
+          if (onFail && typeof onFail === "function") {
+            onFail();
+          }
+          return;
+        case AjaxResultType.Info:
+          osharp.Tip.warning(content);
+          return;
+        case AjaxResultType.NoFound:
+          window.location.href = "/#/nofound";
+          return;
+        case AjaxResultType.UnAuth:
+          window.location.href = "/#/identity/login";
+          return;
+        case AjaxResultType.Success:
+          osharp.Tip.success(content);
+          if (onSuccess && typeof onSuccess === "function") {
+            onSuccess();
+          }
+        default:
+          break;
       }
-      if (type === "Warning") {
-        osharp.Tip.warning(content);
-        return;
-      }
-      if (type === "Info") {
-        osharp.Tip.info(content);
-        return;
-      }
-      if (type === "Success") {
-        osharp.Tip.success(content);
-        if (onSuccess && typeof onSuccess === "function") {
-          onSuccess();
-        }
-      }
+
     }
     /**全屏指定元素 */
     static fullscreen(el) {
@@ -178,40 +175,19 @@ export namespace osharp {
   }
 }
 
-export namespace osharp.filter {
-  /** 查询条件 */
-  export class Rule {
-    field: string;
-    value: string;
-    operate: string;
-
-    constructor(field: string, value: string, operate: string = 'equal') {
-      this.field = field;
-      this.value = value;
-      this.operate = operate;
-    }
-  }
-  /** 查询条件组 */
-  export class Group {
-    rules: Rule[] = []
-    operate: string = 'and';
-    groups: Group[] = [];
-  }
-}
-
 /** kendo ui */
 export namespace osharp {
   /** kendo 操作类 */
   export class Kendo {
     /** 获取osharp查询条件组 */
-    static getFilterGroup(filter, funcFieldReplace): filter.Group {
+    static getFilterGroup(filter, funcFieldReplace): Group {
       if (!funcFieldReplace) {
         funcFieldReplace = field => field;
       }
       if (!filter || !filter.filters || !filter.filters.length) {
         return null;
       }
-      var group = new osharp.filter.Group();
+      var group = new Group();
       filter.filters.forEach(item => {
         if (item.filters && item.filters.length) {
           group.groups.push(Kendo.getFilterGroup(item, funcFieldReplace));
@@ -223,13 +199,13 @@ export namespace osharp {
       return group;
     }
     /** 获取osharp查询条件 */
-    static getFilterRule(filter, funcFieldReplace = null): filter.Rule {
+    static getFilterRule(filter, funcFieldReplace = null): Rule {
       if (!funcFieldReplace || !isFunction(funcFieldReplace)) {
         throw "funcFieldReplace muse be function";
       }
       var field = funcFieldReplace(filter.field);
       var operate = Kendo.renderRuleOperate(filter.operator);
-      var rule = new osharp.filter.Rule(field, filter.value, operate);
+      var rule = new Rule(field, filter.value, operate);
       return rule;
     }
     /** 转换查询操作 */
@@ -272,7 +248,6 @@ export namespace osharp {
           var group = Kendo.getFilterGroup(options.filter, funcFieldReplace);
           paramter.filter_group = JSON.stringify(group);
         }
-
         return paramter;
       }
     }

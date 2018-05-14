@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { SettingsService } from "../../shared/angle/core/settings/settings.service";
-import { LoginDto } from "../identity.model";
+import { LoginDto } from '../../shared/osharp/osharp.model';
+import { AuthService } from '../shared/auth.service';
+import { AjaxResultType } from '../../shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +19,7 @@ export class LoginComponent {
   resendConfirmMail: boolean = false;
   verifyCodeUrl: string = "common/verifycode"
 
-  constructor(public settings: SettingsService, private http: HttpClient, private router: Router) {
-  }
+  constructor(private auth: AuthService, private router: Router) { }
 
   onVerifyCodeClick($event) {
     this.verifyCodeUrl = "/common"
@@ -27,8 +28,8 @@ export class LoginComponent {
   onSubmit($event) {
     $event.preventDefault();
     this.canSubmit = false;
-    this.http.post("/api/identity/login", this.loginDto).subscribe((res: any) => {
-      if (res.Type == "Success") {
+    this.auth.login(this.loginDto).then(result => {
+      if (result.Type == AjaxResultType.Success) {
         this.message = "用户登录成功";
         setTimeout(() => {
           this.router.navigateByUrl('/home');
@@ -36,10 +37,13 @@ export class LoginComponent {
         return;
       }
       this.canSubmit = true;
-      this.message = "登录失败：" + res.Content;
-      if ((<string>res.Content).indexOf("邮箱未验证") > -1) {
+      this.message = "登录失败：" + result.Content;
+      if (result.Content.indexOf("邮箱未验证") > -1) {
         this.resendConfirmMail = true;
       }
+    }).catch(error => {
+      this.canSubmit = true;
+      console.error(error);
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
-declare var $: any;
+
 
 @Component({
     selector: 'kendoui-treeview',

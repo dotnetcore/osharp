@@ -33,7 +33,7 @@ namespace OSharp.AspNetCore.UI
         /// </summary>
         public AjaxResult(string content, object data, AjaxResultType type = AjaxResultType.Success)
         {
-            Type = type.ToString();
+            Type = type;
             Content = content;
             Data = data;
         }
@@ -41,7 +41,7 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 获取或设置 Ajax操作结果类型
         /// </summary>
-        public string Type { get; set; }
+        public AjaxResultType Type { get; set; }
 
         /// <summary>
         /// 获取或设置 消息内容
@@ -52,5 +52,29 @@ namespace OSharp.AspNetCore.UI
         /// 获取或设置 返回数据
         /// </summary>
         public object Data { get; set; }
+
+        /// <summary>
+        /// 是否成功
+        /// </summary>
+        public bool Successed()
+        {
+            return Type == AjaxResultType.Success;
+        }
+
+        /// <summary>
+        /// 是否错误
+        /// </summary>
+        public bool Error()
+        {
+            return Type == AjaxResultType.Error;
+        }
+
+        /// <summary>
+        /// 成功的AjaxResult
+        /// </summary>
+        public static AjaxResult Success(object data)
+        {
+            return new AjaxResult("数据获取成功", AjaxResultType.Success, data);
+        }
     }
 }

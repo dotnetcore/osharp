@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { osharp } from '../../shared/osharp';
-import { ConfirmEmailDto } from '../identity.model';
+import { ConfirmEmailDto } from '../../shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 
 @Component({

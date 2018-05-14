@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding, } from '@angular/core';
 import { SettingsService } from '../../shared/angle/core/settings/settings.service';
 import { osharp } from '../../shared/osharp';
-declare var $: any;
+
 
 @Component({
     selector: 'admin-layout',

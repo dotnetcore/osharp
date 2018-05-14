@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 const screenfull = require('screenfull');
 const browser = require('jquery.browser');
-declare var $: any;
+
 
 import { UserblockService } from '../sidebar/userblock/userblock.service';
 import { SettingsService } from '../../shared/angle/core/settings/settings.service';

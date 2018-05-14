@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -15,6 +15,7 @@ import { LayoutModule } from './layout/layout.module';
 import { HomeModule } from "./home/home.module";
 import { AdminModule } from "./admin/admin.module";
 import { IdentityModule } from './identity/identity.module';
+import { httpInterceptorProviders } from './shared/osharp/interceptors';
 
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
@@ -26,6 +27,7 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent
   ],
   imports: [
+    BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule, // required for ng2-tag-input
     AngleCoreModule,
@@ -43,7 +45,9 @@ export function createTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

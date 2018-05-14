@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-declare var $: any;
+
 
 import { SettingsService } from '../../shared/angle/core/settings/settings.service';
 import { ThemesService } from '../../shared/angle/core/themes/themes.service';

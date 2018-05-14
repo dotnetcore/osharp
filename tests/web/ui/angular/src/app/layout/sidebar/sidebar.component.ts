@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-declare var $: any;
+
 
 import { MenuService } from '../../shared/angle/core/menu/menu.service';
 import { SettingsService } from '../../shared/angle/core/settings/settings.service';

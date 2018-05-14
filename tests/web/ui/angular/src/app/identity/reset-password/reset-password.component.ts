@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { osharp } from "../../shared/osharp";
-import { ResetPasswordDto } from '../identity.model';
+import { ResetPasswordDto } from '../../shared/osharp/osharp.model';
 import { timeout } from 'q';
 import { Router } from '@angular/router';
 

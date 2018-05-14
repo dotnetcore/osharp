@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange, ElementRef } from '@angular/core';
-declare var $: any;
+
 
 @Component({
     selector: 'admin-navsearch',

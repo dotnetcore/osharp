@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { CustomValidators } from 'ng2-validation';
-import { RegisterDto } from "../identity.model";
+import { RegisterDto } from '../../shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 
 @Component({

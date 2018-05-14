@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, ElementRef, EventEmitter } from '@angular/core';
-declare var $: any;
+
 
 @Component({
     selector: 'kendoui-window',
