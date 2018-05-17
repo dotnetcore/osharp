@@ -12,12 +12,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Modules;
 using OSharp.Entity;
+using OSharp.Reflection;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -48,9 +50,12 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 m.IsEnabled
             }).ToList();
 
+            string version = Assembly.GetExecutingAssembly().GetProductVersion();
+
             info.Lines = new List<string>()
             {
                 "WebApi 数据服务已启动",
+                $"版本号：{version}",
                 $"数据连接：{_provider.GetOSharpOptions().GetDbContextOptions(typeof(DefaultDbContext)).ConnectionString}"
             };
 

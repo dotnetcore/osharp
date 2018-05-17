@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>OSharp.Demo</RootNamespace>
   </PropertyGroup>
+
+  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/version.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />

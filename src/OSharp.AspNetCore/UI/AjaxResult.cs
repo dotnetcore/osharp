@@ -74,7 +74,7 @@ namespace OSharp.AspNetCore.UI
         /// </summary>
         public static AjaxResult Success(object data)
         {
-            return new AjaxResult("数据获取成功", AjaxResultType.Success, data);
+            return new AjaxResult("操作执行成功", AjaxResultType.Success, data);
         }
     }
 }

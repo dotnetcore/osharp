@@ -1,13 +1,11 @@
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\build\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>柳柳软件(66soft.net)</Authors>
     <Company>柳柳软件(66soft.net)</Company>
-    <Copyright>Copyright © 66SOFT 2014-2017</Copyright>
+    <Copyright>Copyright © 66SOFT 2014-2018</Copyright>
     <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</PackageIconUrl>

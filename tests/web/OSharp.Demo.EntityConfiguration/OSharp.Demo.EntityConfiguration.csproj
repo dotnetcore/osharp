@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/version.props" />
 
   <ItemGroup>
     <Compile Remove="T4\**" />

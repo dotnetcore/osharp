@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PackageId>OSharpNS.AspNetCore</PackageId>
     <Summary>OSharp(.NetStandard2.0) AspNetCore组件</Summary>
     <Description>OSharp(.NetStandard2.0) AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
