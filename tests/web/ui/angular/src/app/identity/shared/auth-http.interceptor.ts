@@ -20,7 +20,6 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     }
     return next.handle(authReq).pipe(tap(
       event => {
-        console.info("event", event);
         if (event instanceof HttpResponse) {
           if (event.ok && event.body instanceof AjaxResult) {
             let result: AjaxResult = <AjaxResult>event.body;
