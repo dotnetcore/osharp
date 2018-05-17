@@ -20,10 +20,10 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
-using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 
@@ -177,9 +177,9 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置功能")]
-        public async Task<IActionResult> SetFunctions([FromBody]ModuleSetFunctionsModel model)
+        public async Task<IActionResult> SetFunctions([FromBody]ModuleSetFunctionDto dto)
         {
-            OperationResult result = await _securityManager.SetModuleFunctions(model.ModuleId, model.FunctionIds);
+            OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
             return Json(result.ToAjaxResult());
         }
 

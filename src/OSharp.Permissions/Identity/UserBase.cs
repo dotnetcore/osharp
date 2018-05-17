@@ -24,7 +24,7 @@ namespace OSharp.Identity
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
-        /// 初始化一个<see cref="UserBase"/>类型的新实例
+        /// 初始化一个<see cref="UserBase{TUserKey}"/>类型的新实例
         /// </summary>
         protected UserBase()
         {

@@ -21,11 +21,11 @@ using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Data;
+using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
-using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -142,11 +142,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置权限")]
-        public async Task<IActionResult> SetPermission([FromBody]UserSetPermissionModel model)
+        public async Task<IActionResult> SetPermission([FromBody]UserSetPermissionDto dto)
         {
-            OperationResult result1 = await _identityContract.SetUserRoles(model.UserId, model.RoleIds);
+            OperationResult result1 = await _identityContract.SetUserRoles(dto.UserId, dto.RoleIds);
             string msg = $"设置角色：{result1.Message}<br/>";
-            OperationResult result2 = await _securityManager.SetUserModules(model.UserId, model.ModuleIds);
+            OperationResult result2 = await _securityManager.SetUserModules(dto.UserId, dto.ModuleIds);
             msg += $"模块设置：{result2.Message}";
 
             AjaxResultType type;

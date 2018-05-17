@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 
 using OSharp.Collections;
 using OSharp.Demo.Identity.Entities;
@@ -26,17 +25,11 @@ namespace OSharp.Demo.WebApi.Controllers
     [Description("网站-测试")]
     public class TestController : ApiController
     {
-        private readonly IRepository<ModuleFunction, Guid> _moduleFunctionRepository;
-        private readonly IRepository<ModuleRole, Guid> _moduleRoleRepository;
-        private readonly IRepository<Role, int> _roleRepository;
+        private readonly IRepository<EntityRole, Guid> _entityRoleRepository;
 
-        public TestController(IRepository<ModuleFunction, Guid> moduleFunctionRepository,
-            IRepository<ModuleRole, Guid> moduleRoleRepository,
-            IRepository<Role, int> roleRepository)
+        public TestController(IRepository<EntityRole, Guid> entityRoleRepository)
         {
-            _moduleFunctionRepository = moduleFunctionRepository;
-            _moduleRoleRepository = moduleRoleRepository;
-            _roleRepository = roleRepository;
+            _entityRoleRepository = entityRoleRepository;
         }
 
         [Description("测试01")]
@@ -44,11 +37,7 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             List<object> list = new List<object>();
 
-            int[] moduleIds = _moduleFunctionRepository.Query(m => m.FunctionId == functionId).Select(m => m.ModuleId).ToArray();
-            list.Add(moduleIds.ExpandAndToString());
-
-            int[] roleIds = _moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).ToArray();
-            list.Add(roleIds.ExpandAndToString());
+            list.Add(_entityRoleRepository.Query().Count());
 
             return Content(list.ExpandAndToString("\r\n"));
         }

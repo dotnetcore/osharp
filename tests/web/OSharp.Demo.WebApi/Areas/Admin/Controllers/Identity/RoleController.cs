@@ -21,11 +21,11 @@ using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Data;
+using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
-using OSharp.Demo.WebApi.Areas.Admin.ViewModels;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -162,9 +162,9 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("权限设置")]
-        public async Task<ActionResult> SetPermission([FromBody]RoleSetPermissionModel model)
+        public async Task<ActionResult> SetPermission([FromBody]RoleSetPermissionDto dto)
         {
-            OperationResult result = await _securityManager.SetRoleModules(model.RoleId, model.ModuleIds);
+            OperationResult result = await _securityManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return Json(result.ToAjaxResult());
         }
     }

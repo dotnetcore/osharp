@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace OSharp.Demo.WebApi.Areas.Admin.ViewModels
+
+namespace OSharp.Demo.Common.Dtos
 {
     public class TreeNode
     {

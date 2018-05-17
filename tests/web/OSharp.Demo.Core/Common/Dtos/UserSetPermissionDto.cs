@@ -7,33 +7,14 @@
 //  <last-date>2018-04-09 21:01</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-
-namespace OSharp.Demo.WebApi.Areas.Admin.ViewModels
+namespace OSharp.Demo.Common.Dtos
 {
-    public class UserSetPermissionModel
+    public class UserSetPermissionDto
     {
         public int UserId { get; set; }
 
         public int[] RoleIds { get; set; }
 
         public int[] ModuleIds { get; set; }
-    }
-
-
-    public class RoleSetPermissionModel
-    {
-        public int RoleId { get; set; }
-
-        public int[] ModuleIds { get; set; }
-    }
-
-
-    public class ModuleSetFunctionsModel
-    {
-        public int ModuleId { get; set; }
-
-        public Guid[] FunctionIds { get; set; }
     }
 }
