@@ -12,26 +12,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
-using Newtonsoft.Json;
-
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.UI;
-using OSharp.Exceptions;
 
 
 namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
-    /// Json异常处理中间件
+    /// Node技术异常处理中间件
     /// </summary>
-    public class JsonExceptionHandlerMiddleware : IMiddleware
+    public class NodeExceptionHandlerMiddleware : IMiddleware
     {
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// 初始化一个<see cref="JsonExceptionHandlerMiddleware"/>类型的新实例
+        /// 初始化一个<see cref="NodeExceptionHandlerMiddleware"/>类型的新实例
         /// </summary>
-        public JsonExceptionHandlerMiddleware(RequestDelegate next)
+        public NodeExceptionHandlerMiddleware(RequestDelegate next)
         {
             Check.NotNull(next, nameof(next));
 

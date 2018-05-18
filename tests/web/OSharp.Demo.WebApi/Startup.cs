@@ -83,8 +83,11 @@ namespace OSharp.Demo.WebApi
                 app.UseExceptionHandler();
             }
 
-            app.UseDefaultFiles().UseStaticFiles().UseAuthentication().UseSession().UseMvcWithAreaRoute().UseOSharpMvc();
-            app.UseMiddleware<JsonExceptionHandlerMiddleware>();
+            app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
+                .UseDefaultFiles().UseStaticFiles()
+                .UseAuthentication().UseSession()
+                .UseMvcWithAreaRoute().UseOSharpMvc()
+                .UseMiddleware<NodeExceptionHandlerMiddleware>();
         }
     }
 }
