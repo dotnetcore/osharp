@@ -6,8 +6,6 @@
     <Description>OSharp(.NetStandard2.0)权限组件，包含用户认证与权限验证的基础实现</Description>
     <PackageReleaseNotes />
     <RootNamespace>OSharp</RootNamespace>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\build\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -12,8 +12,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Configuration;
-
 using OSharp.Core.Options;
 using OSharp.Dependency;
 using OSharp.Exceptions;

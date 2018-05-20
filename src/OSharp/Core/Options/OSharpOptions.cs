@@ -41,6 +41,11 @@ namespace OSharp.Core.Options
         public MailSenderOptions MailSender { get; set; }
 
         /// <summary>
+        /// 获取或设置 JWT身份认证选项
+        /// </summary>
+        public JwtOptions Jwt { get; set; }
+
+        /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
         public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)

@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from "rxjs/operators";
-import { AjaxResult, AjaxResultType } from '../../shared/osharp/osharp.model';
-import { AuthTokenService } from './auth-token.service';
+import { AjaxResult, AjaxResultType } from '../osharp.model';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
 
-  constructor(public authTokenService: AuthTokenService, public router: Router) { }
+  constructor(public router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const authToken = this.authTokenService.getToken();
+    const authToken = localStorage.getItem('id_token');
     let authReq = req;
     if (authToken) {
       authReq = req.clone({

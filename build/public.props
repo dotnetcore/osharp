@@ -13,5 +13,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>osharp</PackageTags>
     <NeutralLanguage>zh-CHS</NeutralLanguage>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 </Project>

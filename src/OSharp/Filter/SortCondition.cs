@@ -20,6 +20,12 @@ namespace OSharp.Filter
     public class SortCondition
     {
         /// <summary>
+        /// 初始化一个<see cref="SortCondition"/>类型的新实例
+        /// </summary>
+        public SortCondition() : this(null)
+        { }
+
+        /// <summary>
         /// 构造一个指定字段名称的升序排序的排序条件
         /// </summary>
         /// <param name="sortField">字段名称</param>
@@ -76,7 +82,7 @@ namespace OSharp.Filter
         private static string GetPropertyName(Expression<Func<T, object>> keySelector)
         {
             string param = keySelector.Parameters.First().Name;
-            string operand = (((dynamic)keySelector.Body).Operand).ToString();
+            string operand = ((dynamic)keySelector.Body).Operand.ToString();
             operand = operand.Substring(param.Length + 1, operand.Length - param.Length - 1);
             return operand;
         }

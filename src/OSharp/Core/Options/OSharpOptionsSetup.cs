@@ -45,7 +45,23 @@ namespace OSharp.Core.Options
             MailSenderOptions sender = section.Get<MailSenderOptions>();
             if (sender != null)
             {
+                if (sender.SenderPassword == null)
+                {
+                    sender.SenderPassword = _configuration["MailSenderPassword"];
+                }
                 options.MailSender = sender;
+            }
+
+            //JwtOptions
+            section = _configuration.GetSection("OSharp:Jwt");
+            JwtOptions jwt = section.Get<JwtOptions>();
+            if (jwt != null)
+            {
+                if (jwt.Secret == null)
+                {
+                    jwt.Secret = _configuration["JwtSecret"];
+                }
+                options.Jwt = jwt;
             }
         }
 

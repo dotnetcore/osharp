@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from './app.component';
@@ -45,7 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  providers: [
+  providers: [AUTH_PROVIDERS,
     httpInterceptorProviders
   ],
   bootstrap: [AppComponent]

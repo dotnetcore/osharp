@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { SettingsService } from "../../shared/angle/core/settings/settings.service";
 import { LoginDto } from '../../shared/osharp/osharp.model';
-import { AuthService } from '../shared/auth.service';
+import { AuthService } from '../../shared/osharp/services/auth.service';
 import { AjaxResultType } from '../../shared/osharp/osharp.model';
 
 @Component({

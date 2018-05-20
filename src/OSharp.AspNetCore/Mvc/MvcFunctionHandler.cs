@@ -122,7 +122,7 @@ namespace OSharp.AspNetCore.Mvc
         protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
             bool flag = base.IsIgnoreMethod(action, method, functions);
-            return flag && method.HasAttribute<HttpPostAttribute>();
+            return flag && method.HasAttribute<HttpPostAttribute>() || method.HasAttribute<NonActionAttribute>();
         }
     }
 }

@@ -1,7 +1,9 @@
 import { NgModule, } from '@angular/core';
 import { TranslateModule, } from '@ngx-translate/core';
-import { OsharpService } from './osharp.service';
-import { OsharpSettingsService } from './osharp.settings.service';
+import { OsharpService } from './services/osharp.service';
+import { OsharpSettingsService } from './services/osharp.settings.service';
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { OsharpSettingsService } from './osharp.settings.service';
   ],
   providers: [
     OsharpService,
-    OsharpSettingsService
+    OsharpSettingsService,
+    AuthGuard,
+    AuthService
   ]
 })
 export class OsharpModule { }

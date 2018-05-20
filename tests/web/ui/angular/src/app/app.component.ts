@@ -1,9 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 
 import { SettingsService } from './shared/angle/core/settings/settings.service';
-import { OsharpService } from './shared/osharp/osharp.service';
-import { HttpClient } from '@angular/common/http';
+import { OsharpService } from './shared/osharp/services/osharp.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient, private osharp: OsharpService, public settings: SettingsService) { }
+  constructor(private osharp: OsharpService) { }
 
   ngOnInit() {
     this.osharp.SetTitleFromRouter();

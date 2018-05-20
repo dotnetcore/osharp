@@ -5,8 +5,6 @@
     <Description>OSharp(.NetStandard2.0)核心组件，封装着框架核心及数据存储，缓存，辅助操作等功能</Description>
     <Summary>OSharp核心组件(.NetStandard2.0)</Summary>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\build\OSharp.Keys.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Import Project="../../build/public.props" />

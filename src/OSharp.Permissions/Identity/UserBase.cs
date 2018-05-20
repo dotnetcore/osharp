@@ -34,15 +34,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
-        [Required]
-        [DisplayName("用户名")]
+        [Required, DisplayName("用户名")]
         public string UserName { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的用户名
         /// </summary>
-        [Required]
-        [DisplayName("标准化的用户名")]
+        [Required, DisplayName("标准化的用户名")]
         public string NormalizedUserName { get; set; }
 
         /// <summary>
@@ -54,15 +52,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 电子邮箱
         /// </summary>
-        [Required]
-        [DisplayName("电子邮箱")]
+        [Required, DisplayName("电子邮箱"), DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的电子邮箱
         /// </summary>
-        [Required]
-        [DisplayName("标准化的电子邮箱")]
+        [Required, DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress)]
         public string NormalizeEmail { get; set; }
 
         /// <summary>
@@ -108,9 +104,9 @@ namespace OSharp.Identity
         public bool PhoneNumberConfirmed { get; set; }
 
         /// <summary>
-        /// 获取或设置 一个标志，指示是否为该用户启用了双因素身份验证。
+        /// 获取或设置 一个标志，指示是否为该用户启用了双因子身份验证。
         /// </summary>
-        [DisplayName("双因素身份验证")]
+        [DisplayName("双因子身份验证")]
         public bool TwoFactorEnabled { get; set; }
 
         /// <summary>
