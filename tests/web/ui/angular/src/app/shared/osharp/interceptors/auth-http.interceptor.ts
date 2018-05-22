@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from "rxjs/operators";
 import { AjaxResult, AjaxResultType } from '../osharp.model';
+import { osharp } from '../../osharp';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -47,13 +48,39 @@ export class AuthHttpInterceptor implements HttpInterceptor {
               break;
             case 404:
               //不存在，跳转到404页
+              this.router.navigate(['/nofound']);
               break;
             case 500:
               //出错，跳转到错误页
+              this.router.navigate(['/error']);
               break;
             default:
               break;
           }
+        }
+      },
+      error => {
+        if (error instanceof HttpErrorResponse) {
+          switch (error.status) {
+            case 401:
+              //未登录，跳转到登录页
+              this.router.navigate(['/identity/login']);
+              break;
+            case 404:
+              //不存在，跳转到404页
+              this.router.navigate(['/nofound']);
+              break;
+            case 403:
+            case 500:
+              //出错，跳转到错误页
+              osharp.Tip.error(`发生错误：${error.status}：${error.statusText}`);
+              console.log(error);
+              this.router.navigate(['/error']);
+              break;
+            default:
+              break;
+          }
+
         }
       }
     ));

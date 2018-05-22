@@ -39,10 +39,17 @@ namespace OSharp.AspNetCore.Mvc.Filters
         {
             if (context.Result is JsonResult result)
             {
-                if (result.Value is AjaxResult ajax && ajax.Error())
+                if (result.Value is AjaxResult ajax && !ajax.Successed())
                 {
                     return;
                 }
+                _unitOfWork?.Commit();
+                return;
+            }
+            //普通请求
+            if (context.HttpContext.Response.StatusCode >= 400)
+            {
+                return;
             }
             _unitOfWork?.Commit();
         }

@@ -7,7 +7,9 @@
 //  <last-date>2018-03-11 10:46</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Demo.Security.Dtos;

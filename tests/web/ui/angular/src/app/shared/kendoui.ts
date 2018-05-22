@@ -111,7 +111,13 @@ export namespace kendoui {
           }
           osharp.Tools.ajaxResult(e.response, () => this.grid.options.dataSource.read(), null);
         },
-        change: function () { }
+        change: function () { },
+        error: e => {
+          if (e.status != "error") {
+            return;
+          }
+          osharp.Tools.ajaxError(e.xhr);
+        }
       };
 
       return options;

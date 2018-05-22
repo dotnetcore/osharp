@@ -12,6 +12,7 @@ using System.Spatial;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,19 +49,13 @@ namespace OSharp.Demo.WebApi
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
-                var policy = new AuthorizationPolicyBuilder().RequireAssertion(context =>
-                {
-                    return true;
-                }).Build();
+                options.Filters.Add(new FunctionAuthorizeFilter());//全局功能权限过滤器
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
-            services.AddOSharp(builder =>
-            {
-                //builder.ExceptModule<IdentityModule>();
-            });
+            services.AddOSharp();
 
             services.AddDistributedMemoryCache()
                 .AddLogging(builder =>
@@ -87,10 +82,10 @@ namespace OSharp.Demo.WebApi
             }
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
+                .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
-                .UseMvcWithAreaRoute().UseOSharpMvc()
-                .UseMiddleware<NodeExceptionHandlerMiddleware>();
+                .UseMvcWithAreaRoute().UseOSharp();
         }
     }
 }

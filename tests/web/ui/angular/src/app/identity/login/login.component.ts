@@ -43,7 +43,7 @@ export class LoginComponent {
       }
     }).catch(error => {
       this.canSubmit = true;
-      console.error(error);
+      this.message = `发生错误：${error.statusText}`;
     });
   }
 }

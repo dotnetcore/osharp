@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -39,15 +40,35 @@ namespace OSharp.Demo.Identity
         /// 重写以实现<see cref="IdentityOptions"/>的配置
         /// </summary>
         /// <returns></returns>
-        protected override Action<IdentityOptions> SetupAction()
+        protected override Action<IdentityOptions> IdentityOptionsAction()
         {
             return options =>
             {
+                //登录
                 options.SignIn.RequireConfirmedEmail = true;
+                //密码
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                //用户
                 options.User.RequireUniqueEmail = true;
+                //锁定
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+
+            };
+        }
+
+        /// <summary>
+        /// 重写以实现<see cref="CookieAuthenticationOptions"/>的配置
+        /// </summary>
+        /// <returns></returns>
+        protected override Action<CookieAuthenticationOptions> CookieOptionsAction()
+        {
+            return options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.LoginPath = "/#/identity/login";
             };
         }
 

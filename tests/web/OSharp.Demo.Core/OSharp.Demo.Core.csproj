@@ -8,6 +8,7 @@
   <Import Project="../../../build/version.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
   </ItemGroup>

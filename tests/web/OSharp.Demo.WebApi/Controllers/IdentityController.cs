@@ -7,20 +7,18 @@
 //  <last-date>2018-04-29 2:44</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
-using OSharp.Core;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
@@ -33,7 +31,6 @@ using OSharp.Secutiry.Claims;
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-身份认证")]
-    [FunctionAuthorize]
     public class IdentityController : ApiController
     {
         private readonly IIdentityContract _identityContract;
@@ -117,7 +114,7 @@ namespace OSharp.Demo.WebApi.Controllers
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
-
+            throw new NotImplementedException();
             if (!ModelState.IsValid)
             {
                 return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
@@ -135,11 +132,7 @@ namespace OSharp.Demo.WebApi.Controllers
             User user = result.Data;
             await _signInManager.SignInAsync(user, dto.Remember);
             IList<string> roles = await _userManager.GetRolesAsync(user);
-            var data = new
-            {
-                User = new { UserId = user.Id, user.UserName, user.NickName, user.Email, Roles = roles },
-                SessionId = HttpContext.Session.Id
-            };
+            var data = new { UserId = user.Id, user.UserName, user.NickName, user.Email, Roles = roles };
             return Json(new AjaxResult("登录成功", AjaxResultType.Success, data));
         }
 

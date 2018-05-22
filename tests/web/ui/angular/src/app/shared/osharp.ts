@@ -81,14 +81,6 @@ export namespace osharp {
       var type = result.Type;
       var content = result.Content;
       switch (type) {
-        case AjaxResultType.Error:
-        case AjaxResultType.Locked:
-        case AjaxResultType.Forbidden:
-          osharp.Tip.error(content);
-          if (onFail && typeof onFail === "function") {
-            onFail();
-          }
-          return;
         case AjaxResultType.Info:
           osharp.Tip.warning(content);
           return;
@@ -96,6 +88,7 @@ export namespace osharp {
           window.location.href = "/#/nofound";
           return;
         case AjaxResultType.UnAuth:
+          osharp.Tip.warning("用户未登录或登录已失效");
           window.location.href = "/#/identity/login";
           return;
         case AjaxResultType.Success:
@@ -104,10 +97,29 @@ export namespace osharp {
             onSuccess();
           }
         default:
+          osharp.Tip.error(content);
+          if (onFail && typeof onFail === "function") {
+            onFail();
+          }
+          return;
+      }
+    }
+    /**处理Ajax错误 */
+    static ajaxError(xhr) {
+      switch (xhr.status) {
+        case 401:
+          osharp.Tip.warning("用户未登录或登录已失效");
+          window.location.href = "/#/identity/login";
+          break;
+        case 404:
+          window.location.href = "/#/nofound";
+          break;
+        default:
+          osharp.Tip.error(`发生错误：${xhr.status}: ${xhr.statusText}`);
           break;
       }
-
     }
+
     /**全屏指定元素 */
     static fullscreen(el) {
       if (el.requestFullscreen) {

@@ -36,7 +36,6 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [RoleLimit]
-    [FunctionAuthorize]
     [Description("管理-用户信息")]
     public class UserController : AreaApiController
     {

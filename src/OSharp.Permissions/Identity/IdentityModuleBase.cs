@@ -10,6 +10,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -45,9 +46,15 @@ namespace OSharp.Identity
             services.AddScoped<IUserStore<TUser>, TUserStore>();
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
 
-            Action<IdentityOptions> setupAction = SetupAction();
-            IdentityBuilder builder = services.AddIdentity<TUser, TRole>(setupAction);
+            Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
+            IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);
             OnIdentityBuild(builder);
+
+            Action<CookieAuthenticationOptions> cookieOptionsAction = CookieOptionsAction();
+            if (cookieOptionsAction != null)
+            {
+                services.ConfigureApplicationCookie(cookieOptionsAction);
+            }
 
             return services;
         }
@@ -56,7 +63,16 @@ namespace OSharp.Identity
         /// 重写以实现<see cref="IdentityOptions"/>的配置
         /// </summary>
         /// <returns></returns>
-        protected virtual Action<IdentityOptions> SetupAction()
+        protected virtual Action<IdentityOptions> IdentityOptionsAction()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 重写以实现<see cref="CookieAuthenticationOptions"/>的配置
+        /// </summary>
+        /// <returns></returns>
+        protected virtual Action<CookieAuthenticationOptions> CookieOptionsAction()
         {
             return null;
         }
