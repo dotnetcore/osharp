@@ -58,7 +58,7 @@ namespace OSharp.AspNetCore.Mvc
                 if (context.Request.IsAjaxRequest() || context.Request.IsJsonContextType())
                 {
                     context.Response.StatusCode = 500;
-                    //context.Response.Clear();
+                    context.Response.Clear();
                     context.Response.ContentType = "applicaton/json";
                     await context.Response.WriteAsync(new AjaxResult(ex.Message, AjaxResultType.Error).ToJsonString());
                     return;

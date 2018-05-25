@@ -130,7 +130,7 @@ namespace OSharp.Demo.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, "用户已被冻结，无法登录");
             }
-            SignInResult signInResult = await _signInManager.PasswordSignInAsync(user.UserName, dto.Password, dto.Remember, true);
+            SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
             OperationResult<User> result = ToOperationResult(signInResult, user);
             if (!result.Successed)
             {

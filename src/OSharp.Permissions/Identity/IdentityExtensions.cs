@@ -57,6 +57,5 @@ namespace OSharp.Identity
             identityErrors = identityErrors.Union(errors.Select(m => new IdentityError() { Description = m }));
             return IdentityResult.Failed(identityErrors.ToArray());
         }
-
     }
 }

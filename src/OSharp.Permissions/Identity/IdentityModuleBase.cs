@@ -8,13 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Runtime.CompilerServices;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Core;
 using OSharp.Core.Modules;
 
 

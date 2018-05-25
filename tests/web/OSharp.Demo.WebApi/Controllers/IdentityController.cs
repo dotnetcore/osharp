@@ -19,12 +19,14 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Identity;
 using OSharp.Net;
+using OSharp.Security.JwtBearer;
 using OSharp.Secutiry.Claims;
 
 
@@ -114,7 +116,7 @@ namespace OSharp.Demo.WebApi.Controllers
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
-            throw new NotImplementedException();
+
             if (!ModelState.IsValid)
             {
                 return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
@@ -131,9 +133,42 @@ namespace OSharp.Demo.WebApi.Controllers
             }
             User user = result.Data;
             await _signInManager.SignInAsync(user, dto.Remember);
+            return Json(new AjaxResult("登录成功"));
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("用户登录JWT")]
+        public async Task<IActionResult> LoginJwt([FromBody]LoginDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResult("提交信息验证失败", AjaxResultType.Error));
+            }
+            dto.Ip = HttpContext.GetClientIp();
+            dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
+
+            OperationResult<User> result = await _identityContract.Login(dto);
+            if (!result.Successed)
+            {
+                return Json(result.ToAjaxResult());
+            }
+            User user = result.Data;
             IList<string> roles = await _userManager.GetRolesAsync(user);
-            var data = new { UserId = user.Id, user.UserName, user.NickName, user.Email, Roles = roles };
-            return Json(new AjaxResult("登录成功", AjaxResultType.Success, data));
+            //生成Token
+            Claim[] claims =
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.GivenName, user.NickName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.SecurityStamp, user.SecurityStamp),
+                new Claim(ClaimTypes.Role, roles.ExpandAndToString())
+            };
+            string token = JwtHelper.CreateToken(claims);
+            return Json(new AjaxResult("登录成功", AjaxResultType.Success, token));
         }
 
         [Description("用户信息")]

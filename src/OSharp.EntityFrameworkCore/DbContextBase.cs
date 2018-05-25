@@ -37,10 +37,10 @@ namespace OSharp.Entity
             : base(options)
         {
             _typeFinder = typeFinder;
-            IOptionsMonitor<OSharpOptions> osharpOptions = ServiceLocator.Instance.GetService<IOptionsMonitor<OSharpOptions>>();
+            IOptions<OSharpOptions> osharpOptions = ServiceLocator.Instance.GetService<IOptions<OSharpOptions>>();
             if (osharpOptions != null)
             {
-                _osharpDbOptions = osharpOptions.CurrentValue.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == typeof(TDbContext));
+                _osharpDbOptions = osharpOptions.Value.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == typeof(TDbContext));
             }
         }
 

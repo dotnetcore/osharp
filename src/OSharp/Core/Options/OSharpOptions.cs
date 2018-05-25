@@ -12,8 +12,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-using OSharp.Entity;
-
 
 namespace OSharp.Core.Options
 {

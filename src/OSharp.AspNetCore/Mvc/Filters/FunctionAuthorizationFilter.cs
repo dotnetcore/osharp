@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionAuthorizeFilter.cs" company="OSharp开源团队">
+//  <copyright file="FunctionAuthorizationFilter.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-05-22 17:02</last-date>
+//  <last-date>2018-05-23 10:33</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -26,7 +26,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
     /// <summary>
     /// 功能权限授权验证
     /// </summary>
-    public class FunctionAuthorizeFilter : Attribute, IAuthorizationFilter
+    public class FunctionAuthorizationFilter : Attribute, IAuthorizationFilter
     {
         /// <summary>
         /// Called early in the filter pipeline to confirm request is authorized.
@@ -54,7 +54,6 @@ namespace OSharp.AspNetCore.Mvc.Filters
             IPrincipal user = context.HttpContext.User;
             IServiceProvider provider = context.HttpContext.RequestServices;
             IFunctionAuthorization authorization = provider.GetService<IFunctionAuthorization>();
-            Debug.WriteLine($"context:{context.GetHashCode()}, this:{this.GetHashCode()}");
             AuthorizationResult result = authorization.Authorize(function, user);
             return result;
         }

@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(dto: LoginDto) {
-    let url = "/api/identity/login";
+    let url = "/api/identity/loginjwt";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type == AjaxResultType.Success) {
         localStorage.setItem('id_token', result.Data);

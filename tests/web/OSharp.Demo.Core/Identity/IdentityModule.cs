@@ -66,9 +66,11 @@ namespace OSharp.Demo.Identity
             return options =>
             {
                 options.Cookie.HttpOnly = true;
+                options.Cookie.Name = "osharp.identity";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
                 options.LoginPath = "/#/identity/login";
+                
             };
         }
 

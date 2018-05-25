@@ -58,7 +58,7 @@ namespace OSharp
         /// </summary>
         public static OSharpOptions GetOSharpOptions(this IServiceProvider provider)
         {
-            return provider.GetService<IOptionsMonitor<OSharpOptions>>()?.CurrentValue;
+            return provider.GetService<IOptions<OSharpOptions>>()?.Value;
         }
     }
 }
