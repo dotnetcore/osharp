@@ -231,9 +231,36 @@ export namespace osharp {
       if (operate === "doesnotcontain") return "notcontains";
       return operate;
     }
+
+    /**给每个请求头设置 JWT-Token */
+    static setAuthToken(dataSource: kendo.data.DataSource) {
+      let authToken = localStorage.getItem('id_token');
+      if (!authToken) {
+        return;
+      }
+      if (dataSource && dataSource.options && dataSource.options.transport) {
+        var trans = dataSource.options.transport;
+        if (trans.read) {
+          (<any>trans.read).beforeSend = this.setAuthHeaderToken;
+        }
+        if (trans.create) {
+          (<any>trans.create).beforeSend = this.setAuthHeaderToken;
+        }
+        if (trans.update) {
+          (<any>trans.update).beforeSend = this.setAuthHeaderToken;
+        }
+        if (trans.destroy) {
+          (<any>trans.destroy).beforeSend = this.setAuthHeaderToken;
+        }
+      }
+    }
+    private static setAuthHeaderToken(xhr, opts) {
+      let authToken = localStorage.getItem('id_token');
+      xhr.setRequestHeader("Authorization", `Bearer ${authToken}`);
+    }
   }
 
-  export namespace kendo {
+  export namespace kendoui {
     export class Grid {
       /** 处理kendoui到osharp框架的查询参数 */
       static readParameterMap(options, funcFieldReplace) {

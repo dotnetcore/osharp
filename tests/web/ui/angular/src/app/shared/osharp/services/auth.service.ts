@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
 import { LoginDto, AjaxResult, AjaxResultType } from '../osharp.model';
 import { HttpClient } from '@angular/common/http';
-
+import { AuthTokenService } from './auth-token.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private authToken: AuthTokenService) { }
 
   login(dto: LoginDto) {
-    let url = "/api/identity/loginjwt";
+    let url = "/api/identity/token";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type == AjaxResultType.Success) {
-        localStorage.setItem('id_token', result.Data);
+        this.authToken.set(result.Data);
       }
       return result;
     }).toPromise();
   }
 
   loggedIn() {
-    return tokenNotExpired();
+    return this.authToken.get() != null;
   }
 
   logout() {
     let url = '/api/identity/logout';
     return this.http.post<AjaxResult>(url, {}).map(result => {
-      if (result.Type == AjaxResultType.Success) {
-        localStorage.removeItem('id_token');
-      }
+      this.authToken.remove();
       return result;
     }).toPromise();
   }

@@ -8,9 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-using OSharp.Properties;
 
 
 namespace OSharp.Audits

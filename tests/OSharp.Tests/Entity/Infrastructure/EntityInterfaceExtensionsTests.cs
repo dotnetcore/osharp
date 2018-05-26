@@ -11,21 +11,6 @@ namespace OSharp.Entity.Infrastructure.Tests
     public class EntityInterfaceExtensionsTests
     {
         [Fact]
-        public void CheckICreatedTime_Test()
-        {
-            TestEntity entity = null;
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                entity.CheckICreatedTime<TestEntity, int>();
-            });
-
-            entity = new TestEntity();
-            entity.CreatedTime.ShouldBe(DateTime.MinValue);
-            entity.CheckICreatedTime<TestEntity, int>();
-            entity.CreatedTime.ShouldNotBe(DateTime.MinValue);
-        }
-
-        [Fact]
         public void IsEntityType_Test()
         {
             Assert.Throws<ArgumentNullException>(() =>

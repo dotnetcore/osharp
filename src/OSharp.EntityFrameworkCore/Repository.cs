@@ -44,15 +44,12 @@ namespace OSharp.Entity
             UnitOfWork = unitOfWork;
             _dbContext = (DbContext)unitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
-            //DbContext = (IDbContext)_dbContext;
         }
 
         /// <summary>
         /// 获取 当前单元操作对象
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
-
-        //public IDbContext DbContext { get; }
 
         #region 同步方法
 
@@ -64,6 +61,11 @@ namespace OSharp.Entity
         public int Insert(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+            for (int i = 0; i < entities.Length; i++)
+            {
+                TEntity entity = entities[i];
+                entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
+            }
             _dbSet.AddRange(entities);
             return _dbContext.SaveChanges();
         }
@@ -95,6 +97,7 @@ namespace OSharp.Entity
                     {
                         entity = updateFunc(dto, entity);
                     }
+                    entity = entity.CheckICreatedTime<TEntity, TKey>();
                     _dbSet.Add(entity);
                 }
                 catch (Exception e)
@@ -372,6 +375,12 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
+            for (int i = 0; i < entities.Length; i++)
+            {
+                TEntity entity = entities[i];
+                entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
+            }
+
             await _dbSet.AddRangeAsync(entities);
             return await _dbContext.SaveChangesAsync();
         }
@@ -403,6 +412,7 @@ namespace OSharp.Entity
                     {
                         entity = await updateFunc(dto, entity);
                     }
+                    entity = entity.CheckICreatedTime<TEntity, TKey>();
                     await _dbSet.AddAsync(entity);
                 }
                 catch (Exception e)

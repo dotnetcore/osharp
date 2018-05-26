@@ -138,8 +138,8 @@ namespace OSharp.Demo.WebApi.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("用户登录JWT")]
-        public async Task<IActionResult> LoginJwt([FromBody]LoginDto dto)
+        [Description("JWT登录")]
+        public async Task<IActionResult> Token([FromBody]LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -156,7 +156,10 @@ namespace OSharp.Demo.WebApi.Controllers
                 return Json(result.ToAjaxResult());
             }
             User user = result.Data;
+            bool isAdmin = _identityContract.Roles.Any(m =>
+                m.IsAdmin && _identityContract.UserRoles.Where(n => n.UserId == user.Id).Select(n => n.RoleId).Contains(m.Id));
             IList<string> roles = await _userManager.GetRolesAsync(user);
+
             //生成Token
             Claim[] claims =
             {
@@ -165,6 +168,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 new Claim(ClaimTypes.GivenName, user.NickName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtClaimTypes.SecurityStamp, user.SecurityStamp),
+                new Claim(JwtClaimTypes.IsAdmin, isAdmin.ToLower()),
                 new Claim(ClaimTypes.Role, roles.ExpandAndToString())
             };
             string token = JwtHelper.CreateToken(claims);

@@ -81,7 +81,7 @@ export namespace kendoui {
           destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
           parameterMap: (opts, operation) => {
             if (operation == 'read') {
-              return osharp.kendo.Grid.readParameterMap(opts, this.FieldReplace);
+              return osharp.kendoui.Grid.readParameterMap(opts, this.FieldReplace);
             }
             if (operation == 'create' || operation == 'update') {
               return { dtos: opts.models };
@@ -105,6 +105,9 @@ export namespace kendoui {
         serverPaging: true,
         serverSorting: true,
         serverFiltering: true,
+        requestStart: e => {
+          osharp.Kendo.setAuthToken(e.sender);
+        },
         requestEnd: e => {
           if (e.type == "read" && !e.response.Type) {
             return;
@@ -208,6 +211,9 @@ export namespace kendoui {
         },
         schema: {
           model: this.GetModel()
+        },
+        requestStart: e => {
+          osharp.Kendo.setAuthToken(e.sender);
         },
         requestEnd: e => osharp.Tools.ajaxResult(e.response, () => this.treeList.dataSource.read())
       };
