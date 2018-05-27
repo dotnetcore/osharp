@@ -24,6 +24,7 @@ using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
+using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Net;
 using OSharp.Security.JwtBearer;
@@ -111,7 +112,6 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("用户登录")]
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
@@ -127,6 +127,9 @@ namespace OSharp.Demo.WebApi.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
+            IUnitOfWork unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            unitOfWork.Commit();
+
             if (!result.Successed)
             {
                 return Json(result.ToAjaxResult());
@@ -137,7 +140,6 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("JWT登录")]
         public async Task<IActionResult> Token([FromBody]LoginDto dto)
         {
@@ -151,6 +153,9 @@ namespace OSharp.Demo.WebApi.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
+            IUnitOfWork unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            unitOfWork.Commit();
+
             if (!result.Successed)
             {
                 return Json(result.ToAjaxResult());
@@ -165,7 +170,7 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.GivenName, user.NickName),
+                new Claim(ClaimTypes.GivenName, user.NickName ?? user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtClaimTypes.SecurityStamp, user.SecurityStamp),
                 new Claim(JwtClaimTypes.IsAdmin, isAdmin.ToLower()),

@@ -14,12 +14,6 @@ namespace OSharp.Security.JwtBearer
     /// </summary>
     public struct JwtClaimTypes
     {
-        public const string Id = "id";
-        public const string Name = "name";
-        public const string Email = "email";
-        public const string NickName = "nick-name";
-        public const string PhoneNumber = "phone";
-        public const string Roles = "roles";
         public const string IsAdmin = "is-admin";
         public const string SecurityStamp = "security-stamp";
     }

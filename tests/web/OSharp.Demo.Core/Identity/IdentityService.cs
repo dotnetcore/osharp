@@ -105,7 +105,7 @@ namespace OSharp.Demo.Identity
             //触发注册成功事件
             if (count > 0)
             {
-                RegisterEventData eventData = new RegisterEventData(){RegisterDto = dto, User = user};
+                RegisterEventData eventData = new RegisterEventData() { RegisterDto = dto, User = user };
                 _eventBus.PublishSync(eventData);
                 return new OperationResult<User>(OperationResultType.Success, "用户注册成功", user);
             }
@@ -209,12 +209,11 @@ namespace OSharp.Demo.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, "用户登录需要二元验证");
             }
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                return new OperationResult<User>(OperationResultType.Error, result.ToString());
+                return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
             }
-
-            return new OperationResult<User>(OperationResultType.Success, "用户登录成功", user);
+            return new OperationResult<User>(OperationResultType.Error, $"用户名或密码错误，剩余 {_userManager.Options.Lockout.MaxFailedAccessAttempts - user.AccessFailedCount} 次机会");
         }
     }
 }

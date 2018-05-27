@@ -59,6 +59,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             {
                 m.Id,
                 m.UserName,
+                m.NickName,
                 m.Email,
                 m.EmailConfirmed,
                 m.PhoneNumber,
@@ -68,7 +69,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 m.AccessFailedCount,
                 m.IsLocked,
                 m.CreatedTime,
-                Roles = _identityContract.UserRoles.Where(n => n.UserId == m.Id)
+                Roles = _identityContract.UserRoles.Where(n => !n.IsLocked).Where(n => n.UserId == m.Id)
                     .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))
             });
 

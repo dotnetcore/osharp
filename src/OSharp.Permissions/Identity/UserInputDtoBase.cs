@@ -31,6 +31,12 @@ namespace OSharp.Identity
         public string UserName { get; set; }
 
         /// <summary>
+        /// 获取或设置 昵称
+        /// </summary>
+        [Required]
+        public string NickName { get; set; }
+
+        /// <summary>
         /// 获取或设置 密码
         /// </summary>
         public string Password { get; set; }

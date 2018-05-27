@@ -7,34 +7,19 @@
 //  <last-date>2018-03-08 19:55</last-date>
 // -----------------------------------------------------------------------
 
-using System.Security.Claims;
-using System.Spatial;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 using Newtonsoft.Json.Serialization;
-
-using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Audits;
-using OSharp.AutoMapper;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Options;
-using OSharp.Demo.Identity;
-using OSharp.Demo.Security;
-using OSharp.Entity;
-using OSharp.Security.JwtBearer;
 
 
 namespace OSharp.Demo.WebApi
