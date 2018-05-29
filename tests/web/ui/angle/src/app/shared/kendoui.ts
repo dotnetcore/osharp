@@ -1,7 +1,6 @@
 import { NgZone, ElementRef } from "@angular/core";
 import { osharp } from "./osharp";
 import { List } from "linqts";
-import { element } from "protractor";
 import { AjaxResult } from "./osharp/osharp.model";
 declare var $: any;
 
@@ -15,8 +14,8 @@ export namespace kendoui {
     constructor(protected zone: NgZone, protected element: ElementRef) { }
 
     protected InitBase() {
-      var dataSourceOptions = this.GetDataSourceOptions();
-      var dataSource = new kendo.data.DataSource(dataSourceOptions);
+      let dataSourceOptions = this.GetDataSourceOptions();
+      let dataSource = new kendo.data.DataSource(dataSourceOptions);
       this.gridOptions = this.GetGridOptions(dataSource);
     }
 

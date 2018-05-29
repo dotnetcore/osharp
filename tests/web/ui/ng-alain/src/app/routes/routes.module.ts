@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared/shared.module';
-import { RouteRoutingModule } from './routes-routing.module';
+import { AppRoutingModule } from './app.routing';
 // dashboard pages
 import { DashboardComponent } from './dashboard/dashboard.component';
 // passport pages
@@ -14,7 +14,6 @@ import { UserLockComponent } from './passport/lock/lock.component';
 import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
-
 
 const COMPONENTS = [
   DashboardComponent,
@@ -32,11 +31,11 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
-  imports: [ SharedModule, RouteRoutingModule ],
+  imports: [SharedModule, AppRoutingModule],
   declarations: [
     ...COMPONENTS,
     ...COMPONENTS_NOROUNT
   ],
   entryComponents: COMPONENTS_NOROUNT
 })
-export class RoutesModule {}
+export class RoutesModule { }

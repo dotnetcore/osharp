@@ -29,8 +29,8 @@ export class StartupService {
     ).pipe(
       // 接收其他拦截器后产生的异常消息
       catchError(([appData]) => {
-          resolve(null);
-          return [appData];
+        resolve(null);
+        return [appData];
       })
     ).subscribe(([appData]) => {
 
@@ -47,10 +47,10 @@ export class StartupService {
       // 设置页面标题的后缀
       this.titleService.suffix = res.app.name;
     },
-    () => { },
-    () => {
-      resolve(null);
-    });
+      () => { },
+      () => {
+        resolve(null);
+      });
   }
 
   private viaMock(resolve: any, reject: any) {
@@ -91,6 +91,7 @@ export class StartupService {
           {
             text: '快捷菜单',
             icon: 'anticon anticon-rocket',
+            link: '/admin',
             shortcut_root: true
           }
         ]

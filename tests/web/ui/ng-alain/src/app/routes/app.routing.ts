@@ -29,6 +29,8 @@ const routes: Routes = [
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
     ]
   },
+  // admin module
+  { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
   // 全屏布局
   // {
   //     path: 'fullscreen',
@@ -59,4 +61,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
   exports: [RouterModule]
 })
-export class RouteRoutingModule { }
+export class AppRoutingModule { }

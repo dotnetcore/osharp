@@ -13,4 +13,4 @@ import '../node_modules/codemirror/mode/xml/xml.js';
 import '../node_modules/codemirror/mode/htmlmixed/htmlmixed.js';
 import '../node_modules/codemirror/mode/css/css.js';
 
-import './app/shared/osharp/osharp.model'
+import './app/shared/osharp/osharp.model';

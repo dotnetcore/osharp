@@ -27,9 +27,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/simple-line-icons/css/simple-line-icons.css",
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js"
+            ]
           },
           "configurations": {
             "production": {

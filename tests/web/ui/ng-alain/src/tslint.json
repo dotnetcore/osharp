@@ -9,7 +9,8 @@
         "passport",
         "exception",
         "layout",
-        "header"
+        "header",
+        "admin"
       ],
       "camelCase"
     ],
@@ -21,7 +22,8 @@
         "passport",
         "exception",
         "layout",
-        "header"
+        "header",
+        "admin"
       ],
       "kebab-case"
     ]

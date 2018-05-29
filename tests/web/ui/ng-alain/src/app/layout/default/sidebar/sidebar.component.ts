@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
-import { SettingsService } from '@delon/theme';
+import { SettingsService, MenuService } from '@delon/theme';
 
 @Component({
-  selector   : 'layout-sidebar',
+  selector: 'layout-sidebar',
   templateUrl: './sidebar.component.html'
 })
-export class SidebarComponent {
-  constructor(public settings: SettingsService, public msgSrv: NzMessageService) {
+export class SidebarComponent implements OnInit {
+  constructor(
+    public settings: SettingsService,
+    public msgSrv: NzMessageService,
+    private menuSrv: MenuService
+  ) { }
+
+  ngOnInit(): void {
+    this.menuSrv.add([
+      { text: '修改密码', link: '/admin/change-password', icon: 'antion antion-user' }
+    ]);
   }
 }

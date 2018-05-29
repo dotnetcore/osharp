@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "install": "npm run napa",
-    "start": "ng server --port 4200 --proxy-config proxy.config.json --open",
+    "start": "ng server --port 4100 --proxy-config proxy.config.json --open",
     "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",

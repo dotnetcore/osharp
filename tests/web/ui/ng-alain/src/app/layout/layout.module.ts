@@ -13,11 +13,18 @@ import { HeaderFullScreenComponent } from './default/header/components/fullscree
 import { HeaderStorageComponent } from './default/header/components/storage.component';
 import { HeaderUserComponent } from './default/header/components/user.component';
 
+import { LayoutAdminComponent } from "./admin/admin.component";
+import { AdminHeaderComponent } from "./admin/header/header.component";
+import { AdminSidebarComponent } from "./admin/sidebar/sidebar.component";
+
 const COMPONENTS = [
   LayoutDefaultComponent,
   LayoutFullScreenComponent,
   HeaderComponent,
-  SidebarComponent
+  SidebarComponent,
+  LayoutAdminComponent,
+  AdminHeaderComponent,
+  AdminSidebarComponent
 ];
 
 const HEADERCOMPONENTS = [
@@ -32,6 +39,7 @@ const HEADERCOMPONENTS = [
 
 // passport
 import { LayoutPassportComponent } from './passport/passport.component';
+
 const PASSPORT = [
   LayoutPassportComponent
 ];
