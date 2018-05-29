@@ -81,7 +81,7 @@ export class RoleComponent extends GridComponentBase implements OnInit, AfterVie
         template: d => this.kendoui.Boolean(d.IsLocked),
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       },
-      { field: "CreatedTime", title: "注册时间", width: 115, format: "{0:yy-MM-dd HH:mm}" }
+      { field: "CreatedTime", title: "注册时间", width: 120, format: "{0:yy-MM-dd HH:mm}" }
     ];
   }
 

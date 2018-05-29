@@ -175,8 +175,9 @@ export class KendouiService {
   // #region kendoui控件
 
   Boolean(value: boolean) {
-    const html = value ? '<input type="checkbox" checked="checked"/>' : '<input type="checkbox"/>';
-    return '<div class="checkbox c-checkbox"><label>' + html + '<span class="fa fa-check"></span></label></div>';
+    // const html = value ? '<input type="checkbox" checked="checked"/>' : '<input type="checkbox"/>';
+    // return '<div class="checkbox c-checkbox"><label>' + html + '<span class="fa fa-check"></span></label></div>';
+    return value ? "<div class=\"checker\"><span class=\"checked\"></span></div>" : "<div class=\"checker\"><span></span></div>";
   }
 
   BooleanEditor(container, options) {
@@ -353,10 +354,12 @@ export abstract class GridComponentBase {
 
   /**重置Grid高度 */
   protected ResizeGrid(init: boolean) {
-    const winWidth = window.innerWidth, winHeight = window.innerHeight, diffHeight = winWidth >= 1114 ? 80 : winWidth >= 768 ? 64 : 145;
     const $content = $("#grid-box .k-grid-content");
-    const otherHeight = $("#grid-box").height() - $content.height();
-    $content.height(winHeight - diffHeight - otherHeight - (init ? 0 : 0));
+    let winWidth = window.innerWidth, winHeight = window.innerHeight;
+    console.log(winWidth + ' ' + winHeight);
+    let otherHeight = $("admin-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
+    console.log(otherHeight);
+    $content.height(winHeight - otherHeight);
   }
 
   private KeyDownEvent(e) {

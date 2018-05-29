@@ -1,4 +1,4 @@
-
+::ng-deep .k-grid .content{margin:64px 10px 10px 10px;}
 ::ng-deep .k-grid .c-checkbox span, .c-radio span{width:17px;height: 17px;}
 ::ng-deep .k-grid-header th.k-header,
 ::ng-deep .k-filter-row th{padding-left: .1em;}
@@ -14,3 +14,7 @@
 ::ng-deep .k-window .win-content{overflow: auto;}
 ::ng-deep .k-tabstrip > .k-content, ::ng-deep.k-panelbar .k-tabstrip > .k-content{margin: 0 1px 1px;}
 ::ng-deep .k-tabstrip-items .k-state-active{background-color: #7282dc}
+
+::ng-deep .k-grid .checker{margin:-7px 0 0 3px; padding:0; width:19px;height:19px;position: relative;vertical-align: middle;display:inline-block;zoom: 1;}
+::ng-deep .k-grid .checker span{margin:0;padding:0;width:19px;height:19px;text-align: center;display: inline-block;background-position: 0 -260px; background-image: url(/assets/tmp/img/sprite.png); background-repeat: no-repeat;zoom:1;-webkit-font-smoothing: antialiased;}
+::ng-deep .k-grid .checker span.checked{background-position: -76px -260px;}

@@ -7,6 +7,8 @@
 //  <last-date>2018-05-15 13:54</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.Security;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Demo.Security.Entities
     /// <summary>
     /// 实体：数据角色信息
     /// </summary>
+    [Description("数据角色信息")]
     public class EntityRole : EntityRoleBase<int>
     { }
 }

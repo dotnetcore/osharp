@@ -27,6 +27,8 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
       visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
       resize: e => this.onWinResize(e)
     };
+    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
+    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
   }
 
   ngOnInit() {
@@ -76,12 +78,12 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
       }, {
         field: "NickName",
         title: "昵称",
-        width: 150,
+        width: 130,
         filterable: this.osharp.data.stringFilterable
       }, {
         field: "Email",
         title: "邮箱",
-        width: 200,
+        width: 180,
         filterable: this.osharp.data.stringFilterable
       }, {
         field: "EmailConfirmed",
@@ -113,13 +115,13 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       }, {
         field: "LockoutEnabled",
-        title: "是否登录锁",
-        width: 95,
+        title: "登录锁",
+        width: 90,
         template: d => this.kendoui.Boolean(d.LockoutEnabled),
       }, {
         field: "LockoutEnd",
         title: "锁时间",
-        width: 115,
+        width: 120,
         format: "{0:yy-MM-dd HH:mm}"
       }, {
         field: "AccessFailedCount",
@@ -128,7 +130,7 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
       }, {
         field: "CreatedTime",
         title: "注册时间",
-        width: 115,
+        width: 120,
         format: "{0:yy-MM-dd HH:mm}"
       }
     ];

@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using OSharp.Entity;
@@ -24,16 +25,19 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
+        [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 数据编号
         /// </summary>
+        [DisplayName("数据编号")]
         public Guid EntityId { get; set; }
 
         /// <summary>
         /// 获取或设置 过滤条件组Json字符串
         /// </summary>
+        [DisplayName("过滤条件组Json字符串")]
         public string FilterGroupJson { get; set; }
 
         /// <summary>
@@ -53,13 +57,15 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 获取或设置 是否锁定当前信息
+        /// 获取或设置 是否锁定
         /// </summary>
+        [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
 
         /// <summary>
         /// 获取或设置 创建时间
         /// </summary>
+        [DisplayName("创建时间")]
         public DateTime CreatedTime { get; set; }
     }
 }
