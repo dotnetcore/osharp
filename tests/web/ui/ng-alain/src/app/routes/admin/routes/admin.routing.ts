@@ -25,6 +25,5 @@ const routes: Routes = [
 export class AdminRoutingModule {
   constructor(public menuService: MenuService) {
     menuService.add(adminMenu);
-    console.log(menuService.menus);
   }
 }

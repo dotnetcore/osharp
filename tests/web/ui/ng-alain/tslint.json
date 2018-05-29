@@ -82,7 +82,7 @@
       "check-else",
       "check-whitespace"
     ],
-    "prefer-const": true,
+    "prefer-const": false,
     "quotemark": [
       false,
       "single"
@@ -122,12 +122,12 @@
     "use-host-property-decorator": false,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
+    "use-life-cycle-interface": false,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "directive-selector": [
-      true,
+      false,
       "attribute",
       [
         "app",
@@ -140,14 +140,15 @@
       "camelCase"
     ],
     "component-selector": [
-      true,
+      false,
       "element",
       [
         "app",
         "passport",
         "exception",
         "layout",
-        "header"
+        "header",
+        "kendoui"
       ],
       "kebab-case"
     ]

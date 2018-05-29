@@ -13,6 +13,8 @@ export class KendouiService {
     this.osharp = injector.get(OsharpService);
   }
 
+  // #region 工具操作
+
   /** 获取osharp查询条件组 */
   getFilterGroup(filter, funcFieldReplace): Group {
     if (!funcFieldReplace) {
@@ -153,8 +155,24 @@ export class KendouiService {
     this.setAuthToken(e.sender);
   }
 
+  queryOptions(source, options) {
+    let sopts = source.options;
+    let opts = {
+      filter: options.filter || null,
+      aggregate: sopts.aggregate || [],
+      group: sopts.group || [],
+      page: sopts.page || 1,
+      pageSize: sopts.pageSize || 20,
+      sort: options.sort || sopts.sort,
+      take: sopts.pageSize,
+      skip: sopts.pageSize * (sopts.page - 1)
+    };
+    return opts;
+  }
 
-  // region kendoui控件
+  // #endregion
+
+  // #region kendoui控件
 
   Boolean(value: boolean) {
     const html = value ? '<input type="checkbox" checked="checked"/>' : '<input type="checkbox"/>';
@@ -198,7 +216,7 @@ export class KendouiService {
     });
   }
 
-  // endregion
+  // #endregion
 }
 
 export abstract class GridComponentBase {
@@ -251,12 +269,7 @@ export abstract class GridComponentBase {
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     const options: kendo.ui.GridOptions = {
       dataSource: dataSource,
-      toolbar: [{ name: 'create' }, { name: 'save' }, { name: 'cancel' }, {
-        name: 'toolbarRight', template: `
-        <ul class="toolbar-right">
-          <li><a class="fullscreen"><em class="fa fa-expand"></em></a></li>
-        </ul>
-        `}],
+      toolbar: [{ name: 'create' }, { name: 'save' }, { name: 'cancel' }],
       columns: this.GetGridColumns(),
       navigatable: true,
       filterable: true,

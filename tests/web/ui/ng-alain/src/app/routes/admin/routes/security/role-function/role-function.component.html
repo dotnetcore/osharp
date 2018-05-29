@@ -1,1 +1,4 @@
-<div class="role-function"> Hello RoleFunctionComponent! </div>
+<kendoui-splitter [options]="splitterOptions" [height]="850">
+  <div id="grid-box"></div>
+  <kendoui-function [ReadUrl]="functionReadUrl" [TypeId]="selectedRoleId" (TypeIdChange)="onRoleSelectedChange($event)"></kendoui-function>
+</kendoui-splitter>

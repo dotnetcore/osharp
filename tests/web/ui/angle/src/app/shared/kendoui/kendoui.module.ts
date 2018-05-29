@@ -6,21 +6,21 @@ import { KendouiTabstripComponent } from './components/kendoui-tabstrip.componen
 import { KendouiTreeviewComponent } from './components/kendoui-treeview.component';
 import { KendouiFunctionComponent } from './components/kendoui-function.component';
 
+const COMPONENTS = [
+  KendouiSplitterComponent,
+  KendouiWindowComponent,
+  KendouiTabstripComponent,
+  KendouiTreeviewComponent,
+  KendouiFunctionComponent
+];
+
 @NgModule({
   declarations: [
-    KendouiSplitterComponent,
-    KendouiWindowComponent,
-    KendouiTabstripComponent,
-    KendouiTreeviewComponent,
-    KendouiFunctionComponent
+    ...COMPONENTS
   ],
   imports: [CommonModule],
   exports: [
-    KendouiSplitterComponent,
-    KendouiWindowComponent,
-    KendouiTabstripComponent,
-    KendouiTreeviewComponent,
-    KendouiFunctionComponent
+    ...COMPONENTS
   ],
   providers: [],
 })

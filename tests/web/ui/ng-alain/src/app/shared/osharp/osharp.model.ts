@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+declare var Buffer: any;
 
 export class AjaxResult {
   Type: AjaxResultType;

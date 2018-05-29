@@ -5,7 +5,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'layout-admin',
-  templateUrl: './admin.component.html'
+  templateUrl: './admin.component.html',
+  styleUrls: ["./admin.component.css"]
 })
 export class LayoutAdminComponent {
   isFetching = false;

@@ -2,13 +2,13 @@ import { NgModule, Component, } from '@angular/core';
 import { SystemRoutingModule, } from './system.routing';
 import { SettingsComponent } from './settings/settings.component';
 
-const Components = [
+const COMPONENTS = [
   SettingsComponent
 ];
 
 @NgModule({
   declarations: [
-    ...Components
+    ...COMPONENTS
   ],
   imports: [
     SystemRoutingModule,

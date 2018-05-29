@@ -11,7 +11,7 @@ import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
   ],
   imports: [
     RoutesModule,
-    LayoutModule
+    LayoutModule,
   ],
   providers: [
 

@@ -35,7 +35,7 @@ using OSharp.Mapping;
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [RoleLimit]
+    //[RoleLimit]
     [Description("管理-角色信息")]
     public class RoleController : AreaApiController
     {

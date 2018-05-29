@@ -42,5 +42,8 @@
         "environments/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

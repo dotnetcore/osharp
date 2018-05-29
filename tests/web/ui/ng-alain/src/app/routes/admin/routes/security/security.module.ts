@@ -7,8 +7,9 @@ import { UserFunctionComponent } from './user-function/user-function.component';
 import { RoleFunctionComponent } from './role-function/role-function.component';
 import { RoleEntityinfoComponent } from './role-entityinfo/role-entityinfo.component';
 import { UserEntityinfoComponent } from './user-entityinfo/user-entityinfo.component';
+import { SharedModule } from '@shared/shared.module';
 
-const Components = [
+const COMPONENTS = [
   ModuleComponent,
   FunctionComponent,
   EntityinfoComponent,
@@ -20,10 +21,11 @@ const Components = [
 
 @NgModule({
   declarations: [
-    ...Components
+    ...COMPONENTS
   ],
   imports: [
     SecurityRoutingModule,
+    SharedModule
   ],
   providers: [
     // TODO: and services

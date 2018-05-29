@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { Buffer } from 'buffer';
 import { ListNode, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+declare var Buffer: any;
 
 @Injectable()
 export class OsharpService {
