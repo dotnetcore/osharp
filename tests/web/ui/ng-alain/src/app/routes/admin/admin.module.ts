@@ -1,17 +1,20 @@
 import { NgModule, } from '@angular/core';
-import { RoutesModule } from './routes/routes.module';
-import { LayoutModule } from '../../layout/layout.module';
 
 import '@progress/kendo-ui';
 import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN';
 import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
 
+import { LayoutModule } from '../../layout/layout.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { AdminRoutingModule } from './admin.routing';
+
 @NgModule({
   declarations: [
   ],
   imports: [
-    RoutesModule,
+    DashboardModule,
     LayoutModule,
+    AdminRoutingModule
   ],
   providers: [
 

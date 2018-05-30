@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared/shared.module';
 import { AppRoutingModule } from './app.routing';
+import { HomeModule } from "./home/home.module";
 // dashboard pages
 import { DashboardComponent } from './dashboard/dashboard.component';
 // passport pages
@@ -31,7 +32,11 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
-  imports: [SharedModule, AppRoutingModule],
+  imports: [
+    SharedModule,
+    AppRoutingModule,
+    HomeModule
+  ],
   declarations: [
     ...COMPONENTS,
     ...COMPONENTS_NOROUNT

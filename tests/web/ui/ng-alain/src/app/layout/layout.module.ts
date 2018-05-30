@@ -3,43 +3,34 @@ import { SharedModule } from '@shared/shared.module';
 
 import { LayoutDefaultComponent } from './default/default.component';
 import { LayoutFullScreenComponent } from './fullscreen/fullscreen.component';
-import { HeaderComponent } from './default/header/header.component';
-import { SidebarComponent } from './default/sidebar/sidebar.component';
-import { HeaderSearchComponent } from './default/header/components/search.component';
-import { HeaderNotifyComponent } from './default/header/components/notify.component';
-import { HeaderTaskComponent } from './default/header/components/task.component';
-import { HeaderIconComponent } from './default/header/components/icon.component';
-import { HeaderFullScreenComponent } from './default/header/components/fullscreen.component';
-import { HeaderStorageComponent } from './default/header/components/storage.component';
-import { HeaderUserComponent } from './default/header/components/user.component';
-
 import { LayoutAdminComponent } from "./admin/admin.component";
 import { AdminHeaderComponent } from "./admin/header/header.component";
 import { AdminSidebarComponent } from "./admin/sidebar/sidebar.component";
+import { LayoutPassportComponent } from './passport/passport.component';
+import { HeaderNotifyComponent } from './admin/header/components/notify.component';
+import { HeaderIconComponent } from './admin/header/components/icon.component';
+import { HeaderUserComponent } from './admin/header/components/user.component';
+import { HeaderFullScreenComponent } from './admin/header/components/fullscreen.component';
+import { HeaderStorageComponent } from './admin/header/components/storage.component';
+
 
 const COMPONENTS = [
   LayoutDefaultComponent,
   LayoutFullScreenComponent,
-  HeaderComponent,
-  SidebarComponent,
   LayoutAdminComponent,
   AdminHeaderComponent,
   AdminSidebarComponent
 ];
 
 const HEADERCOMPONENTS = [
-  HeaderSearchComponent,
   HeaderNotifyComponent,
-  HeaderTaskComponent,
   HeaderIconComponent,
+  HeaderUserComponent,
   HeaderFullScreenComponent,
-  HeaderStorageComponent,
-  HeaderUserComponent
+  HeaderStorageComponent
 ];
 
 // passport
-import { LayoutPassportComponent } from './passport/passport.component';
-
 const PASSPORT = [
   LayoutPassportComponent
 ];

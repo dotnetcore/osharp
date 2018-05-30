@@ -356,9 +356,7 @@ export abstract class GridComponentBase {
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box .k-grid-content");
     let winWidth = window.innerWidth, winHeight = window.innerHeight;
-    console.log(winWidth + ' ' + winHeight);
     let otherHeight = $("admin-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
-    console.log(otherHeight);
     $content.height(winHeight - otherHeight);
   }
 
