@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -43,7 +44,7 @@ namespace OSharp.Demo.WebApi
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddOSharp();
 
@@ -83,10 +84,12 @@ namespace OSharp.Demo.WebApi
             else
             {
                 app.UseExceptionHandler();
+                app.UseHsts();
             }
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
+                //.UseHttpsRedirection()
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
                 .UseMvcWithAreaRoute().UseOSharp();
