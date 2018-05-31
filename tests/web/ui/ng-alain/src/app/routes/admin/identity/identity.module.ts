@@ -1,5 +1,5 @@
 import { NgModule, } from '@angular/core';
-import { AdminIdentityRoutingModule, } from './admin-identity.routing';
+import { IdentityRoutingModule, } from './identity.routing';
 import { UserComponent } from './user/user.component';
 import { RoleComponent } from './role/role.component';
 import { UserRoleComponent } from './user-role/user-role.component';
@@ -13,15 +13,15 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [
-    COMPONENTS
+    ...COMPONENTS
   ],
   imports: [
     SharedModule,
-    AdminIdentityRoutingModule,
+    IdentityRoutingModule,
   ],
   providers: [
     // TODO: and services
     // DemoService
   ]
 })
-export class AdminIdentityModule { }
+export class IdentityModule { }

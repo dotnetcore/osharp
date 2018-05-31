@@ -11,9 +11,9 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '信息汇总', reuse: true } },
-      { path: 'identity', loadChildren: './admin-identity/admin-identity.module#AdminIdentityModule' },
-      { path: 'security', loadChildren: './admin-security/admin-security.module#AdminSecurityModule' },
-      { path: 'system', loadChildren: './admin-system/admin-system.module#AdminSystemModule' },
+      { path: 'identity', loadChildren: '../admin/identity/identity.module#IdentityModule' },
+      { path: 'security', loadChildren: '../admin/security/security.module#SecurityModule' },
+      { path: 'system', loadChildren: '../admin/system/system.module#SystemModule' },
     ]
   }
 ];

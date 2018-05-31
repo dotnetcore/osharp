@@ -1,5 +1,5 @@
 import { NgModule, } from '@angular/core';
-import { SecurityRoutingModule, } from './admin-security.routing';
+import { SecurityRoutingModule, } from './security.routing';
 import { ModuleComponent } from './module/module.component';
 import { FunctionComponent } from './function/function.component';
 import { EntityinfoComponent } from './entityinfo/entityinfo.component';
@@ -30,4 +30,4 @@ const COMPONENTS = [
   providers: [
   ]
 })
-export class AdminSecurityModule { }
+export class SecurityModule { }

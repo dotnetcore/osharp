@@ -1,13 +1,21 @@
-<h1>Layout Default Component</h1>
-<ul>
-  <li>
-    <a [routerLink]="[ '/' ]">Home</a>
-  </li>
-  <li>
-    <a [routerLink]="[ '/identity' ]">Identity</a>
-  </li>
-  <li>
-    <a [routerLink]="[ '/admin' ]">Admin</a>
-  </li>
-</ul>
-<router-outlet></router-outlet>
+<nz-layout>
+  <nz-header>
+    Header
+  </nz-header>
+  <nz-content>
+    Content
+  </nz-content>
+  <nz-footer>
+    Footer
+  </nz-footer>
+</nz-layout>
+
+
+
+<!-- <div class="wrapper">
+  <div class="router-progress-bar" *ngIf="isFetching"></div>
+  <header class="header"></header>
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</div> -->

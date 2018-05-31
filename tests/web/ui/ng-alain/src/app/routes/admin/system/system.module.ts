@@ -1,5 +1,5 @@
 import { NgModule, Component, } from '@angular/core';
-import { SystemRoutingModule, } from './admin-system.routing';
+import { SystemRoutingModule, } from './system.routing';
 import { SettingsComponent } from './settings/settings.component';
 
 const COMPONENTS = [
@@ -16,4 +16,4 @@ const COMPONENTS = [
   providers: [
   ]
 })
-export class AdminSystemModule { }
+export class SystemModule { }
