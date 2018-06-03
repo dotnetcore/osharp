@@ -228,7 +228,7 @@ namespace OSharp.Core.Functions
             {
                 throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
             }
-            TFunction[] dbItems = repository.TrackQuery().ToArray();
+            TFunction[] dbItems = repository.TrackEntities.ToArray();
 
             //删除的功能
             TFunction[] removeItems = dbItems.Except(functions,
@@ -304,7 +304,7 @@ namespace OSharp.Core.Functions
         protected virtual TFunction[] GetFromDatabase(IServiceProvider scopedProvider)
         {
             IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
-            return repository.Query().ToArray();
+            return repository.Entities.ToArray();
         }
 
     }

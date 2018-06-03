@@ -37,7 +37,7 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             List<object> list = new List<object>();
 
-            list.Add(_entityRoleRepository.Query().Count());
+            list.Add(_entityRoleRepository.Entities.Count());
 
             return Content(list.ExpandAndToString("\r\n"));
         }

@@ -119,7 +119,7 @@ namespace OSharp.Core.EntityInfos
             {
                 throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
             }
-            TEntityInfo[] dbItems = repository.TrackQuery().ToArray();
+            TEntityInfo[] dbItems = repository.TrackEntities.ToArray();
 
             //删除的实体信息
             TEntityInfo[] removeItems = dbItems.Except(entityInfos, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
@@ -185,7 +185,7 @@ namespace OSharp.Core.EntityInfos
         protected virtual TEntityInfo[] GetFromDatabase(IServiceProvider scopedProvider)
         {
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
-            return repository.Query().ToArray();
+            return repository.Entities.ToArray();
         }
 
     }

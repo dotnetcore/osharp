@@ -31,7 +31,7 @@ namespace OSharp.Demo.Identity
         /// </summary>
         public IQueryable<UserRole> UserRoles
         {
-            get { return _userRoleRepository.Query(); }
+            get { return _userRoleRepository.Entities; }
         }
 
         /// <summary>

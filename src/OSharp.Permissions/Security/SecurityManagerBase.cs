@@ -94,7 +94,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TFunction> Functions
         {
-            get { return _functionRepository.Query(); }
+            get { return _functionRepository.Entities; }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TEntityInfo> EntityInfos
         {
-            get { return _entityInfoRepository.Query(); }
+            get { return _entityInfoRepository.Entities; }
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TModule> Modules
         {
-            get { return _moduleRepository.Query(); }
+            get { return _moduleRepository.Entities; }
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetModuleTreeIds(params TModuleKey[] rootIds)
         {
-            return rootIds.SelectMany(m => _moduleRepository.Query(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct().ToArray();
+            return rootIds.SelectMany(m => _moduleRepository.Entities.Where(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct().ToArray();
         }
 
         private static string GetModuleTreePath(TModuleKey currentId, string parentTreePath, string treePathItemFormat)
@@ -340,7 +340,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TModuleFunction> ModuleFunctions
         {
-            get { return _moduleFunctionRepository.Query(); }
+            get { return _moduleFunctionRepository.Entities; }
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
             }
 
-            Guid[] existFunctionIds = _moduleFunctionRepository.Query(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
+            Guid[] existFunctionIds = _moduleFunctionRepository.Entities.Where(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
             Guid[] addFunctionIds = functionIds.Except(existFunctionIds).ToArray();
             Guid[] removeFunctionIds = existFunctionIds.Except(functionIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -392,8 +392,8 @@ namespace OSharp.Security
                 {
                     continue;
                 }
-                TModuleFunction moduleFunction = _moduleFunctionRepository.Query(m => m.ModuleId.Equals(moduleId) && m.FunctionId == functionId)
-                    .FirstOrDefault();
+                TModuleFunction moduleFunction = _moduleFunctionRepository.Entities
+                    .FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.FunctionId == functionId);
                 if (moduleFunction == null)
                 {
                     continue;
@@ -419,7 +419,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TModuleRole> ModuleRoles
         {
-            get { return _moduleRoleRepository.Query(); }
+            get { return _moduleRoleRepository.Entities; }
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{roleId}”的角色信息不存在");
             }
 
-            TModuleKey[] existModuleIds = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).ToArray();
+            TModuleKey[] existModuleIds = _moduleRoleRepository.Entities.Where(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
             TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -471,7 +471,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleRole moduleRole = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId)).FirstOrDefault();
+                TModuleRole moduleRole = _moduleRoleRepository.Entities.FirstOrDefault(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId));
                 if (moduleRole == null)
                 {
                     continue;
@@ -496,7 +496,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetRoleModuleIds(TRoleKey roleId)
         {
-            TModuleKey[] moduleIds = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).Distinct().ToArray();
+            TModuleKey[] moduleIds = _moduleRoleRepository.Entities.Where(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).Distinct().ToArray();
             return GetModuleTreeIds(moduleIds);
         }
 
@@ -509,7 +509,7 @@ namespace OSharp.Security
         /// </summary>
         public IQueryable<TModuleUser> ModuleUsers
         {
-            get { return _moduleUserRepository.Query(); }
+            get { return _moduleUserRepository.Entities; }
         }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{userId}”的用户信息不存在");
             }
 
-            TModuleKey[] existModuleIds = _moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).ToArray();
+            TModuleKey[] existModuleIds = _moduleUserRepository.Entities.Where(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
             TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -561,7 +561,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleUser moduleUser = _moduleUserRepository.Query(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId)).FirstOrDefault();
+                TModuleUser moduleUser = _moduleUserRepository.Entities.FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId));
                 if (moduleUser == null)
                 {
                     continue;
@@ -585,7 +585,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetUserSelfModuleIds(TUserKey userId)
         {
-            TModuleKey[] moduleIds = _moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+            TModuleKey[] moduleIds = _moduleUserRepository.Entities.Where(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
             return GetModuleTreeIds(moduleIds);
         }
 
@@ -598,8 +598,8 @@ namespace OSharp.Security
         {
             TModuleKey[] selfModuleIds = GetUserSelfModuleIds(userId);
 
-            TRoleKey[] roleIds = _userRoleRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
-            TModuleKey[] roleModuleIds = roleIds.SelectMany(m => _moduleRoleRepository.Query(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
+            TRoleKey[] roleIds = _userRoleRepository.Entities.Where(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
+            TModuleKey[] roleModuleIds = roleIds.SelectMany(m => _moduleRoleRepository.Entities.Where(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
                 .Distinct().ToArray();
             roleModuleIds = GetModuleTreeIds(roleModuleIds);
 

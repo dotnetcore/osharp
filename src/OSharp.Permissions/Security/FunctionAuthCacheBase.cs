@@ -62,7 +62,7 @@ namespace OSharp.Security
             {
                 IServiceProvider scopedProvider = scope.ServiceProvider;
                 IRepository<TFunction, Guid> functionRepository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
-                functions = functionRepository.Query().ToArray();
+                functions = functionRepository.Entities.ToArray();
             }
             foreach (TFunction function in functions)
             {
@@ -113,12 +113,12 @@ namespace OSharp.Security
             {
                 IServiceProvider scopedProvider = scope.ServiceProvider;
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
-                TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
+                TModuleKey[] moduleIds = moduleFunctionRepository.Entities.Where(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
                     .ToArray();
                 IRepository<TModuleRole, Guid> moduleRoleRepository = scopedProvider.GetService<IRepository<TModuleRole, Guid>>();
-                TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+                TRoleKey[] roleIds = moduleRoleRepository.Entities.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
                 IRepository<TRole, TRoleKey> roleRepository = scopedProvider.GetService<IRepository<TRole, TRoleKey>>();
-                roleNames = roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
+                roleNames = roleRepository.Entities.Where(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             }
             if (roleNames.Length > 0)
             {
@@ -144,18 +144,18 @@ namespace OSharp.Security
             {
                 IServiceProvider scopedProvider = scope.ServiceProvider;
                 IRepository<TUser, TUserKey> userRepository = scopedProvider.GetService<IRepository<TUser, TUserKey>>();
-                TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
+                TUserKey userId = userRepository.Entities.Where(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
                 if (userId.Equals(default(TUserKey)))
                 {
                     return new Guid[0];
                 }
                 IRepository<TModuleUser, Guid> moduleUserRepository = scopedProvider.GetService<IRepository<TModuleUser, Guid>>();
-                TModuleKey[] moduleIds = moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+                TModuleKey[] moduleIds = moduleUserRepository.Entities.Where(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
                 IRepository<TModule, TModuleKey> moduleRepository = scopedProvider.GetService<IRepository<TModule, TModuleKey>>();
-                moduleIds = moduleIds.Select(m => moduleRepository.Query(n => n.TreePathString.Contains("$" + m + "$"))
+                moduleIds = moduleIds.Select(m => moduleRepository.Entities.Where(n => n.TreePathString.Contains("$" + m + "$"))
                     .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = scopedProvider.GetService<IRepository<TModuleFunction, Guid>>();
-                functionIds = moduleFunctionRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
+                functionIds = moduleFunctionRepository.Entities.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             }
             if (functionIds.Length > 0)
             {

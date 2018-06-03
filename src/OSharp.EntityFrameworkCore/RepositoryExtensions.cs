@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -41,7 +42,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return repository.TrackQuery(predicate).Delete(interceptAction);
+            return repository.TrackEntities.Where(predicate).Delete(interceptAction);
         }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await repository.TrackQuery(predicate).DeleteAsync(interceptAction);
+            return await repository.TrackEntities.Where(predicate).DeleteAsync(interceptAction);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return repository.TrackQuery(predicate).Update(updateExpression, interceptAction);
+            return repository.TrackEntities.Where(predicate).Update(updateExpression, interceptAction);
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await repository.TrackQuery(predicate).UpdateAsync(updateExpression, interceptAction);
+            return await repository.TrackEntities.Where(predicate).UpdateAsync(updateExpression, interceptAction);
         }
 
         /// <summary>

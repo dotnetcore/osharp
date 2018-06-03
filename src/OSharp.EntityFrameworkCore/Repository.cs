@@ -319,6 +319,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
         /// <returns></returns>
+        [Obsolete("使用属性“Entities”代替")]
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
@@ -330,6 +331,7 @@ namespace OSharp.Entity
         }
 
         /// <inheritdoc />
+        [Obsolete("使用方法“Include”代替")]
         public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
             return Include(includePropertySelectors);
@@ -358,6 +360,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
         /// <returns></returns>
+        [Obsolete("使用属性“TrackEntities”代替")]
         public IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate = null)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
@@ -369,6 +372,7 @@ namespace OSharp.Entity
         }
 
         /// <inheritdoc />
+        [Obsolete("使用方法“TrackInclude”代替")]
         public IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
             return TrackInclude(includePropertySelectors);

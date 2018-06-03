@@ -41,7 +41,7 @@ namespace OSharp.Demo.Identity.Events.Handlers
         /// <param name="eventData">事件源数据</param>
         public override void Handle(LogoutEventData eventData)
         {
-            LoginLog log = _loginLogRepository.Query(m => m.UserId == eventData.UserId).FirstOrDefault();
+            LoginLog log = _loginLogRepository.Entities.FirstOrDefault(m => m.UserId == eventData.UserId);
             if (log == null)
             {
                 return;

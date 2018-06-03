@@ -152,7 +152,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
         /// <returns></returns>
-        [Obsolete("使用属性“Entities”代替")]
+        [Obsolete("使用方法“Include”代替")]
         IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors);
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
         /// <returns></returns>
-        [Obsolete("使用属性“Entities”代替")]
+        [Obsolete("使用方法“TrackInclude”代替")]
         IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors);
 
         /// <summary>
