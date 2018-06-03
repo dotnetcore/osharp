@@ -51,6 +51,16 @@ namespace OSharp.Entity
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
 
+        /// <summary>
+        /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
+        /// </summary>
+        public IQueryable<TEntity> Entities => _dbSet.AsQueryable().AsNoTracking();
+
+        /// <summary>
+        /// 获取 <typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
+        /// </summary>
+        public IQueryable<TEntity> TrackEntities => _dbSet.AsQueryable();
+
         #region 同步方法
 
         /// <summary>
@@ -311,7 +321,7 @@ namespace OSharp.Entity
         /// <returns></returns>
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null)
         {
-            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
             if (predicate == null)
             {
                 return query;
@@ -322,7 +332,17 @@ namespace OSharp.Entity
         /// <inheritdoc />
         public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
-            IQueryable<TEntity> query = _dbSet.AsQueryable();
+            return Include(includePropertySelectors);
+        }
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可Include导航属性
+        /// </summary>
+        /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
+        /// <returns></returns>
+        public IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includePropertySelectors)
+        {
+            IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
             if (includePropertySelectors != null && includePropertySelectors.Length > 0)
             {
                 foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
@@ -350,6 +370,16 @@ namespace OSharp.Entity
 
         /// <inheritdoc />
         public IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
+        {
+            return TrackInclude(includePropertySelectors);
+        }
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可Include导航属性
+        /// </summary>
+        /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
+        /// <returns></returns>
+        public IQueryable<TEntity> TrackInclude(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
             if (includePropertySelectors != null && includePropertySelectors.Length > 0)
