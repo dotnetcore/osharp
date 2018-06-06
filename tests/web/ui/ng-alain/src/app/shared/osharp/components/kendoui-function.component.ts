@@ -3,10 +3,11 @@ import { GridComponentBase } from "../services/kendoui.service";
 
 @Component({
   selector: 'kendoui-function',
-  template: `<div id="grid-box"></div>`
+  template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 export class KendouiFunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {
 
+  @Input() ModuleName: string;
   @Input() ReadUrl: string;
   @Input() TypeId: any;
   @Output() TypeIdChange: EventEmitter<kendo.ui.Grid> = new EventEmitter<kendo.ui.Grid>();
@@ -16,6 +17,7 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
 
   ngOnInit(): void {
+    this.moduleName = this.ModuleName;
     super.InitBase();
   }
   ngAfterViewInit(): void {
@@ -66,7 +68,7 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
     $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
   }
   protected ResizeGrid(init: boolean) {
-    let $content = $("kendoui-function #grid-box .k-grid-content");
+    let $content = $("kendoui-function #grid-box-" + this.moduleName + " .k-grid-content");
     $content.height(740);
   }
 }

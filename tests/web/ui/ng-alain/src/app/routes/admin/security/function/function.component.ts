@@ -4,7 +4,7 @@ import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 
 @Component({
   selector: 'admin-security-function',
-  template: `<div id="grid-box"></div>`
+  template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 
 export class FunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {

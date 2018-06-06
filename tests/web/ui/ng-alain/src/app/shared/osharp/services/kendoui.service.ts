@@ -3,6 +3,7 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { Group, Rule } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
+import { NzModalService } from 'ng-zorro-antd';
 
 @Injectable()
 export class KendouiService {
@@ -252,7 +253,7 @@ export abstract class GridComponentBase {
   }
 
   protected GridInit() {
-    const $grid = $($(this.element.nativeElement).find("#grid-box"));
+    const $grid = $($(this.element.nativeElement).find("#grid-box-" + this.moduleName));
     this.grid = new kendo.ui.Grid($grid, this.gridOptions);
     this.ResizeGrid(true);
     window.addEventListener('keydown', e => this.KeyDownEvent(e));
@@ -354,14 +355,15 @@ export abstract class GridComponentBase {
 
   /**重置Grid高度 */
   protected ResizeGrid(init: boolean) {
-    const $content = $("#grid-box .k-grid-content");
+    const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
     let winWidth = window.innerWidth, winHeight = window.innerHeight;
     let otherHeight = $("admin-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
     $content.height(winHeight - otherHeight);
   }
 
   private KeyDownEvent(e) {
-    if (!this.grid) {
+    let els = $(this.element.nativeElement).parent().find("#grid-box-" + this.moduleName);
+    if (!els.length || !this.grid) {
       return;
     }
     const key = e.keyCode;

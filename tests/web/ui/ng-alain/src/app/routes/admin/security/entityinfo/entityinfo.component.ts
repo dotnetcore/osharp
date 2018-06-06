@@ -3,7 +3,7 @@ import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 
 @Component({
   selector: 'admin-security-entityinfo',
-  template: `<div id="grid-box"></div>`
+  template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 export class EntityinfoComponent extends GridComponentBase implements OnInit, AfterViewInit {
 

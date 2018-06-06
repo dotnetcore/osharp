@@ -3,7 +3,7 @@ import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 
 @Component({
   selector: 'admin-identity-user-role',
-  template: `<div id="grid-box"></div>`
+  template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 export class UserRoleComponent extends GridComponentBase implements OnInit, AfterViewInit {
 
