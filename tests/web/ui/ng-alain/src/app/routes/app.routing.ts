@@ -21,44 +21,31 @@ import { LayoutDefaultComponent } from '../layout/default/default.component';
 
 const routes: Routes = [
   {
-    path: '', component: LayoutDefaultComponent, children: [
+    path: '',
+    component: LayoutDefaultComponent,
+    children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent, data: { title: '首页' } },
+      { path: 'home', component: HomeComponent, data: { title: '网站首页' } },
     ]
   },
   { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
   { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
-  { path: '**', redirectTo: 'home' }
-  // { path: '', redirectTo: 'home', pathMatch: 'full' },
-  // { path: 'home', component: HomeComponent, data: { title: '首页' } },
-  // { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
-  // { path: 'admin', loadChildren: './admin/admin.module#AdminModule' }
-  // {
-  //   path: '',
-  //   component: LayoutDefaultComponent,
-  //   children: [
-  //     { path: '', redirectTo: 'home', pathMatch: 'full' },
-  //     { path: 'home', component: HomeComponent, data: { title: '网站首页' } },
-  //     { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
-  //   ]
-  // },
-  // { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
-  // {
-  //   path: 'passport',
-  //   component: LayoutPassportComponent,
-  //   children: [
-  //     { path: 'login', component: UserLoginComponent, data: { title: '登录', titleI18n: 'pro-login' } },
-  //     { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
-  //     { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: 'pro-register-result' } }
-  //   ]
-  // },
-  // // 单页不包裹Layout
-  // { path: 'callback/:type', component: CallbackComponent },
-  // { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: 'lock' } },
-  // { path: '403', component: Exception403Component },
-  // { path: '404', component: Exception404Component },
-  // { path: '500', component: Exception500Component },
-  // { path: '**', redirectTo: 'dashboard' }
+  {
+    path: 'passport',
+    component: LayoutPassportComponent,
+    children: [
+      { path: 'login', component: UserLoginComponent, data: { title: '登录', titleI18n: 'pro-login' } },
+      { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
+      { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: 'pro-register-result' } }
+    ]
+  },
+  // 单页不包裹Layout
+  { path: 'callback/:type', component: CallbackComponent },
+  { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: 'lock' } },
+  { path: '403', component: Exception403Component, data: { title: '无权访问该页面' } },
+  { path: '404', component: Exception404Component, data: { title: '页面不存在' } },
+  { path: '500', component: Exception500Component, data: { title: '服务器内部错误' } },
+  { path: '**', redirectTo: 'dashboard' }
 ];
 
 @NgModule({

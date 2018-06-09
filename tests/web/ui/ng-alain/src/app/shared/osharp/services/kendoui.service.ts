@@ -223,7 +223,7 @@ export class KendouiService {
 
 export abstract class GridComponentBase {
 
-  protected moduleName: string = null;
+  public moduleName: string = null;
   public gridOptions: kendo.ui.GridOptions = null;
   public grid: kendo.ui.Grid = null;
 
@@ -357,13 +357,17 @@ export abstract class GridComponentBase {
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
     let winWidth = window.innerWidth, winHeight = window.innerHeight;
-    let otherHeight = $("admin-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
+    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
     $content.height(winHeight - otherHeight);
   }
 
-  private KeyDownEvent(e) {
+  protected InValidTab() {
     let els = $(this.element.nativeElement).parent().find("#grid-box-" + this.moduleName);
-    if (!els.length || !this.grid) {
+    return els && els.length > 0;
+  }
+
+  private KeyDownEvent(e) {
+    if (!this.InValidTab() || !this.grid) {
       return;
     }
     const key = e.keyCode;
@@ -373,6 +377,8 @@ export abstract class GridComponentBase {
       this.grid.dataSource.read();
     }
   }
+
+
 }
 
 

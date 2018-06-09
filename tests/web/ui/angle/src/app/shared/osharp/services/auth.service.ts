@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private http: HttpClient, private authToken: AuthTokenService) { }
 
   login(dto: LoginDto) {
-    let url = "/api/identity/token";
+    let url = "/api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type == AjaxResultType.Success) {
         this.authToken.set(result.Data);

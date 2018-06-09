@@ -63,6 +63,11 @@ namespace OSharp.Identity
         public bool PhoneNumberConfirmed { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否启用登录锁
+        /// </summary>
+        public bool LockoutEnabled { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }

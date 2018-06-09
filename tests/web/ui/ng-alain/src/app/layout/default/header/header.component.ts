@@ -6,10 +6,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  templateUrl: './header.component.html'
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class DefaultHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {

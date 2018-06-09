@@ -1,5 +1,6 @@
-declare var Buffer: any;
+import { Buffer } from "buffer";
 
+//#region OSharp Tools
 export class AjaxResult {
   Type: AjaxResultType;
   Content?: string;
@@ -43,14 +44,14 @@ export class Group {
   operate = 'and';
   groups: Group[] = [];
 }
+//#endregion
 
-
-// Identity Model
+//#region Identity Model
 export class LoginDto {
   Account: string;
   Password: string;
   VerifyCode: string;
-  Remember: boolean;
+  Remember = true;
   ReturnUrl: string;
 }
 export class RegisterDto {
@@ -121,3 +122,14 @@ export class User {
     return new Buffer(base64, 'base64').toString();
   }
 }
+//#endregion
+
+//#region delon
+
+export class AdResultDto {
+  type: string;
+  title: string;
+  description: string;
+}
+
+//#endregion

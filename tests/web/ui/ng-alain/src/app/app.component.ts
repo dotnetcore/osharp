@@ -1,35 +1,26 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { SettingsService, TitleService } from '@delon/theme';
+import { Component } from '@angular/core';
+import { Router, NavigationEnd, RouteConfigLoadStart, NavigationError } from '@angular/router';
+import { SettingsService, TitleService, ScrollService } from '@delon/theme';
 import { filter } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`,
+  template: `
+  <router-outlet></router-outlet>
+  `,
 })
-export class AppComponent implements OnInit {
-  @HostBinding('class.layout-fixed')
-  get isFixed() {
-    return this.settings.layout.fixed;
-  }
-  @HostBinding('class.layout-boxed')
-  get isBoxed() {
-    return this.settings.layout.boxed;
-  }
-  @HostBinding('class.aside-collapsed')
-  get isCollapsed() {
-    return this.settings.layout.collapsed;
-  }
+export class AppComponent {
+  isFetching = false;
 
   constructor(
-    private settings: SettingsService,
-    private router: Router,
-    private titleSrv: TitleService,
-  ) {}
-
-  ngOnInit() {
-    this.router.events
+    router: Router,
+    private titleSrv: TitleService
+  ) {
+    router.events
       .pipe(filter(evt => evt instanceof NavigationEnd))
-      .subscribe(() => this.titleSrv.setTitle());
+      .subscribe(evt => {
+        this.titleSrv.setTitle();
+      });
   }
 }

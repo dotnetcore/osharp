@@ -98,6 +98,7 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 User user = result.Data;
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = UrlBase64ReplaceChar(code);
                 string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
                 string body =
                     $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
@@ -141,7 +142,7 @@ namespace OSharp.Demo.WebApi.Controllers
 
         [HttpPost]
         [Description("JWT登录")]
-        public async Task<IActionResult> Token([FromBody]LoginDto dto)
+        public async Task<IActionResult> Jwtoken([FromBody]LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -218,7 +219,8 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 return Json(new AjaxResult("注册邮箱已激活，操作取消", AjaxResultType.Info));
             }
-            IdentityResult result = await _userManager.ConfirmEmailAsync(user, dto.Code);
+            string code = UrlBase64ReplaceChar(dto.Code);
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
             return Json(result.ToOperationResult().ToAjaxResult());
         }
 
@@ -241,6 +243,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 return Json(new AjaxResult("Email已激活，无需再次激活", AjaxResultType.Info));
             }
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = UrlBase64ReplaceChar(code);
             string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
             string body =
                 $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，你好！<br>"
@@ -284,6 +287,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 return Json(new AjaxResult("用户不存在", AjaxResultType.Error));
             }
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            token = UrlBase64ReplaceChar(token);
             IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
             string url = $"{Request.Scheme}://{Request.Host}/#/identity/reset-password?userId={user.Id}&token={token}";
             string body = $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
@@ -307,7 +311,8 @@ namespace OSharp.Demo.WebApi.Controllers
             {
                 return Json(new AjaxResult($"用户不存在", AjaxResultType.Error));
             }
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+            string token = UrlBase64ReplaceChar(dto.Token);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, dto.NewPassword);
 
             return Json(result.ToOperationResult().ToAjaxResult());
         }
@@ -316,6 +321,19 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
             await sender.SendEmailAsync(email, subject, body);
+        }
+
+        private static string UrlBase64ReplaceChar(string source)
+        {
+            if (source.Contains('+') || source.Contains('/'))
+            {
+                return source.Replace('+', '-').Replace('/', '_');
+            }
+            if (source.Contains('-') || source.Contains('_'))
+            {
+                return source.Replace('-', '+').Replace('_', '/');
+            }
+            return source;
         }
     }
 }

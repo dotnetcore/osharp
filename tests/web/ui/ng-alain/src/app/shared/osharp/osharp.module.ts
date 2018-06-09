@@ -18,7 +18,7 @@ const COMPONENTS = [
   KendouiSplitterComponent,
   KendouiTabstripComponent,
   KendouiTreeviewComponent,
-  KendouiWindowComponent
+  KendouiWindowComponent,
 ];
 
 const SERVICES = [

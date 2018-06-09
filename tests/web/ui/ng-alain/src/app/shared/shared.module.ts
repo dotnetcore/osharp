@@ -17,7 +17,7 @@ import { OsharpModule } from "./osharp/osharp.module";
 const THIRDMODULES = [
   NgZorroAntdModule,
   CountdownModule,
-  OsharpModule
+  OsharpModule,
 ];
 // endregion
 

@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { ListNode, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
-declare var Buffer: any;
+import { Buffer } from "buffer";
 
 @Injectable()
 export class OsharpService {
@@ -93,6 +93,12 @@ export class OsharpService {
       "click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null
     );
     saveLink.dispatchEvent(ev);
+  }
+  /**打开Email的网站 */
+  openMailSite(email: string) {
+    let host = this.subStr(email, "@");
+    let url = `http://mail.${host}`;
+    window.open(url);
   }
 
   ajaxResult(res, onSuccess?, onFail?) {

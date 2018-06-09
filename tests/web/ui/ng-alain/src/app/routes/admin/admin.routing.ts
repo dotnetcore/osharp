@@ -1,13 +1,13 @@
 import { NgModule, } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LayoutAdminComponent } from '../../layout/admin/admin.component';
 import { MenuService } from '@delon/theme';
 import { adminMenu } from "./admin-menu";
+import { AdminLayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   {
-    path: '', component: LayoutAdminComponent,
+    path: '', component: AdminLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '信息汇总', reuse: true } },

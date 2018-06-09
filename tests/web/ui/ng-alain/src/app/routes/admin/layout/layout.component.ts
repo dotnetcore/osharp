@@ -1,15 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding, } from '@angular/core';
+import { SettingsService, ScrollService, MenuService } from '@delon/theme';
 import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
-import { ScrollService, MenuService, SettingsService } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
-  selector: 'layout-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ["./admin.component.css"]
+  selector: 'admin-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.css']
 })
-export class LayoutAdminComponent {
+export class AdminLayoutComponent {
   isFetching = false;
+
+  @HostBinding('class.layout-fixed')
+  get isFixed() {
+    return this.settings.layout.fixed;
+  }
+  @HostBinding('class.layout-boxed')
+  get isBoxed() {
+    return this.settings.layout.boxed;
+  }
+  @HostBinding('class.aside-collapsed')
+  get isCollapsed() {
+    return this.settings.layout.collapsed;
+  }
 
   constructor(
     router: Router,
@@ -18,14 +31,12 @@ export class LayoutAdminComponent {
     public menuSrv: MenuService,
     public settings: SettingsService,
   ) {
-    // scroll to top in change page
     router.events.subscribe(evt => {
       if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
         this.isFetching = true;
       }
       if (evt instanceof NavigationError) {
         this.isFetching = false;
-        console.log(evt);
         _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
         return;
       }

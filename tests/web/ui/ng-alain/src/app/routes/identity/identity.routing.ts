@@ -19,7 +19,7 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent, data: { title: '用户登录' } },
       { path: 'register', component: RegisterComponent, data: { title: '新用户注册' } },
       { path: 'confirm-email', component: ConfirmEmailComponent, data: { title: '注册邮箱激活' } },
-      { path: 'send-confirm-email', component: SendConfirmMailComponent, data: { title: '重发激活邮件' } },
+      { path: 'send-confirm-mail', component: SendConfirmMailComponent, data: { title: '重发激活邮件' } },
       { path: 'forgot-password', component: ForgotPasswordComponent, data: { title: '找回登录密码' } },
       { path: 'reset-password', component: ResetPasswordComponent, data: { title: '重置登录密码' } },
     ]

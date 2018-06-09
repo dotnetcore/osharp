@@ -52,7 +52,7 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
         EmailConfirmed: { type: "boolean" },
         PhoneNumber: { type: "string" },
         PhoneNumberConfirmed: { type: "boolean" },
-        LockoutEnabled: { type: "boolean", editable: false },
+        LockoutEnabled: { type: "boolean" },
         LockoutEnd: { type: "date", editable: false },
         AccessFailedCount: { type: "number", editable: false },
         CreatedTime: { type: "date", editable: false },
@@ -118,6 +118,7 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
         title: "登录锁",
         width: 90,
         template: d => this.kendoui.Boolean(d.LockoutEnabled),
+        editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       }, {
         field: "LockoutEnd",
         title: "锁时间",

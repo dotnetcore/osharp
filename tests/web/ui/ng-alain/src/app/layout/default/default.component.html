@@ -4,18 +4,12 @@
   </nz-header>
   <nz-content>
     Content
+    <a [routerLink]="[ '/identity/login' ]">登录</a>
+    <a [routerLink]="[ '/identity/register' ]">注册</a>
+    <a [routerLink]="[ '/admin' ]">Admin</a>
+    <p *ngIf="user"> {{user.name}} - {{user.email}} </p>
   </nz-content>
   <nz-footer>
     Footer
   </nz-footer>
 </nz-layout>
-
-
-
-<!-- <div class="wrapper">
-  <div class="router-progress-bar" *ngIf="isFetching"></div>
-  <header class="header"></header>
-  <section class="content">
-    <router-outlet></router-outlet>
-  </section>
-</div> -->
