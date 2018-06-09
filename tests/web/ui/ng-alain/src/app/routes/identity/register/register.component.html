@@ -60,7 +60,6 @@
       </button>
       <a class="login" [routerLink]="[ '/identity/login' ]">已有账号，立即登录</a>
     </nz-form-item>
-    <nz-alert *ngIf="error" nzType="error" nzMessage="{{error}}" [nzShowIcon]="true" class="mb-lg"></nz-alert>
   </form>
 </div>
 <result *ngIf="sended" type="{{result.type}}" [title]="result.title" description="{{result.description}}">

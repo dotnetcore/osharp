@@ -20,11 +20,10 @@
         </nz-col>
       </nz-row>
     </nz-form-item>
-    <nz-alert *ngIf="message!=null" nzType="{{messageType}}" nzMessage="{{message}}" [nzShowIcon]="true" class="mb-lg"></nz-alert>
   </form>
 </div>
 <result *ngIf="sended" type="{{result.type}}" [title]="result.title" description="{{result.description}}">
   <button nz-button [nzType]="'primary'" (click)="sended=false;">返回</button>
-  <button nz-button (click)="osharp.openMailSite(dto.Email)">进入邮箱</button>
+  <button *ngIf="result.type=='success'" nz-button (click)="osharp.openMailSite(dto.Email)">进入邮箱</button>
   <button nz-button (click)="router.navigate(['home'])">返回首页</button>
 </result>

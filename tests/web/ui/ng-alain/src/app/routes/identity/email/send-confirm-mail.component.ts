@@ -18,8 +18,8 @@ export class SendConfirmMailComponent {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private osharp: OsharpService
+    public router: Router,
+    public osharp: OsharpService
   ) { }
 
   submitForm() {

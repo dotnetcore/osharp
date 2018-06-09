@@ -14,7 +14,7 @@ export class LoginComponent {
 
   dto: LoginDto = new LoginDto();
   canSubmit = true;
-  resendConfirmMail = true;
+  resendConfirmMail = false;
   error: string;
 
   constructor(

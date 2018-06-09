@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { ConfirmEmailDto, AjaxResult, AjaxResultType, AdResultDto } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -6,29 +6,27 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Component({
   selector: 'app-identity-confirm-email',
-  // template: `
-  // <h3 class="text-center" style="font-size: 20px; margin-bottom: 20px;">激活邮箱</h3>
-  // <nz-alert nzType="{{messageType}}" nzMessage="{{message}}" [nzShowIcon]="true" class="mb-lg"></nz-alert>
-  // `,
-  templateUrl: './confirm-email.component.html'
+  template: `
+  <result type="{{result.type}}" [title]="result.title" description="{{result.description}}">
+    <button nz-button [nzType]="'primary'" (click)="router.navigate(['identity/login'])">立即登录</button>
+    <button nz-button (click)="router.navigate(['home'])">返回首页</button>
+  </result>
+  `,
 })
-export class ConfirmEmailComponent implements OnInit, AfterViewInit {
+export class ConfirmEmailComponent implements OnInit {
 
   dto: ConfirmEmailDto = new ConfirmEmailDto();
   result: AdResultDto = new AdResultDto();
 
   constructor(
     private http: HttpClient,
-    private router: Router,
+    public router: Router,
     private osharp: OsharpService
   ) { }
 
   ngOnInit(): void {
     this.getUrlParams();
     this.result.title = "正在激活注册邮箱……";
-  }
-
-  ngAfterViewInit(): void {
     this.confirmEmail();
   }
 
@@ -44,7 +42,7 @@ export class ConfirmEmailComponent implements OnInit, AfterViewInit {
         this.result.type = "error";
         this.result.title = "注册邮箱激活失败";
         if (res.Type == AjaxResultType.Info) {
-          this.result.type = 'info-circle-o';
+          this.result.type = 'minus-circle-o';
         }
         this.result.title = "注册邮箱激活取消";
         this.result.description = res.Content;
