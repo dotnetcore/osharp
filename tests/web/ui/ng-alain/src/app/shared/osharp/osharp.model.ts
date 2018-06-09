@@ -126,7 +126,7 @@ export class User {
 
 //#region delon
 
-export class AdResultDto {
+export class AdResult {
   type: string;
   title: string;
   description: string;

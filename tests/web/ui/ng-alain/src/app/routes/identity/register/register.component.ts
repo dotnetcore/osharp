@@ -1,8 +1,7 @@
 import { Component, } from '@angular/core';
 import { IdentityService } from '../shared/identity.service';
 
-import { RegisterDto, AjaxResultType, AdResultDto } from '@shared/osharp/osharp.model';
-import { NzMessageService } from 'ng-zorro-antd';
+import { RegisterDto, AdResult } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 
@@ -14,15 +13,14 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 export class RegisterComponent {
 
   dto: RegisterDto = new RegisterDto();
-  result: AdResultDto = new AdResultDto();
+  result: AdResult = new AdResult();
 
   canSubmit = true;
   sended = false;
 
   constructor(
-    private msgSrv: NzMessageService,
     private _service: IdentityService,
-    private osharp: OsharpService,
+    public osharp: OsharpService,
     private router: Router
   ) { }
 
@@ -30,16 +28,8 @@ export class RegisterComponent {
     this.canSubmit = false;
     this._service.register(this.dto).then(res => {
       this.sended = true;
-      if (res.Type == AjaxResultType.Success) {
-        this.result.type = "success";
-        this.result.title = "新用户注册成功";
-        this.result.description = `你的账户：${this.dto.UserName}[${this.dto.NickName}] 注册成功，请及时登录邮箱 ${this.dto.Email} 接收邮件激活账户。`;
-        return;
-      }
       this.canSubmit = true;
-      this.result.type = 'error';
-      this.result.title = "用户注册失败";
-      this.result.description = res.Content;
+      this.result = res;
     }).catch(e => {
       this.canSubmit = true;
       console.error(e);

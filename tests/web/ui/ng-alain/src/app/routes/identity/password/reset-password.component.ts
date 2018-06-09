@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ResetPasswordDto, AdResultDto, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
+import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { IdentityService } from '../shared/identity.service';
 
 @Component({
   selector: 'app-identity-reset-password',
@@ -11,14 +12,14 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 export class ResetPasswordComponent implements OnInit {
 
   dto: ResetPasswordDto = new ResetPasswordDto();
-  result: AdResultDto = new AdResultDto();
+  result: AdResult = new AdResult();
   canSubmit = true;
   sended = false;
 
   constructor(
-    private http: HttpClient,
     public router: Router,
-    private osharp: OsharpService
+    private osharp: OsharpService,
+    private identity: IdentityService
   ) { }
 
   ngOnInit(): void {
@@ -33,18 +34,10 @@ export class ResetPasswordComponent implements OnInit {
 
   submitForm() {
     this.canSubmit = false;
-    this.http.post('api/identity/ResetPassword', this.dto).subscribe((res: AjaxResult) => {
+    this.identity.resetPassword(this.dto).then(res => {
       this.sended = true;
       this.canSubmit = true;
-      if (res.Type != AjaxResultType.Success) {
-        this.result.type = 'error';
-        this.result.title = '登录密码重置失败';
-        this.result.description = res.Content;
-        return;
-      }
-      this.result.type = "success";
-      this.result.title = '登录密码重置成功';
-      this.result.description = "登录密码重置成功，请使用新密码登录系统。";
+      this.result = res;
     });
   }
 }

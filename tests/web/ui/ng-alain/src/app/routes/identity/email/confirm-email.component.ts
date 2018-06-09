@@ -1,8 +1,9 @@
 import { Component, OnInit, } from '@angular/core';
-import { ConfirmEmailDto, AjaxResult, AjaxResultType, AdResultDto } from '@shared/osharp/osharp.model';
+import { ConfirmEmailDto, AjaxResult, AjaxResultType, AdResult } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { IdentityService } from '../shared/identity.service';
 
 @Component({
   selector: 'app-identity-confirm-email',
@@ -16,12 +17,12 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 export class ConfirmEmailComponent implements OnInit {
 
   dto: ConfirmEmailDto = new ConfirmEmailDto();
-  result: AdResultDto = new AdResultDto();
+  result: AdResult = new AdResult();
 
   constructor(
-    private http: HttpClient,
     public router: Router,
-    private osharp: OsharpService
+    private osharp: OsharpService,
+    private identity: IdentityService
   ) { }
 
   ngOnInit(): void {
@@ -37,20 +38,8 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   private confirmEmail() {
-    this.http.post('api/identity/ConfirmEmail', this.dto).subscribe((res: AjaxResult) => {
-      if (res.Type != AjaxResultType.Success) {
-        this.result.type = "error";
-        this.result.title = "注册邮箱激活失败";
-        if (res.Type == AjaxResultType.Info) {
-          this.result.type = 'minus-circle-o';
-        }
-        this.result.title = "注册邮箱激活取消";
-        this.result.description = res.Content;
-        return;
-      }
-      this.result.type = "success";
-      this.result.title = "注册邮箱激活成功";
-      this.result.description = res.Content;
+    this.identity.confirmEmail(this.dto).then(res => {
+      this.result = res;
     });
   }
 }

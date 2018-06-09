@@ -1,32 +1,35 @@
-<form nz-form (ngSubmit)="submitForm()" role="form" #form="ngForm">
-  <nz-form-item>
-    <nz-form-control>
-      <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
-        <input nz-input [(ngModel)]="dto.Account" name="account" placeholder="用户名/邮箱/手机号" required #account="ngModel">
-      </nz-input-group>
-      <nz-form-explain *ngIf="(account.dirty || account.touched) && account.errors?.required">请输入登录账号</nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control>
-      <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
-        <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="登录密码" required #password="ngModel">
-      </nz-input-group>
-      <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.required">请输入登录密码</nz-form-explain>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control>
-      <label nz-checkbox [(ngModel)]="dto.Remember" name="remember">记住登录</label>
-      <a [routerLink]="[ '/identity/forgot-password' ]" class="login-form-forgot">忘记密码</a>
-      <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!(form.form.valid && canSubmit)">
-        <i class="anticon anticon-login"></i>登录
-      </button>
-      <a [routerLink]="[ '/identity/register' ]">注册新账号</a>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-alert *ngIf="error" nzType="error" nzMessage="{{error}}" [nzShowIcon]="true" class="mb-lg"></nz-alert>
-  <p class="text-center">
-    <a *ngIf="resendConfirmMail" href="/#/identity/send-confirm-mail">重发激活邮件</a>
-  </p>
-</form>
+<div class="identity-box">
+  <form nz-form (ngSubmit)="submitForm()" role="form" #form="ngForm">
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+          <input nz-input [(ngModel)]="dto.Account" name="account" placeholder="用户名/邮箱/手机号" required #account="ngModel">
+        </nz-input-group>
+        <nz-form-explain *ngIf="(account.dirty || account.touched) && account.errors?.required">请输入登录账号</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
+          <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="登录密码" required #password="ngModel">
+        </nz-input-group>
+        <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.required">请输入登录密码</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <label nz-checkbox [(ngModel)]="dto.Remember" name="remember">记住登录</label>
+        <a [routerLink]="[ '/identity/forgot-password' ]" class="login-form-forgot">忘记密码</a>
+        <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!(form.form.valid && canSubmit)">
+          <i class="anticon anticon-login"></i>登录
+        </button>
+        <a [routerLink]="[ '/identity/register' ]">注册新账号</a>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-alert *ngIf="error" nzType="error" nzMessage="{{error}}" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+    <p class="text-center">
+      <a *ngIf="resendConfirmMail" href="/#/identity/send-confirm-mail">重发激活邮件</a>
+    </p>
+  </form>
+
+</div>

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { SendMailDto, AjaxResult, AjaxResultType, AdResultDto } from '@shared/osharp/osharp.model';
-import { HttpClient } from '@angular/common/http';
+import { SendMailDto, AjaxResult, AjaxResultType, AdResult } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { IdentityService } from '../shared/identity.service';
 
 @Component({
   selector: 'app-identity-send-confirm-mail',
@@ -12,30 +12,22 @@ export class SendConfirmMailComponent {
 
   title = "重发注册邮箱激活邮件";
   dto: SendMailDto = new SendMailDto();
-  result: AdResultDto = new AdResultDto();
+  result: AdResult = new AdResult();
   canSubmit = true;
   sended = false;
 
   constructor(
-    private http: HttpClient,
     public router: Router,
-    public osharp: OsharpService
+    public osharp: OsharpService,
+    private identity: IdentityService
   ) { }
 
   submitForm() {
     this.canSubmit = false;
-    this.http.post('api/identity/SendConfirmMail', this.dto).subscribe((res: AjaxResult) => {
-      this.sended = true;
+    this.identity.sendConfirmMail(this.dto).then(res => {
       this.canSubmit = true;
-      if (res.Type != AjaxResultType.Success) {
-        this.result.type = 'error';
-        this.result.title = '重发激活邮件失败';
-        this.result.description = res.Content;
-        return;
-      }
-      this.result.type = "success";
-      this.result.title = '重发激活邮件成功';
-      this.result.description = `注册邮箱激活邮件发送成功，请登录邮箱“${this.dto.Email}”收取邮件进行后续步骤`;
+      this.sended = true;
+      this.result = res;
     });
   }
 }
