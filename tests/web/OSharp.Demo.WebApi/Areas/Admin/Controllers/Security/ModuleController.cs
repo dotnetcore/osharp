@@ -15,7 +15,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
@@ -30,9 +29,8 @@ using OSharp.Filter;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-模块信息")]
-    public class ModuleController : AreaApiController
+    public class ModuleController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
 

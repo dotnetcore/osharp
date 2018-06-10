@@ -107,6 +107,11 @@ namespace OSharp.Core.Functions
             }
         }
 
+        public void ClearCache()
+        {
+            _functions.Clear();
+        }
+
         /// <summary>
         /// 从功能类型中获取功能信息
         /// </summary>

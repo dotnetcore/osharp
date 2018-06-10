@@ -10,7 +10,7 @@
 namespace OSharp.Audits
 {
     /// <summary>
-    /// 实体类：实体属性审计信息
+    /// 实体属性审计信息
     /// </summary>
     public class AuditEntityProperty
     {

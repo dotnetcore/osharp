@@ -17,9 +17,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Http;
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Core;
 using OSharp.Data;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
@@ -64,6 +66,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [Description("用户Email是否不存在")]
+        [Logined]
         public IActionResult CheckEmailNotExists(string email)
         {
             bool exists = !_userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
@@ -173,6 +176,7 @@ namespace OSharp.Demo.WebApi.Controllers
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.GivenName, user.NickName ?? user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.HeadImage, user.HeadImg ?? ""),
                 new Claim(JwtClaimTypes.SecurityStamp, user.SecurityStamp),
                 new Claim(JwtClaimTypes.IsAdmin, isAdmin.ToLower()),
                 new Claim(ClaimTypes.Role, roles.ExpandAndToString())
@@ -181,24 +185,18 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json(new AjaxResult("登录成功", AjaxResultType.Success, token));
         }
 
-        [Description("用户信息")]
-        public IActionResult UserProfile()
+        [HttpPost]
+        [Description("用户登出")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        public async Task<IActionResult> Logout()
         {
-            if (!User.Identity.IsAuthenticated || !(User.Identity is ClaimsIdentity identity))
+            if (!User.Identity.IsAuthenticated)
             {
-                return Json(null);
+                return Json(new AjaxResult("用户登出成功"));
             }
-            int userId = identity.GetUserId<int>();
-            string userName = identity.GetUserName();
-            string email = identity.GetEmail();
-            string nickName = identity.GetNickName();
-            string[] roles = identity.GetRoles().ToArray();
-            var data = new
-            {
-                User = new { UserId = userId, UserName = userName, NickName = nickName, Email = email, Roles = roles },
-                SessionId = HttpContext.Session.Id
-            };
-            return Json(data);
+            int userId = User.Identity.GetUserId<int>();
+            OperationResult result = await _identityContract.Logout(userId);
+            return Json(result.ToAjaxResult());
         }
 
         [HttpPost]
@@ -256,6 +254,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [Logined]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("修改密码")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)

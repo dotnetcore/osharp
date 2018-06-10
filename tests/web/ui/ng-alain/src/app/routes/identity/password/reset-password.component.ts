@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';

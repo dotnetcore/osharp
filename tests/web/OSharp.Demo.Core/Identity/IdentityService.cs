@@ -154,6 +154,11 @@ namespace OSharp.Demo.Identity
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, $"用户 {userId} 登出系统");
+
+            //触发登出成功事件
+            LogoutEventData logoutEventData = new LogoutEventData(){UserId = userId};
+            _eventBus.PublishSync(logoutEventData);
+
             return OperationResult.Success;
         }
 

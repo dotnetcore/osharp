@@ -16,10 +16,11 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
-using OSharp.Core;
 using OSharp.Data;
 using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Identity;
@@ -34,10 +35,8 @@ using OSharp.Mapping;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    //[RoleLimit]
     [Description("管理-角色信息")]
-    public class RoleController : AreaApiController
+    public class RoleController : AdminApiController
     {
         private readonly RoleManager<Role> _roleManager;
         private readonly SecurityManager _securityManager;

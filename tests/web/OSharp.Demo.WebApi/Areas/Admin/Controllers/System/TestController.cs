@@ -11,14 +11,11 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 
-using Microsoft.AspNetCore.Mvc;
-
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-测试")]
-    public class TestController : AreaApiController
+    public class TestController : AdminApiController
     {
         public string[] GetLines()
         {

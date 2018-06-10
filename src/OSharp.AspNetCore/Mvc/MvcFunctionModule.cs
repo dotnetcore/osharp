@@ -8,9 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 
 
@@ -33,7 +35,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IMvcFunctionHandler, MvcFunctionHandler>();
+            services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
             return services;
         }
 
@@ -43,7 +45,11 @@ namespace OSharp.AspNetCore.Mvc
         /// <param name="provider"></param>
         public override void UseModule(IServiceProvider provider)
         {
-            IMvcFunctionHandler handler = provider.GetService<IMvcFunctionHandler>();
+            IFunctionHandler handler = provider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
+            if (handler == null)
+            {
+                return;
+            }
             handler.Initialize();
             IsEnabled = true;
         }

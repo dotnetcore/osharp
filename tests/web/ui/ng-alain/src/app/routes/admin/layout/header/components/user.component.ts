@@ -1,7 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingsService } from '@delon/theme';
+import { NzMessageService } from 'ng-zorro-antd';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { HttpClient } from '@angular/common/http';
+import { AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'header-user',
@@ -22,13 +25,32 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 })
 export class HeaderUserComponent {
   constructor(
+    private http: HttpClient,
     public settings: SettingsService,
+    private msgSrv: NzMessageService,
     private router: Router,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
+    @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService
   ) { }
 
   logout() {
-    this.tokenService.clear();
-    this.router.navigateByUrl(this.tokenService.login_url);
+
+    this.http.post<AjaxResult>('api/identity/logout', {}).subscribe(res => {
+      if (res.Type == AjaxResultType.Success) {
+        this.tokenSrv.clear();
+        this.msgSrv.success("用户退出成功");
+        this.router.navigateByUrl("/identity/login");
+        return;
+      }
+      this.msgSrv.error(`用户登出失败：${res.Content}`);
+    });
+
+    // this.identity.logout().then(res => {
+    //   if (res.Type == AjaxResultType.Success) {
+    //     this.msgSrv.success("用户退出成功");
+    //     this.router.navigateByUrl("/identity/login");
+    //     return;
+    //   }
+    //   this.msgSrv.error(res.Content);
+    // });
   }
 }

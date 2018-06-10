@@ -1,5 +1,5 @@
 import { NgModule, LOCALE_ID, APP_INITIALIZER, Injector } from '@angular/core';
-import { HttpClient, HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DelonModule } from './delon.module';
@@ -10,7 +10,7 @@ import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 import { StartupService } from '@core/startup/startup.service';
 import { DefaultInterceptor } from '@core/net/default.interceptor';
-import { SimpleInterceptor } from '@delon/auth';
+
 // angular i18n
 import { registerLocaleData } from '@angular/common';
 import localeZhHans from '@angular/common/locales/zh-Hans';

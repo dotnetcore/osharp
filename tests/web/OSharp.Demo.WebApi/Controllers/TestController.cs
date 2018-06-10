@@ -10,11 +10,22 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Cache;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
+using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
@@ -37,9 +48,17 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             List<object> list = new List<object>();
 
-            list.Add(_entityRoleRepository.Entities.Count());
+            string str = GetString();
+            list.Add(str);
 
             return Content(list.ExpandAndToString("\r\n"));
+        }
+
+        private string GetString()
+        {
+            string url = "http://localhost:7001/api/test/test01?name=fds";
+            IFunction function = this.GetFunction(url);
+            return function.ToJsonString();
         }
     }
 }

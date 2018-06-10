@@ -18,9 +18,9 @@ namespace OSharp.Secutiry
     public interface IFunctionAuthCache
     {
         /// <summary>
-        /// 创建功能权限缓存
+        /// 创建功能角色权限缓存，只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
         /// </summary>
-        void BuildCaches();
+        void BuildRoleCaches();
 
         /// <summary>
         /// 移除指定功能的缓存

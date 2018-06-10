@@ -9,12 +9,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Functions;
 using OSharp.Exceptions;
+using OSharp.Extensions;
+using OSharp.Secutiry;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -89,10 +95,10 @@ namespace OSharp.AspNetCore.Mvc
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IMvcFunctionHandler functionHandler = ServiceLocator.Instance.GetService<IMvcFunctionHandler>();
+            IFunctionHandler functionHandler = ServiceLocator.Instance.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
-                throw new OsharpException("获取正在执行的功能时 IMvcFunctionHandler 无法解析");
+                throw new OsharpException("获取正在执行的功能时 IFunctionHandler 无法解析");
             }
             IFunction function = functionHandler.GetFunction(area, controller, action);
             if (function != null)
@@ -108,6 +114,67 @@ namespace OSharp.AspNetCore.Mvc
         public static IFunction GetExecuteFunction(this ControllerBase controller)
         {
             return controller.ControllerContext.GetExecuteFunction();
+        }
+
+        /// <summary>
+        /// 获取指定URL的功能信息
+        /// </summary>
+        public static IFunction GetFunction(this ControllerBase controller, string url)
+        {
+            url = url.StartsWith("https://") || url.StartsWith("http://")
+                ? new Uri(url).AbsolutePath : !url.StartsWith("/") ? $"/{url}" : url;
+            IServiceProvider services = controller.HttpContext.RequestServices;
+            IHttpContextFactory factory = services.GetService<IHttpContextFactory>();
+            HttpContext httpContext = factory.Create(controller.HttpContext.Features);
+            httpContext.Request.Path = url;
+            httpContext.Request.Method = "POST";
+            RouteContext routeContext = new RouteContext(httpContext);
+            IRouteCollection router = controller.RouteData.Routers.OfType<IRouteCollection>().FirstOrDefault();
+            if (router == null)
+            {
+                return null;
+            }
+            router.RouteAsync(routeContext).Wait();
+            if (routeContext.Handler == null)
+            {
+                return null;
+            }
+            RouteValueDictionary dict = routeContext.RouteData.Values;
+            string areaName = dict.GetOrDefault("area")?.ToString();
+            string controllerName = dict.GetOrDefault("controller")?.ToString();
+            string actionName = dict.GetOrDefault("action")?.ToString();
+            IFunctionHandler handler = services.GetService<IFunctionHandler>();
+            return handler?.GetFunction(areaName, controllerName, actionName);
+        }
+
+        /// <summary>
+        /// 检测当前用户是否拥有指定URL的功能权限
+        /// </summary>
+        public static bool CheckFunctionAuth(this Controller controller, string url)
+        {
+            IFunction function = controller.GetFunction(url);
+            if (function == null)
+            {
+                return false;
+            }
+            IFunctionAuthorization authorization = controller.HttpContext.RequestServices.GetService<IFunctionAuthorization>();
+            return authorization.Authorize(function).IsOk;
+        }
+
+        /// <summary>
+        /// 检测当前用户是否有指定功能的功能权限
+        /// </summary>
+        public static bool CheckFunctionAuth(this Controller controller, string actionName, string controllerName, string areaName = null)
+        {
+            IServiceProvider services = controller.HttpContext.RequestServices;
+            IFunctionHandler functionHandler = services.GetService<IFunctionHandler>();
+            IFunction function = functionHandler?.GetFunction(areaName, controllerName, actionName);
+            if (function == null)
+            {
+                return false;
+            }
+            IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
+            return authorization.Authorize(function).IsOk;
         }
     }
 }

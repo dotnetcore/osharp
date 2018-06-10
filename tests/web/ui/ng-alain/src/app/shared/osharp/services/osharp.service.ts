@@ -11,7 +11,7 @@ export class OsharpService {
   private router: Router;
 
   constructor(
-    private injector: Injector
+    injector: Injector
   ) {
     this.msgSrv = injector.get(NzMessageService);
     this.router = injector.get(Router);

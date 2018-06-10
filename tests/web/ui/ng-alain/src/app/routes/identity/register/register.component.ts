@@ -1,4 +1,4 @@
-import { Component, } from '@angular/core';
+import { Component, Inject, } from '@angular/core';
 import { IdentityService } from '../shared/identity.service';
 
 import { RegisterDto, AdResult } from '@shared/osharp/osharp.model';

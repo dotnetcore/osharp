@@ -1,20 +1,24 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IMvcFunctionHandler.cs" company="OSharp开源团队">
+//  <copyright file="AreaApiController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-09 21:51</last-date>
+//  <last-date>2018-06-09 20:32</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core.Functions;
+using Microsoft.AspNetCore.Mvc;
+
+using OSharp.Core;
 
 
 namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
-    /// 定义Mvc功能信息处理器
+    /// WebApi的区域控制器基类
     /// </summary>
-    public interface IMvcFunctionHandler : IFunctionHandler
+    [RoleLimit]
+    [Route("api/[area]/[controller]/[action]")]
+    public abstract class AreaApiController : Controller
     { }
 }

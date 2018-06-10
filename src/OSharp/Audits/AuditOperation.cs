@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace OSharp.Audits
 {
     /// <summary>
-    /// 实体类：审计操作信息
+    /// 审计操作信息
     /// </summary>
     public class AuditOperation
     {

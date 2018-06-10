@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { SettingsService, User, ScrollService } from '@delon/theme';
 import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -12,7 +12,8 @@ export class LayoutDefaultComponent implements OnInit {
   user: User;
 
   constructor(
-    private setting: SettingsService
+    private setting: SettingsService,
+    private injector: Injector
   ) { }
 
   ngOnInit(): void {

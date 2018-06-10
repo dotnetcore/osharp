@@ -14,7 +14,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
 using OSharp.Data;
@@ -27,9 +26,8 @@ using OSharp.Security;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-功能信息")]
-    public class FunctionController : AreaApiController
+    public class FunctionController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
 

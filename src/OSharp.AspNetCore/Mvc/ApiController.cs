@@ -10,9 +10,12 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace OSharp.Demo.WebApi.Controllers
+namespace OSharp.AspNetCore.Mvc
 {
+    /// <summary>
+    /// WebApi控制器基类
+    /// </summary>
     [Route("api/[controller]/[action]")]
-    public class ApiController : Controller
+    public abstract class ApiController : Controller
     { }
 }

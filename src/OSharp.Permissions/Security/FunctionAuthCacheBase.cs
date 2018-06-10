@@ -52,12 +52,12 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 创建功能权限缓存
+        /// 创建功能权限缓存，只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
         /// </summary>
-        public virtual void BuildCaches()
+        public virtual void BuildRoleCaches()
         {
             TFunction[] functions;
-            //只重建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
+            //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
             using (var scope = _serviceProvider.CreateScope())
             {
                 IServiceProvider scopedProvider = scope.ServiceProvider;

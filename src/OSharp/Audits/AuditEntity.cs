@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace OSharp.Audits
 {
     /// <summary>
-    /// 实体类：实体审计信息
+    /// 实体审计信息
     /// </summary>
     public class AuditEntity
     {

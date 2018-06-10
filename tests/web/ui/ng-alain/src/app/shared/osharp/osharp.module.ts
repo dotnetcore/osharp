@@ -23,7 +23,7 @@ const COMPONENTS = [
 
 const SERVICES = [
   OsharpService,
-  KendouiService
+  KendouiService,
 ];
 
 @NgModule({
@@ -31,7 +31,9 @@ const SERVICES = [
     ...DIRECTIVES,
     ...COMPONENTS
   ],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+  ],
   exports: [
     ...DIRECTIVES,
     ...COMPONENTS

@@ -15,7 +15,6 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 定义功能信息处理器
     /// </summary>
-    [IgnoreDependency]
     public interface IFunctionHandler
     {
         /// <summary>
@@ -36,5 +35,7 @@ namespace OSharp.Core.Functions
         /// 刷新功能信息缓存
         /// </summary>
         void RefreshCache();
+
+        void ClearCache();
     }
 }

@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { DA_SERVICE_TOKEN, TokenService, JWTTokenModel } from '@delon/auth';
+import { Injectable, Inject, Injector, InjectionToken } from '@angular/core';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService, User as NzUser } from '@delon/theme';
 import { ACLService } from '@delon/acl';
@@ -9,7 +9,7 @@ import { LoginDto, AjaxResult, AjaxResultType, User, RegisterDto, ConfirmEmailDt
 export class IdentityService {
   constructor(
     private http: HttpClient,
-    @Inject(DA_SERVICE_TOKEN) private tokenSrv: TokenService,
+    @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService,
     private settingSrv: SettingsService,
     private aclSrv: ACLService
   ) { }
@@ -30,6 +30,16 @@ export class IdentityService {
         this.aclSrv.setRole(user.Roles);
       }
       return result;
+    }).toPromise();
+  }
+
+  logout() {
+    let url = "api/identity/logout";
+    return this.http.post<AjaxResult>(url, {}).map(res => {
+      if (res.Type == AjaxResultType.Success) {
+        this.tokenSrv.clear();
+      }
+      return res;
     }).toPromise();
   }
 

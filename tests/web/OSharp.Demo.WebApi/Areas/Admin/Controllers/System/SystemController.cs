@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Entity;
@@ -28,7 +27,7 @@ using OSharp.Reflection;
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
     [Description("管理-系统")]
-    public class SystemController : AreaApiController
+    public class SystemController : AdminApiController
     {
         private readonly IServiceProvider _provider;
 

@@ -15,10 +15,8 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
-using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
 using OSharp.Entity;
@@ -27,9 +25,8 @@ using OSharp.Filter;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-用户功能")]
-    public class UserFunctionController : AreaApiController
+    public class UserFunctionController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;

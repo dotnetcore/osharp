@@ -1,18 +1,17 @@
-import { Injectable, NgZone, ElementRef, Injector } from '@angular/core';
+import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { Group, Rule } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
-import { NzModalService } from 'ng-zorro-antd';
+import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
 @Injectable()
 export class KendouiService {
 
-  osharp: OsharpService;
-
-  constructor(private injector: Injector) {
-    this.osharp = injector.get(OsharpService);
-  }
+  constructor(
+    private osharp: OsharpService,
+    @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService
+  ) { }
 
   // #region 工具操作
 
@@ -87,31 +86,32 @@ export class KendouiService {
 
   /**给每个请求头设置 JWT-Token */
   setAuthToken(dataSource: kendo.data.DataSource) {
-    const authToken = localStorage.getItem('id_token');
-    if (!authToken) {
+
+    let token = this.tokenSrv.get(JWTTokenModel);
+    if (token.isExpired()) {
       return;
     }
+
     if (dataSource && dataSource.options && dataSource.options.transport) {
       const trans = dataSource.options.transport;
       if (trans.read) {
-        (<any>trans.read).beforeSend = this.setAuthHeaderToken;
+        (<any>trans.read).beforeSend = (xhr, opts) => this.setAuthHeaderToken(xhr, opts);
       }
       if (trans.create) {
-        (<any>trans.create).beforeSend = this.setAuthHeaderToken;
+        (<any>trans.create).beforeSend = (xhr, opts) => this.setAuthHeaderToken(xhr, opts);
       }
       if (trans.update) {
-        (<any>trans.update).beforeSend = this.setAuthHeaderToken;
+        (<any>trans.update).beforeSend = (xhr, opts) => this.setAuthHeaderToken(xhr, opts);
       }
       if (trans.destroy) {
-        (<any>trans.destroy).beforeSend = this.setAuthHeaderToken;
+        (<any>trans.destroy).beforeSend = (xhr, opts) => this.setAuthHeaderToken(xhr, opts);
       }
     }
   }
   private setAuthHeaderToken(xhr, opts) {
-    const authToken = localStorage.getItem('id_token');
-    xhr.setRequestHeader("Authorization", `Bearer ${authToken}`);
+    let token = this.tokenSrv.get(JWTTokenModel);
+    xhr.setRequestHeader("Authorization", `Bearer ${token.token}`);
   }
-
 
   /**获取TreeView树数据源 */
   CreateHierarchicalDataSource(url: string): kendo.data.HierarchicalDataSource {
@@ -232,7 +232,7 @@ export abstract class GridComponentBase {
   protected osharp: OsharpService;
   protected kendoui: KendouiService;
 
-  constructor(private injector: Injector) {
+  constructor(injector: Injector) {
     this.zone = injector.get(NgZone);
     this.element = injector.get(ElementRef);
     this.osharp = injector.get(OsharpService);

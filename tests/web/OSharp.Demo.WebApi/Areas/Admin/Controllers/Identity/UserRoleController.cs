@@ -14,6 +14,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Data;
@@ -26,9 +28,8 @@ using OSharp.Filter;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-用户角色信息")]
-    public class UserRoleController : AreaApiController
+    public class UserRoleController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { SendMailDto, AdResult, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';

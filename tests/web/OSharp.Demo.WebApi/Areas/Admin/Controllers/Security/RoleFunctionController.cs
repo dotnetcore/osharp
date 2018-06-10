@@ -14,21 +14,18 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
-using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 using OSharp.Filter;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Description("管理-角色功能")]
-    public class RoleFunctionController : AreaApiController
+    public class RoleFunctionController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
         private readonly RoleManager<Role> _roleManager;

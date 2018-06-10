@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -53,7 +54,7 @@ namespace OSharp.Demo.WebApi
                 {
                     builder.AddFile(options =>
                     {
-                        options.FileName = "log-"; 
+                        options.FileName = "log-";
                         options.LogDirectory = "log";
                     });
                 });
@@ -92,7 +93,8 @@ namespace OSharp.Demo.WebApi
                 //.UseHttpsRedirection()
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
-                .UseMvcWithAreaRoute().UseOSharp();
+                .UseMvcWithAreaRoute()
+                .UseOSharp();
         }
     }
 }
