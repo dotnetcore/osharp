@@ -82,6 +82,17 @@ export class ResetPasswordDto {
   NewPassword: string;
   ConfirmPassword: string;
 }
+/**权限字典，以url为键，ok为值 */
+export interface AuthDictionary {
+  [name: string]: AuthItem;
+}
+export class AuthItem {
+  constructor(
+    public url: string,
+    public ok: boolean = false
+  ) { }
+}
+
 
 export class User {
   Id: number;

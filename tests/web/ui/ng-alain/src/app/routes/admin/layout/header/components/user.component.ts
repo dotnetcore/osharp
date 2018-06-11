@@ -34,7 +34,7 @@ export class HeaderUserComponent {
 
   logout() {
 
-    this.http.post<AjaxResult>('api/identity/logout', {}).subscribe(res => {
+    this.http.post<AjaxResult>('/api/identity/logout', {}).subscribe(res => {
       if (res.Type == AjaxResultType.Success) {
         this.tokenSrv.clear();
         this.msgSrv.success("用户退出成功");

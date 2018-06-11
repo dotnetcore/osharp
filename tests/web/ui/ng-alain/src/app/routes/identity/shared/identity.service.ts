@@ -15,7 +15,7 @@ export class IdentityService {
   ) { }
 
   login(dto: LoginDto): Promise<AjaxResult> {
-    let url = "api/identity/jwtoken";
+    let url = "/api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type == AjaxResultType.Success) {
         // 设置Token
@@ -34,7 +34,7 @@ export class IdentityService {
   }
 
   logout() {
-    let url = "api/identity/logout";
+    let url = "/api/identity/logout";
     return this.http.post<AjaxResult>(url, {}).map(res => {
       if (res.Type == AjaxResultType.Success) {
         this.tokenSrv.clear();
@@ -44,7 +44,7 @@ export class IdentityService {
   }
 
   register(dto: RegisterDto): Promise<AdResult> {
-    let url = 'api/identity/register';
+    let url = '/api/identity/register';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
       if (res.Type == AjaxResultType.Success) {
@@ -69,7 +69,7 @@ export class IdentityService {
   }
 
   sendConfirmMail(dto: SendMailDto): Promise<AdResult> {
-    let url = 'api/identity/SendConfirmMail';
+    let url = '/api/identity/SendConfirmMail';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
       if (res.Type != AjaxResultType.Success) {
@@ -86,7 +86,7 @@ export class IdentityService {
   }
 
   confirmEmail(dto: ConfirmEmailDto): Promise<AdResult> {
-    let url = 'api/identity/ConfirmEmail';
+    let url = '/api/identity/ConfirmEmail';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
       if (res.Type != AjaxResultType.Success) {
@@ -107,7 +107,7 @@ export class IdentityService {
   }
 
   sendResetPasswordMail(dto: SendMailDto): Promise<AdResult> {
-    let url = 'api/identity/SendResetPasswordMail';
+    let url = '/api/identity/SendResetPasswordMail';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
       if (res.Type != AjaxResultType.Success) {
@@ -124,7 +124,7 @@ export class IdentityService {
   }
 
   resetPassword(dto: ResetPasswordDto): Promise<AdResult> {
-    let url = 'api/identity/ResetPassword';
+    let url = '/api/identity/ResetPassword';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
       if (res.Type != AjaxResultType.Success) {

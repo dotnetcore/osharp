@@ -58,6 +58,7 @@
     "stylelint-config-standard": "^18.2.0",
     "tslint-config-prettier": "^1.12.0",
     "tslint-language-service": "^0.9.9",
+    "typescript-collections": "^1.3.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

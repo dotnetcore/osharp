@@ -35,7 +35,7 @@ using OSharp.Secutiry.Claims;
 
 namespace OSharp.Demo.WebApi.Controllers
 {
-    [Description("网站-身份认证")]
+    [Description("网站-认证")]
     public class IdentityController : ApiController
     {
         private readonly IIdentityContract _identityContract;

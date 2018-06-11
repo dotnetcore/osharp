@@ -76,8 +76,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         public async Task<IActionResult> Create(UserInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));

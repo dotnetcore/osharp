@@ -20,13 +20,6 @@ namespace OSharp.Secutiry
     public interface IFunctionAuthorization
     {
         /// <summary>
-        /// 检查当前用户是否有执行指定功能的权限
-        /// </summary>
-        /// <param name="function">要检查的功能</param>
-        /// <returns>功能权限检查结果</returns>
-        AuthorizationResult Authorize(IFunction function);
-
-        /// <summary>
         /// 检查指定用户是否有执行指定功能的权限
         /// </summary>
         /// <param name="function">要检查的功能</param>

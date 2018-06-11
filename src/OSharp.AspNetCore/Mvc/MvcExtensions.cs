@@ -158,7 +158,7 @@ namespace OSharp.AspNetCore.Mvc
                 return false;
             }
             IFunctionAuthorization authorization = controller.HttpContext.RequestServices.GetService<IFunctionAuthorization>();
-            return authorization.Authorize(function).IsOk;
+            return authorization.Authorize(function, controller.User).IsOk;
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace OSharp.AspNetCore.Mvc
                 return false;
             }
             IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
-            return authorization.Authorize(function).IsOk;
+            return authorization.Authorize(function, controller.User).IsOk;
         }
     }
 }

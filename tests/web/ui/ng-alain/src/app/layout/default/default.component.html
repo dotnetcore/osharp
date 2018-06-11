@@ -8,6 +8,7 @@
     <a [routerLink]="[ '/identity/register' ]">注册</a>
     <a [routerLink]="[ '/admin' ]">Admin</a>
     <p *ngIf="user"> {{user.name}} - {{user.email}} </p>
+    <router-outlet></router-outlet>
   </nz-content>
   <nz-footer>
     Footer

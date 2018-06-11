@@ -4,7 +4,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
-          <input nz-input [(ngModel)]="dto.UserName" name="userName" placeholder="用户名" required [rangeLength]="[5,30]" [remote]="'api/identity/CheckUserNameExists?userName=:value'"
+          <input nz-input [(ngModel)]="dto.UserName" name="userName" placeholder="用户名" required [rangeLength]="[5,30]" [remote]="'/api/identity/CheckUserNameExists?userName=:value'"
             #userName="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(userName.dirty || userName.touched) && userName.errors?.required">请输入用户名</nz-form-explain>
@@ -34,7 +34,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user-add">
-          <input nz-input [(ngModel)]="dto.NickName" name="nickName" placeholder="用户昵称" required [rangeLength]="[3,20]" [remote]="'api/identity/CheckNickNameExists?nickName=:value'"
+          <input nz-input [(ngModel)]="dto.NickName" name="nickName" placeholder="用户昵称" required [rangeLength]="[3,20]" [remote]="'/api/identity/CheckNickNameExists?nickName=:value'"
             #nickName="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(nickName.dirty || nickName.touched) && nickName.errors?.required">请输入用户昵称</nz-form-explain>
@@ -45,7 +45,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
-          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'api/identity/CheckEmailExists?email=:value'"
+          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'/api/identity/CheckEmailExists?email=:value'"
             #email="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.required">请输入电子邮箱</nz-form-explain>

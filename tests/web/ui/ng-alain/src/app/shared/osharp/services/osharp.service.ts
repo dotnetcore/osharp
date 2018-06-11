@@ -3,18 +3,22 @@ import { ListNode, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.mode
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class OsharpService {
 
   public msgSrv: NzMessageService;
   private router: Router;
+  private http: HttpClient;
 
   constructor(
     injector: Injector
   ) {
     this.msgSrv = injector.get(NzMessageService);
     this.router = injector.get(Router);
+    this.http = injector.get(HttpClient);
   }
 
   // region 工具方法
@@ -157,6 +161,16 @@ export class OsharpService {
         this.getTreeNodes(item, array);
       }
     }
+  }
+
+  /**检查URL的功能权限 */
+  checkUrlAuth(url: string): Observable<boolean> {
+    if (!url.startsWith("https:") && !url.startsWith("http") && !url.startsWith("/")) {
+      url = `/${url}`;
+    }
+    url = this.urlEncode(url);
+    console.log(url);
+    return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url);
   }
 
   // endregion

@@ -88,7 +88,7 @@ export class KendouiService {
   setAuthToken(dataSource: kendo.data.DataSource) {
 
     let token = this.tokenSrv.get(JWTTokenModel);
-    if (token.isExpired()) {
+    if (!token || !token.token || token.isExpired()) {
       return;
     }
 

@@ -2,12 +2,17 @@ import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { List } from 'linqts';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthDictionary, AuthItem } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-identity-user',
   templateUrl: './user.component.html'
 })
 export class UserComponent extends GridComponentBase implements OnInit, AfterViewInit {
+
+  authDict: AuthDictionary = {
+    'created': new AuthItem('/api/admin/user/create'),
+  };
 
   window: kendo.ui.Window;
   windowOptions: kendo.ui.WindowOptions;

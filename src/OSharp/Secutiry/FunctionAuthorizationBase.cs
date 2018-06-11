@@ -46,17 +46,6 @@ namespace OSharp.Secutiry
         protected virtual string SuperRoleName { get; }
 
         /// <summary>
-        /// 检查当前用户是否有执行指定功能的权限
-        /// </summary>
-        /// <param name="function">要检查的功能</param>
-        /// <returns>功能权限检查结果</returns>
-        public AuthorizationResult Authorize(IFunction function)
-        {
-            IPrincipal principal = Thread.CurrentPrincipal;
-            return Authorize(function, principal);
-        }
-
-        /// <summary>
         /// 检查指定用户是否有执行指定功能的权限
         /// </summary>
         /// <param name="function">要检查的功能</param>

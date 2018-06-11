@@ -29,6 +29,21 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [Description("主菜单")]
         public ActionResult MainMenu()
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             return Content("MainMenu");
         }
     }

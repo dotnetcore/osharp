@@ -1,1 +1,7 @@
 <h2>Home Component</h2>
+<form>
+  <button nz-button [nzType]="'primary'" [disabled]="flag">
+    <i class="anticon anticon-login"></i>登录
+  </button>
+</form>
+<button (click)="checkAuth()" nz-button>点击</button>
