@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 using OSharp.Entity;
 
@@ -18,6 +19,7 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 功能信息基类
     /// </summary>
+    [DebuggerDisplay("{Name}[{Area}/{Controller}/{Action}]")]
     public abstract class FunctionBase : EntityBase<Guid>, IFunction
     {
         /// <summary>

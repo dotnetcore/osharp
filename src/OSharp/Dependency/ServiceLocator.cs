@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Dependency;
+using OSharp.Exceptions;
 
 
 namespace OSharp
@@ -44,6 +45,20 @@ namespace OSharp
         public bool IsProviderEnabled => _provider != null;
 
         /// <summary>
+        /// 获取 <see cref="ServiceLifetime.Scoped"/>生命周期的服务提供者
+        /// </summary>
+        public IServiceProvider ScopedProvider
+        {
+            get
+            {
+                IScopedServiceResolver scopedResolver = _provider.GetService<IScopedServiceResolver>();
+                return scopedResolver != null && scopedResolver.ResolveEnabled
+                    ? scopedResolver.ScopedProvider
+                    : null;
+            }
+        }
+
+        /// <summary>
         /// 设置应用程序服务集合
         /// </summary>
         internal void TrySetServiceCollection(IServiceCollection services)
@@ -64,6 +79,62 @@ namespace OSharp
             if (_provider == null)
             {
                 _provider = provider;
+            }
+        }
+
+        /// <summary>
+        /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public void ExcuteScopedWork(Action<IServiceProvider> action)
+        {
+            if (_provider == null)
+            {
+                throw new OsharpException("Root级别的IServiceProvider不存在，无法执行Scoped业务");
+            }
+            IServiceProvider scopedProvider = ScopedProvider;
+            IServiceScope newScope = null;
+            if (scopedProvider == null)
+            {
+                newScope = _provider.CreateScope();
+                scopedProvider = newScope.ServiceProvider;
+            }
+            try
+            {
+                action(scopedProvider);
+            }
+            finally
+            {
+                newScope?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public TResult ExcuteScopedWork<TResult>(Func<IServiceProvider, TResult> func)
+        {
+            if (_provider == null)
+            {
+                throw new OsharpException("Root级别的IServiceProvider不存在，无法执行Scoped业务");
+            }
+            IServiceProvider scopedProvider = ScopedProvider;
+            IServiceScope newScope = null;
+            if (scopedProvider == null)
+            {
+                newScope = _provider.CreateScope();
+                scopedProvider = newScope.ServiceProvider;
+            }
+            try
+            {
+                return func(scopedProvider);
+            }
+            finally
+            {
+                newScope?.Dispose();
             }
         }
 

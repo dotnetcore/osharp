@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using OSharp.Collections;
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 using OSharp.Reflection;
 
 
@@ -30,17 +31,15 @@ namespace OSharp.Core.Functions
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
         private readonly List<TFunction> _functions = new List<TFunction>();
-        private readonly IServiceProvider _provider;
         private readonly ILogger<TFunctionHandler> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例
         /// </summary>
-        protected FunctionHandlerBase(IServiceProvider applicationServiceProvider)
+        protected FunctionHandlerBase(ILoggerFactory loggerFactory, IAllAssemblyFinder allAssemblyFinder)
         {
-            _provider = applicationServiceProvider;
-            _logger = applicationServiceProvider.GetService<ILogger<TFunctionHandler>>();
-            AllAssemblyFinder = applicationServiceProvider.GetService<IAllAssemblyFinder>();
+            _logger = loggerFactory.CreateLogger<TFunctionHandler>();
+            AllAssemblyFinder = allAssemblyFinder;
         }
 
         /// <summary>
@@ -68,11 +67,11 @@ namespace OSharp.Core.Functions
             Type[] functionTypes = FunctionTypeFinder.FindAll(true);
             TFunction[] functions = GetFunctions(functionTypes);
 
-            using (IServiceScope scope = _provider.CreateScope())
+            ServiceLocator.Instance.ExcuteScopedWork(provider =>
             {
-                SyncToDatabase(scope.ServiceProvider, functions);
-            }
-            
+                SyncToDatabase(provider, functions);
+            });
+
             RefreshCache();
         }
 
@@ -100,11 +99,11 @@ namespace OSharp.Core.Functions
         /// </summary>
         public void RefreshCache()
         {
-            using (IServiceScope scope = _provider.CreateScope())
+            ServiceLocator.Instance.ExcuteScopedWork(provider =>
             {
                 _functions.Clear();
-                _functions.AddRange(GetFromDatabase(scope.ServiceProvider)); 
-            }
+                _functions.AddRange(GetFromDatabase(provider));
+            });
         }
 
         /// <summary>

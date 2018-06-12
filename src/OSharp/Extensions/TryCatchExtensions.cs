@@ -102,5 +102,20 @@ namespace OSharp.Extensions
                 obj =>
                 { });
         }
+
+        /// <summary>
+        /// 对某对象执行指定功能，并处理finally
+        /// </summary>
+        public static void TryFinally<T>(this T source, Action<T> action, Action<T> finallyAction) where T : class
+        {
+            try
+            {
+                action(source);
+            }
+            finally
+            {
+                finallyAction(source);
+            }
+        }
     }
 }

@@ -26,6 +26,11 @@ namespace OSharp.Dependency
         bool ResolveEnabled { get; }
 
         /// <summary>
+        /// 获取 <see cref="ServiceLifetime.Scoped"/>生命周期的服务提供者
+        /// </summary>
+        IServiceProvider ScopedProvider { get; }
+
+        /// <summary>
         /// 获取指定服务类型的实例
         /// </summary>
         /// <typeparam name="T">服务类型</typeparam>

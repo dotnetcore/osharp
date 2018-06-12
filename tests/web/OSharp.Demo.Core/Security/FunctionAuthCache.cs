@@ -9,6 +9,8 @@
 
 using System;
 
+using Microsoft.Extensions.Caching.Distributed;
+
 using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security.Entities;
@@ -22,8 +24,8 @@ namespace OSharp.Demo.Security
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthCacheBase{TFunction,TModule,TModuleKey,TModuleFunction,TModuleRole,TModuleUser,TRole,TRoleKey,TUser,TUserKey}"/>类型的新实例
         /// </summary>
-        public FunctionAuthCache(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        public FunctionAuthCache(IDistributedCache cache)
+            : base(cache)
         { }
     }
 }

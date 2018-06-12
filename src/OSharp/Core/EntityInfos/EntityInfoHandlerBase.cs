@@ -30,16 +30,14 @@ namespace OSharp.Core.EntityInfos
         where TEntityInfo : class, IEntityInfo, IEntity<Guid>, new()
     {
         private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
-        private readonly IServiceProvider _provider;
         private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
-        protected EntityInfoHandlerBase(IServiceProvider applicationServiceProvider)
+        protected EntityInfoHandlerBase(ILoggerFactory loggerFactory)
         {
-            _provider = applicationServiceProvider;
-            _logger = applicationServiceProvider.GetService<ILogger<TEntityInfoHandler>>();
+            _logger = loggerFactory.CreateLogger<TEntityInfoHandler>();
         }
 
         /// <summary>
@@ -47,7 +45,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void Initialize()
         {
-            IEntityTypeFinder entityTypeFinder = _provider.GetService<IEntityTypeFinder>();
+            IEntityTypeFinder entityTypeFinder = ServiceLocator.Instance.GetService<IEntityTypeFinder>();
             Type[] entityTypes = entityTypeFinder.FindAll(true);
 
             foreach (Type entityType in entityTypes)
@@ -61,10 +59,10 @@ namespace OSharp.Core.EntityInfos
                 _entityInfos.Add(entityInfo);
             }
 
-            using (IServiceScope scope = _provider.CreateScope())
+            ServiceLocator.Instance.ExcuteScopedWork(provider =>
             {
-                SyncToDatabase(scope.ServiceProvider, _entityInfos);
-            }
+                SyncToDatabase(provider, _entityInfos);
+            });
 
             RefreshCache();
         }
@@ -102,11 +100,11 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void RefreshCache()
         {
-            using (IServiceScope scope = _provider.CreateScope())
+            ServiceLocator.Instance.ExcuteScopedWork(provider =>
             {
                 _entityInfos.Clear();
-                _entityInfos.AddRange(GetFromDatabase(scope.ServiceProvider));
-            }
+                _entityInfos.AddRange(GetFromDatabase(provider));
+            });
         }
 
         /// <summary>
