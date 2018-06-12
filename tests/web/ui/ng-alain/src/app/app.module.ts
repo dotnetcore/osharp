@@ -1,4 +1,4 @@
-import { NgModule, LOCALE_ID, APP_INITIALIZER, Injector } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,12 +42,7 @@ export function StartupServiceFactory(startupService: StartupService): Function 
     // { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
     StartupService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: StartupServiceFactory,
-      deps: [StartupService],
-      multi: true
-    }
+    { provide: APP_INITIALIZER, useFactory: StartupServiceFactory, deps: [StartupService], multi: true },
   ],
   bootstrap: [AppComponent]
 })

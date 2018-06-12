@@ -154,7 +154,7 @@ namespace OSharp
             foreach (PropertyDescriptor property in properties)
             {
                 var val = property.GetValue(value);
-                if (property.PropertyType.FullName.StartsWith("<>f__AnonymousType"))
+                if (property.PropertyType.FullName != null && property.PropertyType.FullName.StartsWith("<>f__AnonymousType"))
                 {
                     dynamic dval = val.ToDynamic();
                     expando.Add(property.Name, dval);

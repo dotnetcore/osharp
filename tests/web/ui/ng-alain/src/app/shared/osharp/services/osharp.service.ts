@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Buffer } from "buffer";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { List } from "linqts";
+import { CacheService } from '@shared/osharp/cache/cache.service';
 
 @Injectable()
 export class OsharpService {
@@ -21,7 +23,7 @@ export class OsharpService {
     this.http = injector.get(HttpClient);
   }
 
-  // region 工具方法
+  // #region 工具方法
 
   /**URL编码 */
   urlEncode(url: string): string {
@@ -173,9 +175,9 @@ export class OsharpService {
     return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url);
   }
 
-  // endregion
+  // #endregion
 
-  // region 消息方法
+  // #region 消息方法
 
   private msgOptions: NzMessageDataOptions = { nzDuration: 1000 * 3, nzAnimate: true, nzPauseOnHover: true };
 
@@ -195,15 +197,50 @@ export class OsharpService {
     return this.msgSrv.error(msg, { nzDuration: 1000 * 6, nzAnimate: true, nzPauseOnHover: true });
   }
 
-  // endregion
+  // #endregion
 
-  // region 静态数据
+  // #region 静态数据
 
   data = {
     accessType: [{ id: 0, text: "匿名访问" }, { id: 1, text: "登录访问" }, { id: 2, text: "角色访问" }],
     stringFilterable: { operators: { string: { contains: "包含", eq: "等于", neq: "不等于", startswith: "开始于", endswith: "结束于", doesnotcontain: "不包含" } } }
   };
 
-  // endregion
-
+  // #endregion
 }
+
+//#region 组件基类
+
+export abstract class ComponentBase {
+  private cache: CacheService;
+
+  /**权限字典，以模块代码为键，是否有权限为值 */
+  public authDict: { [key: string]: boolean; } = null;
+
+  constructor(injector: Injector) {
+    this.cache = injector.get(CacheService);
+  }
+
+  /**重写以返回当前模块的位置，即上级模块的路径，如Root,Root.Admin,Root.Admin.Identity */
+  abstract Position(): string;
+
+  async checkAuth() {
+    if (this.authDict == null) {
+      return;
+    }
+    let position = this.Position();
+    let codes = await this.cache.get<string[]>('/api/security/getauthinfo', { expire: 1 }).toPromise();
+    if (!codes) {
+      return;
+    }
+    let list = new List(codes);
+    for (const key in this.authDict) {
+      if (this.authDict.hasOwnProperty(key)) {
+        let path = `${position}.${key}`;
+        this.authDict[key] = list.Contains(path);
+      }
+    }
+  }
+}
+
+//#endregion

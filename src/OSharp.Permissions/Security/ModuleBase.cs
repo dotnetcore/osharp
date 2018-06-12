@@ -1,20 +1,18 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="ModuleBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-11-17 19:47</last-date>
+//  <last-date>2018-06-12 0:19</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-using OSharp.Collections;
 using OSharp.Entity;
 
 
@@ -39,6 +37,12 @@ namespace OSharp.Security
         public string Remark { get; set; }
 
         /// <summary>
+        /// 获取或设置 模块代码
+        /// </summary>
+        [Required]
+        public string Code { get; set; }
+
+        /// <summary>
         /// 获取或设置 节点内排序码
         /// </summary>
         [DisplayName("排序码")]
@@ -58,10 +62,8 @@ namespace OSharp.Security
         {
             get
             {
-                return TreePathIds == null
-                    ? new TModuleKey[0]
-                    : TreePathString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(m => m.Trim('$').CastTo<TModuleKey>()).ToArray();
+                return TreePathString?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(m => m.Trim('$').CastTo<TModuleKey>()).ToArray() ?? new TModuleKey[0];
             }
         }
 

@@ -43,9 +43,9 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static bool IsController(this TypeInfo typeInfo)
         {
-            return typeInfo.IsClass && !typeInfo.IsAbstract && (typeInfo.IsPublic && !typeInfo.ContainsGenericParameters)
-                && (!typeInfo.IsDefined(typeof(NonControllerAttribute)) && (typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
-                    || typeInfo.IsDefined(typeof(ControllerAttribute))));
+            return typeInfo.IsClass && !typeInfo.IsAbstract && typeInfo.IsPublic && !typeInfo.ContainsGenericParameters
+                && !typeInfo.IsDefined(typeof(NonControllerAttribute)) && (typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
+                    || typeInfo.IsDefined(typeof(ControllerAttribute)));
         }
 
         /// <summary>

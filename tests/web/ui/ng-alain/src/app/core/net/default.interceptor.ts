@@ -54,6 +54,7 @@ export class DefaultInterceptor implements HttpInterceptor {
               case AjaxResultType.Success:
               case AjaxResultType.Info:
               case AjaxResultType.Error:
+              case AjaxResultType.Locked:
                 return of(event);
               case AjaxResultType.UnAuth:
                 this.msg.warning("用户未登录或者登录已过期");

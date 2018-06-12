@@ -46,6 +46,7 @@ export class ModuleComponent extends TreeListComponentBase implements OnInit, Af
         Id: { type: "number", nullable: false, editable: false },
         ParentId: { type: "number", nullable: true },
         Name: { type: "string" },
+        Code: { type: 'string' },
         OrderCode: { type: "number" },
         Remark: { type: "string" }
       },
@@ -59,6 +60,7 @@ export class ModuleComponent extends TreeListComponentBase implements OnInit, Af
         template: d => "<span>" + d.Id + ". " + d.Name + "</span>"
       },
       { field: "Remark", title: "备注", width: 200 },
+      { field: "Code", title: "代码", width: 130 },
       {
         field: "OrderCode", title: "排序", width: 70,
         editor: (container, options) => this.kendoui.NumberEditor(container, options, 3)

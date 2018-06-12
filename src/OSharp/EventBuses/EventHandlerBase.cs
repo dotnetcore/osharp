@@ -62,6 +62,9 @@ namespace OSharp.EventBuses
         /// <param name="eventData">事件源数据</param>
         /// <param name="cancelToken">异步取消标识</param>
         /// <returns>是否成功</returns>
-        public abstract Task HandleAsync(TEventData eventData, CancellationToken cancelToken = default(CancellationToken));
+        public virtual Task HandleAsync(TEventData eventData, CancellationToken cancelToken = default(CancellationToken))
+        {
+            throw new NotSupportedException("当前事件处理器不支持异步事件处理");
+        }
     }
 }

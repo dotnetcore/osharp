@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using OSharp.EventBuses.Internal;
+using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
@@ -282,6 +283,10 @@ namespace OSharp.EventBuses
         protected void InvokeHandler(IEventHandlerFactory factory, Type eventType, IEventData eventData)
         {
             IEventHandler handler = factory.GetHandler();
+            if (handler == null)
+            {
+                throw new OsharpException($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+            }
             if (!handler.CanHandle(eventData))
             {
                 return;

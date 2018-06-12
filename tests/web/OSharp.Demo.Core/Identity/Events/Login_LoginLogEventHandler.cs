@@ -1,14 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="Logout_LoginLogEventHandler.cs" company="OSharp开源团队">
+//  <copyright file="LoginLoginLogEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-05-03 1:22</last-date>
+//  <last-date>2018-05-03 1:19</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,19 +17,19 @@ using OSharp.Entity;
 using OSharp.EventBuses;
 
 
-namespace OSharp.Demo.Identity.Events.Handlers
+namespace OSharp.Demo.Identity.Events
 {
     /// <summary>
-    /// 用户登出事件：登录日志
+    /// 用户登录事件：登录日志
     /// </summary>
-    public class LogoutLoginLogEventHandler : EventHandlerBase<LogoutEventData>, ITransientDependency
+    public class LoginLoginLogEventHandler : EventHandlerBase<LoginEventData>, ITransientDependency
     {
         private readonly IRepository<LoginLog, Guid> _loginLogRepository;
 
         /// <summary>
-        /// 初始化一个<see cref="LogoutLoginLogEventHandler"/>类型的新实例
+        /// 初始化一个<see cref="LoginLoginLogEventHandler"/>类型的新实例
         /// </summary>
-        public LogoutLoginLogEventHandler(IRepository<LoginLog, Guid> loginLogRepository)
+        public LoginLoginLogEventHandler(IRepository<LoginLog, Guid> loginLogRepository)
         {
             _loginLogRepository = loginLogRepository;
         }
@@ -39,15 +38,15 @@ namespace OSharp.Demo.Identity.Events.Handlers
         /// 事件处理
         /// </summary>
         /// <param name="eventData">事件源数据</param>
-        public override void Handle(LogoutEventData eventData)
+        public override void Handle(LoginEventData eventData)
         {
-            LoginLog log = _loginLogRepository.Entities.LastOrDefault(m => m.UserId == eventData.UserId);
-            if (log == null)
+            LoginLog log = new LoginLog()
             {
-                return;
-            }
-            log.LogoutTime = DateTime.Now;
-            _loginLogRepository.Update(log);
+                Ip = eventData.LoginDto.Ip,
+                UserAgent = eventData.LoginDto.UserAgent,
+                UserId = eventData.User.Id
+            };
+            _loginLogRepository.Insert(log);
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace OSharp.Demo.Identity.Events.Handlers
         /// <param name="eventData">事件源数据</param>
         /// <param name="cancelToken">异步取消标识</param>
         /// <returns>是否成功</returns>
-        public override Task HandleAsync(LogoutEventData eventData, CancellationToken cancelToken = default(CancellationToken))
+        public override Task HandleAsync(LoginEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
             throw new NotSupportedException("不支持异步操作");
         }

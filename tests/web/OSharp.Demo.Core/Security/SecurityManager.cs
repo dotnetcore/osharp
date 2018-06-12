@@ -15,6 +15,7 @@ using OSharp.Entity;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Demo.Identity.Entities;
+using OSharp.EventBuses;
 using OSharp.Security;
 
 
@@ -31,6 +32,7 @@ namespace OSharp.Demo.Security
         /// 初始化一个<see cref="SecurityManager"/>类型的新实例
         /// </summary>
         public SecurityManager(
+            IEventBus eventBus,
             IRepository<Function, Guid> functionRepository,
             IRepository<EntityInfo, Guid> entityInfoRepository,
             IRepository<Module, int> moduleRepository,
@@ -39,8 +41,9 @@ namespace OSharp.Demo.Security
             IRepository<ModuleUser, Guid> moduleUserRepository,
             IRepository<Role, int> roleRepository,
             IRepository<User, int> userRepository,
-            IRepository<UserRole, Guid>userRoleRepository)
-            : base(functionRepository,
+            IRepository<UserRole, Guid> userRoleRepository)
+            : base(eventBus,
+                functionRepository,
                 entityInfoRepository,
                 moduleRepository,
                 moduleFunctionRepository,

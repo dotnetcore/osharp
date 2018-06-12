@@ -107,6 +107,9 @@ namespace OSharp.Core.Functions
             }
         }
 
+        /// <summary>
+        /// 清空功能信息缓存
+        /// </summary>
         public void ClearCache()
         {
             _functions.Clear();
@@ -253,10 +256,18 @@ namespace OSharp.Core.Functions
             foreach (TFunction item in dbItems.Except(removeItems))
             {
                 bool isUpdate = false;
-                TFunction function = functions.Single(m =>
-                    string.Equals(m.Area, item.Area, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(m.Controller, item.Controller, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(m.Action, item.Action, StringComparison.OrdinalIgnoreCase));
+                TFunction function;
+                try
+                {
+                    function = functions.Single(m =>
+                        string.Equals(m.Area, item.Area, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(m.Controller, item.Controller, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(m.Action, item.Action, StringComparison.OrdinalIgnoreCase));
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new OsharpException($"发现多个“{item.Area}-{item.Controller}-{item.Action}”的功能信息，不允许重名");
+                }
                 if (function == null)
                 {
                     continue;

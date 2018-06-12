@@ -8,6 +8,7 @@ import { KendouiSplitterComponent } from '@shared/osharp/components/kendoui-spli
 import { KendouiTabstripComponent } from '@shared/osharp/components/kendoui-tabstrip.component';
 import { KendouiTreeviewComponent } from '@shared/osharp/components/kendoui-treeview.component';
 import { KendouiWindowComponent } from '@shared/osharp/components/kendoui-window.component';
+import { OsharpCacheModule } from '@shared/osharp/cache/cache.module';
 
 const DIRECTIVES = [
   RemoteValidator
@@ -33,9 +34,11 @@ const SERVICES = [
   ],
   imports: [
     CommonModule,
+    OsharpCacheModule.forRoot()
   ],
   exports: [
     ...DIRECTIVES,
+    OsharpCacheModule,
     ...COMPONENTS
   ],
   providers: [

@@ -39,6 +39,11 @@ namespace OSharp
         public static ServiceLocator Instance => InstanceLazy.Value;
 
         /// <summary>
+        /// 获取 ServiceProvider是否为可用
+        /// </summary>
+        public bool IsProviderEnabled => _provider != null;
+
+        /// <summary>
         /// 设置应用程序服务集合
         /// </summary>
         internal void TrySetServiceCollection(IServiceCollection services)

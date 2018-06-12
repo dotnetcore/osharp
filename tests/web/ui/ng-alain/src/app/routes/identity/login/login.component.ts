@@ -1,16 +1,17 @@
-import { Component, Inject, } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { IdentityService, } from '../shared/identity.service';
 import { LoginDto, AjaxResultType } from '@shared/osharp/osharp.model';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { ComponentBase } from '@shared/osharp/services/osharp.service';
 
 @Component({
   selector: 'app-identity-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent {
+export class LoginComponent extends ComponentBase implements OnInit {
 
   dto: LoginDto = new LoginDto();
   canSubmit = true;
@@ -20,8 +21,22 @@ export class LoginComponent {
   constructor(
     private msgSrv: NzMessageService,
     private _service: IdentityService,
-    private router: Router
-  ) { }
+    private router: Router,
+    injector: Injector
+  ) {
+    super(injector);
+    this.authDict = {
+      "Login": false
+    };
+  }
+
+  async ngOnInit() {
+    await this.checkAuth();
+  }
+
+  Position(): string {
+    return 'Root.Site.Identity';
+  }
 
   submitForm() {
     this.canSubmit = false;

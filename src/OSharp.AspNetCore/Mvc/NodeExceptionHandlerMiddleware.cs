@@ -9,12 +9,8 @@
 
 using System;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore.Http;
 using OSharp.AspNetCore.UI;
@@ -59,7 +55,7 @@ namespace OSharp.AspNetCore.Mvc
                 {
                     context.Response.StatusCode = 500;
                     context.Response.Clear();
-                    context.Response.ContentType = "applicaton/json";
+                    context.Response.ContentType = "application/json; charset=utf-8";
                     await context.Response.WriteAsync(new AjaxResult(ex.Message, AjaxResultType.Error).ToJsonString());
                     return;
                 }

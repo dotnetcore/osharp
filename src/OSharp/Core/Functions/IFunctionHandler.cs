@@ -36,6 +36,9 @@ namespace OSharp.Core.Functions
         /// </summary>
         void RefreshCache();
 
+        /// <summary>
+        /// 清空功能信息缓存
+        /// </summary>
         void ClearCache();
     }
 }

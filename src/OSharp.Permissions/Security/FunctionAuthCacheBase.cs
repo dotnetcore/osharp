@@ -145,7 +145,7 @@ namespace OSharp.Security
                 IServiceProvider scopedProvider = scope.ServiceProvider;
                 IRepository<TUser, TUserKey> userRepository = scopedProvider.GetService<IRepository<TUser, TUserKey>>();
                 TUserKey userId = userRepository.Entities.Where(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
-                if (userId.Equals(default(TUserKey)))
+                if(Equals(userId, default(TUserKey)))
                 {
                     return new Guid[0];
                 }

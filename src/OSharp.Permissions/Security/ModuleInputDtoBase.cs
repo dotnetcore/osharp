@@ -40,6 +40,12 @@ namespace OSharp.Security
         public string Remark { get; set; }
 
         /// <summary>
+        /// 获取或设置 模块代码
+        /// </summary>
+        [Required]
+        public string Code { get; set; }
+
+        /// <summary>
         /// 获取或设置 节点内排序码
         /// </summary>
         [DisplayName("排序码")]

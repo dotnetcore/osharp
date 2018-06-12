@@ -14,7 +14,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
@@ -50,6 +53,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 m.Name,
                 m.ParentId,
                 m.OrderCode,
+                m.Code,
                 m.Remark
             }).ToList();
             return Json(modules);
@@ -181,23 +185,33 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result.ToAjaxResult());
         }
 
+        [AllowAnonymous]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("测试")]
         public async Task<IActionResult> Build()
         {
-            List<string> msgs = new List<string>();
-            foreach (Module module in _securityManager.Modules)
+            //List<string> msgs = new List<string>();
+            //foreach (Module module in _securityManager.Modules)
+            //{
+            //    msgs.Add((await _securityManager.UpdateModule(new ModuleInputDto()
+            //    {
+            //        Id = module.Id,
+            //        Name = module.Name,
+            //        OrderCode = module.OrderCode,
+            //        Remark = module.Remark,
+            //        ParentId = module.ParentId == null ? 0 : module.ParentId.Value
+            //    })).Message);
+            //}
+            //return Json(new AjaxResult(msgs.ExpandAndToString("<br/>")));
+            IRepository<Module, int> repository = HttpContext.RequestServices.GetService<IRepository<Module, int>>();
+            string[] names = { "查看", "新增", "更新", "删除" };
+            int count = 0;
+            foreach (Module m in repository.TrackEntities.Where(m => names.Contains(m.Name)))
             {
-                msgs.Add((await _securityManager.UpdateModule(new ModuleInputDto()
-                {
-                    Id = module.Id,
-                    Name = module.Name,
-                    OrderCode = module.OrderCode,
-                    Remark = module.Remark,
-                    ParentId = module.ParentId == null ? 0 : module.ParentId.Value
-                })).Message);
+                m.Code = m.Name == "查看" ? "Read" : m.Name == "新增" ? "Create" : m.Name == "更新" ? "Update" : m.Name == "删除" ? "Delete" : m.Code;
+                count += await repository.UpdateAsync(m);
             }
-            return Json(new AjaxResult(msgs.ExpandAndToString("<br/>")));
+            return Json(count);
         }
     }
 }

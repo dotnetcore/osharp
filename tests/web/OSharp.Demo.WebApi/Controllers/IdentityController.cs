@@ -66,7 +66,6 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [Description("用户Email是否不存在")]
-        [Logined]
         public IActionResult CheckEmailNotExists(string email)
         {
             bool exists = !_userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
