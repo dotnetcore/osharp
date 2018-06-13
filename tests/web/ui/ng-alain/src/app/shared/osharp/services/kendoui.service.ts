@@ -5,6 +5,7 @@ import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 
+
 @Injectable()
 export class KendouiService {
 
@@ -15,7 +16,11 @@ export class KendouiService {
 
   // #region 工具操作
 
-  /** 获取osharp查询条件组 */
+  /**
+   * 获取osharp查询条件组
+   * @param filter kendo发出的filter
+   * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
+   */
   getFilterGroup(filter, funcFieldReplace): Group {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
@@ -34,7 +39,11 @@ export class KendouiService {
     group.operate = filter.logic;
     return group;
   }
-  /** 获取osharp查询条件 */
+  /**
+   * 获取osharp查询条件
+   * @param filter kendo发出的filter
+   * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
+   */
   getFilterRule(filter, funcFieldReplace = null): Rule {
     if (!funcFieldReplace || !isFunction(funcFieldReplace)) {
       throw new Error("funcFieldReplace muse be function");
@@ -44,7 +53,10 @@ export class KendouiService {
     const rule = new Rule(field, filter.value, operate);
     return rule;
   }
-  /** 转换查询操作 */
+  /**
+   * 转换查询操作
+   * @param operate kendo的查询对比操作字符串
+   */
   renderRuleOperate(operate) {
     if (operate === "eq") return "equal";
     if (operate === "neq") return "notequal";
@@ -55,7 +67,11 @@ export class KendouiService {
     if (operate === "doesnotcontain") return "notcontains";
     return operate;
   }
-  /** 处理kendoui到osharp框架的查询参数 */
+  /**
+   * 处理kendoui到osharp框架的查询参数
+   * @param options kendo发送的选项
+   * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
+   */
   readParameterMap(options, funcFieldReplace) {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
@@ -82,7 +98,6 @@ export class KendouiService {
     }
     return paramter;
   }
-
 
   /**给每个请求头设置 JWT-Token */
   setAuthToken(dataSource: kendo.data.DataSource) {
@@ -113,7 +128,10 @@ export class KendouiService {
     xhr.setRequestHeader("Authorization", `Bearer ${token.token}`);
   }
 
-  /**获取TreeView树数据源 */
+  /**
+   * 获取TreeView树数据源
+   * @param url 数据源URL
+   */
   CreateHierarchicalDataSource(url: string): kendo.data.HierarchicalDataSource {
     return new kendo.data.HierarchicalDataSource({
       transport: { read: { url: url } },
@@ -129,7 +147,10 @@ export class KendouiService {
     });
   }
 
-  /**初始化树数据 */
+  /**
+   * 初始化树数据
+   * @param nodes 原始树数据节点
+   */
   TreeDataInit(nodes: Array<any>): any {
     if (!nodes.length) {
       return nodes;
@@ -221,6 +242,9 @@ export class KendouiService {
   // #endregion
 }
 
+/**
+ * KendoGrid组件基类
+ */
 export abstract class GridComponentBase extends ComponentBase {
 
   public moduleName: string = null;
@@ -241,9 +265,11 @@ export abstract class GridComponentBase extends ComponentBase {
   }
 
   protected InitBase() {
-    const dataSourceOptions = this.GetDataSourceOptions();
+    let dataSourceOptions = this.GetDataSourceOptions();
+    dataSourceOptions = this.FilterDataAuth(dataSourceOptions);
     const dataSource = new kendo.data.DataSource(dataSourceOptions);
     this.gridOptions = this.GetGridOptions(dataSource);
+    this.gridOptions = this.FilterGridAuth(this.gridOptions);
   }
 
   protected ViewInitBase() {
@@ -331,7 +357,7 @@ export abstract class GridComponentBase extends ComponentBase {
         if (e.type == "read" && !e.response.Type) {
           return;
         }
-        this.osharp.ajaxResult(e.response, () => this.grid.options.dataSource.read(), null);
+        this.osharp.ajaxResult(e.response, () => this.grid.options.dataSource.read());
       },
       change: function () { },
       error: e => {
@@ -341,7 +367,6 @@ export abstract class GridComponentBase extends ComponentBase {
         this.osharp.ajaxError(e.xhr);
       }
     };
-
     return options;
   }
 
@@ -349,12 +374,77 @@ export abstract class GridComponentBase extends ComponentBase {
     return field;
   }
 
-  /**重写以获取Grid的模型设置Model */
+  /**
+   * 重写以获取Grid的模型设置Model
+   */
   protected abstract GetModel(): any;
-  /**重写以获取Grid的列设置Columns */
+  /**
+   * 重写以获取Grid的列设置Columns
+   */
   protected abstract GetGridColumns(): kendo.ui.GridColumn[];
+  /**
+   * 根据 this.auth 的设置对 DataSource 进行权限过滤
+   * @param options 数据源选项
+   */
+  protected FilterDataAuth(options: kendo.data.DataSourceOptions) {
+    let transport = options.transport;
+    if (!this.auth.Create && transport.create) {
+      delete transport.create;
+    }
+    if (!this.auth.Update && transport.update) {
+      delete transport.update;
+    }
+    if (!this.auth.Delete && transport.destroy) {
+      delete transport.destroy;
+    }
 
-  /**重置Grid高度 */
+    let fields = options.schema.model.fields;
+    if (!this.auth.Update && fields) {
+      for (const key in fields) {
+        if (fields.hasOwnProperty(key)) {
+          const item = fields[key];
+          item.editable = false;
+        }
+      }
+    }
+    return options;
+  }
+  /**
+   * 根据 this.auth 的设置对 Grid 进行权限过滤
+   * @param options Grid选项
+   */
+  protected FilterGridAuth(options: kendo.ui.GridOptions) {
+    // 工具栏
+    let toolbar = options.toolbar;
+    if (!this.auth.Create) {
+      this.osharp.remove(toolbar, m => m.name == "create");
+    }
+    if (!this.auth.Update && !this.auth.Delete) {
+      this.osharp.remove(toolbar, m => m.name == "save");
+      this.osharp.remove(toolbar, m => m.name == "cancel");
+    }
+    // 命令列
+    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
+    let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
+    if (cmds) {
+      if (!this.auth.Delete) {
+        this.osharp.remove(cmds, m => m.name == "destroy");
+      }
+      if (!this.auth.SetPermission) {
+        this.osharp.remove(cmds, m => m.name == "permission");
+      }
+      if (cmds.length == 0) {
+        this.osharp.remove(options.columns, m => m == cmdColumn);
+      }
+      cmdColumn.width = cmds.length * 50;
+    }
+    return options;
+  }
+
+  /**
+   * 重置Grid高度
+   * @param init 是否初次
+   */
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
     let winWidth = window.innerWidth, winHeight = window.innerHeight;

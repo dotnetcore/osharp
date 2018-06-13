@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Injector } from '@angular/core';
+import { Component, AfterViewInit, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { List } from 'linqts';
@@ -9,7 +9,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'admin-security-module',
   templateUrl: './module.component.html'
 })
-export class ModuleComponent extends TreeListComponentBase implements OnInit, AfterViewInit {
+export class ModuleComponent extends TreeListComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions = null;
   selectedModuleId = 0;
@@ -31,16 +31,18 @@ export class ModuleComponent extends TreeListComponentBase implements OnInit, Af
     this.functionTreeOptions = { autoBind: true, checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.checkAuth();
-    super.InitBase();
-  }
-  ngAfterViewInit(): void {
-    super.ViewInitBase();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看该页面");
+    }
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Security.Function", ["Read", "Update"]);
+    return new AuthConfig("Root.Admin.Security.Module", ["Read", "Update"]);
   }
 
   //#region Grid

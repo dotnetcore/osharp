@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="SecurityManagerBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-11-15 20:36</last-date>
+//  <last-date>2018-06-14 0:53</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -23,20 +23,19 @@ using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security.Events;
 
-
 namespace OSharp.Security
 {
     /// <summary>
     /// 权限安全管理器基类
     /// </summary>
     public abstract class SecurityManagerBase<TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,
-        TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey>
+            TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey>
         : IFunctionStore<TFunction, TFunctionInputDto>,
-        IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
-        IModuleStore<TModule, TModuleInputDto, TModuleKey>,
-        IModuleFunctionStore<TModuleFunction, TModuleKey>,
-        IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
-        IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
+          IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
+          IModuleStore<TModule, TModuleInputDto, TModuleKey>,
+          IModuleFunctionStore<TModuleFunction, TModuleKey>,
+          IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
+          IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
         where TFunction : IFunction, IEntity<Guid>
         where TFunctionInputDto : FunctionInputDtoBase
         where TEntityInfo : IEntityInfo, IEntity<Guid>
@@ -53,11 +52,11 @@ namespace OSharp.Security
         where TRoleKey : IEquatable<TRoleKey>
         where TUserKey : IEquatable<TUserKey>
     {
+        private readonly IRepository<TEntityInfo, Guid> _entityInfoRepository;
         private readonly IEventBus _eventBus;
         private readonly IRepository<TFunction, Guid> _functionRepository;
-        private readonly IRepository<TEntityInfo, Guid> _entityInfoRepository;
-        private readonly IRepository<TModule, TModuleKey> _moduleRepository;
         private readonly IRepository<TModuleFunction, Guid> _moduleFunctionRepository;
+        private readonly IRepository<TModule, TModuleKey> _moduleRepository;
         private readonly IRepository<TModuleRole, Guid> _moduleRoleRepository;
         private readonly IRepository<TModuleUser, Guid> _moduleUserRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
@@ -78,7 +77,7 @@ namespace OSharp.Security
             IRepository<TRole, TRoleKey> roleRepository,
             IRepository<TUser, TUserKey> userRepository,
             IRepository<TUserRole, Guid> userRoleRepository
-            )
+        )
         {
             _eventBus = eventBus;
             _functionRepository = functionRepository;
@@ -124,6 +123,11 @@ namespace OSharp.Security
             OperationResult result = await _functionRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
+                    if (dto.IsLocked && entity.Area == "Admin" && entity.Controller == "Function"
+                        && (entity.Action == "Update" || entity.Action == "Read"))
+                    {
+                        throw new Exception($"功能信息“{entity.Name}”不能锁定");
+                    }
                     if (dto.AuditEntityEnabled && !dto.AuditOperationEnabled && !entity.AuditOperationEnabled && !entity.AuditEntityEnabled)
                     {
                         dto.AuditOperationEnabled = true;
@@ -153,7 +157,7 @@ namespace OSharp.Security
             return result;
         }
 
-        #endregion
+        #endregion Implementation of IFunctionStore<TFunction,in TFunctionInputDto>
 
         #region Implementation of IEntityInfoStore<TEntityInfo,in TEntityInfoInputDto>
 
@@ -187,7 +191,7 @@ namespace OSharp.Security
             return _entityInfoRepository.UpdateAsync(dtos);
         }
 
-        #endregion
+        #endregion Implementation of IEntityInfoStore<TEntityInfo,in TEntityInfoInputDto>
 
         #region Implementation of IModuleStore<TModule,in TModuleInputDto,in TModuleKey>
 
@@ -370,7 +374,8 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetModuleTreeIds(params TModuleKey[] rootIds)
         {
-            return rootIds.SelectMany(m => _moduleRepository.Entities.Where(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct().ToArray();
+            return rootIds.SelectMany(m => _moduleRepository.Entities.Where(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct()
+                .ToArray();
         }
 
         private static string GetModuleTreePath(TModuleKey currentId, string parentTreePath, string treePathItemFormat)
@@ -378,7 +383,7 @@ namespace OSharp.Security
             return $"{parentTreePath},{treePathItemFormat.FormatWith(currentId)}";
         }
 
-        #endregion
+        #endregion Implementation of IModuleStore<TModule,in TModuleInputDto,in TModuleKey>
 
         #region Implementation of IModuleFunctionStore<TModuleFunction>
 
@@ -464,7 +469,7 @@ namespace OSharp.Security
             return OperationResult.NoChanged;
         }
 
-        #endregion
+        #endregion Implementation of IModuleFunctionStore<TModuleFunction>
 
         #region Implementation of IModuleRoleStore<TModuleRole>
 
@@ -560,7 +565,7 @@ namespace OSharp.Security
             return GetModuleTreeIds(moduleIds);
         }
 
-        #endregion
+        #endregion Implementation of IModuleRoleStore<TModuleRole>
 
         #region Implementation of IModuleUserStore<TModuleUser>
 
@@ -662,13 +667,14 @@ namespace OSharp.Security
             TModuleKey[] selfModuleIds = GetUserSelfModuleIds(userId);
 
             TRoleKey[] roleIds = _userRoleRepository.Entities.Where(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
-            TModuleKey[] roleModuleIds = roleIds.SelectMany(m => _moduleRoleRepository.Entities.Where(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
+            TModuleKey[] roleModuleIds = roleIds
+                .SelectMany(m => _moduleRoleRepository.Entities.Where(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
                 .Distinct().ToArray();
             roleModuleIds = GetModuleTreeIds(roleModuleIds);
 
             return roleModuleIds.Union(selfModuleIds).Distinct().ToArray();
         }
 
-        #endregion
+        #endregion Implementation of IModuleUserStore<TModuleUser>
     }
 }

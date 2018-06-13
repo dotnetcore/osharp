@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
+import { Component, AfterViewInit, Injector, } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
@@ -6,20 +6,19 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'admin-identity-user-role',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
-export class UserRoleComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class UserRoleComponent extends GridComponentBase implements AfterViewInit {
 
   constructor(injector: Injector) {
     super(injector);
     this.moduleName = "userrole";
   }
 
-  async ngOnInit() {
-    await this.checkAuth();
-    super.InitBase();
-  }
-
-  ngAfterViewInit() {
-    super.ViewInitBase();
+  async ngAfterViewInit() {
+    let auth = await this.checkAuth();
+    if (auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    }
   }
 
   protected AuthConfig(): AuthConfig {

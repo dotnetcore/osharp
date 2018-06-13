@@ -7,6 +7,8 @@
 //  <last-date>2018-05-10 19:45</last-date>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics;
+
 using OSharp.Data;
 
 
@@ -15,6 +17,7 @@ namespace OSharp.Secutiry
     /// <summary>
     /// 权限检查结果
     /// </summary>
+    [DebuggerDisplay("{ResultType}-{Message}")]
     public sealed class AuthorizationResult : OsharpResult<AuthorizationStatus>
     {
         /// <summary>

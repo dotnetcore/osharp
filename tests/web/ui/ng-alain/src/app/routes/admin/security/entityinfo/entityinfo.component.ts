@@ -6,20 +6,19 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'admin-security-entityinfo',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
-export class EntityinfoComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class EntityinfoComponent extends GridComponentBase implements AfterViewInit {
 
   constructor(injector: Injector) {
     super(injector);
     this.moduleName = "entityinfo";
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.checkAuth();
-    super.InitBase();
-  }
-
-  ngAfterViewInit() {
-    super.ViewInitBase();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    }
   }
 
   protected AuthConfig(): AuthConfig {
@@ -47,19 +46,5 @@ export class EntityinfoComponent extends GridComponentBase implements OnInit, Af
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       }
     ];
-  }
-
-  protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-    let options = super.GetGridOptions(dataSource);
-    options.columnMenu = { sortable: false };
-    options.toolbar.splice(0, 1);
-    return options;
-  }
-
-  protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
-    let options = super.GetDataSourceOptions();
-    delete options.transport.create;
-    delete options.transport.destroy;
-    return options;
   }
 }

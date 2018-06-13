@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
+import { Component, AfterViewInit, Injector, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
@@ -7,7 +7,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'admin-security-role-function',
   templateUrl: './role-function.component.html'
 })
-export class RoleFunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class RoleFunctionComponent extends GridComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions = null;
   functionReadUrl = "/api/admin/rolefunction/readfunctions";
@@ -21,17 +21,18 @@ export class RoleFunctionComponent extends GridComponentBase implements OnInit, 
     };
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.checkAuth();
-    super.InitBase();
-  }
-
-  ngAfterViewInit(): void {
-    super.ViewInitBase();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看此页面");
+    }
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
+    return new AuthConfig("Root.Admin.Security.RoleFunction", ["Read"]);
   }
 
   protected GetModel() {
@@ -66,7 +67,7 @@ export class RoleFunctionComponent extends GridComponentBase implements OnInit, 
     let options = super.GetGridOptions(dataSource);
     options.editable = false;
     options.selectable = true;
-    options.toolbar = [{ template: '<span style="line-height:30px;">角色列表</span>' }];
+    options.toolbar.push({ name: 'list', template: '<span style="line-height:30px;">角色列表</span>' });
     options.change = e => {
       let row = this.grid.select();
       if (row) {
@@ -74,6 +75,7 @@ export class RoleFunctionComponent extends GridComponentBase implements OnInit, 
         this.selectedRoleId = data.Id;
       }
     };
+
     return options;
   }
 

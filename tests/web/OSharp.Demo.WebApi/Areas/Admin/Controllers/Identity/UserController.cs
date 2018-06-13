@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-10 16:15</last-date>
+//  <last-date>2018-06-14 0:53</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
@@ -32,15 +31,14 @@ using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
 
-
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
     [Description("管理-用户信息")]
     public class UserController : AdminApiController
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SecurityManager _securityManager;
         private readonly IIdentityContract _identityContract;
+        private readonly SecurityManager _securityManager;
+        private readonly UserManager<User> _userManager;
 
         public UserController(UserManager<User> userManager, SecurityManager securityManager, IIdentityContract identityContract)
         {
@@ -54,23 +52,25 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage(predicate, request.PageCondition, m => new
-            {
-                m.Id,
-                m.UserName,
-                m.NickName,
-                m.Email,
-                m.EmailConfirmed,
-                m.PhoneNumber,
-                m.PhoneNumberConfirmed,
-                m.LockoutEnabled,
-                m.LockoutEnd,
-                m.AccessFailedCount,
-                m.IsLocked,
-                m.CreatedTime,
-                Roles = _identityContract.UserRoles.Where(n => !n.IsLocked).Where(n => n.UserId == m.Id)
-                    .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))
-            });
+            var page = _userManager.Users.ToPage(predicate,
+                request.PageCondition,
+                m => new
+                {
+                    m.Id,
+                    m.UserName,
+                    m.NickName,
+                    m.Email,
+                    m.EmailConfirmed,
+                    m.PhoneNumber,
+                    m.PhoneNumberConfirmed,
+                    m.LockoutEnabled,
+                    m.LockoutEnd,
+                    m.AccessFailedCount,
+                    m.IsLocked,
+                    m.CreatedTime,
+                    Roles = _identityContract.UserRoles.Where(n => !n.IsLocked).Where(n => n.UserId == m.Id)
+                        .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name))
+                });
 
             return Json(page.ToPageData());
         }
@@ -141,7 +141,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置权限")]
-        public async Task<IActionResult> SetPermission([FromBody]UserSetPermissionDto dto)
+        public async Task<IActionResult> SetPermission([FromBody] UserSetPermissionDto dto)
         {
             OperationResult result1 = await _identityContract.SetUserRoles(dto.UserId, dto.RoleIds);
             string msg = $"设置角色：{result1.Message}<br/>";

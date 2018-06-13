@@ -7,7 +7,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'admin-security-user-function',
   templateUrl: './user-function.component.html'
 })
-export class UserFunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class UserFunctionComponent extends GridComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions = null;
   functionReadUrl = "/api/admin/userfunction/readfunctions";
@@ -19,6 +19,20 @@ export class UserFunctionComponent extends GridComponentBase implements OnInit, 
     this.splitterOptions = {
       panes: [{ size: "60%" }, { collapsible: true, collapsed: false }]
     };
+  }
+
+  async ngAfterViewInit() {
+    await this.checkAuth();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看此页面");
+    }
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Security.UserFunction", ["Read"]);
   }
 
   protected GetModel() {
@@ -46,24 +60,11 @@ export class UserFunctionComponent extends GridComponentBase implements OnInit, 
     ];
   }
 
-  async ngOnInit() {
-    await this.checkAuth();
-    super.InitBase();
-  }
-
-  ngAfterViewInit(): void {
-    super.ViewInitBase();
-  }
-
-  protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
-  }
-
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
     options.editable = false;
     options.selectable = true;
-    options.toolbar = [{ template: '<span style="line-height:30px;">角色列表</span>' }];
+    options.toolbar.push({ template: '<span style="line-height:30px;">角色列表</span>' });
     options.change = e => {
       let row = this.grid.select();
       if (row) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output, Injector } from '@angular/core';
+import { Component, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output, Injector, OnInit } from '@angular/core';
 import { GridComponentBase } from "../services/kendoui.service";
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
@@ -12,19 +12,24 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   @Input() ModuleName: string;
   @Input() ReadUrl: string;
   @Input() TypeId: any;
+  @Input() Position: string;
   @Output() TypeIdChange: EventEmitter<kendo.ui.Grid> = new EventEmitter<kendo.ui.Grid>();
 
   constructor(injector: Injector) {
     super(injector);
   }
 
-  async ngOnInit() {
-    await this.checkAuth();
+  ngOnInit() {
     this.moduleName = this.ModuleName;
-    super.InitBase();
+    // this.InitBase();
   }
-  ngAfterViewInit() {
-    super.ViewInitBase();
+
+  async ngAfterViewInit() {
+    await this.checkAuth();
+    if (this.auth.ReadFunctions) {
+      super.InitBase();
+      super.ViewInitBase();
+    }
   }
   ngOnChanges() {
     if (this.grid) {
@@ -33,7 +38,7 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
+    return new AuthConfig(this.Position, ["ReadFunctions"]);
   }
 
   protected GetModel() {
@@ -53,8 +58,8 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
-    options.toolbar = [{ template: '<span style="line-height:30px;">功能列表</span>' },
-    { name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` }];
+    options.toolbar.push({ template: '<span style="line-height:30px;">功能列表</span>' });
+    options.toolbar.push({ name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
     // options.pageable = false;
     return options;
   }

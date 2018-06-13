@@ -1,14 +1,15 @@
-import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
+import { Component, AfterViewInit, Injector, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { List } from 'linqts';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
+
 @Component({
   selector: 'admin-identity-user',
   templateUrl: './user.component.html'
 })
-export class UserComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class UserComponent extends GridComponentBase implements AfterViewInit {
 
   window: kendo.ui.Window;
   windowOptions: kendo.ui.WindowOptions;
@@ -32,13 +33,14 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
     this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.checkAuth();
-    super.InitBase();
-  }
-
-  ngAfterViewInit() {
-    super.ViewInitBase();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看该页面");
+    }
   }
 
   protected AuthConfig(): AuthConfig {
@@ -162,10 +164,10 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
   onWinInit(win) {
     this.window = win;
   }
-  onWinClose(win) {
+  onWinClose() {
 
   }
-  onWinSubmit(win) {
+  onWinSubmit() {
     let roles = this.roleTree.dataSource.data();
     let checkRoleIds = new List(roles.slice(0)).Where(m => m.checked).Select(m => m.Id).ToArray();
 

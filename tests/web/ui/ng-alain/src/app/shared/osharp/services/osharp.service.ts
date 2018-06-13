@@ -25,24 +25,40 @@ export class OsharpService {
 
   // #region 工具方法
 
-  /**URL编码 */
+  /**
+   * URL编码
+   * @param url 待编码的URL
+   */
   urlEncode(url: string): string {
     return encodeURIComponent(url);
   }
-  /**URL解码 */
+  /**
+   * URL解码
+   * @param url 待解码的URL
+   */
   urlDecode(url: string): string {
     return decodeURIComponent(url);
   }
 
-  /**Base64字符串解码 */
+  /**
+   * Base64字符串解码
+   * @param base64 待编码的字符串
+   */
   fromBase64(base64: string): string {
     return new Buffer(base64, 'base64').toString();
   }
-  /**Base64字符串编码 */
+  /**
+   * Base64字符串编码
+   * @param str 待解码的Base64字符串
+   */
   toBase64(str: string): string {
     return new Buffer(str).toString('base64');
   }
-  /**获取URL中Hash串中的查询参数值 */
+  /**
+   * 获取URL中Hash串中的查询参数值
+   * @param url URL字符串
+   * @param name 参数名
+   */
   getHashURLSearchParams(url: string, name: string): string {
     if (url.indexOf("#") >= 0) {
       url = this.subStr(url, "#");
@@ -53,7 +69,12 @@ export class OsharpService {
     const params = new URLSearchParams(url);
     return params.get(name);
   }
-  /**提供首尾字符串截取中间的字符串 */
+  /**
+   * 提供首尾字符串截取中间的字符串
+   * @param str 待截取的字符串
+   * @param start 起始的字符串
+   * @param end 结束的字符串
+   */
   subStr(str: string, start: string = null, end: string = null): string {
     let startIndex = 0, endIndex = str.length;
     if (start) {
@@ -64,7 +85,22 @@ export class OsharpService {
     }
     return str.substr(startIndex, endIndex - startIndex);
   }
-  /**值转文字 */
+  /**
+   * 从集合中删除符合条件的项
+   * @param items 集合
+   * @param exp 删除项查询表达式
+   */
+  remove<T>(items: Array<T>, exp: (value: T, index: number, obj: T[]) => boolean) {
+    let index = items.findIndex(exp);
+    items.splice(index, 1);
+    return items;
+  }
+  /**
+   * 值转文字
+   * @param id 待转换的值
+   * @param array 数据节点集合
+   * @param defaultText 转换失败时的默认文字
+   */
   valueToText(id: number, array: Array<ListNode>, defaultText: string = null) {
     let text = defaultText == null ? id : defaultText;
     array.forEach(item => {
@@ -76,7 +112,11 @@ export class OsharpService {
     });
     return text;
   }
-  /**展开集合拼接字符串 */
+  /**
+   * 展开集合拼接字符串
+   * @param array 待展开的集合
+   * @param separator 分隔符
+   */
   expandAndToString(array: Array<any>, separator: string = ',') {
     let result = '';
     if (!array || !array.length) {
@@ -87,7 +127,11 @@ export class OsharpService {
     });
     return result.substr(0, result.length - separator.length);
   }
-  /** 下载数据 */
+  /**
+   * 下载数据
+   * @param filename 存储的文件名
+   * @param content 下载得到的内容
+   */
   download(filename: string, content: string) {
     const urlObject = window.URL;
     const blob = new Blob([content]);
@@ -100,13 +144,22 @@ export class OsharpService {
     );
     saveLink.dispatchEvent(ev);
   }
-  /**打开Email的网站 */
+  /**
+   * 打开Email的网站
+   * @param email Email地址
+   */
   openMailSite(email: string) {
     let host = this.subStr(email, "@");
     let url = `http://mail.${host}`;
     window.open(url);
   }
 
+  /**
+   * 处理Ajax结果
+   * @param res HTTP响应
+   * @param onSuccess 成功后的调用
+   * @param onFail 失败后的调用
+   */
   ajaxResult(res, onSuccess?, onFail?) {
     if (!res || !res.Type) {
       return;
@@ -139,7 +192,10 @@ export class OsharpService {
         break;
     }
   }
-  /**处理Ajax错误 */
+  /**
+   * 处理Ajax错误
+   * @param xhr 错误响应
+   */
   ajaxError(xhr) {
     switch (xhr.status) {
       case 401:
@@ -154,7 +210,11 @@ export class OsharpService {
         break;
     }
   }
-  /**获取树节点集合 */
+  /**
+   * 获取树节点集合
+   * @param root 根节点
+   * @param array 节点集合
+   */
   getTreeNodes(root: any, array: Array<any>) {
     array.push(root);
     if (root.hasChildren) {
@@ -165,7 +225,10 @@ export class OsharpService {
     }
   }
 
-  /**检查URL的功能权限 */
+  /**
+   * 检查URL的功能权限
+   * @param url 要检查权限的后端URL
+   */
   checkUrlAuth(url: string): Observable<boolean> {
     if (!url.startsWith("https:") && !url.startsWith("http") && !url.startsWith("/")) {
       url = `/${url}`;
@@ -181,18 +244,38 @@ export class OsharpService {
 
   private msgOptions: NzMessageDataOptions = { nzDuration: 1000 * 3, nzAnimate: true, nzPauseOnHover: true };
 
+  /**
+   * 消息加载中
+   * @param msg 消息字符串
+   */
   loading(msg) {
     return this.msgSrv.loading(msg, this.msgOptions);
   }
+  /**
+   * 成功的消息
+   * @param msg 消息字符串
+   */
   success(msg) {
     return this.msgSrv.success(msg, this.msgOptions);
   }
+  /**
+   * 消息的消息
+   * @param msg 消息字符串
+   */
   info(msg) {
     return this.msgSrv.info(msg, this.msgOptions);
   }
+  /**
+   * 警告的消息
+   * @param msg 消息字符串
+   */
   warning(msg) {
     return this.msgSrv.warning(msg, this.msgOptions);
   }
+  /**
+   * 错误的消息
+   * @param msg 消息字符串
+   */
   error(msg) {
     return this.msgSrv.error(msg, { nzDuration: 1000 * 6, nzAnimate: true, nzPauseOnHover: true });
   }
@@ -211,10 +294,15 @@ export class OsharpService {
 
 //#region 组件基类
 
+/**
+ * 组件基类，实现了权限控制
+ */
 export abstract class ComponentBase {
   private cache: CacheService;
 
-  /**权限字典，以模块代码为键，是否有权限为值 */
+  /**
+   * 权限字典，以模块代码为键，是否有权限为值
+   */
   public auth: { [key: string]: boolean; } = {};
   private authConfig: AuthConfig = null;
 
@@ -222,9 +310,14 @@ export abstract class ComponentBase {
     this.cache = injector.get(CacheService);
   }
 
-  /**重写以返回权限控制配置信息 */
+  /**
+   * 重写以返回权限控制配置信息
+   */
   protected abstract AuthConfig(): AuthConfig;
 
+  /**
+   * 初始化并执行权限检查，检查结果存储到 this.auth 中
+   */
   async checkAuth() {
     if (this.authConfig == null) {
       this.authConfig = this.AuthConfig();
@@ -233,7 +326,7 @@ export abstract class ComponentBase {
     let position = this.authConfig.position;
     let codes = await this.cache.get<string[]>('/api/security/getauthinfo', { expire: 1 }).toPromise();
     if (!codes) {
-      return;
+      return this.auth;
     }
     let list = new List(codes);
     for (const key in this.auth) {
@@ -245,6 +338,7 @@ export abstract class ComponentBase {
         this.auth[key] = list.Contains(path);
       }
     }
+    return this.auth;
   }
 }
 

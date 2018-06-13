@@ -1,4 +1,5 @@
 <kendoui-splitter [options]="splitterOptions" [height]="835">
   <div id="grid-box-{{moduleName}}"></div>
-  <kendoui-function [ModuleName]="'user-function'" [ReadUrl]="functionReadUrl" [TypeId]="selectedUserId" (TypeIdChange)="onUserSelectedChange($event)"></kendoui-function>
+  <kendoui-function [ModuleName]="'user-function'" [ReadUrl]="functionReadUrl" [TypeId]="selectedUserId" [Position]="'Root.Admin.Security.Module'"
+    (TypeIdChange)="onUserSelectedChange($event)"></kendoui-function>
 </kendoui-splitter>

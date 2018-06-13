@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Injector, } from '@angular/core';
+import { Component, AfterViewInit, Injector, } from '@angular/core';
 
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
@@ -8,19 +8,21 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 
-export class FunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class FunctionComponent extends GridComponentBase implements AfterViewInit {
 
   constructor(injector: Injector) {
     super(injector);
     this.moduleName = "function";
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.checkAuth();
-    super.InitBase();
-  }
-  ngAfterViewInit() {
-    super.ViewInitBase();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看此页面");
+    }
   }
 
   protected AuthConfig(): AuthConfig {
@@ -99,19 +101,10 @@ export class FunctionComponent extends GridComponentBase implements OnInit, Afte
     ];
   }
 
-  protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-    let options = super.GetGridOptions(dataSource);
-    options.columnMenu = { sortable: false };
-    options.toolbar.splice(0, 1);
-    return options;
-  }
-
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     let options = super.GetDataSourceOptions();
     options.group = [{ field: "Area" }, { field: "Controller" }];
     options.pageSize = 19;
-    delete options.transport.create;
-    delete options.transport.destroy;
     return options;
   }
 }
