@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { ListNode, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
+import { ListNode, AjaxResult, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
@@ -215,29 +215,34 @@ export abstract class ComponentBase {
   private cache: CacheService;
 
   /**权限字典，以模块代码为键，是否有权限为值 */
-  public authDict: { [key: string]: boolean; } = null;
+  public auth: { [key: string]: boolean; } = {};
+  private authConfig: AuthConfig = null;
 
   constructor(injector: Injector) {
     this.cache = injector.get(CacheService);
   }
 
-  /**重写以返回当前模块的位置，即上级模块的路径，如Root,Root.Admin,Root.Admin.Identity */
-  abstract Position(): string;
+  /**重写以返回权限控制配置信息 */
+  protected abstract AuthConfig(): AuthConfig;
 
   async checkAuth() {
-    if (this.authDict == null) {
-      return;
+    if (this.authConfig == null) {
+      this.authConfig = this.AuthConfig();
+      this.authConfig.funcs.forEach(key => this.auth[key] = false);
     }
-    let position = this.Position();
+    let position = this.authConfig.position;
     let codes = await this.cache.get<string[]>('/api/security/getauthinfo', { expire: 1 }).toPromise();
     if (!codes) {
       return;
     }
     let list = new List(codes);
-    for (const key in this.authDict) {
-      if (this.authDict.hasOwnProperty(key)) {
-        let path = `${position}.${key}`;
-        this.authDict[key] = list.Contains(path);
+    for (const key in this.auth) {
+      if (this.auth.hasOwnProperty(key)) {
+        let path = key;
+        if (!path.startsWith("Root.")) {
+          path = `${position}.${path}`;
+        }
+        this.auth[key] = list.Contains(path);
       }
     }
   }

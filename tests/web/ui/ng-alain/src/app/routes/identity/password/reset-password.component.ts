@@ -1,29 +1,33 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
+import { Component, OnInit, Inject, Injector } from '@angular/core';
+import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
 import { IdentityService } from '../shared/identity.service';
 
 @Component({
   selector: 'app-identity-reset-password',
   templateUrl: `./reset-password.component.html`
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent extends ComponentBase {
 
   dto: ResetPasswordDto = new ResetPasswordDto();
   result: AdResult = new AdResult();
   canSubmit = true;
-  sended = false;
 
   constructor(
     public router: Router,
     private osharp: OsharpService,
-    private identity: IdentityService
-  ) { }
-
-  ngOnInit(): void {
+    private identity: IdentityService,
+    injector: Injector
+  ) {
+    super(injector);
+    this.checkAuth();
     this.getUrlParams();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Site.Identity", ["ResetPassword"]);
   }
 
   private getUrlParams() {
@@ -35,9 +39,9 @@ export class ResetPasswordComponent implements OnInit {
   submitForm() {
     this.canSubmit = false;
     this.identity.resetPassword(this.dto).then(res => {
-      this.sended = true;
-      this.canSubmit = true;
+      res.show = true;
       this.result = res;
+      this.canSubmit = true;
     });
   }
 }

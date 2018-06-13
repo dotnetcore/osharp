@@ -1,7 +1,6 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, Injector } from '@angular/core';
 import { IdentityService, } from '../shared/identity.service';
-import { LoginDto, AjaxResultType } from '@shared/osharp/osharp.model';
+import { LoginDto, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { ComponentBase } from '@shared/osharp/services/osharp.service';
@@ -11,7 +10,7 @@ import { ComponentBase } from '@shared/osharp/services/osharp.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent extends ComponentBase implements OnInit {
+export class LoginComponent extends ComponentBase {
 
   dto: LoginDto = new LoginDto();
   canSubmit = true;
@@ -25,17 +24,11 @@ export class LoginComponent extends ComponentBase implements OnInit {
     injector: Injector
   ) {
     super(injector);
-    this.authDict = {
-      "Login": false
-    };
+    super.checkAuth();
   }
 
-  async ngOnInit() {
-    await this.checkAuth();
-  }
-
-  Position(): string {
-    return 'Root.Site.Identity';
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig('Root.Site.Identity', ["Login", "Register", "SendResetPasswordMail", "SendConfirmMail"]);
   }
 
   submitForm() {

@@ -1,4 +1,4 @@
-<div *ngIf="!sended" class="identity-box">
+<div *ngIf="!result.show" class="identity-box">
   <h3>新用户注册</h3>
   <form nz-form (ngSubmit)="submitForm()" role="form" #form="ngForm">
     <nz-form-item>
@@ -54,16 +54,17 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <button nz-button nzType="primary" nzSize="large" type="submit" [disabled]="!(form.form.valid && canSubmit)" class="submit">
+      <button nz-button nzType="primary" nzSize="large" type="submit" [disabled]="!(form.form.valid && canSubmit && auth.Register)"
+        class="submit">
         <i class="anticon anticon-plus-circle-o"></i>
         <span>注 册</span>
       </button>
-      <a class="login" [routerLink]="[ '/identity/login' ]">已有账号，立即登录</a>
+      <a *ngIf="auth.Login" class="login" [routerLink]="[ '/identity/login' ]">已有账号，立即登录</a>
     </nz-form-item>
   </form>
 </div>
-<result *ngIf="sended" type="{{result.type}}" [title]="result.title" description="{{result.description}}">
+<result *ngIf="result.show" type="{{result.type}}" [title]="result.title" description="{{result.description}}">
   <button nz-button [nzType]="'primary'" (click)="sended=false;">返回</button>
-  <button nz-button (click)="osharp.openMailSite(dto.Email)">进入邮箱</button>
+  <button *ngIf="result.type == 'success'" nz-button (click)="osharp.openMailSite(dto.Email)">进入邮箱</button>
   <button nz-button (click)="router.navigate(['home'])">返回首页</button>
 </result>
