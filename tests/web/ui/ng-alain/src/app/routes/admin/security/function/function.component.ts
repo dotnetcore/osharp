@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Injector, } from '@angular/core';
 
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-function',
@@ -14,11 +15,16 @@ export class FunctionComponent extends GridComponentBase implements OnInit, Afte
     this.moduleName = "function";
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
   ngAfterViewInit() {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Security.Function", ["Read", "Update"]);
   }
 
   protected GetModel() {

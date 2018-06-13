@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { List } from 'linqts';
 import { TreeListComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-module',
@@ -30,11 +31,16 @@ export class ModuleComponent extends TreeListComponentBase implements OnInit, Af
     this.functionTreeOptions = { autoBind: true, checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
   ngAfterViewInit(): void {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Security.Function", ["Read", "Update"]);
   }
 
   //#region Grid

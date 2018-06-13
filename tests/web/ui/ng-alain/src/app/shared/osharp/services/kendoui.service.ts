@@ -1,5 +1,5 @@
 import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
-import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
 import { Group, Rule } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
@@ -221,7 +221,7 @@ export class KendouiService {
   // #endregion
 }
 
-export abstract class GridComponentBase {
+export abstract class GridComponentBase extends ComponentBase {
 
   public moduleName: string = null;
   public gridOptions: kendo.ui.GridOptions = null;
@@ -233,6 +233,7 @@ export abstract class GridComponentBase {
   protected kendoui: KendouiService;
 
   constructor(injector: Injector) {
+    super(injector);
     this.zone = injector.get(NgZone);
     this.element = injector.get(ElementRef);
     this.osharp = injector.get(OsharpService);
@@ -382,7 +383,7 @@ export abstract class GridComponentBase {
 }
 
 
-export abstract class TreeListComponentBase {
+export abstract class TreeListComponentBase extends ComponentBase {
 
   protected moduleName: string = null;
   protected treeListOptions: kendo.ui.TreeListOptions = null;
@@ -393,7 +394,8 @@ export abstract class TreeListComponentBase {
   protected osharp: OsharpService;
   protected kendoui: KendouiService;
 
-  constructor(private injector: Injector) {
+  constructor(injector: Injector) {
+    super(injector);
     this.zone = injector.get(NgZone);
     this.element = injector.get(ElementRef);
     this.osharp = injector.get(OsharpService);

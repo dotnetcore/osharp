@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Injector, } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-entityinfo',
@@ -12,12 +13,17 @@ export class EntityinfoComponent extends GridComponentBase implements OnInit, Af
     this.moduleName = "entityinfo";
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
 
   ngAfterViewInit() {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Security.EntityInfo", ["Read", "Update"]);
   }
 
   protected GetModel() {

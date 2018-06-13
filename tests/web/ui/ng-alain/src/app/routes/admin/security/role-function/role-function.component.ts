@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-role-function',
@@ -18,6 +19,19 @@ export class RoleFunctionComponent extends GridComponentBase implements OnInit, 
     this.splitterOptions = {
       panes: [{ size: "60%" }, { collapsible: true, collapsed: false }]
     };
+  }
+
+  async ngOnInit() {
+    await this.checkAuth();
+    super.InitBase();
+  }
+
+  ngAfterViewInit(): void {
+    super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
   }
 
   protected GetModel() {
@@ -46,14 +60,6 @@ export class RoleFunctionComponent extends GridComponentBase implements OnInit, 
         template: d => this.kendoui.Boolean(d.IsAdmin),
       }
     ];
-  }
-
-  ngOnInit() {
-    super.InitBase();
-  }
-
-  ngAfterViewInit(): void {
-    super.ViewInitBase();
   }
 
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {

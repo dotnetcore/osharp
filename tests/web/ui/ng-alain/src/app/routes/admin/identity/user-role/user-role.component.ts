@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-identity-user-role',
@@ -12,12 +13,17 @@ export class UserRoleComponent extends GridComponentBase implements OnInit, Afte
     this.moduleName = "userrole";
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
 
   ngAfterViewInit() {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Identity.UserRole", ["Read", "Update"]);
   }
 
   protected GetModel() {

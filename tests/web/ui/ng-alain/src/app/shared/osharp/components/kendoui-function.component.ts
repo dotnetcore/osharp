@@ -1,7 +1,9 @@
 import { Component, OnInit, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output, Injector } from '@angular/core';
 import { GridComponentBase } from "../services/kendoui.service";
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'kendoui-function',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
@@ -16,17 +18,22 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
     super(injector);
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.checkAuth();
     this.moduleName = this.ModuleName;
     super.InitBase();
   }
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     super.ViewInitBase();
   }
-  ngOnChanges(): void {
+  ngOnChanges() {
     if (this.grid) {
       this.TypeIdChange.emit(this.grid);
     }
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
   }
 
   protected GetModel() {

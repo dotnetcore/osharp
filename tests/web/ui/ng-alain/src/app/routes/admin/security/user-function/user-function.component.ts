@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-user-function',
@@ -45,12 +46,17 @@ export class UserFunctionComponent extends GridComponentBase implements OnInit, 
     ];
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
 
   ngAfterViewInit(): void {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Identity.RoleFunction", []);
   }
 
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
@@ -64,7 +70,7 @@ export class UserFunctionComponent extends GridComponentBase implements OnInit, 
         let data: any = this.grid.dataItem(row);
         this.selectedUserId = data.Id;
       }
-    }
+    };
     return options;
   }
 

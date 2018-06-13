@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, Injector, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { List } from 'linqts';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-identity-user',
@@ -31,12 +32,17 @@ export class UserComponent extends GridComponentBase implements OnInit, AfterVie
     this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkAuth();
     super.InitBase();
   }
 
   ngAfterViewInit() {
     super.ViewInitBase();
+  }
+
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Identity.User", ["Read", "Create", "Update", "Delete", "SetPermission"]);
   }
 
   //#region GridBase
