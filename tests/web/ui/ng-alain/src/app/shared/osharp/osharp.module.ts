@@ -9,6 +9,7 @@ import { KendouiTabstripComponent } from '@shared/osharp/components/kendoui-tabs
 import { KendouiTreeviewComponent } from '@shared/osharp/components/kendoui-treeview.component';
 import { KendouiWindowComponent } from '@shared/osharp/components/kendoui-window.component';
 import { OsharpCacheModule } from '@shared/osharp/cache/cache.module';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 const DIRECTIVES = [
   RemoteValidator
@@ -25,6 +26,7 @@ const COMPONENTS = [
 const SERVICES = [
   OsharpService,
   KendouiService,
+  IdentityService
 ];
 
 @NgModule({

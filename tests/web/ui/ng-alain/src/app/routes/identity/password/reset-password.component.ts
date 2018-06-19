@@ -3,7 +3,7 @@ import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType, AuthConfig } fr
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { IdentityService } from '../shared/identity.service';
+import { IdentityService } from '../../../shared/osharp/services/identity.service';
 
 @Component({
   selector: 'app-identity-reset-password',

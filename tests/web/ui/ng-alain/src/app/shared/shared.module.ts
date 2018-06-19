@@ -13,10 +13,12 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 
 import { OsharpModule } from "./osharp/osharp.module";
+import { MaterialComponentsModule } from '@shared/material.module';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
   CountdownModule,
+  MaterialComponentsModule,
   OsharpModule,
 ];
 // endregion

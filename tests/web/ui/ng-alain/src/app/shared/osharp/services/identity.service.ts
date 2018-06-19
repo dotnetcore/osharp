@@ -1,7 +1,7 @@
-import { Injectable, Inject, Injector, InjectionToken } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { HttpClient } from '@angular/common/http';
-import { SettingsService, User as NzUser } from '@delon/theme';
+import { SettingsService } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { LoginDto, AjaxResult, AjaxResultType, User, RegisterDto, ConfirmEmailDto, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
 
@@ -38,6 +38,8 @@ export class IdentityService {
     return this.http.post<AjaxResult>(url, {}).map(res => {
       if (res.Type == AjaxResultType.Success) {
         this.tokenSrv.clear();
+        this.settingSrv.setUser = null;
+        this.aclSrv.setRole([]);
       }
       return res;
     }).toPromise();

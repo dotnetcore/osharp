@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-08 19:55</last-date>
+//  <last-date>2018-06-19 18:13</last-date>
 // -----------------------------------------------------------------------
 
 using System.Text;
@@ -13,16 +13,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 using Newtonsoft.Json.Serialization;
+
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
-
 
 namespace OSharp.Demo.WebApi
 {
@@ -41,7 +40,7 @@ namespace OSharp.Demo.WebApi
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
-                options.Filters.Add(new FunctionAuthorizationFilter());//全局功能权限过滤器
+                options.Filters.Add(new FunctionAuthorizationFilter()); //全局功能权限过滤器
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
@@ -72,6 +71,8 @@ namespace OSharp.Demo.WebApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecret"]))
                 };
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +95,8 @@ namespace OSharp.Demo.WebApi
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
                 .UseMvcWithAreaRoute()
+                .UseSignalR(cfg =>
+                    { })
                 .UseOSharp();
         }
     }

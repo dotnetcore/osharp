@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { SendMailDto, AdResult, AuthConfig } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { IdentityService } from '../shared/identity.service';
+import { IdentityService } from '../../../shared/osharp/services/identity.service';
 
 @Component({
   selector: 'app-identity-forgot-password',

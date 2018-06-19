@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, RouteConfigLoadStart, NavigationError } from '@angular/router';
-import { SettingsService, TitleService, ScrollService } from '@delon/theme';
+import { Router, NavigationEnd } from '@angular/router';
+import { TitleService } from '@delon/theme';
 import { filter } from 'rxjs/operators';
-import { NzMessageService } from 'ng-zorro-antd';
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +22,7 @@ export class AppComponent {
   ) {
     router.events
       .pipe(filter(evt => evt instanceof NavigationEnd))
-      .subscribe(evt => {
+      .subscribe(() => {
         this.titleSrv.setTitle();
       });
   }

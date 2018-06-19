@@ -1,22 +1,23 @@
-import { Component, OnInit, Injector } from '@angular/core';
-import { SettingsService, User, ScrollService } from '@delon/theme';
-import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
-import { NzMessageService } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IdentityService } from '../../shared/osharp/services/identity.service';
 
 @Component({
   selector: 'layout-default',
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.css']
 })
-export class LayoutDefaultComponent implements OnInit {
-  user: User;
+export class LayoutDefaultComponent {
+
+  isHandset$: Observable<boolean>;
 
   constructor(
-    private setting: SettingsService,
-    private injector: Injector
-  ) { }
-
-  ngOnInit(): void {
-    this.user = this.setting.user;
+    breakpointObserver: BreakpointObserver,
+    private identity: IdentityService
+  ) {
+    this.isHandset$ = breakpointObserver.observe(Breakpoints.Handset).pipe(map(result => result.matches));
   }
+
 }

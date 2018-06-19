@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.Core;
 
-
 namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
     /// WebApi的区域控制器基类
     /// </summary>
     [RoleLimit]
+    [ApiController]
     [Route("api/[area]/[controller]/[action]")]
     public abstract class AreaApiController : Controller
     { }

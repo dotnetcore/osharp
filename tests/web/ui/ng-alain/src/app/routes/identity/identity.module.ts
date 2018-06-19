@@ -9,7 +9,6 @@ import { SendConfirmMailComponent } from './email/send-confirm-mail.component';
 import { ForgotPasswordComponent } from './password/forgot-password.component';
 import { ResetPasswordComponent } from './password/reset-password.component';
 import { SharedModule } from '@shared/shared.module';
-import { IdentityService } from './shared/identity.service';
 
 const COMPONENTS = [
   IdentityComponent,
@@ -31,7 +30,6 @@ const COMPONENTS = [
     SharedModule
   ],
   providers: [
-    IdentityService
   ]
 })
 export class IdentityModule { }
