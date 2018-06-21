@@ -1,25 +1,23 @@
-import { Component, } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
-})
-export class HomeComponent {
-
-  flag: boolean = false;
-  url = "/api/user/read";
-
-  constructor(private osharp: OsharpService) {
-
+  templateUrl: './home.component.html',
+  styles: [`
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    padding:5px;
   }
+  `]
+})
+export class HomeComponent implements OnInit {
 
-  checkAuth() {
+  systemInfo = {};
 
-    this.osharp.checkUrlAuth(this.url).subscribe(res => {
-      console.log(res);
-      this.flag = res;
-      this.url = res ? '/api/user/read' : '/api/admin/user/read';
-    });
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.http.get('/api/common/systeminfo').subscribe(res => this.systemInfo = res);
   }
 }

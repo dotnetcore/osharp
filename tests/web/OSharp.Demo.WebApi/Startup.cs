@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-19 18:13</last-date>
+//  <last-date>2018-06-20 19:49</last-date>
 // -----------------------------------------------------------------------
 
 using System.Text;
@@ -95,8 +95,10 @@ namespace OSharp.Demo.WebApi
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
                 .UseMvcWithAreaRoute()
-                .UseSignalR(cfg =>
-                    { })
+                .UseSignalR(opts =>
+                {
+                    //opts.MapHub<>();
+                })
                 .UseOSharp();
         }
     }

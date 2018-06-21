@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { HttpClient } from '@angular/common/http';
-import { SettingsService } from '@delon/theme';
+import { SettingsService, User as NzUser } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { LoginDto, AjaxResult, AjaxResultType, User, RegisterDto, ConfirmEmailDto, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
 
@@ -23,7 +23,8 @@ export class IdentityService {
 
         // 更新用户
         let user = new User(result.Data);
-        let nzUser = { name: user.NickName, avatar: null, email: user.Email };
+        let nzUser: NzUser = { name: user.NickName, avatar: null, email: user.Email };
+        nzUser['isadmin'] = user.IsAdmin;
         this.settingSrv.setUser(nzUser);
 
         // 更新角色
@@ -38,7 +39,7 @@ export class IdentityService {
     return this.http.post<AjaxResult>(url, {}).map(res => {
       if (res.Type == AjaxResultType.Success) {
         this.tokenSrv.clear();
-        this.settingSrv.setUser = null;
+        this.settingSrv.setUser(null);
         this.aclSrv.setRole([]);
       }
       return res;

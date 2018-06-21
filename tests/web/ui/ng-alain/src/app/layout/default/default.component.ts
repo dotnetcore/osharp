@@ -1,23 +1,37 @@
-import { Component } from '@angular/core';
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IdentityService } from '../../shared/osharp/services/identity.service';
+import { Component, } from '@angular/core';
+import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
+import { ScrollService } from '@delon/theme';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'layout-default',
   templateUrl: './default.component.html',
-  styleUrls: ['./default.component.css']
+  styleUrls: ['./default.component.scss']
 })
 export class LayoutDefaultComponent {
-
-  isHandset$: Observable<boolean>;
+  isFetching = false;
 
   constructor(
-    breakpointObserver: BreakpointObserver,
-    private identity: IdentityService
+    router: Router,
+    scroll: ScrollService,
+    _message: NzMessageService,
   ) {
-    this.isHandset$ = breakpointObserver.observe(Breakpoints.Handset).pipe(map(result => result.matches));
+    router.events.subscribe(evt => {
+      if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
+        this.isFetching = true;
+      }
+      if (evt instanceof NavigationError) {
+        this.isFetching = false;
+        _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
+        return;
+      }
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      setTimeout(() => {
+        scroll.scrollToTop();
+        this.isFetching = false;
+      }, 100);
+    });
   }
-
 }

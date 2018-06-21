@@ -1,7 +1,27 @@
-<h2>Home Component</h2>
-<form>
-  <button nz-button [nzType]="'primary'" [disabled]="flag">
-    <i class="anticon anticon-login"></i>登录
-  </button>
-</form>
-<button (click)="checkAuth()" nz-button>点击</button>
+<nz-card nzTitle="模块列表" [nzBordered]="false">
+  <nz-table [nzData]="list" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <td>名称</td>
+        <td>路径</td>
+        <td>级别</td>
+        <td>层次</td>
+        <td>已启用</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let module of systemInfo.Modules">
+        <td>{{module.Name}}</td>
+        <td>{{module.Class}}</td>
+        <td>{{module.Level}}</td>
+        <td>{{module.Order}}</td>
+        <td>{{module.IsEnabled}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<nz-card nzTitle="其他信息">
+  <nz-list>
+    <nz-list-item *ngFor="let line of systemInfo.Lines">{{line}}</nz-list-item>
+  </nz-list>
+</nz-card>

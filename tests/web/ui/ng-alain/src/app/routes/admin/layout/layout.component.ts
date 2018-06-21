@@ -27,7 +27,7 @@ export class AdminLayoutComponent {
   constructor(
     router: Router,
     scroll: ScrollService,
-    private _message: NzMessageService,
+    _message: NzMessageService,
     public menuSrv: MenuService,
     public settings: SettingsService,
   ) {

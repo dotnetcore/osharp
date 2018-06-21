@@ -1,22 +1,16 @@
 <div class="logo">
   <a [routerLink]="['/']">
-    <img class="expanded" src="./assets/logo-full.svg" alt="{{settings.app.name}}" style="max-height:40px;" />
-    <img class="collapsed" src="./assets/logo.svg" alt="{{settings.app.name}}" style="max-height:30px;" />
+    <img class="expanded" src="{{app.logo_full}}" alt="{{app.name}}" style="max-height:40px;" />
+    <img class="collapsed" src="{{app.logo_white}}" alt="{{app.name}}" style="max-height:30px;" />
   </a>
 </div>
 <div class="top-nav-wrap">
-  <ul class="top-nav">
+  <ul class="top-nav" *ngIf="inAdminModule">
     <!-- Menu -->
     <li>
       <div class="item" (click)="toggleCollapsedSideabar()">
         <i class="anticon anticon-menu-{{settings.layout.collapsed ? 'unfold' : 'fold'}}"></i>
       </div>
-    </li>
-    <!-- Github Page -->
-    <li>
-      <a class="item" href="//github.com/i66soft/osharp-ns20" target="_blank">
-        <i class="anticon anticon-github"></i>
-      </a>
     </li>
     <!-- Lock Page -->
     <li class="hidden-xs">
@@ -25,17 +19,18 @@
       </div>
     </li>
   </ul>
+  <ul class="top-nav" *ngIf="!inAdminModule"></ul>
   <ul class="top-nav">
     <!-- Notify -->
-    <li>
+    <li *ngIf="inAdminModule">
       <header-notify></header-notify>
     </li>
     <!-- App Icons -->
-    <li class="hidden-xs">
+    <li class="hidden-xs" *ngIf="inAdminModule">
       <header-icon></header-icon>
     </li>
     <!-- Settings -->
-    <li class="hidden-xs">
+    <li class="hidden-xs" *ngIf="user.name">
       <nz-dropdown nzTrigger="click" nzPlacement="bottomRight">
         <div class="item" nz-dropdown>
           <i class="anticon anticon-setting"></i>
@@ -51,7 +46,21 @@
       </nz-dropdown>
     </li>
     <li class="hidden-xs">
-      <header-user></header-user>
+      <a class="item" href="//github.com/i66soft/osharp-ns20" target="_blank" title="前往 GitHub 获取源代码">
+        <i class="anticon anticon-github"></i>
+      </a>
+    </li>
+    <li class="hidden-xs">
+      <header-user *ngIf="user.name"></header-user>
+      <div *ngIf="!user.name">
+        <a [routerLink]="[ '/identity/login' ]">
+          <i class="anticon anticon-login"></i>登录
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a [routerLink]="[ '/identity/register' ]">
+          <i class="anticon anticon-plus-circle-o"></i>注册
+        </a>
+      </div>
     </li>
   </ul>
 </div>

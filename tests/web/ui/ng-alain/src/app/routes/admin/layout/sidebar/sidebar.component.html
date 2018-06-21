@@ -3,8 +3,8 @@
     <div nz-dropdown class="user-block-dropdown">
       <nz-avatar class="avatar" [nzIcon]="'user'"></nz-avatar>
       <div class="info">
-        <strong>{{settings.user.name}}</strong>
-        <p class="text-truncate mb0">{{settings.user.email}}</p>
+        <strong title="{{user.name}}">{{user.name}}</strong>
+        <p class="text-truncate mb0" title="{{user.email}}">{{user.email}}</p>
       </div>
     </div>
     <ul nz-menu>

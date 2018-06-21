@@ -1,7 +1,7 @@
-<mat-sidenav-container>
-  <mat-toolbar color="primary">
-    <button mat-icon-button (click)="onClick">
-      <mat-icon class="mat-12">OSHARP</mat-icon>
-    </button>
-  </mat-toolbar>
-</mat-sidenav-container>
+<div class="wrapper">
+  <div class="router-progress-bar" *ngIf="isFetching"></div>
+  <layout-header class="header"></layout-header>
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</div>
