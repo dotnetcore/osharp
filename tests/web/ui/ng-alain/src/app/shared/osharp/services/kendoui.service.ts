@@ -253,14 +253,12 @@ export abstract class GridComponentBase extends ComponentBase {
 
   protected zone: NgZone;
   protected element: ElementRef;
-  protected osharp: OsharpService;
   protected kendoui: KendouiService;
 
   constructor(injector: Injector) {
     super(injector);
     this.zone = injector.get(NgZone);
     this.element = injector.get(ElementRef);
-    this.osharp = injector.get(OsharpService);
     this.kendoui = injector.get(KendouiService);
   }
 
@@ -323,19 +321,19 @@ export abstract class GridComponentBase extends ComponentBase {
     const options: kendo.data.DataSourceOptions = {
       transport: {
         read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
-        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post' },
-        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post' },
-        destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         parameterMap: (opts, operation) => {
           if (operation == 'read') {
             return this.kendoui.readParameterMap(opts, this.FieldReplace);
           }
           if (operation == 'create' || operation == 'update') {
-            return { dtos: opts.models };
+            return JSON.stringify(opts.models);
           }
           if (operation == 'destroy' && opts.models.length) {
             const ids = new List(opts.models).Select(m => m['Id']).ToArray();
-            return { ids: ids };
+            return JSON.stringify(ids);
           }
           return {};
         }
@@ -481,14 +479,12 @@ export abstract class TreeListComponentBase extends ComponentBase {
 
   protected zone: NgZone;
   protected element: ElementRef;
-  protected osharp: OsharpService;
   protected kendoui: KendouiService;
 
   constructor(injector: Injector) {
     super(injector);
     this.zone = injector.get(NgZone);
     this.element = injector.get(ElementRef);
-    this.osharp = injector.get(OsharpService);
     this.kendoui = injector.get(KendouiService);
   }
 
@@ -522,9 +518,22 @@ export abstract class TreeListComponentBase extends ComponentBase {
     const options: kendo.data.DataSourceOptions = {
       transport: {
         read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
-        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post' },
-        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post' },
+        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+        parameterMap: (item, operation) => {
+          console.log(item);
+          if (operation == "read") {
+            return item;
+          }
+          if ((operation == "create" || operation == "update") && item) {
+
+            return JSON.stringify(item);
+          }
+          if (operation == "destroy" && item) {
+            return { id: item['Id'] };
+          }
+        }
       },
       schema: {
         model: this.GetModel()

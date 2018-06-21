@@ -164,9 +164,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromForm]int id)
         {
             Check.NotNull(id, nameof(id));
+            Check.GreaterThan(id, nameof(id), 0);
             if (id == 1)
             {
                 return Json(new AjaxResult("根节点不能删除", AjaxResultType.Error));

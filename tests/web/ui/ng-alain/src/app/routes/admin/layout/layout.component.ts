@@ -3,6 +3,7 @@ import { SettingsService, ScrollService, MenuService } from '@delon/theme';
 import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
   selector: 'admin-layout',

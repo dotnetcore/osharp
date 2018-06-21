@@ -14,6 +14,7 @@ export class OsharpService {
   public msgSrv: NzMessageService;
   private router: Router;
   private http: HttpClient;
+  private cache: CacheService
 
   constructor(
     injector: Injector
@@ -21,6 +22,7 @@ export class OsharpService {
     this.msgSrv = injector.get(NzMessageService);
     this.router = injector.get(Router);
     this.http = injector.get(HttpClient);
+    this.cache = injector.get(CacheService);
   }
 
   // #region 工具方法
@@ -229,13 +231,22 @@ export class OsharpService {
    * 检查URL的功能权限
    * @param url 要检查权限的后端URL
    */
-  checkUrlAuth(url: string): Observable<boolean> {
+  checkUrlAuth(url: string): Promise<boolean> {
     if (!url.startsWith("https:") && !url.startsWith("http") && !url.startsWith("/")) {
       url = `/${url}`;
     }
     url = this.urlEncode(url);
     console.log(url);
-    return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url);
+    return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url).toPromise();
+  }
+
+  /**
+   * 刷新权限信息，缓存10分钟有效
+   */
+  refreshAuthInfo(): Promise<string[]> {
+    let key = "/api/security/getauthinfo";
+    this.cache.remove(key);
+    return this.cache.get<string[]>(key, { expire: 60 * 10 }).toPromise();
   }
 
   // #endregion
@@ -298,7 +309,8 @@ export class OsharpService {
  * 组件基类，实现了权限控制
  */
 export abstract class ComponentBase {
-  private cache: CacheService;
+
+  protected osharp: OsharpService;
 
   /**
    * 权限字典，以模块代码为键，是否有权限为值
@@ -307,7 +319,7 @@ export abstract class ComponentBase {
   private authConfig: AuthConfig = null;
 
   constructor(injector: Injector) {
-    this.cache = injector.get(CacheService);
+    this.osharp = injector.get(OsharpService);
   }
 
   /**
@@ -321,10 +333,10 @@ export abstract class ComponentBase {
   async checkAuth() {
     if (this.authConfig == null) {
       this.authConfig = this.AuthConfig();
-      this.authConfig.funcs.forEach(key => this.auth[key] = false);
+      this.authConfig.funcs.forEach(key => this.auth[key] = true);
     }
     let position = this.authConfig.position;
-    let codes = await this.cache.get<string[]>('/api/security/getauthinfo', { expire: 1 }).toPromise();
+    let codes = await this.osharp.refreshAuthInfo();
     if (!codes) {
       return this.auth;
     }

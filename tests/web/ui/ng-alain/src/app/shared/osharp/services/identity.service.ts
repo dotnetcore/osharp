@@ -4,11 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { SettingsService, User as NzUser } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { LoginDto, AjaxResult, AjaxResultType, User, RegisterDto, ConfirmEmailDto, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Injectable()
 export class IdentityService {
   constructor(
     private http: HttpClient,
+    private osharp: OsharpService,
     @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService,
     private settingSrv: SettingsService,
     private aclSrv: ACLService
@@ -20,15 +22,15 @@ export class IdentityService {
       if (result.Type == AjaxResultType.Success) {
         // 设置Token
         this.tokenSrv.set({ token: result.Data });
-
         // 更新用户
         let user = new User(result.Data);
         let nzUser: NzUser = { name: user.NickName, avatar: null, email: user.Email };
         nzUser['isadmin'] = user.IsAdmin;
         this.settingSrv.setUser(nzUser);
-
         // 更新角色
         this.aclSrv.setRole(user.Roles);
+        // 更新权限
+        this.osharp.refreshAuthInfo();
       }
       return result;
     }).toPromise();
@@ -41,6 +43,8 @@ export class IdentityService {
         this.tokenSrv.clear();
         this.settingSrv.setUser(null);
         this.aclSrv.setRole([]);
+        // 更新权限
+        this.osharp.refreshAuthInfo();
       }
       return res;
     }).toPromise();

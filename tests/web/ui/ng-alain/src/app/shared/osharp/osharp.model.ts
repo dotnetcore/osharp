@@ -120,7 +120,7 @@ export class User {
     this.NickName = obj['given_name'] || null;
     this.Email = obj['email'] || null;
     this.SecurityStamp = obj['security-stamp'] || null;
-    this.IsAdmin = obj['is-admin'] != undefined ? obj['is-admin'] : false;
+    this.IsAdmin = obj['is-admin'] != undefined ? JSON.parse(obj['is-admin']) : false;
     this.Roles = obj['role'] != undefined ? obj['role'].split(',') : [];
     this.IssuedAt = obj['iat'] != undefined ? new Date(obj['iat'] * 1000) : null;
     this.NotBefore = obj['nbf'] != undefined ? new Date(obj['nbf'] * 1000) : null;

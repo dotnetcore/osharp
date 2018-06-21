@@ -54,6 +54,6 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
-        public TModuleKey ParentId { get; set; }
+        public TModuleKey? ParentId { get; set; }
     }
 }
