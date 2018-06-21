@@ -3,8 +3,8 @@
     "name": "OSHARP",
     "description": "osharp framework with .netcore 2.0 & angular6",
     "logo": "./assets/osharp/logo.svg",
-    "logo_white": "./assets/osharp/logo-white.svg",
     "logo_full": "./assets/osharp/logo-full.svg",
+    "logo_color": "./assets/osharp/logo-color.svg",
     "siteMenus": [
       {
         "link": "home",

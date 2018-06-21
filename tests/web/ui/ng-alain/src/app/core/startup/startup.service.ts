@@ -15,7 +15,7 @@ export class StartupService {
   ) { }
 
   load(): Promise<any> {
-    return this.httpClient.get('assets/app-data.json').map((data: any) => {
+    return this.httpClient.get('assets/osharp/app-data.json').map((data: any) => {
       if (!data) {
         return;
       }

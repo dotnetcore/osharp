@@ -16,6 +16,8 @@ import { IdentityService } from '@shared/osharp/services/identity.service';
     <div nz-menu class="width-sm">
       <div nz-menu-item [nzDisabled]="true"><i class="anticon anticon-user mr-sm"></i>个人中心</div>
       <div nz-menu-item [nzDisabled]="true"><i class="anticon anticon-setting mr-sm"></i>设置</div>
+      <div nz-menu-item *ngIf="!inAdminModule" (click)="router.navigateByUrl('/admin')"><i class="anticon anticon-global mr-sm"></i>进入后台</div>
+      <div nz-menu-item *ngIf="inAdminModule" (click)="router.navigateByUrl('/home')"><i class="anticon anticon-home mr-sm"></i>返回前台</div>
       <li nz-menu-divider></li>
       <div nz-menu-item (click)="logout()"><i class="anticon anticon-logout mr-sm"></i>退出登录</div>
     </div>
@@ -30,13 +32,22 @@ export class HeaderUserComponent {
     private router: Router
   ) { }
 
-  logout() {
+  get inAdminModule() {
+    return this.router.url.startsWith("/admin/");
+  }
 
+  logout() {
     this.identity.logout().then(res => {
       if (res.Type == AjaxResultType.Success) {
         this.msgSrv.success("用户退出成功");
-        let url = this.router.url || "/home";
-        this.router.navigateByUrl(url);
+
+        let url = this.router.url;
+        if (url.startsWith("/admin/")) {
+          url = "/home";
+        }
+        setTimeout(() => {
+          this.router.navigateByUrl(url);
+        }, 100);
         return;
       }
       this.msgSrv.error(`用户登出失败：${res.Content}`);

@@ -14,9 +14,9 @@ export class IdentityComponent {
   constructor(
     router: Router,
     scroll: ScrollService,
-    private _message: NzMessageService,
+    _message: NzMessageService,
     public menuSrv: MenuService,
-    public setting: SettingsService,
+    public settings: SettingsService,
   ) {
     router.events.subscribe(evt => {
       if (!this.isFetching && evt instanceof RouteConfigLoadStart) {

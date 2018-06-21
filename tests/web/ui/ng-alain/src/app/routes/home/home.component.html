@@ -1,5 +1,5 @@
 <nz-card nzTitle="模块列表" [nzBordered]="false">
-  <nz-table [nzData]="list" [nzShowPagination]="false">
+  <nz-table [nzData]="systemInfo.Modules||[]" [nzShowPagination]="false">
     <thead>
       <tr>
         <td>名称</td>

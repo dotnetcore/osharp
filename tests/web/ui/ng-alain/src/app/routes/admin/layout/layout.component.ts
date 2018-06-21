@@ -2,6 +2,7 @@ import { Component, HostBinding, } from '@angular/core';
 import { SettingsService, ScrollService, MenuService } from '@delon/theme';
 import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Component({
   selector: 'admin-layout',
@@ -31,6 +32,13 @@ export class AdminLayoutComponent {
     public menuSrv: MenuService,
     public settings: SettingsService,
   ) {
+    if (!settings.user.isadmin) {
+      _message.error("你无权查看后台管理页面，即将跳转到首页");
+      setTimeout(() => {
+        router.navigate(['home']);
+      }, 100);
+      return;
+    }
     router.events.subscribe(evt => {
       if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
         this.isFetching = true;

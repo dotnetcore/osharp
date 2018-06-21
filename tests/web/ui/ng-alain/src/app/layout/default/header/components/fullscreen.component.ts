@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import * as screenfull from 'screenfull';
+import { SettingsService } from '@delon/theme';
 
 @Component({
   selector: 'header-fullscreen',
@@ -13,6 +14,9 @@ import * as screenfull from 'screenfull';
 })
 export class HeaderFullScreenComponent {
   status = false;
+
+  constructor(private settings: SettingsService) {
+  }
 
   @HostListener('window:resize')
   _resize() {

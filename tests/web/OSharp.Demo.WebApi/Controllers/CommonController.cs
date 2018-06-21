@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-21 18:25</last-date>
+//  <last-date>2018-06-21 19:06</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -42,7 +42,7 @@ namespace OSharp.Demo.WebApi.Controllers
 
             dynamic info = new ExpandoObject();
             OSharpModuleManager moduleManager = provider.GetService<OSharpModuleManager>();
-            info.Modules = moduleManager.SourceModules.OrderBy(m => m.Level).ThenBy(m => m.Order).Select(m => new
+            info.Modules = moduleManager.SourceModules.OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).Select(m => new
             {
                 m.GetType().Name,
                 Class = m.GetType().FullName,
