@@ -52,7 +52,7 @@ namespace OSharp.Demo.WebApi.Startups
                 userManager.CreateAsync(user).Wait();
                 userManager.AddToRoleAsync(user, role.Name).Wait();
 
-                ModuleInputDto moduleDto = new ModuleInputDto() { Name = "根节点", Remark = "系统根节点", OrderCode = 1 };
+                ModuleInputDto moduleDto = new ModuleInputDto() { Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1 };
                 SecurityManager securityManager = scope.ServiceProvider.GetService<SecurityManager>();
                 securityManager.CreateModule(moduleDto).Wait();
 

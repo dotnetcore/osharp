@@ -1,5 +1,5 @@
 <div id="grid-box-{{moduleName}}"></div>
-<kendoui-window [options]="windowOptions" (init)="onWinInit($event)" (closing)="onWinClose($event)" (submited)="onWinSubmit($event)">
+<kendoui-window [options]="windowOptions" (init)="onWinInit($event)" (closing)="onWinClose()" (submited)="onWinSubmit()">
   <kendoui-tabstrip [options]="tabstripOptions">
     <ul>
       <li class="k-state-active">角色</li>

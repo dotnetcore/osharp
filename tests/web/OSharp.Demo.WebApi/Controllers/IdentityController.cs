@@ -29,6 +29,7 @@ using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Net;
+using OSharp.Security;
 using OSharp.Security.JwtBearer;
 using OSharp.Secutiry.Claims;
 
@@ -36,6 +37,7 @@ using OSharp.Secutiry.Claims;
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-认证")]
+    [ModuleInfo(Order = 1)]
     public class IdentityController : ApiController
     {
         private readonly IIdentityContract _identityContract;
@@ -81,6 +83,10 @@ namespace OSharp.Demo.WebApi.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [ModuleInfo]
+        [DependOnFunction("CheckUserNameExists")]
+        [DependOnFunction("CheckEmailExists")]
+        [DependOnFunction("CheckNickNameExists")]
         [Description("用户注册")]
         public async Task<IActionResult> Register([FromBody]RegisterDto dto)
         {
@@ -115,6 +121,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
         [Description("用户登录")]
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
@@ -143,6 +150,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
         [Description("JWT登录")]
         public async Task<IActionResult> Jwtoken([FromBody]LoginDto dto)
         {
@@ -185,6 +193,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
         [Description("用户登出")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         public async Task<IActionResult> Logout()
@@ -199,6 +208,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
         [Description("激活邮箱")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailDto dto)
@@ -222,6 +232,8 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("CheckEmailNotExists")]
         [Description("发送激活Email邮件")]
         public async Task<IActionResult> SendConfirmMail([FromBody]SendMailDto dto)
         {
@@ -254,6 +266,7 @@ namespace OSharp.Demo.WebApi.Controllers
 
         [HttpPost]
         [Logined]
+        [ModuleInfo]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("修改密码")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
@@ -271,6 +284,8 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("CheckEmailNotExists")]
         [Description("发送重置邮件")]
         public async Task<IActionResult> SendResetPasswordMail([FromBody]SendMailDto dto)
         {
@@ -298,6 +313,7 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("重置登录密码")]
         public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordDto dto)

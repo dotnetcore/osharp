@@ -21,10 +21,12 @@ using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
 using OSharp.Entity;
 using OSharp.Filter;
+using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 4, Position = "Security")]
     [Description("管理-用户功能")]
     public class UserFunctionController : AdminApiController
     {
@@ -39,6 +41,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -56,6 +59,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(page.ToPageData());
         }
 
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [Description("读取功能")]
         public IActionResult ReadFunctions(int userId)
         {

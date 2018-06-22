@@ -16,8 +16,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
@@ -31,10 +29,12 @@ using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
+using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 2, Position = "Identity")]
     [Description("管理-角色信息")]
     public class RoleController : AdminApiController
     {
@@ -42,8 +42,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         private readonly SecurityManager _securityManager;
         private readonly IIdentityContract _identityContract;
 
-        public RoleController(RoleManager<Role> roleManager, 
-            SecurityManager securityManager, 
+        public RoleController(RoleManager<Role> roleManager,
+            SecurityManager securityManager,
             IIdentityContract identityContract)
         {
             _roleManager = roleManager;
@@ -51,6 +51,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -97,6 +98,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public async Task<IActionResult> Create(RoleInputDto[] dtos)
@@ -117,6 +120,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(RoleInputDto[] dtos)
@@ -138,6 +143,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete(int[] ids)
@@ -158,6 +165,9 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [DependOnFunction("ReadRoleModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("权限设置")]
         public async Task<ActionResult> SetPermission([FromBody]RoleSetPermissionDto dto)

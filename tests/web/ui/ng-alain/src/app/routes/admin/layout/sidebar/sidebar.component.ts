@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { SettingsService, User } from '@delon/theme';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'layout-sidebar',
@@ -12,7 +13,8 @@ export class SidebarComponent {
   inAdminModule: boolean;
 
   constructor(
-    settings: SettingsService
+    settings: SettingsService,
+    public msgSrv: NzMessageService
   ) {
     this.user = settings.user || {};
   }

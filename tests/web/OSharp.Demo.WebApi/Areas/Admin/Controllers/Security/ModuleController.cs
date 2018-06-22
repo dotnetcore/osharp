@@ -14,13 +14,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
-using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Security;
@@ -28,10 +25,12 @@ using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 using OSharp.Filter;
+using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 1, Position = "Security")]
     [Description("管理-模块信息")]
     public class ModuleController : AdminApiController
     {
@@ -42,6 +41,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -109,6 +109,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return nodes;
         }
 
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [Description("读取模块功能")]
         public IActionResult ReadFunctions()
         {
@@ -136,6 +138,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增子节点")]
         public async Task<IActionResult> Create(ModuleInputDto dto)
@@ -147,6 +151,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(ModuleInputDto dto)
@@ -162,6 +168,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete([FromForm]int id)
@@ -178,41 +186,15 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [DependOnFunction("ReadTreeNode", Controller = "Function")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置功能")]
         public async Task<IActionResult> SetFunctions([FromBody]ModuleSetFunctionDto dto)
         {
             OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
             return Json(result.ToAjaxResult());
-        }
-
-        [AllowAnonymous]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("测试")]
-        public async Task<IActionResult> Build()
-        {
-            //List<string> msgs = new List<string>();
-            //foreach (Module module in _securityManager.Modules)
-            //{
-            //    msgs.Add((await _securityManager.UpdateModule(new ModuleInputDto()
-            //    {
-            //        Id = module.Id,
-            //        Name = module.Name,
-            //        OrderCode = module.OrderCode,
-            //        Remark = module.Remark,
-            //        ParentId = module.ParentId == null ? 0 : module.ParentId.Value
-            //    })).Message);
-            //}
-            //return Json(new AjaxResult(msgs.ExpandAndToString("<br/>")));
-            IRepository<Module, int> repository = HttpContext.RequestServices.GetService<IRepository<Module, int>>();
-            string[] names = { "查看", "新增", "更新", "删除" };
-            int count = 0;
-            foreach (Module m in repository.TrackEntities.Where(m => names.Contains(m.Name)))
-            {
-                m.Code = m.Name == "查看" ? "Read" : m.Name == "新增" ? "Create" : m.Name == "更新" ? "Update" : m.Name == "删除" ? "Delete" : m.Code;
-                count += await repository.UpdateAsync(m);
-            }
-            return Json(count);
         }
     }
 }

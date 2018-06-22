@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject, Injector } from '@angular/core';
-import { ResetPasswordDto, AdResult, AjaxResult, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
-import { HttpClient } from '@angular/common/http';
+import { Component, Injector } from '@angular/core';
+import { ResetPasswordDto, AdResult, AuthConfig } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
-import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
+import { ComponentBase } from '@shared/osharp/services/osharp.service';
 import { IdentityService } from '../../../shared/osharp/services/identity.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class ResetPasswordComponent extends ComponentBase {
 
   constructor(
     public router: Router,
-    private osharp: OsharpService,
     private identity: IdentityService,
     injector: Injector
   ) {

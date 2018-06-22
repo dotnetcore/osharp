@@ -25,6 +25,7 @@ using OSharp.Security;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 5, Position = "Security")]
     [Description("管理-实体信息")]
     public class EntityInfoController : AdminApiController
     {
@@ -35,6 +36,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -57,6 +59,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(EntityInfoInputDto[] dtos)

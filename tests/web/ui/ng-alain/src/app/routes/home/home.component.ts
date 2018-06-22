@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
 
-  systemInfo = {};
+  systemInfo = null;
 
   constructor(private http: HttpClient) { }
 

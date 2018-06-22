@@ -1,5 +1,5 @@
-<nz-card nzTitle="模块列表" [nzBordered]="false">
-  <nz-table [nzData]="systemInfo.Modules||[]" [nzShowPagination]="false">
+<nz-card *ngIf="systemInfo" nzTitle="模块列表" [nzBordered]="false">
+  <nz-table [nzData]="systemInfo.Modules" [nzShowPagination]="false">
     <thead>
       <tr>
         <td>名称</td>
@@ -20,7 +20,7 @@
     </tbody>
   </nz-table>
 </nz-card>
-<nz-card nzTitle="其他信息">
+<nz-card *ngIf="systemInfo" nzTitle="其他信息">
   <nz-list>
     <nz-list-item *ngFor="let line of systemInfo.Lines">{{line}}</nz-list-item>
   </nz-list>

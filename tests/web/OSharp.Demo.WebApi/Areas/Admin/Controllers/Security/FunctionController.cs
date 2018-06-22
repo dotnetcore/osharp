@@ -28,6 +28,7 @@ using OSharp.Security;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 2, Position = "Security")]
     [Description("管理-功能信息")]
     public class FunctionController : AdminApiController
     {
@@ -38,6 +39,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -126,8 +128,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Description("更新")]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("更新")]
         public async Task<IActionResult> Update(FunctionInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));

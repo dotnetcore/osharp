@@ -30,9 +30,12 @@ using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
+using OSharp.Security;
+
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 1, Position = "Identity")]
     [Description("管理-用户信息")]
     public class UserController : AdminApiController
     {
@@ -47,6 +50,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
         {
@@ -76,8 +80,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Description("新增")]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("新增")]
         public async Task<IActionResult> Create(UserInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
@@ -98,6 +104,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<IActionResult> Update(UserInputDto[] dtos)
@@ -119,6 +127,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public async Task<IActionResult> Delete(int[] ids)
@@ -139,6 +149,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [DependOnFunction("ReadUserRoles", Controller = "Role")]
+        [DependOnFunction("ReadUserModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置权限")]
         public async Task<IActionResult> SetPermission([FromBody] UserSetPermissionDto dto)

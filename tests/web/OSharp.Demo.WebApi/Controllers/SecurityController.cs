@@ -20,12 +20,14 @@ using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Entities;
+using OSharp.Security;
 using OSharp.Secutiry;
 
 
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-授权")]
+    [ModuleInfo(Order = 2)]
     public class SecurityController : ApiController
     {
         private readonly SecurityManager _securityManager;
@@ -34,7 +36,8 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             _securityManager = securityManager;
         }
-
+         
+        [ModuleInfo]
         [Description("检查URL授权")]
         public IActionResult CheckUrlAuth(string url)
         {
@@ -42,6 +45,7 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json(ok);
         }
 
+        [ModuleInfo]
         [Description("获取授权信息")]
         public IActionResult GetAuthInfo()
         {

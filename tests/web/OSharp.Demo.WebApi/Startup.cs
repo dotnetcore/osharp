@@ -68,13 +68,13 @@ namespace OSharp.Demo.WebApi
                 {
                     ValidIssuer = Configuration["OSharp:Jwt:Issuer"],
                     ValidAudience = Configuration["OSharp:Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecret"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["OSharp:Jwt:Secret"] ?? Configuration["JwtSecret"]))
                 };
             });
 
             services.AddSignalR();
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -85,7 +85,7 @@ namespace OSharp.Demo.WebApi
             }
             else
             {
-                app.UseExceptionHandler();
+                app.UseExceptionHandler("/#/500");
                 app.UseHsts();
             }
 

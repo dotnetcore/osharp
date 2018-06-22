@@ -23,18 +23,23 @@ using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Entity;
 using OSharp.Reflection;
+using OSharp.Security;
+
 
 namespace OSharp.Demo.WebApi.Controllers
 {
     [Description("网站-通用")]
+    [ModuleInfo(Order = 3)]
     public class CommonController : ApiController
     {
+        [ModuleInfo]
         [Description("验证码")]
         public IActionResult VerifyCode()
         {
             return Json("");
         }
 
+        [ModuleInfo]
         [Description("系统信息")]
         public IActionResult SystemInfo()
         {
