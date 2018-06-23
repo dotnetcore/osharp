@@ -2,26 +2,25 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>0.1.0-alpha10</version>
+    <version>0.2.1-beta01</version>
     <title>OSharpFramework(.NetStandard2.0)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://choosealicense.com/licenses/apache-2.0/</licenseUrl>
     <projectUrl>https://github.com/i66soft/osharp-ns20</projectUrl>
-    <iconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://core.osharp.org/assets/osharp/logo-color.png</iconUrl>
     <description>OSharp Framework with .NetStandard2.0，此Package包含了OSharpNS的所有组件</description>
-    <copyright>Copyright © 66SOFT 2014-2018</copyright>
+    <copyright>Copyright ? 66SOFT 2014-2018</copyright>
     <tags>osharp</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="OSharpNS.Core" version="0.1.0-alpha10" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="0.1.0-alpha10" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.1.0-alpha10" />
-        <dependency id="OSharpNS.AutoMapper" version="0.1.0-alpha10" />
-        <dependency id="OSharpNS.AspNetCore" version="0.1.0-alpha10" />
+        <dependency id="OSharpNS.Core" version="0.2.1-beta01" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="0.2.1-beta01" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.2.1-beta01" />
+        <dependency id="OSharpNS.AutoMapper" version="0.2.1-beta01" />
+        <dependency id="OSharpNS.AspNetCore" version="0.2.1-beta01" />
       </group>
     </dependencies>
   </metadata>
-  <files />
 </package>
