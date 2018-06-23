@@ -7,7 +7,6 @@
 //  <last-date>2018-04-29 2:44</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -30,7 +29,6 @@ using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Net;
-using OSharp.Security;
 using OSharp.Security.JwtBearer;
 using OSharp.Secutiry.Claims;
 
@@ -287,7 +285,7 @@ namespace OSharp.Demo.WebApi.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("CheckEmailNotExists")]
-        [Description("发送重置邮件")]
+        [Description("发送重置密码邮件")]
         public async Task<IActionResult> SendResetPasswordMail([FromBody]SendMailDto dto)
         {
             if (!ModelState.IsValid)

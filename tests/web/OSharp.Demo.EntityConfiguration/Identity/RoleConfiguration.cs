@@ -33,7 +33,7 @@ namespace OSharp.Demo.EntityConfiguration.Identity
             builder.HasMany<RoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
             builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
 
-            builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", IsAdmin = true, IsDefault = false, IsSystem = true, CreatedTime = DateTime.Now });
+            builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", IsAdmin = true, IsSystem = true });
         }
     }
 }

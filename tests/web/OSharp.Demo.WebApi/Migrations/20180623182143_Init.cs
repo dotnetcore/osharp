@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace OSharp.Demo.WebApi.Migrations
 {
@@ -14,10 +13,10 @@ namespace OSharp.Demo.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    AuditEnabled = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    PropertyNamesJson = table.Column<string>(nullable: false),
-                    TypeName = table.Column<string>(nullable: false)
+                    TypeName = table.Column<string>(nullable: false),
+                    AuditEnabled = table.Column<bool>(nullable: false),
+                    PropertyNamesJson = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,19 +28,19 @@ namespace OSharp.Demo.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    AccessType = table.Column<int>(nullable: false),
-                    Action = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     Area = table.Column<string>(nullable: true),
-                    AuditEntityEnabled = table.Column<bool>(nullable: false),
-                    AuditOperationEnabled = table.Column<bool>(nullable: false),
-                    CacheExpirationSeconds = table.Column<int>(nullable: false),
                     Controller = table.Column<string>(nullable: true),
-                    IsAccessTypeChanged = table.Column<bool>(nullable: false),
-                    IsAjax = table.Column<bool>(nullable: false),
-                    IsCacheSliding = table.Column<bool>(nullable: false),
+                    Action = table.Column<string>(nullable: true),
                     IsController = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    IsAjax = table.Column<bool>(nullable: false),
+                    AccessType = table.Column<int>(nullable: false),
+                    IsAccessTypeChanged = table.Column<bool>(nullable: false),
+                    AuditOperationEnabled = table.Column<bool>(nullable: false),
+                    AuditEntityEnabled = table.Column<bool>(nullable: false),
+                    CacheExpirationSeconds = table.Column<int>(nullable: false),
+                    IsCacheSliding = table.Column<bool>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,10 +54,11 @@ namespace OSharp.Demo.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
-                    OrderCode = table.Column<double>(nullable: false),
-                    ParentId = table.Column<int>(nullable: true),
                     Remark = table.Column<string>(nullable: true),
-                    TreePathString = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: false),
+                    OrderCode = table.Column<double>(nullable: false),
+                    TreePathString = table.Column<string>(nullable: true),
+                    ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,8 +78,8 @@ namespace OSharp.Demo.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
-                    ParentId = table.Column<int>(nullable: true),
-                    Remark = table.Column<string>(nullable: true)
+                    Remark = table.Column<string>(nullable: true),
+                    ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,15 +98,15 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsDefault = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    IsSystem = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     NormalizedName = table.Column<string>(nullable: false),
-                    Remark = table.Column<string>(maxLength: 512, nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Remark = table.Column<string>(maxLength: 512, nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    IsDefault = table.Column<bool>(nullable: false),
+                    IsSystem = table.Column<bool>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,24 +119,26 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    IsSystem = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizeEmail = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(nullable: false),
                     NormalizedUserName = table.Column<string>(nullable: false),
+                    NickName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
+                    NormalizeEmail = table.Column<string>(nullable: false),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
+                    HeadImg = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    Remark = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(nullable: false)
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    IsSystem = table.Column<bool>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false),
+                    Remark = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -148,8 +150,8 @@ namespace OSharp.Demo.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FunctionId = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false)
+                    ModuleId = table.Column<int>(nullable: false),
+                    FunctionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,6 +166,34 @@ namespace OSharp.Demo.WebApi.Migrations
                         name: "FK_ModuleFunction_Module_ModuleId",
                         column: x => x.ModuleId,
                         principalTable: "Module",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EntityRole",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<Guid>(nullable: false),
+                    FilterGroupJson = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EntityRole_EntityInfo_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "EntityInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EntityRole_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -199,9 +229,9 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,12 +245,63 @@ namespace OSharp.Demo.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EntityUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<Guid>(nullable: false),
+                    FilterGroupJson = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EntityUser_EntityInfo_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "EntityInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EntityUser_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoginLog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Ip = table.Column<string>(nullable: true),
+                    UserAgent = table.Column<string>(nullable: true),
+                    CreatedTime = table.Column<DateTime>(nullable: false),
+                    LogoutTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginLog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoginLog_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ModuleUser",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     ModuleId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    Disabled = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,9 +326,9 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: false),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -266,7 +347,7 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(nullable: true),
+                    RegisterIp = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -286,8 +367,8 @@ namespace OSharp.Demo.WebApi.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: true),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
                     ProviderKey = table.Column<string>(nullable: true),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -306,10 +387,10 @@ namespace OSharp.Demo.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    CreatedTime = table.Column<DateTime>(nullable: false),
+                    IsLocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -333,9 +414,9 @@ namespace OSharp.Demo.WebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -349,6 +430,51 @@ namespace OSharp.Demo.WebApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 1, "Root", "根节点", 1.0, null, "系统根节点", "$1$" });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
+                values: new object[] { 1, "f01f360e-ee7f-48bc-b0c3-bd2655381ced", new DateTime(2018, 6, 24, 2, 21, 42, 957, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedTime", "Email", "EmailConfirmed", "HeadImg", "IsLocked", "IsSystem", "LockoutEnabled", "LockoutEnd", "NickName", "NormalizeEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Remark", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "96c88821-b4ef-4c83-8eeb-fbec8d25f075", new DateTime(2018, 6, 24, 2, 21, 42, 964, DateTimeKind.Local), "admin@66soft.net", false, null, false, true, true, null, "站长", "ADMIN@66SOFT.NET", "ADMIN", null, null, false, null, "242ef55f-7224-4316-9b80-1728474e5e7f", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 2, "Site", "网站", 1.0, 1, "网站前台", "$1$,$2$" });
+
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 3, "Admin", "管理", 2.0, 1, "管理后台", "$1$,$3$" });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "Id", "CreatedTime", "IsLocked", "RoleId", "UserId" },
+                values: new object[] { new Guid("89b630f3-d710-4270-b3f2-bb8a91910181"), new DateTime(2018, 6, 24, 2, 21, 42, 967, DateTimeKind.Local), false, 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 4, "Identity", "身份认证模块", 1.0, 3, "身份认证模块节点", "$1$,$3$,$4$" });
+
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 5, "Security", "权限安全模块", 2.0, 3, "权限安全模块节点", "$1$,$3$,$5$" });
+
+            migrationBuilder.InsertData(
+                table: "Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 6, "System", "系统管理模块", 3.0, 3, "系统管理模块节点", "$1$,$3$,$6$" });
+
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
                 table: "EntityInfo",
@@ -356,11 +482,37 @@ namespace OSharp.Demo.WebApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_EntityRole_RoleId",
+                table: "EntityRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EntityRoleIndex",
+                table: "EntityRole",
+                columns: new[] { "EntityId", "RoleId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityUser_UserId",
+                table: "EntityUser",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "EntityUserIndex",
+                table: "EntityUser",
+                columns: new[] { "EntityId", "UserId" });
+
+            migrationBuilder.CreateIndex(
                 name: "AreaControllerActionIndex",
                 table: "Function",
                 columns: new[] { "Area", "Controller", "Action" },
                 unique: true,
                 filter: "[Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoginLog_UserId",
+                table: "LoginLog",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Module_ParentId",
@@ -472,7 +624,13 @@ namespace OSharp.Demo.WebApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EntityInfo");
+                name: "EntityRole");
+
+            migrationBuilder.DropTable(
+                name: "EntityUser");
+
+            migrationBuilder.DropTable(
+                name: "LoginLog");
 
             migrationBuilder.DropTable(
                 name: "ModuleFunction");
@@ -503,6 +661,9 @@ namespace OSharp.Demo.WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserToken");
+
+            migrationBuilder.DropTable(
+                name: "EntityInfo");
 
             migrationBuilder.DropTable(
                 name: "Function");

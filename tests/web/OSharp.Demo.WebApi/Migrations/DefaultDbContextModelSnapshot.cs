@@ -15,7 +15,7 @@ namespace OSharp.Demo.WebApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799")
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -162,6 +162,10 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("Role");
+
+                    b.HasData(
+                        new { Id = 1, ConcurrencyStamp = "f01f360e-ee7f-48bc-b0c3-bd2655381ced", CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 957, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
+                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.RoleClaim", b =>
@@ -244,6 +248,10 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new { Id = 1, AccessFailedCount = 0, ConcurrencyStamp = "96c88821-b4ef-4c83-8eeb-fbec8d25f075", CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 964, DateTimeKind.Local), Email = "admin@66soft.net", EmailConfirmed = false, IsLocked = false, IsSystem = true, LockoutEnabled = true, NickName = "站长", NormalizeEmail = "ADMIN@66SOFT.NET", NormalizedUserName = "ADMIN", PhoneNumberConfirmed = false, SecurityStamp = "242ef55f-7224-4316-9b80-1728474e5e7f", TwoFactorEnabled = false, UserName = "admin" }
+                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.UserClaim", b =>
@@ -331,6 +339,10 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("UserRoleIndex");
 
                     b.ToTable("UserRole");
+
+                    b.HasData(
+                        new { Id = new Guid("89b630f3-d710-4270-b3f2-bb8a91910181"), CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 967, DateTimeKind.Local), IsLocked = false, RoleId = 1, UserId = 1 }
+                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.UserToken", b =>
@@ -413,7 +425,8 @@ namespace OSharp.Demo.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                    b.Property<string>("Code")
+                        .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -431,6 +444,15 @@ namespace OSharp.Demo.WebApi.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Module");
+
+                    b.HasData(
+                        new { Id = 1, Code = "Root", Name = "根节点", OrderCode = 1.0, Remark = "系统根节点", TreePathString = "$1$" },
+                        new { Id = 2, Code = "Site", Name = "网站", OrderCode = 1.0, ParentId = 1, Remark = "网站前台", TreePathString = "$1$,$2$" },
+                        new { Id = 3, Code = "Admin", Name = "管理", OrderCode = 2.0, ParentId = 1, Remark = "管理后台", TreePathString = "$1$,$3$" },
+                        new { Id = 4, Code = "Identity", Name = "身份认证模块", OrderCode = 1.0, ParentId = 3, Remark = "身份认证模块节点", TreePathString = "$1$,$3$,$4$" },
+                        new { Id = 5, Code = "Security", Name = "权限安全模块", OrderCode = 2.0, ParentId = 3, Remark = "权限安全模块节点", TreePathString = "$1$,$3$,$5$" },
+                        new { Id = 6, Code = "System", Name = "系统管理模块", OrderCode = 3.0, ParentId = 3, Remark = "系统管理模块节点", TreePathString = "$1$,$3$,$6$" }
+                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Security.Entities.ModuleFunction", b =>

@@ -29,6 +29,8 @@ namespace OSharp.Demo.EntityConfiguration.Identity
             builder.HasIndex(m => new { m.UserId, m.RoleId }).HasName("UserRoleIndex").IsUnique();
             builder.HasOne<Role>().WithMany().HasForeignKey(m => m.RoleId);
             builder.HasOne<User>().WithMany().HasForeignKey(m => m.UserId);
+
+            builder.HasData(new UserRole() { Id = Guid.NewGuid(), RoleId = 1, UserId = 1 });
         }
     }
 }
