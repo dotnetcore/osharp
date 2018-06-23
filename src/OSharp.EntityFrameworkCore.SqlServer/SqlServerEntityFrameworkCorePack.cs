@@ -1,29 +1,29 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="MySqlEntityFrameworkCoreModule.cs" company="OSharp开源团队">
+//  <copyright file="SqlServerEntityFrameworkCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-07 21:47</last-date>
+//  <last-date>2018-06-23 15:24</last-date>
 // -----------------------------------------------------------------------
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Modules;
+using OSharp.Core.Packs;
 
 
-namespace OSharp.Entity.MySql
+namespace OSharp.Entity.SqlServer
 {
     /// <summary>
-    /// MySqlEntityFrameworkCore模块
+    /// SqlServerEntityFrameworkCore模块
     /// </summary>
-    [DependsOnModules(typeof(EntityFrameworkCoreModule))]
-    public class MySqlEntityFrameworkCoreModule : OSharpModule
+    [DependsOnPacks(typeof(EntityFrameworkCorePack))]
+    public class SqlServerEntityFrameworkCorePack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Framework;
+        public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动

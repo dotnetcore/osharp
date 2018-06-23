@@ -12,8 +12,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Modules;
 using OSharp.Core.Options;
+using OSharp.Core.Packs;
 using OSharp.Exceptions;
 
 
@@ -22,13 +22,13 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySql数据迁移模块基类
     /// </summary>
-    public abstract class MySqlMigrationModuleBase<TDbContext> : OSharpModule
+    public abstract class MySqlMigrationModuleBase<TDbContext> : OsharpPack
         where TDbContext : DbContext
     {
         /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Framework;
+        public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
         /// 使用模块服务

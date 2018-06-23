@@ -1,5 +1,5 @@
 <nz-card *ngIf="systemInfo" nzTitle="模块列表" [nzBordered]="false">
-  <nz-table [nzData]="systemInfo.Modules" [nzShowPagination]="false">
+  <nz-table [nzData]="systemInfo.Packs" [nzShowPagination]="false">
     <thead>
       <tr>
         <td>名称</td>
@@ -10,12 +10,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let module of systemInfo.Modules">
-        <td>{{module.Name}}</td>
-        <td>{{module.Class}}</td>
-        <td>{{module.Level}}</td>
-        <td>{{module.Order}}</td>
-        <td>{{module.IsEnabled}}</td>
+      <tr *ngFor="let pack of systemInfo.Packs">
+        <td>{{pack.Name}}</td>
+        <td>{{pack.Class}}</td>
+        <td>{{pack.Level}}</td>
+        <td>{{pack.Order}}</td>
+        <td>{{pack.IsEnabled}}</td>
       </tr>
     </tbody>
   </nz-table>

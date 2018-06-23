@@ -1,31 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityInfoModule.cs" company="OSharp开源团队">
+//  <copyright file="OSharpCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-09 21:30</last-date>
+//  <last-date>2018-06-23 15:19</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
-using OSharp.Core.Modules;
-using OSharp.Entity;
+using OSharp.Core.Options;
 
 
-namespace OSharp.Core.EntityInfos
+namespace OSharp.Core.Packs
 {
     /// <summary>
-    /// 实体信息模块
+    /// OSharp核心模块
     /// </summary>
-    public class EntityInfoModule : OSharpModule
+    public class OSharpCorePack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Application;
+        public override PackLevel Level => PackLevel.Core;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -34,8 +34,8 @@ namespace OSharp.Core.EntityInfos
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
-            services.AddSingleton<IEntityInfoHandler, EntityInfoHandler>();
+            services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
+            ServiceLocator.Instance.TrySetServiceCollection(services);
 
             return services;
         }
@@ -46,8 +46,9 @@ namespace OSharp.Core.EntityInfos
         /// <param name="provider"></param>
         public override void UseModule(IServiceProvider provider)
         {
-            IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
-            handler.Initialize();
+            //应用程序级别的服务定位器
+            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
+
             IsEnabled = true;
         }
     }

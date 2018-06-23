@@ -13,8 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.Core.Builders;
-using OSharp.Core.Modules;
 using OSharp.Core.Options;
+using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.Reflection;
 
@@ -38,8 +38,8 @@ namespace OSharp
             {
                 builderAction(builder);
             }
-            OSharpModuleManager manager = new OSharpModuleManager(builder, new AppDomainAllAssemblyFinder());
-            manager.LoadModules(services);
+            OSharpPackManager manager = new OSharpPackManager(builder, new AppDomainAllAssemblyFinder());
+            manager.LoadPacks(services);
             services.AddSingleton(provider => manager);
             if (scanOptions == null)
             {

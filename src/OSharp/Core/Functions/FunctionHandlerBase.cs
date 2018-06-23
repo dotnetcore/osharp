@@ -27,25 +27,23 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 功能信息处理基类
     /// </summary>
-    public abstract class FunctionHandlerBase<TFunction, TFunctionHandler> : IFunctionHandler
+    public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
         private readonly List<TFunction> _functions = new List<TFunction>();
-        private readonly ILogger<TFunctionHandler> _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例
+        /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
         /// </summary>
-        protected FunctionHandlerBase(ILoggerFactory loggerFactory, IAllAssemblyFinder allAssemblyFinder)
+        protected FunctionHandlerBase()
         {
-            _logger = loggerFactory.CreateLogger<TFunctionHandler>();
-            AllAssemblyFinder = allAssemblyFinder;
+            Logger = ServiceLocator.Instance.GetService<ILoggerFactory>().CreateLogger(GetType());
         }
 
         /// <summary>
-        /// 获取 所有程序集查找器
+        /// 获取 日志记录对象
         /// </summary>
-        protected IAllAssemblyFinder AllAssemblyFinder { get; }
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// 获取 功能类型查找器
@@ -308,7 +306,7 @@ namespace OSharp.Core.Functions
                 {
                     msg += "，移除功能信息 " + removeCount + " 个";
                 }
-                _logger.LogInformation(msg);
+                Logger.LogInformation(msg);
             }
         }
 

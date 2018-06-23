@@ -1,31 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="CoreModule.cs" company="OSharp开源团队">
+//  <copyright file="EntityInfoPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-07 18:59</last-date>
+//  <last-date>2018-06-23 15:25</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
-using OSharp.Core.Options;
+using OSharp.Core.Packs;
+using OSharp.Entity;
 
 
-namespace OSharp.Core.Modules
+namespace OSharp.Core.EntityInfos
 {
     /// <summary>
-    /// OSharp核心模块
+    /// 实体信息模块
     /// </summary>
-    public class OSharpCoreModule : OSharpModule
+    public class EntityInfoPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Core;
+        public override PackLevel Level => PackLevel.Application;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -34,8 +34,8 @@ namespace OSharp.Core.Modules
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
-            ServiceLocator.Instance.TrySetServiceCollection(services);
+            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
+            services.AddSingleton<IEntityInfoHandler, EntityInfoHandler>();
 
             return services;
         }
@@ -46,9 +46,8 @@ namespace OSharp.Core.Modules
         /// <param name="provider"></param>
         public override void UseModule(IServiceProvider provider)
         {
-            //应用程序级别的服务定位器
-            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
-
+            IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
+            handler.Initialize();
             IsEnabled = true;
         }
     }

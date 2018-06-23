@@ -20,7 +20,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
-using OSharp.Core.Modules;
+using OSharp.Core.Packs;
 using OSharp.Entity;
 using OSharp.Reflection;
 using OSharp.Security;
@@ -46,8 +46,8 @@ namespace OSharp.Demo.WebApi.Controllers
             IServiceProvider provider = HttpContext.RequestServices;
 
             dynamic info = new ExpandoObject();
-            OSharpModuleManager moduleManager = provider.GetService<OSharpModuleManager>();
-            info.Modules = moduleManager.SourceModules.OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).Select(m => new
+            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            info.Packs = packManager.SourcePacks.OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).Select(m => new
             {
                 m.GetType().Name,
                 Class = m.GetType().FullName,

@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="IdentityPack.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-06-23 15:27</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Demo.Identity.Entities;
 using OSharp.Identity;
@@ -16,7 +22,7 @@ namespace OSharp.Demo.Identity
     /// <summary>
     /// 身份认证模块
     /// </summary>
-    public class IdentityModule : IdentityModuleBase<UserStore, RoleStore, User, Role, int, int>
+    public class IdentityPack : IdentityPackBase<UserStore, RoleStore, User, Role, int, int>
     {
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
@@ -53,7 +59,6 @@ namespace OSharp.Demo.Identity
                 options.User.RequireUniqueEmail = true;
                 //锁定
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-
             };
         }
 
@@ -70,7 +75,6 @@ namespace OSharp.Demo.Identity
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
                 options.LoginPath = "/#/identity/login";
-                
             };
         }
 

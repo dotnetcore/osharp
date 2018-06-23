@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ModuleBase.cs" company="OSharp开源团队">
+//  <copyright file="OsharpPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-07 18:49</last-date>
+//  <last-date>2018-06-23 15:18</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -14,17 +14,17 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core.Modules
+namespace OSharp.Core.Packs
 {
     /// <summary>
     /// OSharp模块基类
     /// </summary>
-    public abstract class OSharpModule
+    public abstract class OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
-        public virtual ModuleLevel Level => ModuleLevel.Business;
+        public virtual PackLevel Level => PackLevel.Business;
 
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
@@ -62,7 +62,7 @@ namespace OSharp.Core.Modules
         /// <returns></returns>
         internal Type[] GetDependModuleTypes()
         {
-            DependsOnModulesAttribute depends = this.GetType().GetAttribute<DependsOnModulesAttribute>();
+            DependsOnPacksAttribute depends = this.GetType().GetAttribute<DependsOnPacksAttribute>();
             if (depends == null)
             {
                 return new Type[0];

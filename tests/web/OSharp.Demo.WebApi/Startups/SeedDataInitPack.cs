@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="SeedDataInitPack.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-06-23 15:26</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Modules;
+using OSharp.Core.Packs;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
@@ -15,12 +22,12 @@ using OSharp.Entity;
 
 namespace OSharp.Demo.WebApi.Startups
 {
-    public class SeedDataInitModule : OSharpModule
+    public class SeedDataInitPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Application;
+        public override PackLevel Level => PackLevel.Application;
 
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
@@ -47,7 +54,14 @@ namespace OSharp.Demo.WebApi.Startups
                 Role role = new Role() { Name = "系统管理员", Remark = "系统最高权限管理角色", IsAdmin = true, IsDefault = false, IsSystem = true };
                 roleManager.CreateAsync(role).Wait();
 
-                User user = new User() { UserName = "admin", Email = "admin@osharp.org", EmailConfirmed = true, LockoutEnabled = true, IsSystem = true };
+                User user = new User()
+                {
+                    UserName = "admin",
+                    Email = "admin@osharp.org",
+                    EmailConfirmed = true,
+                    LockoutEnabled = true,
+                    IsSystem = true
+                };
                 UserManager<User> userManager = scope.ServiceProvider.GetService<UserManager<User>>();
                 userManager.CreateAsync(user).Wait();
                 userManager.AddToRoleAsync(user, role.Name).Wait();

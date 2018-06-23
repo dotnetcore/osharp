@@ -1,15 +1,12 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SecurityModule.cs" company="OSharp开源团队">
+//  <copyright file="SecurityPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-11 10:46</last-date>
+//  <last-date>2018-06-23 15:29</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Demo.Security.Dtos;
@@ -23,8 +20,8 @@ namespace OSharp.Demo.Security
     /// <summary>
     /// 权限安全模块
     /// </summary>
-    public class SecurityModule
-        : SecurityModuleBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
+    public class SecurityPack
+        : SecurityPackBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
             Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
     {
         /// <summary>

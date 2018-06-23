@@ -1,18 +1,18 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ModuleLevel.cs" company="OSharp开源团队">
+//  <copyright file="PackLevel.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-20 0:57</last-date>
+//  <last-date>2018-06-23 15:17</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Modules
+namespace OSharp.Core.Packs
 {
     /// <summary>
     /// 模块级别，级别越核心，优先启动
     /// </summary>
-    public enum ModuleLevel
+    public enum PackLevel
     {
         /// <summary>
         /// 核心级别，表示系统的核心模块，
@@ -30,6 +30,6 @@ namespace OSharp.Core.Modules
         /// <summary>
         /// 业务级别，表示涉及真实业务处理的模块
         /// </summary>
-        Business =30
+        Business = 30
     }
 }

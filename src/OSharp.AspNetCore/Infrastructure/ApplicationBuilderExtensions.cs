@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.EventBuses;
 using OSharp.Core;
-using OSharp.Core.Modules;
+using OSharp.Core.Packs;
 
 
 namespace OSharp
@@ -32,7 +32,7 @@ namespace OSharp
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
 
-            OSharpModuleManager moduleManager = serviceProvider.GetService<OSharpModuleManager>();
+            OSharpPackManager moduleManager = serviceProvider.GetService<OSharpPackManager>();
             moduleManager.UseModules(serviceProvider);
 
             return app;

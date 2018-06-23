@@ -27,14 +27,14 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC 功能处理器
     /// </summary>
-    public class MvcFunctionHandler : FunctionHandlerBase<Function, MvcFunctionHandler>
+    public class MvcFunctionHandler : FunctionHandlerBase<Function>
     {
         /// <summary>
-        /// 初始化一个<see cref="FunctionHandlerBase{TFunction, TFunctionHandler}"/>类型的新实例
+        /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
         /// </summary>
-        public MvcFunctionHandler(ILoggerFactory loggerFactory, IAllAssemblyFinder allAssemblyFinder)
-            : base(loggerFactory, allAssemblyFinder)
+        public MvcFunctionHandler()
         {
+            IAllAssemblyFinder allAssemblyFinder = ServiceLocator.Instance.GetService<IAllAssemblyFinder>();
             FunctionTypeFinder = new MvcControllerTypeFinder(allAssemblyFinder);
             MethodInfoFinder = new PublicInstanceMethodInfoFinder();
         }

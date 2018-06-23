@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SecurityModuleBase.cs" company="OSharp开源团队">
+//  <copyright file="SecurityPackBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-11 10:19</last-date>
+//  <last-date>2018-06-23 15:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
-using OSharp.Core.Modules;
+using OSharp.Core.Packs;
 using OSharp.Entity;
 using OSharp.Secutiry;
 
@@ -23,8 +23,8 @@ namespace OSharp.Security
     /// <summary>
     /// 权限安全模块基类
     /// </summary>
-    public abstract class SecurityModuleBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto,
-        TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OSharpModule
+    public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TFunction, TFunctionInputDto, TEntityInfo,
+        TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OsharpPack
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
@@ -49,7 +49,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 模块级别
         /// </summary>
-        public override ModuleLevel Level => ModuleLevel.Application;
+        public override PackLevel Level => PackLevel.Application;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
