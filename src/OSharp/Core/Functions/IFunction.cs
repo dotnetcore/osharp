@@ -18,7 +18,7 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 定义功能信息
     /// </summary>
-    public interface IFunction : ILockable
+    public interface IFunction : IEntity<Guid>, ILockable
     {
         /// <summary>
         /// 获取或设置 功能名称
@@ -49,7 +49,7 @@ namespace OSharp.Core.Functions
         /// 获取或设置 是否Ajax功能
         /// </summary>
         bool IsAjax { get; set; }
-        
+
         /// <summary>
         /// 获取或设置 访问类型
         /// </summary>

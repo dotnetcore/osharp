@@ -50,8 +50,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Modules\" />
-  </ItemGroup>
-
 </Project>

@@ -9,6 +9,7 @@
 
 using System.ComponentModel;
 
+using OSharp.Core.Modules;
 using OSharp.Security;
 
 

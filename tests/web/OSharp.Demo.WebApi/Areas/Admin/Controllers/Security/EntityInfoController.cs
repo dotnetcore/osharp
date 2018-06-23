@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.EntityInfos;
+using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Demo.Security;
 using OSharp.Entity;

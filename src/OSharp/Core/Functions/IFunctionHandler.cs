@@ -7,6 +7,9 @@
 //  <last-date>2017-09-14 20:10</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Reflection;
+
+
 namespace OSharp.Core.Functions
 {
     /// <summary>
@@ -14,6 +17,16 @@ namespace OSharp.Core.Functions
     /// </summary>
     public interface IFunctionHandler
     {
+        /// <summary>
+        /// 获取 功能类型查找器
+        /// </summary>
+        IFunctionTypeFinder FunctionTypeFinder { get; }
+
+        /// <summary>
+        /// 获取 功能方法查找器
+        /// </summary>
+        IMethodInfoFinder MethodInfoFinder { get; }
+
         /// <summary>
         /// 从程序集中获取功能信息（如MVC的Controller-Action）
         /// </summary>

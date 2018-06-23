@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Collections;
+using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Identity;

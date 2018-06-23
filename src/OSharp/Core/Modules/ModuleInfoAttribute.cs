@@ -1,29 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ModuleInfo.cs" company="OSharp开源团队">
+//  <copyright file="ModuleInfoAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 11:38</last-date>
+//  <last-date>2018-06-22 23:16</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core.Functions;
+using System;
 
 
-namespace OSharp.Security
+namespace OSharp.Core.Modules
 {
     /// <summary>
-    /// 从程序集中提取的模块信息载体，包含模块基本信息和模块依赖的功能信息集合
+    /// 描述把当前功能(Controller或者Action)封装为一个模块(Module)节点，可以设置模块依赖的其他功能，模块的位置信息等
+    /// 此特性用于系统初始化时自动提取模块树信息Module
     /// </summary>
-    public class ModuleInfo
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public class ModuleInfoAttribute : Attribute
     {
         /// <summary>
-        /// 获取或设置 模块名称
+        /// 获取或设置 模块名称，为空则取功能名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 模块代码
+        /// 获取或设置 模块代码，为空则取功能Action名
         /// </summary>
         public string Code { get; set; }
 
@@ -33,13 +35,8 @@ namespace OSharp.Security
         public double Order { get; set; }
 
         /// <summary>
-        /// 获取或设置 模块位置
+        /// 获取或设置 模块位置，模块在树节点的位置，默认取所在类的位置
         /// </summary>
         public string Position { get; set; }
-
-        /// <summary>
-        /// 获取或设置 依赖功能
-        /// </summary>
-        public IFunction[] DependOnFunctions { get; set; }
     }
 }

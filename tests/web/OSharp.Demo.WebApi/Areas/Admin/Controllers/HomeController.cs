@@ -16,7 +16,7 @@ using OSharp.Demo.Security;
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
 {
-    [Description("管理-主页")]
+    [Description("管理-主页")] 
     public class HomeController : AdminApiController
     {
         private readonly SecurityManager _securityManager;

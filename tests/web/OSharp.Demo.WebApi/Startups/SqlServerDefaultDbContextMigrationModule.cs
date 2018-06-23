@@ -9,13 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Demo.Identity.Entities;
-using OSharp.Demo.Security;
-using OSharp.Demo.Security.Dtos;
-using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 using OSharp.Entity.SqlServer;
 

@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
+using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Entity;
 using OSharp.Secutiry;
@@ -23,7 +24,7 @@ namespace OSharp.Security
     /// <summary>
     /// 权限安全模块基类
     /// </summary>
-    public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TFunction, TFunctionInputDto, TEntityInfo,
+    public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TModuleHandler, TFunction, TFunctionInputDto, TEntityInfo,
         TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OsharpPack
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
@@ -33,7 +34,8 @@ namespace OSharp.Security
         IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
         where TFunctionAuthorization : IFunctionAuthorization
         where TFunctionAuthCache : IFunctionAuthCache
-        where TFunction : IFunction, IEntity<Guid>
+        where TModuleHandler : IModuleHandler
+        where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
         where TEntityInfo : IEntityInfo, IEntity<Guid>
         where TEntityInfoInputDto : EntityInfoInputDtoBase
@@ -62,6 +64,7 @@ namespace OSharp.Security
 
             services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
             services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
+            services.AddSingleton(typeof(IModuleHandler), typeof(TModuleHandler));
 
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TSecurityManager>());
@@ -71,6 +74,18 @@ namespace OSharp.Security
             services.AddScoped(typeof(IModuleUserStore<TModuleUser, TUserKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
 
             return services;
+        }
+
+        /// <summary>
+        /// 使用模块服务
+        /// </summary>
+        /// <param name="provider"></param>
+        public override void UseModule(IServiceProvider provider)
+        {
+            IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
+            moduleHandler.Initialize();
+
+            base.UseModule(provider);
         }
     }
 }

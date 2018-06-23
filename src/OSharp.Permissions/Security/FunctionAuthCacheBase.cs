@@ -28,7 +28,7 @@ namespace OSharp.Security
     public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModuleUser, TFunction, TModule, TModuleKey,
         TRole, TRoleKey, TUser, TUserKey>
         : IFunctionAuthCache
-        where TFunction : class, IFunction, IEntity<Guid>
+        where TFunction : class, IFunction
         where TModule : ModuleBase<TModuleKey>
         where TModuleFunction : ModuleFunctionBase<TModuleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
+using OSharp.Core.Modules;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
 using OSharp.Entity;

@@ -7,6 +7,8 @@
 //  <last-date>2017-09-11 11:21</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

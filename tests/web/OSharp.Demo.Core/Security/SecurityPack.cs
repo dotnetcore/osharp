@@ -21,7 +21,7 @@ namespace OSharp.Demo.Security
     /// 权限安全模块
     /// </summary>
     public class SecurityPack
-        : SecurityPackBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
+        : SecurityPackBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, ModuleHandler, Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
             Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
     {
         /// <summary>

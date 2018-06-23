@@ -105,15 +105,6 @@ namespace OSharp.AspNetCore.Mvc
         }
 
         /// <summary>
-        /// 重写以实现从类型中获取功能的区域信息
-        /// </summary>
-        protected override string GetArea(Type type)
-        {
-            AreaAttribute attribute = type.GetAttribute<AreaAttribute>(true);
-            return attribute?.RouteValue;
-        }
-
-        /// <summary>
         /// 重写以实现是否忽略指定方法的功能信息
         /// </summary>
         /// <param name="action">要判断的功能信息</param>
@@ -124,6 +115,15 @@ namespace OSharp.AspNetCore.Mvc
         {
             bool flag = base.IsIgnoreMethod(action, method, functions);
             return flag && method.HasAttribute<HttpPostAttribute>() || method.HasAttribute<NonActionAttribute>();
+        }
+
+        /// <summary>
+        /// 从类型中获取功能的区域信息
+        /// </summary>
+        private static string GetArea(Type type)
+        {
+            AreaAttribute attribute = type.GetAttribute<AreaAttribute>(true);
+            return attribute?.RouteValue;
         }
     }
 }

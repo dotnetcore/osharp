@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.Security
+namespace OSharp.Core.Modules
 {
     /// <summary>
     /// 模块依赖的功能信息，用于提取模块信息Module时确定模块依赖的功能（模块依赖当前功能和此特性设置的其他功能）

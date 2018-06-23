@@ -36,7 +36,7 @@ namespace OSharp.Security
           IModuleFunctionStore<TModuleFunction, TModuleKey>,
           IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
           IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
-        where TFunction : IFunction, IEntity<Guid>
+        where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
         where TEntityInfo : IEntityInfo, IEntity<Guid>
         where TEntityInfoInputDto : EntityInfoInputDtoBase

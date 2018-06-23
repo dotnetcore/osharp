@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
 using OSharp.Core.Functions;
+using OSharp.Core.Modules;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Entities;
 using OSharp.Security;

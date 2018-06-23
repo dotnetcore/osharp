@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,8 @@ namespace OSharp.Entity.SqlServer
                         if (contextOptions.AutoMigrationEnabled)
                         {
                             context.CheckAndMigration();
+                            int count = context.SaveChanges();
+                            Debug.WriteLine($"Migration Save:{count}");
                         }
                     }
                 }

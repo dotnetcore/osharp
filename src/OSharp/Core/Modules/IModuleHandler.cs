@@ -7,17 +7,12 @@
 //  <last-date>2018-06-23 2:31</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-
-namespace OSharp.Security
+namespace OSharp.Core.Modules
 {
     /// <summary>
     /// 定义模块信息处理器
     /// </summary>
-    public interface IModuleHandler<TModule, TModuleKey>
-        where TModule : ModuleBase<TModuleKey>
-        where TModuleKey : struct, IEquatable<TModuleKey>
+    public interface IModuleHandler
     {
         /// <summary>
         /// 从程序集中获取模块信息

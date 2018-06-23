@@ -27,7 +27,7 @@ namespace OSharp.Security
     /// <typeparam name="TFunctionInputDto">功能信息输入DTO类型</typeparam>
     [IgnoreDependency]
     public interface IFunctionStore<TFunction, in TFunctionInputDto>
-        where TFunction : IFunction, IEntity<Guid>
+        where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
     {
         /// <summary>

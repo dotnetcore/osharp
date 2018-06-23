@@ -211,11 +211,6 @@ namespace OSharp.Core.Functions
         }
 
         /// <summary>
-        /// 重写以实现从类型中获取功能的区域信息
-        /// </summary>
-        protected abstract string GetArea(Type type);
-
-        /// <summary>
         /// 将从程序集获取的功能信息同步到数据库中
         /// </summary>
         /// <param name="scopedProvider">局部服务程序提供者</param>

@@ -14,9 +14,6 @@ using System.Text;
 
 using OSharp.Collections;
 
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-
 
 namespace OSharp.Demo.WebApi.Helpers
 {
@@ -124,7 +121,7 @@ namespace OSharp.Demo.WebApi.Helpers
         /// <summary>
         /// 获取指定长度的验证码图片
         /// </summary>
-        public Image<Rgb24> CreateImage(int length, out string code, ValidateCodeType codeType = ValidateCodeType.NumberAndLetter)
+        public Image CreateImage(int length, out string code, ValidateCodeType codeType = ValidateCodeType.NumberAndLetter)
         {
             Check.GreaterThan(length, nameof(length), 0);
 
@@ -150,7 +147,7 @@ namespace OSharp.Demo.WebApi.Helpers
         /// <summary>
         /// 获取指定字符串的验证码图片
         /// </summary>
-        public Image<Rgb24> CreateImage(string code, ValidateCodeType codeType)
+        public Image CreateImage(string code, ValidateCodeType codeType)
         {
             Check.NotNullOrEmpty(code, nameof(code));
 
@@ -158,8 +155,8 @@ namespace OSharp.Demo.WebApi.Helpers
                 height = FontSize + FontSize / 2,
                 flag = 255 / 2;
             bool isBgLight = (BgColor.R + BgColor.G + BgColor.B) / 3 > flag;
-            Image<Rgb24> image = new Image<Rgb24>(width, height);
-            
+            Image image = new Bitmap(null, width, height);
+
 
 
 

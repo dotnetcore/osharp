@@ -1,15 +1,25 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="ModuleHandlerBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-06-23 18:21</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using System.Threading.Tasks;
 
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Functions;
+using OSharp.Core.Modules;
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Exceptions;
-using OSharp.Reflection;
+using OSharp.Extensions;
 
 
 namespace OSharp.Security
@@ -17,13 +27,15 @@ namespace OSharp.Security
     /// <summary>
     /// 模块信息处理器基类
     /// </summary>
-    public abstract class ModuleHandlerBase<TModule, TModuleKey, TFunction, TModuleFunction> : IModuleHandler<TModule, TModuleKey>
+    public abstract class ModuleHandlerBase<TModule, TModuleInputDto, TModuleKey, TFunction, TModuleFunction> : IModuleHandler
         where TModule : ModuleBase<TModuleKey>
+        where TModuleInputDto : ModuleInputDtoBase<TModuleKey>, new()
         where TModuleKey : struct, IEquatable<TModuleKey>
-        where TFunction : class, IEntity<Guid>, IFunction, new()
+        where TFunction : class, IFunction, new()
         where TModuleFunction : ModuleFunctionBase<TModuleKey>
     {
         private readonly ServiceLocator _locator;
+        private readonly IModuleInfoPicker _moduleInfoPicker;
 
         /// <summary>
         /// 初始化一个<see cref="ModuleHandlerBase"/>类型的新实例
@@ -31,147 +43,126 @@ namespace OSharp.Security
         protected ModuleHandlerBase()
         {
             _locator = ServiceLocator.Instance;
-            Logger = _locator.GetService<ILoggerFactory>().CreateLogger(GetType());
-            FunctionHandler = _locator.GetService<IFunctionHandler>();
+            _moduleInfoPicker = _locator.GetService<IModuleInfoPicker>();
         }
-
-        /// <summary>
-        /// 获取 日志记录对象
-        /// </summary>
-        protected ILogger Logger { get; }
-
-        /// <summary>
-        /// 获取 功能处理器
-        /// </summary>
-        protected IFunctionHandler FunctionHandler { get; }
 
         /// <summary>
         /// 从程序集中获取模块信息
         /// </summary>
         public void Initialize()
         {
-            Check.NotNull(FunctionHandler, nameof(FunctionHandler));
-            if (!(FunctionHandler is FunctionHandlerBase<TFunction> functionHandler))
+            ModuleInfo[] moduleInfos = _moduleInfoPicker.Pickup();
+            if (moduleInfos.Length == 0)
             {
-                throw new OsharpException($"属性“{nameof(FunctionHandler)}”必须实现基类“{typeof(FunctionHandlerBase<TFunction>)}”");
+                return;
             }
-            IFunctionTypeFinder functionTypeFinder = functionHandler.FunctionTypeFinder;
-            Type[] functionTypes = functionTypeFinder.FindAll(true);
-            ModuleInfo[] modules = GetModules(functionTypes, functionHandler);
-
             _locator.ExcuteScopedWork(provider =>
             {
-                SyncToDatabase(provider, modules);
+                SyncToDatabase(provider, moduleInfos);
             });
         }
 
         /// <summary>
-        /// 重写以实现从类型中提取模块信息
+        /// 重写以实现将提取到的模块信息同步到数据库中
         /// </summary>
-        /// <param name="types">待查找的类型</param>
-        /// <param name="functionHandler">功能处理器</param>
-        /// <returns>提取到的模块信息</returns>
-        protected virtual ModuleInfo[] GetModules(Type[] types, FunctionHandlerBase<TFunction> functionHandler)
+        /// <param name="provider">局部服务提供者</param>
+        /// <param name="moduleInfos">从程序集中提取到的模块信息</param>
+        protected virtual void SyncToDatabase(IServiceProvider provider, ModuleInfo[] moduleInfos)
         {
-            List<ModuleInfo> infos = new List<ModuleInfo>();
-            foreach (Type type in types)
+            Check.NotNull(moduleInfos, nameof(moduleInfos));
+            if (moduleInfos.Length == 0)
             {
-                ModuleInfo info = GetModule(type);
-                if (info == null)
+                return;
+            }
+            IModuleStore<TModule, TModuleInputDto, TModuleKey> moduleStore =
+                provider.GetService<IModuleStore<TModule, TModuleInputDto, TModuleKey>>();
+            IModuleFunctionStore<TModuleFunction, TModuleKey> moduleFunctionStore =
+                provider.GetService<IModuleFunctionStore<TModuleFunction, TModuleKey>>();
+
+            foreach (ModuleInfo info in moduleInfos)
+            {
+                TModule parent = GetModule(moduleStore, info.Position);
+                if (parent == null)
                 {
-                    continue;
+                    throw new OsharpException($"路径为“{info.Position}”的模块信息无法找到");
                 }
-                infos.Add(info);
-                var all = functionHandler.MethodInfoFinder.FindAll(type);
-                for (var index = 0; index < all.Length; index++)
+                OperationResult result;
+                TModule module = moduleStore.Modules.FirstOrDefault(m => m.ParentId.Equals(parent.Id) && m.Code == info.Code);
+                if (module == null)
                 {
-                    MethodInfo method = all[index];
-                    info = GetModule(method, index);
-                    if (info == null)
+                    TModuleInputDto dto = GetDto(info, parent.Id, null);
+                    result = moduleStore.CreateModule(dto).Result;
+                    if (result.Errored)
                     {
-                        continue;
+                        throw new OsharpException(result.Message);
                     }
-                    infos.Add(info);
+                    module = moduleStore.Modules.First(m => m.ParentId.Equals(parent.Id) && m.Code == info.Code);
+                }
+                else
+                {
+                    TModuleInputDto dto = GetDto(info, parent.Id, module);
+                    result = moduleStore.UpdateModule(dto).Result;
+                    if (result.Errored)
+                    {
+                        throw new OsharpException(result.Message);
+                    }
+                }
+                if (info.DependOnFunctions.Length > 0)
+                {
+                    Guid[] functionIds = info.DependOnFunctions.Select(m => m.Id).ToArray();
+                    result = moduleFunctionStore.SetModuleFunctions(module.Id, functionIds).Result;
+                    if (result.Errored)
+                    {
+                        throw new OsharpException(result.Message);
+                    }
                 }
             }
-            return infos.ToArray();
+            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
+            unitOfWork.Commit();
         }
 
-        /// <summary>
-        /// 重写以获取类型的模块信息
-        /// </summary>
-        /// <param name="type">类型</param>
-        /// <returns>提取到的模块信息</returns>
-        protected virtual ModuleInfo GetModule(Type type)
+        private readonly IDictionary<string, TModule> _positionDictionary = new Dictionary<string, TModule>();
+        private TModule GetModule(IModuleStore<TModule, TModuleInputDto, TModuleKey> moduleStore, string position)
         {
-            ModuleInfoAttribute infoAttr = type.GetAttribute<ModuleInfoAttribute>();
-            if (infoAttr == null)
+            if (_positionDictionary.ContainsKey(position))
+            {
+                return _positionDictionary[position];
+            }
+            string[] codes = position.Split('.');
+            if (codes.Length == 0)
             {
                 return null;
             }
-            ModuleInfo info = new ModuleInfo()
-            {
-                Name = infoAttr.Name ?? type.GetDescription() ?? type.Name,
-                Code = infoAttr.Code ?? type.Name,
-                Order = infoAttr.Order,
-                Position = GetPosition(type)
-            };
-            return info;
-        }
-
-        /// <summary>
-        /// 重写以获取从方法中提取模块信息
-        /// </summary>
-        /// <param name="method">待查找的方法</param>
-        /// <param name="index">序号</param>
-        /// <returns>提取到的模块信息</returns>
-        protected virtual ModuleInfo GetModule(MethodInfo method, int index)
-        {
-            ModuleInfoAttribute infoAttr = method.GetAttribute<ModuleInfoAttribute>();
-            if (infoAttr == null)
+            string code = codes[0];
+            TModule module = moduleStore.Modules.FirstOrDefault(m => m.Code == code);
+            if (module == null)
             {
                 return null;
             }
-            ModuleInfo info = new ModuleInfo()
+            for (int i = 1; i < codes.Length; i++)
             {
-                Name = infoAttr.Name ?? method.GetDescription() ?? method.Name,
-                Code = infoAttr.Code ?? method.Name,
-                Order = infoAttr.Order > 0 ? infoAttr.Order : index + 1,
-                Position = GetPosition(method)
+                code = codes[i];
+                module = moduleStore.Modules.FirstOrDefault(m => m.Code == code && m.ParentId.Equals(module.Id));
+                if (module == null)
+                {
+                    return null;
+                }
+            }
+            _positionDictionary.Add(position, module);
+            return module;
+        }
+
+        private static TModuleInputDto GetDto(ModuleInfo info, TModuleKey parentId, TModule existsModule)
+        {
+            return new TModuleInputDto()
+            {
+                Id = existsModule?.Id ?? default(TModuleKey),
+                Name = info.Name,
+                Code = info.Code,
+                OrderCode = info.Order,
+                Remark = existsModule?.Remark,
+                ParentId = parentId
             };
-            //依赖的功能
-
-            return info;
-        }
-
-        /// <summary>
-        /// 重写以实现从类型中获取模块位置字符串
-        /// </summary>
-        /// <param name="type">类型</param>
-        /// <returns>以.拼接的位置字符串</returns>
-        protected virtual string GetPosition(Type type)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 重写以实现从方法中提取模块位置字符串
-        /// </summary>
-        /// <param name="method">方法</param>
-        /// <returns>以.拼接的位置字符串</returns>
-        protected virtual string GetPosition(MethodInfo method)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 重写以实现将从类库提取的模块信息同步到数据库中
-        /// </summary>
-        /// <param name="provider">区域服务提供者</param>
-        /// <param name="modules">从类库中提取的模块信息，包含模块基本信息和模块依赖的功能信息</param>
-        protected virtual void SyncToDatabase(IServiceProvider provider, ModuleInfo[] modules)
-        {
-            throw new NotImplementedException();
         }
     }
 }

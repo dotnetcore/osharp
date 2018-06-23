@@ -57,8 +57,8 @@ namespace OSharp.Demo.WebApi.Startups
                 User user = new User()
                 {
                     UserName = "admin",
-                    Email = "admin@osharp.org",
-                    EmailConfirmed = true,
+                    Email = "admin@66soft.net",
+                    EmailConfirmed = false,
                     LockoutEnabled = true,
                     IsSystem = true
                 };

@@ -7,6 +7,8 @@
 //  <last-date>2015-08-03 18:31</last-date>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+
 using OSharp.Reflection;
 
 namespace OSharp.Data
@@ -121,6 +123,18 @@ namespace OSharp.Data
         public bool Successed
         {
             get { return ResultType == OperationResultType.Success; }
+        }
+
+        /// <summary>
+        /// 获取 是否失败
+        /// </summary>
+        public bool Errored
+        {
+            get
+            {
+                bool contains = new[] { OperationResultType.ValidError, OperationResultType.QueryNull, OperationResultType.Error }.Contains(ResultType);
+                return contains;
+            }
         }
     }
 }
