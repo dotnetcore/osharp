@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using OSharp.EventBuses;
+using OSharp.Extensions;
 
 
 namespace OSharp.Audits

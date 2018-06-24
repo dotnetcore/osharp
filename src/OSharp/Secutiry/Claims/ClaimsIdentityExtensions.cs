@@ -13,6 +13,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
+using OSharp.Data;
+
 
 namespace OSharp.Secutiry.Claims
 {

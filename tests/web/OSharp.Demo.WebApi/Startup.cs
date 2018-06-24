@@ -19,9 +19,12 @@ using Microsoft.IdentityModel.Tokens;
 
 using Newtonsoft.Json.Serialization;
 
+using OSharp.AspNetCore.Infrastructure;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Core;
+
 
 namespace OSharp.Demo.WebApi
 {
@@ -64,20 +67,21 @@ namespace OSharp.Demo.WebApi
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
             {
+                string secret = Configuration["OSharp:Jwt:Secret"] ?? Configuration["JwtSecret"];
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidIssuer = Configuration["OSharp:Jwt:Issuer"],
                     ValidAudience = Configuration["OSharp:Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["OSharp:Jwt:Secret"] ?? Configuration["JwtSecret"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
                 };
             });
 
             services.AddSignalR();
         }
-        
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        { 
+        {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -23,6 +23,7 @@ using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Identity.Events;
 using OSharp.Entity;
 using OSharp.EventBuses;
+using OSharp.Extensions;
 using OSharp.Identity;
 
 

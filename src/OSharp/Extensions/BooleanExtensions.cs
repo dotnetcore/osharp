@@ -9,7 +9,7 @@
 using System;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 布尔值<see cref="Boolean"/>类型的扩展辅助操作类

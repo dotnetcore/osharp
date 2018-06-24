@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+using OSharp.Extensions;
+
 using Xunit;
 
 

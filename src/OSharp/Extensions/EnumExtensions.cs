@@ -10,10 +10,11 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+
 using OSharp.Reflection;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 枚举<see cref="Enum"/>的扩展辅助操作方法

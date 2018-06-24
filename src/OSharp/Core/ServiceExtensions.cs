@@ -15,11 +15,12 @@ using Microsoft.Extensions.Options;
 using OSharp.Core.Builders;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Reflection;
 
 
-namespace OSharp
+namespace OSharp.Core
 {
     /// <summary>
     /// 依赖注入服务集合扩展

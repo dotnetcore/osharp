@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
 using OSharp.Core.Functions;
+using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 

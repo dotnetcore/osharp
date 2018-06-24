@@ -17,7 +17,10 @@ using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Collections;
 using OSharp.Core.Functions;
+using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Properties;

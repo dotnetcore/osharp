@@ -9,6 +9,8 @@
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
+using OSharp.Data;
+
 
 namespace OSharp.AspNetCore.Mvc.ModelBinding
 {

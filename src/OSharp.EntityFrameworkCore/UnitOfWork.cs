@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core;
 using OSharp.Core.Options;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;

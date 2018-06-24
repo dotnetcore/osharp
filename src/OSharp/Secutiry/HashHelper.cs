@@ -9,6 +9,8 @@
 using System.Security.Cryptography;
 using System.Text;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.Secutiry
 {

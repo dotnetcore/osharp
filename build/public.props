@@ -3,15 +3,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Authors>柳柳软件(66soft.net)</Authors>
+    <Authors>LiuliuSoft</Authors>
     <Company>柳柳软件(66soft.net)</Company>
-    <Copyright>Copyright © 66SOFT 2014-2018</Copyright>
+    <Copyright>Copyright @ 66SOFT 2014-2018</Copyright>
     <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
-    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.svg</PackageIconUrl>
+    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/i66soft/osharp-ns20</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>osharp</PackageTags>
+    <PackageTags>osharp osharpns</PackageTags>
     <NeutralLanguage>zh-CHS</NeutralLanguage>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)OSharp.Keys.snk</AssemblyOriginatorKeyFile>

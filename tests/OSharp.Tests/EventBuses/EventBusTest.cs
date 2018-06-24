@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Maths;

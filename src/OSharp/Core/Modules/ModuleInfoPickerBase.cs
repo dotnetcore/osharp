@@ -14,6 +14,8 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Functions;
+using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Reflection;
 

@@ -11,6 +11,8 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.Reflection
 {

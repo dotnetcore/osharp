@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 
 
-namespace OSharp
+namespace OSharp.Timing
 {
     /// <summary>
     /// 时间扩展操作类

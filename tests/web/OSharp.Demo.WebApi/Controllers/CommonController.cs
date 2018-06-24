@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
+using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Entity;

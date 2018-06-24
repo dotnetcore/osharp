@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.Core.Options;
+using OSharp.Dependency;
 
 
 namespace OSharp.Core.Packs

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
@@ -33,21 +34,14 @@ namespace OSharp.Demo.WebApi.Controllers
         }
 
         [Description("测试01")]
-        public IActionResult Test01(Guid functionId)
+        public IActionResult Test01()
         {
             List<object> list = new List<object>();
 
-            string str = GetString();
+            string str = string.Empty;
             list.Add(str);
 
             return Content(list.ExpandAndToString("\r\n"));
-        }
-
-        private string GetString()
-        {
-            string url = "http://localhost:7001/api/test/test01?name=fds";
-            IFunction function = this.GetFunction(url);
-            return function.ToJsonString();
         }
     }
 }

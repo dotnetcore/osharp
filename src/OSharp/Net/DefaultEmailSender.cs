@@ -10,11 +10,14 @@
 using System;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Threading.Tasks;
 
+using OSharp.Core;
 using OSharp.Core.Options;
 using OSharp.Dependency;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 
 
 namespace OSharp.Net
@@ -45,7 +48,7 @@ namespace OSharp.Net
         {
             OSharpOptions options = _provider.GetOSharpOptions();
             MailSenderOptions mailSender = options.MailSender;
-            if (mailSender == null)
+            if (mailSender == null || mailSender.Host == null || mailSender.Host.Contains("请替换"))
             {
                 throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp.MailSender节点");
             }

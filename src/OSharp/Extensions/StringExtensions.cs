@@ -8,23 +8,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
 using Newtonsoft.Json;
+
 using OSharp.Collections;
 using OSharp.Secutiry;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 字符串<see cref="String"/>类型的扩展辅助操作类

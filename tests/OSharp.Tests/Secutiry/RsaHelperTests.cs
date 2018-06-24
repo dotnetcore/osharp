@@ -7,6 +7,7 @@
 //  <last-date>2017-12-30 22:12</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Extensions;
 using OSharp.Secutiry;
 
 using Shouldly;

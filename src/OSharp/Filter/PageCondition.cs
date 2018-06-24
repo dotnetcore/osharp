@@ -7,6 +7,9 @@
 //  <last-date>2015-08-28 1:18</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Extensions;
+
+
 namespace OSharp.Filter
 {
     /// <summary>

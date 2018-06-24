@@ -19,6 +19,7 @@ using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.EventBuses;
+using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security.Events;

@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Dependency;
+using OSharp.Data;
 using OSharp.Exceptions;
 
 
-namespace OSharp
+namespace OSharp.Dependency
 {
     /// <summary>
     /// 应用程序服务定位器，仅适合于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务

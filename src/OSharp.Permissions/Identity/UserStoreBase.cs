@@ -17,7 +17,9 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 
+using OSharp.Data;
 using OSharp.Entity;
+using OSharp.Extensions;
 
 
 namespace OSharp.Identity

@@ -11,6 +11,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.Data
 {

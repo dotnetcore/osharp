@@ -11,7 +11,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 
 
-namespace OSharp
+namespace OSharp.Exceptions
 {
     /// <summary>
     /// 异常操作扩展

@@ -9,6 +9,8 @@
 
 using Microsoft.AspNetCore.Http;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.AspNetCore.Http.Extensions
 {

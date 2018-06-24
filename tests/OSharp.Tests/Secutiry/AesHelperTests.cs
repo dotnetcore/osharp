@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using OSharp.Extensions;
 using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;

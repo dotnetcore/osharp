@@ -7,7 +7,7 @@
 //  <last-date>2018-04-29 3:52</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp
+namespace OSharp.Data
 {
     /// <summary>
     /// 框架中使用到的一些常量

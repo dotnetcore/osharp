@@ -15,7 +15,7 @@ using System.Linq;
 using OSharp.Properties;
 
 
-namespace OSharp
+namespace OSharp.Data
 {
     /// <summary>
     /// 参数合法性检查类

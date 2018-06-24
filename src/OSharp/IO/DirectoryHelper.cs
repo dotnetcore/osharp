@@ -9,6 +9,8 @@
 using System;
 using System.IO;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.IO
 {

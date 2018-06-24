@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
+using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;

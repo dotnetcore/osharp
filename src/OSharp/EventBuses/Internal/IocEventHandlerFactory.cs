@@ -9,6 +9,8 @@
 
 using System;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.EventBuses.Internal
 {

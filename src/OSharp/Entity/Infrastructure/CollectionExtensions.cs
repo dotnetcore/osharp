@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using OSharp.Collections;
+using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Properties;

@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Extensions;
 using OSharp.Mapping;
 
 using Z.EntityFramework.Plus;

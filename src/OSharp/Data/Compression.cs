@@ -11,6 +11,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
+using OSharp.Extensions;
+
+
 namespace OSharp.Data
 {
     /// <summary>

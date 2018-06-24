@@ -14,7 +14,7 @@ using System.Linq;
 using OSharp.Properties;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 用于参数检查的扩展方法

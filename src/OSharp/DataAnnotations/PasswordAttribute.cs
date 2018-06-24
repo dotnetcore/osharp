@@ -9,6 +9,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.DataAnnotations
 {

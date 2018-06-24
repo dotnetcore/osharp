@@ -11,8 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using OSharp.Extensions;
 
-namespace OSharp
+
+namespace OSharp.Linq
 {
     /// <summary>
     /// Expression表达式扩展操作类

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using NSubstitute;
 
+using OSharp.Core;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;

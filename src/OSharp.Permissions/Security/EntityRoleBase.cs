@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using OSharp.Entity;
+using OSharp.Extensions;
 using OSharp.Filter;
 
 

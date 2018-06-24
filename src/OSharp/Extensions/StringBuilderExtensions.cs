@@ -7,11 +7,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Text;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
-    using System.Text;
     /// <summary>
     /// StringBuilder 扩展方法类
     /// </summary>

@@ -11,6 +11,8 @@ using System.IO;
 
 using Microsoft.Extensions.Configuration;
 
+using OSharp.Extensions;
+
 
 namespace OSharp.Core.Options
 {

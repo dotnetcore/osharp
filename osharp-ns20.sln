@@ -23,7 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 		build\OSharp.Keys.snk = build\OSharp.Keys.snk
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
-		build\restore.cmd = build\restore.cmd
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject

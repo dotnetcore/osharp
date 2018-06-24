@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+
+using OSharp.Extensions;
 using OSharp.Reflection;
 
 namespace OSharp.Develop.T4

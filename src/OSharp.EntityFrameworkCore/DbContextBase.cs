@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
+using OSharp.Dependency;
 using OSharp.EventBuses;
 
 

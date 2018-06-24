@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 随机数<see cref="Random"/>类型的扩展辅助操作类

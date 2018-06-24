@@ -12,6 +12,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Exceptions;

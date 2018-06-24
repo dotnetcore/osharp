@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+
+using OSharp.Extensions;
 using OSharp.Filter;
 
 namespace OSharp.Collections

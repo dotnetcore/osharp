@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 using OSharp.Entity;
+using OSharp.Extensions;
 
 
 namespace OSharp.Security

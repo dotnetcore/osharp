@@ -10,15 +10,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using Newtonsoft.Json;
+
 using OSharp.Reflection;
 
 
-namespace OSharp
+namespace OSharp.Extensions
 {
     /// <summary>
     /// 基类型<see cref="Object"/>扩展辅助操作类
