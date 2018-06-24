@@ -12,7 +12,7 @@
     <iconUrl>http://core.osharp.org/assets/osharp/logo-color.png</iconUrl>
     <description>OSharp Framework with .NetStandard2.0，此Package包含了OSharpNS的所有组件</description>
     <copyright>Copyright @ 66SOFT 2014-2018</copyright>
-    <tags>osharp</tags>
+    <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="OSharpNS.Core" version="0.2.1-beta03" />
