@@ -94,7 +94,6 @@ namespace OSharp.Demo.Identity
             Check.NotNull(dto, nameof(dto));
 
             User user = new User() { UserName = dto.UserName, NickName = dto.NickName ?? dto.UserName, Email = dto.Email };
-
             IdentityResult result = dto.Password == null ? await _userManager.CreateAsync(user) : await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {

@@ -20,7 +20,7 @@
       <nz-form-control>
         <label nz-checkbox [(ngModel)]="dto.Remember" name="remember">记住登录</label>
         <a *ngIf="auth.SendResetPasswordMail" [routerLink]="[ '/identity/forgot-password' ]" class="login-form-forgot">忘记密码</a>
-        <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!(form.form.valid && canSubmit && auth.Login)">
+        <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!(form.form.valid && canSubmit && auth.Jwtoken)">
           <i class="anticon anticon-login"></i>登录
         </button>
         <a *ngIf="auth.Register" [routerLink]="[ '/identity/register' ]">注册新账号</a>

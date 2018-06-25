@@ -522,7 +522,6 @@ export abstract class TreeListComponentBase extends ComponentBase {
         update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
         parameterMap: (item, operation) => {
-          console.log(item);
           if (operation == "read") {
             return item;
           }

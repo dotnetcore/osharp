@@ -92,6 +92,9 @@ export class AuthConfig {
   ) { }
 }
 
+/**
+ * 用户信息
+ */
 export class User {
   Id: number;
   UserName: string;
@@ -131,6 +134,24 @@ export class User {
     return new Buffer(base64, 'base64').toString();
   }
 }
+
+//#endregion
+
+//#region system
+
+/**
+ * 系统初始化安装DTO
+ */
+export class InstallDto {
+  SiteName: string;
+  SiteDescription: string;
+  AdminUserName: string;
+  AdminPassword: string;
+  ConfirmPassword: string;
+  AdminEmail: string;
+  AdminNickName: string;
+}
+
 //#endregion
 
 //#region delon

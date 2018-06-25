@@ -174,7 +174,7 @@ namespace OSharp.Extensions
             {
                 throw new InvalidOperationException(string.Format("在源字符串中无法找到“{0}”的子串位置", endStrings.ExpandAndToString()));
             }
-            
+
             int length = endIndex - startIndex;
             return source.Substring(startIndex, length);
         }
@@ -456,6 +456,16 @@ namespace OSharp.Extensions
         }
 
         /// <summary>
+        /// 将JSON字符串还原为对象
+        /// </summary>
+        /// <param name="json">JSON字符串 </param>
+        /// <param name="type">数据类型</param>
+        public static object FromJsonString(this string json, Type type)
+        {
+            return JsonConvert.DeserializeObject(json, type);
+        }
+
+        /// <summary>
         /// 给URL添加查询参数
         /// </summary>
         /// <param name="url">URL字符串</param>
@@ -676,7 +686,7 @@ namespace OSharp.Extensions
             }
             return bytes;
         }
-        
+
         /// <summary>
         /// 将字符串进行Unicode编码，变成形如“\u7f16\u7801”的形式
         /// </summary>

@@ -48,6 +48,21 @@ namespace OSharp.Demo.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KeyValueCouple",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Key = table.Column<string>(nullable: false),
+                    ValueJson = table.Column<string>(nullable: true),
+                    ValueType = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KeyValueCouple", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Module",
                 columns: table => new
                 {
@@ -431,6 +446,15 @@ namespace OSharp.Demo.WebApi.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "KeyValueCouple",
+                columns: new[] { "Id", "IsLocked", "Key", "ValueJson", "ValueType" },
+                values: new object[,]
+                {
+                    { new Guid("fa84bfa5-47c7-4fa8-9fb0-a90a0166404b"), false, "Site.Name", "\"OSHARP\"", "System.String" },
+                    { new Guid("1928b030-7a4b-48b6-b6ec-a90a01664050"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Module",
                 columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
                 values: new object[] { 1, "Root", "根节点", 1.0, null, "系统根节点", "$1$" });
@@ -438,12 +462,7 @@ namespace OSharp.Demo.WebApi.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "f01f360e-ee7f-48bc-b0c3-bd2655381ced", new DateTime(2018, 6, 24, 2, 21, 42, 957, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
-
-            migrationBuilder.InsertData(
-                table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedTime", "Email", "EmailConfirmed", "HeadImg", "IsLocked", "IsSystem", "LockoutEnabled", "LockoutEnd", "NickName", "NormalizeEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Remark", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "96c88821-b4ef-4c83-8eeb-fbec8d25f075", new DateTime(2018, 6, 24, 2, 21, 42, 964, DateTimeKind.Local), "admin@66soft.net", false, null, false, true, true, null, "站长", "ADMIN@66SOFT.NET", "ADMIN", null, null, false, null, "242ef55f-7224-4316-9b80-1728474e5e7f", false, "admin" });
+                values: new object[] { 1, "dbecf737-5373-4b96-ac2b-7febd57b363c", new DateTime(2018, 6, 25, 21, 44, 21, 200, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.InsertData(
                 table: "Module",
@@ -454,11 +473,6 @@ namespace OSharp.Demo.WebApi.Migrations
                 table: "Module",
                 columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
                 values: new object[] { 3, "Admin", "管理", 2.0, 1, "管理后台", "$1$,$3$" });
-
-            migrationBuilder.InsertData(
-                table: "UserRole",
-                columns: new[] { "Id", "CreatedTime", "IsLocked", "RoleId", "UserId" },
-                values: new object[] { new Guid("89b630f3-d710-4270-b3f2-bb8a91910181"), new DateTime(2018, 6, 24, 2, 21, 42, 967, DateTimeKind.Local), false, 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Module",
@@ -628,6 +642,9 @@ namespace OSharp.Demo.WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "EntityUser");
+
+            migrationBuilder.DropTable(
+                name: "KeyValueCouple");
 
             migrationBuilder.DropTable(
                 name: "LoginLog");

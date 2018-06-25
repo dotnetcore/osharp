@@ -37,19 +37,6 @@ namespace OSharp.Demo.EntityConfiguration.Identity
             builder.HasMany<UserToken>().WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
 
             builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
-
-            builder.HasData(new User()
-            {
-                Id = 1,
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
-                NickName = "站长",
-                Email = "admin@66soft.net",
-                NormalizeEmail = "ADMIN@66SOFT.NET",
-                SecurityStamp = Guid.NewGuid().ToString(),
-                LockoutEnabled = true,
-                IsSystem = true
-            });
         }
     }
 }

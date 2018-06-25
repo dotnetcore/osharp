@@ -134,17 +134,6 @@ namespace OSharp.Extensions
         }
 
         /// <summary>
-        /// 将对象序列化为JSON字符串，不支持存在循环引用的对象
-        /// </summary>
-        /// <typeparam name="T">动态类型</typeparam>
-        /// <param name="value">动态类型对象</param>
-        /// <returns>JSON字符串</returns>
-        public static string ToJsonString<T>(this T value)
-        {
-            return JsonConvert.SerializeObject(value);
-        }
-
-        /// <summary>
         /// 将对象[主要是匿名对象]转换为dynamic
         /// </summary>
         public static dynamic ToDynamic(this object value)

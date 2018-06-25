@@ -10,7 +10,7 @@ using OSharp.Entity;
 namespace OSharp.Demo.WebApi.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20180623182143_Init")]
+    [Migration("20180625134421_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,7 +166,7 @@ namespace OSharp.Demo.WebApi.Migrations
                     b.ToTable("Role");
 
                     b.HasData(
-                        new { Id = 1, ConcurrencyStamp = "f01f360e-ee7f-48bc-b0c3-bd2655381ced", CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 957, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
+                        new { Id = 1, ConcurrencyStamp = "dbecf737-5373-4b96-ac2b-7febd57b363c", CreatedTime = new DateTime(2018, 6, 25, 21, 44, 21, 200, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
                     );
                 });
 
@@ -250,10 +250,6 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new { Id = 1, AccessFailedCount = 0, ConcurrencyStamp = "96c88821-b4ef-4c83-8eeb-fbec8d25f075", CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 964, DateTimeKind.Local), Email = "admin@66soft.net", EmailConfirmed = false, IsLocked = false, IsSystem = true, LockoutEnabled = true, NickName = "站长", NormalizeEmail = "ADMIN@66SOFT.NET", NormalizedUserName = "ADMIN", PhoneNumberConfirmed = false, SecurityStamp = "242ef55f-7224-4316-9b80-1728474e5e7f", TwoFactorEnabled = false, UserName = "admin" }
-                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.UserClaim", b =>
@@ -341,10 +337,6 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("UserRoleIndex");
 
                     b.ToTable("UserRole");
-
-                    b.HasData(
-                        new { Id = new Guid("89b630f3-d710-4270-b3f2-bb8a91910181"), CreatedTime = new DateTime(2018, 6, 24, 2, 21, 42, 967, DateTimeKind.Local), IsLocked = false, RoleId = 1, UserId = 1 }
-                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.UserToken", b =>
@@ -517,6 +509,30 @@ namespace OSharp.Demo.WebApi.Migrations
                         .HasName("ModuleUserIndex");
 
                     b.ToTable("ModuleUser");
+                });
+
+            modelBuilder.Entity("OSharp.System.KeyValueCouple", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsLocked");
+
+                    b.Property<string>("Key")
+                        .IsRequired();
+
+                    b.Property<string>("ValueJson");
+
+                    b.Property<string>("ValueType");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KeyValueCouple");
+
+                    b.HasData(
+                        new { Id = new Guid("fa84bfa5-47c7-4fa8-9fb0-a90a0166404b"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
+                        new { Id = new Guid("1928b030-7a4b-48b6-b6ec-a90a01664050"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
+                    );
                 });
 
             modelBuilder.Entity("OSharp.Demo.Identity.Entities.LoginLog", b =>

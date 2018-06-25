@@ -206,6 +206,18 @@ namespace OSharp.Identity
 
             await _userRepository.InsertAsync(user);
 
+            //系统的第一个用户，自动成为超级管理员
+            int count = _userRepository.Entities.Count();
+            if (count == 1)
+            {
+                TRole adminRole = _roleRepository.Entities.FirstOrDefault();
+                if (adminRole != null)
+                {
+                    TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = adminRole.Id};
+                    await _userRoleRepository.InsertAsync(userRole);
+                }
+            }
+
             //默认角色
             TRole defaultRole = _roleRepository.Entities.FirstOrDefault(m => m.IsDefault);
             if (defaultRole != null)
@@ -213,7 +225,7 @@ namespace OSharp.Identity
                 TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = defaultRole.Id};
                 await _userRoleRepository.InsertAsync(userRole);
             }
-
+            
             return IdentityResult.Success;
         }
 

@@ -13,19 +13,26 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
+using OSharp.Data;
+using OSharp.Demo.Common;
+using OSharp.Demo.Common.Dtos;
+using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Reflection;
-using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Controllers

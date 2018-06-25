@@ -26,6 +26,7 @@ using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
+using OSharp.Demo.Security.Dtos;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
