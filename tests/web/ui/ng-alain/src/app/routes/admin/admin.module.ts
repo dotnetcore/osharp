@@ -7,7 +7,6 @@ import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AdminRoutingModule } from './admin.routing';
 import { AdminLayoutModule } from './layout/layout.module';
-import { AdminLayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,7 @@ import { AdminLayoutComponent } from './layout/layout.component';
   imports: [
     AdminLayoutModule,
     DashboardModule,
-    AdminRoutingModule
+    AdminRoutingModule,
   ],
   providers: [
 

@@ -23,6 +23,7 @@ namespace OSharp.Demo.Identity.Entities
         /// <summary>
         /// 获取或设置 注册IP
         /// </summary>
+        [DisplayName("注册IP")]
         public string RegisterIp { get; set; }
 
         /// <summary>

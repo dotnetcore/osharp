@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,24 +44,28 @@ namespace OSharp.System
         }
 
         /// <summary>
-        /// 获取或设置 数据键
+        /// 获取或设置 数据键名
         /// </summary>
         [Required]
+        [DisplayName("数据键名")]
         public string Key { get; set; }
 
         /// <summary>
         /// 获取或设置 数据值JSON字符串
         /// </summary>
+        [DisplayName("数据值JSON")]
         public string ValueJson { get; set; }
 
         /// <summary>
         /// 获取或设置 数据值类型
         /// </summary>
+        [DisplayName("数据值类型名")]
         public string ValueType { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
         /// </summary>
+        [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
 
         /// <summary>
@@ -68,6 +73,7 @@ namespace OSharp.System
         /// </summary>
         [NotMapped]
         [JsonIgnore]
+        [DisplayName("数据值")]
         public object Value
         {
             get
