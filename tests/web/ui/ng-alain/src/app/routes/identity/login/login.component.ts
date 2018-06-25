@@ -28,7 +28,7 @@ export class LoginComponent extends ComponentBase {
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig('Root.Site.Identity', ["Login", "Register", "SendResetPasswordMail", "SendConfirmMail"]);
+    return new AuthConfig('Root.Site.Identity', ["Login", "Jwtoken", "Register", "SendResetPasswordMail", "SendConfirmMail"]);
   }
 
   submitForm() {
