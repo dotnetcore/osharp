@@ -1,4 +1,0 @@
-EFCore数据组件 使用流程：
-	1.定义各种需要的实体类
-	2.使用T4模板生成 EntityTypeConfiguration<T> 实体映射类的 partial 分部类，可按需要创建同名实体映射分部类，配置当前实体与导航属性的外键关系
-	3.在Service层调用实体的Repository<T>完成数据存取
