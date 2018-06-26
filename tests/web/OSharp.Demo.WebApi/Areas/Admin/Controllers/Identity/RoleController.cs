@@ -51,6 +51,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        /// <summary>
+        /// 读取角色
+        /// </summary>
+        /// <returns>角色页列表</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
@@ -63,34 +67,40 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return page.ToPageData();
         }
 
+        /// <summary>
+        /// 读取角色节点
+        /// </summary>
+        /// <returns>角色节点列表</returns>
         [HttpGet]
         [Description("读取节点")]
-        public IActionResult ReadNode()
+        public List<RoleNode> ReadNode()
         {
-            var nodes = _roleManager.Roles.Unlocked().OrderBy(m => m.Name).Select(m => new
-            {
-                RoleId = m.Id,
-                RoleName = m.Name
-            });
-            return Json(nodes);
+            List<RoleNode> nodes = _roleManager.Roles.Unlocked().OrderBy(m => m.Name).ToOutput<RoleNode>().ToList();
+            return nodes;
         }
 
+        /// <summary>
+        /// 读取角色[用户]树数据
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>角色[用户]树数据</returns>
         [HttpGet]
         [Description("读取角色[用户]树数据")]
-        public IActionResult ReadUserRoles(int userId)
+        public List<UserRoleNode> ReadUserRoles(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
 
             int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
-            var nodes = _identityContract.Roles.OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).Select(m => new
-            {
-                m.Id,
-                m.Name,
-                IsChecked = checkRoleIds.Contains(m.Id)
-            }).ToList();
-            return Json(nodes);
+            List<UserRoleNode> nodes = _identityContract.Roles.OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<UserRoleNode>().ToList();
+            nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
+            return nodes;
         }
 
+        /// <summary>
+        /// 新增角色
+        /// </summary>
+        /// <param name="dtos">新增角色信息</param>
+        /// <returns>Json结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -113,6 +123,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return new AjaxResult($"角色“{names.ExpandAndToString()}”创建成功");
         }
 
+        /// <summary>
+        /// 更新角色
+        /// </summary>
+        /// <param name="dtos">更新角色信息</param>
+        /// <returns>Json结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -136,6 +151,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return new AjaxResult($"角色“{names.ExpandAndToString()}”更新成功");
         }
 
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="ids">要删除的角色编号</param>
+        /// <returns>Json结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -158,6 +178,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return new AjaxResult($"角色“{names.ExpandAndToString()}”删除成功");
         }
 
+        /// <summary>
+        /// 设置角色权限
+        /// </summary>
+        /// <param name="dto">设置的角色权限信息</param>
+        /// <returns>Json结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]

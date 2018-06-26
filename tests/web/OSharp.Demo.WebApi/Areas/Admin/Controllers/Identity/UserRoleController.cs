@@ -24,7 +24,6 @@ using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -40,27 +39,26 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        /// <summary>
+        /// 读取用户角色信息
+        /// </summary>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read()
+        public PageData<UserRoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<UserRole, bool>> predicate = FilterHelper.GetExpression<UserRole>(request.FilterGroup);
-            var page = _identityContract.UserRoles.ToPage(predicate, request.PageCondition, m => new
-            {
-                m.Id,
-                m.UserId,
-                m.RoleId,
-                m.IsLocked,
-                m.CreatedTime,
-                UserName = _identityContract.Users.Where(n => n.Id == m.UserId).Select(n => n.UserName).FirstOrDefault(),
-                RoleName = _identityContract.Roles.Where(n => n.Id == m.RoleId).Select(n => n.Name).FirstOrDefault(),
-            });
-
-            return Json(page.ToPageData());
+            PageResult<UserRoleOutputDto> page = _identityContract.UserRoles.ToPage<UserRole, UserRoleOutputDto>(predicate, request.PageCondition);
+            return page.ToPageData();
         }
 
+        /// <summary>
+        /// 更新用户角色信息
+        /// </summary>
+        /// <param name="dtos">用户角色信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]

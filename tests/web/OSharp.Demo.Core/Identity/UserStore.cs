@@ -1,6 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="UserStore.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-06-27 3:28</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
@@ -9,6 +16,9 @@ using OSharp.Identity;
 
 namespace OSharp.Demo.Identity
 {
+    /// <summary>
+    /// 用户仓储
+    /// </summary>
     public class UserStore : UserStoreBase<User, int, UserClaim, UserLogin, UserToken, Role, int, UserRole>
     {
         /// <summary>
@@ -20,7 +30,12 @@ namespace OSharp.Demo.Identity
         /// <param name="userTokenRepository">用户令牌仓储</param>
         /// <param name="roleRepository">角色仓储</param>
         /// <param name="userRoleRepository">用户角色仓储</param>
-        public UserStore(IRepository<User, int> userRepository, IRepository<UserLogin, Guid> userLoginRepository, IRepository<UserClaim, int> userClaimRepository, IRepository<UserToken, Guid> userTokenRepository, IRepository<Role, int> roleRepository, IRepository<UserRole, Guid> userRoleRepository)
+        public UserStore(IRepository<User, int> userRepository,
+            IRepository<UserLogin, Guid> userLoginRepository,
+            IRepository<UserClaim, int> userClaimRepository,
+            IRepository<UserToken, Guid> userTokenRepository,
+            IRepository<Role, int> roleRepository,
+            IRepository<UserRole, Guid> userRoleRepository)
             : base(userRepository, userLoginRepository, userClaimRepository, userTokenRepository, roleRepository, userRoleRepository)
         { }
     }

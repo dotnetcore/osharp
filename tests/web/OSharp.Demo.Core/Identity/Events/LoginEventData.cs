@@ -14,6 +14,9 @@ using OSharp.EventBuses;
 
 namespace OSharp.Demo.Identity.Events
 {
+    /// <summary>
+    /// 登录事件数据
+    /// </summary>
     public class LoginEventData : EventDataBase
     {
         /// <summary>

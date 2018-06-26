@@ -1,6 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="RoleStore.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-06-27 3:28</last-date>
+// -----------------------------------------------------------------------
 
 using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
@@ -9,6 +14,9 @@ using OSharp.Identity;
 
 namespace OSharp.Demo.Identity
 {
+    /// <summary>
+    /// 角色仓储
+    /// </summary>
     public class RoleStore : RoleStoreBase<Role, int, RoleClaim>
     {
         /// <summary>

@@ -28,18 +28,17 @@ namespace OSharp.Security
     /// <summary>
     /// 模块信息处理器基类
     /// </summary>
-    public abstract class ModuleHandlerBase<TModule, TModuleInputDto, TModuleKey, TFunction, TModuleFunction> : IModuleHandler
+    public abstract class ModuleHandlerBase<TModule, TModuleInputDto, TModuleKey, TModuleFunction> : IModuleHandler
         where TModule : ModuleBase<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>, new()
         where TModuleKey : struct, IEquatable<TModuleKey>
-        where TFunction : class, IFunction, new()
         where TModuleFunction : ModuleFunctionBase<TModuleKey>
     {
         private readonly ServiceLocator _locator;
         private readonly IModuleInfoPicker _moduleInfoPicker;
 
         /// <summary>
-        /// 初始化一个<see cref="ModuleHandlerBase"/>类型的新实例
+        /// 初始化一个<see cref="ModuleHandlerBase{TModule, TModuleInputDto, TModuleKey, TModuleFunction}"/>类型的新实例
         /// </summary>
         protected ModuleHandlerBase()
         {

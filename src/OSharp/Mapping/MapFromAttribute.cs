@@ -28,6 +28,9 @@ namespace OSharp.Mapping
             SourceTypes = sourceTypes;
         }
 
+        /// <summary>
+        /// 源类型
+        /// </summary>
         public Type[] SourceTypes { get; }
     }
 }

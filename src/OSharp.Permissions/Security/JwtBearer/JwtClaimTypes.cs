@@ -14,8 +14,17 @@ namespace OSharp.Security.JwtBearer
     /// </summary>
     public struct JwtClaimTypes
     {
+        /// <summary>
+        /// 是否管理
+        /// </summary>
         public const string IsAdmin = "is-admin";
+        /// <summary>
+        /// 安全标识
+        /// </summary>
         public const string SecurityStamp = "security-stamp";
+        /// <summary>
+        /// 头像图片
+        /// </summary>
         public const string HeadImage = "headimg";
     }
 }

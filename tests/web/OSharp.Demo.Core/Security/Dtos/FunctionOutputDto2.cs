@@ -1,25 +1,24 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityInfoOutputDto.cs" company="OSharp开源团队">
+//  <copyright file="FunctionOutputDto2.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-26 14:02</last-date>
+//  <last-date>2018-06-27 2:55</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Text;
 
+using OSharp.Core.Functions;
 using OSharp.Entity;
-using OSharp.Mapping;
 
 
 namespace OSharp.Demo.Security.Dtos
 {
     /// <summary>
-    /// 输出DTO:实体信息
+    /// 简单功能输出DTO
     /// </summary>
-    public class EntityInfoOutputDto : IOutputDto
+    public class FunctionOutputDto2 : IOutputDto
     {
         /// <summary>
         /// 获取或设置 编号
@@ -27,18 +26,23 @@ namespace OSharp.Demo.Security.Dtos
         public Guid Id { get; set; }
 
         /// <summary>
-        /// 获取或设置 实体名称
+        /// 获取或设置 功能名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 实体类型名称
+        /// 获取或设置 访问类型
         /// </summary>
-        public string TypeName { get; set; }
+        public FunctionAccessType AccessType { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 区域名称
         /// </summary>
-        public bool AuditEnabled { get; set; }
+        public string Area { get; set; }
+
+        /// <summary>
+        /// 获取或设置 控制器名称
+        /// </summary>
+        public string Controller { get; set; }
     }
 }

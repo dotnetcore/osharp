@@ -12,7 +12,10 @@ using System;
 
 namespace OSharp.Logging.RollingFile.Internal
 {
-//power by https://github.com/andrewlock/NetEscapades.Extensions.Logging
+    //power by https://github.com/andrewlock/NetEscapades.Extensions.Logging
+    /// <summary>
+    /// 批量日志记录选项
+    /// </summary>
     public class BatchingLoggerOptions
     {
         private int? _backgroundQueueSize;

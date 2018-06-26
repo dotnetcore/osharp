@@ -62,7 +62,7 @@ namespace OSharp.Mapping
         }
 
         /// <summary>
-        /// 将数据源映射为指定<see cref="IOutputDto"/>的集合
+        /// 将数据源映射为指定<typeparamref name="TOutputDto"/>的集合
         /// </summary>
         public static IQueryable<TOutputDto> ToOutput<TOutputDto>(this IQueryable source,
             params Expression<Func<TOutputDto, object>>[] membersToExpand)

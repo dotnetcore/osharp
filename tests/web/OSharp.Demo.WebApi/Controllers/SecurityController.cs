@@ -36,7 +36,12 @@ namespace OSharp.Demo.WebApi.Controllers
         {
             _securityManager = securityManager;
         }
-         
+
+        /// <summary>
+        /// 检查URL授权
+        /// </summary>
+        /// <param name="url">要检查的URL</param>
+        /// <returns>是否有权</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("检查URL授权")]
@@ -46,6 +51,10 @@ namespace OSharp.Demo.WebApi.Controllers
             return ok;
         }
 
+        /// <summary>
+        /// 获取授权信息
+        /// </summary>
+        /// <returns>权限节点</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("获取授权信息")]

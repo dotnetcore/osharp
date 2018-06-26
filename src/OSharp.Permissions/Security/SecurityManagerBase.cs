@@ -65,7 +65,7 @@ namespace OSharp.Security
         private readonly IRepository<TUserRole, Guid> _userRoleRepository;
 
         /// <summary>
-        /// 初始化一个<see cref="SecurityManagerBase"/>类型的新实例
+        /// 初始化一个<see cref="SecurityManagerBase{TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
         protected SecurityManagerBase(
             IEventBus eventBus,

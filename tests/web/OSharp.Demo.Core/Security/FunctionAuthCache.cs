@@ -7,8 +7,6 @@
 //  <last-date>2018-05-11 1:02</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Core.Functions;
@@ -19,6 +17,9 @@ using OSharp.Security;
 
 namespace OSharp.Demo.Security
 {
+    /// <summary>
+    /// 功能权限缓存
+    /// </summary>
     public class FunctionAuthCache : FunctionAuthCacheBase<ModuleFunction, ModuleRole, ModuleUser, Function, Module, int, Role, int, User, int>
     {
         /// <summary>

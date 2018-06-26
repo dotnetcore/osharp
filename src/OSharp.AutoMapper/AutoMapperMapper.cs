@@ -14,8 +14,6 @@ using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
-using OSharp.Dependency;
-
 using IMapper = OSharp.Mapping.IMapper;
 
 

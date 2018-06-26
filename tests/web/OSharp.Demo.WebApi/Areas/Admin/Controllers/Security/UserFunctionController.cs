@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -18,12 +17,13 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
+using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
 using OSharp.Demo.Security;
+using OSharp.Demo.Security.Dtos;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Linq;
-using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -43,34 +43,36 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 读取用户信息
+        /// </summary>
+        /// <returns>用户信息</returns>
+        [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read()
+        public PageData<UserOutputDto2> Read()
         {
             PageRequest request = new PageRequest(Request);
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage(predicate,
-                request.PageCondition,
-                m => new
-                {
-                    m.Id,
-                    m.UserName,
-                    m.Email
-                });
-            return Json(page.ToPageData());
+            var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
+            return page.ToPageData();
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 读取用户功能信息
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>用户功能信息</returns>
+        [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]
-        public IActionResult ReadFunctions(int userId)
+        public PageData<FunctionOutputDto2> ReadFunctions(int userId)
         {
             if (userId == 0)
             {
-                return Json(new PageData<object>());
+                return new PageData<FunctionOutputDto2>();
             }
 
             int[] moduleIds = _securityManager.GetUserWithRoleModuleIds(userId);
@@ -78,7 +80,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 .ToArray();
             if (functionIds.Length == 0)
             {
-                return Json(new PageData<object>());
+                return new PageData<FunctionOutputDto2>();
             }
 
             PageRequest request = new PageRequest(Request);
@@ -89,10 +91,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
 
-            var page = _securityManager.Functions.ToPage(funcExp,
-                request.PageCondition,
-                m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
-            return Json(page.ToPageData());
+            PageResult<FunctionOutputDto2> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+            return page.ToPageData();
         }
     }
 }

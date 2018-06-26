@@ -1,27 +1,35 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="RoleSetPermissionDto.cs" company="OSharp开源团队">
+//  <copyright file="UserRoleNode.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-25 21:18</last-date>
+//  <last-date>2018-06-27 3:29</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Demo.Security.Dtos
+using OSharp.Entity;
+
+
+namespace OSharp.Demo.Identity.Dtos
 {
     /// <summary>
-    /// 角色设置权限DTO
+    /// 用户角色节点
     /// </summary>
-    public class RoleSetPermissionDto
+    public class UserRoleNode : IOutputDto
     {
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
-        public int RoleId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// 获取或设置 要设置的模块编号集合
+        /// 获取或设置 角色名称
         /// </summary>
-        public int[] ModuleIds { get; set; }
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否选中
+        /// </summary>
+        public bool IsChecked { get; set; }
     }
 }

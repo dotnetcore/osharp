@@ -12,6 +12,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OSharp.Demo.Identity.Dtos
 {
+    /// <summary>
+    /// 发送邮件DTO
+    /// </summary>
     public class SendMailDto
     {
         /// <summary>

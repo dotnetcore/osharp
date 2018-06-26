@@ -26,6 +26,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        /// <summary>
+        /// 获取后台管理主菜单
+        /// </summary>
+        /// <returns>菜单信息</returns>
         [HttpGet]
         [Description("主菜单")]
         public ActionResult MainMenu()

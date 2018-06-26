@@ -9,6 +9,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -27,6 +28,8 @@ using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
+using OSharp.Demo.Identity.Entities;
+using OSharp.Demo.WebApi.Mappers;
 
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -54,7 +57,10 @@ namespace OSharp.Demo.WebApi
                 services.AddSwaggerGen(options =>
                 {
                     options.SwaggerDoc("v1", new Info() { Title = "OSharpNS API", Version = "v1" });
-                    options.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml"));
+                    Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
+                    {
+                        options.IncludeXmlComments(file);
+                    });
                 });
             }
 
@@ -118,6 +124,7 @@ namespace OSharp.Demo.WebApi
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
+                .UseDtoMappings()
                 //.UseHttpsRedirection()
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()

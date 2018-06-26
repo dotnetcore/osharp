@@ -4,6 +4,10 @@
     <RootNamespace>OSharp.Demo</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Demo.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../../build/public.props" />
   <Import Project="../../../build/version.props" />
 

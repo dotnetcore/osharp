@@ -24,7 +24,7 @@ namespace OSharp.Identity
         where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
-        /// 初始化一个<see cref="RoleBase"/>类型的新实例
+        /// 初始化一个<see cref="RoleBase{TRoleKey}"/>类型的新实例
         /// </summary>
         protected RoleBase()
         {

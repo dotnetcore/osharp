@@ -28,6 +28,9 @@ namespace OSharp.Mapping
             TargetTypes = targetTypes;
         }
 
+        /// <summary>
+        /// 目标类型
+        /// </summary>
         public Type[] TargetTypes { get; }
     }
 }

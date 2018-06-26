@@ -20,13 +20,12 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Modules;
 using OSharp.Data;
-using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Security;
+using OSharp.Mapping;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -42,47 +41,53 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        /// <summary>
+        /// 读取模块信息
+        /// </summary>
+        /// <returns>模块信息集合</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read()
+        public List<ModuleOutputDto> Read()
         {
             ListFilterGroup group = new ListFilterGroup(Request);
             Expression<Func<Module, bool>> predicate = FilterHelper.GetExpression<Module>(group);
-            var modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).Select(m => new
-            {
-                m.Id,
-                m.Name,
-                m.ParentId,
-                m.OrderCode,
-                m.Code,
-                m.Remark
-            }).ToList();
-            return Json(modules);
+            List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<ModuleOutputDto>().ToList();
+            return modules;
         }
 
+        /// <summary>
+        /// 读取模块[用户]树数据
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>模块[用户]树数据</returns>
         [HttpGet]
         [Description("读取模块[用户]树数据")]
-        public IActionResult ReadUserModules(int userId)
+        public List<object> ReadUserModules(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
             int[] checkedModuleIds = _securityManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
 
             int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
-            return Json(result);
+            return result;
         }
 
+        /// <summary>
+        /// 读取模块[角色]树数据
+        /// </summary>
+        /// <param name="roleId">角色编号</param>
+        /// <returns>模块[角色]树数据</returns>
         [HttpGet]
         [Description("读取模块[角色]树数据")]
-        public ActionResult ReadRoleModules(int roleId)
+        public List<object> ReadRoleModules(int roleId)
         {
             Check.GreaterThan(roleId, nameof(roleId), 0);
             int[] checkedModuleIds = _securityManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
 
             int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
-            return Json(result);
+            return result;
         }
 
         private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
@@ -113,6 +118,10 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return nodes;
         }
 
+        /// <summary>
+        /// 读取模块功能
+        /// </summary>
+        /// <returns>模块功能信息</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -142,6 +151,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(page.ToPageData());
         }
 
+        /// <summary>
+        /// 新增模块子节点
+        /// </summary>
+        /// <param name="dto">模块信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -155,6 +169,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result.ToAjaxResult());
         }
 
+        /// <summary>
+        /// 更新模块信息
+        /// </summary>
+        /// <param name="dto">模块信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -172,6 +191,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result.ToAjaxResult());
         }
 
+        /// <summary>
+        /// 删除模块信息
+        /// </summary>
+        /// <param name="id">模块信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -190,6 +214,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(result.ToAjaxResult());
         }
 
+        /// <summary>
+        /// 模块设置功能信息
+        /// </summary>
+        /// <param name="dto">设置信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]

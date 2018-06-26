@@ -30,7 +30,13 @@ namespace OSharp.EventBuses
     /// </summary>
     public abstract class EventBusBase : IEventBus
     {
+        /// <summary>
+        /// 事件仓储
+        /// </summary>
         protected readonly IEventStore _EventStore;
+        /// <summary>
+        /// 日志对象
+        /// </summary>
         protected readonly ILogger _Logger;
 
         /// <summary>

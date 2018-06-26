@@ -13,10 +13,19 @@ using System;
 
 namespace OSharp.Demo.Security.Dtos
 {
+    /// <summary>
+    /// 模块设置功能DTO
+    /// </summary>
     public class ModuleSetFunctionDto
     {
+        /// <summary>
+        /// 获取或设置 模块编号
+        /// </summary>
         public int ModuleId { get; set; }
 
+        /// <summary>
+        /// 获取或设置 功能编号集合
+        /// </summary>
         public Guid[] FunctionIds { get; set; }
     }
 }

@@ -59,16 +59,21 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return page.ToPageData();
         }
 
+        /// <summary>
+        /// 更新实体信息
+        /// </summary>
+        /// <param name="dtos">实体信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
-        public async Task<IActionResult> Update(EntityInfoInputDto[] dtos)
+        public async Task<AjaxResult> Update(EntityInfoInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
             OperationResult result = await _securityManager.UpdateEntityInfos(dtos);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace OSharp.Security
         private readonly IDistributedCache _cache;
 
         /// <summary>
-        /// 初始化一个<see cref="FunctionAuthCacheBase"/>类型的新实例
+        /// 初始化一个<see cref="FunctionAuthCacheBase{TModuleFunction, TModuleRole, TModuleUser, TFunction, TModule, TModuleKey,TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
         protected FunctionAuthCacheBase(IDistributedCache cache)
         {

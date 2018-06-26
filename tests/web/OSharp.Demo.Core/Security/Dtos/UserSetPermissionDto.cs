@@ -9,12 +9,24 @@
 
 namespace OSharp.Demo.Security.Dtos
 {
+    /// <summary>
+    /// 用户设置权限DTO
+    /// </summary>
     public class UserSetPermissionDto
     {
+        /// <summary>
+        /// 获取或设置 用户编号
+        /// </summary>
         public int UserId { get; set; }
 
+        /// <summary>
+        /// 获取或设置 要设置的角色编号
+        /// </summary>
         public int[] RoleIds { get; set; }
 
+        /// <summary>
+        /// 获取或设置 要设置的模块编号
+        /// </summary>
         public int[] ModuleIds { get; set; }
     }
 }

@@ -22,6 +22,7 @@ using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Security;
+using OSharp.Demo.Security.Dtos;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Security;
@@ -40,10 +41,14 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        /// <summary>
+        /// 读取功能信息
+        /// </summary>
+        /// <returns>功能信息集合</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read()
+        public PageData<FunctionOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
             if (request.PageCondition.SortConditions.Length == 0)
@@ -56,31 +61,18 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 };
             }
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
-            var page = _securityManager.Functions.ToPage(predicate,
-                request.PageCondition,
-                m => new
-                {
-                    Id = m.Id.ToString("N"),
-                    m.Name,
-                    m.Area,
-                    m.Controller,
-                    m.Action,
-                    m.IsController,
-                    m.IsAjax,
-                    m.AccessType,
-                    m.IsAccessTypeChanged,
-                    m.AuditOperationEnabled,
-                    m.AuditEntityEnabled,
-                    m.CacheExpirationSeconds,
-                    m.IsCacheSliding,
-                    m.IsLocked
-                });
-            return Json(page.ToPageData());
+            PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto>(predicate, request.PageCondition);
+            return page.ToPageData();
         }
 
+        /// <summary>
+        /// 读取功能[模块]树数据
+        /// </summary>
+        /// <param name="moduleId">模块编号</param>
+        /// <returns>功能[模块]树数据</returns>
         [HttpGet]
         [Description("读取功能[模块]树数据")]
-        public IActionResult ReadTreeNode(int moduleId)
+        public TreeNode[] ReadTreeNode(int moduleId)
         {
             Check.GreaterThan(moduleId, nameof(moduleId), 0);
             Guid[] checkFuncIds = _securityManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
@@ -127,9 +119,14 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                     }
                 }
             }
-            return Json(new[] { root });
+            return new[] { root };
         }
 
+        /// <summary>
+        /// 更新功能信息
+        /// </summary>
+        /// <param name="dtos">功能信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]

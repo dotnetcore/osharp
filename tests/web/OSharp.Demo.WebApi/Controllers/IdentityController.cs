@@ -54,6 +54,11 @@ namespace OSharp.Demo.WebApi.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// 用户名是否存在
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <returns>是否存在</returns>
         [HttpGet]
         [Description("用户名是否存在")]
         public bool CheckUserNameExists(string userName)
@@ -62,6 +67,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return exists;
         }
 
+        /// <summary>
+        /// 用户Email是否存在
+        /// </summary>
+        /// <param name="email">电子邮箱</param>
+        /// <returns>是否存在</returns>
         [HttpGet]
         [Description("用户Email是否存在")]
         public bool CheckEmailExists(string email)
@@ -70,6 +80,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return exists;
         }
 
+        /// <summary>
+        /// 用户Email是否不存在
+        /// </summary>
+        /// <param name="email">电子邮箱</param>
+        /// <returns>是否不存在</returns>
         [HttpGet]
         [Description("用户Email是否不存在")]
         public bool CheckEmailNotExists(string email)
@@ -78,6 +93,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return exists;
         }
 
+        /// <summary>
+        /// 用户昵称是否存在
+        /// </summary>
+        /// <param name="nickName">用户昵称</param>
+        /// <returns>是否存在</returns>
         [HttpGet]
         [Description("用户昵称是否存在")]
         public bool CheckNickNameExists(string nickName)
@@ -130,6 +150,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return result.ToAjaxResult();
         }
 
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="dto">登录信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("用户登录")]
@@ -207,6 +232,10 @@ namespace OSharp.Demo.WebApi.Controllers
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
+        /// <summary>
+        /// 用户登出
+        /// </summary>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("用户登出")]
@@ -222,6 +251,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return result.ToAjaxResult();
         }
 
+        /// <summary>
+        /// 激活邮箱
+        /// </summary>
+        /// <param name="dto">电子邮箱</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("激活邮箱")]
@@ -246,10 +280,15 @@ namespace OSharp.Demo.WebApi.Controllers
             return result.ToOperationResult().ToAjaxResult();
         }
 
+        /// <summary>
+        /// 发送激活注册邮件
+        /// </summary>
+        /// <param name="dto">激活邮箱信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("CheckEmailNotExists")]
-        [Description("发送激活Email邮件")]
+        [Description("发送激活注册邮件")]
         public async Task<AjaxResult> SendConfirmMail([FromBody]SendMailDto dto)
         {
             if (!ModelState.IsValid)
@@ -279,6 +318,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return new AjaxResult("激活Email邮件发送成功");
         }
 
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="dto">修改密码信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [Logined]
         [ModuleInfo]
@@ -298,6 +342,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return result.ToOperationResult().ToAjaxResult();
         }
 
+        /// <summary>
+        /// 发送重置密码邮件
+        /// </summary>
+        /// <param name="dto">发送邮件信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("CheckEmailNotExists")]
@@ -327,6 +376,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return new AjaxResult("密码重置邮件发送成功");
         }
 
+        /// <summary>
+        /// 重置登录密码
+        /// </summary>
+        /// <param name="dto">重置密码信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]

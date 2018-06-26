@@ -1,44 +1,40 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityInfoOutputDto.cs" company="OSharp开源团队">
+//  <copyright file="RoleOutputDto2.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-26 14:02</last-date>
+//  <last-date>2018-06-27 2:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Text;
-
 using OSharp.Entity;
-using OSharp.Mapping;
 
 
-namespace OSharp.Demo.Security.Dtos
+namespace OSharp.Demo.Identity.Dtos
 {
     /// <summary>
-    /// 输出DTO:实体信息
+    /// 简单角色输出DTO
     /// </summary>
-    public class EntityInfoOutputDto : IOutputDto
+    public class RoleOutputDto2 : IOutputDto
     {
         /// <summary>
-        /// 获取或设置 编号
+        /// 获取或设置 角色编号
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// 获取或设置 实体名称
+        /// 获取或设置 角色名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 实体类型名称
+        /// 获取或设置 角色备注
         /// </summary>
-        public string TypeName { get; set; }
+        public string Remark { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 是否管理
         /// </summary>
-        public bool AuditEnabled { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

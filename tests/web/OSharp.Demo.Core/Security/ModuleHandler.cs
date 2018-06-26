@@ -7,7 +7,6 @@
 //  <last-date>2018-06-23 18:50</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core.Functions;
 using OSharp.Demo.Security.Dtos;
 using OSharp.Demo.Security.Entities;
 using OSharp.Security;
@@ -18,6 +17,6 @@ namespace OSharp.Demo.Security
     /// <summary>
     /// 模块信息处理器
     /// </summary>
-    public class ModuleHandler : ModuleHandlerBase<Module, ModuleInputDto, int, Function, ModuleFunction>
+    public class ModuleHandler : ModuleHandlerBase<Module, ModuleInputDto, int, ModuleFunction>
     { }
 }

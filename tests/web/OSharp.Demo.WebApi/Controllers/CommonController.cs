@@ -48,7 +48,7 @@ namespace OSharp.Demo.WebApi.Controllers
         /// <summary>
         /// 获取系统信息
         /// </summary>
-        /// <returns></returns>
+        /// <returns>系统信息</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("系统信息")]

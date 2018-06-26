@@ -57,7 +57,7 @@ namespace OSharp.Extensions
         }
 
         /// <summary>
-        /// 验证指定值的断言表达式是否为真，不为真抛出<see cref="TException"/>异常
+        /// 验证指定值的断言表达式是否为真，不为真抛出<typeparamref name="TException"/>异常
         /// </summary>
         /// <typeparam name="T">要判断的值的类型</typeparam>
         /// <typeparam name="TException">抛出的异常类型</typeparam>
