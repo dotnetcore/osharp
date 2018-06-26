@@ -1,60 +1,50 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ModuleInputDtoBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="ModuleOutputDto.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-11-18 12:42</last-date>
+//  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 using OSharp.Entity;
 
 
-namespace OSharp.Security
+namespace Liuliu.Demo.Security.Dtos
 {
     /// <summary>
-    /// 模块信息输入DTO基类
+    /// 输入DTO:模块信息
     /// </summary>
-    /// <typeparam name="TModuleKey">模块编号类型</typeparam>
-    public abstract class ModuleInputDtoBase<TModuleKey> : IInputDto<TModuleKey>
-        where TModuleKey : struct, IEquatable<TModuleKey>
+    public class ModuleOutputDto : IOutputDto
     {
         /// <summary>
-        /// 获取或设置 主键，唯一标识
+        /// 获取或设置 模块编号
         /// </summary>
-        public TModuleKey Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 获取或设置 模块名称
         /// </summary>
-        [Required, DisplayName("模块名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 备注
         /// </summary>
-        [DisplayName("模块描述")]
         public string Remark { get; set; }
 
         /// <summary>
         /// 获取或设置 模块代码
         /// </summary>
-        [Required]
         public string Code { get; set; }
 
         /// <summary>
         /// 获取或设置 节点内排序码
         /// </summary>
-        [DisplayName("排序码")]
         public double OrderCode { get; set; }
 
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
-        public TModuleKey? ParentId { get; set; }
+        public int? ParentId { get; set; }
     }
 }

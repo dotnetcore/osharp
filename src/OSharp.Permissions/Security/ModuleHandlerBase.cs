@@ -10,17 +10,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
-using OSharp.Extensions;
 
 
 namespace OSharp.Security

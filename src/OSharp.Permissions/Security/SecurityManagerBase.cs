@@ -29,6 +29,21 @@ namespace OSharp.Security
     /// <summary>
     /// 权限安全管理器基类
     /// </summary>
+    /// <typeparam name="TFunction">功能类型</typeparam>
+    /// <typeparam name="TFunctionInputDto">功能输入DTO类型</typeparam>
+    /// <typeparam name="TEntityInfo">数据实体类型</typeparam>
+    /// <typeparam name="TEntityInfoInputDto">数据实体输入DTO类型</typeparam>
+    /// <typeparam name="TModule">模块类型</typeparam>
+    /// <typeparam name="TModuleInputDto">模块输入类型</typeparam>
+    /// <typeparam name="TModuleKey">模块编号类型</typeparam>
+    /// <typeparam name="TModuleFunction">模块功能类型</typeparam>
+    /// <typeparam name="TModuleRole">模块角色类型</typeparam>
+    /// <typeparam name="TModuleUser">模块用户类型</typeparam>
+    /// <typeparam name="TUserRole">用户角色类型</typeparam>
+    /// <typeparam name="TRole">角色类型</typeparam>
+    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
+    /// <typeparam name="TUser">用户类型</typeparam>
+    /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class SecurityManagerBase<TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,
             TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey>
         : IFunctionStore<TFunction, TFunctionInputDto>,
@@ -67,6 +82,16 @@ namespace OSharp.Security
         /// <summary>
         /// 初始化一个<see cref="SecurityManagerBase{TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,TModuleFunction, TModuleRole, TModuleUser, TUserRole, TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
+        /// <param name="eventBus">事件总线</param>
+        /// <param name="functionRepository">功能仓储</param>
+        /// <param name="entityInfoRepository">实体仓储</param>
+        /// <param name="moduleRepository">模块仓储</param>
+        /// <param name="moduleFunctionRepository">模块功能仓储</param>
+        /// <param name="moduleRoleRepository">模块角色仓储</param>
+        /// <param name="moduleUserRepository">模块用户仓储</param>
+        /// <param name="roleRepository">角色仓储</param>
+        /// <param name="userRepository">用户仓储</param>
+        /// <param name="userRoleRepository">用户角色仓储</param>
         protected SecurityManagerBase(
             IEventBus eventBus,
             IRepository<TFunction, Guid> functionRepository,

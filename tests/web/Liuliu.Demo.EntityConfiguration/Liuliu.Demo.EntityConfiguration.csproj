@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+  </PropertyGroup>
+
+  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/version.props" />
+
+  <ItemGroup>
+    <Compile Remove="T4\**" />
+    <EmbeddedResource Remove="T4\**" />
+    <None Remove="T4\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

@@ -24,6 +24,22 @@ namespace OSharp.Security
     /// <summary>
     /// 权限安全模块基类
     /// </summary>
+    /// <typeparam name="TSecurityManager">安全管理器类型</typeparam>
+    /// <typeparam name="TFunctionAuthorization">功能权限检查类型</typeparam>
+    /// <typeparam name="TFunctionAuthCache">功能权限缓存类型</typeparam>
+    /// <typeparam name="TModuleHandler">模块处理器类型</typeparam>
+    /// <typeparam name="TFunction">功能类型</typeparam>
+    /// <typeparam name="TFunctionInputDto">功能输入DTO类型</typeparam>
+    /// <typeparam name="TEntityInfo">实体信息类型</typeparam>
+    /// <typeparam name="TEntityInfoInputDto">实体输入DTO类型</typeparam>
+    /// <typeparam name="TModule">模块类型</typeparam>
+    /// <typeparam name="TModuleInputDto">模块输入DTO类型</typeparam>
+    /// <typeparam name="TModuleKey">模块编号类型</typeparam>
+    /// <typeparam name="TModuleFunction">模块功能类型</typeparam>
+    /// <typeparam name="TModuleRole">模块角色类型</typeparam>
+    /// <typeparam name="TModuleUser">模块用户类型</typeparam>
+    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
+    /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TModuleHandler, TFunction, TFunctionInputDto, TEntityInfo,
         TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OsharpPack
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
@@ -79,7 +95,7 @@ namespace OSharp.Security
         /// <summary>
         /// 使用模块服务
         /// </summary>
-        /// <param name="provider"></param>
+        /// <param name="provider">服务提供者</param>
         public override void UseModule(IServiceProvider provider)
         {
             IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
