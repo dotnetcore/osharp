@@ -21,7 +21,6 @@ using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Demo.Security;
 using OSharp.Demo.Security.Entities;
-using OSharp.Security;
 using OSharp.Secutiry;
 
 
@@ -38,17 +37,19 @@ namespace OSharp.Demo.WebApi.Controllers
             _securityManager = securityManager;
         }
          
+        [HttpGet]
         [ModuleInfo]
         [Description("检查URL授权")]
-        public IActionResult CheckUrlAuth(string url)
+        public bool CheckUrlAuth(string url)
         {
             bool ok = this.CheckFunctionAuth(url);
-            return Json(ok);
+            return ok;
         }
 
+        [HttpGet]
         [ModuleInfo]
         [Description("获取授权信息")]
-        public IActionResult GetAuthInfo()
+        public List<string> GetAuthInfo()
         {
             Module[] modules = _securityManager.Modules.ToArray();
             List<AuthItem> list = new List<AuthItem>();
@@ -71,7 +72,7 @@ namespace OSharp.Demo.WebApi.Controllers
                     codes.Add(item.Code);
                 }
             }
-            return Json(codes);
+            return codes;
             //return Content(codes.ExpandAndToString("\r\n"));
         }
 
@@ -108,7 +109,7 @@ namespace OSharp.Demo.WebApi.Controllers
         /// <summary>
         /// 获取模块的树形路径代码串
         /// </summary>
-        public static string GetModuleTreeCode(Module module, Module[] source)
+        private static string GetModuleTreeCode(Module module, Module[] source)
         {
             var pathIds = module.TreePathIds;
             string[] names = pathIds.Select(m => source.First(n => n.Id == m)).Select(m => m.Code).ToArray();

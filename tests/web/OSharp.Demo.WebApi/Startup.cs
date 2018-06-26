@@ -7,6 +7,9 @@
 //  <last-date>2018-06-20 19:49</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,21 +28,36 @@ using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
 
+using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace OSharp.Demo.WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
 
+        public IHostingEnvironment Environment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (Environment.IsDevelopment())
+            {
+                services.AddMvcCore().AddApiExplorer();
+                services.AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc("v1", new Info() { Title = "OSharpNS API", Version = "v1" });
+                    options.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".xml"));
+                });
+            }
+
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -77,6 +95,7 @@ namespace OSharp.Demo.WebApi
             });
 
             services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +105,10 @@ namespace OSharp.Demo.WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseSwagger().UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharpNS API V1");
+                });
             }
             else
             {

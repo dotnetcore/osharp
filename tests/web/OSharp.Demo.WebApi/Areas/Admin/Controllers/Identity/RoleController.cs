@@ -21,7 +21,6 @@ using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Data;
-using OSharp.Demo.Common.Dtos;
 using OSharp.Demo.Identity;
 using OSharp.Demo.Identity.Dtos;
 using OSharp.Demo.Identity.Entities;
@@ -31,7 +30,6 @@ using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
-using OSharp.Security;
 
 
 namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
@@ -53,26 +51,19 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _identityContract = identityContract;
         }
 
+        [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read()
+        public PageData<RoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
-            var page = _roleManager.Roles.ToPage(predicate, request.PageCondition, m => new
-            {
-                m.Id,
-                m.Name,
-                m.Remark,
-                m.IsAdmin,
-                m.IsDefault,
-                m.IsLocked,
-                m.CreatedTime
-            });
+            var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
 
-            return Json(page.ToPageData());
+            return page.ToPageData();
         }
 
+        [HttpGet]
         [Description("读取节点")]
         public IActionResult ReadNode()
         {
@@ -84,6 +75,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(nodes);
         }
 
+        [HttpGet]
         [Description("读取角色[用户]树数据")]
         public IActionResult ReadUserRoles(int userId)
         {
@@ -104,7 +96,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
-        public async Task<IActionResult> Create(RoleInputDto[] dtos)
+        public async Task<AjaxResult> Create(RoleInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
@@ -114,11 +106,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 IdentityResult result = await _roleManager.CreateAsync(role);
                 if (!result.Succeeded)
                 {
-                    return Json(result.ToOperationResult().ToAjaxResult());
+                    return result.ToOperationResult().ToAjaxResult();
                 }
                 names.Add(role.Name);
             }
-            return Json(new AjaxResult($"角色“{names.ExpandAndToString()}”创建成功"));
+            return new AjaxResult($"角色“{names.ExpandAndToString()}”创建成功");
         }
 
         [HttpPost]
@@ -126,7 +118,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
-        public async Task<IActionResult> Update(RoleInputDto[] dtos)
+        public async Task<AjaxResult> Update(RoleInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
@@ -137,11 +129,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 IdentityResult result = await _roleManager.UpdateAsync(role);
                 if (!result.Succeeded)
                 {
-                    return Json(result.ToOperationResult().ToAjaxResult());
+                    return result.ToOperationResult().ToAjaxResult();
                 }
                 names.Add(role.Name);
             }
-            return Json(new AjaxResult($"角色“{names.ExpandAndToString()}”更新成功"));
+            return new AjaxResult($"角色“{names.ExpandAndToString()}”更新成功");
         }
 
         [HttpPost]
@@ -149,7 +141,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
-        public async Task<IActionResult> Delete(int[] ids)
+        public async Task<AjaxResult> Delete(int[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             List<string> names = new List<string>();
@@ -159,11 +151,11 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 IdentityResult result = await _roleManager.DeleteAsync(role);
                 if (!result.Succeeded)
                 {
-                    return Json(result.ToOperationResult().ToAjaxResult());
+                    return result.ToOperationResult().ToAjaxResult();
                 }
                 names.Add(role.Name);
             }
-            return Json(new AjaxResult($"角色“{names.ExpandAndToString()}”删除成功"));
+            return new AjaxResult($"角色“{names.ExpandAndToString()}”删除成功");
         }
 
         [HttpPost]

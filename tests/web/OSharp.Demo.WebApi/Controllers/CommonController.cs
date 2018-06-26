@@ -13,24 +13,16 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore.Mvc;
-using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.AspNetCore.UI;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
-using OSharp.Data;
-using OSharp.Demo.Common;
-using OSharp.Demo.Common.Dtos;
-using OSharp.Demo.Identity.Entities;
 using OSharp.Entity;
 using OSharp.Reflection;
 
@@ -41,6 +33,11 @@ namespace OSharp.Demo.WebApi.Controllers
     [ModuleInfo(Order = 3)]
     public class CommonController : ApiController
     {
+        /// <summary>
+        /// 获取验证码图片
+        /// </summary>
+        /// <returns>验证码图片文件</returns>
+        [HttpGet]
         [ModuleInfo]
         [Description("验证码")]
         public IActionResult VerifyCode()
@@ -48,6 +45,11 @@ namespace OSharp.Demo.WebApi.Controllers
             return Json("");
         }
 
+        /// <summary>
+        /// 获取系统信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         [ModuleInfo]
         [Description("系统信息")]
         public IActionResult SystemInfo()

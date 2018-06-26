@@ -40,6 +40,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        [HttpPost]
         [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
@@ -77,6 +78,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(page.ToPageData());
         }
 
+        [HttpGet]
         [Description("读取功能[模块]树数据")]
         public IActionResult ReadTreeNode(int moduleId)
         {

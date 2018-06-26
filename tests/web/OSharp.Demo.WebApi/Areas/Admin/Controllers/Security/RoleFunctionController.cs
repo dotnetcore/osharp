@@ -40,6 +40,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
+        [HttpPost]
         [ModuleInfo]
         [Description("读取")]
         public IActionResult Read()
@@ -59,6 +60,7 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             return Json(page.ToPageData());
         }
 
+        [HttpGet]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]

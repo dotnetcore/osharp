@@ -11,12 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
-using OSharp.Core.Functions;
 using OSharp.Demo.Security.Entities;
 using OSharp.Entity;
 
@@ -33,15 +31,16 @@ namespace OSharp.Demo.WebApi.Controllers
             _entityRoleRepository = entityRoleRepository;
         }
 
+        [HttpGet]
         [Description("测试01")]
-        public IActionResult Test01()
+        public string Test01()
         {
             List<object> list = new List<object>();
 
             string str = string.Empty;
             list.Add(str);
 
-            return Content(list.ExpandAndToString("\r\n"));
+            return list.ExpandAndToString("\r\n");
         }
     }
 }

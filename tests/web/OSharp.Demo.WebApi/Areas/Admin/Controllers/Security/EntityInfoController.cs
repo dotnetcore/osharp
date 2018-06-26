@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -19,6 +20,7 @@ using OSharp.Core.EntityInfos;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Demo.Security;
+using OSharp.Demo.Security.Dtos;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Security;
@@ -37,9 +39,15 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
             _securityManager = securityManager;
         }
 
+        /// <summary>
+        /// 读取实体信息
+        /// </summary>
+        /// <returns>实体信息集合</returns>
+        [HttpPost]
         [ModuleInfo]
+        [AllowAnonymous]
         [Description("读取")]
-        public IActionResult Read()
+        public PageData<EntityInfoOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
             if (request.PageCondition.SortConditions.Length == 0)
@@ -47,16 +55,8 @@ namespace OSharp.Demo.WebApi.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
             Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
-            var page = _securityManager.EntityInfos.ToPage(predicate,
-                request.PageCondition,
-                m => new
-                {
-                    Id = m.Id.ToString("N"),
-                    m.Name,
-                    m.TypeName,
-                    m.AuditEnabled
-                });
-            return Json(page.ToPageData());
+            var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
+            return page.ToPageData();
         }
 
         [HttpPost]
