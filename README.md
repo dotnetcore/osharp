@@ -100,7 +100,9 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 > dotnet new -i OSharpNS.Template.Mvc_Angular
 
 执行后，将能看到`osharp_xxx`系列的命令已安装到列表中
+
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0001.png)
+
 ### 3. 执行`osharp_cmd`命令，获取项目一键项目安装脚本
 
 >dotnet new osharp_cmd
