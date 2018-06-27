@@ -28,7 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-24C2-4506-9E06-AF1B5534C098}"
 	ProjectSection(SolutionItems) = preProject
-		docs\EntityFrameworkCore组件的使用.md = docs\EntityFrameworkCore组件的使用.md
 		README.md = README.md
 	EndProjectSection
 EndProject
