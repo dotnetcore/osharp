@@ -86,6 +86,12 @@ namespace Liuliu.Demo.Web.Controllers
             //return Content(codes.ExpandAndToString("\r\n"));
         }
 
+        /// <summary>
+        /// 验证是否拥有指定模块的权限
+        /// </summary>
+        /// <param name="module">要验证的模块</param>
+        /// <param name="empty">返回模块是否为空模块，即是否分配有功能</param>
+        /// <returns></returns>
         private bool CheckFuncAuth(Module module, out bool empty)
         {
             IServiceProvider services = HttpContext.RequestServices;

@@ -35,7 +35,7 @@ namespace OSharp.Entity.MySql
         /// 使用模块服务
         /// </summary>
         /// <param name="provider">服务提供者</param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             using (IServiceScope scope = provider.CreateScope())
             {

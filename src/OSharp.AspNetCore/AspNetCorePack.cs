@@ -9,7 +9,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.AspNetCore.Infrastructure;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
 using OSharp.Dependency;

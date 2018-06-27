@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Core.Packs;
 
 
-namespace OSharp.AspNetCore.Infrastructure
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// <see cref="IApplicationBuilder"/>辅助扩展方法

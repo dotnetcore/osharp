@@ -54,7 +54,7 @@ namespace OSharp.AutoMapper
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>() ?? new MapperConfigurationExpression();
 

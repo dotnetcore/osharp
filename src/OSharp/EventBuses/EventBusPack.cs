@@ -53,7 +53,7 @@ namespace OSharp.EventBuses
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             IEventBusBuilder builder = provider.GetService<IEventBusBuilder>();
             builder.Build();

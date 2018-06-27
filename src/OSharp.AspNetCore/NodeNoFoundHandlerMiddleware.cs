@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 using OSharp.Data;
 
 
-namespace OSharp.AspNetCore.Mvc
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// Node前端技术404返回index.html中间件

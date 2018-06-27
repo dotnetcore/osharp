@@ -13,10 +13,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 using OSharp.Data;
-using OSharp.Extensions;
 
 
-namespace OSharp.AspNetCore.Http
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// HttpContext扩展方法

@@ -24,7 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Newtonsoft.Json.Serialization;
 
-using OSharp.AspNetCore.Infrastructure;
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;

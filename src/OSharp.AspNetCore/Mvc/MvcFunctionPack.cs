@@ -46,7 +46,7 @@ namespace OSharp.AspNetCore.Mvc
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             IFunctionHandler functionHandler = provider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
             if (functionHandler == null)

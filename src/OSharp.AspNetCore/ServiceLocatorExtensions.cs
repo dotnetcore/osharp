@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using OSharp.Dependency;
 
 
-namespace OSharp.AspNetCore.Http.Extensions
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// 服务定位器扩展方法

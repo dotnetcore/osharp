@@ -44,7 +44,7 @@ namespace OSharp.Core.EntityInfos
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
             handler.Initialize();

@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Dependency;
 
 
-namespace OSharp.AspNetCore.Infrastructure
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// Request的<see cref="ServiceLifetime.Scoped"/>服务解析器

@@ -91,7 +91,7 @@ namespace OSharp.Core.Packs
         {
             foreach (OsharpPack module in LoadedPacks)
             {
-                module.UseModule(provider);
+                module.UsePack(provider);
             }
         }
     }

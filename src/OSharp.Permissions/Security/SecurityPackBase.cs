@@ -96,12 +96,22 @@ namespace OSharp.Security
         /// 使用模块服务
         /// </summary>
         /// <param name="provider">服务提供者</param>
-        public override void UseModule(IServiceProvider provider)
+        public override void UsePack(IServiceProvider provider)
         {
             IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
             moduleHandler.Initialize();
 
-            base.UseModule(provider);
+            //初始化各种缓存
+            IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
+            functionHandler.RefreshCache();
+
+            IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
+            entityInfoHandler.RefreshCache();
+
+            IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
+            functionAuthCache.BuildRoleCaches();
+
+            base.UsePack(provider);
         }
     }
 }

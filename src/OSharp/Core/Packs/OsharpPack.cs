@@ -51,7 +51,7 @@ namespace OSharp.Core.Packs
         /// 使用模块服务
         /// </summary>
         /// <param name="provider"></param>
-        public virtual void UseModule(IServiceProvider provider)
+        public virtual void UsePack(IServiceProvider provider)
         {
             IsEnabled = true;
         }

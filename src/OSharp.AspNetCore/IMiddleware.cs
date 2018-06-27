@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 
-namespace OSharp.AspNetCore.Mvc
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// 定义AspNetCore中间件

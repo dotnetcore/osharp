@@ -12,8 +12,6 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-using OSharp.AspNetCore.Http;
-
 
 namespace OSharp.AspNetCore.Mvc.Filters
 {
