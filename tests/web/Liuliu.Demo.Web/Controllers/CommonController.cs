@@ -65,15 +65,16 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         /// <summary>
-        /// 验证验证码的无效性
+        /// 验证验证码的有效性
         /// </summary>
         /// <param name="code">验证码字符串</param>
         /// <returns>是否无效</returns>
+        [HttpGet]
         [ModuleInfo]
-        [Description("验证验证码的无效性")]
-        public bool CheckCodeInvalid(string code)
+        [Description("验证验证码的有效性")]
+        public bool CheckVerifyCode(string code)
         {
-            return !VerifyCodeHandler.CheckCode(code);
+            return VerifyCodeHandler.CheckCode(code);
         }
 
         /// <summary>

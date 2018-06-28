@@ -56,7 +56,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" [nzSuffix]="suffixButton">
-          <input [(ngModel)]="dto.VerifyCode" name="verifyCode" type="text" nz-input placeholder="验证码" required minlength="4" [remote]="'api/common/CheckCodeInvalid?code=:value'"
+          <input [(ngModel)]="dto.VerifyCode" name="verifyCode" type="text" nz-input placeholder="验证码" required minlength="4" [remoteInverse]="'api/common/CheckVerifyCode?code=:value'"
             #verifyCode="ngModel">
         </nz-input-group>
         <ng-template #suffixButton>
@@ -65,7 +65,7 @@
           </div>
         </ng-template>
         <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && (verifyCode.errors?.required || verifyCode.errors?.minlength)">请输入验证码</nz-form-explain>
-        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && verifyCode.errors?.remote">验证码不正确，请刷新重试</nz-form-explain>
+        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && verifyCode.errors?.remoteInverse">验证码不正确，请刷新重试</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

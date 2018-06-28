@@ -4,18 +4,18 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
-          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'api/identity/CheckEmailNotExists?email=:value'"
+          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remoteInverse]="'api/identity/CheckEmailExists?email=:value'"
             #email="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.required">请输入电子邮箱</nz-form-explain>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.email">电子邮箱格式不正确，应形如xxx@xxx.xxx</nz-form-explain>
-        <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.remote">电子邮箱不存在，请更换重试</nz-form-explain>
+        <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.remoteInverse">电子邮箱不存在，请更换重试</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" [nzSuffix]="suffixButton">
-          <input [(ngModel)]="dto.VerifyCode" name="verifyCode" type="text" nz-input placeholder="验证码" required minlength="4" [remote]="'api/common/CheckCodeInvalid?code=:value'"
+          <input [(ngModel)]="dto.VerifyCode" name="verifyCode" type="text" nz-input placeholder="验证码" required minlength="4" [remoteInverse]="'api/common/CheckVerifyCode?code=:value'"
             #verifyCode="ngModel">
         </nz-input-group>
         <ng-template #suffixButton>
@@ -24,7 +24,7 @@
           </div>
         </ng-template>
         <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && (verifyCode.errors?.required || verifyCode.errors?.minlength)">请输入验证码</nz-form-explain>
-        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && verifyCode.errors?.remote">验证码不正确，请刷新重试</nz-form-explain>
+        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && verifyCode.errors?.remoteInverse">验证码不正确，请刷新重试</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

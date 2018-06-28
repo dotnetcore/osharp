@@ -36,6 +36,7 @@ namespace OSharp.Entity
         public UnitOfWork(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            HasCommited = false;
             ActiveTransactionInfos = new Dictionary<string, ActiveTransactionInfo>();
         }
 
@@ -43,6 +44,11 @@ namespace OSharp.Entity
         /// 获取 活动的事务信息字典，以连接字符串为健，活动事务信息为值
         /// </summary>
         protected IDictionary<string, ActiveTransactionInfo> ActiveTransactionInfos { get; }
+
+        /// <summary>
+        /// 获取 事务是否已提交
+        /// </summary>
+        public bool HasCommited { get; private set; }
 
         /// <summary>
         /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例
@@ -102,6 +108,10 @@ namespace OSharp.Entity
         /// </summary>
         public void Commit()
         {
+            if (HasCommited)
+            {
+                return;
+            }
             foreach (ActiveTransactionInfo transInfo in ActiveTransactionInfos.Values)
             {
                 transInfo.DbContextTransaction.Commit();
@@ -116,6 +126,7 @@ namespace OSharp.Entity
                     attendedDbContext.Database.CommitTransaction();
                 }
             }
+            HasCommited = true;
         }
 
         private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)

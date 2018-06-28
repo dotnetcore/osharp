@@ -5,15 +5,15 @@ import { Observable } from 'rxjs/Observable';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: '[remote][formControlName],[remote][formControl],[remote][ngModel]',
+  selector: '[remoteInverse][formControlName],[remoteInverse][formControl],[remoteInverse][ngModel]',
   providers: [
-    { provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => RemoteValidator), multi: true }
+    { provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => RemoteInverseValidator), multi: true }
   ]
 })
-export class RemoteValidator implements AsyncValidator {
+export class RemoteInverseValidator implements AsyncValidator {
 
   // tslint:disable-next-line:no-input-rename
-  @Input('remote') url: string;
+  @Input('remoteInverse') url: string;
   private timeout;
 
   constructor(private http: HttpClient) { }
@@ -27,12 +27,12 @@ export class RemoteValidator implements AsyncValidator {
       this.timeout = setTimeout(() => {
         this.http.get(url).subscribe(res => {
           if (res !== true) {
-            resolve(null);
+            resolve({ remoteInverse: true });
           } else {
-            resolve({ remote: true });
+            resolve(null);
           }
         }, error => {
-          resolve({ remote: true });
+          resolve({ remoteInverse: false });
           throw error;
         });
       }, 500);

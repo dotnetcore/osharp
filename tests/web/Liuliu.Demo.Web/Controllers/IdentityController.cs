@@ -83,19 +83,6 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         /// <summary>
-        /// 用户Email是否不存在
-        /// </summary>
-        /// <param name="email">电子邮箱</param>
-        /// <returns>是否不存在</returns>
-        [HttpGet]
-        [Description("用户Email是否不存在")]
-        public bool CheckEmailNotExists(string email)
-        {
-            bool exists = !_userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
-            return exists;
-        }
-
-        /// <summary>
         /// 用户昵称是否存在
         /// </summary>
         /// <param name="nickName">用户昵称</param>

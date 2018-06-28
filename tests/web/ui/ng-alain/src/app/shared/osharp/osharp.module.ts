@@ -10,9 +10,11 @@ import { KendouiTreeviewComponent } from '@shared/osharp/components/kendoui-tree
 import { KendouiWindowComponent } from '@shared/osharp/components/kendoui-window.component';
 import { OsharpCacheModule } from '@shared/osharp/cache/cache.module';
 import { IdentityService } from '@shared/osharp/services/identity.service';
+import { RemoteInverseValidator } from '@shared/osharp/directives/remote-inverse-validator.directive';
 
 const DIRECTIVES = [
-  RemoteValidator
+  RemoteValidator,
+  RemoteInverseValidator
 ];
 
 const COMPONENTS = [
