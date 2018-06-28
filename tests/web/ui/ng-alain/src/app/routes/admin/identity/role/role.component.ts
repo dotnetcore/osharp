@@ -106,7 +106,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
     this.winRole = this.grid.dataItem(tr);
     this.window.title("角色权限设置-" + this.winRole.Name).open().center().resize();
     // 设置树数据
-    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("/api/admin/module/ReadRoleModules?roleId=" + this.winRole.Id));
+    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadRoleModules?roleId=" + this.winRole.Id));
   }
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
@@ -117,7 +117,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
     this.osharp.getTreeNodes(moduleRoot, modules);
     let checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
     let body = { roleId: this.winRole.Id, moduleIds: checkModuleIds };
-    this.http.post("/api/admin/role/setpermission", body).subscribe(res => {
+    this.http.post("api/admin/role/setpermission", body).subscribe(res => {
       this.osharp.ajaxResult(res, () => {
         this.grid.dataSource.read();
         this.window.close();

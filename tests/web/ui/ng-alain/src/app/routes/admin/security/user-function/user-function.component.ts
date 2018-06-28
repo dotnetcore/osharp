@@ -10,7 +10,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
 export class UserFunctionComponent extends GridComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions = null;
-  functionReadUrl = "/api/admin/userfunction/readfunctions";
+  functionReadUrl = "api/admin/userfunction/readfunctions";
   selectedUserId = 0;
 
   constructor(injector: Injector, private http: HttpClient) {

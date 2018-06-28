@@ -142,7 +142,7 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
     this.window.title("模块功能设置-" + this.winModule.Name).open().center().resize();
     this.treeList.select(tr);
     // 设置树数据
-    this.functionTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("/api/admin/function/ReadTreeNode?moduleId=" + this.winModule.Id));
+    this.functionTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/function/ReadTreeNode?moduleId=" + this.winModule.Id));
   }
   private onWindowResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
@@ -153,7 +153,7 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
     this.osharp.getTreeNodes(root, functions);
     let checkFuncIds = new List(functions).Where(m => m.checked).Select(m => m.Id).ToArray();
     let body = { moduleId: this.winModule.Id, functionIds: checkFuncIds };
-    this.http.post("/api/admin/module/setfunctions", body).subscribe(res => {
+    this.http.post("api/admin/module/setfunctions", body).subscribe(res => {
       this.osharp.ajaxResult(res, () => {
         $("#btn-refresh-function").click();
         this.window.close();

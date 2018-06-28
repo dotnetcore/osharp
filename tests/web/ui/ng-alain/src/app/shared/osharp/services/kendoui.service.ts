@@ -320,10 +320,10 @@ export abstract class GridComponentBase extends ComponentBase {
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     const options: kendo.data.DataSourceOptions = {
       transport: {
-        read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
-        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post' },
+        create: { url: "api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        update: { url: "api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        destroy: { url: "api/admin/" + this.moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         parameterMap: (opts, operation) => {
           if (operation == 'read') {
             return this.kendoui.readParameterMap(opts, this.FieldReplace);
@@ -517,10 +517,10 @@ export abstract class TreeListComponentBase extends ComponentBase {
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     const options: kendo.data.DataSourceOptions = {
       transport: {
-        read: { url: "/api/admin/" + this.moduleName + "/read", type: 'post' },
-        create: { url: "/api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        update: { url: "/api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        destroy: { url: "/api/admin/" + this.moduleName + "/delete", type: 'post' },
+        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post' },
+        create: { url: "api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        update: { url: "api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        destroy: { url: "api/admin/" + this.moduleName + "/delete", type: 'post' },
         parameterMap: (item, operation) => {
           if (operation == "read") {
             return item;

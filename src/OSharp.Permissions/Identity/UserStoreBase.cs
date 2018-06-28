@@ -215,6 +215,9 @@ namespace OSharp.Identity
                 {
                     TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = adminRole.Id};
                     await _userRoleRepository.InsertAsync(userRole);
+
+                    user.IsSystem = true;
+                    await _userRepository.UpdateAsync(user);
                 }
             }
 

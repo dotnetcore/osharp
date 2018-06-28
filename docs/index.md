@@ -1,1 +1,1 @@
-# OSharp Framework with .NetStandard2.0 & Angular6
+﻿# OSharp Framework with .NetStandard2.0 & Angular6

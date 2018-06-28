@@ -237,14 +237,14 @@ export class OsharpService {
     }
     url = this.urlEncode(url);
     console.log(url);
-    return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url).toPromise();
+    return this.http.get<boolean>("api/security/CheckUrlAuth?url=" + url).toPromise();
   }
 
   /**
    * 刷新权限信息，缓存10分钟有效
    */
   refreshAuthInfo(): Promise<string[]> {
-    let key = "/api/security/getauthinfo";
+    let key = "api/security/getauthinfo";
     this.cache.remove(key);
     return this.cache.get<string[]>(key, { expire: 60 * 10 }).toPromise();
   }

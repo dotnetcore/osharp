@@ -4,7 +4,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
-          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'/api/identity/CheckEmailNotExists?email=:value'"
+          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'api/identity/CheckEmailNotExists?email=:value'"
             #email="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.required">请输入电子邮箱</nz-form-explain>

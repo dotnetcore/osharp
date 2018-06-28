@@ -117,13 +117,12 @@ namespace Liuliu.Demo.Web
             else
             {
                 app.UseExceptionHandler("/#/500");
-                app.UseHsts();
+                app.UseHsts().UseHttpsRedirection();
             }
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDtoMappings()
-                //.UseHttpsRedirection()
                 .UseDefaultFiles().UseStaticFiles()
                 .UseAuthentication()
                 .UseMvcWithAreaRoute()
