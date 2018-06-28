@@ -212,6 +212,13 @@ export class OsharpService {
         break;
     }
   }
+
+  public verifyCodeUrl = "api/common/verifycode";
+
+  refreshVerifyCode() {
+    this.verifyCodeUrl = "api/common/verifycode?t=" + new Date().getTime();
+  }
+
   /**
    * 获取树节点集合
    * @param root 根节点

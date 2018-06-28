@@ -128,7 +128,11 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            //todo: 校验验证码
+
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
 
             dto.RegisterIp = HttpContext.GetClientIp();
 
@@ -297,7 +301,10 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
             User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
@@ -359,7 +366,11 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
-            //todo: 校验验证码
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, true))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
+
             User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {

@@ -10,7 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -18,11 +21,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
+using OSharp.Drawing;
 using OSharp.Entity;
 using OSharp.Reflection;
 
@@ -42,7 +47,33 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("验证码")]
         public IActionResult VerifyCode()
         {
-            return Json("");
+            ValidateCoder coder = new ValidateCoder()
+            {
+                RandomColor = true,
+                RandomItalic = true,
+                RandomLineCount = 7,
+                RandomPointPercent = 10,
+                RandomPosition = true
+            };
+            Bitmap bitmap = coder.CreateImage(4, out string code);
+            VerifyCodeHandler.SetCode(code);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, ImageFormat.Jpeg);
+                return File(ms.ToArray(), @"image/jpeg");
+            }
+        }
+
+        /// <summary>
+        /// 验证验证码的无效性
+        /// </summary>
+        /// <param name="code">验证码字符串</param>
+        /// <returns>是否无效</returns>
+        [ModuleInfo]
+        [Description("验证验证码的无效性")]
+        public bool CheckCodeInvalid(string code)
+        {
+            return !VerifyCodeHandler.CheckCode(code);
         }
 
         /// <summary>

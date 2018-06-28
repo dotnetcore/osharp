@@ -157,10 +157,15 @@ export class InstallDto {
 //#region delon
 
 export class AdResult {
+  /**
+   * 是否显示结果框
+   */
   show: boolean = false;
   /**结果类型，可选为： 'success' | 'error' | 'minus-circle-o'*/
   type: 'success' | 'error' | 'minus-circle-o';
+  /** 结果标题 */
   title: string;
+  /** 结果描述 */
   description: string;
 }
 
