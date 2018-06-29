@@ -4,7 +4,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
-          <input nz-input [(ngModel)]="dto.UserName" name="userName" placeholder="用户名" required [rangeLength]="[5,30]" [remote]="'/api/identity/CheckUserNameExists?userName=:value'"
+          <input nz-input [(ngModel)]="dto.UserName" name="userName" placeholder="用户名" required [rangeLength]="[5,30]" [remote]="'api/identity/CheckUserNameExists?userName=:value'"
             #userName="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(userName.dirty || userName.touched) && userName.errors?.required">请输入用户名</nz-form-explain>
@@ -15,7 +15,8 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
-          <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="密码" required [minlength]="[6]" #password="ngModel">
+          <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="密码，6+位，字母+数字" required [minlength]="[6]"
+            #password="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.required">请输入密码</nz-form-explain>
         <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.rangeLength">密码长度不足6位</nz-form-explain>
@@ -34,7 +35,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user-add">
-          <input nz-input [(ngModel)]="dto.NickName" name="nickName" placeholder="用户昵称" required [rangeLength]="[3,20]" [remote]="'/api/identity/CheckNickNameExists?nickName=:value'"
+          <input nz-input [(ngModel)]="dto.NickName" name="nickName" placeholder="用户昵称" required [rangeLength]="[3,20]" [remote]="'api/identity/CheckNickNameExists?nickName=:value'"
             #nickName="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(nickName.dirty || nickName.touched) && nickName.errors?.required">请输入用户昵称</nz-form-explain>
@@ -45,12 +46,27 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
-          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'/api/identity/CheckEmailExists?email=:value'"
+          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱，请使用有效邮箱，否则无法激活" required email [remote]="'api/identity/CheckEmailExists?email=:value'"
             #email="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.required">请输入电子邮箱</nz-form-explain>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.email">电子邮箱格式不正确，应形如xxx@xxx.xxx</nz-form-explain>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.remote">电子邮箱已存在，请更换重试</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group nzSize="large" [nzSuffix]="suffixButton">
+          <input [(ngModel)]="code.code" name="verifyCode" type="text" nz-input placeholder="验证码" required minlength="4" [remoteInverse]="'api/common/CheckVerifyCode?code=:value&verifycodeid='+code.id"
+            #verifyCode="ngModel">
+        </nz-input-group>
+        <ng-template #suffixButton>
+          <div style="text-align:right; cursor: pointer;">
+            <img (click)="refreshVerifyCode()" src="{{code.image}}" />
+          </div>
+        </ng-template>
+        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && (verifyCode.errors?.required || verifyCode.errors?.minlength)">请输入验证码</nz-form-explain>
+        <nz-form-explain *ngIf="(verifyCode.dirty || verifyCode.touched) && verifyCode.errors?.remoteInverse">验证码不正确，请刷新重试</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -64,7 +80,7 @@
   </form>
 </div>
 <result *ngIf="result.show" type="{{result.type}}" [title]="result.title" description="{{result.description}}">
-  <button nz-button [nzType]="'primary'" (click)="sended=false;">返回</button>
+  <button nz-button [nzType]="'primary'" (click)="result.show=false">返回</button>
   <button *ngIf="result.type == 'success'" nz-button (click)="osharp.openMailSite(dto.Email)">进入邮箱</button>
   <button nz-button (click)="router.navigate(['home'])">返回首页</button>
 </result>

@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { ListNode, AjaxResult, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
+import { ListNode, AjaxResult, AjaxResultType, AuthConfig, VerifyCode } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { List } from "linqts";
 import { CacheService } from '@shared/osharp/cache/cache.service';
+import { ControlWidget } from '@delon/form';
 
 @Injectable()
 export class OsharpService {
@@ -212,6 +213,26 @@ export class OsharpService {
         break;
     }
   }
+
+  //#region 验证码处理
+
+  /**
+   * 获取验证码
+   */
+  refreshVerifyCode(): Observable<VerifyCode> {
+    let url = "api/common/verifycode";
+    return this.http.get(url, { responseType: 'text' }).map(res => {
+      let str = this.fromBase64(res.toString());
+      let strs: string[] = str.split("#$#");
+      let code: VerifyCode = new VerifyCode();
+      code.image = strs[0];
+      code.id = strs[1];
+      return code;
+    });
+  }
+
+  //#endregion
+
   /**
    * 获取树节点集合
    * @param root 根节点
@@ -237,14 +258,14 @@ export class OsharpService {
     }
     url = this.urlEncode(url);
     console.log(url);
-    return this.http.get<boolean>("/api/security/CheckUrlAuth?url=" + url).toPromise();
+    return this.http.get<boolean>("api/security/CheckUrlAuth?url=" + url).toPromise();
   }
 
   /**
    * 刷新权限信息，缓存10分钟有效
    */
   refreshAuthInfo(): Promise<string[]> {
-    let key = "/api/security/getauthinfo";
+    let key = "api/security/getauthinfo";
     this.cache.remove(key);
     return this.cache.get<string[]>(key, { expire: 60 * 10 }).toPromise();
   }

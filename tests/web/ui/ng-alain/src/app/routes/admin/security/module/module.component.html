@@ -1,6 +1,6 @@
 <kendoui-splitter [options]="splitterOptions" [height]="835">
   <div id="tree-list-box"></div>
-  <kendoui-function [ModuleName]="'module-function'" [ReadUrl]="'/api/admin/module/readfunctions'" [TypeId]="selectedModuleId"
+  <kendoui-function [ModuleName]="'module-function'" [ReadUrl]="'api/admin/module/readfunctions'" [TypeId]="selectedModuleId"
     [Position]="'Root.Admin.Security.Module'" (TypeIdChange)="onModuleSelectedChange($event)"></kendoui-function>
 </kendoui-splitter>
 <kendoui-window [options]="windowOptions" (init)="onWindowInit($event)" (submited)="onWindowSubmit($event)">

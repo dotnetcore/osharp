@@ -18,6 +18,6 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get('/api/common/systeminfo').subscribe(res => this.systemInfo = res);
+    this.http.get('api/common/systeminfo').subscribe(res => this.systemInfo = res);
   }
 }

@@ -4,10 +4,10 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:50</last-date>
+//  <last-date>2018-06-28 22:29</last-date>
 // -----------------------------------------------------------------------
 
-namespace Liuliu.Demo.Web.Helpers
+namespace OSharp.Drawing
 {
     /// <summary>
     /// 验证码类型

@@ -1,7 +1,7 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, AfterViewInit, } from '@angular/core';
 import { IdentityService } from '../../../shared/osharp/services/identity.service';
 
-import { RegisterDto, AdResult, AuthConfig } from '@shared/osharp/osharp.model';
+import { RegisterDto, AdResult, AuthConfig, VerifyCode } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
 
@@ -10,11 +10,13 @@ import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.ser
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
-export class RegisterComponent extends ComponentBase {
+export class RegisterComponent extends ComponentBase implements AfterViewInit {
 
   dto: RegisterDto = new RegisterDto();
+  code: VerifyCode = new VerifyCode();
   result: AdResult = new AdResult();
   canSubmit = true;
+  msg: string;
 
   constructor(
     private _service: IdentityService,
@@ -32,11 +34,23 @@ export class RegisterComponent extends ComponentBase {
     }
   }
 
+  ngAfterViewInit() {
+    this.refreshVerifyCode();
+  }
+
   protected AuthConfig(): AuthConfig {
     return new AuthConfig("Root.Site.Identity", ["Register", "Login"]);
   }
 
+  refreshVerifyCode() {
+    this.osharp.refreshVerifyCode().subscribe(vc => {
+      this.code = vc;
+    });
+  }
+
   submitForm() {
+    this.dto.VerifyCode = this.code.code;
+    this.dto.VerifyCodeId = this.code.id;
     this.canSubmit = false;
     this._service.register(this.dto).then(res => {
       res.show = true;

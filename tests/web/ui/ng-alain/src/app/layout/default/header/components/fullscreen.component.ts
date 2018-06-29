@@ -15,9 +15,6 @@ import { SettingsService } from '@delon/theme';
 export class HeaderFullScreenComponent {
   status = false;
 
-  constructor(private settings: SettingsService) {
-  }
-
   @HostListener('window:resize')
   _resize() {
     this.status = screenfull.isFullscreen;

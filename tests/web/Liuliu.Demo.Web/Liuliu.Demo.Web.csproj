@@ -6,10 +6,10 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>柳柳软件(66soft.net)</Authors>
     <Company>柳柳软件(66soft.net)</Company>
-    <Copyright>Copyright © 66SOFT 2014-2017</Copyright>
+    <Copyright>Copyright © 66SOFT 2014-2018</Copyright>
     <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
-    <PackageIconUrl>https://avatars0.githubusercontent.com/u/3930317?v=3&amp;amp;s=80</PackageIconUrl>
+    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/i66soft/osharp-ns20</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>osharp</PackageTags>
@@ -42,7 +42,6 @@
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

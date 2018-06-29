@@ -72,9 +72,7 @@ namespace Liuliu.Demo.Web
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddOSharp();
-
-            services.AddDistributedMemoryCache()
+            services.AddOSharp().AddDistributedMemoryCache()
                 .AddLogging(builder =>
                 {
                     builder.AddFile(options =>
@@ -117,14 +115,14 @@ namespace Liuliu.Demo.Web
             else
             {
                 app.UseExceptionHandler("/#/500");
-                app.UseHsts();
+                app.UseHsts().UseHttpsRedirection();
             }
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDtoMappings()
-                //.UseHttpsRedirection()
-                .UseDefaultFiles().UseStaticFiles()
+                .UseDefaultFiles()
+                .UseStaticFiles()
                 .UseAuthentication()
                 .UseMvcWithAreaRoute()
                 .UseSignalR(opts =>

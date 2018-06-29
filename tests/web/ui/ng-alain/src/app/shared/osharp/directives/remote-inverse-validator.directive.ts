@@ -2,37 +2,47 @@ import { Directive, forwardRef, Input } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, AbstractControl } from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: '[remote][formControlName],[remote][formControl],[remote][ngModel]',
+  selector: '[remoteInverse][formControlName],[remoteInverse][formControl],[remoteInverse][ngModel]',
   providers: [
-    { provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => RemoteValidator), multi: true }
+    { provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => RemoteInverseValidator), multi: true }
   ]
 })
-export class RemoteValidator implements AsyncValidator {
+export class RemoteInverseValidator implements AsyncValidator {
 
   // tslint:disable-next-line:no-input-rename
-  @Input('remote') url: string;
+  @Input('remoteInverse') url: string;
   private timeout;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private osharp: OsharpService
+  ) { }
 
   validate(elem: AbstractControl): Promise<{ [key: string]: any; }> | Observable<{ [key: string]: any; }> {
     let value = elem.value;
-    let url = this.url.replace(/:value/ig, value);
+    if (this.url.indexOf("value&verifycodeid=") > 0) {
+      //拼验证码
+      let id = this.osharp.subStr(this.url, "value&verifycodeid=", "");
+      value = `${value}&id=${id}`;
+    }
+    //let url = this.url.replace(/:value/ig, value);
+    let url = this.url.replace(/:value\S*/, value);
 
     clearTimeout(this.timeout);
     return new Promise((resolve) => {
       this.timeout = setTimeout(() => {
         this.http.get(url).subscribe(res => {
           if (res !== true) {
-            resolve(null);
+            resolve({ remoteInverse: true });
           } else {
-            resolve({ remote: true });
+            resolve(null);
           }
         }, error => {
-          resolve({ remote: true });
+          resolve({ remoteInverse: false });
           throw error;
         });
       }, 500);

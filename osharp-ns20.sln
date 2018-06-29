@@ -28,7 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-24C2-4506-9E06-AF1B5534C098}"
 	ProjectSection(SolutionItems) = preProject
-		docs\EntityFrameworkCore组件的使用.md = docs\EntityFrameworkCore组件的使用.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -48,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Permissions.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{01974482-F9CA-41E7-A9EF-EB13C939570F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "tests\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{52C42A57-8C55-4404-8133-E0FC7ACA4537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "tests\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{B0BC26F8-5011-44DE-B516-643683DB7655}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,10 +103,10 @@ Global
 		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01974482-F9CA-41E7-A9EF-EB13C939570F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52C42A57-8C55-4404-8133-E0FC7ACA4537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52C42A57-8C55-4404-8133-E0FC7ACA4537}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52C42A57-8C55-4404-8133-E0FC7ACA4537}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52C42A57-8C55-4404-8133-E0FC7ACA4537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0BC26F8-5011-44DE-B516-643683DB7655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0BC26F8-5011-44DE-B516-643683DB7655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0BC26F8-5011-44DE-B516-643683DB7655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0BC26F8-5011-44DE-B516-643683DB7655}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,7 +124,7 @@ Global
 		{7D49DBA3-2A22-4DE9-B668-E73E29C3D7A7} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{186A8BDB-8A2D-4E16-9F7C-36F33960809D} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{01974482-F9CA-41E7-A9EF-EB13C939570F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
-		{52C42A57-8C55-4404-8133-E0FC7ACA4537} = {0E239259-0BC3-4521-AD60-07CB87263140}
+		{B0BC26F8-5011-44DE-B516-643683DB7655} = {0E239259-0BC3-4521-AD60-07CB87263140}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

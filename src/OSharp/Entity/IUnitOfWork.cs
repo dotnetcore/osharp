@@ -8,8 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 
 namespace OSharp.Entity
@@ -19,6 +17,11 @@ namespace OSharp.Entity
     /// </summary>
     public interface IUnitOfWork : IDisposable
     {
+        /// <summary>
+        /// 获取 事务是否已提交
+        /// </summary>
+        bool HasCommited { get; }
+
         /// <summary>
         /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例
         /// </summary>

@@ -100,19 +100,25 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 > dotnet new -i OSharpNS.Template.Mvc_Angular
 
 执行后，将能看到`osharp_xxx`系列的命令已安装到列表中
+
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0001.png)
+
 ### 3. 执行`osharp_cmd`命令，获取项目一键项目安装脚本
 
 >dotnet new osharp_cmd
 
 执行后，将得到一个名为`cmd_build.bat`的批处理脚本文件
+
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/f2916f0d42e3edd1d87c0c242641ed7bd6ba15ef/osharpns/Readme/0002.png)
+
 ### 4. 运行脚本文件，生成项目初始化代码
 直接执行`cmd_build.bat`脚本代码，将会提示 `请输入项目名称，推荐形如 “公司.项目”的模式：`，此名称将用作解决方案名称、工程名称起始部分、代码中的`namespace`起始部分。例如输入`Liuliu.Demo`，将生成如下代码结构：
+
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0003.png)
 
 ### 5. 用VS打开解决方案
 打开解决方案后，各个工程之间的引用关系已配置好，osharp框架的类库已引用 nuget.org 上的相应版本，并将自动还原好。项目结构如图所示：
+
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0004.png)
 
 #### 项目代码结构说明：

@@ -10,9 +10,13 @@ import { KendouiTreeviewComponent } from '@shared/osharp/components/kendoui-tree
 import { KendouiWindowComponent } from '@shared/osharp/components/kendoui-window.component';
 import { OsharpCacheModule } from '@shared/osharp/cache/cache.module';
 import { IdentityService } from '@shared/osharp/services/identity.service';
+import { RemoteInverseValidator } from '@shared/osharp/directives/remote-inverse-validator.directive';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { FormsModule } from '@angular/forms';
 
 const DIRECTIVES = [
-  RemoteValidator
+  RemoteValidator,
+  RemoteInverseValidator
 ];
 
 const COMPONENTS = [
@@ -36,7 +40,9 @@ const SERVICES = [
   ],
   imports: [
     CommonModule,
-    OsharpCacheModule.forRoot()
+    FormsModule,
+    OsharpCacheModule.forRoot(),
+    NgZorroAntdModule
   ],
   exports: [
     ...DIRECTIVES,

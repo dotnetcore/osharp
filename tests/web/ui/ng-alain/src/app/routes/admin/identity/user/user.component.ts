@@ -158,8 +158,8 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
     this.window.title("用户权限设置-" + this.winUser.UserName).open().center().resize();
 
     // 设置树数据
-    this.roleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("/api/admin/role/ReadUserRoles?userId=" + this.winUser.Id));
-    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("/api/admin/module/ReadUserModules?userId=" + this.winUser.Id));
+    this.roleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/role/ReadUserRoles?userId=" + this.winUser.Id));
+    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadUserModules?userId=" + this.winUser.Id));
   }
   onWinInit(win) {
     this.window = win;
@@ -177,7 +177,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
     let checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
     let params = { userId: this.winUser.Id, roleIds: checkRoleIds, moduleIds: checkModuleIds };
 
-    this.http.post("/api/admin/user/setpermission", params).subscribe(res => {
+    this.http.post("api/admin/user/setpermission", params).subscribe(res => {
       this.osharp.ajaxResult(res, () => {
         this.grid.dataSource.read();
         this.window.close();

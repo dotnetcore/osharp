@@ -1,0 +1,17 @@
+<svg width="50.00000000000001" height="50.00000000000001" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g display="none" class="layer">
+  <title>±³¾°</title>
+  <ellipse id="svg_5" cy="402" cx="857" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="1.5" stroke="#3f007f" fill="#7f007f"/>
+  <rect stroke="#000000" id="svg_3" height="50" width="50" y="0" x="0" stroke-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="#ad3a3a"/>
+ </g>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <path id="svg_6" d="m231.5,238" opacity="0.5" stroke-width="1.5" stroke="#3f7f00" fill="#00007f"/>
+  <path stroke-opacity="0" id="svg_12" d="m24.25408,5.02983c-11.1411,0 -19.14917,7.60134 -19.14917,19.00476c0,10.14539 7.78642,19.3602 19.15067,19.3602c11.47285,0 19.30092,-9.21201 19.30092,-19.3602c0,-11.49437 -8.26247,-19.00476 -19.3024,-19.00476l-0.00001,0l-0.00001,0zm-0.00297,34.28721l0,0c-3.40526,0 -5.19194,-2.25437 -6.13065,-5.31198c-0.42249,-1.45114 -0.68134,-3.05761 -0.83756,-4.67527c-0.16959,-1.92273 -0.19191,-3.88043 -0.19191,-5.63664c0,-1.38957 0.02678,-2.76934 0.11009,-4.09454c0.18447,-2.4181 0.57424,-4.80122 1.32402,-6.76313c1.03244,-2.40411 2.78342,-3.949 5.72601,-3.949c3.71916,0 5.59807,2.49367 6.52339,6.04805c0.63821,2.6504 0.83309,5.77098 0.83309,8.77961c0,3.21714 -0.15323,7.21092 -1.13509,10.41406c-0.98334,2.99324 -2.81466,5.18884 -6.2214,5.18884l0,0l0.00001,0z" stroke-width="1.5" fill="#ffffff" stroke="#000000"/>
+  <g id="svg_36" stroke="null">
+   <path fill="#ffffff" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m24.05968,17.4202l2.43184,0l0.52199,-4.40413l1.53868,1.71982l-0.31815,2.68432l0.94191,0l0,5.02841l-1.53788,0l-0.29799,2.5142l1.83587,0l0,5.02841l-2.43184,0l-0.52199,4.40413l-1.53868,-1.71982l0.31815,-2.68432l-0.94191,0l0,-5.02841l1.53788,0l0.29799,-2.51421l-1.83587,0l0,-5.02841l0,0l0,0l0,0.00001z" id="svg_34" stroke="#000000"/>
+   <path fill="#ffffff" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m19.52345,17.4202l2.43184,0l0.52199,-4.40413l1.53868,1.71982l-0.31815,2.68432l0.94191,0l0,5.02841l-1.53788,0l-0.29799,2.5142l1.83587,0l0,5.02841l-2.43184,0l-0.52199,4.40413l-1.53868,-1.71982l0.31815,-2.68431l-0.94191,0l0,-5.02841l1.53788,0l0.29799,-2.51421l-1.83587,0l0,-5.02841l0,0l0,0z" id="svg_35" stroke="#000000"/>
+  </g>
+ </g>
+</svg>

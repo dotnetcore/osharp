@@ -83,19 +83,6 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         /// <summary>
-        /// 用户Email是否不存在
-        /// </summary>
-        /// <param name="email">电子邮箱</param>
-        /// <returns>是否不存在</returns>
-        [HttpGet]
-        [Description("用户Email是否不存在")]
-        public bool CheckEmailNotExists(string email)
-        {
-            bool exists = !_userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
-            return exists;
-        }
-
-        /// <summary>
         /// 用户昵称是否存在
         /// </summary>
         /// <param name="nickName">用户昵称</param>
@@ -128,7 +115,10 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            //todo: 校验验证码
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
 
             dto.RegisterIp = HttpContext.GetClientIp();
 
@@ -289,7 +279,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("CheckEmailNotExists")]
+        [DependOnFunction("CheckEmailExists")]
         [Description("发送激活注册邮件")]
         public async Task<AjaxResult> SendConfirmMail([FromBody] SendMailDto dto)
         {
@@ -297,7 +287,10 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
             User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
@@ -351,7 +344,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("CheckEmailNotExists")]
+        [DependOnFunction("CheckEmailExists")]
         [Description("发送重置密码邮件")]
         public async Task<AjaxResult> SendResetPasswordMail([FromBody] SendMailDto dto)
         {
@@ -359,7 +352,11 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
-            //todo: 校验验证码
+            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
+
             User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {

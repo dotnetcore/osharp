@@ -44,6 +44,18 @@ export class Group {
   operate = 'and';
   groups: Group[] = [];
 }
+/**
+ * 验证码类
+ */
+export class VerifyCode {
+  /** 验证码后台编号 */
+  id: string;
+  /** 验证码图片的Base64格式 */
+  image: string = "data:image/png;base64,null";
+  /** 输入的验证码 */
+  code: string;
+}
+
 //#endregion
 
 //#region Identity Model
@@ -51,6 +63,7 @@ export class LoginDto {
   Account: string;
   Password: string;
   VerifyCode: string;
+  VerifyCodeId: string;
   Remember = true;
   ReturnUrl: string;
 }
@@ -61,6 +74,7 @@ export class RegisterDto {
   NickName: string;
   Email: string;
   VerifyCode: string;
+  VerifyCodeId: string;
 }
 export class ChangePasswordDto {
   UserId: string;
@@ -75,6 +89,7 @@ export class ConfirmEmailDto {
 export class SendMailDto {
   Email: string;
   VerifyCode: string;
+  VerifyCodeId: string;
 }
 export class ResetPasswordDto {
   UserId: string;
@@ -157,10 +172,15 @@ export class InstallDto {
 //#region delon
 
 export class AdResult {
+  /**
+   * 是否显示结果框
+   */
   show: boolean = false;
   /**结果类型，可选为： 'success' | 'error' | 'minus-circle-o'*/
   type: 'success' | 'error' | 'minus-circle-o';
+  /** 结果标题 */
   title: string;
+  /** 结果描述 */
   description: string;
 }
 

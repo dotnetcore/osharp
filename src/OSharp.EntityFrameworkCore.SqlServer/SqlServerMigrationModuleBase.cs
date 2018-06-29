@@ -54,8 +54,6 @@ namespace OSharp.Entity.SqlServer
                         if (contextOptions.AutoMigrationEnabled)
                         {
                             context.CheckAndMigration();
-                            int count = context.SaveChanges();
-                            Debug.WriteLine($"Migration Save:{count}");
                         }
                     }
                 }

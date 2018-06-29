@@ -10,7 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -18,11 +21,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
+using OSharp.Drawing;
 using OSharp.Entity;
 using OSharp.Reflection;
 
@@ -40,9 +45,33 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("验证码")]
-        public IActionResult VerifyCode()
+        public string VerifyCode()
         {
-            return Json("");
+            ValidateCoder coder = new ValidateCoder()
+            {
+                RandomColor = true,
+                RandomItalic = true,
+                RandomLineCount = 7,
+                RandomPointPercent = 10,
+                RandomPosition = true
+            };
+            Bitmap bitmap = coder.CreateImage(4, out string code);
+            VerifyCodeHandler.SetCode(code, out string id);
+            return VerifyCodeHandler.GetImageString(bitmap, id);
+        }
+
+        /// <summary>
+        /// 验证验证码的有效性，只作为前端Ajax验证，验证成功不移除验证码，验证码仍需传到后端进行再次验证
+        /// </summary>
+        /// <param name="code">验证码字符串</param>
+        /// <param name="id">验证码编号</param>
+        /// <returns>是否无效</returns>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("验证验证码的有效性")]
+        public bool CheckVerifyCode(string code, string id)
+        {
+            return VerifyCodeHandler.CheckCode(code, id, false);
         }
 
         /// <summary>
