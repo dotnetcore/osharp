@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { ListNode, AjaxResult, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
+import { ListNode, AjaxResult, AjaxResultType, AuthConfig, VerifyCode } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { List } from "linqts";
 import { CacheService } from '@shared/osharp/cache/cache.service';
+import { ControlWidget } from '@delon/form';
 
 @Injectable()
 export class OsharpService {
@@ -213,11 +214,24 @@ export class OsharpService {
     }
   }
 
-  public verifyCodeUrl = "api/common/verifycode";
+  //#region 验证码处理
 
-  refreshVerifyCode() {
-    this.verifyCodeUrl = "api/common/verifycode?t=" + new Date().getTime();
+  /**
+   * 获取验证码
+   */
+  refreshVerifyCode(): Observable<VerifyCode> {
+    let url = "api/common/verifycode";
+    return this.http.get(url, { responseType: 'text' }).map(res => {
+      let str = this.fromBase64(res.toString());
+      let strs: string[] = str.split("#$#");
+      let code: VerifyCode = new VerifyCode();
+      code.image = strs[0];
+      code.id = strs[1];
+      return code;
+    });
   }
+
+  //#endregion
 
   /**
    * 获取树节点集合

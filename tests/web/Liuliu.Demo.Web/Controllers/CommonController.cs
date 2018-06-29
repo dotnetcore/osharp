@@ -45,7 +45,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("验证码")]
-        public IActionResult VerifyCode()
+        public string VerifyCode()
         {
             ValidateCoder coder = new ValidateCoder()
             {
@@ -56,25 +56,22 @@ namespace Liuliu.Demo.Web.Controllers
                 RandomPosition = true
             };
             Bitmap bitmap = coder.CreateImage(4, out string code);
-            VerifyCodeHandler.SetCode(code);
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitmap.Save(ms, ImageFormat.Jpeg);
-                return File(ms.ToArray(), @"image/jpeg");
-            }
+            VerifyCodeHandler.SetCode(code, out string id);
+            return VerifyCodeHandler.GetImageString(bitmap, id);
         }
 
         /// <summary>
-        /// 验证验证码的有效性
+        /// 验证验证码的有效性，只作为前端Ajax验证，验证成功不移除验证码，验证码仍需传到后端进行再次验证
         /// </summary>
         /// <param name="code">验证码字符串</param>
+        /// <param name="id">验证码编号</param>
         /// <returns>是否无效</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("验证验证码的有效性")]
-        public bool CheckVerifyCode(string code)
+        public bool CheckVerifyCode(string code, string id)
         {
-            return VerifyCodeHandler.CheckCode(code);
+            return VerifyCodeHandler.CheckCode(code, id, false);
         }
 
         /// <summary>

@@ -19,8 +19,8 @@ export class RemoteValidator implements AsyncValidator {
   constructor(private http: HttpClient) { }
 
   validate(elem: AbstractControl): Promise<{ [key: string]: any; }> | Observable<{ [key: string]: any; }> {
-    let url = elem.value;
-    url = this.url.replace(/:value/ig, url);
+    let value = elem.value;
+    let url = this.url.replace(/:value/ig, value);
 
     clearTimeout(this.timeout);
     return new Promise((resolve) => {

@@ -1,5 +1,5 @@
-import { Component, Injector } from '@angular/core';
-import { SendMailDto, AdResult, AuthConfig } from '@shared/osharp/osharp.model';
+import { Component, Injector, AfterViewInit } from '@angular/core';
+import { SendMailDto, AdResult, AuthConfig, VerifyCode } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
 import { IdentityService } from '../../../shared/osharp/services/identity.service';
@@ -8,10 +8,11 @@ import { IdentityService } from '../../../shared/osharp/services/identity.servic
   selector: 'app-identity-forgot-password',
   templateUrl: `../shared/send-mail.html`,
 })
-export class ForgotPasswordComponent extends ComponentBase {
+export class ForgotPasswordComponent extends ComponentBase implements AfterViewInit {
 
   title = '发送重置密码邮件';
   dto: SendMailDto = new SendMailDto();
+  code: VerifyCode = new VerifyCode();
   result: AdResult = new AdResult();
   canSubmit = true;
   canSend = false;
@@ -28,11 +29,23 @@ export class ForgotPasswordComponent extends ComponentBase {
     });
   }
 
+  ngAfterViewInit() {
+    this.refreshVerifyCode();
+  }
+
   protected AuthConfig(): AuthConfig {
     return new AuthConfig('Root.Site.Identity', ['SendResetPasswordMail']);
   }
 
+  refreshVerifyCode() {
+    this.osharp.refreshVerifyCode().subscribe(vc => {
+      this.code = vc;
+    });
+  }
+
   submitForm() {
+    this.dto.VerifyCode = this.code.code;
+    this.dto.VerifyCodeId = this.code.id;
     this.canSubmit = false;
     this.identity.sendResetPasswordMail(this.dto).then(res => {
       res.show = true;

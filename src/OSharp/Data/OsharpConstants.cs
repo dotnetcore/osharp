@@ -18,9 +18,10 @@ namespace OSharp.Data
         /// 当前MVC功能键名
         /// </summary>
         public const string CurrentMvcFunctionKey = "OSHARP_MVC_FUNCTION_CURRENT";
+
         /// <summary>
-        /// 验证码Session名
+        /// 验证码缓存键名前缀
         /// </summary>
-        public const string VerifyCodeSessionKey = "OSHARP_VERIFY_CODE_SESSION";
+        public const string VerifyCodeKeyPrefix = "OSHARP_VERIFY_CODE";
     }
 }

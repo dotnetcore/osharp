@@ -2,6 +2,7 @@ import { Directive, forwardRef, Input } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, AbstractControl } from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -16,11 +17,20 @@ export class RemoteInverseValidator implements AsyncValidator {
   @Input('remoteInverse') url: string;
   private timeout;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private osharp: OsharpService
+  ) { }
 
   validate(elem: AbstractControl): Promise<{ [key: string]: any; }> | Observable<{ [key: string]: any; }> {
-    let url = elem.value;
-    url = this.url.replace(/:value/ig, url);
+    let value = elem.value;
+    if (this.url.indexOf("value&verifycodeid=") > 0) {
+      //拼验证码
+      let id = this.osharp.subStr(this.url, "value&verifycodeid=", "");
+      value = `${value}&id=${id}`;
+    }
+    //let url = this.url.replace(/:value/ig, value);
+    let url = this.url.replace(/:value\S*/, value);
 
     clearTimeout(this.timeout);
     return new Promise((resolve) => {
