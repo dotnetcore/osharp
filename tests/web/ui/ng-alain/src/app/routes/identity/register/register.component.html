@@ -15,7 +15,8 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
-          <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="密码" required [minlength]="[6]" #password="ngModel">
+          <input nz-input type="password" [(ngModel)]="dto.Password" name="password" placeholder="密码，6+位，字母+数字" required [minlength]="[6]"
+            #password="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.required">请输入密码</nz-form-explain>
         <nz-form-explain *ngIf="(password.dirty || password.touched) && password.errors?.rangeLength">密码长度不足6位</nz-form-explain>
@@ -45,7 +46,7 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
-          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱" required email [remote]="'api/identity/CheckEmailExists?email=:value'"
+          <input nz-input type="email" [(ngModel)]="dto.Email" name="email" placeholder="电子邮箱，请使用有效邮箱，否则无法激活" required email [remote]="'api/identity/CheckEmailExists?email=:value'"
             #email="ngModel">
         </nz-input-group>
         <nz-form-explain *ngIf="(email.dirty || email.touched) && email.errors?.required">请输入电子邮箱</nz-form-explain>
