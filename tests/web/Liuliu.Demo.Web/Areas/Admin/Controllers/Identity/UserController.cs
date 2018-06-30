@@ -22,6 +22,7 @@ using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -29,6 +30,7 @@ using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -44,12 +46,19 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         private readonly IIdentityContract _identityContract;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserManager<User> userManager, SecurityManager securityManager, IIdentityContract identityContract)
+        public UserController(
+            UserManager<User> userManager,
+            SecurityManager securityManager,
+            IIdentityContract identityContract,
+            ILoggerFactory loggerFactory
+        )
         {
             _userManager = userManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
+            _logger = loggerFactory.CreateLogger<UserController>();
         }
 
         /// <summary>
