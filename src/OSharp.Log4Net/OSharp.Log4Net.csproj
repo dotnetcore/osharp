@@ -8,6 +8,14 @@
     <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
