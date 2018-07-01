@@ -38,20 +38,19 @@ namespace Liuliu.Demo.Web
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _environment;
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
-            Environment = env;
+            _configuration = configuration;
+            _environment = env;
         }
-
-        public IConfiguration Configuration { get; }
-
-        public IHostingEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (Environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 services.AddMvcCore().AddApiExplorer();
                 services.AddSwaggerGen(options =>
@@ -73,17 +72,7 @@ namespace Liuliu.Demo.Web
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddOSharp()
-                .AddDistributedMemoryCache()
-                //.AddLogging(builder =>
-                //{
-                //    builder.AddFile(options =>
-                //    {
-                //        options.FileName = "log-";
-                //        options.LogDirectory = "log";
-                //    });
-                //})
-                ;
+            services.AddOSharp().AddDistributedMemoryCache();
 
             services.AddAuthentication(options =>
             {
@@ -91,11 +80,11 @@ namespace Liuliu.Demo.Web
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
             {
-                string secret = Configuration["OSharp:Jwt:Secret"] ?? Configuration["JwtSecret"];
+                string secret = _configuration["OSharp:Jwt:Secret"] ?? _configuration["JwtSecret"];
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = Configuration["OSharp:Jwt:Issuer"],
-                    ValidAudience = Configuration["OSharp:Jwt:Audience"],
+                    ValidIssuer = _configuration["OSharp:Jwt:Issuer"],
+                    ValidAudience = _configuration["OSharp:Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
                 };
             });
@@ -133,7 +122,6 @@ namespace Liuliu.Demo.Web
                     //opts.MapHub<>();
                 })
                 .UseOSharp();
-            loggerFactory.CreateLogger<Startup>().LogInformation("系统启动完成");
         }
     }
 }

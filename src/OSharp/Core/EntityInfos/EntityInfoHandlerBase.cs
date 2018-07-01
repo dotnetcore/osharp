@@ -49,7 +49,7 @@ namespace OSharp.Core.EntityInfos
         {
             IEntityTypeFinder entityTypeFinder = ServiceLocator.Instance.GetService<IEntityTypeFinder>();
             Type[] entityTypes = entityTypeFinder.FindAll(true);
-
+            _logger.LogInformation($"数据实体处理器开始初始化，共找到 {entityTypes.Length} 个实体类");
             foreach (Type entityType in entityTypes)
             {
                 if (_entityInfos.Exists(m => m.TypeName == entityType.FullName))
@@ -165,14 +165,17 @@ namespace OSharp.Core.EntityInfos
                 if (addCount > 0)
                 {
                     msg += $"，添加实体信息 {addCount} 个";
-                }
-                if (updateCount > 0)
-                {
-                    msg += $"，更新实体信息 {updateCount} 个";
+                    _logger.LogInformation($"删除{removeItems.Length}个数据实体：{removeItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
                 if (removeCount > 0)
                 {
                     msg += $"，删除实体信息 {removeCount} 个";
+                    _logger.LogInformation($"新增{addItems.Length}个数据实体：{addItems.Select(m => m.TypeName).ExpandAndToString()}");
+                }
+                if (updateCount > 0)
+                {
+                    msg += $"，更新实体信息 {updateCount} 个";
+                    _logger.LogInformation($"更新{updateCount}个数据实体");
                 }
                 _logger.LogInformation(msg);
             }

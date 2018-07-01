@@ -111,7 +111,7 @@ namespace OSharp.Security
             IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
             functionAuthCache.BuildRoleCaches();
 
-            base.UsePack(provider);
+            IsEnabled = true;
         }
     }
 }

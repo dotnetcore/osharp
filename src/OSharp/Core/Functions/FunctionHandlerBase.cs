@@ -66,6 +66,7 @@ namespace OSharp.Core.Functions
 
             Type[] functionTypes = FunctionTypeFinder.FindAll(true);
             TFunction[] functions = GetFunctions(functionTypes);
+            Logger.LogInformation($"功能信息初始化，共找到{functions.Length}个功能信息");
 
             ServiceLocator.Instance.ExcuteScopedWork(provider =>
             {
@@ -285,6 +286,7 @@ namespace OSharp.Core.Functions
                 {
                     repository.Update(item);
                     updateCount++;
+                    Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
                 }
             }
             repository.UnitOfWork.Commit();
@@ -293,6 +295,10 @@ namespace OSharp.Core.Functions
                 string msg = "刷新功能信息";
                 if (addCount > 0)
                 {
+                    foreach (TFunction function in addItems)
+                    {
+                        Logger.LogDebug($"新增功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
+                    }
                     msg += "，添加功能信息 " + addCount + " 个";
                 }
                 if (updateCount > 0)
@@ -301,6 +307,10 @@ namespace OSharp.Core.Functions
                 }
                 if (removeCount > 0)
                 {
+                    foreach (TFunction function in removeItems)
+                    {
+                        Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
+                    }
                     msg += "，移除功能信息 " + removeCount + " 个";
                 }
                 Logger.LogInformation(msg);

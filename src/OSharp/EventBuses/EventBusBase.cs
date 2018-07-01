@@ -121,7 +121,9 @@ namespace OSharp.EventBuses
                 Type eventType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
                 IEventHandlerFactory factory = new IocEventHandlerFactory(handlerType);
                 _EventStore.Add(eventType, factory);
+                _Logger.LogDebug($"创建事件“{eventType}”到处理器“{handlerType}”的订阅配对");
             }
+            _Logger.LogInformation($"程序集“{assembly.GetName().Name}”创建了{handlerTypes.Length}个处理器的事件订阅");
         }
 
         /// <summary>

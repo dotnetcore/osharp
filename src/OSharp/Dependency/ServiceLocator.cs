@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Data;
 using OSharp.Exceptions;
@@ -57,6 +58,15 @@ namespace OSharp.Dependency
                     ? scopedResolver.ScopedProvider
                     : null;
             }
+        }
+
+        /// <summary>
+        /// 获取当前是否处于<see cref="ServiceLifetime.Scoped"/>生命周期中
+        /// </summary>
+        /// <returns></returns>
+        public static bool InScoped()
+        {
+            return Instance.ScopedProvider != null;
         }
 
         /// <summary>
@@ -268,6 +278,37 @@ namespace OSharp.Dependency
                 return scopedResolver.GetServices(serviceType);
             }
             return _provider.GetServices(serviceType);
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <typeparam name="T">非静态强类型</typeparam>
+        /// <returns>日志对象</returns>
+        public ILogger<T> GetLogger<T>()
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger<T>();
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <param name="type">指定类型</param>
+        /// <returns>日志对象</returns>
+        public ILogger GetLogger(Type type)
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger(type);
+        }
+
+        /// <summary>
+        /// 获取指定名称的日志对象
+        /// </summary>
+        public ILogger GetLogger(string name)
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger(name);
         }
     }
 }

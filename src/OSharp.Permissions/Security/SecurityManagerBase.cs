@@ -17,6 +17,7 @@ using OSharp.Collections;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Extensions;
