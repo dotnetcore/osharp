@@ -98,14 +98,10 @@ namespace Liuliu.Demo.Web.Controllers
 
             string version = Assembly.GetExecutingAssembly().GetProductVersion();
 
-            MvcOptions mvcOps = provider.GetService<IOptions<MvcOptions>>().Value;
-
             info.Lines = new List<string>()
             {
                 "WebApi 数据服务已启动",
-                $"版本号：{version}",
-                $"数据连接：{provider.GetOSharpOptions().GetDbContextOptions(typeof(DefaultDbContext)).ConnectionString}",
-                $"MvcFilters：\r\n{mvcOps.Filters.ExpandAndToString(m => $"{m.ToString()}-{m.GetHashCode()}", "\r\n")}"
+                $"当前版本：{version}"
             };
 
             return Json(info);
