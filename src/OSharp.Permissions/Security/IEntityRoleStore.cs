@@ -66,7 +66,7 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="ids">要删除的实体角色信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteTEntityRoles(params int[] ids);
+        Task<OperationResult> DeleteTEntityRoles(params Guid[] ids);
 
         #endregion
 

@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
 
 using OSharp.Data;
@@ -46,23 +48,24 @@ namespace OSharp.Core.EntityInfos
         public bool AuditEnabled { get; set; } = true;
 
         /// <summary>
-        /// 获取或设置 实体属性信息Json字符串
+        /// 获取或设置 实体属性信息JSON字符串
         /// </summary>
         [Required, DisplayName("实体属性信息Json字符串")]
-        public string PropertyNamesJson { get; set; }
+        public string PropertyJson { get; set; }
 
         /// <summary>
-        /// 获取 实体属性信息字典
+        /// 获取 实体属性信息
         /// </summary>
-        public IDictionary<string, string> PropertyNames
+        [NotMapped]
+        public EntityProperty[] Properties
         {
             get
             {
-                if (PropertyNamesJson.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(PropertyJson) || !PropertyJson.StartsWith("["))
                 {
-                    return new Dictionary<string, string>();
+                    return new EntityProperty[0];
                 }
-                return PropertyNamesJson.FromJsonString<Dictionary<string, string>>();
+                return PropertyJson.FromJsonString<EntityProperty[]>();
             }
         }
 
@@ -78,13 +81,13 @@ namespace OSharp.Core.EntityInfos
             Name = entityType.GetDescription();
             AuditEnabled = true;
 
-            IDictionary<string, string> propertyDict = new Dictionary<string, string>();
             PropertyInfo[] propertyInfos = entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (PropertyInfo propertyInfo in propertyInfos)
+            PropertyJson = propertyInfos.Select(m => new EntityProperty()
             {
-                propertyDict.Add(propertyInfo.Name, propertyInfo.GetDescription());
-            }
-            PropertyNamesJson = propertyDict.ToJsonString();
+                Name = m.Name,
+                Display = m.GetDescription(),
+                TypeName = m.PropertyType.FullName
+            }).ToArray().ToJsonString();
         }
     }
 }

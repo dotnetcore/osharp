@@ -24,7 +24,7 @@ namespace Liuliu.Demo.Security
     public class SecurityPack
         : SecurityPackBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, ModuleHandler, Function, FunctionInputDto, EntityInfo,
             EntityInfoInputDto,
-            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
+            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, EntityRole, EntityRoleInputDto, int, int>
     {
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，

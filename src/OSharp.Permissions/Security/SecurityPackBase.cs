@@ -38,16 +38,19 @@ namespace OSharp.Security
     /// <typeparam name="TModuleFunction">模块功能类型</typeparam>
     /// <typeparam name="TModuleRole">模块角色类型</typeparam>
     /// <typeparam name="TModuleUser">模块用户类型</typeparam>
+    /// <typeparam name="TEntityRole">实体角色类型</typeparam>
+    /// <typeparam name="TEntityRoleInputDto">实体角色输入DTO类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TModuleHandler, TFunction, TFunctionInputDto, TEntityInfo,
-        TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : OsharpPack
+        TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TEntityRole, TEntityRoleInputDto, TRoleKey, TUserKey> : OsharpPack
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
         IModuleStore<TModule, TModuleInputDto, TModuleKey>,
         IModuleFunctionStore<TModuleFunction, TModuleKey>,
         IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
-        IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
+        IModuleUserStore<TModuleUser, TUserKey, TModuleKey>,
+        IEntityRoleStore<TEntityRole, TEntityRoleInputDto, TRoleKey>
         where TFunctionAuthorization : IFunctionAuthorization
         where TFunctionAuthCache : IFunctionAuthCache
         where TModuleHandler : IModuleHandler
@@ -60,6 +63,8 @@ namespace OSharp.Security
         where TModuleFunction : ModuleFunctionBase<TModuleKey>
         where TModuleRole : ModuleRoleBase<TModuleKey, TRoleKey>
         where TModuleUser : ModuleUserBase<TModuleKey, TUserKey>
+        where TEntityRole : EntityRoleBase<TRoleKey>
+        where TEntityRoleInputDto : EntityRoleInputDtoBase<TRoleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
         where TRoleKey : IEquatable<TRoleKey>
         where TUserKey : IEquatable<TUserKey>
@@ -88,6 +93,7 @@ namespace OSharp.Security
             services.AddScoped(typeof(IModuleFunctionStore<TModuleFunction, TModuleKey>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleUserStore<TModuleUser, TUserKey, TModuleKey>), provider => provider.GetService<TSecurityManager>());
+            services.AddScoped(typeof(IEntityRoleStore<TEntityRole, TEntityRoleInputDto, TRoleKey>), provider => provider.GetService<TSecurityManager>());
 
             return services;
         }

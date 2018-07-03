@@ -39,14 +39,14 @@ namespace OSharp.Core.EntityInfos
         bool AuditEnabled { get; set; }
 
         /// <summary>
-        /// 获取或设置 实体属性信息Json字符串
+        /// 获取或设置 实体属性信息JSON字符串
         /// </summary>
-        string PropertyNamesJson { get; set; }
+        string PropertyJson { get; set; }
 
         /// <summary>
-        /// 获取 实体属性信息字典
+        /// 获取 实体属性信息
         /// </summary>
-        IDictionary<string, string> PropertyNames { get; }
+        EntityProperty[] Properties { get; }
 
         /// <summary>
         /// 从实体类型初始化实体信息

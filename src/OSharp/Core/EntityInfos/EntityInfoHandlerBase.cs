@@ -147,9 +147,9 @@ namespace OSharp.Core.EntityInfos
                     item.Name = entityInfo.Name;
                     isUpdate = true;
                 }
-                if (item.PropertyNamesJson != entityInfo.PropertyNamesJson)
+                if (item.PropertyJson != entityInfo.PropertyJson)
                 {
-                    item.PropertyNamesJson = entityInfo.PropertyNamesJson;
+                    item.PropertyJson = entityInfo.PropertyJson;
                     isUpdate = true;
                 }
                 if (isUpdate)

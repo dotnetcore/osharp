@@ -119,6 +119,7 @@ namespace OSharp.Entity
         private static AuditEntity GetAuditEntity(EntityEntry entry, IEntityInfo entityInfo)
         {
             AuditEntity audit = new AuditEntity() { Name = entityInfo.Name, TypeName = entityInfo.TypeName, OperateType = OperateType.Insert };
+            EntityProperty[] entityProperties = entityInfo.Properties;
             foreach (IProperty property in entry.CurrentValues.Properties)
             {
                 if (property.IsConcurrencyToken)
@@ -134,8 +135,8 @@ namespace OSharp.Entity
                 }
                 AuditEntityProperty auditProperty = new AuditEntityProperty()
                 {
-                    Name = name,
-                    FieldName = entityInfo.PropertyNames[name],
+                    FieldName = name,
+                    DisplayName = entityProperties.First(m => m.Name == name).Display,
                     DataType = property.ClrType.ToString()
                 };
                 if (entry.State == EntityState.Added)
