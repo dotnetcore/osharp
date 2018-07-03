@@ -88,7 +88,7 @@ namespace OSharp.Core.Packs
         /// 启用模块
         /// </summary>
         /// <param name="provider">服务提供者</param>
-        public void UseModules(IServiceProvider provider)
+        public void UsePacks(IServiceProvider provider)
         {
             ILogger<OSharpPackManager> logger = provider.GetService<ILogger<OSharpPackManager>>();
             logger.LogInformation("OSharp框架初始化开始");

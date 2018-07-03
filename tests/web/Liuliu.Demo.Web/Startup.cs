@@ -12,8 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using Liuliu.Demo.Web.Mappers;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -112,7 +110,6 @@ namespace Liuliu.Demo.Web
 
             app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
-                .UseDtoMappings()
                 .UseDefaultFiles()
                 .UseStaticFiles()
                 .UseAuthentication()

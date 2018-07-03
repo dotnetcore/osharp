@@ -47,6 +47,5 @@ namespace OSharp.Audits
             cancelToken.ThrowIfCancellationRequested();
             return _auditStore.SetAuditDatasAsync(eventData.AuditEntities, cancelToken);
         }
-
     }
 }

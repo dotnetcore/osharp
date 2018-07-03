@@ -8,8 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Security.Principal;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +45,12 @@ namespace OSharp.Identity
         {
             services.AddScoped<IUserStore<TUser>, TUserStore>();
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
+            //注入当前用户，替换Thread.CurrentPrincipal的作用
+            services.AddTransient<IPrincipal>(provider =>
+            {
+                IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
+                return accessor?.HttpContext.User;
+            });
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);

@@ -5,6 +5,9 @@ using System.Text;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core;
+using OSharp.Core.Builders;
+
 using Shouldly;
 
 using Xunit;
@@ -26,9 +29,14 @@ namespace OSharp.Dependency.Tests
         public void TrySetApplicationServiceProvider_Test()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<ServiceLocatorTests, ServiceLocatorTests>();
+            services.AddScoped<ServiceLocatorTests, ServiceLocatorTests>();
+            services.AddLogging();
+            services.AddOSharp(b => b.AddCorePack());
+
             IServiceProvider provider = services.BuildServiceProvider();
-            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
+            provider.UseOSharp();
+
+            ServiceLocator.Instance.GetService<ServiceLocatorTests>().ShouldNotBeNull();
         }
     }
 }

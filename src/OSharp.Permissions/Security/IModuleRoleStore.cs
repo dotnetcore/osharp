@@ -21,7 +21,6 @@ namespace OSharp.Security
     /// <summary>
     /// 定义模块角色信息存储
     /// </summary>
-    [IgnoreDependency]
     public interface IModuleRoleStore<TModuleRole, in TRoleKey, TModuleKey>
     {
         #region 模块角色信息业务

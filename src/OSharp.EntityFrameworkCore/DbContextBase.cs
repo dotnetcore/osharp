@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
 //  <copyright file="DbContextBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-21 2:08</last-date>
+//  <last-date>2018-07-01 17:54</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -30,9 +30,9 @@ namespace OSharp.Entity
     /// </summary>
     public abstract class DbContextBase : DbContext, IDbContext
     {
-        private readonly IEntityConfigurationTypeFinder _typeFinder;
-        private readonly OSharpDbContextOptions _osharpDbOptions;
         private readonly ILogger _logger;
+        private readonly OSharpDbContextOptions _osharpDbOptions;
+        private readonly IEntityConfigurationTypeFinder _typeFinder;
 
         /// <summary>
         /// 初始化一个<see cref="DbContextBase"/>类型的新实例
@@ -68,23 +68,23 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        ///     Saves all changes made in this context to the database.
+        ///     将在此上下文中所做的所有更改保存到数据库中。
         /// </summary>
         /// <remarks>
-        ///     This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
-        ///     changes to entity instances before saving to the underlying database. This can be disabled via
+        ///     此方法将自动调用 <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> 
+        ///     若要在保存到基础数据库之前发现对实体实例的任何更改，请执行以下操作。这可以通过以下类型禁用
         ///     <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
         /// </remarks>
         /// <returns>
-        ///     The number of state entries written to the database.
+        ///     写入数据库的状态项的数目。
         /// </returns>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateException">
-        ///     An error is encountered while saving to the database.
+        ///     保存到数据库时遇到错误。
         /// </exception>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
-        ///     A concurrency violation is encountered while saving to the database.
-        ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
-        ///     This is usually because the data in the database has been modified since it was loaded into memory.
+        ///     保存到数据库时会遇到并发冲突。
+        ///     当在保存期间影响到意外数量的行时，就会发生并发冲突。
+        ///     这通常是因为数据库中的数据在加载到内存后已经被修改。
         /// </exception>
         public override int SaveChanges()
         {
@@ -98,37 +98,35 @@ namespace OSharp.Entity
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
-                eventBus.PublishSync(this, eventData);
+                eventBus.Publish(this, eventData);
             }
             return count;
         }
 
         /// <summary>
-        ///     Asynchronously saves all changes made in this context to the database.
+        ///     异步地将此上下文中的所有更改保存到数据库中。
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
-        ///         changes to entity instances before saving to the underlying database. This can be disabled via
+        ///         此方法将自动调用 <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> 
+        ///         若要在保存到基础数据库之前发现对实体实例的任何更改，请执行以下操作。这可以通过以下类型禁用
         ///         <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
         ///     </para>
         ///     <para>
-        ///         Multiple active operations on the same context instance are not supported.  Use 'await' to ensure
-        ///         that any asynchronous operations have completed before calling another method on this context.
+        ///         不支持同一上下文实例上的多个活动操作。请使用“等待”确保在此上下文上调用其他方法之前任何异步操作都已完成。
         ///     </para>
         /// </remarks>
         /// <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken" /> to observe while waiting for the task to complete.</param>
         /// <returns>
-        ///     A task that represents the asynchronous save operation. The task result contains the
-        ///     number of state entries written to the database.
+        ///     表示异步保存操作的任务。任务结果包含写入数据库的状态条目数。
         /// </returns>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateException">
-        ///     An error is encountered while saving to the database.
+        ///     保存到数据库时遇到错误。
         /// </exception>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
-        ///     A concurrency violation is encountered while saving to the database.
-        ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
-        ///     This is usually because the data in the database has been modified since it was loaded into memory.
+        ///     保存到数据库时会遇到并发冲突。
+        ///     当在保存期间影响到意外数量的行时，就会发生并发冲突。
+        ///     这通常是因为数据库中的数据在加载到内存后已经被修改。
         /// </exception>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -146,5 +144,6 @@ namespace OSharp.Entity
             }
             return count;
         }
+
     }
 }

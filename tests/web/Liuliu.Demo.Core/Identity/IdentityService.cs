@@ -104,7 +104,7 @@ namespace Liuliu.Demo.Identity
             if (count > 0)
             {
                 RegisterEventData eventData = new RegisterEventData() { RegisterDto = dto, User = user };
-                _eventBus.PublishSync(eventData);
+                _eventBus.Publish(eventData);
                 return new OperationResult<User>(OperationResultType.Success, "用户注册成功", user);
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
@@ -138,7 +138,7 @@ namespace Liuliu.Demo.Identity
 
             //触发登录成功事件
             LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
-            _eventBus.PublishSync(loginEventData);
+            _eventBus.Publish(loginEventData);
 
             return result;
         }
@@ -155,7 +155,7 @@ namespace Liuliu.Demo.Identity
 
             //触发登出成功事件
             LogoutEventData logoutEventData = new LogoutEventData() { UserId = userId };
-            _eventBus.PublishSync(logoutEventData);
+            _eventBus.Publish(logoutEventData);
 
             return OperationResult.Success;
         }

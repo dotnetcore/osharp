@@ -11,24 +11,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using Liuliu.Demo.Common;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
-using OSharp.Collections;
-using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
-using OSharp.Entity;
 using OSharp.Reflection;
 
 
@@ -38,6 +34,13 @@ namespace Liuliu.Demo.Web.Controllers
     [ModuleInfo(Order = 3)]
     public class CommonController : ApiController
     {
+        private readonly ICommonContract _commonContract;
+
+        public CommonController(ICommonContract commonContract)
+        {
+            _commonContract = commonContract;
+        }
+
         /// <summary>
         /// 获取验证码图片
         /// </summary>
@@ -105,6 +108,14 @@ namespace Liuliu.Demo.Web.Controllers
             };
 
             return Json(info);
+        }
+
+        [HttpGet]
+        [Description("测试")]
+        public IActionResult Test()
+        {
+            string text = _commonContract.Test();
+            return Json(new { text = text });
         }
     }
 }

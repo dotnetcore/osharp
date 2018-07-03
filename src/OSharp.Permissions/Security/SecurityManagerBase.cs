@@ -172,14 +172,14 @@ namespace OSharp.Security
             {
                 //功能信息缓存刷新事件
                 FunctionCacheRefreshEventData clearEventData = new FunctionCacheRefreshEventData();
-                _eventBus.PublishSync(clearEventData);
+                _eventBus.Publish(clearEventData);
 
                 //功能权限缓存刷新事件
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData()
                 {
                     FunctionIds = dtos.Select(m => m.Id).ToArray()
                 };
-                _eventBus.PublishSync(removeEventData);
+                _eventBus.Publish(removeEventData);
             }
             return result;
         }
@@ -389,7 +389,7 @@ namespace OSharp.Security
                 //功能权限缓存刷新事件
                 Guid[] functionIds = _moduleFunctionRepository.Entities.Where(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
-                _eventBus.PublishSync(removeEventData);
+                _eventBus.Publish(removeEventData);
             }
             return result;
         }
@@ -488,7 +488,7 @@ namespace OSharp.Security
                 {
                     FunctionIds = addFunctionIds.Union(removeFunctionIds).Distinct().ToArray()
                 };
-                _eventBus.PublishSync(removeEventData);
+                _eventBus.Publish(removeEventData);
 
                 return new OperationResult(OperationResultType.Success,
                     $"模块“{module.Name}”添加功能“{addNames.ExpandAndToString()}”，移除功能“{removeNames.ExpandAndToString()}”操作成功");
@@ -573,7 +573,7 @@ namespace OSharp.Security
                 Guid[] functionIds = _moduleFunctionRepository.Entities.Where(m => moduleIds.Contains(m.ModuleId))
                     .Select(m => m.FunctionId).Distinct().ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
-                _eventBus.PublishSync(removeEventData);
+                _eventBus.Publish(removeEventData);
 
                 return new OperationResult(OperationResultType.Success,
                     $"角色“{role.Name}”添加模块“{addNames.ExpandAndToString()}”，移除模块“{removeNames.ExpandAndToString()}”操作成功");
@@ -665,7 +665,7 @@ namespace OSharp.Security
             {
                 //功能权限缓存刷新事件
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { UserNames = new[] { user.UserName } };
-                _eventBus.PublishSync(removeEventData);
+                _eventBus.Publish(removeEventData);
 
                 return new OperationResult(OperationResultType.Success,
                     $"用户“{user.UserName}”添加模块“{addNames.ExpandAndToString()}”，移除模块“{removeNames.ExpandAndToString()}”操作成功");

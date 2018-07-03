@@ -12,6 +12,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core;
 using OSharp.Core.Packs;
 
 
@@ -28,10 +29,7 @@ namespace OSharp.AspNetCore
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
-
-            OSharpPackManager moduleManager = serviceProvider.GetService<OSharpPackManager>();
-            moduleManager.UseModules(serviceProvider);
-
+            serviceProvider.UseOSharp();
             return app;
         }
 

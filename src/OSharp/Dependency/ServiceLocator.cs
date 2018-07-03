@@ -9,6 +9,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +25,7 @@ namespace OSharp.Dependency
     /// <summary>
     /// 应用程序服务定位器，仅适合于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
     /// </summary>
-    public sealed class ServiceLocator
+    public sealed class ServiceLocator : IDisposable
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
         private IServiceProvider _provider;
@@ -72,25 +74,19 @@ namespace OSharp.Dependency
         /// <summary>
         /// 设置应用程序服务集合
         /// </summary>
-        internal void TrySetServiceCollection(IServiceCollection services)
+        internal void SetServiceCollection(IServiceCollection services)
         {
             Check.NotNull(services, nameof(services));
-            if (_services == null)
-            {
-                _services = services;
-            }
+            _services = services;
         }
 
         /// <summary>
         /// 设置应用程序服务提供者
         /// </summary>
-        public void TrySetApplicationServiceProvider(IServiceProvider provider)
+        internal void SetApplicationServiceProvider(IServiceProvider provider)
         {
             Check.NotNull(provider, nameof(provider));
-            if (_provider == null)
-            {
-                _provider = provider;
-            }
+            _provider = provider;
         }
 
         /// <summary>
@@ -309,6 +305,29 @@ namespace OSharp.Dependency
         {
             ILoggerFactory factory = GetService<ILoggerFactory>();
             return factory.CreateLogger(name);
+        }
+
+        /// <summary>
+        /// 获取当前用户
+        /// </summary>
+        public ClaimsPrincipal GetCurrentUser()
+        {
+            try
+            {
+                IPrincipal user = GetService<IPrincipal>();
+                return user as ClaimsPrincipal;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            _services = null;
+            _provider = null;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Web.Startups
         {
             return _serviceProvider != null
                 ? _serviceProvider.GetService<IEntityConfigurationTypeFinder>()
-                : new EntityConfigurationTypeFinder(new EntityConfigurationAssemblyFinder(new AppDomainAllAssemblyFinder()));
+                : new EntityConfigurationTypeFinder(new AppDomainAllAssemblyFinder());
         }
 
         public override DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString)
