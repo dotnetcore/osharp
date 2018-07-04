@@ -48,9 +48,9 @@ namespace OSharp.Security
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthCacheBase{TModuleFunction, TModuleRole, TModuleUser, TFunction, TModule, TModuleKey,TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
-        protected FunctionAuthCacheBase(IDistributedCache cache)
+        protected FunctionAuthCacheBase()
         {
-            _cache = cache;
+            _cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             _logger = ServiceLocator.Instance.GetLogger(GetType());
         }
 
@@ -70,7 +70,7 @@ namespace OSharp.Security
             {
                 GetFunctionRoles(function.Id);
             }
-            _logger.LogInformation($"创建{functions.Length}个功能的“Function-Roles[]”缓存");
+            _logger.LogInformation($"功能权限：创建{functions.Length}个功能的“Function-Roles[]”缓存");
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace OSharp.Security
                 _cache.Remove(key);
                 _logger.LogDebug($"移除功能“{functionId}”的“Function-Roles[]”缓存");
             }
-            _logger.LogInformation($"移除{functionIds.Length}个“Function-Roles[]”缓存");
+            _logger.LogInformation($"功能权限：移除{functionIds.Length}个“Function-Roles[]”缓存");
         }
 
         /// <summary>

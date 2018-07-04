@@ -26,6 +26,7 @@ namespace OSharp.System
     /// <summary>
     /// 实体类：数据键值对
     /// </summary>
+    [Description("键值对信息")]
     public class KeyValueCouple : EntityBase<Guid>, ILockable, IKeyValueCouple
     {
         /// <summary>

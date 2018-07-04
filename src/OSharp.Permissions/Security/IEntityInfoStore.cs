@@ -19,7 +19,7 @@ namespace OSharp.Security
     /// </summary>
     [IgnoreDependency]
     public interface IEntityInfoStore<TEntityInfo, in TEntityInfoInputDto>
-        where TEntityInfo : IEntityInfo, IEntity<Guid>
+        where TEntityInfo : IEntityInfo
         where TEntityInfoInputDto : EntityInfoInputDtoBase
     {
         #region 实体信息业务

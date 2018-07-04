@@ -16,15 +16,20 @@ using System.Linq;
 using System.Reflection;
 
 using Liuliu.Demo.Common;
+using Liuliu.Demo.Security;
+using Liuliu.Demo.Security.Dtos;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
+using OSharp.Filter;
 using OSharp.Reflection;
 
 
@@ -35,10 +40,12 @@ namespace Liuliu.Demo.Web.Controllers
     public class CommonController : ApiController
     {
         private readonly ICommonContract _commonContract;
+        private readonly SecurityManager _securityManager;
 
-        public CommonController(ICommonContract commonContract)
+        public CommonController(ICommonContract commonContract, SecurityManager securityManager)
         {
             _commonContract = commonContract;
+            _securityManager = securityManager;
         }
 
         /// <summary>
@@ -111,11 +118,18 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("测试")]
         public object Test()
         {
-            string text = _commonContract.Test();
-            return new { text = text };
+            EntityRoleInputDto dto = new EntityRoleInputDto()
+            {
+                RoleId = 3,
+                EntityId = Guid.Parse("a0f5a8cf-f774-45e2-be2f-a9130053ab73"),
+                FilterGroup = new FilterGroup()
+            };
+            dto.FilterGroup.AddRule(new FilterRule("Id", 5, FilterOperate.GreaterOrEqual));
+            return _securityManager.CreateEntityRoles(dto);
         }
     }
 }

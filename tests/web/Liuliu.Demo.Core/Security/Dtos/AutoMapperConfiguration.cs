@@ -13,6 +13,8 @@ using Liuliu.Demo.Security.Entities;
 
 using OSharp.AutoMapper;
 using OSharp.Dependency;
+using OSharp.Extensions;
+using OSharp.Filter;
 using OSharp.Json;
 
 
@@ -31,6 +33,9 @@ namespace Liuliu.Demo.Security.Dtos
         {
             mapper.CreateMap<EntityRoleInputDto, EntityRole>()
                 .ForMember(mr => mr.FilterGroupJson, opt => opt.ResolveUsing(dto => dto.FilterGroup.ToJsonString()));
+
+            mapper.CreateMap<EntityRole, EntityRoleOutputDto>()
+                .ForMember(dto => dto.FilterGroup, opt => opt.ResolveUsing(mr => mr.FilterGroupJson?.FromJsonString<FilterGroup>()));
         }
     }
 }

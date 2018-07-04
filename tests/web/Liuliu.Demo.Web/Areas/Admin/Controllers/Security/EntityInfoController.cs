@@ -47,7 +47,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>实体信息集合</returns>
         [HttpPost]
         [ModuleInfo]
-        [AllowAnonymous]
         [Description("读取")]
         public PageData<EntityInfoOutputDto> Read()
         {

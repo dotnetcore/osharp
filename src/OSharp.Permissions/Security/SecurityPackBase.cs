@@ -27,6 +27,7 @@ namespace OSharp.Security
     /// <typeparam name="TSecurityManager">安全管理器类型</typeparam>
     /// <typeparam name="TFunctionAuthorization">功能权限检查类型</typeparam>
     /// <typeparam name="TFunctionAuthCache">功能权限缓存类型</typeparam>
+    /// <typeparam name="TDataAuthCache">数据权限缓存类型</typeparam>
     /// <typeparam name="TModuleHandler">模块处理器类型</typeparam>
     /// <typeparam name="TFunction">功能类型</typeparam>
     /// <typeparam name="TFunctionInputDto">功能输入DTO类型</typeparam>
@@ -42,7 +43,7 @@ namespace OSharp.Security
     /// <typeparam name="TEntityRoleInputDto">实体角色输入DTO类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TModuleHandler, TFunction, TFunctionInputDto, TEntityInfo,
+    public abstract class SecurityPackBase<TSecurityManager, TFunctionAuthorization, TFunctionAuthCache, TDataAuthCache, TModuleHandler, TFunction, TFunctionInputDto, TEntityInfo,
         TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TEntityRole, TEntityRoleInputDto, TRoleKey, TUserKey> : OsharpPack
         where TSecurityManager : class, IFunctionStore<TFunction, TFunctionInputDto>,
         IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
@@ -53,10 +54,11 @@ namespace OSharp.Security
         IEntityRoleStore<TEntityRole, TEntityRoleInputDto, TRoleKey>
         where TFunctionAuthorization : IFunctionAuthorization
         where TFunctionAuthCache : IFunctionAuthCache
+        where TDataAuthCache : IDataAuthCache
         where TModuleHandler : IModuleHandler
         where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
-        where TEntityInfo : IEntityInfo, IEntity<Guid>
+        where TEntityInfo : IEntityInfo
         where TEntityInfoInputDto : EntityInfoInputDtoBase
         where TModule : ModuleBase<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>
@@ -85,6 +87,7 @@ namespace OSharp.Security
 
             services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
             services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
+            services.AddSingleton(typeof(IDataAuthCache), typeof(TDataAuthCache));
             services.AddSingleton(typeof(IModuleHandler), typeof(TModuleHandler));
 
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TSecurityManager>());
@@ -116,6 +119,9 @@ namespace OSharp.Security
 
             IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
             functionAuthCache.BuildRoleCaches();
+
+            IDataAuthCache dataAuthCache = provider.GetService<IDataAuthCache>();
+            dataAuthCache.BuildCaches();
 
             IsEnabled = true;
         }

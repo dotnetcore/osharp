@@ -61,7 +61,7 @@ namespace OSharp.Security
           IEntityRoleStore<TEntityRole, TEntityRoleInputDto, TRoleKey>
         where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
-        where TEntityInfo : IEntityInfo, IEntity<Guid>
+        where TEntityInfo : IEntityInfo
         where TEntityInfoInputDto : EntityInfoInputDtoBase
         where TModule : ModuleBase<TModuleKey>
         where TModuleInputDto : ModuleInputDtoBase<TModuleKey>
@@ -711,7 +711,7 @@ namespace OSharp.Security
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的实体角色信息编号</param>
         /// <returns>实体角色信息是否存在</returns>
-        public virtual Task<bool> CheckTEntityRoleExists(Expression<Func<TEntityRole, bool>> predicate, Guid id = default(Guid))
+        public virtual Task<bool> CheckEntityRoleExists(Expression<Func<TEntityRole, bool>> predicate, Guid id = default(Guid))
         {
             return _entityRoleRepository.CheckExistsAsync(predicate, id);
         }
@@ -733,7 +733,7 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="dtos">要添加的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> CreateTEntityRoles(params TEntityRoleInputDto[] dtos)
+        public virtual Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
             return _entityRoleRepository.InsertAsync(dtos,
                 async dto =>
@@ -748,7 +748,7 @@ namespace OSharp.Security
                     {
                         throw new Exception($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
-                    if (await CheckTEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId))
+                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId))
                     {
                         throw new Exception($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
                     }
@@ -765,7 +765,7 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="dtos">包含更新信息的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> UpdateTEntityRoles(params TEntityRoleInputDto[] dtos)
+        public virtual Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
             return _entityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
@@ -780,7 +780,7 @@ namespace OSharp.Security
                     {
                         throw new Exception($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
-                    if (await CheckTEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId, dto.Id))
+                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId, dto.Id))
                     {
                         throw new Exception($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
                     }
@@ -797,7 +797,7 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="ids">要删除的实体角色信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> DeleteTEntityRoles(params Guid[] ids)
+        public virtual Task<OperationResult> DeleteEntityRoles(params Guid[] ids)
         {
             return _entityRoleRepository.DeleteAsync(ids);
         }

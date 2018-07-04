@@ -63,7 +63,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<RoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
+            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpressionWithDataFilter<Role>(request.FilterGroup);
             var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
 
             return page.ToPageData();

@@ -10,19 +10,16 @@
 using System;
 using System.Collections.Generic;
 
+using OSharp.Entity;
+
 
 namespace OSharp.Core.EntityInfos
 {
     /// <summary>
     /// 定义数据实体信息
     /// </summary>
-    public interface IEntityInfo
+    public interface IEntityInfo : IEntity<Guid>
     {
-        /// <summary>
-        /// 获取或设置 编号
-        /// </summary>
-        Guid Id { get; set; }
-
         /// <summary>
         /// 获取或设置 实体名称
         /// </summary>

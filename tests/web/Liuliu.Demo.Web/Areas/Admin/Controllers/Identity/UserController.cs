@@ -30,7 +30,6 @@ using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
-using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -46,7 +45,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         private readonly IIdentityContract _identityContract;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
-        private readonly ILogger<UserController> _logger;
 
         public UserController(
             UserManager<User> userManager,
@@ -58,7 +56,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             _userManager = userManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
-            _logger = loggerFactory.CreateLogger<UserController>();
         }
 
         /// <summary>

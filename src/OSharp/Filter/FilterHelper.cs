@@ -11,12 +11,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
 
-using OSharp;
+using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
+using OSharp.Linq;
 using OSharp.Properties;
 using OSharp.Reflection;
+using OSharp.Secutiry;
+using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Filter
@@ -122,6 +126,38 @@ namespace OSharp.Filter
             Expression body = GetExpressionBody(param, group);
             Expression<Func<T, bool>> expression = Expression.Lambda<Func<T, bool>>(body, param);
             return expression;
+        }
+
+        /// <summary>
+        /// 获取指定查询条件组的查询表达式，并综合数据权限
+        /// </summary>
+        public static Expression<Func<T, bool>> GetExpressionWithDataFilter<T>(FilterGroup group)
+        {
+            Expression<Func<T, bool>> exp = GetExpression<T>(group);
+            //从缓存中查找当前用户的角色与实体T的过滤条件
+            ClaimsPrincipal user = ServiceLocator.Instance.GetCurrentUser();
+            if (user != null)
+            {
+                IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
+                string[] roleNames = user.Identity.GetRoles();
+                string typeName = typeof(T).FullName;
+                Expression<Func<T, bool>> subExp = null;
+                foreach (string roleName in roleNames)
+                {
+                    FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName);
+                    if (subGroup == null)
+                    {
+                        continue;
+                    }
+                    subExp = subExp == null ? GetExpression<T>(subGroup) : subExp.Or(GetExpression<T>(subGroup));
+                }
+                if (subExp != null)
+                {
+                    exp = exp.And(subExp);
+                }
+            }
+
+            return exp;
         }
 
         /// <summary>

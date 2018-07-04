@@ -29,7 +29,7 @@ namespace OSharp.Core.EntityInfos
     /// <typeparam name="TEntityInfo"></typeparam>
     /// <typeparam name="TEntityInfoHandler"></typeparam>
     public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler
-        where TEntityInfo : class, IEntityInfo, IEntity<Guid>, new()
+        where TEntityInfo : class, IEntityInfo, new()
     {
         private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
         private readonly ILogger _logger;

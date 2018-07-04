@@ -88,7 +88,6 @@ namespace Liuliu.Demo.Web.Controllers
                 }
             }
             return codes;
-            //return Content(codes.ExpandAndToString("\r\n"));
         }
 
         /// <summary>

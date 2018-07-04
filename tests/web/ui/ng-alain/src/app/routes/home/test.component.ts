@@ -12,6 +12,6 @@ export class TestComponent implements OnInit {
     constructor(private http: HttpClient) { }
 
     ngOnInit(): void {
-        this.http.get("api/common/test").subscribe((res: any) => this.text = res.text);
+        this.http.get("api/common/test").subscribe((res: any) => this.text = JSON.stringify(res));
     }
 }

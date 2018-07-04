@@ -13,7 +13,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Filter;
 
 
@@ -37,7 +36,7 @@ namespace OSharp.Security
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的实体角色信息编号</param>
         /// <returns>实体角色信息是否存在</returns>
-        Task<bool> CheckTEntityRoleExists(Expression<Func<TEntityRole, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckEntityRoleExists(Expression<Func<TEntityRole, bool>> predicate, Guid id = default(Guid));
 
         /// <summary>
         /// 获取指定角色和实体的过滤条件组
@@ -52,21 +51,21 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="dtos">要添加的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateTEntityRoles(params TEntityRoleInputDto[] dtos);
+        Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos);
 
         /// <summary>
         /// 更新实体角色信息信息
         /// </summary>
         /// <param name="dtos">包含更新信息的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> UpdateTEntityRoles(params TEntityRoleInputDto[] dtos);
+        Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos);
 
         /// <summary>
         /// 删除实体角色信息信息
         /// </summary>
         /// <param name="ids">要删除的实体角色信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteTEntityRoles(params Guid[] ids);
+        Task<OperationResult> DeleteEntityRoles(params Guid[] ids);
 
         #endregion
 
