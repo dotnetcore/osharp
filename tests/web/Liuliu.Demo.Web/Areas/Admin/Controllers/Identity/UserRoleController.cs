@@ -64,10 +64,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
-        public async Task<IActionResult> Update(UserRoleInputDto[] dtos)
+        public async Task<AjaxResult> Update(UserRoleInputDto[] dtos)
         {
             OperationResult result = await _identityContract.UpdateUserRoles(dtos);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
     }
 }

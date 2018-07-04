@@ -84,7 +84,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("系统信息")]
-        public IActionResult SystemInfo()
+        public object SystemInfo()
         {
             IServiceProvider provider = HttpContext.RequestServices;
 
@@ -107,15 +107,15 @@ namespace Liuliu.Demo.Web.Controllers
                 $"当前版本：{version}"
             };
 
-            return Json(info);
+            return info;
         }
 
         [HttpGet]
         [Description("测试")]
-        public IActionResult Test()
+        public object Test()
         {
             string text = _commonContract.Test();
-            return Json(new { text = text });
+            return new { text = text };
         }
     }
 }

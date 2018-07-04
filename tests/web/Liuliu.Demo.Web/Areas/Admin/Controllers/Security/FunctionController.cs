@@ -133,12 +133,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
-        public async Task<IActionResult> Update(FunctionInputDto[] dtos)
+        public async Task<AjaxResult> Update(FunctionInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
 
             OperationResult result = await _securityManager.UpdateFunctions(dtos);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
     }
 }

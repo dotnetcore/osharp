@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Liuliu.Demo.EntityConfiguration.xml</DocumentationFile>
   </PropertyGroup>
 
   <Import Project="../../../build/public.props" />
