@@ -23,6 +23,12 @@ namespace OSharp.Secutiry
         void BuildCaches();
 
         /// <summary>
+        /// 设置指定数据权限的缓存
+        /// </summary>
+        /// <param name="item">数据权限缓存项</param>
+        void SetCache(DataAuthCacheItem item);
+
+        /// <summary>
         /// 移除指定角色名与实体类型的缓存项
         /// </summary>
         /// <param name="roleName">角色名称</param>

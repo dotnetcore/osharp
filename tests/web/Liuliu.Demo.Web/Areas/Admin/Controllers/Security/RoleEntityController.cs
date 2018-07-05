@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="EntityRoleController.cs" company="OSharp开源团队">
+//  <copyright file="RoleEntityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-04 14:48</last-date>
+//  <last-date>2018-07-05 14:45</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -31,11 +31,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [ModuleInfo(Order = 6, Position = "Security")]
     [Description("管理-角色数据权限")]
-    public class EntityRoleController : AdminApiController
+    public class RoleEntityController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
 
-        public EntityRoleController(SecurityManager securityManager)
+        public RoleEntityController(SecurityManager securityManager)
         {
             _securityManager = securityManager;
         }

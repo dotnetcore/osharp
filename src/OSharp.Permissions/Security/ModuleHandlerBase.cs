@@ -13,6 +13,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Dependency;
@@ -76,6 +77,26 @@ namespace OSharp.Security
             IModuleFunctionStore<TModuleFunction, TModuleKey> moduleFunctionStore =
                 provider.GetService<IModuleFunctionStore<TModuleFunction, TModuleKey>>();
 
+            //删除数据库中多余的模块
+            TModule[] modules = moduleStore.Modules.ToArray();
+            var positionModules = modules.Select(m => new { m.Id, Position = GetModulePosition(modules, m) })
+                .OrderByDescending(m => m.Position.Length).ToArray();
+            string[] deletePositions = positionModules.Select(m => m.Position)
+                .Except(moduleInfos.Select(n => $"{n.Position}.{n.Code}"))
+                .Except("Root,Root.Site,Root.Admin,Root.Admin.Identity,Root.Admin.Security,Root.Admin.System".Split(','))
+                .ToArray();
+            TModuleKey[] deleteModuleIds = positionModules.Where(m => deletePositions.Contains(m.Position)).Select(m => m.Id).ToArray();
+            OperationResult result;
+            foreach (TModuleKey id in deleteModuleIds)
+            {
+                result = moduleStore.DeleteModule(id).Result;
+                if (result.Errored)
+                {
+                    throw new OsharpException(result.Message);
+                }
+            }
+
+            //新增或更新传入的模块
             foreach (ModuleInfo info in moduleInfos)
             {
                 TModule parent = GetModule(moduleStore, info.Position);
@@ -83,7 +104,6 @@ namespace OSharp.Security
                 {
                     throw new OsharpException($"路径为“{info.Position}”的模块信息无法找到");
                 }
-                OperationResult result;
                 TModule module = moduleStore.Modules.FirstOrDefault(m => m.ParentId.Equals(parent.Id) && m.Code == info.Code);
                 if (module == null)
                 {
@@ -161,5 +181,12 @@ namespace OSharp.Security
                 ParentId = parentId
             };
         }
+
+        private static string GetModulePosition(TModule[] source, TModule module)
+        {
+            string[] codes = module.TreePathIds.Select(id => source.First(n => n.Id.Equals(id)).Code).ToArray();
+            return codes.ExpandAndToString(".");
+        }
+
     }
 }

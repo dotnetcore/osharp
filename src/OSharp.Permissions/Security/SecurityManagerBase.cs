@@ -27,6 +27,8 @@ using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security.Events;
+using OSharp.Secutiry;
+
 
 namespace OSharp.Security
 {
@@ -733,9 +735,10 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="dtos">要添加的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
+        public virtual async Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            return _entityRoleRepository.InsertAsync(dtos,
+            List<DataAuthCacheItem>cacheItems = new List<DataAuthCacheItem>();
+            OperationResult result = await _entityRoleRepository.InsertAsync(dtos,
                 async dto =>
                 {
                     TRole role = await _roleRepository.GetAsync(dto.RoleId);
@@ -757,7 +760,19 @@ namespace OSharp.Security
                     {
                         throw new Exception($"数据规则验证失败：{checkResult.Message}");
                     }
+                    cacheItems.Add(new DataAuthCacheItem()
+                    {
+                        RoleName = role.Name,
+                        EntityTypeFullName = entityInfo.TypeName,
+                        FilterGroup = dto.FilterGroup
+                    });
                 });
+            if (result.Successed && cacheItems.Count > 0)
+            {
+                DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData() { CacheItems = cacheItems };
+                _eventBus.Publish(eventData);
+            }
+            return result;
         }
 
         /// <summary>
@@ -765,9 +780,10 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="dtos">包含更新信息的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
+        public virtual async Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            return _entityRoleRepository.UpdateAsync(dtos,
+            List<DataAuthCacheItem>cacheItems = new List<DataAuthCacheItem>();
+            OperationResult result = await  _entityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
                     TRole role = await _roleRepository.GetAsync(dto.RoleId);
@@ -789,7 +805,20 @@ namespace OSharp.Security
                     {
                         throw new Exception($"数据规则验证失败：{checkResult.Message}");
                     }
+                    cacheItems.Add(new DataAuthCacheItem()
+                    {
+                        RoleName = role.Name,
+                        EntityTypeFullName = entityInfo.TypeName,
+                        FilterGroup = dto.FilterGroup
+                    });
                 });
+
+            if (result.Successed && cacheItems.Count > 0)
+            {
+                DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData() { CacheItems = cacheItems };
+                _eventBus.Publish(eventData);
+            }
+            return result;
         }
 
         /// <summary>
@@ -797,9 +826,29 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="ids">要删除的实体角色信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> DeleteEntityRoles(params Guid[] ids)
+        public virtual async Task<OperationResult> DeleteEntityRoles(params Guid[] ids)
         {
-            return _entityRoleRepository.DeleteAsync(ids);
+            List<(string, string)> list = new List<(string, string)>();
+            OperationResult result = await _entityRoleRepository.DeleteAsync(ids,
+                async entity =>
+                {
+                    TRole role = await _roleRepository.GetAsync(entity.RoleId);
+                    TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(entity.EntityId);
+                    if (role != null && entityInfo != null)
+                    {
+                        list.Add((role.Name, entityInfo.TypeName));
+                    }
+                });
+            if (result.Successed && list.Count > 0)
+            {
+                //移除数据权限缓存
+                IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
+                foreach ((string roleName, string typeName) in list)
+                {
+                    cache.RemoveCache(roleName, typeName);
+                }
+            }
+            return result;
         }
 
         private static OperationResult CheckFilterGroupProperty(FilterGroup group, TEntityInfo entityInfo)

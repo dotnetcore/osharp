@@ -70,9 +70,20 @@ namespace OSharp.Security
                 FilterGroup filterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
                 string key = $"Security_EntityRole_{entityRole.RoleName}_{entityRole.EntityTypeFullName}";
                 _cache.Set(key, filterGroup);
-                _logger.LogDebug($"创建角色“{entityRole.RoleName}”和实体“{entityRole.EntityTypeFullName}”的数据权限规则");
+                _logger.LogDebug($"创建角色“{entityRole.RoleName}”和实体“{entityRole.EntityTypeFullName}”的数据权限规则缓存");
             }
-            _logger.LogInformation($"数据权限：创建{entityRoles.Length}个数据权限过滤规则");
+            _logger.LogInformation($"数据权限：创建{entityRoles.Length}个数据权限过滤规则缓存");
+        }
+
+        /// <summary>
+        /// 设置指定数据权限的缓存
+        /// </summary>
+        /// <param name="item">数据权限缓存项</param>
+        public void SetCache(DataAuthCacheItem item)
+        {
+            string key = $"Security_EntityRole_{item.RoleName}_{item.EntityTypeFullName}";
+            _cache.Set(key, item.FilterGroup);
+            _logger.LogDebug($"创建角色“{item.RoleName}”和实体“{item.EntityTypeFullName}”的数据权限规则缓存");
         }
 
         /// <summary>
@@ -84,7 +95,7 @@ namespace OSharp.Security
         {
             string key = $"Security_EntityRole_{roleName}_{entityTypeFullName}";
             _cache.Remove(key);
-            _logger.LogDebug($"移除角色“{roleName}”和实体“{entityTypeFullName}”的数据权限规则");
+            _logger.LogDebug($"移除角色“{roleName}”和实体“{entityTypeFullName}”的数据权限规则缓存");
         }
 
         /// <summary>

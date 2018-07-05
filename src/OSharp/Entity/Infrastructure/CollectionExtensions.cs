@@ -126,9 +126,19 @@ namespace OSharp.Entity
             pageIndex.CheckGreaterThan("pageIndex", 0);
             pageSize.CheckGreaterThan("pageSize", 0);
 
-            int total;
-            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out total, sortConditions).ToOutput<TOutputDto>().ToArray();
+            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out int total, sortConditions).ToOutput<TOutputDto>().ToArray();
             return new PageResult<TOutputDto>() { Total = total, Data = data };
+        }
+
+        /// <summary>
+        /// 从指定<see cref="IQueryable{T}"/>数据源中查询出数据权限过滤的子数据集
+        /// </summary>
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <param name="source">要查询的数据集</param>
+        public static IQueryable<TEntity> DataAuthQuery<TEntity>(this IQueryable<TEntity> source)
+        {
+            Expression<Func<TEntity, bool>> exp = FilterHelper.GetDataFilterExpression<TEntity>();
+            return source.Where(exp);
         }
 
         /// <summary>

@@ -131,30 +131,48 @@ namespace OSharp.Filter
         /// <summary>
         /// 获取指定查询条件组的查询表达式，并综合数据权限
         /// </summary>
-        public static Expression<Func<T, bool>> GetExpressionWithDataFilter<T>(FilterGroup group)
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="group">传入的查询条件组，为空时则只返回数据权限过滤器</param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> GetDataFilterExpression<T>(FilterGroup group = null)
         {
-            Expression<Func<T, bool>> exp = GetExpression<T>(group);
+            Expression<Func<T, bool>> exp = m => true;
+            if (group != null)
+            {
+                exp = GetExpression<T>(group);
+            }
             //从缓存中查找当前用户的角色与实体T的过滤条件
             ClaimsPrincipal user = ServiceLocator.Instance.GetCurrentUser();
-            if (user != null)
+            if (user == null)
             {
-                IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
-                string[] roleNames = user.Identity.GetRoles();
-                string typeName = typeof(T).FullName;
-                Expression<Func<T, bool>> subExp = null;
-                foreach (string roleName in roleNames)
+                return exp;
+            }
+
+            IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
+            if (cache == null)
+            {
+                return exp;
+            }
+
+            string[] roleNames = user.Identity.GetRoles();
+            string typeName = typeof(T).FullName;
+            Expression<Func<T, bool>> subExp = null;
+            foreach (string roleName in roleNames)
+            {
+                FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName);
+                if (subGroup == null)
                 {
-                    FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName);
-                    if (subGroup == null)
-                    {
-                        continue;
-                    }
-                    subExp = subExp == null ? GetExpression<T>(subGroup) : subExp.Or(GetExpression<T>(subGroup));
+                    continue;
                 }
-                if (subExp != null)
+                subExp = subExp == null ? GetExpression<T>(subGroup) : subExp.Or(GetExpression<T>(subGroup));
+            }
+            if (subExp != null)
+            {
+                if (group == null)
                 {
-                    exp = exp.And(subExp);
+                    return subExp;
                 }
+                exp = subExp.And(exp);
             }
 
             return exp;
