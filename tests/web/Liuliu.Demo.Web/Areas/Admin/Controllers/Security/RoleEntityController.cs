@@ -9,19 +9,24 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Identity;
+using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Security;
 using Liuliu.Demo.Security.Dtos;
 using Liuliu.Demo.Security.Entities;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Modules;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -51,7 +56,35 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetExpression<EntityRole>(request.FilterGroup);
-            var page = _securityManager.EntityRoles.ToPage<EntityRole, EntityRoleOutputDto>(predicate, request.PageCondition);
+            RoleManager<Role> roleManager = ServiceLocator.Instance.GetService<RoleManager<Role>>();
+            var page = _securityManager.EntityRoles.ToPage(predicate,
+                request.PageCondition,
+                m => new
+                {
+                    m.Id,
+                    m.RoleId,
+                    m.EntityId,
+                    m.FilterGroupJson,
+                    m.IsLocked,
+                    m.CreatedTime,
+                    RoleName = roleManager.Roles.First(n => n.Id == m.RoleId).Name,
+                    Entity = _securityManager.EntityInfos.Where(n => n.Id == m.EntityId).Select(n => new
+                    {
+                        n.Name,
+                        n.TypeName
+                    }).FirstOrDefault()
+                }).ToPageResult(data => data.Select(n => new EntityRoleOutputDto()
+                {
+                    Id = n.Id,
+                    RoleId = n.RoleId,
+                    EntityId = n.EntityId,
+                    RoleName = n.RoleName,
+                    EntityName = n.Entity.Name,
+                    EntityType = n.Entity.TypeName,
+                    FilterGroup = n.FilterGroupJson.FromJsonString<FilterGroup>(),
+                    IsLocked = n.IsLocked,
+                    CreatedTime = n.CreatedTime
+                }).ToArray());
             return page.ToPageData();
         }
 

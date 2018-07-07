@@ -1,6 +1,6 @@
 import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { Group, Rule } from '@shared/osharp/osharp.model';
+import { Group, Rule, FilterOperate } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
@@ -31,12 +31,12 @@ export class KendouiService {
     const group = new Group();
     filter.filters.forEach(item => {
       if (item.filters && item.filters.length) {
-        group.groups.push(this.getFilterGroup(item, funcFieldReplace));
+        group.Groups.push(this.getFilterGroup(item, funcFieldReplace));
       } else {
-        group.rules.push(this.getFilterRule(item, funcFieldReplace));
+        group.Rules.push(this.getFilterRule(item, funcFieldReplace));
       }
     });
-    group.operate = filter.logic;
+    group.Operate = this.renderRuleOperate(filter.logic);
     return group;
   }
   /**
@@ -49,7 +49,7 @@ export class KendouiService {
       throw new Error("funcFieldReplace muse be function");
     }
     const field = funcFieldReplace(filter.field);
-    const operate = this.renderRuleOperate(filter.operator);
+    const operate: FilterOperate = this.renderRuleOperate(filter.operator);
     const rule = new Rule(field, filter.value, operate);
     return rule;
   }
@@ -57,15 +57,30 @@ export class KendouiService {
    * 转换查询操作
    * @param operate kendo的查询对比操作字符串
    */
-  renderRuleOperate(operate) {
-    if (operate === "eq") return "equal";
-    if (operate === "neq") return "notequal";
-    if (operate === "gt") return "greater";
-    if (operate === "gte") return "greaterorequal";
-    if (operate === "lt") return "less";
-    if (operate === "lte") return "lessorequal";
-    if (operate === "doesnotcontain") return "notcontains";
-    return operate;
+  renderRuleOperate(operate): FilterOperate {
+    var dict: { [key: string]: FilterOperate } = {
+      "and": FilterOperate.And,
+      "or": FilterOperate.Or,
+      "eq": FilterOperate.Equal,
+      "neq": FilterOperate.NotEqual,
+      "lt": FilterOperate.Less,
+      "lte": FilterOperate.LessOrEqual,
+      "gt": FilterOperate.Greater,
+      "gte": FilterOperate.GreaterOrEqual,
+      "startswith": FilterOperate.StartsWith,
+      "endswith": FilterOperate.EndsWith,
+      "contains": FilterOperate.Contains,
+      "doesnotcontain": FilterOperate.NotContains
+    };
+    for (const key in dict) {
+      if (dict.hasOwnProperty(key)) {
+        const value = dict[key];
+        if (key === operate) {
+          return value;
+        }
+      }
+    }
+    throw `后端服务器不支持${operate}的比较操作`;
   }
   /**
    * 处理kendoui到osharp框架的查询参数

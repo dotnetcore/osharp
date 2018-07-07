@@ -8,7 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
+using Liuliu.Demo.Identity;
+
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Filter;
 
@@ -31,9 +35,24 @@ namespace Liuliu.Demo.Security.Dtos
         public int RoleId { get; set; }
 
         /// <summary>
+        /// 获取或设置 角色名称
+        /// </summary>
+        public string RoleName { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据编号
         /// </summary>
         public Guid EntityId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 业务实体名称
+        /// </summary>
+        public string EntityName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 业务实体类型
+        /// </summary>
+        public string EntityType { get; set; }
 
         /// <summary>
         /// 获取或设置 过滤条件组

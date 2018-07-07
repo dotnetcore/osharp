@@ -7,6 +7,9 @@
 //  <last-date>2017-09-01 20:43</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+
 namespace OSharp.Filter
 {
     /// <summary>
@@ -46,6 +49,17 @@ namespace OSharp.Filter
         public PageData<T> ToPageData()
         {
             return new PageData<T>(Data, Total);
+        }
+
+        /// <summary>
+        /// 转换为指定类型的页结果
+        /// </summary>
+        /// <typeparam name="TResult">页结果数据类型</typeparam>
+        /// <param name="func">数据转移委托</param>
+        /// <returns>页结果</returns>
+        public PageResult<TResult> ToPageResult<TResult>(Func<T[], TResult[]> func)
+        {
+            return new PageResult<TResult>(func(Data), Total);
         }
     }
 }

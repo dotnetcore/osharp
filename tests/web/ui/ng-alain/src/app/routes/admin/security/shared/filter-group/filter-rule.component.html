@@ -1,0 +1,20 @@
+<div class="rule-box">
+  <nz-select [(ngModel)]="selectField">
+    <nz-option [nzValue]="1" nzLabel="字段1"></nz-option>
+    <nz-option [nzValue]="2" nzLabel="字段2"></nz-option>
+    <nz-option [nzValue]="3" nzLabel="字段3"></nz-option>
+    <nz-option [nzValue]="4" nzLabel="字段4"></nz-option>
+    <nz-option [nzValue]="5" nzLabel="字段5"></nz-option>
+  </nz-select>
+  <nz-select [(ngModel)]="selectOperate">
+    <nz-option [nzValue]="1" nzLabel="操作1"></nz-option>
+    <nz-option [nzValue]="2" nzLabel="操作2"></nz-option>
+    <nz-option [nzValue]="3" nzLabel="操作3"></nz-option>
+    <nz-option [nzValue]="4" nzLabel="操作4"></nz-option>
+    <nz-option [nzValue]="5" nzLabel="操作5"></nz-option>
+  </nz-select>
+  <input style="width:150px; margin-right:8px;" />
+  <button nz-button (click)="removeRule()" nzType="default" nzSize="small" nzShape="circle">
+    <i class="anticon anticon-close"></i>
+  </button>
+</div>
