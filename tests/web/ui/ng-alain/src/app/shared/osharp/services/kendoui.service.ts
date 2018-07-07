@@ -1,6 +1,6 @@
 import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { Group, Rule, FilterOperate } from '@shared/osharp/osharp.model';
+import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
@@ -21,14 +21,14 @@ export class KendouiService {
    * @param filter kendo发出的filter
    * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
    */
-  getFilterGroup(filter, funcFieldReplace): Group {
+  getFilterGroup(filter, funcFieldReplace): FilterGroup {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
     }
     if (!filter || !filter.filters || !filter.filters.length) {
       return null;
     }
-    const group = new Group();
+    const group = new FilterGroup();
     filter.filters.forEach(item => {
       if (item.filters && item.filters.length) {
         group.Groups.push(this.getFilterGroup(item, funcFieldReplace));
@@ -44,13 +44,13 @@ export class KendouiService {
    * @param filter kendo发出的filter
    * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
    */
-  getFilterRule(filter, funcFieldReplace = null): Rule {
+  getFilterRule(filter, funcFieldReplace = null): FilterRule {
     if (!funcFieldReplace || !isFunction(funcFieldReplace)) {
       throw new Error("funcFieldReplace muse be function");
     }
     const field = funcFieldReplace(filter.field);
     const operate: FilterOperate = this.renderRuleOperate(filter.operator);
-    const rule = new Rule(field, filter.value, operate);
+    const rule = new FilterRule(field, filter.value, operate);
     return rule;
   }
   /**

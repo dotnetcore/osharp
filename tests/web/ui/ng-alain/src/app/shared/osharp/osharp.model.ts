@@ -27,7 +27,7 @@ export class ListNode {
 }
 
 /** 查询条件 */
-export class Rule {
+export class FilterRule {
   /**属性名 */
   Field: string;
   /**属性值 */
@@ -48,22 +48,22 @@ export class Rule {
   }
 }
 /** 查询条件组 */
-export class Group {
+export class FilterGroup {
   /**条件集合 */
-  Rules: Rule[] = [];
+  Rules: FilterRule[] = [];
   /**条件间操作 */
   Operate: FilterOperate = FilterOperate.And;
   /**条件组集合 */
-  Groups: Group[] = [];
+  Groups: FilterGroup[] = [];
   Level: number = 1;
 
-  static Init(group: Group) {
+  static Init(group: FilterGroup) {
     if (!group.Level) {
       group.Level = 1;
     }
     group.Groups.forEach(subGroup => {
       subGroup.Level = group.Level + 1;
-      Group.Init(subGroup);
+      FilterGroup.Init(subGroup);
     });
   }
 }
@@ -80,8 +80,59 @@ export enum FilterOperate {
   StartsWith = 9,
   EndsWith = 10,
   Contains = 11,
-  NotContains = 12
+  NotContains = 12,
 }
+export class FilterOperateEntry {
+  Operate: FilterOperate;
+  Display: string;
+
+  constructor(operate: FilterOperate) {
+    this.Operate = operate;
+    switch (operate) {
+      case FilterOperate.And:
+        this.Display = "并且";
+        break;
+      case FilterOperate.Or:
+        this.Display = "或者";
+        break;
+      case FilterOperate.Equal:
+        this.Display = "等于";
+        break;
+      case FilterOperate.NotEqual:
+        this.Display = "不等于";
+        break;
+      case FilterOperate.Less:
+        this.Display = "小于";
+        break;
+      case FilterOperate.LessOrEqual:
+        this.Display = "小于等于";
+        break;
+      case FilterOperate.Greater:
+        this.Display = "大于";
+        break;
+      case FilterOperate.GreaterOrEqual:
+        this.Display = "大于等于";
+        break;
+      case FilterOperate.StartsWith:
+        this.Display = "开始于";
+        break;
+      case FilterOperate.EndsWith:
+        this.Display = "结束于";
+        break;
+      case FilterOperate.Contains:
+        this.Display = "包含";
+        break;
+      case FilterOperate.NotContains:
+        this.Display = "不包含";
+        break;
+      default:
+        this.Display = "未知操作";
+        break;
+    }
+    this.Display = `${<number>operate}.${this.Display}`;
+  }
+}
+
 /** 实体属性信息 */
 export class EntityProperty {
   Name: string;

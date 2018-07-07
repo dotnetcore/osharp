@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Injector } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
-import { AuthConfig, Group } from '@shared/osharp/osharp.model';
+import { AuthConfig, FilterGroup } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-security-role-entity',
@@ -9,15 +9,16 @@ import { AuthConfig, Group } from '@shared/osharp/osharp.model';
 export class RoleEntityComponent extends GridComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions;
-  filterGroup: Group;
+  filterGroup: FilterGroup;
   entityType: string;
   selectName: string = "未选择";
+  groupJson: string;
 
   constructor(injector: Injector) {
     super(injector);
     this.moduleName = "roleentity";
     this.splitterOptions = {
-      panes: [{ size: "50%" }, { collapsible: true, collapsed: false }]
+      panes: [{ size: "45%" }, { collapsible: true, collapsed: false }]
     };
   }
 
@@ -90,26 +91,30 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       if (row) {
         let data: any = this.grid.dataItem(row);
         if (data) {
-          this.selectName = `角色:${data.RoleName} + 实体:${data.EntityName}`
+          this.selectName = `角色: ${data.RoleName} + 实体: ${data.EntityName}`
           if (data.FilterGroup) {
             this.filterGroup = data.FilterGroup;
           } else {
-            this.filterGroup = new Group();
+            this.filterGroup = new FilterGroup();
           }
           this.entityType = data.EntityType;
         }
         else {
           this.selectName = "未选择";
-          this.filterGroup = new Group();
+          this.filterGroup = new FilterGroup();
           this.entityType = null;
         }
       } else {
         this.selectName = "未选择";
-        this.filterGroup = new Group();
+        this.filterGroup = new FilterGroup();
         this.entityType = null;
       }
     }
 
     return options;
+  }
+
+  showGroupJson() {
+    this.groupJson = JSON.stringify(this.filterGroup, null, 2);
   }
 }

@@ -2,13 +2,12 @@
   <security-filter-group *ngFor="let subGroup of group.Groups" [group]="subGroup" [entity]="entity" (remove)="removeSubGroup($event)"></security-filter-group>
   <div>
     <security-filter-rule *ngFor="let subRule of group.Rules" [rule]="subRule" [properties]="entityProperties" (remove)="removeRule($event)"></security-filter-rule>
-    <nz-select [(ngModel)]="group.Operate">
-      <nz-option [nzValue]="1" nzLabel="并且"></nz-option>
-      <nz-option [nzValue]="2" nzLabel="或者"></nz-option>
+    <nz-select [(ngModel)]="group.Operate" nzSize="small">
+      <nz-option *ngFor="let entry of groupOperateEntries" [nzValue]="entry.Operate" [nzLabel]="entry.Display"></nz-option>
     </nz-select>
-    <button nz-button (click)="addGroup()">增加分组</button>
-    <button nz-button (click)="addRule()">增加条件</button>
-    <button nz-button (click)="removeGroup()" *ngIf="group.Level>1">删除分组</button>
+    <button nz-button nzSize="small" (click)="addGroup()">增加分组</button>
+    <button nz-button nzSize="small" (click)="addRule()">增加条件</button>
+    <button nz-button nzSize="small" (click)="removeGroup()" *ngIf="group.Level>1">删除分组</button>
   </div>
 </div>
 <nz-alert *ngIf="!group" nzType="info" nzMessage="请选择左边一行进行操作"></nz-alert>
