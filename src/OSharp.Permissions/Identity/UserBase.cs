@@ -130,11 +130,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 是否系统用户
         /// </summary>
+        [DisplayName("是否系统用户")]
         public bool IsSystem { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定当前信息
         /// </summary>
+        [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace OSharp.Security.Events
     /// <summary>
     /// 数据权限缓存刷新事件处理器
     /// </summary>
-    public class DataAuthCacheRefreshEventHandler : EventHandlerBase<DataAuthCacheRefreshEventData>
+    public class DataAuthCacheRefreshEventHandler : EventHandlerBase<DataAuthCacheRefreshEventData>, ITransientDependency
     {
         /// <summary>
         /// 事件处理

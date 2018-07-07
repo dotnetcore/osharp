@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 
+using Microsoft.Extensions.Primitives;
+
+using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
@@ -82,11 +85,29 @@ namespace OSharp.Core.EntityInfos
             AuditEnabled = true;
 
             PropertyInfo[] propertyInfos = entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            PropertyJson = propertyInfos.Select(m => new EntityProperty()
+            PropertyJson = propertyInfos.Select(property =>
             {
-                Name = m.Name,
-                Display = m.GetDescription(),
-                TypeName = m.PropertyType.FullName
+                EntityProperty ep = new EntityProperty()
+                {
+                    Name = property.Name,
+                    Display = property.GetDescription(),
+                    TypeName = property.PropertyType.FullName
+                };
+                //枚举类型，获取枚举项作为取值范围
+                if (property.PropertyType.IsEnum)
+                {
+                    ep.TypeName = typeof(int).FullName;
+                    Type enumType = property.PropertyType;
+                    Array values = enumType.GetEnumValues();
+                    int[] intValues = values.Cast<int>().ToArray();
+                    string[] names = values.Cast<Enum>().Select(m => m.ToDescription()).ToArray();
+                    for (int i = 0; i < intValues.Length; i++)
+                    {
+                        string value = intValues[i].ToString();
+                        ep.ValueRange.Add(new { id = value, text = names[i] });
+                    }
+                }
+                return ep;
             }).ToArray().ToJsonString();
         }
     }

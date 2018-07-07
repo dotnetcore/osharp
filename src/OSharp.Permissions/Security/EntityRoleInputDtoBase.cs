@@ -9,6 +9,7 @@
 
 using System;
 
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
 
@@ -22,9 +23,29 @@ namespace OSharp.Security
     public abstract class EntityRoleInputDtoBase<TRoleKey> : IInputDto<Guid>
     {
         /// <summary>
+        /// 初始化一个<see cref="EntityRoleInputDtoBase"/>类型的新实例
+        /// </summary>
+        protected EntityRoleInputDtoBase()
+        {
+            FilterGroup = new FilterGroup();
+        }
+
+        private Guid _id;
+        /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id
+        {
+            get { return _id; }
+            set
+            {
+                if (value == Guid.Empty)
+                {
+                    value = CombGuid.NewGuid();
+                }
+                _id = value;
+            }
+        }
 
         /// <summary>
         /// 获取或设置 角色编号

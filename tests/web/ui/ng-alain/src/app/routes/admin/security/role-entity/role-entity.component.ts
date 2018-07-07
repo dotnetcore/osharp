@@ -1,21 +1,26 @@
 import { Component, AfterViewInit, Injector } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
-import { AuthConfig, FilterGroup } from '@shared/osharp/osharp.model';
+import { AuthConfig, FilterGroup, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
+import { HttpClient } from '@angular/common/http';
+import { container } from '../../../../../../node_modules/@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'admin-security-role-entity',
-  templateUrl: './role-entity.component.html',
+  templateUrl: './role-entity.component.html'
 })
 export class RoleEntityComponent extends GridComponentBase implements AfterViewInit {
 
   splitterOptions: kendo.ui.SplitterOptions;
+  http: HttpClient;
   filterGroup: FilterGroup;
   entityType: string;
   selectName: string = "未选择";
   groupJson: string;
+  selectData: any = null;
 
   constructor(injector: Injector) {
     super(injector);
+    this.http = injector.get(HttpClient);
     this.moduleName = "roleentity";
     this.splitterOptions = {
       panes: [{ size: "45%" }, { collapsible: true, collapsed: false }]
@@ -38,9 +43,9 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
     return {
       id: "Id",
       fields: {
-        Id: { type: "string", editable: false },
-        RoleId: { type: "number", editable: false },
-        EntityId: { type: "string", editable: false },
+        Id: { type: "string", editable: false, defaultValue: "00000000-0000-0000-0000-000000000000" },
+        RoleId: { type: "number", editable: true },
+        EntityId: { type: "string", editable: true },
         RoleName: { type: "string", validation: { required: true } },
         EntityName: { type: "string", validation: { required: true } },
         EntityType: { type: "string", validation: { required: true } },
@@ -62,12 +67,14 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       field: "RoleId",
       title: "角色",
       width: 150,
-      template: "#=RoleId#.#=RoleName#"
+      template: "#=RoleId#.#=RoleName#",
+      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/role/ReadNode", "RoleName", "RoleId")
     }, {
       field: "EntityId",
       title: "数据实体",
       width: 300,
-      template: "#=EntityName# [#=EntityType#]"
+      template: "#=EntityName# [#=EntityType#]",
+      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/entityinfo/ReadNode", "Name", "Id")
     }, {
       field: "IsLocked",
       title: "锁定",
@@ -91,6 +98,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       if (row) {
         let data: any = this.grid.dataItem(row);
         if (data) {
+          this.selectData = data;
           this.selectName = `角色: ${data.RoleName} + 实体: ${data.EntityName}`
           if (data.FilterGroup) {
             this.filterGroup = data.FilterGroup;
@@ -116,5 +124,16 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
 
   showGroupJson() {
     this.groupJson = JSON.stringify(this.filterGroup, null, 2);
+  }
+  saveFilterGroup() {
+    if (this.entityType == null) {
+      this.osharp.info("请在左边选中一行，再进行操作");
+      return;
+    }
+    let data = this.selectData;
+    let dto = { Id: data.Id, RoleId: data.RoleId, EntityId: data.EntityId, FilterGroup: this.filterGroup, IsLocked: data.IsLocked };
+    this.http.post<AjaxResult>("api/admin/roleentity/Update", [dto]).subscribe(res => {
+      this.osharp.ajaxResult(res);
+    });
   }
 }

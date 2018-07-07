@@ -15,10 +15,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Dependency;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Linq;
@@ -42,6 +44,7 @@ namespace OSharp.Entity
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
@@ -51,6 +54,7 @@ namespace OSharp.Entity
             UnitOfWork = unitOfWork;
             _dbContext = (DbContext)unitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
+            _logger = ServiceLocator.Instance.GetLogger<Repository<TEntity, TKey>>();
         }
 
         /// <summary>
@@ -117,8 +121,13 @@ namespace OSharp.Entity
                     entity = entity.CheckICreatedTime<TEntity, TKey>();
                     _dbSet.Add(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(dto));
@@ -188,8 +197,13 @@ namespace OSharp.Entity
                     }
                     _dbSet.Remove(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(entity));
@@ -262,8 +276,13 @@ namespace OSharp.Entity
                     }
                     _dbSet.Update(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(dto));
@@ -456,8 +475,13 @@ namespace OSharp.Entity
                     entity = entity.CheckICreatedTime<TEntity, TKey>();
                     await _dbSet.AddAsync(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(dto));
@@ -529,8 +553,13 @@ namespace OSharp.Entity
                     }
                     _dbSet.Remove(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(entity));
@@ -602,8 +631,13 @@ namespace OSharp.Entity
                     }
                     _dbSet.Update(entity);
                 }
+                catch (OsharpException e)
+                {
+                    return new OperationResult(OperationResultType.Error, e.Message);
+                }
                 catch (Exception e)
                 {
+                    _logger.LogError(e, e.Message);
                     return new OperationResult(OperationResultType.Error, e.Message);
                 }
                 names.AddIfNotNull(GetNameValue(dto));

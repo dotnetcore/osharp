@@ -303,7 +303,8 @@ namespace OSharp.EventBuses
             IEventHandler handler = factory.GetHandler();
             if (handler == null)
             {
-                throw new OsharpException($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+                _Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+                return;
             }
             if (!handler.CanHandle(eventData))
             {
@@ -333,6 +334,11 @@ namespace OSharp.EventBuses
         protected virtual Task InvokeHandlerAsync(IEventHandlerFactory factory, Type eventType, IEventData eventData, bool wait = true)
         {
             IEventHandler handler = factory.GetHandler();
+            if (handler == null)
+            {
+                _Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+                return Task.FromResult(0);
+            }
             if (!handler.CanHandle(eventData))
             {
                 return Task.FromResult(0);

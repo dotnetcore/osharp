@@ -4,6 +4,7 @@ import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.mo
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { element } from '../../../../../node_modules/protractor';
 
 
 @Injectable()
@@ -236,22 +237,76 @@ export class KendouiService {
   DropDownList(element, dataSource, textField = 'text', valueField = 'id') {
     return new kendo.ui.DropDownList(element, {
       autoBind: true,
-      dataTextField: textField || "text",
-      dataValueField: valueField || "id",
+      dataTextField: textField,
+      dataValueField: valueField,
       dataSource: dataSource
     });
+  }
+
+  RemoteDropDownList(element, url, textField = 'text', valueField = 'id') {
+    var dataSource = {
+      transport: {
+        dataType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.DropDownList(element, dataSource, textField, valueField);
   }
 
   DropDownListEditor(container, options, dataSource, textField = 'text', valueField = 'id') {
     const input = $('<input/>');
     input.attr('name', options.field);
     input.appendTo(container);
-    return new kendo.ui.DropDownList(input, {
+    return this.DropDownList(input, dataSource, textField, valueField);
+  }
+
+  RemoteDropDownListEditor(container, options, url, textField = 'text', valueField = 'id') {
+    const input = $('<input/>');
+    input.attr('name', options.field);
+    input.appendTo(container);
+    return this.RemoteDropDownList(input, url, textField, valueField);
+  }
+
+  ComboBox(element, dataSource, textField = 'text', valueField = 'id') {
+    return new kendo.ui.ComboBox(element, {
       autoBind: true,
+      filter: "contains",
       dataTextField: textField,
       dataValueField: valueField,
       dataSource: dataSource
     });
+  }
+
+  RemoteComboBox(element, url, textField = 'text', valueField = 'id') {
+    let dataSource = {
+      transport: {
+        serverFiltering: true,
+        dateType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.ComboBox(element, dataSource, textField, valueField);
+  }
+
+  ComboBoxEditor(container, options, dataSource, textField = 'text', valueField = 'id') {
+    const input = $('<input/>');
+    input.attr('name', options.field);
+    input.appendTo(container);
+    return this.ComboBox(input, dataSource, textField, valueField);
+  }
+
+  RemoteComboBoxEditor(container, options, url, textField = 'text', valueField = 'id') {
+    let dataSource = {
+      transport: {
+        serverFiltering: true,
+        dateType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.ComboBoxEditor(container, options, dataSource, textField, valueField);
   }
 
   // #endregion

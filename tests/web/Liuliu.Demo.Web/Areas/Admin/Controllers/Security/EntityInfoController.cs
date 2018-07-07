@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -26,6 +27,7 @@ using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Mapping;
 using OSharp.Security;
 
 
@@ -59,6 +61,19 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
+        }
+
+        /// <summary>
+        /// 读取实体节点
+        /// </summary>
+        /// <returns>实体节点集合</returns>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("读取节点")]
+        public List<EntityInfoNode> ReadNode()
+        {
+            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfoNode>().ToList();
+            return nodes;
         }
 
         [HttpGet]

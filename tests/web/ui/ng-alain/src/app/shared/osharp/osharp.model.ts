@@ -138,6 +138,7 @@ export class EntityProperty {
   Name: string;
   Display: string;
   TypeName: string;
+  ValueRange: any[];
 }
 
 /**

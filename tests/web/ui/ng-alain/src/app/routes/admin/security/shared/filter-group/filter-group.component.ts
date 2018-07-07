@@ -9,6 +9,7 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
   templateUrl: './filter-group.component.html',
   styles: [`
   .group-box{margin:5px;padding:5px; border:dashed 2px #ddd;}
+  .group-box nz-select{margin-right:5px;}
   `]
 })
 export class FilterGroupComponent implements OnChanges {
@@ -29,7 +30,6 @@ export class FilterGroupComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.group);
     if (this.group && (!this.group.Level || this.group.Level == 1)) {
       FilterGroup.Init(this.group);
     }
@@ -40,7 +40,6 @@ export class FilterGroupComponent implements OnChanges {
       }
       this.http.get<AjaxResult>("api/admin/entityinfo/ReadProperties?typeName=" + this.entity).subscribe(res => {
         if (res.Type != AjaxResultType.Success) {
-          console.log(res);
           this.osharp.error(res.Content);
           return;
         }
@@ -62,7 +61,11 @@ export class FilterGroupComponent implements OnChanges {
       this.osharp.error("请选择左边的一行再进行操作");
       return;
     }
-    this.group.Rules.push(new FilterRule(null, null));
+    let rule = new FilterRule(null, null);
+    if (this.entityProperties.length > 0) {
+      rule.Field = this.entityProperties[0].Name;
+    }
+    this.group.Rules.push(rule);
   }
   removeRule(rule: FilterRule) {
     if (rule) {

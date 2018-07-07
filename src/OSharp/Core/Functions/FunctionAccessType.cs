@@ -7,6 +7,9 @@
 //  <last-date>2017-09-04 8:14</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
+
 namespace OSharp.Core.Functions
 {
     /// <summary>
@@ -17,16 +20,19 @@ namespace OSharp.Core.Functions
         /// <summary>
         /// 匿名用户可访问
         /// </summary>
+        [Description("匿名访问")]
         Anonymouse = 0,
 
         /// <summary>
         /// 登录用户可访问
         /// </summary>
+        [Description("登录访问")]
         Logined = 1,
 
         /// <summary>
         /// 指定角色可访问
         /// </summary>
+        [Description("角色访问")]
         RoleLimit = 2
     }
 }

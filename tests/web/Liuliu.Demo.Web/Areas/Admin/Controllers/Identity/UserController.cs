@@ -68,7 +68,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<UserOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
+            Expression<Func<User, bool>> predicate = FilterHelper.GetDataFilterExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
 
             return page.ToPageData();

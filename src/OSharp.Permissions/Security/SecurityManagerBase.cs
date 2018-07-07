@@ -22,6 +22,7 @@ using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -164,7 +165,7 @@ namespace OSharp.Security
                     if (dto.IsLocked && entity.Area == "Admin" && entity.Controller == "Function"
                         && (entity.Action == "Update" || entity.Action == "Read"))
                     {
-                        throw new Exception($"功能信息“{entity.Name}”不能锁定");
+                        throw new OsharpException($"功能信息“{entity.Name}”不能锁定");
                     }
                     if (dto.AuditEntityEnabled && !dto.AuditOperationEnabled && !entity.AuditOperationEnabled && !entity.AuditEntityEnabled)
                     {
@@ -737,28 +738,28 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            List<DataAuthCacheItem>cacheItems = new List<DataAuthCacheItem>();
+            List<DataAuthCacheItem> cacheItems = new List<DataAuthCacheItem>();
             OperationResult result = await _entityRoleRepository.InsertAsync(dtos,
                 async dto =>
                 {
                     TRole role = await _roleRepository.GetAsync(dto.RoleId);
                     if (role == null)
                     {
-                        throw new Exception($"编号为“{dto.RoleId}”的角色信息不存在");
+                        throw new OsharpException($"编号为“{dto.RoleId}”的角色信息不存在");
                     }
                     TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(dto.EntityId);
                     if (entityInfo == null)
                     {
-                        throw new Exception($"编号为“{dto.EntityId}”的数据实体信息不存在");
+                        throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
                     if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId))
                     {
-                        throw new Exception($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
+                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
                     }
-                    OperationResult checkResult = CheckFilterGroupProperty(dto.FilterGroup, entityInfo);
+                    OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
                     if (!checkResult.Successed)
                     {
-                        throw new Exception($"数据规则验证失败：{checkResult.Message}");
+                        throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
                     cacheItems.Add(new DataAuthCacheItem()
                     {
@@ -782,28 +783,28 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            List<DataAuthCacheItem>cacheItems = new List<DataAuthCacheItem>();
-            OperationResult result = await  _entityRoleRepository.UpdateAsync(dtos,
+            List<DataAuthCacheItem> cacheItems = new List<DataAuthCacheItem>();
+            OperationResult result = await _entityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
                     TRole role = await _roleRepository.GetAsync(dto.RoleId);
                     if (role == null)
                     {
-                        throw new Exception($"编号为“{dto.RoleId}”的角色信息不存在");
+                        throw new OsharpException($"编号为“{dto.RoleId}”的角色信息不存在");
                     }
                     TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(dto.EntityId);
                     if (entityInfo == null)
                     {
-                        throw new Exception($"编号为“{dto.EntityId}”的数据实体信息不存在");
+                        throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
                     if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId, dto.Id))
                     {
-                        throw new Exception($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
+                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
                     }
-                    OperationResult checkResult = CheckFilterGroupProperty(dto.FilterGroup, entityInfo);
+                    OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
                     if (!checkResult.Successed)
                     {
-                        throw new Exception($"数据规则验证失败：{checkResult.Message}");
+                        throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
                     cacheItems.Add(new DataAuthCacheItem()
                     {
@@ -851,7 +852,7 @@ namespace OSharp.Security
             return result;
         }
 
-        private static OperationResult CheckFilterGroupProperty(FilterGroup group, TEntityInfo entityInfo)
+        private static OperationResult CheckFilterGroup(FilterGroup group, TEntityInfo entityInfo)
         {
             EntityProperty[] properties = entityInfo.Properties;
 
@@ -862,11 +863,22 @@ namespace OSharp.Security
                     return new OperationResult(OperationResultType.Error, $"属性名“{rule.Field}”在实体“{entityInfo.Name}”中不存在");
                 }
             }
+            if (group.Operate == FilterOperate.And)
+            {
+                List<IGrouping<string, FilterRule>> duplicate = group.Rules.GroupBy(m => m.Field + m.Operate).Where(m => m.Count() > 1).ToList();
+                if (duplicate.Count > 0)
+                {
+                    FilterRule[] rules = duplicate.SelectMany(m => m.Select(n => n)).DistinctBy(m => m.Field + m.Operate).ToArray();
+                    return new OperationResult(OperationResultType.Error,
+                        $"组操作为“并且”的条件下，字段和操作“{rules.ExpandAndToString(m => $"{properties.First(n => n.Name == m.Field).Display}-{m.Operate.ToDescription()}", ", ")}”存在重复规则，请移除重复项");
+                }
+            }
+
             if (group.Groups.Count > 0)
             {
                 foreach (FilterGroup g in group.Groups)
                 {
-                    OperationResult result = CheckFilterGroupProperty(g, entityInfo);
+                    OperationResult result = CheckFilterGroup(g, entityInfo);
                     if (!result.Successed)
                     {
                         return result;
