@@ -19,7 +19,6 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 ### 框架组件组织
 
 * OSharp【框架核心组件】：框架的核心组件，包含一系列快速开发中经常用到的Utility辅助工具功能，框架各个组件的核心接口定义，部分核心功能的实现
-
 * OSharp.AspNetCore【AspNetCore组件】：AspNetCore组件，提供AspNetCore的服务端功能的封装
 * OSharp.AutoMapper【对象映射组件】：AutoMapper 对象映射组件，封装基于AutoMapper的对象映射实现
 * OSharp.EntityFrameworkCore【EFCore 数据组件】：EFCore数据访问组件，封装EntityFrameworkCore数据访问功能的实现
@@ -55,39 +54,50 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * 从底层开始，自动收集了系统的所有业务点（[IFunction](http://docs.osharp.org/api/OSharp.Core.Functions.IFunction.html)）和数据实体（[IEntityInfo](http://docs.osharp.org/api/OSharp.Core.EntityInfos.IEntityInfo.html)），用于对系统的功能权限、数据权限、数据缓存、操作审计 等实用功能提供数据支持。
 
 * 功能点`Function`与MVC的`Area/Controller/Action`一一对应，是功能权限的最小验证单位，基于功能点，可以配置：
-  * 功能访问类型（匿名访问、登录访问、限定角色访问）
-  * 功能的数据缓存时间及缓存过期方式（绝对过期、相对过期）
-  * 是否开启操作审计（XXX人员XXX时间做了XXX操作）
-  * 是否开启数据审计（操作引起的数据变化详情（新增、更新、删除））
+    * 功能访问类型（匿名访问、登录访问、限定角色访问）
+    * 功能的数据缓存时间及缓存过期方式（绝对过期、相对过期）
+    * 是否开启操作审计（XXX人员XXX时间做了XXX操作）
+    * 是否开启数据审计（操作引起的数据变化详情（新增、更新、删除））
 * 数据实体`EntityInfo`与数据库中的各个数据实体一一对应，基于数据实体，可以配置：
-  * 是否开启数据审计，与`Function`上的同配置级别不同，如果指定实体未开放审计，则不审计当前实体。
-  * **[未实现]** 数据权限，基于`角色 - 实体`的数据权限设计，通过配置实现 XXX角色是否有权访问XXX实体数据（的XX属性）
+    * 是否开启数据审计，与`Function`上的同配置级别不同，如果指定实体未开放审计，则不审计当前实体。
+    * **[部分实现]** 数据权限，基于`角色 - 实体`的数据权限设计，通过配置实现 XXX角色是否有权访问XXX实体数据（的XX属性）
 * 设计了一个树形结构的业务模块体系（[Module](http://docs.osharp.org/api/OSharp.Security.ModuleBase-1.html)），对应着后端向前端开放的操作点（菜单/按钮），一个模块可由一个或多个功能点构成，模块是对外开放的特殊功能点，是进行**角色/用户功能授权**的单位。把一个模块授权给角色，角色即拥有了一个或多个功能点的操作权限。
 * #### 功能权限授权流程
-  * **[自动]** 创建MVC的各个`Area/Controller/Action`的功能点`Function`信息，存储到数据库
-  * **[自动]** 创建树形模块`Module`信息，并创建模块与功能点（一个或多个）的分配关系，存储到数据库
-  * 将模块`Module`分配给角色`Role`
-  * 将角色`Role`分配给用户`User`
-  * 可将模块`Module`分配给用户`User`，解决特权问题
-  * 这样用户即可根据拥有的角色，自动拥有模块对应着的所有功能点的功能权限
-  * 
+    * **[自动]** 创建MVC的各个`Area/Controller/Action`的功能点`Function`信息，存储到数据库
+    * **[自动]** 创建树形模块`Module`信息，并创建模块与功能点（一个或多个）的分配关系，存储到数据库
+    * 将模块`Module`分配给角色`Role`
+    * 将角色`Role`分配给用户`User`
+    * 可将模块`Module`分配给用户`User`，解决特权问题
+    * 这样用户即可根据拥有的角色，自动拥有模块对应着的所有功能点的功能权限 
 * #### 功能权限验证流程
-  * 系统初始化时，根据每个角色`Role`分配到的模块`Module`，自动初始化每个 `角色 Role - Function[] `的权限对应关系并缓存
-  * 游客进入系统时，自动请求所有可匿名访问`FunctionAccessType.Anonymouse`的模块信息并缓存到浏览器，浏览器根据这个缓存的模块集合，对前端页面的各个操作点（菜单/按钮）进行是否隐藏/禁用的状态控制
-  * 注册用户登录系统时，自动请求所有可执行（包括匿名的`FunctionAccessType.Anonymouse`、登录的`FunctionAccessType.Logined`、指定角色的`FunctionAccessType.RoleLimit`）的模块信息并缓存到浏览器，浏览器根据这个缓存的模块集合，对前端页面的各个操作点（菜单/按钮）进行是否隐藏/禁用的状态控制
-  * 用户`User`执行一个功能点`Function`时，验证流程如下：
-    * 功能点不存在时，返回404
-    * 功能点被锁定时，返回423
-    * 功能点可访问性为匿名`FunctionAccessType.Anonymouse`验证通过
-    * 功能点可访问性为需要登录`FunctionAccessType.Logined`时，用户未登录，返回401，已登录则验证通过
-    * 功能点可访问性为需要登录`FunctionAccessType.RoleLimit`时，流程如下：
-      * 用户未登录，返回401
-      * 逐个验证用户拥有的角色`Role`，根据角色从缓存中取出`Role-Function[]`缓存项，`Function[]`包含要验证的功能点时，验证通过
-      * 由分配给用户的模块`Module`对应的功能点，获取到`User-Function[]`（并缓存），`Function[]`包含要验证的功能点时，验证通过
-      * 验证未通过，返回403
+    * 系统初始化时，根据每个角色`Role`分配到的模块`Module`，自动初始化每个 `角色 Role - Function[] `的权限对应关系并缓存
+    * 游客进入系统时，自动请求所有可匿名访问`FunctionAccessType.Anonymouse`的模块信息并缓存到浏览器，浏览器根据这个缓存的模块集合，对前端页面的各个操作点（菜单/按钮）进行是否隐藏/禁用的状态控制
+    * 注册用户登录系统时，自动请求所有可执行（包括匿名的`FunctionAccessType.Anonymouse`、登录的`FunctionAccessType.Logined`、指定角色的`FunctionAccessType.RoleLimit`）的模块信息并缓存到浏览器，浏览器根据这个缓存的模块集合，对前端页面的各个操作点（菜单/按钮）进行是否隐藏/禁用的状态控制
+    * 用户`User`执行一个功能点`Function`时，验证流程如下：
+        * 功能点不存在时，返回404
+        * 功能点被锁定时，返回423
+        * 功能点可访问性为匿名`FunctionAccessType.Anonymouse`验证通过
+        * 功能点可访问性为需要登录`FunctionAccessType.Logined`时，用户未登录，返回401，已登录则验证通过
+        * 功能点可访问性为需要登录`FunctionAccessType.RoleLimit`时，流程如下：
+            * 用户未登录，返回401
+            * 逐个验证用户拥有的角色`Role`，根据角色从缓存中取出`Role-Function[]`缓存项，`Function[]`包含要验证的功能点时，验证通过
+            * 由分配给用户的模块`Module`对应的功能点，获取到`User-Function[]`（并缓存），`Function[]`包含要验证的功能点时，验证通过
+            * 验证未通过，返回403
 
-* #### [未实现] 数据权限授权流程
-* #### [未实现] 数据权限验证流程
+* #### [部分实现] 数据权限授权流程
+    * 基于 角色`Role`-实体`EntityInfo` 的一一对应关系，配置指定角色对指定数据实体的数据查询筛选规则，并持久化到数据库中
+    * 数据查询筛选规则组成为 条件组`FilterGroup`和条件`FilterRule`，一个条件组 [FilterGroup](http://docs.osharp.org/api/OSharp.Filter.FilterGroup.html) 包含 一个或多个条件 [FilterRule](http://docs.osharp.org/api/OSharp.Filter.FilterRule.html) 和 一个或多个 条件组`FilterGroup`，这样就实现了条件组和条件的无限嵌套，能满足绝大多数数据筛选规则的组装需要，如下图：
+    
+    ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0009.png)
+
+* #### [部分实现] 数据权限验证流程
+    * 系统初始化时，将所有`角色-实体`的数据筛选规则缓存到内存中
+    * 进行数据查询的时候，根据当前用户的所有`角色 Role`和要查询的`实体 EntityInfo`，查找出所有配置的数据筛选规则`FilterGroup`，转换为数据查询表达式`Expression<Func<TEntity,bool>>`，各个角色的表达式之间使用`Or`逻辑进行组合
+    * 将以上生成的`数据权限`数据查询表达式，使用`And`逻辑组合到用户的提交的查询条件生成的表达式中，得到最终的数据查询表达式，提交到数据库中进行数据查询，从而获得数据权限限制下的合法数据
+
+## 6. 集成 Swagger 后端API文档系统
+
+OSharpNS 快速启动模板的开发模式，集成了`Swagger` API 文档生成组件，更方便了前后端分离的开发模式中前后端开发人员的数据接口对接工作。基于`Swagger`的工作原理，API的输入输出都需使用`强类型`的数据类型，`Swagger`才能发挥更好的作用，而OSharpNS框架通过`AutoMapper`的`ProjectTo`对业务实体到输出DTO`IOutputDto`提供了自动映射功能，能有效减轻后端开发中数据对象属性映射的工作量。
 
 ## <a id="03"/> 快速启动
 
@@ -171,8 +181,9 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0006.png)
 
-<br/>
 ## <a id="04"/>项目开发进度
+
+截止到目前，OSharpNS 框架的完成程度已经很高了，计划中的功能点，均已得到较高水准的实现，具体功能点完成进度如下所示：
 
 - [ ] **OSharpNS Framework**
     - [ ] OSharp
@@ -209,17 +220,18 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
               - [x] 实现基于MVC的事务提交AOP拦截提交
         - [ ] SignalR
     - [ ] OSharp.Permissions
-        - [x] 身份认证Identity
+        - [ ] 身份认证Identity
             - [x] 用户添加昵称`NickName`属性，并添加默认验证器
             - [x] 重写UserStore，RoleStore，使用现有IRepository进行数据存储
-        - [ ] 权限授权Security
+            - [ ] 实现第三方OAuth2认证系统的整合
+        - [x] 权限授权Security
             - [x] 功能权限
                 - [x] 实现功能权限各个业务实体的数据存储
                 - [x] 实现在系统初始化时，遍历反射程序集，自动初始化功能点、数据实体、业务模块等信息并持久化到数据库
                 - [x] 实现系统初始化时，将功能点，数据实体，角色功能权限等信息缓存到内存中
                 - [x] 实现`角色-功能点`，`用户-功能点`的功能权限验证
-            - [ ] 数据权限
-                - [ ] 实现`角色-实体`，`用户-实体`的数据权限配置
-                - [ ] 实现`角色-实体`，`用户-实体`的数据权限过滤
+            - [x] 数据权限
+                - [x] 实现`角色-实体`，`用户-实体`的数据权限配置
+                - [x] 实现`角色-实体`，`用户-实体`的数据权限过滤
         - [x] 系统System
             - [x] 实现键值对数据字典功能

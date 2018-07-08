@@ -50,7 +50,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
     4. 是否开启数据审计（操作引起的数据变化详情（新增、更新、删除））
 3. 数据实体`EntityInfo`与数据库中的各个数据实体一一对应，基于数据实体，可以配置：
     1. 是否开启数据审计，与`Function`上的同配置级别不同，如果指定实体未开放审计，则不审计当前实体。
-    2. **[未实现]** 数据权限，基于`角色 - 实体`的数据权限设计，通过配置实现 XXX角色是否有权访问XXX实体数据（的XX属性）
+    2. **[部分实现]** 数据权限，基于`角色 - 实体`的数据权限设计，通过配置实现 XXX角色是否有权访问XXX实体数据（的XX属性）
 4. 设计了一个树形结构的业务模块体系（[Module](http://docs.osharp.org/api/OSharp.Security.ModuleBase-1.html)），对应着后端向前端开放的操作点（菜单/按钮），一个模块可由一个或多个功能点构成，模块是对外开放的特殊功能点，是进行**角色/用户功能授权**的单位。把一个模块授权给角色，角色即拥有了一个或多个功能点的操作权限。
 5. ### 功能权限授权流程
     1. **[自动]** 创建MVC的各个`Area/Controller/Action`的功能点`Function`信息，存储到数据库
@@ -73,8 +73,17 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
             2. 逐个验证用户拥有的角色`Role`，根据角色从缓存中取出`Role-Function[]`缓存项，`Function[]`包含要验证的功能点时，验证通过
             3. 由分配给用户的模块`Module`对应的功能点，获取到`User-Function[]`（并缓存），`Function[]`包含要验证的功能点时，验证通过
             4. 验证未通过，返回403
-7. ### [未实现] 数据权限授权流程
-8. ### [未实现] 数据权限验证流程
+
+7. ### [部分实现] 数据权限授权流程
+    * 基于 角色`Role`-实体`EntityInfo` 的一一对应关系，配置指定角色对指定数据实体的数据查询筛选规则，并持久化到数据库中
+    * 数据查询筛选规则组成为 条件组`FilterGroup`和条件`FilterRule`，一个条件组 [FilterGroup](http://docs.osharp.org/api/OSharp.Filter.FilterGroup.html) 包含 一个或多个条件 [FilterRule](http://docs.osharp.org/api/OSharp.Filter.FilterRule.html) 和 一个或多个 条件组`FilterGroup`，这样就实现了条件组和条件的无限嵌套，能满足绝大多数数据筛选规则的组装需要，如下图：
+    
+    ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0009.png)
+
+8. ### [部分实现] 数据权限验证流程
+    * 系统初始化时，将所有`角色-实体`的数据筛选规则缓存到内存中
+    * 进行数据查询的时候，根据当前用户的所有`角色 Role`和要查询的`实体 EntityInfo`，查找出所有配置的数据筛选规则`FilterGroup`，转换为数据查询表达式`Expression<Func<TEntity,bool>>`，各个角色的表达式之间使用`Or`逻辑进行组合
+    * 将以上生成的`数据权限`数据查询表达式，使用`And`逻辑组合到用户的提交的查询条件生成的表达式中，得到最终的数据查询表达式，提交到数据库中进行数据查询，从而获得数据权限限制下的合法数据
 
 ## 6. 集成 Swagger 后端API文档系统
 
@@ -92,7 +101,7 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 执行后，将能看到`osharp_xxx`系列的命令已安装到列表中
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025257948-1346844384.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0001.png)
 
 ## 3. 执行 osharp_cmd 命令，获取项目一键安装脚本
 
@@ -100,17 +109,17 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 执行后，将得到一个名为`cmd_build.bat`的批处理脚本文件
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025324047-1706828538.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/f2916f0d42e3edd1d87c0c242641ed7bd6ba15ef/osharpns/Readme/0002.png)
 
 ## 4. 运行脚本文件，生成项目初始化代码
 直接执行`cmd_build.bat`脚本代码，将会提示 `请输入项目名称，推荐形如 “公司.项目”的模式：`，此名称将用作解决方案名称、工程名称起始部分、代码中的`namespace`起始部分。例如输入`Liuliu.Demo`，将生成如下代码结构：
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025342700-41794936.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0003.png)
 
 ## 5. 用VS打开解决方案
 打开解决方案后，各个工程之间的引用关系已配置好，osharp框架的类库已引用 nuget.org 上的相应版本，并将自动还原好。项目结构如图所示：
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025402492-2139908394.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0004.png)
 
 ### 项目代码结构说明：
 * `Liuliu.Demo.Core`： 业务核心工程，顶层文件夹以业务模块内聚，每个文件夹按职责划分文件夹，通常可包含传输对象`Dtos`、实体类型`Entities`、事件处理`Events`等，业务接口`IXxxContract`与业务实现`IXxxService`放在外边，如果文件数量多的话也可以建文件夹存放。
@@ -140,7 +149,7 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 * 定位到项目的目录`src/ui/ng-alain`，在空白处点右键，使用 VS Code 打开项目，可看到如下结构：
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025419735-865546819.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0005.png)
 
 * 按`Ctrl+Tab`快捷键，调出VS Code的命令行控制台，输入NodeJS包安装命令：
 > npm install
@@ -164,15 +173,14 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 最终效果如下图所示：
 
-![](https://images2018.cnblogs.com/blog/87201/201806/87201-20180628025435689-607962896.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0006.png)
 
-<br/>
 # 项目开发进度
 
-截止到目前，OSharpNS 框架的完成程度已经很高了，计划中的功能点，除了`数据权限`未完成，其余均已得到较高水准的实现，具体功能点完成进度如下所示：
+截止到目前，OSharpNS 框架的完成程度已经很高了，计划中的功能点，均已得到较高水准的实现，具体功能点完成进度如下所示：
 
 - [ ] **OSharpNS Framework**
-    - [ ] OSharp
+    - [x] OSharp
         - [x] 添加常用Utility辅助工具类
         - [x] 添加框架配置Options定义
         - [x] 定义Entity数据访问相关接口
@@ -206,17 +214,18 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
               - [x] 实现基于MVC的事务提交AOP拦截提交
         - [ ] SignalR
     - [ ] OSharp.Permissions
-        - [x] 身份认证Identity
+        - [ ] 身份认证Identity
             - [x] 用户添加昵称`NickName`属性，并添加默认验证器
             - [x] 重写UserStore，RoleStore，使用现有IRepository进行数据存储
-        - [ ] 权限授权Security
+            - [ ] 实现第三方OAuth2认证系统的整合
+        - [x] 权限授权Security
             - [x] 功能权限
                 - [x] 实现功能权限各个业务实体的数据存储
                 - [x] 实现在系统初始化时，遍历反射程序集，自动初始化功能点、数据实体、业务模块等信息并持久化到数据库
                 - [x] 实现系统初始化时，将功能点，数据实体，角色功能权限等信息缓存到内存中
                 - [x] 实现`角色-功能点`，`用户-功能点`的功能权限验证
-            - [ ] 数据权限
-                - [ ] 实现`角色-实体`，`用户-实体`的数据权限配置
-                - [ ] 实现`角色-实体`，`用户-实体`的数据权限过滤
+            - [x] 数据权限
+                - [x] 实现`角色-实体`，`用户-实体`的数据权限配置
+                - [x] 实现`角色-实体`，`用户-实体`的数据权限过滤
         - [x] 系统System
             - [x] 实现键值对数据字典功能

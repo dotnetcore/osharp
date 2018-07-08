@@ -107,7 +107,7 @@ namespace OSharp.Security
                 TModule module = moduleStore.Modules.FirstOrDefault(m => m.ParentId.Equals(parent.Id) && m.Code == info.Code);
                 if (module == null)
                 {
-                    TModuleInputDto dto = GetDto(info, parent.Id, null);
+                    TModuleInputDto dto = GetDto(info, parent, null);
                     result = moduleStore.CreateModule(dto).Result;
                     if (result.Errored)
                     {
@@ -117,7 +117,7 @@ namespace OSharp.Security
                 }
                 else
                 {
-                    TModuleInputDto dto = GetDto(info, parent.Id, module);
+                    TModuleInputDto dto = GetDto(info, parent, module);
                     result = moduleStore.UpdateModule(dto).Result;
                     if (result.Errored)
                     {
@@ -169,7 +169,7 @@ namespace OSharp.Security
             return module;
         }
 
-        private static TModuleInputDto GetDto(ModuleInfo info, TModuleKey parentId, TModule existsModule)
+        private static TModuleInputDto GetDto(ModuleInfo info, TModule parent, TModule existsModule)
         {
             return new TModuleInputDto()
             {
@@ -177,8 +177,8 @@ namespace OSharp.Security
                 Name = info.Name,
                 Code = info.Code,
                 OrderCode = info.Order,
-                Remark = existsModule?.Remark,
-                ParentId = parentId
+                Remark = existsModule?.Remark ?? $"{parent.Name}-{info.Name}",
+                ParentId = parent.Id
             };
         }
 
@@ -187,6 +187,5 @@ namespace OSharp.Security
             string[] codes = module.TreePathIds.Select(id => source.First(n => n.Id.Equals(id)).Code).ToArray();
             return codes.ExpandAndToString(".");
         }
-
     }
 }

@@ -119,7 +119,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return nodes;
         }
 
-        /*
         /// <summary>
         /// 读取模块功能
         /// </summary>
@@ -153,6 +152,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return page.ToPageData();
         }
 
+        //模块暂时不需要CUD操作
+        /*
         /// <summary>
         /// 新增模块子节点
         /// </summary>

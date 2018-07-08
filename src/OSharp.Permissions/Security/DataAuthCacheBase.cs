@@ -39,7 +39,7 @@ namespace OSharp.Security
         private readonly ILogger _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="DataAuthCacheBase"/>类型的新实例
+        /// 初始化一个<see cref="DataAuthCacheBase{TEntityRole, TRole, TEntityInfo, TRoleKey}"/>类型的新实例
         /// </summary>
         protected DataAuthCacheBase()
         {
