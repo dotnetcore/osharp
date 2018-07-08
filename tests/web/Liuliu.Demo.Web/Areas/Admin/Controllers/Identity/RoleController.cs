@@ -31,6 +31,7 @@ using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.Identity;
+using OSharp.Linq;
 using OSharp.Mapping;
 
 
@@ -77,7 +78,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取节点")]
         public List<RoleNode> ReadNode()
         {
-            List<RoleNode> nodes = _roleManager.Roles.Unlocked().OrderBy(m => m.Name).ToOutput<RoleNode>().ToList();
+            Expression<Func<Role, bool>> roleExp = FilterHelper.GetDataFilterExpression<Role>().And(m => !m.IsLocked);
+            List<RoleNode> nodes = _roleManager.Roles.Where(roleExp).OrderBy(m => m.Name).ToOutput<RoleNode>().ToList();
             return nodes;
         }
 
@@ -93,7 +95,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Check.GreaterThan(userId, nameof(userId), 0);
 
             int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
-            List<UserRoleNode> nodes = _identityContract.Roles.OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<UserRoleNode>().ToList();
+            Expression<Func<Role, bool>> roleExp = FilterHelper.GetDataFilterExpression<Role>().And(m => !m.IsLocked);
+            List<UserRoleNode> nodes = _identityContract.Roles.Where(roleExp).OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<UserRoleNode>().ToList();
             nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
             return nodes;
         }

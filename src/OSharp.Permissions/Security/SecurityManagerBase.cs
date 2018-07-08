@@ -575,6 +575,14 @@ namespace OSharp.Security
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
                 _eventBus.Publish(removeEventData);
 
+                if (addNames.Count > 0 && removeNames.Count == 0)
+                {
+                    return new OperationResult(OperationResultType.Success, $"角色“{role.Name}”添加模块“{addNames.ExpandAndToString()}”操作成功");
+                }
+                if (addNames.Count == 0 && removeNames.Count > 0)
+                {
+                    return new OperationResult(OperationResultType.Success, $"角色“{role.Name}”移除模块“{removeNames.ExpandAndToString()}”操作成功");
+                }
                 return new OperationResult(OperationResultType.Success,
                     $"角色“{role.Name}”添加模块“{addNames.ExpandAndToString()}”，移除模块“{removeNames.ExpandAndToString()}”操作成功");
             }
@@ -664,6 +672,14 @@ namespace OSharp.Security
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { UserNames = new[] { user.UserName } };
                 _eventBus.Publish(removeEventData);
 
+                if (addNames.Count > 0 && removeNames.Count == 0)
+                {
+                    return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”添加模块“{addNames.ExpandAndToString()}”操作成功");
+                }
+                if (addNames.Count == 0 && removeNames.Count > 0)
+                {
+                    return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”移除模块“{removeNames.ExpandAndToString()}”操作成功");
+                }
                 return new OperationResult(OperationResultType.Success,
                     $"用户“{user.UserName}”添加模块“{addNames.ExpandAndToString()}”，移除模块“{removeNames.ExpandAndToString()}”操作成功");
             }

@@ -23,7 +23,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
     this.http = injector.get(HttpClient);
     this.moduleName = "roleentity";
     this.splitterOptions = {
-      panes: [{ size: "45%" }, { collapsible: true, collapsed: false }]
+      panes: [{ size: "50%" }, { collapsible: true, collapsed: false }]
     };
   }
 
@@ -68,13 +68,15 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       title: "角色",
       width: 150,
       template: "#=RoleId#.#=RoleName#",
-      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/role/ReadNode", "RoleName", "RoleId")
+      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/role/ReadNode", "RoleName", "RoleId"),
+      filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/role/ReadNode", "RoleName", "RoleId") }
     }, {
       field: "EntityId",
       title: "数据实体",
       width: 300,
       template: "#=EntityName# [#=EntityType#]",
-      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/entityinfo/ReadNode", "Name", "Id")
+      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/entityinfo/ReadNode", "Name", "Id"),
+      filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/entityinfo/ReadNode", "Name", "Id") }
     }, {
       field: "IsLocked",
       title: "锁定",

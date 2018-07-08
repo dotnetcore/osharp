@@ -11,7 +11,8 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
 })
 export class UserComponent extends GridComponentBase implements AfterViewInit {
 
-  window: kendo.ui.Window;
+  roleWindow: kendo.ui.Window;
+  moduleWindow: kendo.ui.Window;
   windowOptions: kendo.ui.WindowOptions;
   tabstripOptions: kendo.ui.TabStripOptions;
   roleTreeOptions: kendo.ui.TreeViewOptions;
@@ -44,7 +45,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.User", ["Read", "Create", "Update", "Delete", "SetPermission"]);
+    return new AuthConfig("Root.Admin.Identity.User", ["Read", "Create", "Update", "Delete", "SetRoles", "SetModules"]);
   }
 
   //#region GridBase
@@ -72,8 +73,10 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
     return [
       {
         command: [
-          { name: "permission", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "" }
+          { name: "setRoles", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.roleWindowOpen(e) },
+          { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.moduleWindowOpen(e) },
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
+          {}
         ],
         width: 100
       },
@@ -151,39 +154,62 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
 
   private winUser: any;
 
-  private windowOpen(e) {
+  //#region RoleWindow
+
+  onRoleWinInit(win) {
+    this.roleWindow = win;
+  }
+  private roleWindowOpen(e) {
     e.preventDefault();
     let tr = $(e.target).closest("tr");
     this.winUser = this.grid.dataItem(tr);
-    this.window.title("用户权限设置-" + this.winUser.UserName).open().center().resize();
-
-    // 设置树数据
+    this.roleWindow.title("用户角色设置-" + this.winUser.UserName).open().center().resize();
     this.roleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/role/ReadUserRoles?userId=" + this.winUser.Id));
-    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadUserModules?userId=" + this.winUser.Id));
   }
-  onWinInit(win) {
-    this.window = win;
-  }
-  onWinClose() {
-
-  }
-  onWinSubmit() {
+  onRoleWinSubmit() {
     let roles = this.roleTree.dataSource.data();
     let checkRoleIds = new List(roles.slice(0)).Where(m => m.checked).Select(m => m.Id).ToArray();
 
+    let params = { userId: this.winUser.Id, roleIds: checkRoleIds };
+
+    this.http.post("api/admin/user/setroles", params).subscribe(res => {
+      this.osharp.ajaxResult(res, () => {
+        this.grid.dataSource.read();
+        this.roleWindow.close();
+      });
+    });
+  }
+
+  //#endregion
+
+  //#region ModuleWindow
+
+  onModuleWinInit(win) {
+    this.moduleWindow = win;
+  }
+  private moduleWindowOpen(e) {
+    e.preventDefault();
+    let tr = $(e.target).closest("tr");
+    this.winUser = this.grid.dataItem(tr);
+    this.moduleWindow.title("用户模块设置-" + this.winUser.UserName).open().center().resize();
+    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadUserModules?userId=" + this.winUser.Id));
+  }
+  onModuleWinSubmit() {
     let moduleRoot = this.moduleTree.dataSource.data()[0];
     let modules = [];
     this.osharp.getTreeNodes(moduleRoot, modules);
     let checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
-    let params = { userId: this.winUser.Id, roleIds: checkRoleIds, moduleIds: checkModuleIds };
+    let params = { userId: this.winUser.Id, moduleIds: checkModuleIds };
 
-    this.http.post("api/admin/user/setpermission", params).subscribe(res => {
+    this.http.post("api/admin/user/setmodules", params).subscribe(res => {
       this.osharp.ajaxResult(res, () => {
         this.grid.dataSource.read();
-        this.window.close();
+        this.moduleWindow.close();
       });
     });
   }
+
+  //#endregion
 
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);

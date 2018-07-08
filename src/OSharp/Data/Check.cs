@@ -124,7 +124,7 @@ namespace OSharp.Data
         }
 
         /// <summary>
-        /// 检查参数必须小于[或可等于，参数canEqual]指定值，否则抛出<see cref="ArgumentOutOfRangeException"/>异常。
+        /// 检查参数必须小于[或可等于，参数<paramref name="canEqual"/>]指定值，否则抛出<see cref="ArgumentOutOfRangeException"/>异常。
         /// </summary>
         /// <typeparam name="T">参数类型。</typeparam>
         /// <param name="value"></param>
@@ -140,7 +140,7 @@ namespace OSharp.Data
         }
 
         /// <summary>
-        /// 检查参数必须大于[或可等于，参数canEqual]指定值，否则抛出<see cref="ArgumentOutOfRangeException"/>异常。
+        /// 检查参数必须大于[或可等于，参数<paramref name="canEqual"/>]指定值，否则抛出<see cref="ArgumentOutOfRangeException"/>异常。
         /// </summary>
         /// <typeparam name="T">参数类型。</typeparam>
         /// <param name="value"></param>
