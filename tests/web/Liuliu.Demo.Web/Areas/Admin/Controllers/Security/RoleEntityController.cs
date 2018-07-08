@@ -13,7 +13,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Security;
 using Liuliu.Demo.Security.Dtos;
@@ -51,6 +50,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>角色数据权限列表信息</returns>
         [HttpPost]
         [ModuleInfo]
+        [DependOnFunction("ReadProperties", Controller = "EntityInfo")]
         [Description("读取")]
         public PageData<EntityRoleOutputDto> Read()
         {
@@ -96,6 +96,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
+        [DependOnFunction("ReadNode", Controller = "Role")]
+        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public async Task<AjaxResult> Create(params EntityRoleInputDto[] dtos)
@@ -113,6 +115,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
+        [DependOnFunction("ReadNode", Controller = "Role")]
+        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)

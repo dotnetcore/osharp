@@ -465,16 +465,6 @@ export abstract class GridComponentBase extends ComponentBase {
     if (!this.auth.Delete && transport.destroy) {
       delete transport.destroy;
     }
-
-    let fields = options.schema.model.fields;
-    if (!this.auth.Update && fields) {
-      for (const key in fields) {
-        if (fields.hasOwnProperty(key)) {
-          const item = fields[key];
-          item.editable = false;
-        }
-      }
-    }
     return options;
   }
   /**
@@ -491,6 +481,16 @@ export abstract class GridComponentBase extends ComponentBase {
       this.osharp.remove(toolbar, m => m.name == "save");
       this.osharp.remove(toolbar, m => m.name == "cancel");
     }
+    //新增和更新的编辑状态
+    options.beforeEdit = e => {
+      if (e.model.isNew() && !this.auth.Create) {
+        e.preventDefault();
+      }
+      if (!e.model.isNew() && !this.auth.Update) {
+        e.preventDefault();
+      }
+    };
+
     // 命令列
     let cmdColumn = options.columns && options.columns.find(m => m.command != null);
     let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
