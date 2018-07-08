@@ -127,12 +127,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取模块功能")]
-        public IActionResult ReadFunctions()
+        public PageData<FunctionOutputDto2> ReadFunctions()
         {
             PageRequest request = new PageRequest(Request);
             if (request.FilterGroup.Rules.Count == 0)
             {
-                return Json(new PageData<object>());
+                return new PageData<FunctionOutputDto2>();
             }
             Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
@@ -140,7 +140,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
-                return Json(new PageData<object>());
+                return new PageData<FunctionOutputDto2>();
             }
             if (request.PageCondition.SortConditions.Length == 0)
             {
@@ -148,8 +148,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }
             var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
                 request.PageCondition,
-                m => new { m.Id, m.Name, m.AccessType, m.Area, m.Controller });
-            return Json(page.ToPageData());
+                m => new FunctionOutputDto2() { Id = m.Id, Name = m.Name, AccessType = m.AccessType, Area = m.Area, Controller = m.Controller });
+            return page.ToPageData();
         }
 
         /// <summary>
@@ -162,12 +162,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增子节点")]
-        public async Task<IActionResult> Create(ModuleInputDto dto)
+        public async Task<AjaxResult> Create(ModuleInputDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
             OperationResult result = await _securityManager.CreateModule(dto);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
 
         /// <summary>
@@ -180,16 +180,16 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
-        public async Task<IActionResult> Update(ModuleInputDto dto)
+        public async Task<AjaxResult> Update(ModuleInputDto dto)
         {
             Check.NotNull(dto, nameof(dto));
             if (dto.Id == 1)
             {
-                return Json(new AjaxResult("根节点不能编辑", AjaxResultType.Error));
+                return new AjaxResult("根节点不能编辑", AjaxResultType.Error);
             }
 
             OperationResult result = await _securityManager.UpdateModule(dto);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
 
         /// <summary>
@@ -202,17 +202,17 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
-        public async Task<IActionResult> Delete([FromForm] int id)
+        public async Task<AjaxResult> Delete([FromForm] int id)
         {
             Check.NotNull(id, nameof(id));
             Check.GreaterThan(id, nameof(id), 0);
             if (id == 1)
             {
-                return Json(new AjaxResult("根节点不能删除", AjaxResultType.Error));
+                return new AjaxResult("根节点不能删除", AjaxResultType.Error);
             }
 
             OperationResult result = await _securityManager.DeleteModule(id);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
 
         /// <summary>
@@ -226,10 +226,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("ReadTreeNode", Controller = "Function")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置功能")]
-        public async Task<IActionResult> SetFunctions([FromBody] ModuleSetFunctionDto dto)
+        public async Task<AjaxResult> SetFunctions([FromBody] ModuleSetFunctionDto dto)
         {
             OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
     }
 }

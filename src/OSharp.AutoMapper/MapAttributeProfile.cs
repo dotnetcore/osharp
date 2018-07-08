@@ -12,6 +12,8 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using Microsoft.Extensions.Logging;
+
 using OSharp.Collections;
 using OSharp.Mapping;
 using OSharp.Reflection;
@@ -24,14 +26,19 @@ namespace OSharp.AutoMapper
     {
         private readonly IMapFromAttributeTypeFinder _mapFromAttributeTypeFinder;
         private readonly IMapToAttributeTypeFinder _mapToAttributeTypeFinder;
+        private readonly ILogger<MapAttributeProfile> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="MapAttributeProfile"/>类型的新实例
         /// </summary>
-        public MapAttributeProfile(IMapFromAttributeTypeFinder mapFromAttributeTypeFinder, IMapToAttributeTypeFinder mapToAttributeTypeFinder)
+        public MapAttributeProfile(
+            IMapFromAttributeTypeFinder mapFromAttributeTypeFinder,
+            IMapToAttributeTypeFinder mapToAttributeTypeFinder,
+            ILoggerFactory loggerFactory)
         {
             _mapFromAttributeTypeFinder = mapFromAttributeTypeFinder;
             _mapToAttributeTypeFinder = mapToAttributeTypeFinder;
+            _logger = loggerFactory.CreateLogger<MapAttributeProfile>();
         }
 
         /// <inheritdoc />
@@ -64,7 +71,9 @@ namespace OSharp.AutoMapper
             foreach ((Type Source, Type Target) tuple in tuples)
             {
                 CreateMap(tuple.Source, tuple.Target);
+                _logger.LogDebug($"创建“{tuple.Source}”到“{tuple.Target}”的对象映射关系");
             }
+            _logger.LogInformation($"创建{tuples.Count}个对象映射关系");
         }
     }
 }

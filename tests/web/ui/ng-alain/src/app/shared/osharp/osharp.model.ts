@@ -27,23 +27,120 @@ export class ListNode {
 }
 
 /** 查询条件 */
-export class Rule {
-  field: string;
-  value: string;
-  operate: string;
+export class FilterRule {
+  /**属性名 */
+  Field: string;
+  /**属性值 */
+  Value: string;
+  /**对比操作 */
+  Operate: FilterOperate;
 
-  constructor(field: string, value: string, operate: string = 'equal') {
-    this.field = field;
-    this.value = value;
-    this.operate = operate;
+  /**
+   * 实例化一个条件信息
+   * @param field 字段名
+   * @param value 属性值
+   * @param operate 对比操作
+   */
+  constructor(field: string, value: string, operate: FilterOperate = FilterOperate.Equal) {
+    this.Field = field;
+    this.Value = value;
+    this.Operate = operate;
   }
 }
 /** 查询条件组 */
-export class Group {
-  rules: Rule[] = [];
-  operate = 'and';
-  groups: Group[] = [];
+export class FilterGroup {
+  /**条件集合 */
+  Rules: FilterRule[] = [];
+  /**条件间操作 */
+  Operate: FilterOperate = FilterOperate.And;
+  /**条件组集合 */
+  Groups: FilterGroup[] = [];
+  Level: number = 1;
+
+  static Init(group: FilterGroup) {
+    if (!group.Level) {
+      group.Level = 1;
+    }
+    group.Groups.forEach(subGroup => {
+      subGroup.Level = group.Level + 1;
+      FilterGroup.Init(subGroup);
+    });
+  }
 }
+/**比较操作枚举 */
+export enum FilterOperate {
+  And = 1,
+  Or = 2,
+  Equal = 3,
+  NotEqual = 4,
+  Less = 5,
+  LessOrEqual = 6,
+  Greater = 7,
+  GreaterOrEqual = 8,
+  StartsWith = 9,
+  EndsWith = 10,
+  Contains = 11,
+  NotContains = 12,
+}
+export class FilterOperateEntry {
+  Operate: FilterOperate;
+  Display: string;
+
+  constructor(operate: FilterOperate) {
+    this.Operate = operate;
+    switch (operate) {
+      case FilterOperate.And:
+        this.Display = "并且";
+        break;
+      case FilterOperate.Or:
+        this.Display = "或者";
+        break;
+      case FilterOperate.Equal:
+        this.Display = "等于";
+        break;
+      case FilterOperate.NotEqual:
+        this.Display = "不等于";
+        break;
+      case FilterOperate.Less:
+        this.Display = "小于";
+        break;
+      case FilterOperate.LessOrEqual:
+        this.Display = "小于等于";
+        break;
+      case FilterOperate.Greater:
+        this.Display = "大于";
+        break;
+      case FilterOperate.GreaterOrEqual:
+        this.Display = "大于等于";
+        break;
+      case FilterOperate.StartsWith:
+        this.Display = "开始于";
+        break;
+      case FilterOperate.EndsWith:
+        this.Display = "结束于";
+        break;
+      case FilterOperate.Contains:
+        this.Display = "包含";
+        break;
+      case FilterOperate.NotContains:
+        this.Display = "不包含";
+        break;
+      default:
+        this.Display = "未知操作";
+        break;
+    }
+    this.Display = `${<number>operate}.${this.Display}`;
+  }
+}
+
+/** 实体属性信息 */
+export class EntityProperty {
+  Name: string;
+  Display: string;
+  TypeName: string;
+  ValueRange: any[];
+}
+
 /**
  * 验证码类
  */

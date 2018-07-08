@@ -49,7 +49,7 @@ namespace OSharp.Entity.SqlServer
                     {
                         if (contextOptions.DatabaseType != DatabaseType.SqlServer)
                         {
-                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 SqlServer 类型");
+                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.SqlServer)} 类型");
                         }
                         if (contextOptions.AutoMigrationEnabled)
                         {

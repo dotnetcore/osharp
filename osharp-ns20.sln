@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "tests\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{B0BC26F8-5011-44DE-B516-643683DB7655}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{B0BC26F8-5011-44DE-B516-643683DB7655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0BC26F8-5011-44DE-B516-643683DB7655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0BC26F8-5011-44DE-B516-643683DB7655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{186A8BDB-8A2D-4E16-9F7C-36F33960809D} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{01974482-F9CA-41E7-A9EF-EB13C939570F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{B0BC26F8-5011-44DE-B516-643683DB7655} = {0E239259-0BC3-4521-AD60-07CB87263140}
+		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

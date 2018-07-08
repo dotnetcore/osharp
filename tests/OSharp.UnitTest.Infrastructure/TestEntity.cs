@@ -9,12 +9,14 @@
 using System;
 using System.ComponentModel;
 
+using OSharp.Entity;
+
 
 namespace OSharp.UnitTest.Infrastructure
 {
     [Description("测试实体")]
     [Serializable]
-    public class TestEntity
+    public class TestEntity : IEntity<int>
     {
         public TestEntity()
         {

@@ -11,8 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
 
+using Microsoft.Extensions.Primitives;
+
+using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
@@ -46,23 +51,24 @@ namespace OSharp.Core.EntityInfos
         public bool AuditEnabled { get; set; } = true;
 
         /// <summary>
-        /// 获取或设置 实体属性信息Json字符串
+        /// 获取或设置 实体属性信息JSON字符串
         /// </summary>
         [Required, DisplayName("实体属性信息Json字符串")]
-        public string PropertyNamesJson { get; set; }
+        public string PropertyJson { get; set; }
 
         /// <summary>
-        /// 获取 实体属性信息字典
+        /// 获取 实体属性信息
         /// </summary>
-        public IDictionary<string, string> PropertyNames
+        [NotMapped]
+        public EntityProperty[] Properties
         {
             get
             {
-                if (PropertyNamesJson.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(PropertyJson) || !PropertyJson.StartsWith("["))
                 {
-                    return new Dictionary<string, string>();
+                    return new EntityProperty[0];
                 }
-                return PropertyNamesJson.FromJsonString<Dictionary<string, string>>();
+                return PropertyJson.FromJsonString<EntityProperty[]>();
             }
         }
 
@@ -78,13 +84,31 @@ namespace OSharp.Core.EntityInfos
             Name = entityType.GetDescription();
             AuditEnabled = true;
 
-            IDictionary<string, string> propertyDict = new Dictionary<string, string>();
             PropertyInfo[] propertyInfos = entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (PropertyInfo propertyInfo in propertyInfos)
+            PropertyJson = propertyInfos.Select(property =>
             {
-                propertyDict.Add(propertyInfo.Name, propertyInfo.GetDescription());
-            }
-            PropertyNamesJson = propertyDict.ToJsonString();
+                EntityProperty ep = new EntityProperty()
+                {
+                    Name = property.Name,
+                    Display = property.GetDescription(),
+                    TypeName = property.PropertyType.FullName
+                };
+                //枚举类型，获取枚举项作为取值范围
+                if (property.PropertyType.IsEnum)
+                {
+                    ep.TypeName = typeof(int).FullName;
+                    Type enumType = property.PropertyType;
+                    Array values = enumType.GetEnumValues();
+                    int[] intValues = values.Cast<int>().ToArray();
+                    string[] names = values.Cast<Enum>().Select(m => m.ToDescription()).ToArray();
+                    for (int i = 0; i < intValues.Length; i++)
+                    {
+                        string value = intValues[i].ToString();
+                        ep.ValueRange.Add(new { id = value, text = names[i] });
+                    }
+                }
+                return ep;
+            }).ToArray().ToJsonString();
         }
     }
 }

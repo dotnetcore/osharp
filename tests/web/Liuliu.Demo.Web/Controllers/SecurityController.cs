@@ -17,6 +17,7 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
@@ -32,10 +33,14 @@ namespace Liuliu.Demo.Web.Controllers
     public class SecurityController : ApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly ILogger<SecurityController> _logger;
 
-        public SecurityController(SecurityManager securityManager)
+        public SecurityController(
+            SecurityManager securityManager,
+            ILoggerFactory loggerFactory)
         {
             _securityManager = securityManager;
+            _logger = loggerFactory.CreateLogger<SecurityController>();
         }
 
         /// <summary>
@@ -83,7 +88,6 @@ namespace Liuliu.Demo.Web.Controllers
                 }
             }
             return codes;
-            //return Content(codes.ExpandAndToString("\r\n"));
         }
 
         /// <summary>

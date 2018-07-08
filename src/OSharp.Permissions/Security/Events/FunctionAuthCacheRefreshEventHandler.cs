@@ -39,6 +39,10 @@ namespace OSharp.Security.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(FunctionAuthCacheRefreshEventData eventData)
         {
+            if (!ServiceLocator.InScoped())
+            {
+                return;
+            }
             IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
             if (eventData.FunctionIds.Length > 0)
             {

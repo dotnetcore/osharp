@@ -87,15 +87,30 @@ namespace OSharp.Dependency
                         services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
                         continue;
                     }
+                    bool multiple = interfaceType.HasAttribute<MultipleDependencyAttribute>();
                     if (i == 0)
                     {
-                        services.TryAdd(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                        if (multiple)
+                        {
+                            services.Add(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                        }
+                        else
+                        {
+                            services.TryAdd(new ServiceDescriptor(interfaceType, implementationType, lifetime));
+                        }
                     }
                     else
                     {
                         //有多个接口时，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一个实例
                         Type firstInterfaceType = interfaceTypes[0];
-                        services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
+                        if (multiple)
+                        {
+                            services.Add(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
+                        }
+                        else
+                        {
+                            services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
+                        }
                     }
                 }
             }

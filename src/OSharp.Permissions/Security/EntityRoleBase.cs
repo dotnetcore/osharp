@@ -30,7 +30,7 @@ namespace OSharp.Security
         public TRoleKey RoleId { get; set; }
 
         /// <summary>
-        /// 获取或设置 数据编号
+        /// 获取或设置 数据实体编号
         /// </summary>
         [DisplayName("数据编号")]
         public Guid EntityId { get; set; }

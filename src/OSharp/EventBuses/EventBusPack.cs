@@ -30,7 +30,7 @@ namespace OSharp.EventBuses
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
         /// </summary>
-        public override int Order => 1;
+        public override int Order => 2;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中

@@ -38,9 +38,18 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <inheritdoc />
         public override void OnResultExecuted(ResultExecutedContext context)
         {
-            if (context.Result is JsonResult result)
+            if (context.Result is JsonResult result1)
             {
-                if (result.Value is AjaxResult ajax && !ajax.Successed())
+                if (result1.Value is AjaxResult ajax && !ajax.Successed())
+                {
+                    return;
+                }
+                _unitOfWork?.Commit();
+                return;
+            }
+            if (context.Result is ObjectResult result2)
+            {
+                if (result2.Value is AjaxResult ajax && !ajax.Successed())
                 {
                     return;
                 }

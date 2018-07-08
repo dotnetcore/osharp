@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Builders;
 using OSharp.Reflection;
@@ -75,9 +76,9 @@ namespace OSharp.Core.Packs
             packs = packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             LoadedPacks = packs;
 
-            foreach (OsharpPack module in LoadedPacks)
+            foreach (OsharpPack pack in LoadedPacks)
             {
-                services = module.AddServices(services);
+                services = pack.AddServices(services);
             }
 
             return services;
@@ -87,12 +88,18 @@ namespace OSharp.Core.Packs
         /// 启用模块
         /// </summary>
         /// <param name="provider">服务提供者</param>
-        public void UseModules(IServiceProvider provider)
+        public void UsePacks(IServiceProvider provider)
         {
-            foreach (OsharpPack module in LoadedPacks)
+            ILogger<OSharpPackManager> logger = provider.GetService<ILogger<OSharpPackManager>>();
+            logger.LogInformation("OSharp框架初始化开始");
+
+            foreach (OsharpPack pack in LoadedPacks)
             {
-                module.UsePack(provider);
+                pack.UsePack(provider);
+                logger.LogInformation($"模块{pack.GetType()}加载成功");
             }
+
+            logger.LogInformation("OSharp框架初始化完成");
         }
     }
 }

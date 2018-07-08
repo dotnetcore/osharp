@@ -48,7 +48,7 @@ namespace OSharp.Entity.MySql
                     {
                         if (contextOptions.DatabaseType != DatabaseType.MySql)
                         {
-                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 SqlServer 类型");
+                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.MySql)} 类型");
                         }
                         if (contextOptions.AutoMigrationEnabled)
                         {

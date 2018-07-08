@@ -36,7 +36,7 @@ namespace OSharp.Core.Modules
         public double Order { get; set; }
 
         /// <summary>
-        /// 获取或设置 模块位置
+        /// 获取或设置 模块位置，父模块Code以点号 . 相连的字符串
         /// </summary>
         public string Position { get; set; }
 

@@ -1,0 +1,9 @@
+<kendoui-splitter [options]="splitterOptions" [height]="835">
+  <div id="grid-box-{{moduleName}}"></div>
+  <nz-card [nzTitle]="'数据筛选规则 - '+selectName">
+    <security-filter-group [group]="filterGroup" [entity]="entityType"></security-filter-group>
+    <button (click)="showGroupJson()" nz-button *ngIf="filterGroup" style="margin:5px" nzType="default">显示JSON</button>
+    <button (click)="saveFilterGroup()" nz-button *ngIf="filterGroup " style="margin:5px" nzType="primary" [disabled]="!auth.Update">保存</button>
+    <nz-alert *ngIf="groupJson" nzType="info" nzShowIcon nzMessage="筛选规则JSON" nzDescription="{{groupJson}}"></nz-alert>
+  </nz-card>
+</kendoui-splitter>

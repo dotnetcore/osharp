@@ -17,7 +17,7 @@ namespace OSharp.Audits
         /// <summary>
         /// 获取或设置 名称
         /// </summary>
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// 获取或设置 字段

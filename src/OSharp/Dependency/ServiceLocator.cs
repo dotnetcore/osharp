@@ -9,9 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Data;
 using OSharp.Exceptions;
@@ -22,7 +25,7 @@ namespace OSharp.Dependency
     /// <summary>
     /// 应用程序服务定位器，仅适合于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
     /// </summary>
-    public sealed class ServiceLocator
+    public sealed class ServiceLocator : IDisposable
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
         private IServiceProvider _provider;
@@ -60,27 +63,30 @@ namespace OSharp.Dependency
         }
 
         /// <summary>
+        /// 获取当前是否处于<see cref="ServiceLifetime.Scoped"/>生命周期中
+        /// </summary>
+        /// <returns></returns>
+        public static bool InScoped()
+        {
+            return Instance.ScopedProvider != null;
+        }
+
+        /// <summary>
         /// 设置应用程序服务集合
         /// </summary>
-        internal void TrySetServiceCollection(IServiceCollection services)
+        internal void SetServiceCollection(IServiceCollection services)
         {
             Check.NotNull(services, nameof(services));
-            if (_services == null)
-            {
-                _services = services;
-            }
+            _services = services;
         }
 
         /// <summary>
         /// 设置应用程序服务提供者
         /// </summary>
-        public void TrySetApplicationServiceProvider(IServiceProvider provider)
+        internal void SetApplicationServiceProvider(IServiceProvider provider)
         {
             Check.NotNull(provider, nameof(provider));
-            if (_provider == null)
-            {
-                _provider = provider;
-            }
+            _provider = provider;
         }
 
         /// <summary>
@@ -268,6 +274,60 @@ namespace OSharp.Dependency
                 return scopedResolver.GetServices(serviceType);
             }
             return _provider.GetServices(serviceType);
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <typeparam name="T">非静态强类型</typeparam>
+        /// <returns>日志对象</returns>
+        public ILogger<T> GetLogger<T>()
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger<T>();
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <param name="type">指定类型</param>
+        /// <returns>日志对象</returns>
+        public ILogger GetLogger(Type type)
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger(type);
+        }
+
+        /// <summary>
+        /// 获取指定名称的日志对象
+        /// </summary>
+        public ILogger GetLogger(string name)
+        {
+            ILoggerFactory factory = GetService<ILoggerFactory>();
+            return factory.CreateLogger(name);
+        }
+
+        /// <summary>
+        /// 获取当前用户
+        /// </summary>
+        public ClaimsPrincipal GetCurrentUser()
+        {
+            try
+            {
+                IPrincipal user = GetService<IPrincipal>();
+                return user as ClaimsPrincipal;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            _services = null;
+            _provider = null;
         }
     }
 }

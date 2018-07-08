@@ -9,7 +9,7 @@
     <Copyright>Copyright © 66SOFT 2014-2018</Copyright>
     <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
-    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
+    <PackageIconUrl>https://en.gravatar.com/userimage/140788132/0ff3b1e68fa0154337b1528c4276e276.png?size=80</PackageIconUrl>
     <RepositoryUrl>https://github.com/i66soft/osharp-ns20</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>osharp</PackageTags>
@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="log\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,17 +45,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <Content Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@ namespace OSharp.Core
     public static class ServiceExtensions
     {
         /// <summary>
-        /// 将OSharp服务添加到容器
+        /// 将OSharp服务，各个<see cref="OsharpPack"/>模块的服务添加到服务容器中
         /// </summary>
         public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null, AppServiceScanOptions scanOptions = null)
         {
@@ -52,6 +52,16 @@ namespace OSharp.Core
                 services.Configure(builder.OptionsAction);
             }
             return services;
+        }
+
+        /// <summary>
+        /// 应用OSharp框架，初始化各个Pack
+        /// </summary>
+        public static IServiceProvider UseOSharp(this IServiceProvider provider)
+        {
+            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            packManager.UsePacks(provider);
+            return provider;
         }
 
         /// <summary>

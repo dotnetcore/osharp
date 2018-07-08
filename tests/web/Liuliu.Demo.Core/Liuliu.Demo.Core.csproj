@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Demo.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Liuliu.Demo.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <Import Project="../../../build/public.props" />
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
   </ItemGroup>

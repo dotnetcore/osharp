@@ -96,6 +96,14 @@ namespace Liuliu.Demo.Identity
             {
                 return new OperationResult(OperationResultType.Error, ex.Message);
             }
+            if (addRoleNames.Length > 0 && removeRoleNames.Length == 0)
+            {
+                return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”添加角色“{addRoleNames.ExpandAndToString()}”操作成功");
+            }
+            if (addRoleNames.Length == 0 && removeRoleNames.Length > 0)
+            {
+                return new OperationResult(OperationResultType.Success, $"用户“{user.UserName}”移除角色“{removeRoleNames.ExpandAndToString()}”操作成功");
+            }
             return new OperationResult(OperationResultType.Success,
                 $"用户“{user.UserName}”添加角色“{addRoleNames.ExpandAndToString()}”，移除角色“{removeRoleNames.ExpandAndToString()}”操作成功");
         }

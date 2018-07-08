@@ -22,6 +22,7 @@ using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -45,7 +46,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
 
-        public UserController(UserManager<User> userManager, SecurityManager securityManager, IIdentityContract identityContract)
+        public UserController(
+            UserManager<User> userManager,
+            SecurityManager securityManager,
+            IIdentityContract identityContract,
+            ILoggerFactory loggerFactory
+        )
         {
             _userManager = userManager;
             _securityManager = securityManager;
@@ -62,7 +68,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<UserOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
+            Expression<Func<User, bool>> predicate = FilterHelper.GetDataFilterExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
 
             return page.ToPageData();
@@ -153,39 +159,37 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// 设置用户权限
+        /// 设置用户角色
         /// </summary>
-        /// <param name="dto">用户权限信息</param>
+        /// <param name="dto">用户角色信息</param>
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [DependOnFunction("ReadUserRoles", Controller = "Role")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("设置角色")]
+        public async Task<AjaxResult> SetRoles(UserSetRoleDto dto)
+        {
+            OperationResult result = await _identityContract.SetUserRoles(dto.UserId, dto.RoleIds);
+            return result.ToAjaxResult();
+        }
+
+        /// <summary>
+        /// 设置用户模块
+        /// </summary>
+        /// <param name="dto">用户模块信息</param>
+        /// <returns>JSON操作结果</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
         [DependOnFunction("ReadUserModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("设置权限")]
-        public async Task<AjaxResult> SetPermission([FromBody] UserSetPermissionDto dto)
+        [Description("设置模块")]
+        public async Task<AjaxResult> SetModules(UserSetModuleDto dto)
         {
-            OperationResult result1 = await _identityContract.SetUserRoles(dto.UserId, dto.RoleIds);
-            string msg = $"设置角色：{result1.Message}<br/>";
-            OperationResult result2 = await _securityManager.SetUserModules(dto.UserId, dto.ModuleIds);
-            msg += $"模块设置：{result2.Message}";
-
-            AjaxResultType type;
-            if (result1.ResultType == OperationResultType.NoChanged && result2.ResultType == OperationResultType.NoChanged)
-            {
-                type = AjaxResultType.Info;
-            }
-            else if (new[] { result1.ResultType, result2.ResultType }.Contains(OperationResultType.Success))
-            {
-                type = AjaxResultType.Success;
-            }
-            else
-            {
-                type = AjaxResultType.Error;
-            }
-
-            return new AjaxResult(msg, type);
+            OperationResult result = await _securityManager.SetUserModules(dto.UserId, dto.ModuleIds);
+            return result.ToAjaxResult();
         }
     }
 }

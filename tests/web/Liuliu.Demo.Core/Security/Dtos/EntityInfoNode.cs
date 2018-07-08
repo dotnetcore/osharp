@@ -1,32 +1,35 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="UserSetPermissionDto.cs" company="OSharp开源团队">
+//  <copyright file="EntityInfoNode.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:44</last-date>
+//  <last-date>2018-07-08 3:03</last-date>
 // -----------------------------------------------------------------------
+
+using System;
+
 
 namespace Liuliu.Demo.Security.Dtos
 {
     /// <summary>
-    /// 用户设置权限DTO
+    /// 实体信息节点
     /// </summary>
-    public class UserSetPermissionDto
+    public class EntityInfoNode
     {
         /// <summary>
-        /// 获取或设置 用户编号
+        /// 获取或设置 编号
         /// </summary>
-        public int UserId { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// 获取或设置 要设置的角色编号
+        /// 获取或设置 实体名称
         /// </summary>
-        public int[] RoleIds { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 要设置的模块编号
+        /// 获取或设置 实体类型名称
         /// </summary>
-        public int[] ModuleIds { get; set; }
+        public string TypeName { get; set; }
     }
 }

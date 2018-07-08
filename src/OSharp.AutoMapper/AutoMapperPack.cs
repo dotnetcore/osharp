@@ -40,7 +40,7 @@ namespace OSharp.AutoMapper
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<MapperConfigurationExpression>(new MapperConfigurationExpression());
+            services.AddSingleton(new MapperConfigurationExpression());
 
             services.AddSingleton<IMapFromAttributeTypeFinder, MapFromAttributeTypeFinder>();
             services.AddSingleton<IMapToAttributeTypeFinder, MapToAttributeTypeFinder>();
@@ -57,6 +57,13 @@ namespace OSharp.AutoMapper
         public override void UsePack(IServiceProvider provider)
         {
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>() ?? new MapperConfigurationExpression();
+
+            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
+            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
+            foreach (IAutoMapperConfiguration config in configs)
+            {
+                config.CreateMaps(cfg);
+            }
 
             //获取已注册到IoC的所有Profile
             IMapTuple[] tuples = provider.GetServices<IMapTuple>().ToArray();

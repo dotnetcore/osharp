@@ -1,5 +1,11 @@
 <div id="grid-box-{{moduleName}}"></div>
-<kendoui-window [options]="windowOptions" (init)="onWinInit($event)" (closing)="onWinClose()" (submited)="onWinSubmit()">
+<kendoui-window [options]="windowOptions" (init)="onRoleWinInit($event)" (submited)="onRoleWinSubmit()">
+  <kendoui-treeview [options]="roleTreeOptions" (init)="onRoleTreeInit($event)"></kendoui-treeview>
+</kendoui-window>
+<kendoui-window [options]="windowOptions" (init)="onModuleWinInit($event)" (submited)="onModuleWinSubmit()">
+  <kendoui-treeview [options]="moduleTreeOptions" (init)="onModuleTreeInit($event)"></kendoui-treeview>
+</kendoui-window>
+<!-- <kendoui-window [options]="windowOptions" (init)="onWinInit($event)" (closing)="onWinClose()" (submited)="onWinSubmit()">
   <kendoui-tabstrip [options]="tabstripOptions">
     <ul>
       <li class="k-state-active">角色</li>
@@ -12,4 +18,4 @@
       <kendoui-treeview [options]="moduleTreeOptions" (init)="onModuleTreeInit($event)"></kendoui-treeview>
     </div>
   </kendoui-tabstrip>
-</kendoui-window>
+</kendoui-window> -->

@@ -8,14 +8,15 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Liuliu.Demo.Security;
 using Liuliu.Demo.Security.Dtos;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -24,7 +25,9 @@ using OSharp.Core.EntityInfos;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Mapping;
 using OSharp.Security;
 
 
@@ -47,7 +50,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>实体信息集合</returns>
         [HttpPost]
         [ModuleInfo]
-        [AllowAnonymous]
         [Description("读取")]
         public PageData<EntityInfoOutputDto> Read()
         {
@@ -59,6 +61,36 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
+        }
+
+        /// <summary>
+        /// 读取实体节点
+        /// </summary>
+        /// <returns>实体节点集合</returns>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("读取节点")]
+        public List<EntityInfoNode> ReadNode()
+        {
+            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfoNode>().ToList();
+            return nodes;
+        }
+
+        [HttpGet]
+        [ModuleInfo]
+        [Description("读取实体属性信息")]
+        public AjaxResult ReadProperties(string typeName)
+        {
+            Check.NotNull(typeName, nameof(typeName));
+            string json = _securityManager.EntityInfos.FirstOrDefault(m => m.TypeName == typeName)?.PropertyJson;
+            if (json == null)
+            {
+                return new AjaxResult($"实体类“{typeName}”不存在", AjaxResultType.Error);
+            }
+            string[] filterTokens = { "Normalized", "Stamp", "Password" };
+            EntityProperty[] properties = json.FromJsonString<EntityProperty[]>().Where(m => !filterTokens.Any(n => m.Name.Contains(n)))
+                .OrderByDescending(m => m.Name == "Id").ToArray();
+            return new AjaxResult("获取成功", AjaxResultType.Success, properties);
         }
 
         /// <summary>

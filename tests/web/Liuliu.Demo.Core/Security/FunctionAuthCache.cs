@@ -10,8 +10,6 @@
 using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Security.Entities;
 
-using Microsoft.Extensions.Caching.Distributed;
-
 using OSharp.Core.Functions;
 using OSharp.Security;
 
@@ -22,12 +20,5 @@ namespace Liuliu.Demo.Security
     /// 功能权限缓存
     /// </summary>
     public class FunctionAuthCache : FunctionAuthCacheBase<ModuleFunction, ModuleRole, ModuleUser, Function, Module, int, Role, int, User, int>
-    {
-        /// <summary>
-        /// 初始化一个<see cref="FunctionAuthCacheBase{TFunction,TModule,TModuleKey,TModuleFunction,TModuleRole,TModuleUser,TRole,TRoleKey,TUser,TUserKey}"/>类型的新实例
-        /// </summary>
-        public FunctionAuthCache(IDistributedCache cache)
-            : base(cache)
-        { }
-    }
+    { }
 }

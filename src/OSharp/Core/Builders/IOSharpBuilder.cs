@@ -43,7 +43,7 @@ namespace OSharp.Core.Builders
         IOSharpBuilder AddPack<TPack>() where TPack : OsharpPack;
 
         /// <summary>
-        /// 移除指定模块
+        /// 排除指定模块
         /// </summary>
         /// <typeparam name="TPack"></typeparam>
         /// <returns></returns>

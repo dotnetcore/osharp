@@ -1,9 +1,10 @@
 import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { Group, Rule } from '@shared/osharp/osharp.model';
+import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { element } from '../../../../../node_modules/protractor';
 
 
 @Injectable()
@@ -21,22 +22,22 @@ export class KendouiService {
    * @param filter kendo发出的filter
    * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
    */
-  getFilterGroup(filter, funcFieldReplace): Group {
+  getFilterGroup(filter, funcFieldReplace): FilterGroup {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
     }
     if (!filter || !filter.filters || !filter.filters.length) {
       return null;
     }
-    const group = new Group();
+    const group = new FilterGroup();
     filter.filters.forEach(item => {
       if (item.filters && item.filters.length) {
-        group.groups.push(this.getFilterGroup(item, funcFieldReplace));
+        group.Groups.push(this.getFilterGroup(item, funcFieldReplace));
       } else {
-        group.rules.push(this.getFilterRule(item, funcFieldReplace));
+        group.Rules.push(this.getFilterRule(item, funcFieldReplace));
       }
     });
-    group.operate = filter.logic;
+    group.Operate = this.renderRuleOperate(filter.logic);
     return group;
   }
   /**
@@ -44,28 +45,43 @@ export class KendouiService {
    * @param filter kendo发出的filter
    * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
    */
-  getFilterRule(filter, funcFieldReplace = null): Rule {
+  getFilterRule(filter, funcFieldReplace = null): FilterRule {
     if (!funcFieldReplace || !isFunction(funcFieldReplace)) {
       throw new Error("funcFieldReplace muse be function");
     }
     const field = funcFieldReplace(filter.field);
-    const operate = this.renderRuleOperate(filter.operator);
-    const rule = new Rule(field, filter.value, operate);
+    const operate: FilterOperate = this.renderRuleOperate(filter.operator);
+    const rule = new FilterRule(field, filter.value, operate);
     return rule;
   }
   /**
    * 转换查询操作
    * @param operate kendo的查询对比操作字符串
    */
-  renderRuleOperate(operate) {
-    if (operate === "eq") return "equal";
-    if (operate === "neq") return "notequal";
-    if (operate === "gt") return "greater";
-    if (operate === "gte") return "greaterorequal";
-    if (operate === "lt") return "less";
-    if (operate === "lte") return "lessorequal";
-    if (operate === "doesnotcontain") return "notcontains";
-    return operate;
+  renderRuleOperate(operate): FilterOperate {
+    var dict: { [key: string]: FilterOperate } = {
+      "and": FilterOperate.And,
+      "or": FilterOperate.Or,
+      "eq": FilterOperate.Equal,
+      "neq": FilterOperate.NotEqual,
+      "lt": FilterOperate.Less,
+      "lte": FilterOperate.LessOrEqual,
+      "gt": FilterOperate.Greater,
+      "gte": FilterOperate.GreaterOrEqual,
+      "startswith": FilterOperate.StartsWith,
+      "endswith": FilterOperate.EndsWith,
+      "contains": FilterOperate.Contains,
+      "doesnotcontain": FilterOperate.NotContains
+    };
+    for (const key in dict) {
+      if (dict.hasOwnProperty(key)) {
+        const value = dict[key];
+        if (key === operate) {
+          return value;
+        }
+      }
+    }
+    throw `后端服务器不支持${operate}的比较操作`;
   }
   /**
    * 处理kendoui到osharp框架的查询参数
@@ -221,22 +237,76 @@ export class KendouiService {
   DropDownList(element, dataSource, textField = 'text', valueField = 'id') {
     return new kendo.ui.DropDownList(element, {
       autoBind: true,
-      dataTextField: textField || "text",
-      dataValueField: valueField || "id",
+      dataTextField: textField,
+      dataValueField: valueField,
       dataSource: dataSource
     });
+  }
+
+  RemoteDropDownList(element, url, textField = 'text', valueField = 'id') {
+    var dataSource = {
+      transport: {
+        dataType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.DropDownList(element, dataSource, textField, valueField);
   }
 
   DropDownListEditor(container, options, dataSource, textField = 'text', valueField = 'id') {
     const input = $('<input/>');
     input.attr('name', options.field);
     input.appendTo(container);
-    return new kendo.ui.DropDownList(input, {
+    return this.DropDownList(input, dataSource, textField, valueField);
+  }
+
+  RemoteDropDownListEditor(container, options, url, textField = 'text', valueField = 'id') {
+    const input = $('<input/>');
+    input.attr('name', options.field);
+    input.appendTo(container);
+    return this.RemoteDropDownList(input, url, textField, valueField);
+  }
+
+  ComboBox(element, dataSource, textField = 'text', valueField = 'id') {
+    return new kendo.ui.ComboBox(element, {
       autoBind: true,
+      filter: "contains",
       dataTextField: textField,
       dataValueField: valueField,
       dataSource: dataSource
     });
+  }
+
+  RemoteComboBox(element, url, textField = 'text', valueField = 'id') {
+    let dataSource = {
+      transport: {
+        serverFiltering: true,
+        dateType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.ComboBox(element, dataSource, textField, valueField);
+  }
+
+  ComboBoxEditor(container, options, dataSource, textField = 'text', valueField = 'id') {
+    const input = $('<input/>');
+    input.attr('name', options.field);
+    input.appendTo(container);
+    return this.ComboBox(input, dataSource, textField, valueField);
+  }
+
+  RemoteComboBoxEditor(container, options, url, textField = 'text', valueField = 'id') {
+    let dataSource = {
+      transport: {
+        serverFiltering: true,
+        dateType: "json",
+        read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.ComboBoxEditor(container, options, dataSource, textField, valueField);
   }
 
   // #endregion
@@ -395,16 +465,6 @@ export abstract class GridComponentBase extends ComponentBase {
     if (!this.auth.Delete && transport.destroy) {
       delete transport.destroy;
     }
-
-    let fields = options.schema.model.fields;
-    if (!this.auth.Update && fields) {
-      for (const key in fields) {
-        if (fields.hasOwnProperty(key)) {
-          const item = fields[key];
-          item.editable = false;
-        }
-      }
-    }
     return options;
   }
   /**
@@ -421,15 +481,22 @@ export abstract class GridComponentBase extends ComponentBase {
       this.osharp.remove(toolbar, m => m.name == "save");
       this.osharp.remove(toolbar, m => m.name == "cancel");
     }
+    //新增和更新的编辑状态
+    options.beforeEdit = e => {
+      if (e.model.isNew() && !this.auth.Create) {
+        e.preventDefault();
+      }
+      if (!e.model.isNew() && !this.auth.Update) {
+        e.preventDefault();
+      }
+    };
+
     // 命令列
     let cmdColumn = options.columns && options.columns.find(m => m.command != null);
     let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
     if (cmds) {
       if (!this.auth.Delete) {
         this.osharp.remove(cmds, m => m.name == "destroy");
-      }
-      if (!this.auth.SetPermission) {
-        this.osharp.remove(cmds, m => m.name == "permission");
       }
       if (cmds.length == 0) {
         this.osharp.remove(options.columns, m => m == cmdColumn);

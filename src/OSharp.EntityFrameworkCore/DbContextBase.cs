@@ -1,18 +1,20 @@
 // -----------------------------------------------------------------------
 //  <copyright file="DbContextBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-21 2:08</last-date>
+//  <last-date>2018-07-01 17:54</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
@@ -26,13 +28,14 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFramework上下文基类
     /// </summary>
-    public abstract class DbContextBase<TDbContext> : DbContext, IDbContext
+    public abstract class DbContextBase : DbContext, IDbContext
     {
-        private readonly IEntityConfigurationTypeFinder _typeFinder;
+        private readonly ILogger _logger;
         private readonly OSharpDbContextOptions _osharpDbOptions;
+        private readonly IEntityConfigurationTypeFinder _typeFinder;
 
         /// <summary>
-        /// 初始化一个<see cref="DbContextBase{TDbContext}"/>类型的新实例
+        /// 初始化一个<see cref="DbContextBase"/>类型的新实例
         /// </summary>
         protected DbContextBase(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
             : base(options)
@@ -41,10 +44,9 @@ namespace OSharp.Entity
             if (ServiceLocator.Instance.IsProviderEnabled)
             {
                 IOptions<OSharpOptions> osharpOptions = ServiceLocator.Instance.GetService<IOptions<OSharpOptions>>();
-                if (osharpOptions != null)
-                {
-                    _osharpDbOptions = osharpOptions.Value.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == typeof(TDbContext));
-                }
+                _osharpDbOptions = osharpOptions?.Value.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == GetType());
+
+                _logger = ServiceLocator.Instance.GetLogger(GetType());
             }
         }
 
@@ -55,85 +57,86 @@ namespace OSharp.Entity
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //通过实体配置信息将实体注册到当前上下文
-            IEntityRegister[] registers = _typeFinder.GetEntityRegisters(typeof(TDbContext));
+            Type contextType = GetType();
+            IEntityRegister[] registers = _typeFinder.GetEntityRegisters(contextType);
             foreach (IEntityRegister register in registers)
             {
                 register.RegistTo(modelBuilder);
+                _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
             }
+            _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
         }
 
         /// <summary>
-        ///     Saves all changes made in this context to the database.
+        ///     将在此上下文中所做的所有更改保存到数据库中。
         /// </summary>
         /// <remarks>
-        ///     This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
-        ///     changes to entity instances before saving to the underlying database. This can be disabled via
+        ///     此方法将自动调用 <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> 
+        ///     若要在保存到基础数据库之前发现对实体实例的任何更改，请执行以下操作。这可以通过以下类型禁用
         ///     <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
         /// </remarks>
         /// <returns>
-        ///     The number of state entries written to the database.
+        ///     写入数据库的状态项的数目。
         /// </returns>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateException">
-        ///     An error is encountered while saving to the database.
+        ///     保存到数据库时遇到错误。
         /// </exception>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
-        ///     A concurrency violation is encountered while saving to the database.
-        ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
-        ///     This is usually because the data in the database has been modified since it was loaded into memory.
+        ///     保存到数据库时会遇到并发冲突。
+        ///     当在保存期间影响到意外数量的行时，就会发生并发冲突。
+        ///     这通常是因为数据库中的数据在加载到内存后已经被修改。
         /// </exception>
         public override int SaveChanges()
         {
             IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }
             int count = base.SaveChanges();
-            if (count > 0 && auditEntities.Count > 0)
+            if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
-                eventBus.PublishSync(this, eventData);
+                eventBus.Publish(this, eventData);
             }
             return count;
         }
 
         /// <summary>
-        ///     Asynchronously saves all changes made in this context to the database.
+        ///     异步地将此上下文中的所有更改保存到数据库中。
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
-        ///         changes to entity instances before saving to the underlying database. This can be disabled via
+        ///         此方法将自动调用 <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> 
+        ///         若要在保存到基础数据库之前发现对实体实例的任何更改，请执行以下操作。这可以通过以下类型禁用
         ///         <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
         ///     </para>
         ///     <para>
-        ///         Multiple active operations on the same context instance are not supported.  Use 'await' to ensure
-        ///         that any asynchronous operations have completed before calling another method on this context.
+        ///         不支持同一上下文实例上的多个活动操作。请使用“等待”确保在此上下文上调用其他方法之前任何异步操作都已完成。
         ///     </para>
         /// </remarks>
         /// <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken" /> to observe while waiting for the task to complete.</param>
         /// <returns>
-        ///     A task that represents the asynchronous save operation. The task result contains the
-        ///     number of state entries written to the database.
+        ///     表示异步保存操作的任务。任务结果包含写入数据库的状态条目数。
         /// </returns>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateException">
-        ///     An error is encountered while saving to the database.
+        ///     保存到数据库时遇到错误。
         /// </exception>
         /// <exception cref="T:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
-        ///     A concurrency violation is encountered while saving to the database.
-        ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
-        ///     This is usually because the data in the database has been modified since it was loaded into memory.
+        ///     保存到数据库时会遇到并发冲突。
+        ///     当在保存期间影响到意外数量的行时，就会发生并发冲突。
+        ///     这通常是因为数据库中的数据在加载到内存后已经被修改。
         /// </exception>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }
             int count = await base.SaveChangesAsync(cancellationToken);
-            if (count > 0 && auditEntities.Count > 0)
+            if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
@@ -141,5 +144,6 @@ namespace OSharp.Entity
             }
             return count;
         }
+
     }
 }

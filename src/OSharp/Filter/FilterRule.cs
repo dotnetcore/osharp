@@ -74,5 +74,21 @@ namespace OSharp.Filter
         public FilterOperate Operate { get; set; }
 
         #endregion
+
+        #region Overrides of Object
+
+        /// <summary>Determines whether the specified object is equal to the current object.</summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FilterRule rule))
+            {
+                return false;
+            }
+            return rule.Field == Field && rule.Value == Value && rule.Operate == Operate;
+        }
+
+        #endregion
     }
 }

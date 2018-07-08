@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>OSharpNS.Log4Net</PackageId>
+    <Description>OSharp(.NetStandard2.0)Log4Net组件，封装使用log4net组件来实现框架的日志输出功能</Description>
+    <Summary>OSharp Log4Net组件(.NetStandard2.0)</Summary>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+  </ItemGroup>
+
+</Project>

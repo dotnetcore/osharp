@@ -1,17 +1,6 @@
-﻿// -----------------------------------------------------------------------
-//  <copyright file="20180625134421_Init.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
-//  </copyright>
-//  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:50</last-date>
-// -----------------------------------------------------------------------
-
-using System;
-
+﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-
 
 namespace Liuliu.Demo.Web.Migrations
 {
@@ -27,7 +16,7 @@ namespace Liuliu.Demo.Web.Migrations
                     Name = table.Column<string>(nullable: false),
                     TypeName = table.Column<string>(nullable: false),
                     AuditEnabled = table.Column<bool>(nullable: false),
-                    PropertyNamesJson = table.Column<string>(nullable: false)
+                    PropertyJson = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -306,8 +295,8 @@ namespace Liuliu.Demo.Web.Migrations
                     UserId = table.Column<int>(nullable: false),
                     Ip = table.Column<string>(nullable: true),
                     UserAgent = table.Column<string>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    LogoutTime = table.Column<DateTime>(nullable: true)
+                    LogoutTime = table.Column<DateTime>(nullable: true),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -461,14 +450,8 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: new[] { "Id", "IsLocked", "Key", "ValueJson", "ValueType" },
                 values: new object[,]
                 {
-                    { new Guid("fa84bfa5-47c7-4fa8-9fb0-a90a0166404b"), false, "Site.Name", "\"OSHARP\"", "System.String" },
-                    {
-                        new Guid("1928b030-7a4b-48b6-b6ec-a90a01664050"),
-                        false,
-                        "Site.Description",
-                        "\"Osharp with .NetStandard2.0 & Angular6\"",
-                        "System.String"
-                    }
+                    { new Guid("4b2f3f7f-874e-4f85-82a1-a91300538f00"), false, "Site.Name", "\"OSHARP\"", "System.String" },
+                    { new Guid("1a972119-cf36-4314-8ddd-a91300538f04"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
                 });
 
             migrationBuilder.InsertData(
@@ -478,32 +461,8 @@ namespace Liuliu.Demo.Web.Migrations
 
             migrationBuilder.InsertData(
                 table: "Role",
-                columns: new[]
-                {
-                    "Id",
-                    "ConcurrencyStamp",
-                    "CreatedTime",
-                    "IsAdmin",
-                    "IsDefault",
-                    "IsLocked",
-                    "IsSystem",
-                    "Name",
-                    "NormalizedName",
-                    "Remark"
-                },
-                values: new object[]
-                {
-                    1,
-                    "dbecf737-5373-4b96-ac2b-7febd57b363c",
-                    new DateTime(2018, 6, 25, 21, 44, 21, 200, DateTimeKind.Local),
-                    true,
-                    false,
-                    false,
-                    true,
-                    "系统管理员",
-                    "系统管理员",
-                    "系统最高权限管理角色"
-                });
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
+                values: new object[] { 1, "b2194acf-2bfd-46e4-b2ea-1be822ac3052", new DateTime(2018, 7, 4, 5, 4, 13, 700, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.InsertData(
                 table: "Module",

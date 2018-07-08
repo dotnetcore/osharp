@@ -1,0 +1,43 @@
+<nz-row>
+  <div class="rule-box" *ngIf="properties && properties.length>0">
+    <nz-select [(ngModel)]="rule.Field" nzSize="small" (ngModelChange)="fieldChange($event)" class="f-left">
+      <nz-option *ngFor="let property of properties" [nzValue]="property.Name" [nzLabel]="property.Display"></nz-option>
+    </nz-select>
+    <nz-select [(ngModel)]="rule.Operate" nzSize="small" class="f-left">
+      <nz-option *ngFor="let entry of operateEntries" [nzValue]="entry.Operate" [nzLabel]="entry.Display"></nz-option>
+    </nz-select>
+
+    <div *ngIf="property" class="f-left">
+      <ng-container *ngIf="property.TypeName=='System.Boolean'; else elseTemplate1">
+        <nz-select [(ngModel)]="rule.Value" nzSize="small">
+          <nz-option nzValue="true" nzLabel="是"></nz-option>
+          <nz-option nzValue="false" nzLabel="否"></nz-option>
+        </nz-select>
+      </ng-container>
+      <ng-template #elseTemplate1>
+        <ng-container *ngIf="property.TypeName=='System.Int32'; else elseTemplate2">
+          <ng-container *ngIf="property.ValueRange.length>0; else elseTemplate3">
+            <nz-select [(ngModel)]="rule.Value" nzSize="small">
+              <nz-option *ngFor="let value of property.ValueRange" [nzValue]="value.id" [nzLabel]="value.text"></nz-option>
+            </nz-select>
+          </ng-container>
+          <ng-template #elseTemplate3>
+            <nz-input-number [(ngModel)]="rule.Value" nzSize="small"></nz-input-number>
+          </ng-template>
+        </ng-container>
+        <ng-template #elseTemplate2>
+          <ng-container *ngIf="property.TypeName=='System.DateTime'; else elseTemplate4">
+            <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="yyyy-MM-dd HH:mm" nzPlaceHolder="Select Time" nzSize="small"></nz-date-picker>
+          </ng-container>
+          <ng-template #elseTemplate4>
+            <input nz-input [(ngModel)]="rule.Value" style="width:150px; margin-right:8px;" nzSize="small" />
+          </ng-template>
+
+        </ng-template>
+      </ng-template>
+    </div>
+    <button nz-button (click)="removeRule()" nzType="default" nzSize="small" nzShape="circle" class="f-left" style="margin-left:5px;">
+      <i class="anticon anticon-close"></i>
+    </button>
+  </div>
+</nz-row>

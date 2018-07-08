@@ -16,8 +16,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Audits;
+using OSharp.Collections;
 using OSharp.Core;
 using OSharp.Core.EntityInfos;
 using OSharp.Dependency;
@@ -52,9 +54,12 @@ namespace OSharp.Entity
         /// </summary>
         public static void CheckAndMigration(this DbContext dbContext)
         {
-            if (dbContext.Database.GetPendingMigrations().Any())
+            string[] migrations = dbContext.Database.GetPendingMigrations().ToArray();
+            if (migrations.Length > 0)
             {
                 dbContext.Database.Migrate();
+                ILogger logger = ServiceLocator.Instance.GetLogger("OSharp.Entity.DbContextExtensions");
+                logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
             }
         }
 
@@ -73,7 +78,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 异步执行指定的Sql语句
         /// </summary>
-        public static Task<int> ExecuteSqlCommandAsync(this IDbContext dbContext, string sql, params object [] parameters)
+        public static Task<int> ExecuteSqlCommandAsync(this IDbContext dbContext, string sql, params object[] parameters)
         {
             if (!(dbContext is DbContext context))
             {
@@ -114,6 +119,7 @@ namespace OSharp.Entity
         private static AuditEntity GetAuditEntity(EntityEntry entry, IEntityInfo entityInfo)
         {
             AuditEntity audit = new AuditEntity() { Name = entityInfo.Name, TypeName = entityInfo.TypeName, OperateType = OperateType.Insert };
+            EntityProperty[] entityProperties = entityInfo.Properties;
             foreach (IProperty property in entry.CurrentValues.Properties)
             {
                 if (property.IsConcurrencyToken)
@@ -129,8 +135,8 @@ namespace OSharp.Entity
                 }
                 AuditEntityProperty auditProperty = new AuditEntityProperty()
                 {
-                    Name = name,
-                    FieldName = entityInfo.PropertyNames[name],
+                    FieldName = name,
+                    DisplayName = entityProperties.First(m => m.Name == name).Display,
                     DataType = property.ClrType.ToString()
                 };
                 if (entry.State == EntityState.Added)

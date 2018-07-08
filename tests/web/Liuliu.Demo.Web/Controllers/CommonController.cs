@@ -11,24 +11,25 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using Liuliu.Demo.Common;
+using Liuliu.Demo.Security;
+using Liuliu.Demo.Security.Dtos;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
-using OSharp.Collections;
-using OSharp.Core;
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
-using OSharp.Entity;
+using OSharp.Filter;
 using OSharp.Reflection;
 
 
@@ -38,6 +39,15 @@ namespace Liuliu.Demo.Web.Controllers
     [ModuleInfo(Order = 3)]
     public class CommonController : ApiController
     {
+        private readonly ICommonContract _commonContract;
+        private readonly SecurityManager _securityManager;
+
+        public CommonController(ICommonContract commonContract, SecurityManager securityManager)
+        {
+            _commonContract = commonContract;
+            _securityManager = securityManager;
+        }
+
         /// <summary>
         /// 获取验证码图片
         /// </summary>
@@ -81,7 +91,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("系统信息")]
-        public IActionResult SystemInfo()
+        public object SystemInfo()
         {
             IServiceProvider provider = HttpContext.RequestServices;
 
@@ -98,17 +108,28 @@ namespace Liuliu.Demo.Web.Controllers
 
             string version = Assembly.GetExecutingAssembly().GetProductVersion();
 
-            MvcOptions mvcOps = provider.GetService<IOptions<MvcOptions>>().Value;
-
             info.Lines = new List<string>()
             {
                 "WebApi 数据服务已启动",
-                $"版本号：{version}",
-                $"数据连接：{provider.GetOSharpOptions().GetDbContextOptions(typeof(DefaultDbContext)).ConnectionString}",
-                $"MvcFilters：\r\n{mvcOps.Filters.ExpandAndToString(m => $"{m.ToString()}-{m.GetHashCode()}", "\r\n")}"
+                $"当前版本：{version}"
             };
 
-            return Json(info);
+            return info;
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("测试")]
+        public object Test()
+        {
+            EntityRoleInputDto dto = new EntityRoleInputDto()
+            {
+                RoleId = 3,
+                EntityId = Guid.Parse("a0f5a8cf-f774-45e2-be2f-a9130053ab73"),
+                FilterGroup = new FilterGroup()
+            };
+            dto.FilterGroup.AddRule(new FilterRule("Id", 5, FilterOperate.GreaterOrEqual));
+            return _securityManager.CreateEntityRoles(dto);
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="EntityConfigurationTypeFinder.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-15 3:14</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-07-04 0:07</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -14,11 +14,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Exceptions;
-using OSharp.Finders;
-using OSharp.Core;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
+using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
@@ -27,18 +25,16 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类配置类型查找器
     /// </summary>
-    public class EntityConfigurationTypeFinder : FinderBase<Type>, IEntityConfigurationTypeFinder
+    public class EntityConfigurationTypeFinder : BaseTypeFinderBase<IEntityRegister>, IEntityConfigurationTypeFinder
     {
-        private readonly IEntityConfigurationAssemblyFinder _assemblyFinder;
         private Dictionary<Type, IEntityRegister[]> _entityRegistersDict;
 
         /// <summary>
         /// 初始化一个<see cref="EntityConfigurationTypeFinder"/>类型的新实例
         /// </summary>
-        public EntityConfigurationTypeFinder(IEntityConfigurationAssemblyFinder assemblyFinder)
-        {
-            _assemblyFinder = assemblyFinder;
-        }
+        public EntityConfigurationTypeFinder(IAllAssemblyFinder allAssemblyFinder)
+            : base(allAssemblyFinder)
+        { }
 
         /// <summary>
         /// 获取 各个上下文的实体注册信息字典
@@ -87,19 +83,6 @@ namespace OSharp.Entity
                 }
             }
             throw new OsharpException($"无法获取实体类“{entityType}”的所属上下文类型，请通过继承基类“EntityTypeConfigurationBase<TEntity, TKey>”配置实体加载到上下文中");
-        }
-
-        /// <summary>
-        /// 重写以实现所有项的查找
-        /// </summary>
-        /// <returns></returns>
-        protected override Type[] FindAllItems()
-        {
-            Type baseType = typeof(IEntityRegister);
-            Type[] types = _assemblyFinder.FindAll()
-                .SelectMany(assembly => assembly.GetTypes().Where(type => baseType.IsAssignableFrom(type) && !type.IsAbstract && type.IsPublic))
-                .ToArray();
-            return types;
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace OSharp.Core.Packs
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
-            ServiceLocator.Instance.TrySetServiceCollection(services);
+            ServiceLocator.Instance.SetServiceCollection(services);
 
             return services;
         }
@@ -48,7 +48,7 @@ namespace OSharp.Core.Packs
         public override void UsePack(IServiceProvider provider)
         {
             //应用程序级别的服务定位器
-            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
+            ServiceLocator.Instance.SetApplicationServiceProvider(provider);
 
             IsEnabled = true;
         }

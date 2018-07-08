@@ -12,8 +12,10 @@ using System.Linq;
 
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Caching;
+using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
@@ -41,13 +43,15 @@ namespace OSharp.Security
         where TUserKey : IEquatable<TUserKey>
     {
         private readonly IDistributedCache _cache;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthCacheBase{TModuleFunction, TModuleRole, TModuleUser, TFunction, TModule, TModuleKey,TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
-        protected FunctionAuthCacheBase(IDistributedCache cache)
+        protected FunctionAuthCacheBase()
         {
-            _cache = cache;
+            _cache = ServiceLocator.Instance.GetService<IDistributedCache>();
+            _logger = ServiceLocator.Instance.GetLogger(GetType());
         }
 
         /// <summary>
@@ -66,6 +70,7 @@ namespace OSharp.Security
             {
                 GetFunctionRoles(function.Id);
             }
+            _logger.LogInformation($"功能权限：创建{functions.Length}个功能的“Function-Roles[]”缓存");
         }
 
         /// <summary>
@@ -78,7 +83,9 @@ namespace OSharp.Security
             {
                 string key = $"Security_FunctionRoles_{functionId}";
                 _cache.Remove(key);
+                _logger.LogDebug($"移除功能“{functionId}”的“Function-Roles[]”缓存");
             }
+            _logger.LogInformation($"功能权限：移除{functionIds.Length}个“Function-Roles[]”缓存");
         }
 
         /// <summary>
@@ -105,6 +112,7 @@ namespace OSharp.Security
             string[] roleNames = _cache.Get<string[]>(key);
             if (roleNames != null)
             {
+                _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存");
                 return roleNames;
             }
             roleNames = ServiceLocator.Instance.ExcuteScopedWork(provider =>
@@ -120,6 +128,7 @@ namespace OSharp.Security
             if (roleNames.Length > 0)
             {
                 _cache.Set(key, roleNames);
+                _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存");
             }
             return roleNames;
         }
@@ -135,6 +144,7 @@ namespace OSharp.Security
             Guid[] functionIds = _cache.Get<Guid[]>(key);
             if (functionIds != null)
             {
+                _logger.LogDebug($"从缓存中获取到用户“{userName}”的“User-Function[]”缓存");
                 return functionIds;
             }
             functionIds = ServiceLocator.Instance.ExcuteScopedWork(provider =>
@@ -156,6 +166,7 @@ namespace OSharp.Security
 
             if (functionIds.Length > 0)
             {
+                _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
                 _cache.Set(key, functionIds);
             }
             return functionIds;

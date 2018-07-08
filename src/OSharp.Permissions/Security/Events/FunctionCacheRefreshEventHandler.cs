@@ -39,6 +39,10 @@ namespace OSharp.Security.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(FunctionCacheRefreshEventData eventData)
         {
+            if (!ServiceLocator.InScoped())
+            {
+                return;
+            }
             IFunctionHandler functionHandler = _provider.GetService<IFunctionHandler>();
             functionHandler.RefreshCache();
         }

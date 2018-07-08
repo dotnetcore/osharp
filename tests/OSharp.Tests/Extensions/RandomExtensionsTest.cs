@@ -13,7 +13,7 @@ namespace OSharp.Extensions.Tests
         {
             Random rnd = new Random();
             bool value = rnd.NextBoolean();
-            Assert.True(new[] { true, false }.Contains(value));
+            Assert.Contains(value, new[] { true, false });
         }
 
         [Fact()]
@@ -21,7 +21,7 @@ namespace OSharp.Extensions.Tests
         {
             Random rnd = new Random();
             UriKind kind = rnd.NextEnum<UriKind>();
-            Assert.True(new[] { UriKind.Absolute, UriKind.Relative, UriKind.RelativeOrAbsolute }.Contains(kind));
+            Assert.Contains(kind, new[] { UriKind.Absolute, UriKind.Relative, UriKind.RelativeOrAbsolute });
         }
 
         [Fact()]
@@ -30,9 +30,9 @@ namespace OSharp.Extensions.Tests
             Random rnd = new Random();
             Assert.Throws<ArgumentOutOfRangeException>(() => rnd.NextBytes(-5));
 
-            Byte[] bytes = rnd.NextBytes(10);
+            byte[] bytes = rnd.NextBytes(10);
             Assert.True(bytes.Length == 10);
-            Assert.True(bytes.Distinct().Count() > 8);
+            Assert.True(bytes.Distinct().Count() > 5);
         }
 
         [Fact()]

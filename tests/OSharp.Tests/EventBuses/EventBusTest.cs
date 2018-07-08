@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Maths;
+using OSharp.UnitTest;
 
 using Shouldly;
 
@@ -17,15 +19,13 @@ using Xunit;
 
 namespace OSharp.Tests.IEventBuses
 {
-    public class IEventBusTests
+    public class IEventBusTests: IDisposable
     {
         public IEventBusTests()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddOSharp();
             services.AddLogging();
-            IServiceProvider provider = services.BuildServiceProvider();
-            ServiceLocator.Instance.TrySetApplicationServiceProvider(provider);
+            services.UnitTestInit();
         }
 
         [Fact]
@@ -37,24 +37,24 @@ namespace OSharp.Tests.IEventBuses
 
             bus.Subscribe<HelloEventData, HelloEventHandler>();
             HelloEventData data = new HelloEventData("hello world");
-            bus.PublishSync(data);
-            Thread.Sleep(50);
+            bus.Publish(data);
+            //Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
             bus.UnsubscribeAll<HelloEventData>();
 
             Action<HelloEventData> action = m => m.List.Add(m.Message);
             bus.Subscribe<HelloEventData>(action);
-            bus.PublishSync(data);
-            Thread.Sleep(50);
+            bus.Publish(data);
+            //Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
             bus.Unsubscribe(action);
 
             IEventHandler<HelloEventData> handler = new HelloEventHandler();
             bus.Subscribe<HelloEventData>(handler);
-            bus.PublishSync(typeof(HelloEventData), (IEventData)data);
-            Thread.Sleep(50);
+            bus.Publish(typeof(HelloEventData), (IEventData)data);
+            //Thread.Sleep(50);
             data.List.ShouldContain(data.Message);
             data.List.Clear();
             bus.Unsubscribe(handler);
@@ -69,10 +69,10 @@ namespace OSharp.Tests.IEventBuses
             bus.Subscribe<HelloEventData, HelloEventHandler>();
             HelloEventData data = new HelloEventData("hello world");
             await bus.PublishAsync(data);
-            //Thread.Sleep(50);
-            //data.List.ShouldContain(data.Message);
-            //data.List.Clear();
-            //bus.UnsubscribeAll<HelloEventData>();
+            Thread.Sleep(100);
+            data.List.ShouldContain(data.Message);
+            data.List.Clear();
+            bus.UnsubscribeAll<HelloEventData>();
         }
 
         private class HelloEventData : EventDataBase
@@ -114,5 +114,16 @@ namespace OSharp.Tests.IEventBuses
                 return Task.Run(() => Handle(eventData), cancelToken);
             }
         }
+
+
+        #region IDisposable
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            ServiceLocator.Instance.Dispose();
+        }
+
+        #endregion
     }
 }

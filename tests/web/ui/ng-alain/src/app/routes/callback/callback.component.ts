@@ -14,7 +14,7 @@ export class CallbackComponent implements OnInit {
     private socialService: SocialService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {

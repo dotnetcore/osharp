@@ -53,15 +53,15 @@ namespace OSharp.Data
             byte[] msecsArray = new byte[4];
             byte[] guidArray = id.ToByteArray();
 
-            // Copy the date parts of the guid to the respective byte arrays. 
+            // 将GUID的日期部分复制到相应的字节数组。 
             Array.Copy(guidArray, guidArray.Length - 6, daysArray, 2, 2);
             Array.Copy(guidArray, guidArray.Length - 4, msecsArray, 0, 4);
 
-            // Reverse the arrays to put them into the appropriate order 
+            // 将数组反转，以将它们排列成适当的顺序。 
             Array.Reverse(daysArray);
             Array.Reverse(msecsArray);
 
-            // Convert the bytes to ints 
+            // 将字节转换为int 
             int days = BitConverter.ToInt32(daysArray, 0);
             int msecs = BitConverter.ToInt32(msecsArray, 0);
 

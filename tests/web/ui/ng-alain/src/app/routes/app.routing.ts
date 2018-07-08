@@ -8,6 +8,7 @@ import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutDefaultComponent } from '../layout/default/default.component';
+import { TestComponent } from './home/test.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent, data: { title: '网站首页' } },
+      { path: 'test', component: TestComponent, data: { title: '测试页' } },
     ]
   },
   { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
