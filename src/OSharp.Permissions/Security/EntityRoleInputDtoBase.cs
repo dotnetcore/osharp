@@ -23,7 +23,7 @@ namespace OSharp.Security
     public abstract class EntityRoleInputDtoBase<TRoleKey> : IInputDto<Guid>
     {
         /// <summary>
-        /// 初始化一个<see cref="EntityRoleInputDtoBase"/>类型的新实例
+        /// 初始化一个<see cref="EntityRoleInputDtoBase{TRoleKey}"/>类型的新实例
         /// </summary>
         protected EntityRoleInputDtoBase()
         {

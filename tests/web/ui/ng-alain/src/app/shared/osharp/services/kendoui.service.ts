@@ -533,8 +533,6 @@ export abstract class GridComponentBase extends ComponentBase {
       this.grid.dataSource.read();
     }
   }
-
-
 }
 
 
@@ -559,6 +557,7 @@ export abstract class TreeListComponentBase extends ComponentBase {
     const dataSourceOptions = this.GetDataSourceOptions();
     const dataSource = new kendo.data.TreeListDataSource(dataSourceOptions);
     this.treeListOptions = this.GetTreeListOptions(dataSource);
+    this.treeListOptions = this.FilterTreeListAuth(this.treeListOptions);
   }
 
   protected ViewInitBase() {
@@ -617,6 +616,32 @@ export abstract class TreeListComponentBase extends ComponentBase {
   /**重写以获取Model */
   protected abstract GetModel(): any;
   protected abstract GetTreeListColumns(): kendo.ui.TreeListColumn[];
+
+  /**
+   * 根据 this.auth 的设置对 TreeList 选项进行权限过滤
+   * @param options TreeList选项
+   */
+  protected FilterTreeListAuth(options: kendo.ui.TreeListOptions) {
+    //命令列
+    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
+    let cmds = cmdColumn && cmdColumn.command as kendo.ui.TreeListColumnCommandItem[];
+    if (cmds) {
+      if (!this.auth.Create) {
+        this.osharp.remove(cmds, m => m.name == "createChild");
+      }
+      if (!this.auth.Update) {
+        this.osharp.remove(cmds, m => m.name == "edit");
+      }
+      if (!this.auth.Delete) {
+        this.osharp.remove(cmds, m => m.name == "destroy");
+      }
+      if (cmds.length == 0) {
+        this.osharp.remove(options.columns, m => m == cmdColumn);
+      }
+      cmdColumn.width = cmds.length * 50;
+    }
+    return options;
+  }
 
   /**重置Grid高度 */
   protected ResizeGrid(init: boolean) {

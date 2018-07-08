@@ -152,6 +152,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return page.ToPageData();
         }
 
+        //模块暂时不需要CUD操作
+        /*
         /// <summary>
         /// 新增模块子节点
         /// </summary>
@@ -231,5 +233,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
             return result.ToAjaxResult();
         }
+        */
     }
 }

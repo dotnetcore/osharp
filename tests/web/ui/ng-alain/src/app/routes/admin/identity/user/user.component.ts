@@ -148,8 +148,6 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
   }
 
   protected FilterGridAuth(options: kendo.ui.GridOptions) {
-    let opts = super.FilterGridAuth(options);
-
     // 命令列
     let cmdColumn = options.columns && options.columns.find(m => m.command != null);
     let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
@@ -161,7 +159,8 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         this.osharp.remove(cmds, m => m.name == "setModules");
       }
     }
-    return opts;
+    options = super.FilterGridAuth(options);
+    return options;
   }
   //#endregion
 

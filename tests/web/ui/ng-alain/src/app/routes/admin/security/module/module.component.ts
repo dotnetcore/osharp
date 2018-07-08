@@ -42,7 +42,7 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Security.Module", ["Read", "Update"]);
+    return new AuthConfig("Root.Admin.Security.Module", ["Read", "ReadFunctions"]);
   }
 
   //#region Grid
@@ -75,10 +75,10 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
       }, {
         title: "操作",
         command: [
-          { name: "setFuncs", imageClass: "k-i-categorize", text: " ", click: e => this.windowOpen(e) },
-          { name: "createChild", text: " " },
-          { name: "edit", text: " " },
-          { name: "destroy", imageClass: "k-i-delete", text: " " }
+          // { name: "setFuncs", imageClass: "k-i-categorize", text: " ", click: e => this.windowOpen(e) },
+          // { name: "createChild", text: " " },
+          // { name: "edit", text: " " },
+          // { name: "destroy", imageClass: "k-i-delete", text: " " }
         ],
         width: 180
       }
@@ -113,7 +113,18 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
     };
     return options;
   }
-
+  protected FilterTreeListAuth(options: kendo.ui.TreeListOptions) {
+    //命令列
+    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
+    let cmds = cmdColumn && cmdColumn.command as kendo.ui.TreeListColumnCommandItem[];
+    if (cmds) {
+      if (!this.auth.SetFunctions) {
+        this.osharp.remove(cmds, m => m.name == "setFuncs");
+      }
+    }
+    options = super.FilterTreeListAuth(options);
+    return options;
+  }
   onModuleSelectedChange(functionGrid: kendo.ui.Grid) {
     let options = {
       filter: {
