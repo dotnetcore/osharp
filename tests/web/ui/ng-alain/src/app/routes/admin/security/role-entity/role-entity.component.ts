@@ -60,7 +60,6 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
     const columns = [{
       command: [
         { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
-        {}
       ],
       width: 100
     }, {

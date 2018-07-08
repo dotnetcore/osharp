@@ -105,7 +105,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// 新增角色
         /// </summary>
         /// <param name="dtos">新增角色信息</param>
-        /// <returns>Json结果</returns>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -132,7 +132,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// 更新角色
         /// </summary>
         /// <param name="dtos">更新角色信息</param>
-        /// <returns>Json结果</returns>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -160,7 +160,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// 删除角色
         /// </summary>
         /// <param name="ids">要删除的角色编号</param>
-        /// <returns>Json结果</returns>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
@@ -184,17 +184,17 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// 设置角色权限
+        /// 设置角色模块
         /// </summary>
-        /// <param name="dto">设置的角色权限信息</param>
-        /// <returns>Json结果</returns>
+        /// <param name="dto">角色模块信息</param>
+        /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [DependOnFunction("ReadRoleModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("权限设置")]
-        public async Task<ActionResult> SetPermission([FromBody] RoleSetPermissionDto dto)
+        [Description("设置模块")]
+        public async Task<ActionResult> SetModules([FromBody] RoleSetModuleDto dto)
         {
             OperationResult result = await _securityManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return Json(result.ToAjaxResult());

@@ -498,9 +498,6 @@ export abstract class GridComponentBase extends ComponentBase {
       if (!this.auth.Delete) {
         this.osharp.remove(cmds, m => m.name == "destroy");
       }
-      if (!this.auth.SetPermission) {
-        this.osharp.remove(cmds, m => m.name == "permission");
-      }
       if (cmds.length == 0) {
         this.osharp.remove(options.columns, m => m == cmdColumn);
       }

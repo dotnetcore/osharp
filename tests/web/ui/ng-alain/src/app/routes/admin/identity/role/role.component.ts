@@ -39,7 +39,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.Role", ["Read", "Create", "Update", "Delete", "SetPermission"]);
+    return new AuthConfig("Root.Admin.Identity.Role", ["Read", "Create", "Update", "Delete", "SetModules"]);
   }
 
   //#region GridBase
@@ -63,7 +63,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
     return [
       {
         command: [
-          { name: "permission", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
+          { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
           { name: "destroy", iconClass: "k-icon k-i-delete", text: "" }
         ],
         width: 100
@@ -92,6 +92,20 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
     ];
   }
 
+  protected FilterGridAuth(options: kendo.ui.GridOptions) {
+    let opts = super.FilterGridAuth(options);
+
+    // 命令列
+    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
+    let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
+    if (cmds) {
+      if (!this.auth.SetModules) {
+        this.osharp.remove(cmds, m => m.name == "setModules");
+      }
+    }
+    return opts;
+  }
+
   //#endregion
 
   //#region Window
@@ -104,26 +118,27 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
     e.preventDefault();
     let tr = $(e.target).closest("tr");
     this.winRole = this.grid.dataItem(tr);
-    this.window.title("角色权限设置-" + this.winRole.Name).open().center().resize();
+    this.window.title("角色模块设置-" + this.winRole.Name).open().center().resize();
     // 设置树数据
     this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadRoleModules?roleId=" + this.winRole.Id));
   }
   private onWinResize(e) {
     $(".win-content .k-tabstrip .k-content").height(e.height - 140);
   }
-  onWinSubmit(win) {
+  onWinSubmit() {
     let moduleRoot = this.moduleTree.dataSource.data()[0];
     let modules = [];
     this.osharp.getTreeNodes(moduleRoot, modules);
     let checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
     let body = { roleId: this.winRole.Id, moduleIds: checkModuleIds };
-    this.http.post("api/admin/role/setpermission", body).subscribe(res => {
+    this.http.post("api/admin/role/SetModules", body).subscribe(res => {
       this.osharp.ajaxResult(res, () => {
         this.grid.dataSource.read();
         this.window.close();
       });
     });
   }
+
   //#endregion
 
   //#region Tree

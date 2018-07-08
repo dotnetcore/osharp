@@ -76,7 +76,6 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
           { name: "setRoles", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.roleWindowOpen(e) },
           { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.moduleWindowOpen(e) },
           { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
-          {}
         ],
         width: 100
       },
@@ -148,6 +147,22 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
     ];
   }
 
+  protected FilterGridAuth(options: kendo.ui.GridOptions) {
+    let opts = super.FilterGridAuth(options);
+
+    // 命令列
+    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
+    let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
+    if (cmds) {
+      if (!this.auth.SetRoles) {
+        this.osharp.remove(cmds, m => m.name == "setRoles");
+      }
+      if (!this.auth.SetModules) {
+        this.osharp.remove(cmds, m => m.name == "setModules");
+      }
+    }
+    return opts;
+  }
   //#endregion
 
   //#region Window
