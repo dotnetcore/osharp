@@ -119,6 +119,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return nodes;
         }
 
+        /*
         /// <summary>
         /// 读取模块功能
         /// </summary>
@@ -231,5 +232,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
             return result.ToAjaxResult();
         }
+        */
     }
 }

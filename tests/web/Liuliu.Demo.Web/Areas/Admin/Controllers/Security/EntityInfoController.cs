@@ -68,7 +68,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// </summary>
         /// <returns>实体节点集合</returns>
         [HttpGet]
-        [ModuleInfo]
         [Description("读取节点")]
         public List<EntityInfoNode> ReadNode()
         {
@@ -77,7 +76,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [ModuleInfo]
         [Description("读取实体属性信息")]
         public AjaxResult ReadProperties(string typeName)
         {

@@ -97,7 +97,7 @@ namespace OSharp.Identity
         /// Returns an <see cref="T:System.Linq.IQueryable`1" /> collection of users.
         /// </summary>
         /// <value>An <see cref="T:System.Linq.IQueryable`1" /> collection of users.</value>
-        public IQueryable<TUser> Users => _userRepository.Entities;
+        public IQueryable<TUser> Users => _userRepository.TrackEntities;
 
         #endregion
 
