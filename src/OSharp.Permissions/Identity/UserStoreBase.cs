@@ -19,7 +19,9 @@ using Microsoft.AspNetCore.Identity;
 
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.EventBuses;
 using OSharp.Extensions;
+using OSharp.Identity.Events;
 
 
 namespace OSharp.Identity
@@ -64,6 +66,7 @@ namespace OSharp.Identity
         private readonly IRepository<TUserToken, Guid> _userTokenRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUserRole, Guid> _userRoleRepository;
+        private readonly IEventBus _eventBus;
         private bool _disposed;
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace OSharp.Identity
             IRepository<TUserClaim, int> userClaimRepository,
             IRepository<TUserToken, Guid> userTokenRepository,
             IRepository<TRole, TRoleKey> roleRepository,
-            IRepository<TUserRole, Guid> userRoleRepository)
+            IRepository<TUserRole, Guid> userRoleRepository,
+            IEventBus eventBus
+        )
         {
             _userRepository = userRepository;
             _userLoginRepository = userLoginRepository;
@@ -89,6 +94,7 @@ namespace OSharp.Identity
             _userTokenRepository = userTokenRepository;
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
+            _eventBus = eventBus;
         }
 
         #region Implementation of IQueryableUserStore<TUser>
@@ -213,7 +219,7 @@ namespace OSharp.Identity
                 TRole adminRole = _roleRepository.Entities.FirstOrDefault();
                 if (adminRole != null)
                 {
-                    TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = adminRole.Id};
+                    TUserRole userRole = new TUserRole() { UserId = user.Id, RoleId = adminRole.Id };
                     await _userRoleRepository.InsertAsync(userRole);
 
                     user.IsSystem = true;
@@ -225,10 +231,10 @@ namespace OSharp.Identity
             TRole defaultRole = _roleRepository.Entities.FirstOrDefault(m => m.IsDefault);
             if (defaultRole != null)
             {
-                TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = defaultRole.Id};
+                TUserRole userRole = new TUserRole() { UserId = user.Id, RoleId = defaultRole.Id };
                 await _userRoleRepository.InsertAsync(userRole);
             }
-            
+
             return IdentityResult.Success;
         }
 
@@ -571,6 +577,11 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             user.SecurityStamp = stamp;
+
+            //移除用户在线缓存
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserName = user.UserName };
+            _eventBus.Publish(eventData);
+
             return Task.CompletedTask;
         }
 
@@ -1121,7 +1132,7 @@ namespace OSharp.Identity
             Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
 
             TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
             }
@@ -1194,7 +1205,7 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
             }
@@ -1217,7 +1228,7 @@ namespace OSharp.Identity
             Check.NotNullOrEmpty(roleName, nameof(roleName));
 
             TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
             }

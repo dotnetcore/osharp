@@ -59,9 +59,18 @@ export class FilterRuleComponent implements OnChanges {
                 }
                 break;
             case 'System.Int32':
-                this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual]);
-                if (!this.rule.Value) {
-                    this.rule.Value = '0';
+                if (this.property.ValueRange.length == 0) {
+                    //数值类型
+                    this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual]);
+                    if (!this.rule.Value) {
+                        this.rule.Value = '0';
+                    }
+                } else {
+                    //枚举类型
+                    this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual]);
+                    if (!this.rule.Value) {
+                        this.rule.Value = this.property.ValueRange[0].id;
+                    }
                 }
                 break;
             case 'System.DateTime':

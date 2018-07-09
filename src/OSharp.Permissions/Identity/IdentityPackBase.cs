@@ -45,12 +45,16 @@ namespace OSharp.Identity
         {
             services.AddScoped<IUserStore<TUser>, TUserStore>();
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
+
             //注入当前用户，替换Thread.CurrentPrincipal的作用
             services.AddTransient<IPrincipal>(provider =>
             {
                 IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
                 return accessor?.HttpContext.User;
             });
+
+            //在线用户缓存
+            services.AddSingleton<IOnlineUserCache, OnlineUserCache<TUser, TUserKey>>();
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);

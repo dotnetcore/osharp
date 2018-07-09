@@ -12,6 +12,7 @@ using System;
 using Liuliu.Demo.Identity.Entities;
 
 using OSharp.Entity;
+using OSharp.EventBuses;
 using OSharp.Identity;
 
 
@@ -31,13 +32,15 @@ namespace Liuliu.Demo.Identity
         /// <param name="userTokenRepository">用户令牌仓储</param>
         /// <param name="roleRepository">角色仓储</param>
         /// <param name="userRoleRepository">用户角色仓储</param>
+        /// <param name="eventBus">事件总线</param>
         public UserStore(IRepository<User, int> userRepository,
             IRepository<UserLogin, Guid> userLoginRepository,
             IRepository<UserClaim, int> userClaimRepository,
             IRepository<UserToken, Guid> userTokenRepository,
             IRepository<Role, int> roleRepository,
-            IRepository<UserRole, Guid> userRoleRepository)
-            : base(userRepository, userLoginRepository, userClaimRepository, userTokenRepository, roleRepository, userRoleRepository)
+            IRepository<UserRole, Guid> userRoleRepository,
+            IEventBus eventBus)
+            : base(userRepository, userLoginRepository, userClaimRepository, userTokenRepository, roleRepository, userRoleRepository, eventBus)
         { }
     }
 }

@@ -7,7 +7,7 @@
 //  <last-date>2018-05-26 0:07</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Security.JwtBearer
+namespace OSharp.Identity.JwtBearer
 {
     /// <summary>
     /// Jwt声明类型
@@ -18,10 +18,6 @@ namespace OSharp.Security.JwtBearer
         /// 是否管理
         /// </summary>
         public const string IsAdmin = "is-admin";
-        /// <summary>
-        /// 安全标识
-        /// </summary>
-        public const string SecurityStamp = "security-stamp";
         /// <summary>
         /// 头像图片
         /// </summary>

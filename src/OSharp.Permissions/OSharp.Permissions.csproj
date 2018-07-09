@@ -34,4 +34,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Security\JwtBearer\" />
+  </ItemGroup>
+
 </Project>

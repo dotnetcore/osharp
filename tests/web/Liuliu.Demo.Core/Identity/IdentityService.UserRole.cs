@@ -91,6 +91,7 @@ namespace Liuliu.Demo.Identity
                 {
                     return result.ToOperationResult();
                 }
+                await _userManager.UpdateSecurityStampAsync(user);
             }
             catch (InvalidOperationException ex)
             {

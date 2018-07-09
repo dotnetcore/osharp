@@ -8,6 +8,7 @@
     </nz-select>
 
     <div *ngIf="property" class="f-left">
+      <!--布尔类型-->
       <ng-container *ngIf="property.TypeName=='System.Boolean'; else elseTemplate1">
         <nz-select [(ngModel)]="rule.Value" nzSize="small">
           <nz-option nzValue="true" nzLabel="是"></nz-option>
@@ -15,24 +16,28 @@
         </nz-select>
       </ng-container>
       <ng-template #elseTemplate1>
+        <!--数值类型-->
         <ng-container *ngIf="property.TypeName=='System.Int32'; else elseTemplate2">
+          <!--枚举类型-->
           <ng-container *ngIf="property.ValueRange.length>0; else elseTemplate3">
             <nz-select [(ngModel)]="rule.Value" nzSize="small">
               <nz-option *ngFor="let value of property.ValueRange" [nzValue]="value.id" [nzLabel]="value.text"></nz-option>
             </nz-select>
           </ng-container>
           <ng-template #elseTemplate3>
+            <!--数值类型-->
             <nz-input-number [(ngModel)]="rule.Value" nzSize="small"></nz-input-number>
           </ng-template>
         </ng-container>
         <ng-template #elseTemplate2>
+          <!--时间类型-->
           <ng-container *ngIf="property.TypeName=='System.DateTime'; else elseTemplate4">
             <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="yyyy-MM-dd HH:mm" nzPlaceHolder="Select Time" nzSize="small"></nz-date-picker>
           </ng-container>
           <ng-template #elseTemplate4>
+            <!--字符串类型-->
             <input nz-input [(ngModel)]="rule.Value" style="width:150px; margin-right:8px;" nzSize="small" />
           </ng-template>
-
         </ng-template>
       </ng-template>
     </div>

@@ -27,6 +27,7 @@ using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
+using OSharp.Identity.JwtBearer;
 
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -84,6 +85,9 @@ namespace Liuliu.Demo.Web
                     ValidAudience = _configuration["OSharp:Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
                 };
+
+                jwt.SecurityTokenValidators.Clear();
+                jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
             });
 
             services.AddSignalR();
