@@ -1,5 +1,5 @@
 mat-toolbar {
-    margin-bottom: 50px;
+    //margin-bottom: 50px;
     .logo {
         width: 150px;
         transition: width .2s;
@@ -36,6 +36,11 @@ mat-toolbar {
 
 .nav-sidebar-toggle {
     display: inline-block;
+}
+
+.component-content {
+    max-width: 1152px;
+    margin: 0 auto;
 }
 
 @media screen and (min-width: 960px) {

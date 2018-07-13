@@ -1,21 +1,9 @@
 <mat-sidenav-container fullscreen>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-      <a routerLink="/" (click)="sidenav.close()" mat-list-item>
-        <mat-icon mat-list-icon>home</mat-icon>
-        <span mat-line>Home</span>
-      </a>
-      <a routerLink="/login" (click)="sidenav.close()" mat-list-item>
-        <mat-icon mat-list-icon>lock_outline</mat-icon>
-        <span mat-line>Login</span>
-      </a>
-      <a routerLink="/register" (click)="sidenav.close()" mat-list-item>
-        <mat-icon mat-list-icon>add_box</mat-icon>
-        <span mat-line>Register</span>
-      </a>
-      <a routerLink="/full" (click)="sidenav.close()" mat-list-item>
-        <mat-icon mat-list-icon>add_box</mat-icon>
-        <span mat-line>Full form</span>
+      <a *ngFor="let nav of mainNavs" href="{{nav.link}}" [target]="nav.target?nav.target:'_self'" (click)="sidenav.close()" mat-list-item>
+        <mat-icon mat-list-icon>{{nav.icon}}</mat-icon>
+        <span mat-line>{{nav.text}}</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
@@ -46,38 +34,12 @@
           <img src="../../../assets/res/github.svg" />
           <span mat-line> Github</span>
         </a>
-        <ng-container *ngIf="!(settings.user && settings.user.name); else userSelectTemplate">
-          <a mat-button [routerLink]="[ '/identity/login' ]">
-            <mat-icon>exit_to_app</mat-icon>
-            <span mat-line>登录</span>
-          </a>
-          <a mat-button [routerLink]="[ '/identity/register' ]">
-            <mat-icon>add_box</mat-icon>
-            <span mat-line>注册</span>
-          </a>
-        </ng-container>
-        <ng-template #userSelectTemplate>
-          <button mat-button [matMenuTriggerFor]="menuUserRef">
-            <mat-icon>person</mat-icon>
-            <span mat-line>{{settings.user.name}}</span>
-          </button>
-          <mat-menu #menuUserRef="matMenu">
-            <button mat-menu-item>
-              <mat-icon>person</mat-icon>
-              <span mat-line>个人中心</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>settings</mat-icon>
-              <span mat-line>设置</span>
-            </button>
-            <button mat-menu-item (click)="identity.logout()">
-              <mat-icon>power_settings_new</mat-icon>
-              <span mat-line>退出</span>
-            </button>
-          </mat-menu>
-        </ng-template>
+        <layout-user-menu></layout-user-menu>
       </div>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div class="component-content">
+      <router-outlet></router-outlet>
+    </div>
+    <layout-footer></layout-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>
