@@ -1,5 +1,5 @@
 import { Component, Injector, AfterViewInit, } from '@angular/core';
-import { IdentityService } from '../../../shared/osharp/services/identity.service';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 import { RegisterDto, AdResult, AuthConfig, VerifyCode } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';

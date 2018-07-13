@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Core;
 using OSharp.Core.Options;
@@ -40,21 +41,25 @@ namespace OSharp.Entity.SqlServer
         {
             using (IServiceScope scope = provider.CreateScope())
             {
+                ILogger logger = provider.GetService<ILoggerFactory>().CreateLogger(GetType());
                 TDbContext context = CreateDbContext(scope.ServiceProvider);
                 if (context != null)
                 {
                     OSharpOptions options = scope.ServiceProvider.GetOSharpOptions();
                     OSharpDbContextOptions contextOptions = options.GetDbContextOptions(context.GetType());
-                    if (contextOptions != null)
+                    if (contextOptions == null)
                     {
-                        if (contextOptions.DatabaseType != DatabaseType.SqlServer)
-                        {
-                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.SqlServer)} 类型");
-                        }
-                        if (contextOptions.AutoMigrationEnabled)
-                        {
-                            context.CheckAndMigration();
-                        }
+                        logger.LogWarning($"上下文类型“{context.GetType()}”的数据库上下文配置不存在");
+                        return;
+                    }
+                    if (contextOptions.DatabaseType != DatabaseType.SqlServer)
+                    {
+                        logger.LogWarning($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.SqlServer)} 类型");
+                        return;
+                    }
+                    if (contextOptions.AutoMigrationEnabled)
+                    {
+                        context.CheckAndMigration();
                     }
                 }
             }

@@ -4,7 +4,6 @@ import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.mo
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
-import { element } from '../../../../../node_modules/protractor';
 
 
 @Injectable()

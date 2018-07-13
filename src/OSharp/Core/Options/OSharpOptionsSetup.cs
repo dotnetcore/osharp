@@ -72,7 +72,7 @@ namespace OSharp.Core.Options
         /// </summary>
         /// <param name="options"></param>
         private void SetDbContextOptionses(OSharpOptions options)
-        {
+        { 
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
             IDictionary<string, OSharpDbContextOptions> dict = section.Get<Dictionary<string, OSharpDbContextOptions>>();
             if (dict == null || dict.Count == 0)

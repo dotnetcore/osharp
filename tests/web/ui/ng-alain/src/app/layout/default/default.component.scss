@@ -1,3 +1,64 @@
+mat-toolbar {
+    margin-bottom: 50px;
+    .logo {
+        width: 150px;
+        transition: width .2s;
+        a {
+            display: block;
+            text-align: center;
+            touch-action: manipulation;
+        }
+        img {
+            vertical-align: middle;
+            max-width: 100%;
+            border-style: none;
+        }
+        .expanded {
+            display: inline;
+        }
+        .collapsed {
+            display: none;
+        }
+    }
+}
+
+.nav-main-menu {
+    display: none;
+}
+
+.nav-main-menu-right {
+    display: inline-block;
+    .mat-button {
+        min-width: 0px;
+        padding: 0 10px;
+    }
+}
+
+.nav-sidebar-toggle {
+    display: inline-block;
+}
+
+@media screen and (min-width: 960px) {
+    .nav-main-menu {
+        display: inline-block;
+    }
+    .nav-sidebar-toggle {
+        display: none;
+    }
+}
+
+@media screen and (max-width:959px) {
+    mat-toolbar .logo {
+        width: 40px;
+        .expanded {
+            display: none;
+        }
+        .collapsed {
+            display: inline;
+        }
+    }
+}
+
 .content {
     margin: 64px auto 24px auto;
     width: 1152px;
