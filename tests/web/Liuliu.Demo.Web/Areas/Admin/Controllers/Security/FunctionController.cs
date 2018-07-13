@@ -61,7 +61,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     new SortCondition("IsController", ListSortDirection.Descending)
                 };
             }
-            Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> predicate = FilterHelper.GetDataFilterExpression<Function>(request.FilterGroup);
             PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }

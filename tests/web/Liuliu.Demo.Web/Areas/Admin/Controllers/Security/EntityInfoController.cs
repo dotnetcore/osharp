@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
-            Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
+            Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetDataFilterExpression<EntityInfo>(request.FilterGroup);
             var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }

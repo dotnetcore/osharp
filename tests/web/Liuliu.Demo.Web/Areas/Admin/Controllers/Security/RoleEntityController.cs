@@ -55,7 +55,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<EntityRoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetExpression<EntityRole>(request.FilterGroup);
+            Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetDataFilterExpression<EntityRole>(request.FilterGroup);
             RoleManager<Role> roleManager = ServiceLocator.Instance.GetService<RoleManager<Role>>();
             var page = _securityManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,

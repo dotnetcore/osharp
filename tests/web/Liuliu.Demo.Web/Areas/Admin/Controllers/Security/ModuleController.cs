@@ -52,7 +52,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public List<ModuleOutputDto> Read()
         {
             ListFilterGroup group = new ListFilterGroup(Request);
-            Expression<Func<Module, bool>> predicate = FilterHelper.GetExpression<Module>(group);
+            Expression<Func<Module, bool>> predicate = FilterHelper.GetDataFilterExpression<Module>(group);
             List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<ModuleOutputDto>().ToList();
             return modules;
         }
@@ -134,7 +134,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 return new PageData<FunctionOutputDto2>();
             }
-            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(request.FilterGroup);
+            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetDataFilterExpression<Module>(request.FilterGroup);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
