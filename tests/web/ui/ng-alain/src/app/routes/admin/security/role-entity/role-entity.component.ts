@@ -49,7 +49,8 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
         RoleName: { type: "string", validation: { required: true } },
         EntityName: { type: "string", validation: { required: true } },
         EntityType: { type: "string", validation: { required: true } },
-        FilterGroup: { type: "object" },
+        Operation: { type: "number", editable: true },
+        FilterGroup: { type: "object", editable: false },
         IsLocked: { type: "boolean" },
         CreatedTime: { type: "date", editable: false }
       }
@@ -65,7 +66,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
     }, {
       field: "RoleId",
       title: "角色",
-      width: 150,
+      width: 120,
       template: "#=RoleId#.#=RoleName#",
       editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/role/ReadNode", "RoleName", "RoleId"),
       filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/role/ReadNode", "RoleName", "RoleId") }
@@ -76,6 +77,13 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       template: "#=EntityName# [#=EntityType#]",
       editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/entityinfo/ReadNode", "Name", "Id"),
       filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/entityinfo/ReadNode", "Name", "Id") }
+    }, {
+      field: "Operation",
+      title: "操作",
+      width: 75,
+      template: d => this.osharp.valueToText(d.Operation, this.osharp.data.dataAuthOperations),
+      editor: (container, options) => this.kendoui.DropDownListEditor(container, options, this.osharp.data.dataAuthOperations),
+      filterable: { ui: el => this.kendoui.DropDownList(el, this.osharp.data.dataAuthOperations) }
     }, {
       field: "IsLocked",
       title: "锁定",
@@ -91,6 +99,12 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
     return columns;
   }
 
+  protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
+    let options = super.GetDataSourceOptions();
+    options.group = [{ field: "RoleName" }, { field: "EntityName" }];
+    return options;
+  }
+
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
     options.selectable = true;
@@ -100,7 +114,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
         let data: any = this.grid.dataItem(row);
         if (data) {
           this.selectData = data;
-          this.selectName = `角色: ${data.RoleName} + 实体: ${data.EntityName}`
+          this.selectName = `${data.RoleName} + ${data.EntityName} + ${this.osharp.valueToText(data.Operation, this.osharp.data.dataAuthOperations)}`;
           if (data.FilterGroup) {
             this.filterGroup = data.FilterGroup;
           } else {
@@ -132,7 +146,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       return;
     }
     let data = this.selectData;
-    let dto = { Id: data.Id, RoleId: data.RoleId, EntityId: data.EntityId, FilterGroup: this.filterGroup, IsLocked: data.IsLocked };
+    let dto = { Id: data.Id, RoleId: data.RoleId, EntityId: data.EntityId, Operation: data.Operation, FilterGroup: this.filterGroup, IsLocked: data.IsLocked };
     this.http.post<AjaxResult>("api/admin/roleentity/Update", [dto]).subscribe(res => {
       this.osharp.ajaxResult(res);
     });

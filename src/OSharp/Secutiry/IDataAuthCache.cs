@@ -33,7 +33,8 @@ namespace OSharp.Secutiry
         /// </summary>
         /// <param name="roleName">角色名称</param>
         /// <param name="entityTypeFullName">实体类型名称</param>
-        void RemoveCache(string roleName, string entityTypeFullName);
+        /// <param name="operation">数据权限操作</param>
+        void RemoveCache(string roleName, string entityTypeFullName, DataAuthOperation operation);
 
         /// <summary>
         /// 获取指定角色名与实体类型的数据权限过滤规则
@@ -41,6 +42,7 @@ namespace OSharp.Secutiry
         /// <param name="roleName">角色名称</param>
         /// <param name="entityTypeFullName">实体类型名称</param>
         /// <returns>数据过滤条件组</returns>
-        FilterGroup GetFilterGroup(string roleName, string entityTypeFullName);
+        /// <param name="operation">数据权限操作</param>
+        FilterGroup GetFilterGroup(string roleName, string entityTypeFullName, DataAuthOperation operation);
     }
 }

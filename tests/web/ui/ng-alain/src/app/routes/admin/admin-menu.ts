@@ -26,7 +26,7 @@ export const adminMenu: Menu[] = [
           { text: '用户功能管理', link: '/admin/security/user-function', icon: 'icon-magnet' },
           { text: '实体信息管理', link: '/admin/security/entityinfo', icon: 'icon-puzzle' },
           { text: '角色数据管理', link: '/admin/security/role-entity', icon: 'icon-vector' },
-          { text: '用户数据管理', link: '/admin/security/user-entityinfo', icon: 'icon-social-reddit' }
+          // { text: '用户数据管理', link: '/admin/security/user-entityinfo', icon: 'icon-social-reddit' }
         ]
       }
     ]

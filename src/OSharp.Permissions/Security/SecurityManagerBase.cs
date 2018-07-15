@@ -738,11 +738,12 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="roleId">角色编号</param>
         /// <param name="entityId">实体编号</param>
+        /// <param name="operation">操作</param>
         /// <returns>过滤条件组</returns>
-        public virtual FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId)
+        public virtual FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId, DataAuthOperation operation)
         {
-            return _entityRoleRepository.Entities.Where(m => m.RoleId.Equals(roleId) && m.EntityId == entityId).Select(m => m.FilterGroupJson)
-                .ToArray().Select(m => m.FromJsonString<FilterGroup>()).ToArray();
+            return _entityRoleRepository.Entities.Where(m => m.RoleId.Equals(roleId) && m.EntityId == entityId && m.Operation == operation)
+                .Select(m => m.FilterGroupJson).ToArray().Select(m => m.FromJsonString<FilterGroup>()).ToArray();
         }
 
         /// <summary>
@@ -766,9 +767,9 @@ namespace OSharp.Security
                     {
                         throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
-                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId))
+                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId && m.Operation == dto.Operation))
                     {
-                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
+                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                     }
                     OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
                     if (!checkResult.Successed)
@@ -779,6 +780,7 @@ namespace OSharp.Security
                     {
                         RoleName = role.Name,
                         EntityTypeFullName = entityInfo.TypeName,
+                        Operation = dto.Operation,
                         FilterGroup = dto.FilterGroup
                     });
                 });
@@ -811,9 +813,9 @@ namespace OSharp.Security
                     {
                         throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
                     }
-                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId, dto.Id))
+                    if (await CheckEntityRoleExists(m => m.RoleId.Equals(dto.RoleId) && m.EntityId == dto.EntityId && m.Operation == dto.Operation, dto.Id))
                     {
-                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”的数据权限规则已存在，不能重复添加");
+                        throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                     }
                     OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
                     if (!checkResult.Successed)
@@ -860,7 +862,7 @@ namespace OSharp.Security
                 IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
                 foreach ((string roleName, string typeName) in list)
                 {
-                    cache.RemoveCache(roleName, typeName);
+                    cache.RemoveCache(roleName, typeName, DataAuthOperation.Delete);
                 }
             }
             return result;

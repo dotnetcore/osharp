@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Liuliu.Demo.Identity;
@@ -15,6 +16,7 @@ using Liuliu.Demo.Identity;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Filter;
+using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Security.Dtos
@@ -53,6 +55,11 @@ namespace Liuliu.Demo.Security.Dtos
         /// 获取或设置 业务实体类型
         /// </summary>
         public string EntityType { get; set; }
+
+        /// <summary>
+        /// 获取或设置 数据权限操作
+        /// </summary>
+        public DataAuthOperation Operation { get; set; }
 
         /// <summary>
         /// 获取或设置 过滤条件组

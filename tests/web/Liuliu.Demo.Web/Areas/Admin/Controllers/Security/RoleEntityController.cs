@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -29,6 +30,7 @@ using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -56,6 +58,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetDataFilterExpression<EntityRole>(request.FilterGroup);
+            if (request.PageCondition.SortConditions.Length == 0)
+            {
+                request.PageCondition.SortConditions = new[]
+                {
+                    new SortCondition("RoleId"), 
+                    new SortCondition("EntityId"), 
+                    new SortCondition("Operation")
+                };
+            }
             RoleManager<Role> roleManager = ServiceLocator.Instance.GetService<RoleManager<Role>>();
             var page = _securityManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
@@ -64,6 +75,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     m.Id,
                     m.RoleId,
                     m.EntityId,
+                    m.Operation,
                     m.FilterGroupJson,
                     m.IsLocked,
                     m.CreatedTime,
@@ -81,6 +93,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     RoleName = n.RoleName,
                     EntityName = n.Entity.Name,
                     EntityType = n.Entity.TypeName,
+                    Operation = n.Operation,
                     FilterGroup = n.FilterGroupJson.FromJsonString<FilterGroup>(),
                     IsLocked = n.IsLocked,
                     CreatedTime = n.CreatedTime

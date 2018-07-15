@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using OSharp.Data;
 using OSharp.Filter;
+using OSharp.Secutiry;
 
 
 namespace OSharp.Security
@@ -43,8 +44,9 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="roleId">角色编号</param>
         /// <param name="entityId">实体编号</param>
+        /// <param name="operation">操作</param>
         /// <returns>过滤条件组</returns>
-        FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId);
+        FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId, DataAuthOperation operation);
 
         /// <summary>
         /// 添加实体角色信息信息

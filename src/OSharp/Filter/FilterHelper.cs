@@ -1,9 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="FilterHelper.cs" company="OSharp开源团队">
-//      Copyright (c) 2014 OSharp. All rights reserved.
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2014:07:04 18:09</last-date>
+//  <last-date>2018-07-15 10:22</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -61,7 +62,10 @@ namespace OSharp.Filter
                         {
                             throw new NotSupportedException("“StartsWith”比较方式只支持字符串类型的数据");
                         }
-                        return Expression.Call(left, typeof(string).GetMethod("StartsWith", new[] { typeof(string) }), right);
+                        return Expression.Call(left,
+                            typeof(string).GetMethod("StartsWith", new[] { typeof(string) })
+                            ?? throw new InvalidOperationException($"名称为“StartsWith”的方法不存在"),
+                            right);
                     }
                 },
                 {
@@ -72,7 +76,10 @@ namespace OSharp.Filter
                         {
                             throw new NotSupportedException("“EndsWith”比较方式只支持字符串类型的数据");
                         }
-                        return Expression.Call(left, typeof(string).GetMethod("EndsWith", new[] { typeof(string) }), right);
+                        return Expression.Call(left,
+                            typeof(string).GetMethod("EndsWith", new[] { typeof(string) })
+                            ?? throw new InvalidOperationException($"名称为“EndsWith”的方法不存在"),
+                            right);
                     }
                 },
                 {
@@ -83,7 +90,10 @@ namespace OSharp.Filter
                         {
                             throw new NotSupportedException("“Contains”比较方式只支持字符串类型的数据");
                         }
-                        return Expression.Call(left, typeof(string).GetMethod("Contains", new[] { typeof(string) }), right);
+                        return Expression.Call(left,
+                            typeof(string).GetMethod("Contains", new[] { typeof(string) })
+                            ?? throw new InvalidOperationException($"名称为“Contains”的方法不存在"),
+                            right);
                     }
                 },
                 {
@@ -94,7 +104,10 @@ namespace OSharp.Filter
                         {
                             throw new NotSupportedException("“NotContains”比较方式只支持字符串类型的数据");
                         }
-                        return Expression.Not(Expression.Call(left, typeof(string).GetMethod("Contains", new[] { typeof(string) }), right));
+                        return Expression.Not(Expression.Call(left,
+                            typeof(string).GetMethod("Contains", new[] { typeof(string) })
+                            ?? throw new InvalidOperationException($"名称为“Contains”的方法不存在"),
+                            right));
                     }
                 }
                 //{
@@ -133,8 +146,10 @@ namespace OSharp.Filter
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="group">传入的查询条件组，为空时则只返回数据权限过滤器</param>
-        /// <returns></returns>
-        public static Expression<Func<T, bool>> GetDataFilterExpression<T>(FilterGroup group = null)
+        /// <param name="operation">数据权限操作</param>
+        /// <returns>综合之后的表达式</returns>
+        public static Expression<Func<T, bool>> GetDataFilterExpression<T>(FilterGroup group = null,
+            DataAuthOperation operation = DataAuthOperation.Read)
         {
             Expression<Func<T, bool>> exp = m => true;
             if (group != null)
@@ -159,7 +174,7 @@ namespace OSharp.Filter
             Expression<Func<T, bool>> subExp = null;
             foreach (string roleName in roleNames)
             {
-                FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName);
+                FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName, operation);
                 if (subGroup == null)
                 {
                     continue;
@@ -200,12 +215,13 @@ namespace OSharp.Filter
         {
             Type type = operate.GetType();
             MemberInfo[] members = type.GetMember(operate.CastTo<string>());
-            if (members.Length > 0)
+            if (members.Length == 0)
             {
-                OperateCodeAttribute attribute = members[0].GetAttribute<OperateCodeAttribute>();
-                return attribute == null ? null : attribute.Code;
+                return null;
             }
-            return null;
+
+            OperateCodeAttribute attribute = members[0].GetAttribute<OperateCodeAttribute>();
+            return attribute?.Code;
         }
 
         /// <summary>

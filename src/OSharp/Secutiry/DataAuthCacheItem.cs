@@ -28,6 +28,11 @@ namespace OSharp.Secutiry
         public string EntityTypeFullName { get; set; }
 
         /// <summary>
+        /// 获取或设置 数据权限操作
+        /// </summary>
+        public DataAuthOperation Operation { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据过滤规则
         /// </summary>
         public FilterGroup FilterGroup { get; set; }
