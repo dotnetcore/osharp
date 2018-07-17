@@ -38,7 +38,7 @@ export class LoginComponent extends ComponentBase {
         this.msgSrv.success("用户登录成功");
         setTimeout(() => {
           this.router.navigate(['home']);
-        }, 1000);
+        }, 50);
         return;
       }
       this.canSubmit = true;

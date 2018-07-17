@@ -22,10 +22,10 @@
       <mat-icon>settings</mat-icon>
       <span mat-line>设置</span>
     </button>
-    <a mat-menu-item routerLink="/admin">
+    <button mat-menu-item (click)="router.navigateByUrl('/admin')">
       <mat-icon>account_balance</mat-icon>
       <span mat-line>进入后台</span>
-    </a>
+    </button>
     <button mat-menu-item (click)="identity.logout()">
       <mat-icon>power_settings_new</mat-icon>
       <span mat-line>退出</span>
