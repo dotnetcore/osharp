@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsService } from '@delon/theme';
 import { IdentityService } from '@shared/osharp/services/identity.service';
-import { SettingsService } from '../../../../../../node_modules/@delon/theme';
 
 @Component({
   selector: 'layout-user-menu',
   templateUrl: './user-menu.component.html',
-  styles: []
+  styleUrls: ['./user-menu.component.scss']
 })
 export class UserMenuComponent {
 
