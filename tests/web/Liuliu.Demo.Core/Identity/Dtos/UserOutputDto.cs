@@ -10,8 +10,11 @@
 using System;
 using System.Linq;
 
+using Liuliu.Demo.Identity.Entities;
+
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Identity.Dtos
@@ -19,7 +22,8 @@ namespace Liuliu.Demo.Identity.Dtos
     /// <summary>
     /// 输出DTO:用户信息
     /// </summary>
-    public class UserOutputDto : IOutputDto
+    [MapFrom(typeof(User))]
+    public class UserOutputDto : IOutputDto, IDataAuthEnabled
     {
         /// <summary>
         /// 获取或设置 用户编号
@@ -93,5 +97,19 @@ namespace Liuliu.Demo.Identity.Dtos
                     .SelectMany(m => identityContract.Roles.Where(n => n.Id == m.RoleId).Select(n => n.Name)).Distinct().ToArray();
             }
         }
+
+        #region Implementation of IDataAuthEnabled
+
+        /// <summary>
+        /// 获取或设置 是否可更新
+        /// </summary>
+        public bool Updatable { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否可删除
+        /// </summary>
+        public bool Deletable { get; set; }
+
+        #endregion
     }
 }

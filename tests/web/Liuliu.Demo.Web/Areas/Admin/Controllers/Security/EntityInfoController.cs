@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
-            Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetDataFilterExpression<EntityInfo>(request.FilterGroup);
+            Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }
@@ -71,7 +71,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取节点")]
         public List<EntityInfoNode> ReadNode()
         {
-            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfoNode>().ToList();
+            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfo, EntityInfoNode>().ToList();
             return nodes;
         }
 

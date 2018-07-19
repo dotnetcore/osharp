@@ -42,7 +42,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return repository.TrackEntities.Where(predicate).Delete(interceptAction);
+            return repository.TrackQuery().Where(predicate).Delete(interceptAction);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await repository.TrackEntities.Where(predicate).DeleteAsync(interceptAction);
+            return await repository.TrackQuery().Where(predicate).DeleteAsync(interceptAction);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return repository.TrackEntities.Where(predicate).Update(updateExpression, interceptAction);
+            return repository.TrackQuery().Where(predicate).Update(updateExpression, interceptAction);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await repository.TrackEntities.Where(predicate).UpdateAsync(updateExpression, interceptAction);
+            return await repository.TrackQuery().Where(predicate).UpdateAsync(updateExpression, interceptAction);
         }
 
         /// <summary>

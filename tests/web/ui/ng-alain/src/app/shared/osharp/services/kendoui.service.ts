@@ -485,7 +485,7 @@ export abstract class GridComponentBase extends ComponentBase {
       if (e.model.isNew() && !this.auth.Create) {
         e.preventDefault();
       }
-      if (!e.model.isNew() && !this.auth.Update) {
+      if (!e.model.isNew() && (!this.auth.Update) || (!(<any>(e.model)).Updatable)) {
         e.preventDefault();
       }
     };

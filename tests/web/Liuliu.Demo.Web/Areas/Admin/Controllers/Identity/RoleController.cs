@@ -64,9 +64,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<RoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<Role, bool>> predicate = FilterHelper.GetDataFilterExpression<Role>(request.FilterGroup);
+            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
             var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
-            
+
             return page.ToPageData();
         }
 
@@ -78,8 +78,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取节点")]
         public List<RoleNode> ReadNode()
         {
-            Expression<Func<Role, bool>> roleExp = FilterHelper.GetDataFilterExpression<Role>().And(m => !m.IsLocked);
-            List<RoleNode> nodes = _roleManager.Roles.Where(roleExp).OrderBy(m => m.Name).ToOutput<RoleNode>().ToList();
+            List<RoleNode> nodes = _roleManager.Roles.Where(m => !m.IsLocked).OrderBy(m => m.Name).ToOutput<Role, RoleNode>().ToList();
             return nodes;
         }
 
@@ -95,8 +94,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Check.GreaterThan(userId, nameof(userId), 0);
 
             int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
-            Expression<Func<Role, bool>> roleExp = FilterHelper.GetDataFilterExpression<Role>().And(m => !m.IsLocked);
-            List<UserRoleNode> nodes = _identityContract.Roles.Where(roleExp).OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<UserRoleNode>().ToList();
+            List<UserRoleNode> nodes = _identityContract.Roles.Where(m => !m.IsLocked)
+                .OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<Role, UserRoleNode>().ToList();
             nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
             return nodes;
         }

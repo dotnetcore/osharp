@@ -56,7 +56,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<User, bool>> predicate = FilterHelper.GetDataFilterExpression<User>(request.FilterGroup);
+            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
@@ -86,7 +86,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }
 
             PageRequest request = new PageRequest(Request);
-            Expression<Func<Function, bool>> funcExp = FilterHelper.GetDataFilterExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {

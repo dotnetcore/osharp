@@ -57,12 +57,12 @@ namespace OSharp.Security
                 IRepository<TEntityRole, Guid> entityRoleRepository = provider.GetService<IRepository<TEntityRole, Guid>>();
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
                 IRepository<TEntityInfo, Guid> entityInfoRepository = provider.GetService<IRepository<TEntityInfo, Guid>>();
-                return entityRoleRepository.Entities.Where(m => !m.IsLocked).Select(m => new
+                return entityRoleRepository.Query(m => !m.IsLocked).Select(m => new
                 {
                     m.FilterGroupJson,
                     m.Operation,
-                    RoleName = roleRepository.Entities.First(n => n.Id.Equals(m.RoleId)).Name,
-                    EntityTypeFullName = entityInfoRepository.Entities.First(n => n.Id == m.EntityId).TypeName
+                    RoleName = roleRepository.Query(null, false).First(n => n.Id.Equals(m.RoleId)).Name,
+                    EntityTypeFullName = entityInfoRepository.Query(null, false).First(n => n.Id == m.EntityId).TypeName
                 }).ToArray();
             });
 

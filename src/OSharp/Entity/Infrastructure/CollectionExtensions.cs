@@ -16,6 +16,8 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Properties;
+using OSharp.Reflection;
+using OSharp.Secutiry;
 
 
 namespace OSharp.Entity
@@ -126,19 +128,34 @@ namespace OSharp.Entity
             pageIndex.CheckGreaterThan("pageIndex", 0);
             pageSize.CheckGreaterThan("pageSize", 0);
 
-            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out int total, sortConditions).ToOutput<TOutputDto>().ToArray();
+            TOutputDto[] data = source.Where(predicate, pageIndex, pageSize, out int total, sortConditions).ToOutput<TEntity, TOutputDto>().ToArray();
             return new PageResult<TOutputDto>() { Total = total, Data = data };
         }
 
         /// <summary>
-        /// 从指定<see cref="IQueryable{T}"/>数据源中查询出数据权限过滤的子数据集
+        /// 将数据源映射为指定<typeparamref name="TOutputDto"/>的集合，
+        /// 并验证数据的<see cref="DataAuthOperation.Update"/>,<see cref="DataAuthOperation.Delete"/>数据权限状态
         /// </summary>
-        /// <typeparam name="TEntity">实体类型</typeparam>
-        /// <param name="source">要查询的数据集</param>
-        public static IQueryable<TEntity> DataAuthQuery<TEntity>(this IQueryable<TEntity> source)
+        public static IQueryable<TOutputDto> ToOutput<TEntity, TOutputDto>(this IQueryable<TEntity> source)
         {
-            Expression<Func<TEntity, bool>> exp = FilterHelper.GetDataFilterExpression<TEntity>();
-            return source.Where(exp);
+            if (!typeof(TOutputDto).IsBaseOn<IDataAuthEnabled>())
+            {
+                return MapperExtensions.ToOutput<TEntity, TOutputDto>(source);
+            }
+
+            List<TEntity> entities = source.ToList();
+            List<TOutputDto> dtos = new List<TOutputDto>();
+            Func<TEntity, bool> updateFunc = FilterHelper.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Update).Compile();
+            Func<TEntity, bool> deleteFunc = FilterHelper.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Delete).Compile();
+            foreach (TEntity entity in entities)
+            {
+                TOutputDto dto = entity.MapTo<TOutputDto>();
+                IDataAuthEnabled dto2 = (IDataAuthEnabled)dto;
+                dto2.Updatable = updateFunc(entity);
+                dto2.Deletable = deleteFunc(entity);
+                dtos.Add(dto);
+            }
+            return dtos.AsQueryable();
         }
 
         /// <summary>

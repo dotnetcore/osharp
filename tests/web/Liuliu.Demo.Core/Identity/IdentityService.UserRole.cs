@@ -32,7 +32,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         public IQueryable<UserRole> UserRoles
         {
-            get { return _userRoleRepository.Entities; }
+            get { return _userRoleRepository.Query(); }
         }
 
         /// <summary>

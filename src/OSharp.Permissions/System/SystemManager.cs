@@ -48,7 +48,7 @@ namespace OSharp.System
         /// </summary>
         public IQueryable<KeyValueCouple> KeyValueCouples
         {
-            get { return _keyValueRepository.Entities; }
+            get { return _keyValueRepository.Query(); }
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace OSharp.System
         public KeyValueCouple GetKeyValueCouple(string key)
         {
             const int seconds = 60 * 1000;
-            KeyValueCouple[] pairs = _cache.Get(AllKeyValueCouplesKey, () => _keyValueRepository.Entities.ToArray(), seconds);
+            KeyValueCouple[] pairs = _cache.Get(AllKeyValueCouplesKey, () => _keyValueRepository.Query().ToArray(), seconds);
             return pairs.FirstOrDefault(m => m.Key == key);
         }
 
@@ -96,7 +96,7 @@ namespace OSharp.System
             Check.NotNull(dtos, nameof(dtos));
             foreach (KeyValueCouple dto in dtos)
             {
-                KeyValueCouple pair = _keyValueRepository.TrackEntities.FirstOrDefault(m => m.Key == dto.Key);
+                KeyValueCouple pair = _keyValueRepository.TrackQuery().FirstOrDefault(m => m.Key == dto.Key);
                 if (pair == null)
                 {
                     pair = dto;
@@ -134,7 +134,7 @@ namespace OSharp.System
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> DeleteKeyValueCouples(string rootKey)
         {
-            Guid[] ids = _keyValueRepository.Entities.Where(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
+            Guid[] ids = _keyValueRepository.Query(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
             return await DeleteKeyValueCouples(ids);
         }
 

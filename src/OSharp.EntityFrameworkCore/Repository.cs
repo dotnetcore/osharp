@@ -356,55 +356,40 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件及是否启用数据权限过滤
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
-        /// <returns></returns>
-        [Obsolete("使用属性“Entities”代替")]
-        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null)
+        /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null, bool filterByDataAuth = true)
         {
-            IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
-            if (predicate == null)
-            {
-                return query;
-            }
-            return query.Where(predicate);
-        }
-
-        /// <inheritdoc />
-        [Obsolete("使用方法“Include”代替")]
-        public virtual IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors)
-        {
-            return Include(includePropertySelectors);
+            return TrackQuery(predicate, filterByDataAuth).AsNoTracking();
         }
 
         /// <summary>
         /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可Include导航属性
         /// </summary>
         /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
-        /// <returns></returns>
-        public virtual IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includePropertySelectors)
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
-            IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
-            if (includePropertySelectors != null && includePropertySelectors.Length > 0)
-            {
-                foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
-                {
-                    query = query.Include(selector);
-                }
-            }
-            return query.AsNoTracking();
+            return TrackQuery(includePropertySelectors).AsNoTracking();
         }
 
         /// <summary>
-        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可附加过滤条件
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可附加过滤条件及是否启用数据权限过滤
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
-        /// <returns></returns>
-        [Obsolete("使用属性“TrackEntities”代替")]
-        public virtual IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate = null)
+        /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
+        /// <returns>符合条件的数据集</returns>
+        public IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate = null, bool filterByDataAuth = true)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
+            if (filterByDataAuth)
+            {
+                Expression<Func<TEntity, bool>> dataAuthExp = GetDataFilter(DataAuthOperation.Read);
+                query = query.Where(dataAuthExp);
+            }
             if (predicate == null)
             {
                 return query;
@@ -412,19 +397,12 @@ namespace OSharp.Entity
             return query.Where(predicate);
         }
 
-        /// <inheritdoc />
-        [Obsolete("使用方法“TrackInclude”代替")]
-        public virtual IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
-        {
-            return TrackInclude(includePropertySelectors);
-        }
-
         /// <summary>
         /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可Include导航属性
         /// </summary>
         /// <param name="includePropertySelectors">要Include操作的属性表达式</param>
-        /// <returns></returns>
-        public virtual IQueryable<TEntity> TrackInclude(params Expression<Func<TEntity, object>>[] includePropertySelectors)
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
             if (includePropertySelectors != null && includePropertySelectors.Length > 0)
@@ -436,7 +414,7 @@ namespace OSharp.Entity
             }
             return query;
         }
-
+        
         #endregion
 
         #region 异步方法
@@ -611,7 +589,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entity, nameof(entity));
 
-            CheckDataAuth(DataAuthOperation.Update,entity);
+            CheckDataAuth(DataAuthOperation.Update, entity);
             _dbSet.Update(entity);
             return await _dbContext.SaveChangesAsync();
         }

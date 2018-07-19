@@ -11,6 +11,7 @@ using System;
 
 using OSharp.Core.Functions;
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Security.Dtos
@@ -18,7 +19,8 @@ namespace Liuliu.Demo.Security.Dtos
     /// <summary>
     /// 功能输出DTO
     /// </summary>
-    public class FunctionOutputDto : IOutputDto
+    [MapFrom(typeof(Function))]
+    public class FunctionOutputDto : IOutputDto, IDataAuthEnabled
     {
         /// <summary>
         /// 获取或设置 编号
@@ -89,5 +91,19 @@ namespace Liuliu.Demo.Security.Dtos
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
+
+        #region Implementation of IDataAuthEnabled
+
+        /// <summary>
+        /// 获取或设置 是否可更新的数据权限状态
+        /// </summary>
+        public bool Updatable { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否可删除的数据权限状态
+        /// </summary>
+        public bool Deletable { get; set; }
+
+        #endregion
     }
 }

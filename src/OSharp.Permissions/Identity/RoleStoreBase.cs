@@ -69,7 +69,7 @@ namespace OSharp.Identity
         /// Returns an <see cref="T:System.Linq.IQueryable`1" /> collection of roles.
         /// </summary>
         /// <value>An <see cref="T:System.Linq.IQueryable`1" /> collection of roles.</value>
-        public IQueryable<TRole> Roles => _roleRepository.Entities;
+        public IQueryable<TRole> Roles => _roleRepository.Query();
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace OSharp.Identity
 
             if (role.IsDefault)
             {
-                string defaultRole = _roleRepository.Entities.Where(m => m.IsDefault).Select(m => m.Name).FirstOrDefault();
+                string defaultRole = _roleRepository.Query(m => m.IsDefault, false).Select(m => m.Name).FirstOrDefault();
                 if (defaultRole != null)
                 {
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole}”，不能重复添加");
@@ -117,8 +117,8 @@ namespace OSharp.Identity
             }
             if (role.IsDefault)
             {
-                var defaultRole = _roleRepository.Entities.Where(m => m.IsDefault).Select(m => new { m.Id, m.Name }).FirstOrDefault();
-                if (defaultRole !=null && !defaultRole.Id.Equals(role.Id))
+                var defaultRole = _roleRepository.Query(m => m.IsDefault, false).Select(m => new { m.Id, m.Name }).FirstOrDefault();
+                if (defaultRole != null && !defaultRole.Id.Equals(role.Id))
                 {
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole.Name}”，不能重复添加");
                 }
@@ -272,7 +272,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(role, nameof(role));
 
-            IList<Claim> list = _roleClaimRepository.Entities.Where(m => m.RoleId.Equals(role.Id)).Select(n => new Claim(n.ClaimType, n.ClaimValue)).ToList();
+            IList<Claim> list = _roleClaimRepository.Query(m => m.RoleId.Equals(role.Id)).Select(n => new Claim(n.ClaimType, n.ClaimValue)).ToList();
             return Task.FromResult(list);
         }
 

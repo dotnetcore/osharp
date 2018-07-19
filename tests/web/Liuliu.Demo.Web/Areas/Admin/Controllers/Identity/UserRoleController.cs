@@ -49,7 +49,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<UserRoleOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<UserRole, bool>> predicate = FilterHelper.GetDataFilterExpression<UserRole>(request.FilterGroup);
+            Expression<Func<UserRole, bool>> predicate = FilterHelper.GetExpression<UserRole>(request.FilterGroup);
             PageResult<UserRoleOutputDto> page = _identityContract.UserRoles.ToPage<UserRole, UserRoleOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }

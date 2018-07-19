@@ -52,7 +52,8 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
         Operation: { type: "number", editable: true },
         FilterGroup: { type: "object", editable: false },
         IsLocked: { type: "boolean" },
-        CreatedTime: { type: "date", editable: false }
+        CreatedTime: { type: "date", editable: false },
+        Updatable: { type: "boolean", editable: false },
       }
     };
   }

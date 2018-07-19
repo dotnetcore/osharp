@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 using Liuliu.Demo.Security;
 using Liuliu.Demo.Security.Dtos;
@@ -20,13 +19,11 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -52,8 +49,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public List<ModuleOutputDto> Read()
         {
             ListFilterGroup group = new ListFilterGroup(Request);
-            Expression<Func<Module, bool>> predicate = FilterHelper.GetDataFilterExpression<Module>(group);
-            List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<ModuleOutputDto>().ToList();
+            Expression<Func<Module, bool>> predicate = FilterHelper.GetExpression<Module>(group);
+            List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
             return modules;
         }
 
@@ -134,7 +131,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 return new PageData<FunctionOutputDto2>();
             }
-            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetDataFilterExpression<Module>(request.FilterGroup);
+            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();

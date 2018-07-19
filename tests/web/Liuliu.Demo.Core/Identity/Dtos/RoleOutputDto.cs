@@ -9,7 +9,10 @@
 
 using System;
 
+using Liuliu.Demo.Identity.Entities;
+
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Identity.Dtos
@@ -17,7 +20,8 @@ namespace Liuliu.Demo.Identity.Dtos
     /// <summary>
     /// 角色输出DTO
     /// </summary>
-    public class RoleOutputDto : IOutputDto
+    [MapFrom(typeof(Role))]
+    public class RoleOutputDto : IOutputDto, IDataAuthEnabled
     {
         /// <summary>
         /// 获取或设置 角色编号
@@ -53,5 +57,19 @@ namespace Liuliu.Demo.Identity.Dtos
         /// 获取或设置 创建时间
         /// </summary>
         public DateTime CreatedTime { get; set; }
+
+        #region Implementation of IDataAuthEnabled
+
+        /// <summary>
+        /// 获取或设置 是否可更新的数据权限状态
+        /// </summary>
+        public bool Updatable { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否可删除的数据权限状态
+        /// </summary>
+        public bool Deletable { get; set; }
+
+        #endregion
     }
 }

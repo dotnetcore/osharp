@@ -644,7 +644,7 @@ namespace OSharp.Caching
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TOutputDto>().ToList(), cacheSeconds);
+            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), cacheSeconds);
         }
 
         /// <summary>
@@ -662,7 +662,7 @@ namespace OSharp.Caching
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TOutputDto>().ToArray(), cacheSeconds);
+            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), cacheSeconds);
         }
 
         /// <summary>
@@ -680,7 +680,7 @@ namespace OSharp.Caching
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TOutputDto>().ToList(), function);
+            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), function);
         }
 
         /// <summary>
@@ -698,7 +698,7 @@ namespace OSharp.Caching
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TOutputDto>().ToArray(), function);
+            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), function);
         }
 
         #endregion
@@ -796,14 +796,14 @@ namespace OSharp.Caching
             source = source != null
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
-            IQueryable<TOutputDto> query = source.ToOutput<TOutputDto>();
+            IQueryable<TOutputDto> query = source.ToOutput<TEntity, TOutputDto>();
             return GetKey(query.Expression, keyParams);
         }
 
         private static string GetKey<TSource, TOutputDto>(IQueryable<TSource> source,
             params object[] keyParams)
         {
-            IQueryable<TOutputDto> query = source.ToOutput<TOutputDto>();
+            IQueryable<TOutputDto> query = source.ToOutput<TSource, TOutputDto>();
             return GetKey(query.Expression, keyParams);
         }
 
