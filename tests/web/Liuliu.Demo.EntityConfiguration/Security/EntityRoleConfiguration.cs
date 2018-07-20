@@ -29,7 +29,7 @@ namespace Liuliu.Demo.EntityConfiguration.Security
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<EntityRole> builder)
         {
-            builder.HasIndex(m => new { m.EntityId, m.RoleId }).HasName("EntityRoleIndex").IsUnique();
+            builder.HasIndex(m => new { m.EntityId, m.RoleId, m.Operation }).HasName("EntityRoleIndex").IsUnique();
 
             builder.HasOne<EntityInfo>().WithMany().HasForeignKey(m => m.EntityId);
             builder.HasOne<Role>().WithMany().HasForeignKey(m => m.RoleId);

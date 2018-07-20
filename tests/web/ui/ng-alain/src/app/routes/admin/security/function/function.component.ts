@@ -45,7 +45,8 @@ export class FunctionComponent extends GridComponentBase implements AfterViewIni
         IsAjax: { type: "boolean", editable: false },
         Area: { type: "string", editable: false },
         Controller: { type: "string", editable: false },
-        Action: { type: "string", editable: false }
+        Action: { type: "string", editable: false },
+        Updatable: { type: "boolean", editable: false },
       }
     };
   }

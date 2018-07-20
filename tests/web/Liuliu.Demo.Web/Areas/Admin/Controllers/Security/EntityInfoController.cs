@@ -71,7 +71,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取节点")]
         public List<EntityInfoNode> ReadNode()
         {
-            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfoNode>().ToList();
+            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfo, EntityInfoNode>().ToList();
             return nodes;
         }
 

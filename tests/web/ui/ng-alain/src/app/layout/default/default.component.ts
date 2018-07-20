@@ -1,19 +1,25 @@
 import { Component, } from '@angular/core';
 import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
-import { ScrollService } from '@delon/theme';
+import { ScrollService, SettingsService, App } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
-  selector: 'layout-default',
-  templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
-})
-export class LayoutDefaultComponent {
-  isFetching = false;
+  selector: 'layout-default', templateUrl: './default.component.html', styleUrls: ['./default.component.scss']
+}
 
+) export class LayoutDefaultComponent {
+  isFetching = false;
+  mainNavs = [
+    { text: "首页", icon: "home", link: '/#/home' },
+    { text: "特性", icon: "ac_unit", link: '/#/', disabled: true },
+    { text: "组件", icon: "widgets", link: '/#/', disabled: true },
+    { text: "博客", icon: "assignment_ind", link: 'http://www.cnblogs.com/guomingfeng/category/1243352.html', target: '_blank' }
+  ];
+  mainActions = [];
   constructor(
     router: Router,
     scroll: ScrollService,
+    public settings: SettingsService,
     _message: NzMessageService,
   ) {
     router.events.subscribe(evt => {

@@ -4,7 +4,6 @@ import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.mo
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
-import { element } from '../../../../../node_modules/protractor';
 
 
 @Injectable()
@@ -483,11 +482,14 @@ export abstract class GridComponentBase extends ComponentBase {
     }
     //新增和更新的编辑状态
     options.beforeEdit = e => {
-      if (e.model.isNew() && !this.auth.Create) {
-        e.preventDefault();
-      }
-      if (!e.model.isNew() && !this.auth.Update) {
-        e.preventDefault();
+      if (e.model.isNew()) {
+        if (!this.auth.Create) {
+          e.preventDefault();
+        }
+      } else {
+        if (!this.auth.Update || !(<any>(e.model)).Updatable) {
+          e.preventDefault();
+        }
       }
     };
 

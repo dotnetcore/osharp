@@ -54,7 +54,9 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
         IsAdmin: { type: "boolean" },
         IsDefault: { type: "boolean" },
         IsLocked: { type: "boolean" },
-        CreatedTime: { type: "date", editable: false }
+        CreatedTime: { type: "date", editable: false },
+        Updatable: { type: "boolean", editable: false },
+        Deletable: { type: "boolean", editable: false },
       }
     };
   }
@@ -64,7 +66,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
       {
         command: [
           { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "" }
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => { return d.Deletable; } }
         ],
         width: 100
       },

@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output, Injector, OnInit } from '@angular/core';
-import { GridComponentBase } from "../services/kendoui.service";
+import { GridComponentBase } from "@shared/osharp/services/kendoui.service";
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({

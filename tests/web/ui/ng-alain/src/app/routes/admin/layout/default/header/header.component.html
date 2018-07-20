@@ -5,7 +5,7 @@
   </a>
 </div>
 <div class="top-nav-wrap">
-  <ul class="top-nav" *ngIf="inAdminModule">
+  <ul class="top-nav">
     <!-- Menu -->
     <li>
       <div class="item" (click)="toggleCollapsedSideabar()">
@@ -19,14 +19,14 @@
       </div>
     </li>
   </ul>
-  <ul class="top-nav" *ngIf="!inAdminModule"></ul>
+  <ul class="top-nav"></ul>
   <ul class="top-nav">
     <!-- Notify -->
-    <li *ngIf="inAdminModule">
+    <li>
       <header-notify></header-notify>
     </li>
     <!-- App Icons -->
-    <li class="hidden-xs" *ngIf="inAdminModule">
+    <li class="hidden-xs">
       <header-icon></header-icon>
     </li>
     <!-- Settings -->

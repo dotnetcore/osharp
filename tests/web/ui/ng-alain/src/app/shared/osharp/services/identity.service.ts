@@ -8,7 +8,7 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Injectable()
 export class IdentityService {
-  // private tokenSrv: ITokenService;
+
   constructor(
     private http: HttpClient,
     private osharp: OsharpService,

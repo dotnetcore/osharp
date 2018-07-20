@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Secutiry;
 
 
 namespace OSharp.Security
@@ -34,6 +35,11 @@ namespace OSharp.Security
         /// </summary>
         [DisplayName("数据编号")]
         public Guid EntityId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 数据权限操作
+        /// </summary>
+        public DataAuthOperation Operation { get; set; }
 
         /// <summary>
         /// 获取或设置 过滤条件组Json字符串

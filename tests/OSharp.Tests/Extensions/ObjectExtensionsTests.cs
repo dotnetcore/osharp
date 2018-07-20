@@ -66,6 +66,7 @@ namespace OSharp.Extensions.Tests
         [Fact()]
         public void ToJsonStringTest()
         {
+            Assert.Equal("null", ((object)null).ToJsonString());
             Assert.Equal("\"\"", "".ToJsonString());
             Assert.Equal("123", 123.ToJsonString());
         }

@@ -20,7 +20,7 @@ using OSharp.Dependency;
 using OSharp.Exceptions;
 
 
-namespace OSharp.Security.JwtBearer
+namespace OSharp.Identity.JwtBearer
 {
     /// <summary>
     /// Jwt辅助操作类

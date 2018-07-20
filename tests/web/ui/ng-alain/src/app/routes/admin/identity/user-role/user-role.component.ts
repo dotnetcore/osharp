@@ -34,7 +34,8 @@ export class UserRoleComponent extends GridComponentBase implements AfterViewIni
         UserName: { type: "string", validation: { required: true } },
         RoleName: { type: "string", validation: { required: true } },
         IsLocked: { type: "boolean" },
-        CreatedTime: { type: "date", editable: false }
+        CreatedTime: { type: "date", editable: false },
+        Updatable: { type: "boolean", editable: false },
       }
     };
   }
@@ -45,21 +46,18 @@ export class UserRoleComponent extends GridComponentBase implements AfterViewIni
         title: "用户",
         width: 150,
         template: "#=UserId#.#=UserName#"
-      },
-      {
+      }, {
         field: "RoleId",
         title: "角色",
         width: 150,
         template: "#=RoleId#.#=RoleName#"
-      },
-      {
+      }, {
         field: "IsLocked",
         title: "锁定",
         width: 95,
         template: d => this.kendoui.Boolean(d.IsLocked),
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
-      },
-      {
+      }, {
         field: "CreatedTime",
         title: "注册时间",
         width: 115,
@@ -70,7 +68,9 @@ export class UserRoleComponent extends GridComponentBase implements AfterViewIni
 
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
+    console.log(options.toolbar);
     options.toolbar.splice(0, 1);
+    console.log(options.toolbar);
     return options;
   }
 

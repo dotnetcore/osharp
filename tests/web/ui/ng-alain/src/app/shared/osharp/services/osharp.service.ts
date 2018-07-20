@@ -7,7 +7,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { List } from "linqts";
 import { CacheService } from '@shared/osharp/cache/cache.service';
-import { ControlWidget } from '@delon/form';
 
 @Injectable()
 export class OsharpService {
@@ -318,7 +317,8 @@ export class OsharpService {
 
   data = {
     accessType: [{ id: 0, text: "匿名访问" }, { id: 1, text: "登录访问" }, { id: 2, text: "角色访问" }],
-    stringFilterable: { operators: { string: { contains: "包含", eq: "等于", neq: "不等于", startswith: "开始于", endswith: "结束于", doesnotcontain: "不包含" } } }
+    stringFilterable: { operators: { string: { contains: "包含", eq: "等于", neq: "不等于", startswith: "开始于", endswith: "结束于", doesnotcontain: "不包含" } } },
+    dataAuthOperations: [{ id: 0, text: "读取" }, { id: 1, text: "更新" }, { id: 2, text: "删除" }]
   };
 
   // #endregion

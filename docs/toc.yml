@@ -1,5 +1,5 @@
-﻿- name: OSharpNS 介绍
+- name: 文档
   href: articles/
-- name: OSharpNS API Doc
+- name: API Doc
   href: api/
   homepage: api/index.md

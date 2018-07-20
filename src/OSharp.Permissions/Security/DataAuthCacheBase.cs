@@ -57,20 +57,23 @@ namespace OSharp.Security
                 IRepository<TEntityRole, Guid> entityRoleRepository = provider.GetService<IRepository<TEntityRole, Guid>>();
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
                 IRepository<TEntityInfo, Guid> entityInfoRepository = provider.GetService<IRepository<TEntityInfo, Guid>>();
-                return entityRoleRepository.Entities.Where(m => !m.IsLocked).Select(m => new
+                return entityRoleRepository.Query(m => !m.IsLocked).Select(m => new
                 {
                     m.FilterGroupJson,
-                    RoleName = roleRepository.Entities.First(n => n.Id.Equals(m.RoleId)).Name,
-                    EntityTypeFullName = entityInfoRepository.Entities.First(n => n.Id == m.EntityId).TypeName
+                    m.Operation,
+                    RoleName = roleRepository.Query(null, false).First(n => n.Id.Equals(m.RoleId)).Name,
+                    EntityTypeFullName = entityInfoRepository.Query(null, false).First(n => n.Id == m.EntityId).TypeName
                 }).ToArray();
             });
 
             foreach (var entityRole in entityRoles)
             {
                 FilterGroup filterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
-                string key = $"Security_EntityRole_{entityRole.RoleName}_{entityRole.EntityTypeFullName}";
+                string key = GetKey(entityRole.RoleName, entityRole.EntityTypeFullName, entityRole.Operation);
+                string name = GetName(entityRole.RoleName, entityRole.EntityTypeFullName, entityRole.Operation);
+
                 _cache.Set(key, filterGroup);
-                _logger.LogDebug($"创建角色“{entityRole.RoleName}”和实体“{entityRole.EntityTypeFullName}”的数据权限规则缓存");
+                _logger.LogDebug($"创建{name}的数据权限规则缓存");
             }
             _logger.LogInformation($"数据权限：创建{entityRoles.Length}个数据权限过滤规则缓存");
         }
@@ -81,9 +84,11 @@ namespace OSharp.Security
         /// <param name="item">数据权限缓存项</param>
         public void SetCache(DataAuthCacheItem item)
         {
-            string key = $"Security_EntityRole_{item.RoleName}_{item.EntityTypeFullName}";
+            string key = GetKey(item.RoleName, item.EntityTypeFullName, item.Operation);
+            string name = GetName(item.RoleName, item.EntityTypeFullName, item.Operation);
+
             _cache.Set(key, item.FilterGroup);
-            _logger.LogDebug($"创建角色“{item.RoleName}”和实体“{item.EntityTypeFullName}”的数据权限规则缓存");
+            _logger.LogDebug($"创建{name}的数据权限规则缓存");
         }
 
         /// <summary>
@@ -91,11 +96,13 @@ namespace OSharp.Security
         /// </summary>
         /// <param name="roleName">角色名称</param>
         /// <param name="entityTypeFullName">实体类型名称</param>
-        public void RemoveCache(string roleName, string entityTypeFullName)
+        /// <param name="operation">数据权限操作</param>
+        public void RemoveCache(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            string key = $"Security_EntityRole_{roleName}_{entityTypeFullName}";
+            string key = GetKey(roleName, entityTypeFullName, operation);
+            string name = GetName(roleName, entityTypeFullName, operation);
             _cache.Remove(key);
-            _logger.LogDebug($"移除角色“{roleName}”和实体“{entityTypeFullName}”的数据权限规则缓存");
+            _logger.LogDebug($"移除{name}的数据权限规则缓存");
         }
 
         /// <summary>
@@ -104,10 +111,21 @@ namespace OSharp.Security
         /// <param name="roleName">角色名称</param>
         /// <param name="entityTypeFullName">实体类型名称</param>
         /// <returns>数据过滤条件组</returns>
-        public FilterGroup GetFilterGroup(string roleName, string entityTypeFullName)
+        /// <param name="operation">数据权限操作</param>
+        public FilterGroup GetFilterGroup(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            string key = $"Security_EntityRole_{roleName}_{entityTypeFullName}";
+            string key = GetKey(roleName, entityTypeFullName, operation);
             return _cache.Get<FilterGroup>(key);
+        }
+
+        private static string GetKey(string roleName, string entityTypeFullName, DataAuthOperation operation)
+        {
+            return $"Security_EntityRole_{roleName}_{entityTypeFullName}_{operation}";
+        }
+
+        private static string GetName(string roleName, string entityTypeFullName, DataAuthOperation operation)
+        {
+            return $"角色“{roleName}”和实体“{entityTypeFullName}”和操作“{operation}”";
         }
     }
 }

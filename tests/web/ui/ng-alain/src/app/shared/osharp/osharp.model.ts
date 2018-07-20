@@ -138,6 +138,7 @@ export class EntityProperty {
   Name: string;
   Display: string;
   TypeName: string;
+  IsUserFlag: boolean;
   ValueRange: any[];
 }
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -12,7 +12,8 @@ import { DelonFormModule } from '@delon/form';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 
-import { OsharpModule } from "./osharp/osharp.module";
+import { OsharpModule } from "@shared/osharp/osharp.module";
+import { MaterialModule } from '@shared/material.module';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
@@ -22,7 +23,8 @@ const THIRDMODULES = [
 // endregion
 
 // region: your componets & directives
-const COMPONENTS = [];
+const COMPONENTS = [
+];
 const DIRECTIVES = [];
 // endregion
 
@@ -36,6 +38,7 @@ const DIRECTIVES = [];
     DelonABCModule,
     DelonACLModule,
     DelonFormModule,
+    MaterialModule,
     // third libs
     ...THIRDMODULES
   ],
@@ -53,6 +56,7 @@ const DIRECTIVES = [];
     DelonABCModule,
     DelonACLModule,
     DelonFormModule,
+    MaterialModule,
     // third libs
     ...THIRDMODULES,
     // your components
@@ -60,4 +64,10 @@ const DIRECTIVES = [];
     ...DIRECTIVES
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule
+    };
+  }
+}

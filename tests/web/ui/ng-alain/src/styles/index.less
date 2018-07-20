@@ -1,1 +1,49 @@
 // 建议所有项目自定义样式放在该文件夹下
+.mat-sidenav-container {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.blank-grow {
+    flex: 1 1 auto;
+}
+
+.form-vertical {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    background: @primary-color;
+    color: white;
+}
+
+@media screen and (min-width: 768px) {
+    .form-vertical .form-container {
+        width: 35%;
+    }
+}
+
+.form-vertical .form-container .form-fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-vertical .form-container .form-fields>* {
+    width: 100%;
+}
+
+.form-vertical .form-container .form-buttons {
+    padding: 15px;
+}
+
+.form-horizotnal-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+mat-error:not(:first-of-type) {
+    display: none;
+}

@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -34,6 +33,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
+using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -68,7 +68,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<UserOutputDto> Read()
         {
             PageRequest request = new PageRequest(Request);
-            Expression<Func<User, bool>> predicate = FilterHelper.GetDataFilterExpression<User>(request.FilterGroup);
+            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
 
             return page.ToPageData();

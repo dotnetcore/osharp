@@ -98,7 +98,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Role");
 
                     b.HasData(
-                        new { Id = 1, ConcurrencyStamp = "b2194acf-2bfd-46e4-b2ea-1be822ac3052", CreatedTime = new DateTime(2018, 7, 4, 5, 4, 13, 700, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
+                        new { Id = 1, ConcurrencyStamp = "5f8e54eb-15bf-4c6b-b5b7-ce51c926bf60", CreatedTime = new DateTime(2018, 7, 15, 14, 10, 35, 578, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
                     );
                 });
 
@@ -307,13 +307,15 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<bool>("IsLocked");
 
+                    b.Property<int>("Operation");
+
                     b.Property<int>("RoleId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("EntityId", "RoleId")
+                    b.HasIndex("EntityId", "RoleId", "Operation")
                         .IsUnique()
                         .HasName("EntityRoleIndex");
 
@@ -528,8 +530,8 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("KeyValueCouple");
 
                     b.HasData(
-                        new { Id = new Guid("4b2f3f7f-874e-4f85-82a1-a91300538f00"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
-                        new { Id = new Guid("1a972119-cf36-4314-8ddd-a91300538f04"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
+                        new { Id = new Guid("426b3368-9841-4e17-85c8-a91e00e99f43"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
+                        new { Id = new Guid("9d176145-6058-4b7f-868d-a91e00e99f47"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
                     );
                 });
 

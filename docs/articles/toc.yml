@@ -1,2 +1,4 @@
-- name: Introduction
+- name: OSharpNS简介
   href: intro.md
+- name: 更新日志
+  href: updatelogs.md

@@ -24,6 +24,7 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Identity;
 using OSharp.Json;
 
 
@@ -39,12 +40,9 @@ namespace Liuliu.Demo.Web.Controllers
         {
             List<object> list = new List<object>();
 
-            UserManager<User> userManager = ServiceLocator.Instance.GetService<UserManager<User>>();
-            foreach (User user in userManager.Users.ToList())
-            {
-                var result = await userManager.AddToRoleAsync(user, "只读管理员");
-                list.Add(result.ToJsonString());
-            }
+            IOnlineUserCache cache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
+            OnlineUser user = cache.GetOrRefresh("admin");
+            list.Add(user.ToJsonString());
 
             return list.ExpandAndToString("\r\n");
         }

@@ -19,7 +19,9 @@ using Microsoft.AspNetCore.Identity;
 
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.EventBuses;
 using OSharp.Extensions;
+using OSharp.Identity.Events;
 
 
 namespace OSharp.Identity
@@ -64,6 +66,7 @@ namespace OSharp.Identity
         private readonly IRepository<TUserToken, Guid> _userTokenRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUserRole, Guid> _userRoleRepository;
+        private readonly IEventBus _eventBus;
         private bool _disposed;
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace OSharp.Identity
             IRepository<TUserClaim, int> userClaimRepository,
             IRepository<TUserToken, Guid> userTokenRepository,
             IRepository<TRole, TRoleKey> roleRepository,
-            IRepository<TUserRole, Guid> userRoleRepository)
+            IRepository<TUserRole, Guid> userRoleRepository,
+            IEventBus eventBus
+        )
         {
             _userRepository = userRepository;
             _userLoginRepository = userLoginRepository;
@@ -89,6 +94,7 @@ namespace OSharp.Identity
             _userTokenRepository = userTokenRepository;
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
+            _eventBus = eventBus;
         }
 
         #region Implementation of IQueryableUserStore<TUser>
@@ -97,7 +103,7 @@ namespace OSharp.Identity
         /// Returns an <see cref="T:System.Linq.IQueryable`1" /> collection of users.
         /// </summary>
         /// <value>An <see cref="T:System.Linq.IQueryable`1" /> collection of users.</value>
-        public IQueryable<TUser> Users => _userRepository.TrackEntities;
+        public IQueryable<TUser> Users => _userRepository.TrackQuery();
 
         #endregion
 
@@ -207,13 +213,13 @@ namespace OSharp.Identity
             await _userRepository.InsertAsync(user);
 
             //系统的第一个用户，自动成为超级管理员
-            int count = _userRepository.Entities.Count();
+            int count = _userRepository.Query().Count();
             if (count == 1)
             {
-                TRole adminRole = _roleRepository.Entities.FirstOrDefault();
+                TRole adminRole = _roleRepository.Query().FirstOrDefault();
                 if (adminRole != null)
                 {
-                    TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = adminRole.Id};
+                    TUserRole userRole = new TUserRole() { UserId = user.Id, RoleId = adminRole.Id };
                     await _userRoleRepository.InsertAsync(userRole);
 
                     user.IsSystem = true;
@@ -222,13 +228,13 @@ namespace OSharp.Identity
             }
 
             //默认角色
-            TRole defaultRole = _roleRepository.Entities.FirstOrDefault(m => m.IsDefault);
+            TRole defaultRole = _roleRepository.Query().FirstOrDefault(m => m.IsDefault);
             if (defaultRole != null)
             {
-                TUserRole userRole = new TUserRole(){UserId = user.Id, RoleId = defaultRole.Id};
+                TUserRole userRole = new TUserRole() { UserId = user.Id, RoleId = defaultRole.Id };
                 await _userRoleRepository.InsertAsync(userRole);
             }
-            
+
             return IdentityResult.Success;
         }
 
@@ -307,7 +313,7 @@ namespace OSharp.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            return Task.FromResult(_userRepository.TrackEntities.FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
+            return Task.FromResult(_userRepository.Query().FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
         }
 
         #endregion
@@ -372,7 +378,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            IList<UserLoginInfo> loginInfos = _userLoginRepository.Entities.Where(m => m.UserId.Equals(user.Id)).Select(m =>
+            IList<UserLoginInfo> loginInfos = _userLoginRepository.Query(m => m.UserId.Equals(user.Id)).Select(m =>
                 new UserLoginInfo(m.LoginProvider, m.ProviderKey, m.ProviderDisplayName)).ToList();
             return Task.FromResult(loginInfos);
         }
@@ -393,7 +399,7 @@ namespace OSharp.Identity
             Check.NotNullOrEmpty(loginProvider, nameof(loginProvider));
             Check.NotNullOrEmpty(providerKey, nameof(providerKey));
 
-            TUserKey userId = _userLoginRepository.TrackEntities.Where(m => m.LoginProvider == loginProvider && m.ProviderKey == providerKey)
+            TUserKey userId = _userLoginRepository.TrackQuery(m => m.LoginProvider == loginProvider && m.ProviderKey == providerKey)
                 .Select(m => m.UserId).FirstOrDefault();
             TUser user = _userRepository.Get(userId);
             return Task.FromResult(user);
@@ -417,7 +423,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            IList<Claim> claims = _userClaimRepository.Entities.Where(m => m.UserId.Equals(user.Id))
+            IList<Claim> claims = _userClaimRepository.Query(m => m.UserId.Equals(user.Id))
                 .Select(m => new Claim(m.ClaimType, m.ClaimValue)).ToList();
             return Task.FromResult(claims);
         }
@@ -451,8 +457,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            List<TUserClaim> userClaims = _userClaimRepository.TrackEntities
-                .Where(m => m.UserId.Equals(user.Id) && m.ClaimType == claim.Type && m.ClaimValue == claim.Value).ToList();
+            List<TUserClaim> userClaims = _userClaimRepository.TrackQuery(m => m.UserId.Equals(user.Id) && m.ClaimType == claim.Type && m.ClaimValue == claim.Value).ToList();
             foreach (TUserClaim userClaim in userClaims)
             {
                 userClaim.ClaimType = newClaim.Type;
@@ -493,9 +498,9 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(claim, nameof(claim));
 
-            TUserKey[] userIds = _userClaimRepository.Entities.Where(m => m.ClaimType == claim.Type && m.ClaimValue == claim.Value)
+            TUserKey[] userIds = _userClaimRepository.Query(m => m.ClaimType == claim.Type && m.ClaimValue == claim.Value)
                 .Select(m => m.UserId).ToArray();
-            IList<TUser> users = _userRepository.TrackEntities.Where(m => userIds.Contains(m.Id)).ToList();
+            IList<TUser> users = _userRepository.TrackQuery(m => userIds.Contains(m.Id)).ToList();
             return Task.FromResult(users);
         }
 
@@ -571,6 +576,11 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             user.SecurityStamp = stamp;
+
+            //移除用户在线缓存
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserName = user.UserName };
+            _eventBus.Publish(eventData);
+
             return Task.CompletedTask;
         }
 
@@ -675,7 +685,7 @@ namespace OSharp.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            TUser user = _userRepository.TrackEntities.FirstOrDefault(m => m.NormalizeEmail == normalizedEmail);
+            TUser user = _userRepository.TrackQuery().FirstOrDefault(m => m.NormalizeEmail == normalizedEmail);
             return Task.FromResult(user);
         }
 
@@ -962,7 +972,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            TUserToken token = _userTokenRepository.TrackEntities
+            TUserToken token = _userTokenRepository.TrackQuery()
                 .FirstOrDefault(m => m.Id.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name);
             if (token == null)
             {
@@ -1003,7 +1013,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            string value = _userTokenRepository.Entities.Where(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name)
+            string value = _userTokenRepository.Query(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name)
                 .Select(m => m.Value).FirstOrDefault();
             return Task.FromResult(value);
         }
@@ -1120,8 +1130,8 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
             Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
 
-            TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == normalizedRoleName).Select(m => m.Id).FirstOrDefault();
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
             }
@@ -1143,7 +1153,7 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
             Check.NotNullOrEmpty(normalizedRoleName, nameof(normalizedRoleName));
 
-            TRole role = _roleRepository.Entities.FirstOrDefault(m => m.NormalizedName == normalizedRoleName);
+            TRole role = _roleRepository.Query().FirstOrDefault(m => m.NormalizedName == normalizedRoleName);
             if (role == null)
             {
                 throw new InvalidOperationException($"名称为“{normalizedRoleName}”的角色信息不存在");
@@ -1168,12 +1178,12 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             IList<string> list = new List<string>();
-            List<TRoleKey> roleIds = _userRoleRepository.Entities.Where(m => m.UserId.Equals(user.Id)).Select(m => m.RoleId).ToList();
+            List<TRoleKey> roleIds = _userRoleRepository.Query(m => m.UserId.Equals(user.Id)).Select(m => m.RoleId).ToList();
             if (roleIds.Count == 0)
             {
                 return Task.FromResult(list);
             }
-            list = _roleRepository.Entities.Where(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
+            list = _roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
             return Task.FromResult(list);
         }
 
@@ -1193,12 +1203,12 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
             }
-            bool exist = _userRoleRepository.Entities.Where(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId)).Any();
+            bool exist = _userRoleRepository.Query(m => m.UserId.Equals(user.Id) && m.RoleId.Equals(roleId)).Any();
             return Task.FromResult(exist);
         }
 
@@ -1216,13 +1226,13 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNullOrEmpty(roleName, nameof(roleName));
 
-            TRoleKey roleId = _roleRepository.Entities.Where(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
-            if (roleId.Equals(default(TRoleKey)))
+            TRoleKey roleId = _roleRepository.Query(m => m.NormalizedName == roleName).Select(m => m.Id).FirstOrDefault();
+            if (Equals(roleId, default(TRoleKey)))
             {
                 throw new InvalidOperationException($"名称为“{roleName}”的角色信息不存在");
             }
-            List<TUserKey> userIds = _userRoleRepository.Entities.Where(m => m.RoleId.Equals(roleId)).Select(m => m.UserId).ToList();
-            IList<TUser> users = _userRepository.TrackEntities.Where(m => userIds.Contains(m.Id)).ToList();
+            List<TUserKey> userIds = _userRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.UserId).ToList();
+            IList<TUser> users = _userRepository.TrackQuery(m => userIds.Contains(m.Id)).ToList();
             return Task.FromResult(users);
         }
 

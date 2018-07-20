@@ -1,8 +1,0 @@
-language: csharp
-solution: osharp-ns20.sln
-mono: none
-dotnet: 2.0.0
-dist: trusty
-script:
- - dotnet restore
- - dotnet test tests/OSharp.Tests/OSharp.Tests.csproj -f netcoreapp2.0

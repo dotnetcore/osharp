@@ -8,8 +8,9 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
   selector: 'security-filter-group',
   templateUrl: './filter-group.component.html',
   styles: [`
-  .group-box{margin:5px;padding:5px; border:dashed 2px #ddd;}
+  .group-box{margin:2px;padding:3px; border:dashed 2px #ddd;}
   .group-box nz-select{margin-right:5px;}
+  .group-operate{margin:3px 0;}
   `]
 })
 export class FilterGroupComponent implements OnChanges {

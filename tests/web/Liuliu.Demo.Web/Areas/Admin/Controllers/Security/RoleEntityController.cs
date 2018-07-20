@@ -29,6 +29,7 @@ using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -56,14 +57,27 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             PageRequest request = new PageRequest(Request);
             Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetExpression<EntityRole>(request.FilterGroup);
+            if (request.PageCondition.SortConditions.Length == 0)
+            {
+                request.PageCondition.SortConditions = new[]
+                {
+                    new SortCondition("RoleId"),
+                    new SortCondition("EntityId"),
+                    new SortCondition("Operation")
+                };
+            }
             RoleManager<Role> roleManager = ServiceLocator.Instance.GetService<RoleManager<Role>>();
+            Func<EntityRole, bool> updateFunc = FilterHelper.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
+            Func<EntityRole, bool> deleteFunc = FilterHelper.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
             var page = _securityManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
                 m => new
                 {
+                    Data = m,
                     m.Id,
                     m.RoleId,
                     m.EntityId,
+                    m.Operation,
                     m.FilterGroupJson,
                     m.IsLocked,
                     m.CreatedTime,
@@ -81,9 +95,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     RoleName = n.RoleName,
                     EntityName = n.Entity.Name,
                     EntityType = n.Entity.TypeName,
+                    Operation = n.Operation,
                     FilterGroup = n.FilterGroupJson.FromJsonString<FilterGroup>(),
                     IsLocked = n.IsLocked,
-                    CreatedTime = n.CreatedTime
+                    CreatedTime = n.CreatedTime,
+                    Updatable = updateFunc(n.Data),
+                    Deletable = deleteFunc(n.Data)
                 }).ToArray());
             return page.ToPageData();
         }

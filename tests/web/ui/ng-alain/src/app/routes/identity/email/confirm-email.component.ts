@@ -3,7 +3,7 @@ import { ConfirmEmailDto, AjaxResult, AjaxResultType, AdResult } from '@shared/o
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
-import { IdentityService } from '../../../shared/osharp/services/identity.service';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
   selector: 'app-identity-confirm-email',

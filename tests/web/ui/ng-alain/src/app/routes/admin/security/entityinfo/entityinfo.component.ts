@@ -31,7 +31,8 @@ export class EntityinfoComponent extends GridComponentBase implements AfterViewI
       fields: {
         Name: { type: "string", editable: false },
         TypeName: { type: "string", editable: false },
-        AuditEnabled: { type: "boolean" }
+        AuditEnabled: { type: "boolean" },
+        Updatable: { type: "boolean", editable: false },
       }
     };
   }

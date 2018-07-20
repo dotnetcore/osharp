@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { ResetPasswordDto, AdResult, AuthConfig } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
 import { ComponentBase } from '@shared/osharp/services/osharp.service';
-import { IdentityService } from '../../../shared/osharp/services/identity.service';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
   selector: 'app-identity-reset-password',

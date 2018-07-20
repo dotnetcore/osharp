@@ -31,11 +31,11 @@ export function StartupServiceFactory(startupService: StartupService): Function 
     HttpClientModule,
     DelonModule.forRoot(),
     CoreModule,
-    SharedModule,
+    SharedModule.forRoot(),
     LayoutModule,
     RoutesModule,
     // JSON-Schema form
-    JsonSchemaModule
+    JsonSchemaModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'zh-Hans' },

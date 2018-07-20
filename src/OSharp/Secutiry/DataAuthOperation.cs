@@ -1,30 +1,38 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="JwtClaimTypes.cs" company="OSharp开源团队">
+//  <copyright file="DataAuthOperation.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-05-26 0:07</last-date>
+//  <last-date>2018-07-14 11:18</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Security.JwtBearer
+using System.ComponentModel;
+
+
+namespace OSharp.Secutiry
 {
     /// <summary>
-    /// Jwt声明类型
+    /// 数据权限操作
     /// </summary>
-    public struct JwtClaimTypes
+    public enum DataAuthOperation
     {
         /// <summary>
-        /// 是否管理
+        /// 读取
         /// </summary>
-        public const string IsAdmin = "is-admin";
+        [Description("读取")]
+        Read,
+
         /// <summary>
-        /// 安全标识
+        /// 更新
         /// </summary>
-        public const string SecurityStamp = "security-stamp";
+        [Description("更新")]
+        Update,
+
         /// <summary>
-        /// 头像图片
+        /// 删除
         /// </summary>
-        public const string HeadImage = "headimg";
+        [Description("删除")]
+        Delete
     }
 }

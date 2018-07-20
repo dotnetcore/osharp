@@ -9,7 +9,9 @@
 
 using System;
 
+using OSharp.Core.EntityInfos;
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Security.Dtos
@@ -17,7 +19,8 @@ namespace Liuliu.Demo.Security.Dtos
     /// <summary>
     /// 输出DTO:实体信息
     /// </summary>
-    public class EntityInfoOutputDto : IOutputDto
+    [MapFrom(typeof(EntityInfo))]
+    public class EntityInfoOutputDto : IOutputDto, IDataAuthEnabled
     {
         /// <summary>
         /// 获取或设置 编号
@@ -38,5 +41,19 @@ namespace Liuliu.Demo.Security.Dtos
         /// 获取或设置 是否启用数据日志
         /// </summary>
         public bool AuditEnabled { get; set; }
+
+        #region Implementation of IDataAuthEnabled
+
+        /// <summary>
+        /// 获取或设置 是否可更新的数据权限状态
+        /// </summary>
+        public bool Updatable { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否可删除的数据权限状态
+        /// </summary>
+        public bool Deletable { get; set; }
+
+        #endregion
     }
 }

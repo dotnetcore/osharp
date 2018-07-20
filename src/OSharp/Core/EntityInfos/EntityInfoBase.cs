@@ -80,7 +80,7 @@ namespace OSharp.Core.EntityInfos
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            TypeName = entityType.FullName;
+            TypeName = $"{entityType.FullName},{entityType.Module.Name.Replace(".dll", "")}";
             Name = entityType.GetDescription();
             AuditEnabled = true;
 
@@ -106,6 +106,10 @@ namespace OSharp.Core.EntityInfos
                         string value = intValues[i].ToString();
                         ep.ValueRange.Add(new { id = value, text = names[i] });
                     }
+                }
+                if (property.HasAttribute<UserFlagAttribute>())
+                {
+                    ep.IsUserFlag = true;
                 }
                 return ep;
             }).ToArray().ToJsonString();

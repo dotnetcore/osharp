@@ -10,14 +10,12 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   searchToggleStatus: boolean;
   app: App;
-  inAdminModule: boolean;
 
   constructor(
     public settings: SettingsService,
     router: Router
   ) {
     this.app = settings.app;
-    this.inAdminModule = router.url.startsWith("/admin/");
   }
 
   get user() {

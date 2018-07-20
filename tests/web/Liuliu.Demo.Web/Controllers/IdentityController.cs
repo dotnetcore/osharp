@@ -32,8 +32,8 @@ using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Identity;
+using OSharp.Identity.JwtBearer;
 using OSharp.Net;
-using OSharp.Security.JwtBearer;
 using OSharp.Secutiry.Claims;
 
 
@@ -216,11 +216,18 @@ namespace Liuliu.Demo.Web.Controllers
                 new Claim(ClaimTypes.GivenName, user.NickName ?? user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtClaimTypes.HeadImage, user.HeadImg ?? ""),
-                new Claim(JwtClaimTypes.SecurityStamp, user.SecurityStamp),
                 new Claim(JwtClaimTypes.IsAdmin, isAdmin.ToLower()),
                 new Claim(ClaimTypes.Role, roles.ExpandAndToString())
             };
             string token = JwtHelper.CreateToken(claims);
+            
+            //在线用户缓存
+            IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
+            if (onlineUserCache != null)
+            {
+                await onlineUserCache.GetOrRefreshAsync(user.UserName);
+            }
+
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 

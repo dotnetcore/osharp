@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { IdentityService, } from '../../../shared/osharp/services/identity.service';
+import { IdentityService, } from '@shared/osharp/services/identity.service';
 import { LoginDto, AjaxResultType, AuthConfig } from '@shared/osharp/osharp.model';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
@@ -38,7 +38,7 @@ export class LoginComponent extends ComponentBase {
         this.msgSrv.success("用户登录成功");
         setTimeout(() => {
           this.router.navigate(['home']);
-        }, 1000);
+        }, 50);
         return;
       }
       this.canSubmit = true;

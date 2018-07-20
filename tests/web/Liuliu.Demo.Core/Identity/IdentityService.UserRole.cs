@@ -32,7 +32,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         public IQueryable<UserRole> UserRoles
         {
-            get { return _userRoleRepository.Entities; }
+            get { return _userRoleRepository.Query(); }
         }
 
         /// <summary>
@@ -91,6 +91,7 @@ namespace Liuliu.Demo.Identity
                 {
                     return result.ToOperationResult();
                 }
+                await _userManager.UpdateSecurityStampAsync(user);
             }
             catch (InvalidOperationException ex)
             {

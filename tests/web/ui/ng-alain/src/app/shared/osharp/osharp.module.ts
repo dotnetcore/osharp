@@ -8,6 +8,7 @@ import { KendouiSplitterComponent } from '@shared/osharp/components/kendoui-spli
 import { KendouiTabstripComponent } from '@shared/osharp/components/kendoui-tabstrip.component';
 import { KendouiTreeviewComponent } from '@shared/osharp/components/kendoui-treeview.component';
 import { KendouiWindowComponent } from '@shared/osharp/components/kendoui-window.component';
+import { KendouiComboBoxComponent } from "@shared/osharp/components/kendoui-combobox.component";
 import { OsharpCacheModule } from '@shared/osharp/cache/cache.module';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 import { RemoteInverseValidator } from '@shared/osharp/directives/remote-inverse-validator.directive';
@@ -25,6 +26,7 @@ const COMPONENTS = [
   KendouiTabstripComponent,
   KendouiTreeviewComponent,
   KendouiWindowComponent,
+  KendouiComboBoxComponent,
 ];
 
 const SERVICES = [
