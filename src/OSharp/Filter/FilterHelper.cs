@@ -335,7 +335,7 @@ namespace OSharp.Filter
             //    }
             //    return Expression.NewArrayInit(conversionType, expressionList);
             //}
-            if ((string)rule.Value == "@CurrentUserId")
+            if (rule.Value?.ToString() == "@CurrentUserId")
             {
                 if (rule.Operate != FilterOperate.Equal)
                 {
