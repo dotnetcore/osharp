@@ -482,11 +482,14 @@ export abstract class GridComponentBase extends ComponentBase {
     }
     //新增和更新的编辑状态
     options.beforeEdit = e => {
-      if (e.model.isNew() && !this.auth.Create) {
-        e.preventDefault();
-      }
-      if (!e.model.isNew() && (!this.auth.Update) || (!(<any>(e.model)).Updatable)) {
-        e.preventDefault();
+      if (e.model.isNew()) {
+        if (!this.auth.Create) {
+          e.preventDefault();
+        }
+      } else {
+        if (!this.auth.Update || !(<any>(e.model)).Updatable) {
+          e.preventDefault();
+        }
       }
     };
 

@@ -874,9 +874,14 @@ namespace OSharp.Security
 
             foreach (FilterRule rule in group.Rules)
             {
-                if (!properties.Any(m => m.Name == rule.Field))
+                EntityProperty property = properties.FirstOrDefault(m => m.Name == rule.Field);
+                if (property == null)
                 {
                     return new OperationResult(OperationResultType.Error, $"属性名“{rule.Field}”在实体“{entityInfo.Name}”中不存在");
+                }
+                if (rule.Value == null || rule.Value.ToString().IsNullOrWhiteSpace())
+                {
+                    return new OperationResult(OperationResultType.Error, $"属性名“{property.Display}”操作“{rule.Operate.ToDescription()}”的值不能为空");
                 }
             }
             if (group.Operate == FilterOperate.And)
@@ -889,18 +894,25 @@ namespace OSharp.Security
                         $"组操作为“并且”的条件下，字段和操作“{rules.ExpandAndToString(m => $"{properties.First(n => n.Name == m.Field).Display}-{m.Operate.ToDescription()}", ", ")}”存在重复规则，请移除重复项");
                 }
             }
-
+            OperationResult result;
             if (group.Groups.Count > 0)
             {
                 foreach (FilterGroup g in group.Groups)
                 {
-                    OperationResult result = CheckFilterGroup(g, entityInfo);
+                    result = CheckFilterGroup(g, entityInfo);
                     if (!result.Successed)
                     {
                         return result;
                     }
                 }
             }
+            Type entityType = Type.GetType(entityInfo.TypeName);
+            result = FilterHelper.CheckFilterGroup(group, entityType);
+            if (!result.Successed)
+            {
+                return result;
+            }
+
             return OperationResult.Success;
         }
 

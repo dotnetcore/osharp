@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
 
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -132,6 +133,7 @@ namespace OSharp.Filter
         /// </summary>
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="group">查询条件组，如果为null，则直接返回 true 表达式</param>
+        /// <returns>查询表达式</returns>
         public static Expression<Func<T, bool>> GetExpression<T>(FilterGroup group)
         {
             group.CheckNotNull("group");
@@ -198,13 +200,33 @@ namespace OSharp.Filter
         /// </summary>
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
-        /// <returns></returns>
+        /// <returns>查询表达式</returns>
         public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
         {
             ParameterExpression param = Expression.Parameter(typeof(T), "m");
             Expression body = GetExpressionBody(param, rule);
             Expression<Func<T, bool>> expression = Expression.Lambda<Func<T, bool>>(body, param);
             return expression;
+        }
+
+        /// <summary>
+        /// 验证指定查询条件组是否能正常转换为表达式
+        /// </summary>
+        /// <param name="group">查询条件组</param>
+        /// <param name="type">实体类型</param>
+        /// <returns>验证操作结果</returns>
+        public static OperationResult CheckFilterGroup(FilterGroup group, Type type)
+        {
+            try
+            {
+                ParameterExpression param = Expression.Parameter(type, "m");
+                GetExpressionBody(param, group);
+                return OperationResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(OperationResultType.Error, $"条件组验证失败：{ex.Message}");
+            }
         }
 
         /// <summary>
@@ -313,13 +335,26 @@ namespace OSharp.Filter
             //    }
             //    return Expression.NewArrayInit(conversionType, expressionList);
             //}
-
-            Type elementType = conversionType.GetUnNullableType();
-            object value = rule.Value.CastTo(conversionType);
-            //object value = rule.Value is string
-            //    ? rule.Value.ToString().CastTo(conversionType)
-            //    : Convert.ChangeType(rule.Value, elementType);
-            return Expression.Constant(value, conversionType);
+            if ((string)rule.Value == "@CurrentUserId")
+            {
+                if (rule.Operate != FilterOperate.Equal)
+                {
+                    throw new OsharpException($"当前用户“{rule.Value}”只能用在“{FilterOperate.Equal.ToDescription()}”操作中");
+                }
+                ClaimsPrincipal user = ServiceLocator.Instance.GetCurrentUser();
+                if (user == null || !user.Identity.IsAuthenticated)
+                {
+                    throw new OsharpException("需要获取当前用户编号，但当前用户为空，可能未登录或已过期");
+                }
+                object value = user.Identity.GetClaimValueFirstOrDefault(ClaimTypes.NameIdentifier);
+                value = value.CastTo(conversionType);
+                return Expression.Constant(value, conversionType);
+            }
+            else
+            {
+                object value = rule.Value.CastTo(conversionType);
+                return Expression.Constant(value, conversionType);
+            }
         }
 
         #endregion

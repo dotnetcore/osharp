@@ -35,7 +35,7 @@ export function StartupServiceFactory(startupService: StartupService): Function 
     LayoutModule,
     RoutesModule,
     // JSON-Schema form
-    JsonSchemaModule
+    JsonSchemaModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'zh-Hans' },

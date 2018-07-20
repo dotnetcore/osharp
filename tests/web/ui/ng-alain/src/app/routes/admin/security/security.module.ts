@@ -29,7 +29,7 @@ const COMPONENTS = [
   ],
   imports: [
     SecurityRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [
   ]

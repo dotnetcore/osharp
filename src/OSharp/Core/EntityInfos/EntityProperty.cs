@@ -42,6 +42,11 @@ namespace OSharp.Core.EntityInfos
         public string TypeName { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否用户字段
+        /// </summary>
+        public bool IsUserFlag { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据值范围集合（主要针对枚举类型）
         /// </summary>
         public List<object> ValueRange { get; set; }
