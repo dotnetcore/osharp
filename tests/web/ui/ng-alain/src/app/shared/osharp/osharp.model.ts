@@ -132,6 +132,31 @@ export class FilterOperateEntry {
     this.Display = `${<number>operate}.${this.Display}`;
   }
 }
+/** 分页请求 */
+export class PageRequest {
+  /** 分页条件信息 */
+  PageCondition: PageCondition = new PageCondition();
+  /** 查询条件组 */
+  FilterGroup: FilterGroup = new FilterGroup();
+}
+/** 分页条件 */
+export class PageCondition {
+  /** 页序 */
+  PageIndex: number = 1;
+  /** 分页大小 */
+  PageSize: number = 20;
+  /** 排序条件集合 */
+  SortConditions: SortCondition[] = [];
+}
+export class SortCondition {
+  SortField: string;
+  ListSortDirection: ListSortDirection;
+}
+export enum ListSortDirection {
+  Ascending,
+  Descending
+}
+
 
 /** 实体属性信息 */
 export class EntityProperty {

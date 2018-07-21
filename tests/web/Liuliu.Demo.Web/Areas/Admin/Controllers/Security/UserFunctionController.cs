@@ -52,9 +52,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<UserOutputDto2> Read()
+        public PageData<UserOutputDto2> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
@@ -85,7 +84,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            PageRequest request = new PageRequest(Request);
+            PageRequest request = new PageRequest();
             Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)

@@ -60,12 +60,11 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
     let options = super.GetGridOptions(dataSource);
     options.toolbar.push({ template: '<span style="line-height:30px;">功能列表</span>' });
     options.toolbar.push({ name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
-    // options.pageable = false;
     return options;
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     let options = super.GetDataSourceOptions();
-    options.transport.read = { url: this.ReadUrl, type: "post" };
+    options.transport.read = { url: this.ReadUrl, type: "post", dataType: 'json', contentType: 'application/json;charset=utf-8' };
     options.transport.create = options.transport.update = options.transport.destroy = null;
     options.group = [{ field: "Area" }, { field: "Controller" }];
     options.pageSize = 15;

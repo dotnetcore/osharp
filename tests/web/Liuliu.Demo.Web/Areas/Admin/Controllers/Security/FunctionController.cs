@@ -49,9 +49,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<FunctionOutputDto> Read()
+        public PageData<FunctionOutputDto> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[]

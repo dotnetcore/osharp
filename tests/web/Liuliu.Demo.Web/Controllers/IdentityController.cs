@@ -39,8 +39,6 @@ using OSharp.Json;
 using OSharp.Net;
 using OSharp.Secutiry.Claims;
 
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-
 
 namespace Liuliu.Demo.Web.Controllers
 {
@@ -118,7 +116,7 @@ namespace Liuliu.Demo.Web.Controllers
         [DependOnFunction("CheckEmailExists")]
         [DependOnFunction("CheckNickNameExists")]
         [Description("用户注册")]
-        public async Task<AjaxResult> Register([FromBody] RegisterDto dto)
+        public async Task<AjaxResult> Register(RegisterDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -161,7 +159,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("用户登录")]
-        public async Task<AjaxResult> Login([FromBody] LoginDto dto)
+        public async Task<AjaxResult> Login(LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -195,7 +193,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("JWT登录")]
-        public async Task<AjaxResult> Jwtoken([FromBody] LoginDto dto)
+        public async Task<AjaxResult> Jwtoken(LoginDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 
@@ -242,6 +240,12 @@ namespace Liuliu.Demo.Web.Controllers
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
+        /// <summary>
+        /// OAuth2登录
+        /// </summary>
+        /// <param name="provider">登录提供程序</param>
+        /// <param name="returnUrl">登录成功返回URL</param>
+        /// <returns></returns>
         [HttpGet]
         [ModuleInfo]
         [Description("OAuth2登录")]
@@ -252,6 +256,12 @@ namespace Liuliu.Demo.Web.Controllers
             return Challenge(properties, provider);
         }
 
+        /// <summary>
+        /// OAuth2登录回调
+        /// </summary>
+        /// <param name="returnUrl">登录成功返回URL</param>
+        /// <param name="remoteError">远程错误信息</param>
+        /// <returns></returns>
         [HttpGet]
         [Description("OAuth2登录回调")]
         public async Task<IActionResult> OAuth2Callback(string returnUrl = null, string remoteError = null)
@@ -267,7 +277,7 @@ namespace Liuliu.Demo.Web.Controllers
                 return Unauthorized();
             }
             Logger.LogWarning($"ExternalLoginInfo:{info.ToJsonString()}");
-            SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
             Logger.LogWarning($"SignInResult:{result.ToJsonString()}");
             if (result.Succeeded)
             {
@@ -305,7 +315,7 @@ namespace Liuliu.Demo.Web.Controllers
         [ModuleInfo]
         [Description("激活邮箱")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        public async Task<AjaxResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
+        public async Task<AjaxResult> ConfirmEmail(ConfirmEmailDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -334,7 +344,7 @@ namespace Liuliu.Demo.Web.Controllers
         [ModuleInfo]
         [DependOnFunction("CheckEmailExists")]
         [Description("发送激活注册邮件")]
-        public async Task<AjaxResult> SendConfirmMail([FromBody] SendMailDto dto)
+        public async Task<AjaxResult> SendConfirmMail(SendMailDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -399,7 +409,7 @@ namespace Liuliu.Demo.Web.Controllers
         [ModuleInfo]
         [DependOnFunction("CheckEmailExists")]
         [Description("发送重置密码邮件")]
-        public async Task<AjaxResult> SendResetPasswordMail([FromBody] SendMailDto dto)
+        public async Task<AjaxResult> SendResetPasswordMail(SendMailDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -437,7 +447,7 @@ namespace Liuliu.Demo.Web.Controllers
         [ModuleInfo]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("重置登录密码")]
-        public async Task<AjaxResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        public async Task<AjaxResult> ResetPassword(ResetPasswordDto dto)
         {
             Check.NotNull(dto, nameof(dto));
 

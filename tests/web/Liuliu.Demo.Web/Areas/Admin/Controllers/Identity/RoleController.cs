@@ -61,9 +61,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<RoleOutputDto> Read()
+        public PageData<RoleOutputDto> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
             var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
 

@@ -53,9 +53,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("ReadProperties", Controller = "EntityInfo")]
         [Description("读取")]
-        public PageData<EntityRoleOutputDto> Read()
+        public PageData<EntityRoleOutputDto> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetExpression<EntityRole>(request.FilterGroup);
             if (request.PageCondition.SortConditions.Length == 0)
             {
