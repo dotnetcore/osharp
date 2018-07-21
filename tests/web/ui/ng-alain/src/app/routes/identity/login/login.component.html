@@ -23,6 +23,8 @@
         <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!(form.form.valid && canSubmit && auth.Jwtoken)">
           <i class="anticon anticon-login"></i>登录
         </button>
+        <!-- <a href="/api/identity/oauth2?provider=QQ" target="_blank">QQ登录</a>
+        <a href="/api/identity/oauth2?provider=Microsoft&returnUrl=http%3A%2F%2Flocalhost%3A4201%2F%23%2F" target="_blank">Microsoft登录</a> -->
         <a *ngIf="auth.Register" [routerLink]="[ '/identity/register' ]">注册新账号</a>
       </nz-form-control>
     </nz-form-item>

@@ -88,6 +88,14 @@ namespace Liuliu.Demo.Web
 
                 jwt.SecurityTokenValidators.Clear();
                 jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
+            }).AddQQ(qq =>
+            {
+                qq.AppId = _configuration["Authentication:QQ:AppId"];
+                qq.AppKey = _configuration["Authentication:QQ:AppKey"];
+            }).AddMicrosoftAccount(ms =>
+            {
+                ms.ClientId = _configuration["Authentication:Microsoft:ClientId"];
+                ms.ClientSecret = _configuration["Authentication:Microsoft:ClientSecret"];
             });
 
             services.AddSignalR();

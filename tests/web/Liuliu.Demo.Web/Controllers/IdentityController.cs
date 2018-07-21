@@ -17,8 +17,10 @@ using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
@@ -33,8 +35,11 @@ using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
+using OSharp.Json;
 using OSharp.Net;
 using OSharp.Secutiry.Claims;
+
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -89,10 +94,16 @@ namespace Liuliu.Demo.Web.Controllers
         /// <returns>是否存在</returns>
         [HttpGet]
         [Description("用户昵称是否存在")]
-        public bool CheckNickNameExists(string nickName)
+        public async Task<bool> CheckNickNameExists(string nickName)
         {
-            bool exists = _userManager.Users.Any(m => m.NickName == nickName);
-            return exists;
+            IUserValidator<User> nickNameValidator =
+                _userManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, int>));
+            if (nickNameValidator == null)
+            {
+                return false;
+            }
+            IdentityResult result = await nickNameValidator.ValidateAsync(_userManager, new User() { NickName = nickName });
+            return !result.Succeeded;
         }
 
         /// <summary>
@@ -220,7 +231,7 @@ namespace Liuliu.Demo.Web.Controllers
                 new Claim(ClaimTypes.Role, roles.ExpandAndToString())
             };
             string token = JwtHelper.CreateToken(claims);
-            
+
             //在线用户缓存
             IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
             if (onlineUserCache != null)
@@ -229,6 +240,41 @@ namespace Liuliu.Demo.Web.Controllers
             }
 
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
+        }
+
+        [HttpGet]
+        [ModuleInfo]
+        [Description("OAuth2登录")]
+        public IActionResult OAuth2(string provider, string returnUrl = null)
+        {
+            string redirectUrl = Url.Action(nameof(OAuth2Callback), "Identity", new { returnUrl });
+            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet]
+        [Description("OAuth2登录回调")]
+        public async Task<IActionResult> OAuth2Callback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                Logger.LogError($"第三方登录错误：{remoteError}");
+                return Unauthorized();
+            }
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return Unauthorized();
+            }
+            Logger.LogWarning($"ExternalLoginInfo:{info.ToJsonString()}");
+            SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            Logger.LogWarning($"SignInResult:{result.ToJsonString()}");
+            if (result.Succeeded)
+            {
+                Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
+                return Ok();
+            }
+            return Unauthorized();
         }
 
         /// <summary>
