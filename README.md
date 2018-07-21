@@ -10,6 +10,7 @@
  - [OSharpNS特性](#02)
  - [快速开始](#03)
  - [项目进度](#04)
+ - [更新记录](https://github.com/i66soft/osharp-ns20/blob/master/UpdateLogs.md)
 
 ## <a id="01"/>OSharpNS简介
 
