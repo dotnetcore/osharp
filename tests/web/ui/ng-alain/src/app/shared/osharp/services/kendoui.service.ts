@@ -575,7 +575,9 @@ export abstract class TreeListComponentBase extends ComponentBase {
       columns: this.GetTreeListColumns(),
       selectable: true,
       resizable: true,
-      editable: { move: true }
+      filterable: true,
+      sortable: { allowUnsort: true, mode: 'multiple' },
+      editable: { move: false }
     };
     return options;
   }

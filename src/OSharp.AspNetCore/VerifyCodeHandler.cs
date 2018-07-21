@@ -12,7 +12,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Data;

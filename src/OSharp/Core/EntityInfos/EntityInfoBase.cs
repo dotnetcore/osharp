@@ -8,16 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 
-using Microsoft.Extensions.Primitives;
-
-using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;

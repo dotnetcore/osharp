@@ -52,8 +52,8 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
-      { field: "Name", title: "功能名称", width: 300, filterable: false, sortable: false },
-      { field: "AccessType", title: "功能类型", width: 100, filterable: false, sortable: false, template: d => this.osharp.valueToText(d.AccessType, this.osharp.data.accessType) }
+      { field: "Name", title: "功能名称", width: 300 },
+      { field: "AccessType", title: "功能类型", width: 100, template: d => this.osharp.valueToText(d.AccessType, this.osharp.data.accessType) }
     ];
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {

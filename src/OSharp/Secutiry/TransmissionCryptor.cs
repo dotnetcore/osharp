@@ -11,7 +11,6 @@ using System.Security.Cryptography;
 using System.Text;
 using OSharp.Collections;
 using OSharp.Extensions;
-using OSharp.Properties;
 
 
 namespace OSharp.Secutiry

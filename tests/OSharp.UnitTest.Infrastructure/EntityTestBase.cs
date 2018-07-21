@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 
 using OSharp.Extensions;
-using OSharp.Timing;
 
 
 namespace OSharp.UnitTest.Infrastructure

@@ -11,7 +11,6 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 
 using OSharp.Core.Functions;
 using OSharp.Entity;

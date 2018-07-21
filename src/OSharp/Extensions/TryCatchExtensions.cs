@@ -8,12 +8,6 @@
 
 using System;
 
-using OSharp.Core;
-using OSharp.Data;
-using OSharp.Exceptions;
-using OSharp.Linq;
-using OSharp.Timing;
-
 
 namespace OSharp.Extensions
 {

@@ -13,12 +13,10 @@ using System.ComponentModel;
 using System.Reflection;
 
 using OSharp.Entity;
-using OSharp.Core;
 using OSharp.Core.EntityInfos;
 
 using Xunit;
 
-using OSharp.Reflection;
 using OSharp.UnitTest.Infrastructure;
 
 

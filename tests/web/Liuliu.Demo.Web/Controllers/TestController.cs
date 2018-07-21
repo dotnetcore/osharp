@@ -7,23 +7,16 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 
-using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security.Entities;
-
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Dependency;
-using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Json;
 

@@ -19,7 +19,6 @@ using Liuliu.Demo.Common;
 using Liuliu.Demo.Security;
 using Liuliu.Demo.Security.Dtos;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 

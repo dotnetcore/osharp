@@ -7,7 +7,6 @@
 //  <last-date>2017-11-15 17:26</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core;
 using OSharp.Core.EntityInfos;
 using OSharp.Mapping;
 

@@ -7,8 +7,6 @@
 //  <last-date>2018-07-09 16:07</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using OSharp.Dependency;
 using OSharp.EventBuses;
 

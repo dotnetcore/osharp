@@ -15,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Collections;
 using OSharp.Dependency;
-using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Identity.JwtBearer

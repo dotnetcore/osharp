@@ -1,5 +1,4 @@
-﻿using OSharp.Filter;
-using Xunit;
+﻿using Xunit;
 
 
 namespace OSharp.Filter.Tests

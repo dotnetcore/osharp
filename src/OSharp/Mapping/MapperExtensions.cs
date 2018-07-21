@@ -11,10 +11,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Properties;
-using OSharp.Reflection;
 
 
 namespace OSharp.Mapping

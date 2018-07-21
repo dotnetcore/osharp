@@ -10,10 +10,8 @@
 using System;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
-using OSharp.Core.Packs;
 
 
 namespace OSharp.AspNetCore

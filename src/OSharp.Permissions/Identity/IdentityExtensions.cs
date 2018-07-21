@@ -7,11 +7,7 @@
 //  <last-date>2017-11-16 11:53</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
 
 using Microsoft.AspNetCore.Identity;
 
