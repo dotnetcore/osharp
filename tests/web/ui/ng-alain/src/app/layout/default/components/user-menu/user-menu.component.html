@@ -11,7 +11,7 @@
 <ng-template #userSelectTemplate>
   <button mat-button [matMenuTriggerFor]="menuUserRef">
     <mat-icon>person</mat-icon>
-    <span mat-line>{{settings.user.name}}</span>
+    <span mat-line>{{settings.user.nickName}}</span>
   </button>
   <mat-menu #menuUserRef="matMenu">
     <button mat-menu-item disabled>
@@ -22,7 +22,7 @@
       <mat-icon>settings</mat-icon>
       <span mat-line>设置</span>
     </button>
-    <button mat-menu-item (click)="router.navigateByUrl('/admin')">
+    <button mat-menu-item *ngIf="settings.user.isAdmin" (click)="router.navigateByUrl('/admin')">
       <mat-icon>account_balance</mat-icon>
       <span mat-line>进入后台</span>
     </button>

@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { HttpClient } from '@angular/common/http';
-import { SettingsService, User as NzUser } from '@delon/theme';
+import { SettingsService } from '@delon/theme';
 import { ACLService } from '@delon/acl';
-import { LoginDto, AjaxResult, AjaxResultType, User, RegisterDto, ConfirmEmailDto, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
+import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { Observable } from '../../../../../node_modules/rxjs';
 
 @Injectable()
 export class IdentityService {
@@ -23,15 +24,8 @@ export class IdentityService {
       if (result.Type == AjaxResultType.Success) {
         // 设置Token
         this.tokenSrv.set({ token: result.Data });
-        // 更新用户
-        let user = new User(result.Data);
-        let nzUser: NzUser = { name: user.NickName, avatar: null, email: user.Email };
-        nzUser['isadmin'] = user.IsAdmin;
-        this.settingSrv.setUser(nzUser);
-        // 更新角色
-        this.aclSrv.setRole(user.Roles);
-        // 更新权限
-        this.osharp.refreshAuthInfo();
+        // 刷新用户信息
+        this.refreshUser().subscribe();
       }
       return result;
     }).toPromise();
@@ -41,11 +35,10 @@ export class IdentityService {
     let url = "api/identity/logout";
     return this.http.post<AjaxResult>(url, {}).map(res => {
       if (res.Type == AjaxResultType.Success) {
+        //清除Token
         this.tokenSrv.clear();
-        this.settingSrv.setUser(null);
-        this.aclSrv.setRole([]);
-        // 更新权限
-        this.osharp.refreshAuthInfo();
+        // 刷新用户信息
+        this.refreshUser().subscribe();
       }
       return res;
     }).toPromise();
@@ -68,12 +61,29 @@ export class IdentityService {
     }).toPromise();
   }
 
-  user(): User {
-    let jwt = this.tokenSrv.get();
-    if (!jwt || !jwt.token) {
-      return null;
-    }
-    return new User(jwt.token);
+  /** 刷新用户信息 */
+  refreshUser(): Observable<User> {
+    let url = "api/identity/profile";
+    console.log(url);
+    return this.http.get(url).map((res: any) => {
+      if (!res || res == {}) {
+        this.settingSrv.setUser({});
+        this.aclSrv.setRole([]);
+        // 更新权限
+        this.osharp.refreshAuthInfo();
+        return {};
+      }
+      let user: User = {
+        id: res.Id, name: res.UserName, nickName: res.NickName, avatar: res.HeadImg, email: res.Email, roles: res.Roles, isAdmin: res.IsAdmin
+      };
+      console.log(user);
+      this.settingSrv.setUser(user);
+      // 更新角色
+      this.aclSrv.setRole(user.roles);
+      // 更新权限
+      this.osharp.refreshAuthInfo();
+      return user;
+    });
   }
 
   sendConfirmMail(dto: SendMailDto): Promise<AdResult> {

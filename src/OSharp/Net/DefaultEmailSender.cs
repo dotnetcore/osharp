@@ -53,9 +53,9 @@ namespace OSharp.Net
             }
 
             string host = mailSender.Host,
-                displayName = mailSender.SenderDisplayName,
-                userName = mailSender.SenderUserName,
-                password = mailSender.SenderPassword;
+                displayName = mailSender.DisplayName,
+                userName = mailSender.UserName,
+                password = mailSender.Password;
             SmtpClient client = new SmtpClient(host)
             {
                 UseDefaultCredentials = false,

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity;
@@ -213,20 +214,12 @@ namespace Liuliu.Demo.Web.Controllers
                 return result.ToAjaxResult();
             }
             User user = result.Data;
-            bool isAdmin = _identityContract.Roles.Any(m =>
-                m.IsAdmin && _identityContract.UserRoles.Where(n => n.UserId == user.Id).Select(n => n.RoleId).Contains(m.Id));
-            IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            //生成Token
+            //生成Token，这里只包含最基本信息，其他信息从在线用户缓存中获取
             Claim[] claims =
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.GivenName, user.NickName ?? user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(JwtClaimTypes.HeadImage, user.HeadImg ?? ""),
-                new Claim(JwtClaimTypes.IsAdmin, isAdmin.ToLower()),
-                new Claim(ClaimTypes.Role, roles.ExpandAndToString())
+                new Claim(ClaimTypes.Name, user.UserName)
             };
             string token = JwtHelper.CreateToken(claims);
 
@@ -304,6 +297,23 @@ namespace Liuliu.Demo.Web.Controllers
             int userId = User.Identity.GetUserId<int>();
             OperationResult result = await _identityContract.Logout(userId);
             return result.ToAjaxResult();
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("用户信息")]
+        public OnlineUser Profile()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            OnlineUser onlineUser = ServiceLocator.Instance.GetService<IOnlineUserCache>()?.GetOrRefresh(User.Identity.Name);
+            return onlineUser;
         }
 
         /// <summary>

@@ -27,14 +27,18 @@ namespace OSharp.Identity
     /// </summary>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public class OnlineUserCache<TUser, TUserKey> : IOnlineUserCache
+    /// <typeparam name="TRole">角色类型</typeparam>
+    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
+    public class OnlineUserCache<TUser, TUserKey, TRole, TRoleKey> : IOnlineUserCache
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
+        where TRole : RoleBase<TRoleKey>
+        where TRoleKey : IEquatable<TRoleKey>
     {
         private readonly IDistributedCache _cache;
 
         /// <summary>
-        /// 初始化一个<see cref="OnlineUserCache{TUser, TUserKey}"/>类型的新实例
+        /// 初始化一个<see cref="OnlineUserCache{TUser, TUserKey, TRole, TRoleKey}"/>类型的新实例
         /// </summary>
         public OnlineUserCache(IDistributedCache cache)
         {
@@ -64,7 +68,11 @@ namespace OSharp.Identity
                             return null;
                         }
                         IList<string> roles = userManager.GetRolesAsync(user).Result;
-                        return GetOnlineUser(user, roles.ToArray());
+
+                        RoleManager<TRole> roleManager = provider.GetService<RoleManager<TRole>>();
+                        bool isAdmin = roleManager.Roles.Any(m => roles.Contains(m.Name) && m.IsAdmin);
+
+                        return GetOnlineUser(user, roles.ToArray(), isAdmin);
                     });
                 },
                 options);
@@ -93,7 +101,11 @@ namespace OSharp.Identity
                             return null;
                         }
                         IList<string> roles = await userManager.GetRolesAsync(user);
-                        return GetOnlineUser(user, roles.ToArray());
+
+                        RoleManager<TRole> roleManager = provider.GetService<RoleManager<TRole>>();
+                        bool isAdmin = roleManager.Roles.Any(m => roles.Contains(m.Name) && m.IsAdmin);
+
+                        return GetOnlineUser(user, roles.ToArray(), isAdmin);
                     });
                 },
                 options);
@@ -115,8 +127,9 @@ namespace OSharp.Identity
         /// </summary>
         /// <param name="user">来自数据库的用户实例</param>
         /// <param name="roles">用户拥有的角色</param>
+        /// <param name="isAdmin">是否管理</param>
         /// <returns>在线用户信息</returns>
-        private static OnlineUser GetOnlineUser(TUser user, string[] roles)
+        private static OnlineUser GetOnlineUser(TUser user, string[] roles, bool isAdmin)
         {
             return new OnlineUser()
             {
@@ -125,6 +138,7 @@ namespace OSharp.Identity
                 NickName = user.NickName,
                 Email = user.Email,
                 HeadImg = user.HeadImg,
+                IsAdmin = isAdmin,
                 Roles = roles
             };
         }
