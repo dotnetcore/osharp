@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -94,10 +95,6 @@ namespace Liuliu.Demo.Web
                 qq.AppId = _configuration["Authentication:QQ:AppId"];
                 qq.AppKey = _configuration["Authentication:QQ:AppKey"];
                 qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
-            }).AddMicrosoftAccount(ms =>
-            {
-                ms.ClientId = _configuration["Authentication:Microsoft:ClientId"];
-                ms.ClientSecret = _configuration["Authentication:Microsoft:ClientSecret"];
             });
 
             services.AddSignalR();
