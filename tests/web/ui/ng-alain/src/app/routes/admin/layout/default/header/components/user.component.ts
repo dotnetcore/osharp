@@ -12,13 +12,13 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
   <nz-dropdown nzPlacement="bottomRight">
     <div class="item d-flex align-items-center px-sm" nz-dropdown>
       <nz-avatar [nzSrc]="settings.user.avatar" nzSize="small" class="mr-sm"></nz-avatar>
-      {{settings.user.name}}
+      {{settings.user.nickName}}
     </div>
     <div nz-menu class="width-sm">
       <div nz-menu-item [nzDisabled]="true"><i class="anticon anticon-user mr-sm"></i>个人中心</div>
       <div nz-menu-item [nzDisabled]="true"><i class="anticon anticon-setting mr-sm"></i>设置</div>
       <div nz-menu-item (click)="osharp.refreshAuthInfo()"><i class="anticon anticon-reload mr-sm"></i>刷新权限</div>
-      <div nz-menu-item *ngIf="!inAdminModule && settings.user.isadmin" (click)="router.navigateByUrl('/admin')"><i class="anticon anticon-global mr-sm"></i>进入后台</div>
+      <div nz-menu-item *ngIf="!inAdminModule && settings.user.isAdmin" (click)="router.navigateByUrl('/admin')"><i class="anticon anticon-global mr-sm"></i>进入后台</div>
       <div nz-menu-item *ngIf="inAdminModule" (click)="router.navigateByUrl('/home')"><i class="anticon anticon-home mr-sm"></i>返回前台</div>
       <li nz-menu-divider></li>
       <div nz-menu-item (click)="logout()"><i class="anticon anticon-logout mr-sm"></i>退出登录</div>
