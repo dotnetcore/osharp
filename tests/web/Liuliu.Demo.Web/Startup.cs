@@ -15,6 +15,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,7 +79,7 @@ namespace Liuliu.Demo.Web
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
             {
-                string secret = _configuration["OSharp:Jwt:Secret"] ?? _configuration["JwtSecret"];
+                string secret = _configuration["OSharp:Jwt:Secret"];
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidIssuer = _configuration["OSharp:Jwt:Issuer"],
@@ -88,6 +89,15 @@ namespace Liuliu.Demo.Web
 
                 jwt.SecurityTokenValidators.Clear();
                 jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
+            }).AddQQ(qq =>
+            {
+                qq.AppId = _configuration["Authentication:QQ:AppId"];
+                qq.AppKey = _configuration["Authentication:QQ:AppKey"];
+                qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
+            }).AddMicrosoftAccount(ms =>
+            {
+                ms.ClientId = _configuration["Authentication:Microsoft:ClientId"];
+                ms.ClientSecret = _configuration["Authentication:Microsoft:ClientSecret"];
             });
 
             services.AddSignalR();

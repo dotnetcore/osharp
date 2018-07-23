@@ -30,7 +30,7 @@ namespace OSharp.Entity
         {
             string connString = GetConnectionString();
             IEntityConfigurationTypeFinder typeFinder = GetEntityConfigurationTypeFinder();
-            DbContextOptionsBuilder builder = new DbContextOptionsBuilder<DefaultDbContext>();
+            DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
             builder = UseSql(builder, connString);
             return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, typeFinder);
         }

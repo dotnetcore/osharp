@@ -86,7 +86,8 @@ namespace Liuliu.Demo.Identity
         /// <returns></returns>
         protected override IdentityBuilder OnIdentityBuild(IdentityBuilder builder)
         {
-            builder.AddUserValidator<UserNickNameValidator<User, int>>();
+            //如需要昵称唯一，启用下面这个验证码
+            //builder.AddUserValidator<UserNickNameValidator<User, int>>();
             return builder.AddDefaultTokenProviders();
         }
     }

@@ -33,7 +33,6 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
-using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -65,9 +64,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<UserOutputDto> Read()
+        public PageData<UserOutputDto> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
 

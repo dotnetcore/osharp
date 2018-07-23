@@ -1,6 +1,6 @@
 import { Injectable, NgZone, ElementRef, Injector, Inject } from '@angular/core';
 import { OsharpService, ComponentBase } from '@shared/osharp/services/osharp.service';
-import { FilterGroup, FilterRule, FilterOperate } from '@shared/osharp/osharp.model';
+import { FilterGroup, FilterRule, FilterOperate, PageRequest, SortCondition, ListSortDirection } from '@shared/osharp/osharp.model';
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
@@ -87,31 +87,26 @@ export class KendouiService {
    * @param options kendo发送的选项
    * @param funcFieldReplace 字段替换函数，用于处理关联实体的字段
    */
-  readParameterMap(options, funcFieldReplace) {
+  readParameterMap(options, funcFieldReplace): PageRequest {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
     }
-    const paramter = {
-      pageIndex: options.page,
-      pageSize: options.pageSize || 100000,
-      sortField: null,
-      sortOrder: null,
-      filter_group: null
-    };
+    const request = new PageRequest();
+    let page = request.PageCondition;
+    page.PageIndex = options.page;
+    page.PageSize = options.pageSize || 100000;
     if (options.sort && options.sort.length) {
-      const fields = [], orders = [];
       options.sort.forEach(item => {
-        fields.push(funcFieldReplace(item.field));
-        orders.push(item.dir);
+        let sort = new SortCondition();
+        sort.SortField = funcFieldReplace(item.field);
+        sort.ListSortDirection = item.dir == "desc" ? ListSortDirection.Descending : ListSortDirection.Ascending;
+        page.SortConditions.push(sort);
       });
-      paramter.sortField = this.osharp.expandAndToString(fields);
-      paramter.sortOrder = this.osharp.expandAndToString(orders);
     }
     if (options.filter && options.filter.filters.length) {
-      const group = this.getFilterGroup(options.filter, funcFieldReplace);
-      paramter.filter_group = JSON.stringify(group);
+      request.FilterGroup = this.getFilterGroup(options.filter, funcFieldReplace);
     }
-    return paramter;
+    return request;
   }
 
   /**给每个请求头设置 JWT-Token */
@@ -389,13 +384,15 @@ export abstract class GridComponentBase extends ComponentBase {
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     const options: kendo.data.DataSourceOptions = {
       transport: {
-        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post' },
+        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         create: { url: "api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         update: { url: "api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         destroy: { url: "api/admin/" + this.moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         parameterMap: (opts, operation) => {
           if (operation == 'read') {
-            return this.kendoui.readParameterMap(opts, this.FieldReplace);
+            let request = this.kendoui.readParameterMap(opts, this.FieldReplace);
+            console.log(request);
+            return JSON.stringify(request);
           }
           if (operation == 'create' || operation == 'update') {
             return JSON.stringify(opts.models);
@@ -578,14 +575,16 @@ export abstract class TreeListComponentBase extends ComponentBase {
       columns: this.GetTreeListColumns(),
       selectable: true,
       resizable: true,
-      editable: { move: true }
+      filterable: true,
+      sortable: { allowUnsort: true, mode: 'multiple' },
+      editable: { move: false }
     };
     return options;
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     const options: kendo.data.DataSourceOptions = {
       transport: {
-        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post' },
+        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         create: { url: "api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         update: { url: "api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
         destroy: { url: "api/admin/" + this.moduleName + "/delete", type: 'post' },

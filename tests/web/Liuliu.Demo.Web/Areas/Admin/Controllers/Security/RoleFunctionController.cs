@@ -20,7 +20,6 @@ using Liuliu.Demo.Security.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Entity;
@@ -50,9 +49,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<RoleOutputDto2> Read()
+        public PageData<RoleOutputDto2> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
             Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
             PageResult<RoleOutputDto2> page = _roleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
@@ -82,7 +80,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            PageRequest request = new PageRequest(Request);
+            PageRequest request = new PageRequest();
             Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)

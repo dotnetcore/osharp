@@ -27,7 +27,6 @@ using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Mapping;
 using OSharp.Security;
 
 
@@ -51,9 +50,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<EntityInfoOutputDto> Read()
+        public PageData<EntityInfoOutputDto> Read(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
@@ -75,6 +73,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return nodes;
         }
 
+        /// <summary>
+        /// 读取实体属性信息
+        /// </summary>
+        /// <param name="typeName">实体类型</param>
+        /// <returns>JSON操作结果</returns>
         [HttpGet]
         [Description("读取实体属性信息")]
         public AjaxResult ReadProperties(string typeName)

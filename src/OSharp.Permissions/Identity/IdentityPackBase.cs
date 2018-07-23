@@ -54,7 +54,7 @@ namespace OSharp.Identity
             });
 
             //在线用户缓存
-            services.AddSingleton<IOnlineUserCache, OnlineUserCache<TUser, TUserKey>>();
+            services.AddSingleton<IOnlineUserCache, OnlineUserCache<TUser, TUserKey, TRole, TRoleKey>>();
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);

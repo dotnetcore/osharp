@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { User as NzUser } from '@delon/theme';
 
 //#region OSharp Tools
 export class AjaxResult {
@@ -132,6 +132,31 @@ export class FilterOperateEntry {
     this.Display = `${<number>operate}.${this.Display}`;
   }
 }
+/** 分页请求 */
+export class PageRequest {
+  /** 分页条件信息 */
+  PageCondition: PageCondition = new PageCondition();
+  /** 查询条件组 */
+  FilterGroup: FilterGroup = new FilterGroup();
+}
+/** 分页条件 */
+export class PageCondition {
+  /** 页序 */
+  PageIndex: number = 1;
+  /** 分页大小 */
+  PageSize: number = 20;
+  /** 排序条件集合 */
+  SortConditions: SortCondition[] = [];
+}
+export class SortCondition {
+  SortField: string;
+  ListSortDirection: ListSortDirection;
+}
+export enum ListSortDirection {
+  Ascending,
+  Descending
+}
+
 
 /** 实体属性信息 */
 export class EntityProperty {
@@ -205,47 +230,19 @@ export class AuthConfig {
   ) { }
 }
 
-/**
- * 用户信息
- */
-export class User {
-  Id: number;
-  UserName: string;
-  NickName: string;
-  Email: string;
-  SecurityStamp: string;
-  IsAdmin: boolean;
-  Roles: string[];
-  IssuedAt: Date;
-  NotBefore: Date;
-  Expires: Date;
-
-  constructor(token: string) {
-    if (token == null) {
-      return;
-    }
-    const strs: string[] = token.split(".");
-    if (strs.length != 3) {
-      return;
-    }
-    const json = this.fromBase64(strs[1]);
-    const obj = JSON.parse(json);
-
-    this.Id = obj['nameid'] || 0;
-    this.UserName = obj['unique_name'] || null;
-    this.NickName = obj['given_name'] || null;
-    this.Email = obj['email'] || null;
-    this.SecurityStamp = obj['security-stamp'] || null;
-    this.IsAdmin = obj['is-admin'] != undefined ? JSON.parse(obj['is-admin']) : false;
-    this.Roles = obj['role'] != undefined ? obj['role'].split(',') : [];
-    this.IssuedAt = obj['iat'] != undefined ? new Date(obj['iat'] * 1000) : null;
-    this.NotBefore = obj['nbf'] != undefined ? new Date(obj['nbf'] * 1000) : null;
-    this.Expires = obj['exp'] != undefined ? new Date(obj['exp'] * 1000) : null;
+/** 用户信息 */
+export class User implements NzUser {
+  constructor() {
+    this.roles = [];
   }
-
-  private fromBase64(base64: string): string {
-    return new Buffer(base64, 'base64').toString();
-  }
+  id?: number;
+  name?: string;
+  avatar?: string;
+  email?: string;
+  [key: string]: any;
+  nickName?: string;
+  roles?: string[];
+  isAdmin?: boolean;
 }
 
 //#endregion

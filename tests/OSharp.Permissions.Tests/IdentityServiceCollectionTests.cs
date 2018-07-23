@@ -1,5 +1,3 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace OSharp.Permissions.Tests

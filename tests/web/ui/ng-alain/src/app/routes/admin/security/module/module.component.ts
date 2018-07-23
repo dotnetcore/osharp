@@ -135,6 +135,7 @@ export class ModuleComponent extends TreeListComponentBase implements AfterViewI
       }
     };
     options = this.kendoui.queryOptions(functionGrid.dataSource, options);
+    console.log(options);
     functionGrid.dataSource.query(options);
   }
 

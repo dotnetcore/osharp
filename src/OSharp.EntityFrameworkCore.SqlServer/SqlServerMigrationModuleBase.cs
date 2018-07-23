@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using OSharp.Core;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
-using OSharp.Exceptions;
 
 
 namespace OSharp.Entity.SqlServer

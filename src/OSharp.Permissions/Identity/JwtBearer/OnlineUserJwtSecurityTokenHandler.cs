@@ -8,14 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 
 using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Collections;
 using OSharp.Dependency;
-using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Identity.JwtBearer
@@ -40,14 +38,14 @@ namespace OSharp.Identity.JwtBearer
 
             if (identity.IsAuthenticated)
             {
-                //由用户名获取在线缓存的角色赋给Identity
+                //由在线缓存获取用户信息赋给IIdentity
                 IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
                 OnlineUser user = onlineUserCache.GetOrRefresh(identity.Name);
-                Claim roleClaim = identity.Claims.FirstOrDefault(m => m.Type == ClaimTypes.Role);
-                if (roleClaim != null)
+                identity.AddClaims(new[]
                 {
-                    identity.RemoveClaim(roleClaim);
-                }
+                    new Claim(ClaimTypes.GivenName, user.NickName),
+                    new Claim(ClaimTypes.Email, user.Email)
+                });
                 if (user.Roles.Length > 0)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, user.Roles.ExpandAndToString()));

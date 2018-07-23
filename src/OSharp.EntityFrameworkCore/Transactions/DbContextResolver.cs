@@ -13,7 +13,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 

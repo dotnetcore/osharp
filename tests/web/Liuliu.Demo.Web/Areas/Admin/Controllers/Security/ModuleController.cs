@@ -19,7 +19,6 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.AspNetCore.UI;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -48,8 +47,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public List<ModuleOutputDto> Read()
         {
-            ListFilterGroup group = new ListFilterGroup(Request);
-            Expression<Func<Module, bool>> predicate = FilterHelper.GetExpression<Module>(group);
+            Expression<Func<Module, bool>> predicate = m => true;
             List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
             return modules;
         }
@@ -124,9 +122,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取模块功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions()
+        public PageData<FunctionOutputDto2> ReadFunctions(PageRequest request)
         {
-            PageRequest request = new PageRequest(Request);
             if (request.FilterGroup.Rules.Count == 0)
             {
                 return new PageData<FunctionOutputDto2>();

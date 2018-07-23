@@ -20,7 +20,6 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Audits;
 using OSharp.Collections;
-using OSharp.Core;
 using OSharp.Core.EntityInfos;
 using OSharp.Dependency;
 using OSharp.Exceptions;
