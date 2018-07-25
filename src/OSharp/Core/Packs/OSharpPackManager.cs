@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -87,15 +88,15 @@ namespace OSharp.Core.Packs
         /// <summary>
         /// 启用模块
         /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public void UsePacks(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public void UsePacks(IApplicationBuilder app)
         {
-            ILogger<OSharpPackManager> logger = provider.GetService<ILogger<OSharpPackManager>>();
+            ILogger<OSharpPackManager> logger = app.ApplicationServices.GetService<ILogger<OSharpPackManager>>();
             logger.LogInformation("OSharp框架初始化开始");
 
             foreach (OsharpPack pack in LoadedPacks)
             {
-                pack.UsePack(provider);
+                pack.UsePack(app);
                 logger.LogInformation($"模块{pack.GetType()}加载成功");
             }
 

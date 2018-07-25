@@ -27,7 +27,7 @@ using OSharp.Identity.JwtBearer;
 
 namespace Liuliu.Demo.Web.Startups
 {
-    public class AuthenticationPack : OsharpPack, IAspNetCoreBasePack
+    public class AuthenticationPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -69,16 +69,14 @@ namespace Liuliu.Demo.Web.Startups
         }
 
         /// <summary>
-        /// 应用AspNetCore的模块初始化逻辑
+        /// 应用模块服务
         /// </summary>
         /// <param name="app">应用程序构建器</param>
-        /// <returns>应用程序构建器</returns>
-        public IApplicationBuilder UsePack(IApplicationBuilder app)
+        public override void UsePack(IApplicationBuilder app)
         {
             //app.UseAuthentication();
             ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
             logger.LogInformation("AuthenticationPack 模块初始化完毕");
-            return app;
         }
     }
 }

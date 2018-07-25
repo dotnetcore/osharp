@@ -32,7 +32,7 @@ namespace OSharp.Entity.MySql
         public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
-        /// 使用模块服务
+        /// 应用模块服务
         /// </summary>
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)

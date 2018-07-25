@@ -3,12 +3,13 @@
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 15:18</last-date>
+//  <last-editor></last-editor>
+//  <last-date>2018-07-25 12:03</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Reflection;
@@ -48,10 +49,10 @@ namespace OSharp.Core.Packs
         }
 
         /// <summary>
-        /// 使用模块服务
+        /// 应用模块服务
         /// </summary>
-        /// <param name="provider"></param>
-        public virtual void UsePack(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public virtual void UsePack(IApplicationBuilder app)
         {
             IsEnabled = true;
         }
@@ -63,11 +64,7 @@ namespace OSharp.Core.Packs
         internal Type[] GetDependModuleTypes()
         {
             DependsOnPacksAttribute depends = this.GetType().GetAttribute<DependsOnPacksAttribute>();
-            if (depends == null)
-            {
-                return new Type[0];
-            }
-            return depends.DependedModuleTypes;
+            return depends == null ? new Type[0] : depends.DependedModuleTypes;
         }
     }
 }

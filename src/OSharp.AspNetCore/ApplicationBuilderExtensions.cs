@@ -32,14 +32,8 @@ namespace OSharp.AspNetCore
         {
             IServiceProvider provider = app.ApplicationServices;
             OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
-            packManager.UsePacks(provider);
-
-            foreach (OsharpPack pack in packManager.LoadedPacks.Where(m => m.GetType().IsBaseOn<IAspNetCoreBasePack>()))
-            {
-                IAspNetCoreBasePack aspPack = pack as IAspNetCoreBasePack;
-                app = aspPack?.UsePack(app);
-            }
-
+            packManager.UsePacks(app);
+            
             return app;
         }
 

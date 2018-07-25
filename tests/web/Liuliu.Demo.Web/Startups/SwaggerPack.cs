@@ -29,7 +29,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// Swagger Api模块 
     /// </summary>
-    public class SwaggerPack : OsharpPack, IAspNetCoreBasePack
+    public class SwaggerPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -65,11 +65,10 @@ namespace Liuliu.Demo.Web.Startups
         }
 
         /// <summary>
-        /// 应用AspNetCore的模块初始化逻辑
+        /// 应用模块服务
         /// </summary>
         /// <param name="app">应用程序构建器</param>
-        /// <returns>应用程序构建器</returns>
-        public IApplicationBuilder UsePack(IApplicationBuilder app)
+        public override void UsePack(IApplicationBuilder app)
         {
             IHostingEnvironment environment = app.ApplicationServices.GetService<IHostingEnvironment>();
             if (environment.IsDevelopment())
@@ -81,7 +80,6 @@ namespace Liuliu.Demo.Web.Startups
                 ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
                 logger.LogInformation("SwaggerPack 模块初始化完毕");
             }
-            return app;
         }
     }
 }

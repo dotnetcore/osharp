@@ -19,12 +19,12 @@ using OSharp.Dependency;
 
 namespace Liuliu.Demo.Web.Startups
 {
-    public class AspNetCoreMvcPack : OsharpPack, IAspNetCoreBasePack
+    public class AspNetCoreMvcPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
-        public override PackLevel Level => PackLevel.Framework;
+        public override PackLevel Level => PackLevel.Application;
 
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
@@ -39,29 +39,29 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            //services.AddMvc(options =>
-            //{
-            //    options.Conventions.Add(new DashedRoutingConvention());
-            //    options.Filters.Add(new FunctionAuthorizationFilter()); //全局功能权限过滤器
-            //}).AddJsonOptions(options =>
-            //{
-            //    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            //}).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                options.Conventions.Add(new DashedRoutingConvention());
+                options.Filters.Add(new FunctionAuthorizationFilter()); //全局功能权限过滤器
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDistributedMemoryCache();
 
             return services;
         }
 
         /// <summary>
-        /// 应用AspNetCore的模块初始化逻辑
+        /// 应用模块服务
         /// </summary>
         /// <param name="app">应用程序构建器</param>
-        /// <returns>应用程序构建器</returns>
-        public IApplicationBuilder UsePack(IApplicationBuilder app)
+        public override void UsePack(IApplicationBuilder app)
         {
-            //app.UseMvcWithAreaRoute();
+            app.UseMvcWithAreaRoute();
             ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
             logger.LogInformation("AspNetCoreMvcPack 模块初始化完毕");
-            return app;
         }
     }
 }

@@ -7,9 +7,6 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -30,8 +27,6 @@ using OSharp.Core;
 using OSharp.Data;
 using OSharp.Identity.JwtBearer;
 
-using Swashbuckle.AspNetCore.Swagger;
-
 
 namespace Liuliu.Demo.Web
 {
@@ -51,38 +46,7 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-            {
-                options.Conventions.Add(new DashedRoutingConvention());
-                options.Filters.Add(new FunctionAuthorizationFilter()); //全局功能权限过滤器
-            }).AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddOSharp().AddDistributedMemoryCache();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(jwt =>
-            {
-                string secret = _configuration["OSharp:Jwt:Secret"];
-                jwt.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidIssuer = _configuration["OSharp:Jwt:Issuer"],
-                    ValidAudience = _configuration["OSharp:Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
-                };
-                jwt.SecurityTokenValidators.Clear();
-                jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
-            }).AddQQ(qq =>
-            {
-                qq.AppId = _configuration["Authentication:QQ:AppId"];
-                qq.AppKey = _configuration["Authentication:QQ:AppKey"];
-                qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
-            });
+            services.AddOSharp();
 
             services.AddSignalR();
         }
@@ -105,8 +69,6 @@ namespace Liuliu.Demo.Web
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles()
-                .UseAuthentication()
-                .UseMvcWithAreaRoute()
                 .UseSignalR(opts =>
                 {
                     //opts.MapHub<>();
