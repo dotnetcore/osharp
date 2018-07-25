@@ -55,16 +55,6 @@ namespace OSharp.Core
         }
 
         /// <summary>
-        /// 应用OSharp框架，初始化各个Pack
-        /// </summary>
-        public static IServiceProvider UseOSharp(this IServiceProvider provider)
-        {
-            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
-            packManager.UsePacks(provider);
-            return provider;
-        }
-
-        /// <summary>
         /// 从服务提供者中获取OSharpOptions
         /// </summary>
         public static OSharpOptions GetOSharpOptions(this IServiceProvider provider)

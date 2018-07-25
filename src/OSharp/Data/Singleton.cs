@@ -51,6 +51,6 @@ namespace OSharp.Data
         /// <summary>
         /// 获取 单例对象字典
         /// </summary>
-        public static IDictionary<Type, object> AllSingletons { get; private set; }
+        public static IDictionary<Type, object> AllSingletons { get; }
     }
 }

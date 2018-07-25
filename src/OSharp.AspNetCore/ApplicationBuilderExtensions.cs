@@ -8,10 +8,14 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
+using OSharp.Core.Packs;
+using OSharp.Reflection;
 
 
 namespace OSharp.AspNetCore
@@ -26,8 +30,16 @@ namespace OSharp.AspNetCore
         /// </summary>
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
-            IServiceProvider serviceProvider = app.ApplicationServices;
-            serviceProvider.UseOSharp();
+            IServiceProvider provider = app.ApplicationServices;
+            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            packManager.UsePacks(provider);
+
+            foreach (OsharpPack pack in packManager.LoadedPacks.Where(m => m.GetType().IsBaseOn<IAspNetCoreBasePack>()))
+            {
+                IAspNetCoreBasePack aspPack = pack as IAspNetCoreBasePack;
+                app = aspPack?.UsePack(app);
+            }
+
             return app;
         }
 

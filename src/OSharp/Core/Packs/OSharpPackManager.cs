@@ -46,7 +46,7 @@ namespace OSharp.Core.Packs
         public IEnumerable<OsharpPack> SourcePacks => _sourcePacks;
 
         /// <summary>
-        /// 获取 加载的模块信息集合
+        /// 获取 最终加载的模块信息集合
         /// </summary>
         public IEnumerable<OsharpPack> LoadedPacks { get; private set; }
 

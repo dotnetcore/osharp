@@ -11,8 +11,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +27,7 @@ using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
+using OSharp.Data;
 using OSharp.Identity.JwtBearer;
 
 using Swashbuckle.AspNetCore.Swagger;
@@ -45,24 +44,13 @@ namespace Liuliu.Demo.Web
         {
             _configuration = configuration;
             _environment = env;
+            Singleton<IConfiguration>.Instance = configuration;
+            Singleton<IHostingEnvironment>.Instance = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (_environment.IsDevelopment())
-            {
-                services.AddMvcCore().AddApiExplorer();
-                services.AddSwaggerGen(options =>
-                {
-                    options.SwaggerDoc("v1", new Info() { Title = "OSharpNS API", Version = "v1" });
-                    Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
-                    {
-                        options.IncludeXmlComments(file);
-                    });
-                });
-            }
-
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -87,7 +75,6 @@ namespace Liuliu.Demo.Web
                     ValidAudience = _configuration["OSharp:Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
                 };
-
                 jwt.SecurityTokenValidators.Clear();
                 jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
             }).AddQQ(qq =>
@@ -107,10 +94,6 @@ namespace Liuliu.Demo.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseSwagger().UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharpNS API V1");
-                });
             }
             else
             {

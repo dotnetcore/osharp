@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
 using OSharp.Core.Builders;
+using OSharp.Core.Packs;
 
 using Shouldly;
 
@@ -31,7 +32,8 @@ namespace OSharp.Dependency.Tests
             services.AddOSharp(b => b.AddCorePack());
 
             IServiceProvider provider = services.BuildServiceProvider();
-            provider.UseOSharp();
+            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            packManager.UsePacks(provider);
 
             ServiceLocator.Instance.GetService<ServiceLocatorTests>().ShouldNotBeNull();
         }
