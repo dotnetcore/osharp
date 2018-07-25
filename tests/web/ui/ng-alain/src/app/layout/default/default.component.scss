@@ -1,5 +1,6 @@
 mat-toolbar {
-    //margin-bottom: 50px;
+    position: fixed;
+    z-index: 100000;
     .logo {
         width: 150px;
         transition: width .2s;
@@ -41,6 +42,7 @@ mat-toolbar {
 .component-content {
     max-width: 1152px;
     margin: 0 auto;
+    margin-top: 64px;
 }
 
 @media screen and (min-width: 960px) {
@@ -62,6 +64,12 @@ mat-toolbar {
             display: inline;
         }
     }
+}
+
+@media screen and (max-width:599px){
+  .component-content{
+    margin-top: 56px;
+  }
 }
 
 .content {
