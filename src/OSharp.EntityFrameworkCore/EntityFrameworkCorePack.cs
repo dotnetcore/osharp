@@ -34,8 +34,8 @@ namespace OSharp.Entity
             services.AddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
             services.AddSingleton<IDbContextResolver, DbContextResolver>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

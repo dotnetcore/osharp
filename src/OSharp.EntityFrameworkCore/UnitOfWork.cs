@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -88,6 +89,11 @@ namespace OSharp.Entity
                 if (transInfo.StarterDbContext.GetType() == resolveOptions.DbContextType)
                 {
                     return transInfo.StarterDbContext as IDbContext;
+                }
+                dbContext = transInfo.AttendedDbContexts.FirstOrDefault(m => m.GetType() == resolveOptions.DbContextType);
+                if (dbContext != null)
+                {
+                    return dbContext as IDbContext;
                 }
                 dbContext = contextResolver.Resolve(resolveOptions);
                 if (dbContext.IsRelationalTransaction())
