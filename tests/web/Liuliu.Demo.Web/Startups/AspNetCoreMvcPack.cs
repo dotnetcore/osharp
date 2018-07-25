@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="AspNetCoreMvcPack.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor></last-editor>
+//  <last-date>2018-07-25 14:52</last-date>
+// -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json.Serialization;
 
@@ -14,7 +17,6 @@ using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
-using OSharp.Dependency;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -60,8 +62,6 @@ namespace Liuliu.Demo.Web.Startups
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseMvcWithAreaRoute();
-            ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
-            logger.LogInformation("AspNetCoreMvcPack 模块初始化完毕");
         }
     }
 }

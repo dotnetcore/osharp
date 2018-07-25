@@ -7,25 +7,15 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-
-using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Mvc.Conventions;
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
 using OSharp.Data;
-using OSharp.Identity.JwtBearer;
 
 
 namespace Liuliu.Demo.Web

@@ -14,12 +14,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-using OSharp.AspNetCore;
 using OSharp.Core.Packs;
 using OSharp.Data;
-using OSharp.Dependency;
 
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -77,8 +74,6 @@ namespace Liuliu.Demo.Web.Startups
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharpNS API V1");
                 });
-                ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
-                logger.LogInformation("SwaggerPack 模块初始化完毕");
             }
         }
     }
