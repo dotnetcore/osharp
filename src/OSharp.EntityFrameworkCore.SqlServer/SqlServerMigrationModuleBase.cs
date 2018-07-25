@@ -9,6 +9,7 @@
 
 using System;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,11 +33,12 @@ namespace OSharp.Entity.SqlServer
         public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
-        /// 使用模块服务
+        /// 应用模块服务
         /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public override void UsePack(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
         {
+            IServiceProvider provider = app.ApplicationServices;
             using (IServiceScope scope = provider.CreateScope())
             {
                 ILogger logger = provider.GetService<ILoggerFactory>().CreateLogger(GetType());

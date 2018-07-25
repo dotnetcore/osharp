@@ -66,6 +66,8 @@ namespace OSharp.Identity
                 services.ConfigureApplicationCookie(cookieOptionsAction);
             }
 
+            AddAuthentication(services);
+
             return services;
         }
 
@@ -86,6 +88,13 @@ namespace OSharp.Identity
         {
             return null;
         }
+
+        /// <summary>
+        /// 添加Authentication服务
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        protected virtual void AddAuthentication(IServiceCollection services)
+        { }
 
         /// <summary>
         /// 重写以实现 AddIdentity 之后的构建逻辑

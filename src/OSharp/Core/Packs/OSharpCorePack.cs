@@ -9,6 +9,7 @@
 
 using System;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -42,13 +43,13 @@ namespace OSharp.Core.Packs
         }
 
         /// <summary>
-        /// 使用模块服务
+        /// 应用模块服务
         /// </summary>
-        /// <param name="provider"></param>
-        public override void UsePack(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
         {
             //应用程序级别的服务定位器
-            ServiceLocator.Instance.SetApplicationServiceProvider(provider);
+            ServiceLocator.Instance.SetApplicationServiceProvider(app.ApplicationServices);
 
             IsEnabled = true;
         }

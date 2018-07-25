@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
 using OSharp.Core.Builders;
+using OSharp.Core.Packs;
 
 
 namespace OSharp.UnitTest
@@ -14,7 +15,8 @@ namespace OSharp.UnitTest
         {
             services.AddOSharp(build => build.AddCorePack());
             IServiceProvider provider = services.BuildServiceProvider();
-            provider.UseOSharp();
+            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            packManager.UsePacks(provider);
             return provider;
         }
     }

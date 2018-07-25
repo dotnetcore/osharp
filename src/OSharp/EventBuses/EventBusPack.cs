@@ -9,6 +9,7 @@
 
 using System;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -50,12 +51,12 @@ namespace OSharp.EventBuses
         }
 
         /// <summary>
-        /// 使用模块服务
+        /// 应用模块服务
         /// </summary>
-        /// <param name="provider"></param>
-        public override void UsePack(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
         {
-            IEventBusBuilder builder = provider.GetService<IEventBusBuilder>();
+            IEventBusBuilder builder = app.ApplicationServices.GetService<IEventBusBuilder>();
             builder.Build();
             IsEnabled = true;
         }

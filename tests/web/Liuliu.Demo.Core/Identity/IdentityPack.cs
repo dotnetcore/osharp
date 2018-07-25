@@ -8,20 +8,28 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Text;
 
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
+using OSharp.Data;
 using OSharp.Identity;
+using OSharp.Identity.JwtBearer;
 
 
 namespace Liuliu.Demo.Identity
 {
     /// <summary>
-    /// 身份认证模块
+    /// 身份认证模块，此模块必须在MVC模块之前启动
     /// </summary>
     public class IdentityPack : IdentityPackBase<UserStore, RoleStore, User, Role, int, int>
     {
@@ -29,7 +37,7 @@ namespace Liuliu.Demo.Identity
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
-        public override int Order => 1;
+        public override int Order => 0;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -80,6 +88,37 @@ namespace Liuliu.Demo.Identity
         }
 
         /// <summary>
+        /// 添加Authentication服务
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        protected override void AddAuthentication(IServiceCollection services)
+        {
+            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwt =>
+            {
+                string secret = configuration["OSharp:Jwt:Secret"];
+                jwt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = configuration["OSharp:Jwt:Issuer"],
+                    ValidAudience = configuration["OSharp:Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
+                };
+
+                jwt.SecurityTokenValidators.Clear();
+                jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
+            }).AddQQ(qq =>
+            {
+                qq.AppId = configuration["Authentication:QQ:AppId"];
+                qq.AppKey = configuration["Authentication:QQ:AppKey"];
+                qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
+            });
+        }
+
+        /// <summary>
         /// 重写以实现 AddIdentity 之后的构建逻辑
         /// </summary>
         /// <param name="builder"></param>
@@ -89,6 +128,17 @@ namespace Liuliu.Demo.Identity
             //如需要昵称唯一，启用下面这个验证码
             //builder.AddUserValidator<UserNickNameValidator<User, int>>();
             return builder.AddDefaultTokenProviders();
+        }
+
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+
+            IsEnabled = true;
         }
     }
 }
