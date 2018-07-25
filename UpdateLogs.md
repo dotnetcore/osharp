@@ -1,5 +1,9 @@
 # OSharp .NetStandard 更新记录
 
+### latest version
+1. 客户端代码移除部分多余布局文件
+2. 整合模块，简化Startup的代码。调整Pack的UsePack参数类型，由原来的IServiceProvider变更为IApplicationBuilder。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
+
 ### 0.3.0-beta04
 1. `OSharp.Permissions`增加QQ登录的支持
 2. 将后台列表页数据读取改为强类型`PageRequest`
