@@ -38,7 +38,7 @@ namespace OSharp.Core.Functions
         /// </summary>
         protected FunctionHandlerBase()
         {
-            Logger = ServiceLocator.Instance.GetService<ILoggerFactory>().CreateLogger(GetType());
+            Logger = ServiceLocator.Instance.GetLogger(GetType());
         }
 
         /// <summary>
