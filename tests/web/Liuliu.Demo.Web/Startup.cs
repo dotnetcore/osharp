@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
-using OSharp.Core;
 using OSharp.Data;
 
 
@@ -22,13 +21,8 @@ namespace Liuliu.Demo.Web
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _environment;
-
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            _configuration = configuration;
-            _environment = env;
             Singleton<IConfiguration>.Instance = configuration;
             Singleton<IHostingEnvironment>.Instance = env;
         }
@@ -37,8 +31,6 @@ namespace Liuliu.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOSharp();
-
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,10 +51,6 @@ namespace Liuliu.Demo.Web
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles()
-                .UseSignalR(opts =>
-                {
-                    //opts.MapHub<>();
-                })
                 .UseOSharp();
         }
     }

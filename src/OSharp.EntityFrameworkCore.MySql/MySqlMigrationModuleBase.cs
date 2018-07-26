@@ -9,10 +9,10 @@
 
 using System;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Exceptions;
@@ -34,10 +34,10 @@ namespace OSharp.Entity.MySql
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public override void UsePack(IServiceProvider provider)
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = app.ApplicationServices.CreateScope())
             {
                 TDbContext context = CreateDbContext(scope.ServiceProvider);
                 if (context != null)

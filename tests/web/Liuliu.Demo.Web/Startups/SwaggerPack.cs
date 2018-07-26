@@ -51,7 +51,7 @@ namespace Liuliu.Demo.Web.Startups
                 services.AddMvcCore().AddApiExplorer();
                 services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new Info() { Title = "OSharpNS API", Version = "v1" });
+                    options.SwaggerDoc("v1", new Info() { Title = "OSharp API", Version = "v1" });
                     Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                     {
                         options.IncludeXmlComments(file);
@@ -72,7 +72,7 @@ namespace Liuliu.Demo.Web.Startups
             {
                 app.UseSwagger().UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharpNS API V1");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharp API V1");
                 });
             }
         }
