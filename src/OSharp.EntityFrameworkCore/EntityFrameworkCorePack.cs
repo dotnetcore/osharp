@@ -10,6 +10,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Entity.Transactions;
 
 
 namespace OSharp.Entity

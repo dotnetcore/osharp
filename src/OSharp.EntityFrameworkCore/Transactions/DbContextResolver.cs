@@ -39,7 +39,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="resolveOptions">上下文解析选项</param>
         /// <returns></returns>
-        public DbContext Resolve(DbContextResolveOptions resolveOptions)
+        public IDbContext Resolve(DbContextResolveOptions resolveOptions)
         {
             Type dbContextType = resolveOptions.DbContextType;
             IDbContextOptionsBuilderCreator builderCreator = _serviceProvider.GetServices<IDbContextOptionsBuilderCreator>()
@@ -55,7 +55,7 @@ namespace OSharp.Entity
             {
                 throw new OsharpException($"实例化数据上下文“{dbContextType.AssemblyQualifiedName}”失败");
             }
-            return context;
+            return context as IDbContext;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace OSharp.Identity
             services.AddTransient<IPrincipal>(provider =>
             {
                 IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
-                return accessor?.HttpContext.User;
+                return accessor?.HttpContext?.User;
             });
 
             //在线用户缓存

@@ -34,7 +34,7 @@ namespace OSharp.Collections
         /// <returns> 拼接后的字符串 </returns>
         public static string ExpandAndToString<T>(this IEnumerable<T> collection, string separator = ",")
         {
-            return collection.ExpandAndToString(t => t.ToString(), separator);
+            return collection.ExpandAndToString(t => t?.ToString(), separator);
         }
 
         /// <summary>
