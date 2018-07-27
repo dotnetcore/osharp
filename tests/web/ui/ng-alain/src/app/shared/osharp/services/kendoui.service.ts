@@ -391,7 +391,6 @@ export abstract class GridComponentBase extends ComponentBase {
         parameterMap: (opts, operation) => {
           if (operation == 'read') {
             let request = this.kendoui.readParameterMap(opts, this.FieldReplace);
-            console.log(request);
             return JSON.stringify(request);
           }
           if (operation == 'create' || operation == 'update') {

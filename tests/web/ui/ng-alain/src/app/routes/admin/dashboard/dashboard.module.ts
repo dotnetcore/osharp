@@ -6,6 +6,7 @@ import '@antv/g2';
 import '@antv/g2-plugin-slider';
 import '@antv/data-set';
 
+
 @NgModule({
   declarations: [
     DashboardComponent,
