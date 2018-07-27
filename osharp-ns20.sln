@@ -28,7 +28,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{806C30F7-24C2-4506-9E06-AF1B5534C098}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		UpdateLogs.md = UpdateLogs.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{2ACDE867-4B21-40B1-AC52-A14BDA260787}"
@@ -50,6 +49,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "tests\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{B0BC26F8-5011-44DE-B516-643683DB7655}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{F5AE9B1E-523E-4ED0-BC3F-A2D722C2A48C}"
+	ProjectSection(SolutionItems) = preProject
+		docs\articles\updatelogs.md = docs\articles\updatelogs.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +136,7 @@ Global
 		{01974482-F9CA-41E7-A9EF-EB13C939570F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{B0BC26F8-5011-44DE-B516-643683DB7655} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
+		{F5AE9B1E-523E-4ED0-BC3F-A2D722C2A48C} = {806C30F7-24C2-4506-9E06-AF1B5534C098}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

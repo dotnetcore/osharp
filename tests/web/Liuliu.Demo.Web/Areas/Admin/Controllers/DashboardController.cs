@@ -99,7 +99,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("曲线数据")]
-        [AllowAnonymous]
         public IActionResult LineData(DateTime start, DateTime end)
         {
             IFunction function = this.GetExecuteFunction();
