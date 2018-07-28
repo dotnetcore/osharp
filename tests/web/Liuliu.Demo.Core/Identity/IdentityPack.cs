@@ -110,11 +110,11 @@ namespace Liuliu.Demo.Identity
 
                 jwt.SecurityTokenValidators.Clear();
                 jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
-            }).AddQQ(qq =>
-            {
-                qq.AppId = configuration["Authentication:QQ:AppId"];
-                qq.AppKey = configuration["Authentication:QQ:AppKey"];
-                qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
+            //}).AddQQ(qq =>
+            //{
+            //    qq.AppId = configuration["Authentication:QQ:AppId"];
+            //    qq.AppKey = configuration["Authentication:QQ:AppKey"];
+            //    qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
             });
         }
 

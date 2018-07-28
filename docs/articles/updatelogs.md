@@ -167,4 +167,3 @@
 8. 添加EntityFrameworkCore组件的多上下文支持，以及同DbConnection连接对象的多上下文事务同步，不同连接对象的多上下文受EF Core本身限制，暂时无法事务同步。
 9. 添加 `IgnoreDependencyAttribute` 特性，用于禁用指定接口或类型不参与依赖注入的`ServiceCollection`自动初始化
 10. 完成 对象映射功能Mapper的设计及 `OSharp.AutoMapper` 初始化封装
-11. 
