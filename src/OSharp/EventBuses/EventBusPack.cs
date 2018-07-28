@@ -40,6 +40,7 @@ namespace OSharp.EventBuses
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddSingleton<IEventHandlerTypeFinder, EventHandlerTypeFinder>();
             services.AddSingleton<IEventBus, PassThroughEventBus>();
             services.AddSingleton<IEventSubscriber>(provider => provider.GetService<IEventBus>());
             services.AddSingleton<IEventPublisher>(provider => provider.GetService<IEventBus>());

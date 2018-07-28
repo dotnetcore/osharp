@@ -416,7 +416,7 @@ namespace OSharp.Entity
             }
             return query;
         }
-        
+
         #endregion
 
         #region 异步方法

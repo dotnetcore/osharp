@@ -29,22 +29,23 @@ namespace OSharp.EventBuses
     public abstract class EventBusBase : IEventBus
     {
         /// <summary>
-        /// 事件仓储
-        /// </summary>
-        protected readonly IEventStore _EventStore;
-        /// <summary>
-        /// 日志对象
-        /// </summary>
-        protected readonly ILogger _Logger;
-
-        /// <summary>
         /// 初始化一个<see cref="EventBusBase"/>类型的新实例
         /// </summary>
         protected EventBusBase(IEventStore eventStore, ILogger logger)
         {
-            _EventStore = eventStore;
-            _Logger = logger;
+            EventStore = eventStore;
+            Logger = logger;
         }
+
+        /// <summary>
+        /// 获取 事件仓储
+        /// </summary>
+        protected IEventStore EventStore { get; }
+
+        /// <summary>
+        /// 获取 日志对象
+        /// </summary>
+        protected ILogger Logger { get; }
 
         #region Implementation of IEventSubscriber
 
@@ -55,7 +56,7 @@ namespace OSharp.EventBuses
         /// <typeparam name="TEventHandler">事件处理器类型</typeparam>
         public virtual void Subscribe<TEventData, TEventHandler>() where TEventData : IEventData where TEventHandler : IEventHandler, new()
         {
-            _EventStore.Add<TEventData, TEventHandler>();
+            EventStore.Add<TEventData, TEventHandler>();
         }
 
         /// <summary>
@@ -93,23 +94,18 @@ namespace OSharp.EventBuses
             Check.NotNull(eventType, nameof(eventType));
             Check.NotNull(eventHandler, nameof(eventHandler));
 
-            _EventStore.Add(eventType, eventHandler);
+            EventStore.Add(eventType, eventHandler);
         }
 
         /// <summary>
-        /// 遍历程序集类型，自动订阅所有事件数据及其处理类型
+        /// 自动订阅所有事件数据及其处理类型
         /// </summary>
-        /// <param name="assembly">程序集</param>
-        public virtual void SubscribeAll(Assembly assembly)
+        /// <param name="eventHandlerTypes">事件处理器类型集合</param>
+        public virtual void SubscribeAll(Type[] eventHandlerTypes)
         {
-            assembly.CheckNotNull("assembly");
-
-            Type[] handlerTypes = assembly.GetTypes().Where(type => type.IsDeriveClassFrom(typeof(IEventHandler<>))).ToArray();
-            if (handlerTypes.Length == 0)
-            {
-                return;
-            }
-            foreach (Type handlerType in handlerTypes)
+            Check.NotNull(eventHandlerTypes, nameof(eventHandlerTypes));
+            
+            foreach (Type handlerType in eventHandlerTypes)
             {
                 Type handlerInterface = handlerType.GetInterface("IEventHandler`1"); //获取该类实现的泛型接口
                 if (handlerInterface == null)
@@ -118,10 +114,10 @@ namespace OSharp.EventBuses
                 }
                 Type eventType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
                 IEventHandlerFactory factory = new IocEventHandlerFactory(handlerType);
-                _EventStore.Add(eventType, factory);
-                _Logger.LogDebug($"创建事件“{eventType}”到处理器“{handlerType}”的订阅配对");
+                EventStore.Add(eventType, factory);
+                Logger.LogDebug($"创建事件“{eventType}”到处理器“{handlerType}”的订阅配对");
             }
-            _Logger.LogInformation($"程序集“{assembly.GetName().Name}”创建了{handlerTypes.Length}个处理器的事件订阅");
+            Logger.LogInformation($"共从程序集创建了{eventHandlerTypes.Length}个事件处理器的事件订阅");
         }
 
         /// <summary>
@@ -133,7 +129,7 @@ namespace OSharp.EventBuses
         {
             Check.NotNull(action, nameof(action));
 
-            _EventStore.Remove(action);
+            EventStore.Remove(action);
         }
 
         /// <summary>
@@ -155,7 +151,7 @@ namespace OSharp.EventBuses
         /// <param name="eventHandler">事件处理对象</param>
         public virtual void Unsubscribe(Type eventType, IEventHandler eventHandler)
         {
-            _EventStore.Remove(eventType, eventHandler);
+            EventStore.Remove(eventType, eventHandler);
         }
 
         /// <summary>
@@ -173,7 +169,7 @@ namespace OSharp.EventBuses
         /// <param name="eventType">事件数据类型</param>
         public virtual void UnsubscribeAll(Type eventType)
         {
-            _EventStore.RemoveAll(eventType);
+            EventStore.RemoveAll(eventType);
         }
 
         #endregion
@@ -225,7 +221,7 @@ namespace OSharp.EventBuses
         {
             eventData.EventSource = eventSource;
 
-            IDictionary<Type, IEventHandlerFactory[]> dict = _EventStore.GetHandlers(eventType);
+            IDictionary<Type, IEventHandlerFactory[]> dict = EventStore.GetHandlers(eventType);
             foreach (var typeItem in dict)
             {
                 foreach (IEventHandlerFactory factory in typeItem.Value)
@@ -280,7 +276,7 @@ namespace OSharp.EventBuses
         {
             eventData.EventSource = eventSource;
 
-            IDictionary<Type, IEventHandlerFactory[]> dict = _EventStore.GetHandlers(eventType);
+            IDictionary<Type, IEventHandlerFactory[]> dict = EventStore.GetHandlers(eventType);
             foreach (var typeItem in dict)
             {
                 foreach (IEventHandlerFactory factory in typeItem.Value)
@@ -302,7 +298,7 @@ namespace OSharp.EventBuses
             IEventHandler handler = factory.GetHandler();
             if (handler == null)
             {
-                _Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+                Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
                 return;
             }
             if (!handler.CanHandle(eventData))
@@ -335,7 +331,7 @@ namespace OSharp.EventBuses
             IEventHandler handler = factory.GetHandler();
             if (handler == null)
             {
-                _Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
+                Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
                 return Task.FromResult(0);
             }
             if (!handler.CanHandle(eventData))
@@ -362,7 +358,7 @@ namespace OSharp.EventBuses
             catch (Exception ex)
             {
                 string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
-                _Logger.LogError(ex, msg);
+                Logger.LogError(ex, msg);
             }
             finally
             {
@@ -379,7 +375,7 @@ namespace OSharp.EventBuses
             catch (Exception ex)
             {
                 string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
-                _Logger.LogError(ex, msg);
+                Logger.LogError(ex, msg);
             }
             finally
             {

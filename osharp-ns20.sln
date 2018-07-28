@@ -55,12 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{F5
 		docs\articles\updatelogs.md = docs\articles\updatelogs.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packs", "packs", "{F2927208-2DB7-4428-B317-3EAB0B7C07AB}"
-	ProjectSection(SolutionItems) = preProject
-		docs\articles\packs\index.md = docs\articles\packs\index.md
-		docs\articles\packs\pack-osharpcore.md = docs\articles\packs\pack-osharpcore.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,7 +137,6 @@ Global
 		{B0BC26F8-5011-44DE-B516-643683DB7655} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{F5AE9B1E-523E-4ED0-BC3F-A2D722C2A48C} = {806C30F7-24C2-4506-9E06-AF1B5534C098}
-		{F2927208-2DB7-4428-B317-3EAB0B7C07AB} = {F5AE9B1E-523E-4ED0-BC3F-A2D722C2A48C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

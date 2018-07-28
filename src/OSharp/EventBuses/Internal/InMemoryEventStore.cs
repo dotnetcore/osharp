@@ -35,7 +35,7 @@ namespace OSharp.EventBuses.Internal
         }
 
         /// <summary>
-        /// 将事件源类型与事件处理类型添加到存储
+        /// 将事件源类型与事件处理类型添加到存储，这里使用的是类型，应当使用即时的处理器工厂来存储
         /// </summary>
         /// <typeparam name="TEventData">事件源数据类型</typeparam>
         /// <typeparam name="TEventHandler">数据处理器类型</typeparam>
@@ -46,7 +46,7 @@ namespace OSharp.EventBuses.Internal
         }
 
         /// <summary>
-        /// 将事件源类型与事件处理器添加到存储
+        /// 将事件源类型与事件处理器实例添加到存储，这里使用的是处理器实例，应当使用单例的处理器工厂来存储
         /// </summary>
         /// <param name="eventType">事件源类型</param>
         /// <param name="eventHandler">事件处理器实例</param>

@@ -9,6 +9,8 @@
 
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity.Entities;
 
@@ -47,6 +49,23 @@ namespace Liuliu.Demo.Identity.Events
             }
             log.LogoutTime = DateTime.Now;
             _loginLogRepository.Update(log);
+        }
+
+        /// <summary>
+        /// 异步事件处理
+        /// </summary>
+        /// <param name="eventData">事件源数据</param>
+        /// <param name="cancelToken">异步取消标识</param>
+        /// <returns>是否成功</returns>
+        public override async Task HandleAsync(LogoutEventData eventData, CancellationToken cancelToken = default(CancellationToken))
+        {
+            LoginLog log = _loginLogRepository.Query().LastOrDefault(m => m.UserId == eventData.UserId);
+            if (log == null)
+            {
+                return;
+            }
+            log.LogoutTime = DateTime.Now;
+            await _loginLogRepository.UpdateAsync(log);
         }
     }
 }

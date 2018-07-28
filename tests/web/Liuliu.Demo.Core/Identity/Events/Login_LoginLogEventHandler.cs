@@ -58,7 +58,13 @@ namespace Liuliu.Demo.Identity.Events
         /// <returns>是否成功</returns>
         public override Task HandleAsync(LoginEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
-            throw new NotSupportedException("不支持异步操作");
+            LoginLog log = new LoginLog()
+            {
+                Ip = eventData.LoginDto.Ip,
+                UserAgent = eventData.LoginDto.UserAgent,
+                UserId = eventData.User.Id
+            };
+            return _loginLogRepository.InsertAsync(log);
         }
     }
 }
