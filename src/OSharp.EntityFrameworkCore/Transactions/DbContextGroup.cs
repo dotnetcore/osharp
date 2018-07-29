@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace OSharp.Entity.Transactions
     /// </summary>
     public class DbContextGroup : IDisposable
     {
-        private IDbContextTransaction _dbContextTransaction;
+        private DbTransaction _transaction;
 
         /// <summary>
         /// 初始化一个<see cref="DbContextGroup"/>类型的新实例
@@ -46,28 +47,28 @@ namespace OSharp.Entity.Transactions
         public IList<DbContextBase> DbContexts { get; }
 
         /// <summary>
-        /// 对指定数据上下文开启或使用已存在事务
+        /// 对数据库连接开启事务
         /// </summary>
-        /// <param name="context">上下文</param>
-        public void BeginOrUseTransaction(DbContext context)
+        /// <param name="connection">数据库连接对象</param>
+        public void BeginOrUseTransaction(DbConnection connection)
         {
-            if (context.Database.CurrentTransaction != null)
+            if (_transaction == null)
             {
-                return;
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+                _transaction = connection.BeginTransaction();
             }
-            if (!DbContexts.Contains(context))
+            foreach (DbContextBase context in DbContexts)
             {
-                return;
-            }
-            if (_dbContextTransaction == null)
-            {
-                _dbContextTransaction = context.Database.BeginTransaction();
-            }
-            else
-            {
+                if (context.Database.CurrentTransaction != null)
+                {
+                    continue;
+                }
                 if (context.IsRelationalTransaction())
                 {
-                    context.Database.UseTransaction(_dbContextTransaction.GetDbTransaction());
+                    context.Database.UseTransaction(_transaction);
                 }
                 else
                 {
@@ -77,11 +78,57 @@ namespace OSharp.Entity.Transactions
         }
 
         /// <summary>
+        /// 对数据库连接开启事务
+        /// </summary>
+        /// <param name="connection">数据库连接对象</param>
+        /// <param name="cancellationToken">异步取消标记</param>
+        public async Task BeginOrUseTransactionAsync(DbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (_transaction == null)
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    await connection.OpenAsync(cancellationToken);
+                }
+                _transaction = connection.BeginTransaction();
+            }
+            foreach (DbContextBase context in DbContexts)
+            {
+                if (context.Database.CurrentTransaction != null && context.Database.CurrentTransaction.GetDbTransaction() == _transaction)
+                {
+                    continue;
+                }
+                if (context.IsRelationalTransaction())
+                {
+                    context.Database.UseTransaction(_transaction);
+                }
+                else
+                {
+                    await context.Database.BeginTransactionAsync(cancellationToken);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 对指定数据上下文开启或使用已存在事务
+        /// </summary>
+        /// <param name="context">上下文</param>
+        public void BeginOrUseTransaction(DbContext context)
+        {
+            if (!DbContexts.Contains(context))
+            {
+                return;
+            }
+            DbConnection connection = context.Database.GetDbConnection();
+            BeginOrUseTransaction(connection);
+        }
+
+        /// <summary>
         /// 异步对指定数据上下文开启或使用已存在事务
         /// </summary>
         /// <param name="context">上下文</param>
         /// <param name="cancellationToken">异步取消标记</param>
-        public async Task BeginOrUseTransactionAsync(DbContext context, CancellationToken cancellationToken)
+        public async Task BeginOrUseTransactionAsync(DbContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (context.Database.CurrentTransaction != null)
             {
@@ -91,21 +138,8 @@ namespace OSharp.Entity.Transactions
             {
                 return;
             }
-            if (_dbContextTransaction == null)
-            {
-                _dbContextTransaction = await context.Database.BeginTransactionAsync(cancellationToken);
-            }
-            else
-            {
-                if (context.IsRelationalTransaction())
-                {
-                    context.Database.UseTransaction(_dbContextTransaction.GetDbTransaction());
-                }
-                else
-                {
-                    await context.Database.BeginTransactionAsync(cancellationToken);
-                }
-            }
+            DbConnection connection = context.Database.GetDbConnection();
+            await BeginOrUseTransactionAsync(connection, cancellationToken);
         }
 
         /// <summary>
@@ -117,7 +151,7 @@ namespace OSharp.Entity.Transactions
             {
                 return;
             }
-            _dbContextTransaction.Commit();
+            _transaction.Commit();
             foreach (var context in DbContexts)
             {
                 if (context.IsRelationalTransaction())
@@ -135,7 +169,7 @@ namespace OSharp.Entity.Transactions
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            _dbContextTransaction?.Dispose();
+            _transaction?.Dispose();
             foreach (DbContextBase context in DbContexts)
             {
                 context.Dispose();
