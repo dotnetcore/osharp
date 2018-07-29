@@ -4,6 +4,18 @@
 * 启动顺序：1
 * 位置：OSharp.dll
 
+
+> - [依赖注入模块组成](#依赖注入模块组成)
+>     - [依赖注入服务自动注册](#依赖注入服务自动注册)
+>     - [服务定位器](#服务定位器)
+> - [依赖注入初始化](#依赖注入初始化)
+>     - [依赖注入服务查找](#依赖注入服务查找)
+>     - [服务注册](#服务注册)
+> - [依赖注入使用](#依赖注入使用)
+>     - [需要注入的服务实现继承相应的接口](#需要注入的服务实现继承相应的接口)
+>     - [忽略指定接口，不作为服务注册](#忽略指定接口，不作为服务注册)
+>     - [允许指定服务注册多个服务实现](#允许指定服务注册多个服务实现)
+
 ---
 依赖注入模块`DependencyPack`主要为系统提供自动依赖注入功能。
 
@@ -23,7 +35,7 @@
         ```
         services.Add(new ServiceDescriptor(interfaceType, implementationType, lifetime));
         ```
-### 服务定位器 ServiceLocator
+### 服务定位器
 
   定义了一个`服务定位`模式的服务定位器`ServiceLocator`，用于在非注入的情况下使用依赖注入服务。
 * `ServiceLocator`是个单例，通过`ServiceLocator.Instance`来使用
@@ -78,15 +90,13 @@
     
 ## 依赖注入初始化
 
-### 初始化流程
-
-#### 依赖注入服务查找
+### 依赖注入服务查找
 
 * 通过`IAllAssemblyFinder`查找出引用的所有程序集
 * 反射程序集，使用`SingletonDependencyTypeFinder`,`ScopedDependencyTypeFinder`,`TransientDependencyTypeFinder`三个查找类，分别查找出 单例的`ServiceLifetime.Singleton`,区域的`ServiceLifetime.Scoped`,即时的`ServiceLifetime.Transient`三种生命周期的注入类型，即实现了 `ISingletonDependency`,`IScopeDependency`,`ITransientDependency` 的所有**服务实现类型**。
     > 如需自定义查找行为，可通过重写`DependencyPack`指定`ServiceScanOptions`选项属性使用自定义的类型查找器
 
-#### 服务注册
+### 服务注册
 
 * 遍历查找到的服务实现类型
 * 获取服务实现类型的所有接口，排除标记了`[IgnoreDependency]`特性的接口
