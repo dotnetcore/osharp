@@ -5,6 +5,8 @@
   items:
     - name: 核心模块 OSharpCorePack
       href: packs/osharpcore.md
+    - name: 依赖注入模块 DependencyPack
+      href: packs/dependency.md
     - name: 日志模块 Log4NetPack
       href: packs/log4net.md
     - name: AspNetCore模块 AspNetCorePack

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace OSharp.Dependency.Tests
 {
-    public class AppServiceAdderOptionsTests
+    public class ServiceScanOptionsTests
     {
         [Fact]
         public void Ctor_Test()
         {
-            AppServiceAdderOptions options = new AppServiceAdderOptions();
+            ServiceScanOptions options = new ServiceScanOptions();
 
             options.TransientTypeFinder.ShouldNotBeNull();
             options.ScopedTypeFinder.ShouldNotBeNull();

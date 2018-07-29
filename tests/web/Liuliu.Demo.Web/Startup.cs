@@ -20,7 +20,7 @@ using OSharp.Data;
 namespace Liuliu.Demo.Web
 {
     public class Startup
-    {
+    { 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Singleton<IConfiguration>.Instance = configuration;

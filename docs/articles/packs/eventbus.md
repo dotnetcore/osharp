@@ -1,4 +1,4 @@
-# EventBus模块：EventBusPack
+# 事件总线模块：EventBusPack
 
 * 级别：PackLevel.Core
 * 启动顺序：2
@@ -29,7 +29,7 @@
 
 ---
 
-`OSharpBusPack`模块是一个简单的`发布-订阅`模式的`事件总线`系统，为业务提供简单的`发布-订阅`服务。
+`EventBusPack`模块是一个简单的`发布-订阅`模式的`事件总线`系统，为业务提供简单的`发布-订阅`服务。
 
 ## <a id="01"/>事件总线组成
 

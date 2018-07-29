@@ -29,9 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 将OSharp服务，各个<see cref="OsharpPack"/>模块的服务添加到服务容器中
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services,
-            Action<IOSharpBuilder> builderAction = null,
-            AppServiceScanOptions scanOptions = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null)
         {
             Check.NotNull(services, nameof(services));
 
@@ -43,15 +41,6 @@ namespace Microsoft.Extensions.DependencyInjection
             OSharpPackManager manager = new OSharpPackManager(builder, new AppDomainAllAssemblyFinder());
             manager.LoadPacks(services);
             services.AddSingleton(provider => manager);
-            if (scanOptions == null)
-            {
-                scanOptions = new AppServiceScanOptions();
-            }
-            services = new AppServiceAdder(scanOptions).AddServices(services);
-            if (builder.OptionsAction != null)
-            {
-                services.Configure(builder.OptionsAction);
-            }
             return services;
         }
 
