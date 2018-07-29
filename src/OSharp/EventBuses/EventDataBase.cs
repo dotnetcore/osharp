@@ -13,7 +13,7 @@ using System;
 namespace OSharp.EventBuses
 {
     /// <summary>
-    /// 事件源数据信息
+    /// 事件源数据信息基类
     /// </summary>
     public abstract class EventDataBase : IEventData
     {

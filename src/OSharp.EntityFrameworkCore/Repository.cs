@@ -239,6 +239,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
 
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
             return _dbSet.Where(predicate).Delete();
         }
 
@@ -322,6 +323,7 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
             return _dbSet.Where(predicate).Update(updateExpression);
         }
 
@@ -414,7 +416,7 @@ namespace OSharp.Entity
             }
             return query;
         }
-        
+
         #endregion
 
         #region 异步方法
@@ -577,6 +579,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
 
+            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync();
             return await _dbSet.Where(predicate).DeleteAsync();
         }
 
@@ -660,6 +663,7 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
+            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync();
             return await _dbSet.Where(predicate).UpdateAsync(updateExpression);
         }
 

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Core.Builders;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.UnitTest;
+using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;
 
@@ -15,15 +17,8 @@ using Xunit;
 
 namespace OSharp.Tests.IEventBuses
 {
-    public class IEventBusTests: IDisposable
+    public class IEventBusTests : AspNetCoreUnitTestBase<IEventBusTests.EventBusStartup>
     {
-        public IEventBusTests()
-        {
-            IServiceCollection services = new ServiceCollection();
-            services.AddLogging();
-            services.UnitTestInit();
-        }
-
         [Fact]
         public void Subscribe_Test()
         {
@@ -112,14 +107,19 @@ namespace OSharp.Tests.IEventBuses
         }
 
 
-        #region IDisposable
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        public class EventBusStartup : TestStartup
         {
-            ServiceLocator.Instance.Dispose();
+            public override void ConfigureServices(IServiceCollection services)
+            {
+                services.AddHttpContextAccessor().AddLogging();
+
+                services.AddOSharp(builder =>
+                {
+                    builder.AddCorePack().AddPack<EventBusPack>();
+                });
+            }
         }
 
-        #endregion
     }
+
 }

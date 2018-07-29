@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace OSharp.Entity
@@ -29,6 +31,20 @@ namespace OSharp.Entity
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns><typeparamref name="TEntity"/>所属上下文类的实例</returns>
         IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// 对指定数据上下文开启或使用已存在事务
+        /// </summary>
+        /// <param name="context">上下文</param>
+        void BeginOrUseTransaction(IDbContext context);
+
+        /// <summary>
+        /// 异步对指定数据上下文开启或使用已存在事务
+        /// </summary>
+        /// <param name="context">上下文</param>
+        /// <param name="cancellationToken">异步取消标记</param>
+        Task BeginOrUseTransactionAsync(IDbContext context, CancellationToken cancellationToken);
+
 
         /// <summary>
         /// 提交当前上下文的事务更改

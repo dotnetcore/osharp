@@ -1,4 +1,12 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="EventHandlerBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-07-28 19:43</last-date>
+// -----------------------------------------------------------------------
+
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -62,7 +70,7 @@ namespace OSharp.EventBuses
         /// <returns>是否成功</returns>
         public virtual Task HandleAsync(TEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
-            throw new NotSupportedException("当前事件处理器不支持异步事件处理");
+            return Task.Run(() => Handle(eventData), cancelToken);
         }
     }
 }

@@ -1,6 +1,24 @@
 # OSharp .NetStandard 更新记录
 
-### 0.3.0-beta02
+### latest version
+1. 客户端代码移除部分多余布局文件
+2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
+3. 优化前台header样式，固定header不随滚动条滚动
+4. 修复`UnitOfWork`查找上下文的时候不返回关联上下文存在时的问题
+5. 将事务开启时机由原先的创建上下文对象即开启更改为提交保存前开启，减小事务范围，同时避免只读业务也开启事务
+6. 更新事件总线初始化流程，添加事件处理器查找器`EventHandlerTypeFinder`进行事件总线初始化
+7. 将依赖注入功能提取为`DependencyPack`模块
+8. 提取MVC模块基类 MvcPackBase，AspNetCoreMvcPack还是需要在Hosting项目中定义，以方便调整启动顺序（MVC模块需要在Identity模块之后启动，否则Identity无法生效）
+9. 将事务开启更改为由DbConnection对象来开启，DbContext只是使用此事务，不负责开启事务
+
+### 0.3.0-beta04
+1. `OSharp.Permissions`增加QQ登录的支持
+2. 将后台列表页数据读取改为强类型`PageRequest`
+3. 解决JWToken信息不同步的问题，简化JWToken只包含`UserId，UserName`的基本信息，用户其他信息使用`Identity/Profile`从在线用户缓存中进行获取
+4. 更新ng-alain, @delon/xxx, ng-zorro-antd组件到当前最新版本
+5. 修复 `DesignTimeDbContextFactoryBase` 泛型使用不正确的问题
+
+### 0.3.0-beta02-03
 1. 添加在线用户信息缓存功能，使用户权限变更即时生效
 2. 引入 material 前端UI，作为前台UI库，完成header布局
 3. 将GetExpression替换成GetDataFilterExpression，以启用数据权限过滤
@@ -9,7 +27,7 @@
 6. `Repository`的数据查询，更新，删除，自动整合数据权限配置的数据筛选过滤条件，顶层使用的数据，默认已经是数据权限过滤之后的数据源。
 7. 添加`IDataAuthEnabled`接口，用于控制查询数据的`更新、删除`数据权限，以方便控制数据显示的操作按钮状态，当OutputDto实现此接口时，数据查询的时候，自动验证数据权限并设置数据的`更新、删除`两个数据权限状态。
 8. 实现用户个人数据的数据权限控制，通过在实体中的用户编号属性上标注[UserFlag]特性，配置数据权限时设置@CurrentUserId的特定值，在翻译成查询表达式时，把@CurrentUserId值替换成当前用户编号，生成只属于当前用户的数据查询表达式，来判断数据权限
-9. 更新 .net core 到2.1.2，SDK需要更新到`2.1.302`版本方可运行
+9. 更新 .net core 到 2.1.2，SDK需要更新到`2.1.302`版本方可运行
 
 ### 0.3.0-beta01
 1. 完善框架初始化过程的日志输出
@@ -153,4 +171,3 @@
 8. 添加EntityFrameworkCore组件的多上下文支持，以及同DbConnection连接对象的多上下文事务同步，不同连接对象的多上下文受EF Core本身限制，暂时无法事务同步。
 9. 添加 `IgnoreDependencyAttribute` 特性，用于禁用指定接口或类型不参与依赖注入的`ServiceCollection`自动初始化
 10. 完成 对象映射功能Mapper的设计及 `OSharp.AutoMapper` 初始化封装
-11. 

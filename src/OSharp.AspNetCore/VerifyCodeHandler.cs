@@ -41,7 +41,6 @@ namespace OSharp.AspNetCore
             {
                 return false;
             }
-
             string key = $"{OsharpConstants.VerifyCodeKeyPrefix}_{id}";
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             bool flag = code.Equals(cache.GetString(key), StringComparison.OrdinalIgnoreCase);

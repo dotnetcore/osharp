@@ -28,7 +28,7 @@ namespace OSharp.Core.Packs
         public virtual PackLevel Level => PackLevel.Business;
 
         /// <summary>
-        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
         public virtual int Order => 0;

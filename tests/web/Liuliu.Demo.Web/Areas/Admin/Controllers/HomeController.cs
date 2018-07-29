@@ -36,5 +36,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             return Content("MainMenu");
         }
+
+
     }
 }

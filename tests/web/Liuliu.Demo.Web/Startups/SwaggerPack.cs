@@ -14,12 +14,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-using OSharp.AspNetCore;
 using OSharp.Core.Packs;
 using OSharp.Data;
-using OSharp.Dependency;
 
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -54,7 +51,7 @@ namespace Liuliu.Demo.Web.Startups
                 services.AddMvcCore().AddApiExplorer();
                 services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new Info() { Title = "OSharpNS API", Version = "v1" });
+                    options.SwaggerDoc("v1", new Info() { Title = "OSharp API", Version = "v1" });
                     Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                     {
                         options.IncludeXmlComments(file);
@@ -75,10 +72,8 @@ namespace Liuliu.Demo.Web.Startups
             {
                 app.UseSwagger().UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharpNS API V1");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharp API V1");
                 });
-                ILogger logger = ServiceLocator.Instance.GetLogger(GetType());
-                logger.LogInformation("SwaggerPack 模块初始化完毕");
             }
         }
     }

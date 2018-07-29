@@ -8,17 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
 using OSharp.Core.Packs;
-using OSharp.Reflection;
 
 
-namespace OSharp.AspNetCore
+namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// <see cref="IApplicationBuilder"/>辅助扩展方法

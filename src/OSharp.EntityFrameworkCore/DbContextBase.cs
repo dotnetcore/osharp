@@ -14,12 +14,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
 using OSharp.Dependency;
+using OSharp.Entity.Transactions;
 using OSharp.EventBuses;
 
 
@@ -51,6 +53,35 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 获取或设置 所在上下文组
+        /// </summary>
+        public DbContextGroup ContextGroup { get; set; }
+
+        /// <summary>
+        /// 开启或使用现有事务
+        /// </summary>
+        public void BeginOrUseTransaction()
+        {
+            if (ContextGroup == null)
+            {
+                return;
+            }
+            ContextGroup.BeginOrUseTransaction(this);
+        }
+
+        /// <summary>
+        /// 异步开启或使用现有事务
+        /// </summary>
+        public async Task BeginOrUseTransactionAsync()
+        {
+            if (ContextGroup == null)
+            {
+                return;
+            }
+            await ContextGroup.BeginOrUseTransactionAsync(this, CancellationToken.None);
+        }
+
+        /// <summary>
         /// 创建上下文数据模型时，对各个实体类的数据库映射细节进行配置
         /// </summary>
         /// <param name="modelBuilder">上下文数据模型构建器</param>
@@ -68,7 +99,7 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        ///     将在此上下文中所做的所有更改保存到数据库中。
+        ///     将在此上下文中所做的所有更改保存到数据库中，同时自动开启事务或使用现有同连接事务
         /// </summary>
         /// <remarks>
         ///     此方法将自动调用 <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> 
@@ -93,6 +124,9 @@ namespace OSharp.Entity
             {
                 auditEntities = this.GetAuditEntities();
             }
+            //开启或使用现有事务
+            BeginOrUseTransaction();
+
             int count = base.SaveChanges();
             if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
             {
@@ -104,7 +138,7 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        ///     异步地将此上下文中的所有更改保存到数据库中。
+        ///     异步地将此上下文中的所有更改保存到数据库中，同时自动开启事务或使用现有同连接事务
         /// </summary>
         /// <remarks>
         ///     <para>
@@ -135,6 +169,10 @@ namespace OSharp.Entity
             {
                 auditEntities = this.GetAuditEntities();
             }
+
+            //开启或使用现有事务
+            await BeginOrUseTransactionAsync();
+
             int count = await base.SaveChangesAsync(cancellationToken);
             if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
             {
@@ -145,5 +183,17 @@ namespace OSharp.Entity
             return count;
         }
 
+        #region Overrides of DbContext
+
+        /// <summary>
+        ///     Releases the allocated resources for this context.
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
+            ContextGroup = null;
+        }
+
+        #endregion
     }
 }

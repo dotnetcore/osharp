@@ -21,27 +21,31 @@ using OSharp.Reflection;
 
 namespace OSharp.AutoMapper
 {
-    /// <inheritdoc cref="IMapTuple" />
-    public class MapAttributeProfile : Profile, IMapTuple
+    /// <summary>
+    /// 创建源类型与目标类型的配对
+    /// </summary>
+    public class MapTupleProfile : Profile, IMapTuple
     {
         private readonly IMapFromAttributeTypeFinder _mapFromAttributeTypeFinder;
         private readonly IMapToAttributeTypeFinder _mapToAttributeTypeFinder;
-        private readonly ILogger<MapAttributeProfile> _logger;
+        private readonly ILogger<MapTupleProfile> _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="MapAttributeProfile"/>类型的新实例
+        /// 初始化一个<see cref="MapTupleProfile"/>类型的新实例
         /// </summary>
-        public MapAttributeProfile(
+        public MapTupleProfile(
             IMapFromAttributeTypeFinder mapFromAttributeTypeFinder,
             IMapToAttributeTypeFinder mapToAttributeTypeFinder,
             ILoggerFactory loggerFactory)
         {
             _mapFromAttributeTypeFinder = mapFromAttributeTypeFinder;
             _mapToAttributeTypeFinder = mapToAttributeTypeFinder;
-            _logger = loggerFactory.CreateLogger<MapAttributeProfile>();
+            _logger = loggerFactory.CreateLogger<MapTupleProfile>();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 执行对象映射构造
+        /// </summary>
         public void CreateMap()
         {
             List<(Type Source, Type Target)> tuples = new List<(Type Source, Type Target)>();

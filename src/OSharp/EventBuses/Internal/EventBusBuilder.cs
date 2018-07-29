@@ -7,6 +7,7 @@
 //  <last-date>2017-09-18 18:29</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 
 using OSharp.Reflection;
@@ -19,15 +20,15 @@ namespace OSharp.EventBuses.Internal
     /// </summary>
     internal class EventBusBuilder : IEventBusBuilder
     {
-        private readonly IAllAssemblyFinder _allAssemblyFinder;
+        private readonly IEventHandlerTypeFinder _typeFinder;
         private readonly IEventBus _eventBus;
 
         /// <summary>
         /// 初始化一个<see cref="EventBusBuilder"/>类型的新实例
         /// </summary>
-        public EventBusBuilder(IAllAssemblyFinder allAssemblyFinder, IEventBus eventBus)
+        public EventBusBuilder(IEventHandlerTypeFinder typeFinder, IEventBus eventBus)
         {
-            _allAssemblyFinder = allAssemblyFinder;
+            _typeFinder = typeFinder;
             _eventBus = eventBus;
         }
 
@@ -36,11 +37,12 @@ namespace OSharp.EventBuses.Internal
         /// </summary>
         public void Build()
         {
-            Assembly[] assemblies = _allAssemblyFinder.FindAll(true);
-            foreach (Assembly assembly in assemblies)
+            Type[] types = _typeFinder.FindAll(true);
+            if (types.Length == 0)
             {
-                _eventBus.SubscribeAll(assembly);
+                return;
             }
+            _eventBus.SubscribeAll(types);
         }
     }
 }

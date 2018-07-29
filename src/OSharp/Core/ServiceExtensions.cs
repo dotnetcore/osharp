@@ -1,15 +1,14 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ServiceCollectionExtensions.cs" company="OSharp开源团队">
+//  <copyright file="ServiceExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-08 0:58</last-date>
+//  <last-editor></last-editor>
+//  <last-date>2018-07-26 12:22</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.Core.Builders;
@@ -20,7 +19,7 @@ using OSharp.Dependency;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 依赖注入服务集合扩展
@@ -30,7 +29,7 @@ namespace OSharp.Core
         /// <summary>
         /// 将OSharp服务，各个<see cref="OsharpPack"/>模块的服务添加到服务容器中
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null, AppServiceScanOptions scanOptions = null)
+        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null)
         {
             Check.NotNull(services, nameof(services));
 
@@ -42,15 +41,6 @@ namespace OSharp.Core
             OSharpPackManager manager = new OSharpPackManager(builder, new AppDomainAllAssemblyFinder());
             manager.LoadPacks(services);
             services.AddSingleton(provider => manager);
-            if (scanOptions == null)
-            {
-                scanOptions = new AppServiceScanOptions();
-            }
-            services = new AppServiceAdder(scanOptions).AddServices(services);
-            if (builder.OptionsAction != null)
-            {
-                services.Configure(builder.OptionsAction);
-            }
             return services;
         }
 

@@ -24,7 +24,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// 应用程序目录程序集查找器
     /// </summary>
-    public class AppDomainAllAssemblyFinder : FinderBase<Assembly>, IAllAssemblyFinder, ISingletonDependency
+    public class AppDomainAllAssemblyFinder : FinderBase<Assembly>, IAllAssemblyFinder
     {
         private readonly bool _filterNetAssembly;
 

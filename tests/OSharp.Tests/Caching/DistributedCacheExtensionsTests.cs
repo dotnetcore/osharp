@@ -69,6 +69,7 @@ namespace OSharp.Caching.Tests
             _cache.Remove(key);
             _cache.Get<TestEntity>(key).ShouldBeNull();
 
+            function.CacheExpirationSeconds = 10;
             key = "key005";
             newEntity = _cache.Get(key, () => entity, function);
             newEntity.ShouldNotBeNull();

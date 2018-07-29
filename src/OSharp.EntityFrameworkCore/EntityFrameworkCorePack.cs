@@ -10,6 +10,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Entity.Transactions;
 
 
 namespace OSharp.Entity
@@ -34,8 +35,8 @@ namespace OSharp.Entity
             services.AddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
             services.AddSingleton<IDbContextResolver, DbContextResolver>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

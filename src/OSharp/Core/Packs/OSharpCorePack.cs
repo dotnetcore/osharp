@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.Core.Options;
 using OSharp.Dependency;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.Packs
@@ -36,22 +37,10 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddSingleton<IAllAssemblyFinder, AppDomainAllAssemblyFinder>();
             services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
-            ServiceLocator.Instance.SetServiceCollection(services);
 
             return services;
-        }
-
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
-        {
-            //应用程序级别的服务定位器
-            ServiceLocator.Instance.SetApplicationServiceProvider(app.ApplicationServices);
-
-            IsEnabled = true;
         }
     }
 }

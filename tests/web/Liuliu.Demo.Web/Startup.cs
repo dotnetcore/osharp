@@ -7,38 +7,22 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-
-using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Mvc.Conventions;
-using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Core;
 using OSharp.Data;
-using OSharp.Identity.JwtBearer;
 
 
 namespace Liuliu.Demo.Web
 {
     public class Startup
-    {
-        private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _environment;
-
+    { 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            _configuration = configuration;
-            _environment = env;
             Singleton<IConfiguration>.Instance = configuration;
             Singleton<IHostingEnvironment>.Instance = env;
         }
@@ -47,8 +31,6 @@ namespace Liuliu.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOSharp();
-
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,10 +51,6 @@ namespace Liuliu.Demo.Web
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles()
-                .UseSignalR(opts =>
-                {
-                    //opts.MapHub<>();
-                })
                 .UseOSharp();
         }
     }

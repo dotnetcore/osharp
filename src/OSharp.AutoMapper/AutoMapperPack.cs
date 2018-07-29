@@ -45,7 +45,7 @@ namespace OSharp.AutoMapper
 
             services.AddSingleton<IMapFromAttributeTypeFinder, MapFromAttributeTypeFinder>();
             services.AddSingleton<IMapToAttributeTypeFinder, MapToAttributeTypeFinder>();
-            services.AddSingleton<IMapTuple, MapAttributeProfile>();
+            services.AddSingleton<IMapTuple, MapTupleProfile>();
             services.AddSingleton<IMapper, AutoMapperMapper>();
 
             return services;
