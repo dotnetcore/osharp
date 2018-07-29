@@ -110,7 +110,7 @@ public class SqlServerEntityFrameworkCorePack : OsharpPack
 }
 ```
 
-## <a id="02"/>Pack管理器 OSharpPackMamager
+## <a id="02"/>模块管理初始化
 
 Pack模块的查找，加载，初始化等工作，都是由模块管理器[`OSharpPackManager`](http://docs.osharp.org/api/OSharp.Core.Packs.OSharpPackManager.html)执行的。
 
@@ -127,20 +127,3 @@ Pack模块的查找，加载，初始化等工作，都是由模块管理器[`OS
     * 按顺序执行各个`Pack`的`pack.UsePack(app)`，使用传入的`IApplicationBuilder`参数执行各个模块的初始化业务
 
 ### <a id="022"/>Pack初始化流程图
-```flow
-st=>start: 开始
-e=>end: 结束
-op1=>operation: 查找模块类型
-con1=>condition: 是否只加载特定模块？
-op2=>operation: 只加载指定模块
-op3=>operation: 加载所有模块，并排除指定模块
-op4=>operation: 对要加载的模块进行排序
-op5=>operation: 逐个执行`pack.AddServices`，加载服务
-op6=>operation: 逐个执行`pack.UsePack`，初始化模块
-
-st->op1->con1
-con1(yes)->op2->op4
-con1(no)->op3->op4
-op4->op5->op6->e
-
-```
