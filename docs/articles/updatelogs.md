@@ -9,6 +9,7 @@
 6. 更新事件总线初始化流程，添加事件处理器查找器`EventHandlerTypeFinder`进行事件总线初始化
 7. 将依赖注入功能提取为`DependencyPack`模块
 8. 提取MVC模块基类 MvcPackBase，AspNetCoreMvcPack还是需要在Hosting项目中定义，以方便调整启动顺序（MVC模块需要在Identity模块之后启动，否则Identity无法生效）
+9. 将事务开启更改为由DbConnection对象来开启，DbContext只是使用此事务，不负责开启事务
 
 ### 0.3.0-beta04
 1. `OSharp.Permissions`增加QQ登录的支持

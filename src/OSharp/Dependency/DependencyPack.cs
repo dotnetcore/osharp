@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -55,6 +56,8 @@ namespace OSharp.Dependency
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            ServiceLocator.Instance.SetServiceCollection(services);
+
             //添加即时生命周期类型的服务
             Type[] dependencyTypes = ScanOptions.TransientTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Transient);
@@ -142,6 +145,16 @@ namespace OSharp.Dependency
                 }
             }
             return interfaceTypes;
+        }
+
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
+        {
+            ServiceLocator.Instance.SetApplicationServiceProvider(app.ApplicationServices);
+            IsEnabled = true;
         }
     }
 }
