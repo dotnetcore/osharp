@@ -112,3 +112,67 @@
         OR
         services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
         ```
+
+## 依赖注入使用
+
+### 需要注入的服务实现继承相应的接口
+
+单例生命周期服务，实现接口`ISingletonDependency`
+```
+public class TestService : ITestContract, ISingletonDependency
+{ 
+    //...
+}
+```
+作用域生命周期服务，实现接口`IScopeDependency`
+```
+public class TestService : ITestContract, IScopeDependency
+{ 
+    //...
+}
+```
+即时生命周期服务，实现接口`ITransientDependency`
+```
+public class TestService : ITestContract, ITransientDependency
+{ 
+    //...
+}
+```
+
+### 忽略指定接口，不作为服务注册
+
+要使指定的接口不作为服务注册，在接口上标注`[IgnoreDependency]`特性可在注册时跳过
+
+```
+[IgnoreDependency]
+public interface IIgnoreInterface
+{
+    //...
+}
+```
+
+### 允许指定服务注册多个服务实现
+
+如需使指定的接口服务注册多个服务实现，在接口上标注`[MultipleDependency]`特性，如下：
+```
+[MultipleDependency]
+public interface IMultipleInterface
+{
+    //...
+}
+
+public class MyService1 : IMultipleInterface
+{
+    //...
+}
+
+public class MyService2 : IMultipleInterface
+{
+    //...
+}
+
+```
+`MyService1`和`MyService2`都将作为服务实现被注册到`IMultipleInterface`中，获取所有服务实现可通过`provider.GetServices<IMultipleInterface>()`获取。
+```
+IMultipleInterface[] instalces = provider.GetServices<IMultipleInterface>().ToArray();
+```
