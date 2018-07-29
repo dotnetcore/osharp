@@ -2,10 +2,12 @@
 
 ### latest version
 1. 客户端代码移除部分多余布局文件
-2. 整合模块，简化Startup的代码。调整Pack的UsePack参数类型，由原来的IServiceProvider变更为IApplicationBuilder。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
+2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
 3. 优化前台header样式，固定header不随滚动条滚动
-4. 修复UnitOfWork查找上下文的时候不返回关联上下文存在时的问题
+4. 修复`UnitOfWork`查找上下文的时候不返回关联上下文存在时的问题
 5. 将事务开启时机由原先的创建上下文对象即开启更改为提交保存前开启，减小事务范围，同时避免只读业务也开启事务
+6. 更新事件总线初始化流程，添加事件处理器查找器`EventHandlerTypeFinder`进行事件总线初始化
+7. 将依赖注入功能提取为`DependencyPack`模块
 
 ### 0.3.0-beta04
 1. `OSharp.Permissions`增加QQ登录的支持

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.Core.Options;
 using OSharp.Dependency;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.Packs
@@ -36,6 +37,7 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddSingleton<IAllAssemblyFinder, AppDomainAllAssemblyFinder>();
             services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
             ServiceLocator.Instance.SetServiceCollection(services);
 

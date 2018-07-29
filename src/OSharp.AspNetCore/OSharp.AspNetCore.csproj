@@ -25,7 +25,7 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
