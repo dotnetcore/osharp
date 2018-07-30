@@ -25,7 +25,6 @@ namespace OSharp.Entity
     /// <typeparam name="TKey">主键类型</typeparam>
     public interface IRepository<TEntity, TKey>
         where TEntity : IEntity<TKey>
-        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取 当前单元操作对象
