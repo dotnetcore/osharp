@@ -8,9 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +25,7 @@ namespace OSharp.Entity
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly DbContextGroupManager _groupManager;
+        private readonly IDbContextManager _dbContextMamager;
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWork"/>类型的新实例
@@ -37,7 +34,7 @@ namespace OSharp.Entity
         {
             _serviceProvider = serviceProvider;
             HasCommited = false;
-            _groupManager = new DbContextGroupManager();
+            _dbContextMamager = serviceProvider.GetService<IDbContextManager>();
         }
 
         /// <summary>
@@ -57,66 +54,28 @@ namespace OSharp.Entity
             Type entityType = typeof(TEntity);
             Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
 
-            DbContextBase dbContext;
             OSharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
             DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextOptions);
             IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
-            DbContextGroup group = _groupManager.Get(resolveOptions.ConnectionString);
-            //连接字符串的上下文组不存在，创建组
-            if (group == null)
+
+            //已存在上下文对象，直接返回
+            DbContextBase dbContext = _dbContextMamager.Get(resolveOptions.ConnectionString, dbContextType);
+            if (dbContext != null)
             {
-                resolveOptions.ExistingConnection = null;
-                dbContext = (DbContextBase)contextResolver.Resolve(resolveOptions);
-                if (!dbContext.ExistsRelationalDatabase())
-                {
-                    throw new OsharpException($"数据上下文“{dbContext.GetType().FullName}”的数据库不存在，请通过 Migration 功能进行数据迁移创建数据库。");
-                }
-                group = new DbContextGroup();
-                group.DbContexts.Add(dbContext);
-                dbContext.ContextGroup = group;
-                _groupManager.Set(resolveOptions.ConnectionString, group);
+                return dbContext;
             }
-            else
+            dbContext = (DbContextBase)contextResolver.Resolve(resolveOptions);
+            if (!dbContext.ExistsRelationalDatabase())
             {
-                resolveOptions.ExistingConnection = group.DbContexts[0].Database.GetDbConnection();
-                //相同连接串相同上下文类型并且已存在对象，直接返回上下文对象
-                dbContext = group.DbContexts.FirstOrDefault(m => m.GetType() == resolveOptions.DbContextType);
-                if (dbContext != null)
-                {
-                    return dbContext;
-                }
-                dbContext = (DbContextBase)contextResolver.Resolve(resolveOptions);
-                group.DbContexts.Add(dbContext);
-                dbContext.ContextGroup = group;
+                throw new OsharpException($"数据上下文“{dbContext.GetType().FullName}”的数据库不存在，请通过 Migration 功能进行数据迁移创建数据库。");
             }
+            if (resolveOptions.ExistingConnection == null)
+            {
+                resolveOptions.ExistingConnection = dbContext.Database.GetDbConnection();
+            }
+            _dbContextMamager.Add(dbContextOptions.ConnectionString, dbContext);
+
             return dbContext;
-        }
-
-        /// <summary>
-        /// 对指定数据上下文开启或使用已存在事务
-        /// </summary>
-        /// <param name="context">上下文</param>
-        public void BeginOrUseTransaction(IDbContext context)
-        {
-            if (!(context is DbContext dbContext))
-            {
-                return;
-            }
-            _groupManager.BeginOrUseTransaction(dbContext);
-        }
-
-        /// <summary>
-        /// 异步对指定数据上下文开启或使用已存在事务
-        /// </summary>
-        /// <param name="context">上下文</param>
-        /// <param name="cancellationToken">异步取消标记</param>
-        public async Task BeginOrUseTransactionAsync(IDbContext context, CancellationToken cancellationToken)
-        {
-            if (!(context is DbContext dbContext))
-            {
-                return;
-            }
-            await _groupManager.BeginOrUseTransactionAsync(dbContext, cancellationToken);
         }
 
         /// <summary>
@@ -128,7 +87,7 @@ namespace OSharp.Entity
             {
                 return;
             }
-            _groupManager.Commit();
+            _dbContextMamager.Commit();
             HasCommited = true;
         }
 
@@ -145,7 +104,7 @@ namespace OSharp.Entity
         /// <summary>释放对象.</summary>
         public void Dispose()
         {
-            _groupManager.Dispose();
+            _dbContextMamager.Dispose();
         }
     }
 }

@@ -20,6 +20,11 @@ namespace OSharp.Entity
     public interface IEntityConfigurationTypeFinder : ITypeFinder
     {
         /// <summary>
+        /// 初始化
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
         /// 获取指定上下文类型的实体配置注册信息
         /// </summary>
         /// <param name="dbContextType">数据上下文类型</param>
