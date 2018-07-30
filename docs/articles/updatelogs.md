@@ -1,6 +1,6 @@
 # OSharp .NetStandard 更新记录
 
-### latest version
+### 0.3.0-beta05
 1. 客户端代码移除部分多余布局文件
 2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
 3. 优化前台header样式，固定header不随滚动条滚动
