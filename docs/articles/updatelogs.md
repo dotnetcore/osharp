@@ -1,6 +1,6 @@
 # OSharp .NetStandard 更新记录
 
-### 0.3.0-beta05
+### 0.3.0-beta05-06
 1. 客户端代码移除部分多余布局文件
 2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
 3. 优化前台header样式，固定header不随滚动条滚动
@@ -10,6 +10,10 @@
 7. 将依赖注入功能提取为`DependencyPack`模块
 8. 提取MVC模块基类 MvcPackBase，AspNetCoreMvcPack还是需要在Hosting项目中定义，以方便调整启动顺序（MVC模块需要在Identity模块之后启动，否则Identity无法生效）
 9. 将事务开启更改为由DbConnection对象来开启，DbContext只是使用此事务，不负责开启事务
+10. 简化数据存储模块OSharp.EntityFrameworkCore的上下文获取与管理，优化数据存储模块的初始化机制
+11. 修复未开启事务时提交事务出错的问题
+12. 修复部分模块状态启动不正确的问题
+13. 修复因IEntityConfigurationTypeFinder未初始化导致迁移时获取不到实体类的问题
 
 ### 0.3.0-beta04
 1. `OSharp.Permissions`增加QQ登录的支持

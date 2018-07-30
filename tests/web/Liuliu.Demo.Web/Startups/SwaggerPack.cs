@@ -74,6 +74,7 @@ namespace Liuliu.Demo.Web.Startups
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "OSharp API V1");
                 });
+                IsEnabled = true;
             }
         }
     }
