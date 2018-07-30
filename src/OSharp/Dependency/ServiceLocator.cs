@@ -23,7 +23,8 @@ using OSharp.Exceptions;
 namespace OSharp.Dependency
 {
     /// <summary>
-    /// 应用程序服务定位器，仅适合于<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+    /// 应用程序服务定位器，可随时正常解析<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
+    /// 如果当前处于HttpContext有效的范围内，可正常解析<see cref="ServiceLifetime.Scoped"/>的服务
     /// </summary>
     public sealed class ServiceLocator : IDisposable
     {
