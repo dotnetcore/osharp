@@ -147,10 +147,11 @@ namespace OSharp.Entity.Transactions
         /// </summary>
         public void Commit()
         {
-            if (HasCommited || DbContexts.Count == 0)
+            if (HasCommited || DbContexts.Count == 0 || _transaction == null)
             {
                 return;
             }
+            
             _transaction.Commit();
             foreach (var context in DbContexts)
             {
