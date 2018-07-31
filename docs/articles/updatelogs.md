@@ -1,5 +1,24 @@
 # OSharp .NetStandard 更新记录
 
+### latest version
+
+### 0.3.0-beta07
+1. 优化模块数据初始化流程，自动生成分类性质的模块信息，分类性质的模块信息是指在Area模块与Controller模块之间的模块信息，如下的`Identity`模块就是个分类模块信息：
+    ```
+    namespace Liuliu.Demo.Web.Areas.Admin.Controllers
+    {
+        [ModuleInfo(Order = 1, Position = "Identity", PositionName = "身份认证模块")]
+        [Description("管理-用户信息")]
+        public class UserController : AdminApiController
+        { }
+    }
+    ```
+    将生成如下模块结构：
+    > 根节点 - Root
+    > > 管理 - Admin
+    > > > **身份认证模块 - Identity**
+    > > > > 用户信息 - User
+
 ### 0.3.0-beta05-06
 1. 客户端代码移除部分多余布局文件
 2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码

@@ -10,8 +10,8 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20180715061035_DataAuthOperation")]
-    partial class DataAuthOperation
+    [Migration("20180731144027_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,7 +100,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Role");
 
                     b.HasData(
-                        new { Id = 1, ConcurrencyStamp = "5f8e54eb-15bf-4c6b-b5b7-ce51c926bf60", CreatedTime = new DateTime(2018, 7, 15, 14, 10, 35, 578, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
+                        new { Id = 1, ConcurrencyStamp = "c853f82f-009d-4fa8-bf61-2af5763b29b6", CreatedTime = new DateTime(2018, 7, 31, 22, 40, 27, 469, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
                     );
                 });
 
@@ -376,12 +376,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Module");
 
                     b.HasData(
-                        new { Id = 1, Code = "Root", Name = "根节点", OrderCode = 1.0, Remark = "系统根节点", TreePathString = "$1$" },
-                        new { Id = 2, Code = "Site", Name = "网站", OrderCode = 1.0, ParentId = 1, Remark = "网站前台", TreePathString = "$1$,$2$" },
-                        new { Id = 3, Code = "Admin", Name = "管理", OrderCode = 2.0, ParentId = 1, Remark = "管理后台", TreePathString = "$1$,$3$" },
-                        new { Id = 4, Code = "Identity", Name = "身份认证模块", OrderCode = 1.0, ParentId = 3, Remark = "身份认证模块节点", TreePathString = "$1$,$3$,$4$" },
-                        new { Id = 5, Code = "Security", Name = "权限安全模块", OrderCode = 2.0, ParentId = 3, Remark = "权限安全模块节点", TreePathString = "$1$,$3$,$5$" },
-                        new { Id = 6, Code = "System", Name = "系统管理模块", OrderCode = 3.0, ParentId = 3, Remark = "系统管理模块节点", TreePathString = "$1$,$3$,$6$" }
+                        new { Id = 1, Code = "Root", Name = "根节点", OrderCode = 1.0, Remark = "系统根节点", TreePathString = "$1$" }
                     );
                 });
 
@@ -532,8 +527,8 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("KeyValueCouple");
 
                     b.HasData(
-                        new { Id = new Guid("426b3368-9841-4e17-85c8-a91e00e99f43"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
-                        new { Id = new Guid("9d176145-6058-4b7f-868d-a91e00e99f47"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
+                        new { Id = new Guid("cd9e1efe-8cc3-40fa-a781-a92e0175a924"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
+                        new { Id = new Guid("a2b1305e-525f-4c6d-bc36-a92e0175a928"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
                     );
                 });
 

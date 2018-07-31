@@ -10,7 +10,7 @@
 namespace OSharp.Core.Modules
 {
     /// <summary>
-    /// 定义模块信息提取器
+    /// 定义模块信息提取器，从程序集中提取模块信息
     /// </summary>
     public interface IModuleInfoPicker
     {

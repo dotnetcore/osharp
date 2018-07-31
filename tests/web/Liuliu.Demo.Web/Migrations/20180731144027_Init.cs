@@ -192,6 +192,7 @@ namespace Liuliu.Demo.Web.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
                     EntityId = table.Column<Guid>(nullable: false),
+                    Operation = table.Column<int>(nullable: false),
                     FilterGroupJson = table.Column<string>(nullable: true),
                     IsLocked = table.Column<bool>(nullable: false),
                     CreatedTime = table.Column<DateTime>(nullable: false)
@@ -450,8 +451,8 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: new[] { "Id", "IsLocked", "Key", "ValueJson", "ValueType" },
                 values: new object[,]
                 {
-                    { new Guid("4b2f3f7f-874e-4f85-82a1-a91300538f00"), false, "Site.Name", "\"OSHARP\"", "System.String" },
-                    { new Guid("1a972119-cf36-4314-8ddd-a91300538f04"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
+                    { new Guid("cd9e1efe-8cc3-40fa-a781-a92e0175a924"), false, "Site.Name", "\"OSHARP\"", "System.String" },
+                    { new Guid("a2b1305e-525f-4c6d-bc36-a92e0175a928"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
                 });
 
             migrationBuilder.InsertData(
@@ -462,32 +463,7 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "b2194acf-2bfd-46e4-b2ea-1be822ac3052", new DateTime(2018, 7, 4, 5, 4, 13, 700, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
-
-            migrationBuilder.InsertData(
-                table: "Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 2, "Site", "网站", 1.0, 1, "网站前台", "$1$,$2$" });
-
-            migrationBuilder.InsertData(
-                table: "Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 3, "Admin", "管理", 2.0, 1, "管理后台", "$1$,$3$" });
-
-            migrationBuilder.InsertData(
-                table: "Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 4, "Identity", "身份认证模块", 1.0, 3, "身份认证模块节点", "$1$,$3$,$4$" });
-
-            migrationBuilder.InsertData(
-                table: "Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 5, "Security", "权限安全模块", 2.0, 3, "权限安全模块节点", "$1$,$3$,$5$" });
-
-            migrationBuilder.InsertData(
-                table: "Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 6, "System", "系统管理模块", 3.0, 3, "系统管理模块节点", "$1$,$3$,$6$" });
+                values: new object[] { 1, "c853f82f-009d-4fa8-bf61-2af5763b29b6", new DateTime(2018, 7, 31, 22, 40, 27, 469, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
@@ -503,7 +479,7 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "EntityRoleIndex",
                 table: "EntityRole",
-                columns: new[] { "EntityId", "RoleId" },
+                columns: new[] { "EntityId", "RoleId", "Operation" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

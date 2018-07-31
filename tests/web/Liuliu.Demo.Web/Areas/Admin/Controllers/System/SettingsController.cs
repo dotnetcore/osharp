@@ -14,7 +14,7 @@ using OSharp.Core.Modules;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 1, Position = "System")]
+    [ModuleInfo(Order = 1, Position = "System", PositionName = "系统管理模块")]
     [Description("管理-系统设置")]
     public class SettingsController : AdminApiController
     { }

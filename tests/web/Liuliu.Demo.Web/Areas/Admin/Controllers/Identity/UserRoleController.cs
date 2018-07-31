@@ -28,7 +28,7 @@ using OSharp.Filter;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 3, Position = "Identity")]
+    [ModuleInfo(Order = 3, Position = "Identity", PositionName = "身份认证模块")]
     [Description("管理-用户角色信息")]
     public class UserRoleController : AdminApiController
     {

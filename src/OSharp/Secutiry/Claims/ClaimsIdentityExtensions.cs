@@ -107,6 +107,24 @@ namespace OSharp.Secutiry.Claims
         }
 
         /// <summary>
+        /// 移除指定类型的声明
+        /// </summary>
+        public static void RemoveClaim(this IIdentity identity, string claimType)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return;
+            }
+            Claim claim = claimsIdentity.FindFirst(claimType);
+            if (claim == null)
+            {
+                return;
+            }
+            claimsIdentity.RemoveClaim(claim);
+        }
+
+        /// <summary>
         /// 获取所有角色
         /// </summary>
         public static string[] GetRoles(this IIdentity identity)
