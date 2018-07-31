@@ -29,7 +29,7 @@ using OSharp.Linq;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 4, Position = "Security")]
+    [ModuleInfo(Order = 4, Position = "Security", PositionName = "权限安全模块")]
     [Description("管理-用户功能")]
     public class UserFunctionController : AdminApiController
     {

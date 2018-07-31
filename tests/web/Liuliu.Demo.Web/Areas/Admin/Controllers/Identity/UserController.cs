@@ -25,6 +25,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Caching;
 using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Data;
@@ -37,7 +38,7 @@ using OSharp.Mapping;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 1, Position = "Identity")]
+    [ModuleInfo(Order = 1, Position = "Identity", PositionName = "身份认证模块")]
     [Description("管理-用户信息")]
     public class UserController : AdminApiController
     {

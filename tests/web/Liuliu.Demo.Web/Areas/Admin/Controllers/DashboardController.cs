@@ -29,6 +29,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 1)]
     [Description("管理-信息汇总")]
     public class DashboardController : AdminApiController
     {

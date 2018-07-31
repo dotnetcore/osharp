@@ -60,6 +60,7 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseMvcWithAreaRoute();
+            IsEnabled = true;
         }
     }
 }

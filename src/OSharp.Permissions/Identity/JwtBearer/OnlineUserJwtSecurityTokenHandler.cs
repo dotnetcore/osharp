@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Collections;
 using OSharp.Dependency;
+using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Identity.JwtBearer
@@ -41,6 +42,10 @@ namespace OSharp.Identity.JwtBearer
                 //由在线缓存获取用户信息赋给IIdentity
                 IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
                 OnlineUser user = onlineUserCache.GetOrRefresh(identity.Name);
+                if (user == null)
+                {
+                    return null;
+                }
                 identity.AddClaims(new[]
                 {
                     new Claim(ClaimTypes.GivenName, user.NickName),

@@ -51,6 +51,7 @@ namespace OSharp.Entity
         {
             IEntityConfigurationTypeFinder finder = app.ApplicationServices.GetService<IEntityConfigurationTypeFinder>();
             finder?.Initialize();
+            IsEnabled = true;
         }
     }
 }

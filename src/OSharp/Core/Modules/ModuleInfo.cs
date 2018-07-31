@@ -7,6 +7,7 @@
 //  <last-date>2018-06-23 11:38</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 using OSharp.Core.Functions;
@@ -41,6 +42,11 @@ namespace OSharp.Core.Modules
         public string Position { get; set; }
 
         /// <summary>
+        /// 获取或设置 父级模块名称，需要创建父级模块的时候设置值
+        /// </summary>
+        public string PositionName { get; set; }
+
+        /// <summary>
         /// 获取或设置 依赖功能
         /// </summary>
         public IFunction[] DependOnFunctions { get; set; } = new IFunction[0];
@@ -49,5 +55,21 @@ namespace OSharp.Core.Modules
         {
             return $"{Name}[{Code}]({Position}),FunctionCount:{DependOnFunctions.Length}";
         }
+
+        #region Overrides of Object
+
+        /// <summary>Determines whether the specified object is equal to the current object.</summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ModuleInfo info))
+            {
+                return false;
+            }
+            return $"{info.Position}.{info.Code}" == $"{Position}.{Code}";
+        }
+
+        #endregion
     }
 }

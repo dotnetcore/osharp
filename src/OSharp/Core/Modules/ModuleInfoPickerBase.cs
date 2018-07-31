@@ -9,10 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.Extensions.Logging;
 
+using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
@@ -69,12 +71,16 @@ namespace OSharp.Core.Modules
             List<ModuleInfo> infos = new List<ModuleInfo>();
             foreach (Type moduleType in moduleTypes)
             {
-                ModuleInfo typeInfo = GetModule(moduleType);
-                infos.Add(typeInfo);
+                string[] existPaths = infos.Select(m => $"{m.Position}.{m.Code}").ToArray();
+                ModuleInfo[] typeInfos = GetModules(moduleType, existPaths);
+                foreach (ModuleInfo info in typeInfos)
+                {
+                    infos.AddIfNotExist(info);
+                }
                 MethodInfo[] methods = FunctionHandler.MethodInfoFinder.Find(moduleType, type => type.HasAttribute<ModuleInfoAttribute>());
                 for (int index = 0; index < methods.Length; index++)
                 {
-                    ModuleInfo methodInfo = GetModule(methods[index], typeInfo, index);
+                    ModuleInfo methodInfo = GetModule(methods[index], typeInfos.Last(), index);
                     infos.Add(methodInfo);
                 }
             }
@@ -85,8 +91,9 @@ namespace OSharp.Core.Modules
         /// 重写以实现从类型中提取模块信息
         /// </summary>
         /// <param name="type">类型信息</param>
+        /// <param name="existPaths">已存在的路径集合</param>
         /// <returns>提取到的模块信息</returns>
-        protected abstract ModuleInfo GetModule(Type type);
+        protected abstract ModuleInfo[] GetModules(Type type, string[] existPaths);
 
         /// <summary>
         /// 重写以实现从方法信息中提取模块信息
