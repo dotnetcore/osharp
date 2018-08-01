@@ -194,7 +194,7 @@ namespace OSharp.Security
                 Name = info.Name,
                 Code = info.Code,
                 OrderCode = info.Order,
-                Remark = existsModule?.Remark ?? $"{parent.Name}-{info.Name}",
+                Remark = $"{parent.Name}-{info.Name}",
                 ParentId = parent.Id
             };
         }

@@ -313,7 +313,7 @@ namespace OSharp.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            return Task.FromResult(_userRepository.Query().FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
+            return Task.FromResult(_userRepository.TrackQuery().FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
         }
 
         #endregion
