@@ -7,6 +7,7 @@
 //  <last-date>2017-09-20 1:06</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ using Microsoft.Extensions.Logging;
 using OSharp.Audits;
 using OSharp.Collections;
 using OSharp.Core.EntityInfos;
+using OSharp.Core.Functions;
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 
@@ -87,11 +90,50 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 更新上下文中指定实体的状态
+        /// </summary>
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <typeparam name="TKey">主键类型</typeparam>
+        /// <param name="context">上下文对象</param>
+        /// <param name="entities">要更新的实体类型</param>
+        public static void Update<TEntity, TKey>(this DbContext context, params TEntity[] entities)
+            where TEntity : class, IEntity<TKey>
+        {
+            Check.NotNull(entities, nameof(entities));
+
+            DbSet<TEntity> set = context.Set<TEntity>();
+            foreach (TEntity entity in entities)
+            {
+                try
+                {
+                    EntityEntry<TEntity> entry = context.Entry(entity);
+                    if (entry.State == EntityState.Detached)
+                    {
+                        set.Attach(entity);
+                        entry.State = EntityState.Modified;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    TEntity oldEntity = set.Find(entity.Id);
+                    context.Entry(oldEntity).CurrentValues.SetValues(entity);
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取上下文实体审计数据
         /// </summary>
         public static IList<AuditEntity> GetAuditEntities(this DbContext context)
         {
             List<AuditEntity> result = new List<AuditEntity>();
+            //当前操作的功能是否允许数据审计
+            ScopedDictionary scopedDict = ServiceLocator.Instance.GetService<ScopedDictionary>();
+            IFunction function = scopedDict?.Function;
+            if (function == null || !function.AuditEntityEnabled)
+            {
+                return result;
+            }
             IEntityInfoHandler entityInfoHandler = ServiceLocator.Instance.GetService<IEntityInfoHandler>();
             if (entityInfoHandler == null)
             {
@@ -105,12 +147,13 @@ namespace OSharp.Entity
             }
             foreach (EntityEntry entry in entries)
             {
+                //当前操作的实体是否允许数据审计
                 IEntityInfo entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType());
                 if (entityInfo == null || !entityInfo.AuditEnabled)
                 {
                     continue;
                 }
-                result.Add(GetAuditEntity(entry, entityInfo));
+                result.AddIfNotNull(GetAuditEntity(entry, entityInfo));
             }
             return result;
         }
@@ -141,24 +184,27 @@ namespace OSharp.Entity
                 if (entry.State == EntityState.Added)
                 {
                     auditProperty.NewValue = entry.Property(property.Name).CurrentValue?.ToString();
+                    audit.Properties.Add(auditProperty);
                 }
                 else if (entry.State == EntityState.Deleted)
                 {
                     auditProperty.OriginalValue = entry.Property(property.Name).OriginalValue?.ToString();
+                    audit.Properties.Add(auditProperty);
                 }
                 else if (entry.State == EntityState.Modified)
                 {
                     string currentValue = entry.Property(property.Name).CurrentValue?.ToString();
                     string originalValue = entry.Property(property.Name).OriginalValue?.ToString();
-                    if (currentValue != originalValue)
+                    if (currentValue == originalValue)
                     {
-                        auditProperty.NewValue = currentValue;
-                        auditProperty.OriginalValue = originalValue;
+                        continue;
                     }
+                    auditProperty.NewValue = currentValue;
+                    auditProperty.OriginalValue = originalValue;
+                    audit.Properties.Add(auditProperty);
                 }
-                audit.Properties.Add(auditProperty);
             }
-            return audit;
+            return audit.Properties.Count == 0 ? null : audit;
         }
     }
 }

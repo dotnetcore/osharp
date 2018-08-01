@@ -253,7 +253,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             CheckDataAuth(DataAuthOperation.Update, entities);
-            _dbSet.UpdateRange(entities);
+            _dbContext.Update<TEntity, TKey>(entities);
             return _dbContext.SaveChanges();
         }
 
@@ -290,7 +290,7 @@ namespace OSharp.Entity
                         entity = updateFunc(dto, entity);
                     }
                     CheckDataAuth(DataAuthOperation.Update, entity);
-                    _dbSet.Update(entity);
+                    _dbContext.Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
                 {
@@ -586,14 +586,14 @@ namespace OSharp.Entity
         /// <summary>
         /// 异步更新实体对象
         /// </summary>
-        /// <param name="entity">更新后的实体对象</param>
+        /// <param name="entities">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
-        public virtual async Task<int> UpdateAsync(TEntity entity)
+        public virtual async Task<int> UpdateAsync(params TEntity[] entities)
         {
-            Check.NotNull(entity, nameof(entity));
+            Check.NotNull(entities, nameof(entities));
 
-            CheckDataAuth(DataAuthOperation.Update, entity);
-            _dbSet.Update(entity);
+            CheckDataAuth(DataAuthOperation.Update, entities);
+            _dbContext.Update<TEntity, TKey>(entities);
             return await _dbContext.SaveChangesAsync();
         }
 
@@ -630,7 +630,7 @@ namespace OSharp.Entity
                     }
 
                     CheckDataAuth(DataAuthOperation.Update, entity);
-                    _dbSet.Update(entity);
+                    _dbContext.Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
                 {

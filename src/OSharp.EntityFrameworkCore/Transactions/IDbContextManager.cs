@@ -23,10 +23,10 @@ namespace OSharp.Entity.Transactions
         /// <summary>
         /// 获取指定类型的数据上下文
         /// </summary>
-        /// <param name="connectionString">数据库连接字符串</param>
         /// <param name="contextType">数据上下文类型</param>
+        /// <param name="connectionString">数据库连接字符串</param>
         /// <returns>数据上下文对象</returns>
-        DbContextBase Get(string connectionString, Type contextType);
+        DbContextBase Get(Type contextType, string connectionString = null);
 
         /// <summary>
         /// 添加数据上下文

@@ -120,7 +120,7 @@ namespace OSharp.Entity
         public override int SaveChanges()
         {
             IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditDataEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }
@@ -165,7 +165,7 @@ namespace OSharp.Entity
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditDataEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }

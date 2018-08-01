@@ -62,7 +62,7 @@ namespace OSharp.Entity.Transactions
             }
             foreach (DbContextBase context in DbContexts)
             {
-                if (context.Database.CurrentTransaction != null)
+                if (context.Database.CurrentTransaction != null && context.Database.CurrentTransaction.GetDbTransaction() == _transaction)
                 {
                     continue;
                 }
@@ -151,7 +151,7 @@ namespace OSharp.Entity.Transactions
             {
                 return;
             }
-            
+
             _transaction.Commit();
             foreach (var context in DbContexts)
             {

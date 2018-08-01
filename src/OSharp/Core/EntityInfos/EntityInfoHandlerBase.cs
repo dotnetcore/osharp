@@ -81,8 +81,18 @@ namespace OSharp.Core.EntityInfos
             {
                 RefreshCache();
             }
-            return _entityInfos.FirstOrDefault(m => m.TypeName == type.FullName)
-                ?? _entityInfos.FirstOrDefault(m => type.BaseType != null && m.TypeName == type.BaseType.FullName);
+            string typeName = $"{type.FullName},{type.Module.Name.Replace(".dll", "")}";
+            IEntityInfo entityInfo = _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
+            if (entityInfo != null)
+            {
+                return entityInfo;
+            }
+            if (type.BaseType == null)
+            {
+                return null;
+            }
+            typeName = $"{type.BaseType.FullName},{type.BaseType.Module.Name.Replace(".dll", "")}";
+            return _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
         }
 
         /// <summary>

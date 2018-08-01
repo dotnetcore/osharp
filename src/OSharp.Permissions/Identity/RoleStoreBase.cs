@@ -89,7 +89,7 @@ namespace OSharp.Identity
 
             if (role.IsDefault)
             {
-                string defaultRole = _roleRepository.Query(m => m.IsDefault, false).Select(m => m.Name).FirstOrDefault();
+                string defaultRole = _roleRepository.TrackQuery(m => m.IsDefault, false).Select(m => m.Name).FirstOrDefault();
                 if (defaultRole != null)
                 {
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole}”，不能重复添加");
@@ -117,7 +117,7 @@ namespace OSharp.Identity
             }
             if (role.IsDefault)
             {
-                var defaultRole = _roleRepository.Query(m => m.IsDefault, false).Select(m => new { m.Id, m.Name }).FirstOrDefault();
+                var defaultRole = _roleRepository.TrackQuery(m => m.IsDefault, false).Select(m => new { m.Id, m.Name }).FirstOrDefault();
                 if (defaultRole != null && !defaultRole.Id.Equals(role.Id))
                 {
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole.Name}”，不能重复添加");
@@ -238,7 +238,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
 
             TRoleKey id = ConvertIdFromString(roleId);
-            return Task.FromResult(Roles.FirstOrDefault(m => m.Id.Equals(id)));
+            return Task.FromResult(_roleRepository.TrackQuery().FirstOrDefault(m => m.Id.Equals(id)));
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace OSharp.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
-            return Task.FromResult(Roles.FirstOrDefault(m => m.NormalizedName == normalizedRoleName));
+            return Task.FromResult(_roleRepository.TrackQuery().FirstOrDefault(m => m.NormalizedName == normalizedRoleName));
         }
 
         #endregion

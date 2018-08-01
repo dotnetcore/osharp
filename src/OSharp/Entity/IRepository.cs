@@ -213,9 +213,9 @@ namespace OSharp.Entity
         /// <summary>
         /// 异步更新实体对象
         /// </summary>
-        /// <param name="entity">更新后的实体对象</param>
+        /// <param name="entities">更新后的实体对象</param>
         /// <returns>操作影响的行数</returns>
-        Task<int> UpdateAsync(TEntity entity);
+        Task<int> UpdateAsync(params TEntity[] entities);
 
         /// <summary>
         /// 异步以DTO为载体批量更新实体

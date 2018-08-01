@@ -59,7 +59,7 @@ namespace OSharp.Entity
             IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
 
             //已存在上下文对象，直接返回
-            DbContextBase dbContext = _dbContextMamager.Get(resolveOptions.ConnectionString, dbContextType);
+            DbContextBase dbContext = _dbContextMamager.Get(dbContextType, resolveOptions.ConnectionString);
             if (dbContext != null)
             {
                 return dbContext;

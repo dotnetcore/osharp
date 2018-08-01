@@ -33,8 +33,7 @@ namespace OSharp.Audits
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddTransient<AuditEntityStoreEventHandler>();
-            services.AddSingleton<IAuditStore, NullAuditStore>();
+            services.AddTransient<AuditEntityEventHandler>();
 
             return services;
         }

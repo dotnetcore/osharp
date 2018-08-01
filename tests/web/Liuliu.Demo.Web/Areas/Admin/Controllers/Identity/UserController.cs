@@ -38,6 +38,7 @@ using OSharp.Mapping;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
+    [AuditOperation]
     [ModuleInfo(Order = 1, Position = "Identity", PositionName = "身份认证模块")]
     [Description("管理-用户信息")]
     public class UserController : AdminApiController

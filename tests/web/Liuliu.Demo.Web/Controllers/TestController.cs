@@ -9,14 +9,21 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Identity.Entities;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Dependency;
+using OSharp.Entity;
+using OSharp.Entity.Transactions;
 using OSharp.Identity;
 using OSharp.Json;
 
@@ -24,20 +31,87 @@ using OSharp.Json;
 namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-测试")]
+    [ClassFilter]
     public class TestController : ApiController
     {
         [HttpGet]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [MethodFilter]
         [Description("测试01")]
         public async Task<string> Test01()
         {
             List<object> list = new List<object>();
 
-            IOnlineUserCache cache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
-            OnlineUser user = cache.GetOrRefresh("admin");
-            list.Add(user.ToJsonString());
-
             return list.ExpandAndToString("\r\n");
+        }
+    }
+
+
+    public class ClassFilter : ActionFilterAttribute
+    {
+        private readonly ILogger _logger;
+
+        public ClassFilter()
+        {
+            _logger = ServiceLocator.Instance.GetLogger(GetType());
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            _logger.LogInformation("ClassFilter - OnActionExecuting");
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            _logger.LogInformation("ClassFilter - OnActionExecuted");
+        }
+
+        /// <inheritdoc />
+        public override void OnResultExecuting(ResultExecutingContext context)
+        {
+            _logger.LogInformation("ClassFilter - OnResultExecuting");
+        }
+
+        /// <inheritdoc />
+        public override void OnResultExecuted(ResultExecutedContext context)
+        {
+            _logger.LogInformation("ClassFilter - OnResultExecuted");
+        }
+    }
+
+    public class MethodFilter : ActionFilterAttribute
+    {
+        private readonly ILogger _logger;
+
+        public MethodFilter()
+        {
+            _logger = ServiceLocator.Instance.GetLogger(GetType());
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            _logger.LogInformation("MethodFilter - OnActionExecuting");
+        }
+
+        /// <inheritdoc />
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            _logger.LogInformation("MethodFilter - OnActionExecuted");
+        }
+
+        /// <inheritdoc />
+        public override void OnResultExecuting(ResultExecutingContext context)
+        {
+            _logger.LogInformation("MethodFilter - OnResultExecuting");
+        }
+
+        /// <inheritdoc />
+        public override void OnResultExecuted(ResultExecutedContext context)
+        {
+            _logger.LogInformation("MethodFilter - OnResultExecuted");
         }
     }
 }

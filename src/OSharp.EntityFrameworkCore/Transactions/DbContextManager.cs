@@ -34,13 +34,17 @@ namespace OSharp.Entity.Transactions
         /// <summary>
         /// 获取指定类型的数据上下文
         /// </summary>
-        /// <param name="connectionString">数据库连接字符串</param>
         /// <param name="contextType">数据上下文类型</param>
+        /// <param name="connectionString">数据库连接字符串</param>
         /// <returns>数据上下文对象</returns>
-        public DbContextBase Get(string connectionString, Type contextType)
+        public DbContextBase Get(Type contextType, string connectionString = null)
         {
+            if (connectionString == null)
+            {
+                return _groups.Values.SelectMany(m => m.DbContexts).FirstOrDefault(m => m.GetType() == contextType);
+            }
             DbContextGroup group = _groups.GetOrDefault(connectionString);
-            return group?.DbContexts.FirstOrDefault(m => m.GetType() == contextType);
+            return @group?.DbContexts.FirstOrDefault(m => m.GetType() == contextType);
         }
 
         /// <summary>
