@@ -12,11 +12,13 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 
 using Liuliu.Demo.System;
+using Liuliu.Demo.System.Dtos;
 using Liuliu.Demo.System.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.Core.Modules;
+using OSharp.Entity;
 using OSharp.Filter;
 
 
@@ -33,12 +35,20 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             _auditContract = auditContract;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 读取操作审计信息
+        /// </summary>
+        /// <param name="request">页数据请求</param>
+        /// <returns>操作审计信息的页数据</returns>
+        [HttpPost]
+        [ModuleInfo]
         [Description("读取")]
-        public IActionResult Read(PageRequest request)
+        public PageData<AuditOperationOutputDto> Read(PageRequest request)
         {
             Expression<Func<AuditOperation, bool>> predicate = FilterHelper.GetExpression<AuditOperation>(request.FilterGroup);
-            throw new NotImplementedException();
+            request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
+            var page = _auditContract.AuditOperations.ToPage<AuditOperation, AuditOperationOutputDto>(predicate, request.PageCondition);
+            return page.ToPageData();
         }
     }
 }

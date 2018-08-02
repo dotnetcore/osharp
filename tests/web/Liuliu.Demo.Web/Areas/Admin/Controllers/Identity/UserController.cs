@@ -69,7 +69,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
-
             return page.ToPageData();
         }
 

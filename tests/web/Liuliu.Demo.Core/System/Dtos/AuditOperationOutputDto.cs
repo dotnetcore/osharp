@@ -20,6 +20,11 @@ namespace Liuliu.Demo.System.Dtos
     public class AuditOperationOutputDto : IOutputDto
     {
         /// <summary>
+        /// 获取或设置 数据编号
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
         /// 获取或设置 执行的功能名
         /// </summary>
         public string FunctionName { get; set; }
@@ -45,9 +50,14 @@ namespace Liuliu.Demo.System.Dtos
         public string Ip { get; set; }
 
         /// <summary>
-        /// 获取或设置 当前访问UserAgent
+        /// 获取或设置 操作系统
         /// </summary>
-        public string UserAgent { get; set; }
+        public string OperationSystem { get; set; }
+
+        /// <summary>
+        /// 获取或设置 浏览器
+        /// </summary>
+        public string Browser { get; set; }
 
         /// <summary>
         /// 获取或设置 信息添加时间
