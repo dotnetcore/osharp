@@ -16,9 +16,9 @@ using OSharp.Core.Packs;
 namespace Liuliu.Demo.System
 {
     /// <summary>
-    /// 系统模块
+    /// 审计模块
     /// </summary>
-    public class SystemPack : OsharpPack
+    public class AuditPack : AuditPackBase
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -39,7 +39,9 @@ namespace Liuliu.Demo.System
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IAuditStore, AuditDatabaseStore>();
-            return services;
+            services.AddScoped<IAuditContract, AuditService>();
+
+            return base.AddServices(services);
         }
     }
 }

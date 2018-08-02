@@ -16,6 +16,7 @@ using Liuliu.Demo.System.Entities;
 using OSharp.Audits;
 using OSharp.Entity;
 using OSharp.Mapping;
+using OSharp.Net;
 
 
 namespace Liuliu.Demo.System
@@ -60,6 +61,12 @@ namespace Liuliu.Demo.System
         private static AuditOperation BuildOperation(AuditOperationEntry operationEntry)
         {
             AuditOperation operation = operationEntry.MapTo<AuditOperation>();
+            if (operationEntry.UserAgent != null)
+            {
+                UserAgent userAgent = new UserAgent(operationEntry.UserAgent);
+                operation.OperationSystem = userAgent.GetSystem();
+                operation.Browser = userAgent.GetBrowser();
+            }
             foreach (AuditEntityEntry entityEntry in operationEntry.EntityEntries)
             {
                 AuditEntity entity = entityEntry.MapTo<AuditEntity>();

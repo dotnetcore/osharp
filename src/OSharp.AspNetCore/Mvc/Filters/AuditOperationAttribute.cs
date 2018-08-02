@@ -60,12 +60,6 @@ namespace OSharp.AspNetCore.Mvc.Filters
         }
 
         /// <inheritdoc />
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            
-        }
-
-        /// <inheritdoc />
         public override void OnResultExecuted(ResultExecutedContext context)
         {
             IServiceProvider provider = context.HttpContext.RequestServices;
@@ -76,11 +70,8 @@ namespace OSharp.AspNetCore.Mvc.Filters
             }
             IAuditStore store = provider.GetService<IAuditStore>();
             store?.Save(dict.AuditOperation);
-            //if (context.Filters.All(m => m.GetType() != typeof(UnitOfWorkAttribute)))
-            //{
             IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
             unitOfWork?.Commit();
-            //}
         }
     }
 }
