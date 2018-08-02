@@ -9,6 +9,8 @@
 
 using System;
 
+using OSharp.AspNetCore.UI;
+using OSharp.Data;
 using OSharp.Entity;
 
 
@@ -60,9 +62,23 @@ namespace Liuliu.Demo.System.Dtos
         public string Browser { get; set; }
 
         /// <summary>
+        /// 获取或设置 操作结果
+        /// </summary>
+        public AjaxResultType ResultType { get; set; } = AjaxResultType.Success;
+
+        /// <summary>
+        /// 获取或设置 消息
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 获取或设置 执行耗时，单位毫秒
+        /// </summary>
+        public int Elapsed { get; set; }
+
+        /// <summary>
         /// 获取或设置 信息添加时间
         /// </summary>
         public DateTime CreatedTime { get; set; }
-
     }
 }

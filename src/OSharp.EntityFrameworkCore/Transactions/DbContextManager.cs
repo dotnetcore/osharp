@@ -130,6 +130,17 @@ namespace OSharp.Entity.Transactions
             }
         }
 
+        /// <summary>
+        /// 回滚所有事务
+        /// </summary>
+        public void Rollback()
+        {
+            foreach (DbContextGroup group in _groups.Values)
+            {
+                group.Rollback();
+            }
+        }
+
         #region Implementation of IDisposable
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

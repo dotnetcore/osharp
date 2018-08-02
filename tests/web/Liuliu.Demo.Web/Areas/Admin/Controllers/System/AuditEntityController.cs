@@ -48,13 +48,38 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<AuditEntityOutputDto> Read(PageRequest request)
         {
             Expression<Func<AuditEntity, bool>> predicate = FilterHelper.GetExpression<AuditEntity>(request.FilterGroup);
-            var page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+            PageResult<AuditEntityOutputDto> page;
+            //有操作参数，是从操作列表来的
+            if (request.FilterGroup.Rules.Any(m => m.Field == "OperationId"))
+            {
+                page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+                {
+                    Name = m.Name,
+                    TypeName = m.TypeName,
+                    EntityKey = m.EntityKey,
+                    OperateType = m.OperateType,
+                    Properties = _auditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
+                    {
+                        DisplayName = n.DisplayName,
+                        FieldName = n.FieldName,
+                        OriginalValue = n.OriginalValue,
+                        NewValue = n.NewValue,
+                        DataType = n.DataType
+                    }).ToList()
+                });
+                return page.ToPageData();
+            }
+            request.AddDefaultSortCondition(new SortCondition("Operation.CreatedTime", ListSortDirection.Descending));
+            page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
             {
                 Name = m.Name,
                 TypeName = m.TypeName,
                 EntityKey = m.EntityKey,
                 OperateType = m.OperateType,
-                Properties = _auditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).Select(n => new AuditPropertyOutputDto()
+                NickName = m.Operation.NickName,
+                FunctionName = m.Operation.FunctionName,
+                CreatedTime = m.Operation.CreatedTime,
+                Properties = _auditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
                 {
                     DisplayName = n.DisplayName,
                     FieldName = n.FieldName,

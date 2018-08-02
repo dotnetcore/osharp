@@ -124,6 +124,7 @@ namespace OSharp.Entity
             {
                 auditEntities = this.GetAuditEntities();
             }
+            var d = this.Database;
             //开启或使用现有事务
             BeginOrUseTransaction();
 

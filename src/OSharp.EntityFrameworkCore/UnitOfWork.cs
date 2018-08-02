@@ -85,6 +85,14 @@ namespace OSharp.Entity
             _dbContextMamager.Commit();
         }
 
+        /// <summary>
+        /// 回滚所有事务
+        /// </summary>
+        public void Rollback()
+        {
+            _dbContextMamager.Rollback();
+        }
+
         private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
         {
             OSharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);

@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 
@@ -166,6 +167,45 @@ namespace OSharp.Entity.Transactions
                 context.Database.CommitTransaction();
             }
             HasCommited = true;
+        }
+
+        /// <summary>
+        /// 将事务回滚
+        /// </summary>
+        public void Rollback()
+        {
+            //if (HasCommited || DbContexts.Count == 0 || _transaction == null)
+            //{
+            //    return;
+            //}
+            if (_transaction?.Connection != null)
+            {
+                _transaction.Rollback();
+            }
+            foreach (var context in DbContexts)
+            {
+                if (context.IsRelationalTransaction())
+                {
+                    CleanChanges(context);
+                    if (context.Database.CurrentTransaction != null)
+                    {
+                        context.Database.CurrentTransaction.Rollback();
+                        context.Database.CurrentTransaction.Dispose();
+                    }
+                    continue;
+                }
+                context.Database.RollbackTransaction();
+            }
+            HasCommited = true;
+        }
+
+        private static void CleanChanges(DbContext context)
+        {
+            var entries = context.ChangeTracker.Entries().ToArray();
+            for (int i = 0; i < entries.Length; i++)
+            {
+                entries[i].State = EntityState.Detached;
+            }
         }
 
         #region IDisposable

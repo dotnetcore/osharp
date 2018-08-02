@@ -67,6 +67,7 @@ namespace Liuliu.Demo.System
                 operation.OperationSystem = userAgent.GetSystem();
                 operation.Browser = userAgent.GetBrowser();
             }
+            operation.Elapsed = (int)operationEntry.EndedTime.Subtract(operationEntry.CreatedTime).TotalMilliseconds;
             foreach (AuditEntityEntry entityEntry in operationEntry.EntityEntries)
             {
                 AuditEntity entity = entityEntry.MapTo<AuditEntity>();

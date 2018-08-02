@@ -7,20 +7,26 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Identity;
+using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Entity.Transactions;
@@ -34,6 +40,15 @@ namespace Liuliu.Demo.Web.Controllers
     [ClassFilter]
     public class TestController : ApiController
     {
+        private readonly UserManager<User> _userManager;
+        private readonly IIdentityContract _identityContract;
+
+        public TestController(UserManager<User> userManager, IIdentityContract identityContract)
+        {
+            _userManager = userManager;
+            _identityContract = identityContract;
+        }
+
         [HttpGet]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [MethodFilter]
@@ -42,12 +57,35 @@ namespace Liuliu.Demo.Web.Controllers
         {
             List<object> list = new List<object>();
 
+            if (!_userManager.Users.Any())
+            {
+                RegisterDto dto = new RegisterDto
+                {
+                    UserName = "admin",
+                    Password = "gmf31529019",
+                    ConfirmPassword = "gmf31529019",
+                    Email = "i66soft@qq.com",
+                    NickName = "大站长",
+                    RegisterIp = HttpContext.GetClientIp()
+                };
+
+                OperationResult<User> result = await _identityContract.Register(dto);
+                if (result.Successed)
+                {
+                    User user = result.Data;
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                }
+                list.Add(result.Message);
+            }
+
             return list.ExpandAndToString("\r\n");
         }
+
     }
 
 
-    public class ClassFilter : ActionFilterAttribute
+    public class ClassFilter : ActionFilterAttribute, IExceptionFilter
     {
         private readonly ILogger _logger;
 
@@ -78,6 +116,16 @@ namespace Liuliu.Demo.Web.Controllers
         public override void OnResultExecuted(ResultExecutedContext context)
         {
             _logger.LogInformation("ClassFilter - OnResultExecuted");
+        }
+
+        /// <summary>
+        /// Called after an action has thrown an <see cref="T:System.Exception" />.
+        /// </summary>
+        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext" />.</param>
+        public void OnException(ExceptionContext context)
+        {
+            var ex = context.Exception.Message;
+            _logger.LogInformation("ClassFilter - OnException");
         }
     }
 
@@ -113,5 +161,6 @@ namespace Liuliu.Demo.Web.Controllers
         {
             _logger.LogInformation("MethodFilter - OnResultExecuted");
         }
+
     }
 }

@@ -18,6 +18,7 @@ using OSharp.Audits;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Secutiry.Claims;
 
 
@@ -68,11 +69,16 @@ namespace OSharp.AspNetCore.Mvc.Filters
             {
                 return;
             }
+            dict.AuditOperation.EndedTime = DateTime.Now;
+            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
+            //回滚之前业务处理中的未提交事务，防止审计信息保存时误提交
+            unitOfWork?.Rollback();
+
             IAuditStore store = provider.GetService<IAuditStore>();
             store?.Save(dict.AuditOperation);
-            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
             unitOfWork?.Commit();
         }
+
     }
 }
 

@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Audits;
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Mapping;
 
@@ -64,6 +66,21 @@ namespace Liuliu.Demo.System.Entities
         /// 获取或设置 当前访问UserAgent
         /// </summary>
         public string UserAgent { get; set; }
+
+        /// <summary>
+        /// 获取或设置 操作结果
+        /// </summary>
+        public AjaxResultType ResultType { get; set; } = AjaxResultType.Success;
+
+        /// <summary>
+        /// 获取或设置 消息
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 获取或设置 执行耗时，单位毫秒
+        /// </summary>
+        public int Elapsed { get; set; }
 
         /// <summary>
         /// 获取或设置 信息添加时间

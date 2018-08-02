@@ -42,6 +42,21 @@ namespace Liuliu.Demo.System.Dtos
         public OperateType OperateType { get; set; }
 
         /// <summary>
+        /// 获取或设置 当前用户昵称
+        /// </summary>
+        public string NickName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 所属操作名称
+        /// </summary>
+        public string FunctionName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 信息添加时间
+        /// </summary>
+        public DateTime CreatedTime { get; set; }
+
+        /// <summary>
         /// 获取或设置 实体属性审计信息集合
         /// </summary>
         public IEnumerable<AuditPropertyOutputDto> Properties { get; set; } = new List<AuditPropertyOutputDto>();

@@ -65,5 +65,10 @@ namespace OSharp.Entity.Transactions
         /// 提交所有事务
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// 回滚所有事务
+        /// </summary>
+        void Rollback();
     }
 }

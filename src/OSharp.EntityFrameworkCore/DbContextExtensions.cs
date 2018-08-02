@@ -164,7 +164,13 @@ namespace OSharp.Entity
             {
                 Name = entityInfo.Name,
                 TypeName = entityInfo.TypeName,
-                OperateType = OperateType.Insert,
+                OperateType = entry.State == EntityState.Added
+                    ? OperateType.Insert
+                    : entry.State == EntityState.Modified
+                        ? OperateType.Update
+                        : entry.State == EntityState.Deleted
+                            ? OperateType.Delete
+                            : OperateType.Query,
                 Entity = entry.Entity
             };
             EntityProperty[] entityProperties = entityInfo.Properties;

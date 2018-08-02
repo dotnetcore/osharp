@@ -10,6 +10,8 @@
 using System;
 using System.Collections.Generic;
 
+using OSharp.Data;
+
 
 namespace OSharp.Audits
 {
@@ -57,14 +59,29 @@ namespace OSharp.Audits
         public string UserAgent { get; set; }
 
         /// <summary>
+        /// 获取或设置 操作结果类型
+        /// </summary>
+        public AjaxResultType ResultType { get; set; } = AjaxResultType.Success;
+
+        /// <summary>
+        /// 获取或设置 消息
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
         /// 获取或设置 信息添加时间
         /// </summary>
         public DateTime CreatedTime { get; set; }
 
         /// <summary>
+        /// 获取或设置 结束时间
+        /// </summary>
+        public DateTime EndedTime { get; set; }
+
+        /// <summary>
         /// 获取或设置 审计数据信息集合
         /// </summary>
         public ICollection<AuditEntityEntry> EntityEntries { get; set; }
-        
+
     }
 }

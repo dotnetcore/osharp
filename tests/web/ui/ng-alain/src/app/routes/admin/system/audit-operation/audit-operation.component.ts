@@ -4,7 +4,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'admin-system-audit-operation',
-  templateUrl: './audit-operation.component.html',
+  template: '<div id="grid-box-{{moduleName}}"></div>',
   styles: []
 })
 export class AuditOperationComponent extends GridComponentBase implements AfterViewInit {
@@ -37,18 +37,27 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
         OperationSystem: { type: "string" },
         Browser: { type: "string" },
         CreatedTime: { type: "date" },
+        Message: { type: "string" },
+        Elapsed: { type: "number" }
       }
     };
   }
   protected GetGridColumns(): kendo.ui.GridColumn[] {
     return [
-      { field: "FunctionName", title: "功能", width: 300, filterable: this.osharp.data.stringFilterable },
-      { field: "UserName", title: "用户名", width: 300, filterable: this.osharp.data.stringFilterable },
-      { field: "NickName", title: "昵称", width: 300, filterable: this.osharp.data.stringFilterable },
+      { field: "FunctionName", title: "功能", width: 150, filterable: this.osharp.data.stringFilterable },
+      { field: "UserName", title: "用户名", width: 150, filterable: this.osharp.data.stringFilterable },
+      { field: "NickName", title: "昵称", width: 150, filterable: this.osharp.data.stringFilterable },
       { field: "Ip", title: "IP地址", width: 100, filterable: this.osharp.data.stringFilterable },
       { field: "OperationSystem", title: "操作系统", width: 250, filterable: this.osharp.data.stringFilterable },
       { field: "Browser", title: "浏览器", width: 150, filterable: this.osharp.data.stringFilterable },
+      {
+        field: "ResultType", title: "结果", width: 65,
+        template: d => this.osharp.valueToText(d.ResultType, this.osharp.data.ajaxResultType),
+        filterable: { ui: element => this.kendoui.DropDownList(element, this.osharp.data.ajaxResultType) }
+      },
       { field: "CreatedTime", title: "执行时间", width: 115, format: "{0:yy-MM-dd HH:mm}" },
+      { field: "Elapsed", title: "耗时(ms)", width: 75 },
+      { field: "Message", title: "消息", width: 300, filterable: this.osharp.data.stringFilterable },
     ];
   }
 
@@ -77,10 +86,11 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
     dataSourceOptions.filter = { field: "OperationId", operator: "eq", value: e.data['Id'] };
 
     let gridOptions = this.kendoui.CreateGridOptions(new kendo.data.DataSource(dataSourceOptions), [
-      { field: "Name", title: "实体名称", width: 300, template: "#=Name#(#=TypeName#)", filterable: this.osharp.data.stringFilterable },
-      { field: "EntityKey", title: "数据编号", width: 100 },
+      { field: "Name", title: "实体名称", width: 130, filterable: this.osharp.data.stringFilterable },
+      { field: "TypeName", title: "实体类型", width: 250, filterable: this.osharp.data.stringFilterable },
+      { field: "EntityKey", title: "数据编号", width: 285 },
       {
-        field: "OperateType", title: "操作", width: 100,
+        field: "OperateType", title: "操作", width: 75,
         template: d => this.osharp.valueToText(d.OperateType, this.osharp.data.operateType),
         filterable: { ui: element => this.kendoui.DropDownList(element, this.osharp.data.operateType) }
       }
