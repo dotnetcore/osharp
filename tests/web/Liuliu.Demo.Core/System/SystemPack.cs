@@ -1,24 +1,24 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SignalrPack.cs" company="OSharp开源团队">
+//  <copyright file="SystemPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2018-07-26 12:15</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-08-02 4:33</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Audits;
 using OSharp.Core.Packs;
 
 
-namespace Liuliu.Demo.Web.Startups
+namespace Liuliu.Demo.System
 {
     /// <summary>
-    /// SignalR模块
+    /// 系统模块
     /// </summary>
-    public class SignalRPack : OsharpPack
+    public class SystemPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -38,21 +38,8 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSignalR();
+            services.AddScoped<IAuditStore, AuditDatabaseStore>();
             return services;
-        }
-
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
-        {
-            app.UseSignalR(options =>
-            {
-                //options.MapHub<>();
-            });
-            IsEnabled = true;
         }
     }
 }

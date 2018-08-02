@@ -21,6 +21,11 @@ namespace OSharp.Entity.Transactions
     public interface IDbContextManager : IDisposable
     {
         /// <summary>
+        /// 获取 事务是否已提交
+        /// </summary>
+        bool HasCommited { get; }
+
+        /// <summary>
         /// 获取指定类型的数据上下文
         /// </summary>
         /// <param name="contextType">数据上下文类型</param>

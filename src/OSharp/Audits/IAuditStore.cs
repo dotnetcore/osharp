@@ -22,15 +22,15 @@ namespace OSharp.Audits
         /// <summary>
         /// 设置保存审计数据
         /// </summary>
-        /// <param name="operation">操作审计数据</param>
-        void Save(AuditOperation operation);
+        /// <param name="operationEntry">操作审计数据</param>
+        void Save(AuditOperationEntry operationEntry);
 
         /// <summary>
         /// 异步保存实体审计数据
         /// </summary>
-        /// <param name="operation">操作审计数据</param>
+        /// <param name="operationEntry">操作审计数据</param>
         /// <param name="cancelToken">异步取消标识</param>
         /// <returns></returns>
-        Task SaveAsync(AuditOperation operation, CancellationToken cancelToken = default(CancellationToken));
+        Task SaveAsync(AuditOperationEntry operationEntry, CancellationToken cancelToken = default(CancellationToken));
     }
 }

@@ -119,8 +119,8 @@ namespace OSharp.Entity
         /// </exception>
         public override int SaveChanges()
         {
-            IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditDataEnabled && ServiceLocator.InScoped())
+            IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }
@@ -164,8 +164,8 @@ namespace OSharp.Entity
         /// </exception>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            IList<AuditEntity> auditEntities = new List<AuditEntity>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditDataEnabled && ServiceLocator.InScoped())
+            IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }

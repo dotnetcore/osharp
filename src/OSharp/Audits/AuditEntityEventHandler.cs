@@ -7,6 +7,7 @@
 //  <last-date>2018-08-01 21:39</last-date>
 // -----------------------------------------------------------------------
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,14 +41,15 @@ namespace OSharp.Audits
         {
             eventData.CheckNotNull("eventData");
 
-            AuditOperation operation = _scopedDictionary.AuditOperation;
+            AuditOperationEntry operation = _scopedDictionary.AuditOperation;
             if (operation == null)
             {
                 return;
             }
-            foreach (AuditEntity auditEntity in eventData.AuditEntities)
+            foreach (AuditEntityEntry auditEntity in eventData.AuditEntities)
             {
-                operation.AuditEntities.Add(auditEntity);
+                SetAddedId(auditEntity);
+                operation.EntityEntries.Add(auditEntity);
             }
         }
 
@@ -62,16 +64,31 @@ namespace OSharp.Audits
             eventData.CheckNotNull("eventData");
             cancelToken.ThrowIfCancellationRequested();
 
-            AuditOperation operation = _scopedDictionary.AuditOperation;
+            AuditOperationEntry operation = _scopedDictionary.AuditOperation;
             if (operation == null)
             {
                 return Task.FromResult(0);
             }
-            foreach (AuditEntity auditEntity in eventData.AuditEntities)
+            foreach (AuditEntityEntry auditEntity in eventData.AuditEntities)
             {
-                operation.AuditEntities.Add(auditEntity);
+                SetAddedId(auditEntity);
+                operation.EntityEntries.Add(auditEntity);
             }
             return Task.FromResult(0);
+        }
+
+        private static void SetAddedId(AuditEntityEntry entry)
+        {
+            if (entry.OperateType == OperateType.Insert)
+            {
+                dynamic entity = entry.Entity;
+                entry.EntityKey = entity.Id.ToString();
+                AuditPropertyEntry property = entry.PropertyEntries.FirstOrDefault(m => m.FieldName == "Id");
+                if (property != null)
+                {
+                    property.NewValue = entity.Id.ToString();
+                }
+            }
         }
     }
 }

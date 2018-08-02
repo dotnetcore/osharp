@@ -36,7 +36,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
         }
 
         /// <inheritdoc />
-        public override void OnActionExecuted(ActionExecutedContext context)
+        public override void OnResultExecuted(ResultExecutedContext context)
         {
             if (context.Result is JsonResult result1)
             {

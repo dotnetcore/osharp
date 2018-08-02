@@ -26,10 +26,16 @@ namespace OSharp.Entity.Transactions
     /// </summary>
     public class DbContextManager : IDbContextManager
     {
-        #region Implementation of IDbContextManager
-
         private readonly ConcurrentDictionary<string, DbContextGroup> _groups
             = new ConcurrentDictionary<string, DbContextGroup>();
+
+        /// <summary>
+        /// 获取 事务是否已提交
+        /// </summary>
+        public bool HasCommited
+        {
+            get { return _groups.Values.All(m => m.HasCommited); }
+        }
 
         /// <summary>
         /// 获取指定类型的数据上下文
@@ -123,8 +129,6 @@ namespace OSharp.Entity.Transactions
                 group.Commit();
             }
         }
-
-        #endregion
 
         #region Implementation of IDisposable
 

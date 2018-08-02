@@ -30,7 +30,7 @@ namespace OSharp.Dependency
         /// <summary>
         /// 获取或设置 当前操作审计
         /// </summary>
-        public AuditOperation AuditOperation { get; set; }
+        public AuditOperationEntry AuditOperation { get; set; }
 
         /// <summary>
         /// 获取或设置 当前用户

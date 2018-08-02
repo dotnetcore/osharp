@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Audits;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
+using OSharp.Entity;
 using OSharp.Secutiry.Claims;
 
 
@@ -31,16 +32,17 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            IServiceProvider provider = context.HttpContext.RequestServices;
             IFunction function = context.GetExecuteFunction();
             if (function == null || !function.AuditOperationEnabled)
             {
                 return;
             }
 
-            ScopedDictionary dict = context.HttpContext.RequestServices.GetService<ScopedDictionary>();
+            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
             dict.Function = function;
 
-            AuditOperation operation = new AuditOperation
+            AuditOperationEntry operation = new AuditOperationEntry
             {
                 FunctionName = function.Name,
                 Ip = context.HttpContext.GetClientIp(),
@@ -74,6 +76,11 @@ namespace OSharp.AspNetCore.Mvc.Filters
             }
             IAuditStore store = provider.GetService<IAuditStore>();
             store?.Save(dict.AuditOperation);
+            //if (context.Filters.All(m => m.GetType() != typeof(UnitOfWorkAttribute)))
+            //{
+            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
+            unitOfWork?.Commit();
+            //}
         }
     }
 }

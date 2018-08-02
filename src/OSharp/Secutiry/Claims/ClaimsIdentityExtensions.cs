@@ -115,7 +115,7 @@ namespace OSharp.Secutiry.Claims
             {
                 return null;
             }
-            return claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            return claimsIdentity.FindFirst(ClaimTypes.GivenName)?.Value;
         }
 
         /// <summary>

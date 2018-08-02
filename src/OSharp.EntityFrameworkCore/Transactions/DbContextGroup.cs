@@ -52,7 +52,7 @@ namespace OSharp.Entity.Transactions
         /// <param name="connection">数据库连接对象</param>
         public void BeginOrUseTransaction(DbConnection connection)
         {
-            if (_transaction == null)
+            if (_transaction?.Connection == null)
             {
                 if (connection.State != ConnectionState.Open)
                 {
@@ -75,6 +75,7 @@ namespace OSharp.Entity.Transactions
                     context.Database.BeginTransaction();
                 }
             }
+            HasCommited = false;
         }
 
         /// <summary>
@@ -107,6 +108,7 @@ namespace OSharp.Entity.Transactions
                     await context.Database.BeginTransactionAsync(cancellationToken);
                 }
             }
+            HasCommited = false;
         }
 
         /// <summary>
@@ -157,6 +159,7 @@ namespace OSharp.Entity.Transactions
             {
                 if (context.IsRelationalTransaction())
                 {
+                    context.Database.CurrentTransaction.Dispose();
                     //关系型数据库共享事务
                     continue;
                 }

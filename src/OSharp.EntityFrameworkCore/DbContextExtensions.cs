@@ -124,9 +124,9 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取上下文实体审计数据
         /// </summary>
-        public static IList<AuditEntity> GetAuditEntities(this DbContext context)
+        public static IList<AuditEntityEntry> GetAuditEntities(this DbContext context)
         {
-            List<AuditEntity> result = new List<AuditEntity>();
+            List<AuditEntityEntry> result = new List<AuditEntityEntry>();
             //当前操作的功能是否允许数据审计
             ScopedDictionary scopedDict = ServiceLocator.Instance.GetService<ScopedDictionary>();
             IFunction function = scopedDict?.Function;
@@ -158,9 +158,15 @@ namespace OSharp.Entity
             return result;
         }
 
-        private static AuditEntity GetAuditEntity(EntityEntry entry, IEntityInfo entityInfo)
+        private static AuditEntityEntry GetAuditEntity(EntityEntry entry, IEntityInfo entityInfo)
         {
-            AuditEntity audit = new AuditEntity() { Name = entityInfo.Name, TypeName = entityInfo.TypeName, OperateType = OperateType.Insert };
+            AuditEntityEntry audit = new AuditEntityEntry
+            {
+                Name = entityInfo.Name,
+                TypeName = entityInfo.TypeName,
+                OperateType = OperateType.Insert,
+                Entity = entry.Entity
+            };
             EntityProperty[] entityProperties = entityInfo.Properties;
             foreach (IProperty property in entry.CurrentValues.Properties)
             {
@@ -175,7 +181,7 @@ namespace OSharp.Entity
                         ? entry.Property(property.Name).OriginalValue?.ToString()
                         : entry.Property(property.Name).CurrentValue?.ToString();
                 }
-                AuditEntityProperty auditProperty = new AuditEntityProperty()
+                AuditPropertyEntry auditProperty = new AuditPropertyEntry()
                 {
                     FieldName = name,
                     DisplayName = entityProperties.First(m => m.Name == name).Display,
@@ -184,12 +190,12 @@ namespace OSharp.Entity
                 if (entry.State == EntityState.Added)
                 {
                     auditProperty.NewValue = entry.Property(property.Name).CurrentValue?.ToString();
-                    audit.Properties.Add(auditProperty);
+                    audit.PropertyEntries.Add(auditProperty);
                 }
                 else if (entry.State == EntityState.Deleted)
                 {
                     auditProperty.OriginalValue = entry.Property(property.Name).OriginalValue?.ToString();
-                    audit.Properties.Add(auditProperty);
+                    audit.PropertyEntries.Add(auditProperty);
                 }
                 else if (entry.State == EntityState.Modified)
                 {
@@ -201,10 +207,10 @@ namespace OSharp.Entity
                     }
                     auditProperty.NewValue = currentValue;
                     auditProperty.OriginalValue = originalValue;
-                    audit.Properties.Add(auditProperty);
+                    audit.PropertyEntries.Add(auditProperty);
                 }
             }
-            return audit.Properties.Count == 0 ? null : audit;
+            return audit.PropertyEntries.Count == 0 ? null : audit;
         }
     }
 }
