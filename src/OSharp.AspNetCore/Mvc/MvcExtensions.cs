@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -18,7 +17,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Functions;
-using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -88,16 +86,16 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static IFunction GetExecuteFunction(this ActionContext context)
         {
-            const string key = OsharpConstants.CurrentMvcFunctionKey;
-            IDictionary<object, object> items = context.HttpContext.Items;
-            if (items.ContainsKey(key))
+            IServiceProvider provider = context.HttpContext.RequestServices;
+            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
+            if (dict.Function != null)
             {
-                return items[key] as IFunction;
+                return dict.Function;
             }
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
-            IFunctionHandler functionHandler = ServiceLocator.Instance.GetService<IFunctionHandler>();
+            IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
                 throw new OsharpException("获取正在执行的功能时 IFunctionHandler 无法解析");
@@ -105,7 +103,7 @@ namespace OSharp.AspNetCore.Mvc
             IFunction function = functionHandler.GetFunction(area, controller, action);
             if (function != null)
             {
-                items.Add(key, function);
+                dict.Function = function;
             }
             return function;
         }

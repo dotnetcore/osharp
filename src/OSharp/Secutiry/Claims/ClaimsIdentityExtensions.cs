@@ -32,8 +32,7 @@ namespace OSharp.Secutiry.Claims
             {
                 return null;
             }
-            Claim claim = claimsIdentity.Claims.FirstOrDefault(m => m.Type == type);
-            return claim?.Value;
+            return claimsIdentity.FindFirst(type)?.Value;
         }
 
         /// <summary>
@@ -65,6 +64,19 @@ namespace OSharp.Secutiry.Claims
                 return default(T);
             }
             return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        /// <summary>
+        /// 获取用户ID
+        /// </summary>
+        public static string GetUserId(this IIdentity identity)
+        {
+            Check.NotNull(identity, nameof(identity));
+            if (!(identity is ClaimsIdentity claimsIdentity))
+            {
+                return null;
+            }
+            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         /// <summary>
@@ -103,7 +115,7 @@ namespace OSharp.Secutiry.Claims
             {
                 return null;
             }
-            return claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            return claimsIdentity.FindFirst(ClaimTypes.GivenName)?.Value;
         }
 
         /// <summary>

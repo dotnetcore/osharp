@@ -1,30 +1,35 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AuditPack.cs" company="OSharp开源团队">
+//  <copyright file="SystemPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 15:23</last-date>
+//  <last-date>2018-08-02 4:33</last-date>
 // -----------------------------------------------------------------------
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Audits;
 using OSharp.Core.Packs;
-using OSharp.EventBuses;
 
 
-namespace OSharp.Audits
+namespace Liuliu.Demo.System
 {
     /// <summary>
     /// 审计模块
     /// </summary>
-    [DependsOnPacks(typeof(EventBusPack))]
-    public class AuditPack : OsharpPack
+    public class AuditPack : AuditPackBase
     {
         /// <summary>
-        /// 获取 模块级别
+        /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public override PackLevel Level => PackLevel.Application;
+
+        /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
+        /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
+        /// </summary>
+        public override int Order => 2;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -33,10 +38,10 @@ namespace OSharp.Audits
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddTransient<AuditEntityStoreEventHandler>();
-            services.AddSingleton<IAuditStore, NullAuditStore>();
+            services.AddScoped<IAuditStore, AuditDatabaseStore>();
+            services.AddScoped<IAuditContract, AuditService>();
 
-            return services;
+            return base.AddServices(services);
         }
     }
 }

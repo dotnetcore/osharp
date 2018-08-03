@@ -158,6 +158,116 @@ export class KendouiService {
   }
 
   /**
+   * 创建一个Grid的选项
+   * @param dataSource 数据源
+   * @param columns 数据列配置
+   */
+  CreateGridOptions(
+    dataSource: kendo.data.DataSource,
+    columns: kendo.ui.GridColumn[]
+  ) {
+    const options: kendo.ui.GridOptions = {
+      dataSource: dataSource,
+      toolbar: [{ name: 'create' }, { name: 'save' }, { name: 'cancel' }],
+      columns: columns,
+      navigatable: true,
+      filterable: true,
+      resizable: true,
+      scrollable: true,
+      selectable: false,
+      reorderable: true,
+      columnMenu: false,
+      sortable: { allowUnsort: true, showIndexes: true, mode: 'multiple' },
+      pageable: { refresh: true, pageSizes: [10, 15, 20, 50, 'all'], buttonCount: 5 },
+      editable: { mode: "incell", confirmation: true },
+      saveChanges: e => {
+        if (!confirm('是否提交对表格的更改？')) {
+          e.preventDefault();
+        }
+      }
+    };
+    return options;
+  }
+
+  /**
+   * 创建Grid数据源
+   * @param moduleName 模块名称
+   * @param model 模型信息
+   * @param funcFieldReplace 字段替换方法委托
+   * @param funcGridRefresh 表格刷新方法委托
+   */
+  CreateDataSourceOptions(moduleName: string,
+    model: any,
+    funcFieldReplace?: any,
+    funcGridRefresh?: any
+  ): kendo.data.DataSourceOptions {
+    const options: kendo.data.DataSourceOptions = {
+      transport: {
+        read: { url: "api/admin/" + moduleName + "/read", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        create: { url: "api/admin/" + moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        update: { url: "api/admin/" + moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        destroy: { url: "api/admin/" + moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        parameterMap: (opts, operation) => {
+          if (operation == 'read') {
+            let request = this.readParameterMap(opts, funcFieldReplace || (field => field));
+            return JSON.stringify(request);
+          }
+          if (operation == 'create' || operation == 'update') {
+            return JSON.stringify(opts.models);
+          }
+          if (operation == 'destroy' && opts.models.length) {
+            const ids = new List(opts.models).Select(m => m['Id']).ToArray();
+            return JSON.stringify(ids);
+          }
+          return {};
+        }
+      },
+      group: [],
+      schema: {
+        model: model,
+        data: d => d.Rows,
+        total: d => d.Total
+      },
+      aggregate: [],
+      batch: true,
+      pageSize: 24,
+      serverPaging: true,
+      serverSorting: true,
+      serverFiltering: true,
+      requestStart: e => this.OnRequestStart(e),
+      requestEnd: e => {
+        if (e.type == "read" && !e.response.Type) {
+          return;
+        }
+        this.osharp.ajaxResult(e.response, funcGridRefresh);
+      },
+      change: function () { },
+      error: e => {
+        if (e.status != "error") {
+          return;
+        }
+        this.osharp.ajaxError(e.xhr);
+      }
+    };
+    return options;
+  }
+
+  /**
+   * 创建本地数据源
+   * @param model 数据模型
+   */
+  CreateLocalDataSourceOptions(model: any, data?: object[]): kendo.data.DataSourceOptions {
+    let options: kendo.data.DataSourceOptions = {
+      data: data || [],
+      schema: {
+        model: model
+      },
+      pageSize: 20
+    };
+    return options;
+  }
+
+  /**
    * 初始化树数据
    * @param nodes 原始树数据节点
    */
@@ -358,79 +468,13 @@ export abstract class GridComponentBase extends ComponentBase {
   }
 
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-    const options: kendo.ui.GridOptions = {
-      dataSource: dataSource,
-      toolbar: [{ name: 'create' }, { name: 'save' }, { name: 'cancel' }],
-      columns: this.GetGridColumns(),
-      navigatable: true,
-      filterable: true,
-      resizable: true,
-      scrollable: true,
-      selectable: false,
-      reorderable: true,
-      columnMenu: false,
-      sortable: { allowUnsort: true, showIndexes: true, mode: 'multiple' },
-      pageable: { refresh: true, pageSizes: [10, 15, 20, 50, 'all'], buttonCount: 5 },
-      editable: { mode: "incell", confirmation: true },
-      saveChanges: e => {
-        if (!confirm('是否提交对表格的更改？')) {
-          e.preventDefault();
-        }
-      }
-    };
-    return options;
+    let columns = this.GetGridColumns();
+    return this.kendoui.CreateGridOptions(dataSource, columns);
   }
 
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
-    const options: kendo.data.DataSourceOptions = {
-      transport: {
-        read: { url: "api/admin/" + this.moduleName + "/read", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        create: { url: "api/admin/" + this.moduleName + "/create", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        update: { url: "api/admin/" + this.moduleName + "/update", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        destroy: { url: "api/admin/" + this.moduleName + "/delete", type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
-        parameterMap: (opts, operation) => {
-          if (operation == 'read') {
-            let request = this.kendoui.readParameterMap(opts, this.FieldReplace);
-            return JSON.stringify(request);
-          }
-          if (operation == 'create' || operation == 'update') {
-            return JSON.stringify(opts.models);
-          }
-          if (operation == 'destroy' && opts.models.length) {
-            const ids = new List(opts.models).Select(m => m['Id']).ToArray();
-            return JSON.stringify(ids);
-          }
-          return {};
-        }
-      },
-      group: [],
-      schema: {
-        model: this.GetModel(),
-        data: d => d.Rows,
-        total: d => d.Total
-      },
-      aggregate: [],
-      batch: true,
-      pageSize: 24,
-      serverPaging: true,
-      serverSorting: true,
-      serverFiltering: true,
-      requestStart: e => this.kendoui.OnRequestStart(e),
-      requestEnd: e => {
-        if (e.type == "read" && !e.response.Type) {
-          return;
-        }
-        this.osharp.ajaxResult(e.response, () => this.grid.options.dataSource.read());
-      },
-      change: function () { },
-      error: e => {
-        if (e.status != "error") {
-          return;
-        }
-        this.osharp.ajaxError(e.xhr);
-      }
-    };
-    return options;
+    let model = this.GetModel();
+    return this.kendoui.CreateDataSourceOptions(this.moduleName, model, this.FieldReplace, () => this.grid.dataSource.read());
   }
 
   protected FieldReplace(field: string): string {

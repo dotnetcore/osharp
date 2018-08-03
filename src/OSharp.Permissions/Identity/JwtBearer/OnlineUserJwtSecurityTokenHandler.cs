@@ -57,6 +57,8 @@ namespace OSharp.Identity.JwtBearer
                 }
             }
 
+            ScopedDictionary dict = ServiceLocator.Instance.GetService<ScopedDictionary>();
+            dict.Identity = identity;
             return identity;
         }
     }

@@ -19,6 +19,7 @@ using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.EntityInfos
@@ -81,8 +82,18 @@ namespace OSharp.Core.EntityInfos
             {
                 RefreshCache();
             }
-            return _entityInfos.FirstOrDefault(m => m.TypeName == type.FullName)
-                ?? _entityInfos.FirstOrDefault(m => type.BaseType != null && m.TypeName == type.BaseType.FullName);
+            string typeName = type.GetFullNameWithModule();
+            IEntityInfo entityInfo = _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
+            if (entityInfo != null)
+            {
+                return entityInfo;
+            }
+            if (type.BaseType == null)
+            {
+                return null;
+            }
+            typeName = type.BaseType.GetFullNameWithModule();
+            return _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
         }
 
         /// <summary>

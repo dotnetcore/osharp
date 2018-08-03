@@ -75,6 +75,10 @@ namespace OSharp.Core.Modules
                 ModuleInfo[] typeInfos = GetModules(moduleType, existPaths);
                 foreach (ModuleInfo info in typeInfos)
                 {
+                    if (info.Order == 0)
+                    {
+                        info.Order = infos.Count(m => m.Position == info.Position) + 1;
+                    }
                     infos.AddIfNotExist(info);
                 }
                 MethodInfo[] methods = FunctionHandler.MethodInfoFinder.Find(moduleType, type => type.HasAttribute<ModuleInfoAttribute>());

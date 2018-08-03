@@ -10,6 +10,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Dependency;
 
 
@@ -18,6 +19,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// WebApi控制器基类
     /// </summary>
+    [AuditOperation]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public abstract class ApiController : Controller

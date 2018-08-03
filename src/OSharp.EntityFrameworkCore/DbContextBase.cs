@@ -119,11 +119,12 @@ namespace OSharp.Entity
         /// </exception>
         public override int SaveChanges()
         {
-            IList<AuditEntity> auditEntities = new List<AuditEntity>();
+            IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
             if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();
             }
+            var d = this.Database;
             //开启或使用现有事务
             BeginOrUseTransaction();
 
@@ -164,7 +165,7 @@ namespace OSharp.Entity
         /// </exception>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            IList<AuditEntity> auditEntities = new List<AuditEntity>();
+            IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
             if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
             {
                 auditEntities = this.GetAuditEntities();

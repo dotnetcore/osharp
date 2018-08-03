@@ -76,7 +76,7 @@ namespace OSharp.Core.EntityInfos
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            TypeName = $"{entityType.FullName},{entityType.Module.Name.Replace(".dll", "")}";
+            TypeName = entityType.GetFullNameWithModule();
             Name = entityType.GetDescription();
             AuditEnabled = true;
 

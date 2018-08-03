@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 
@@ -52,7 +53,7 @@ namespace OSharp.Entity.Transactions
         /// <param name="connection">数据库连接对象</param>
         public void BeginOrUseTransaction(DbConnection connection)
         {
-            if (_transaction == null)
+            if (_transaction?.Connection == null)
             {
                 if (connection.State != ConnectionState.Open)
                 {
@@ -62,7 +63,7 @@ namespace OSharp.Entity.Transactions
             }
             foreach (DbContextBase context in DbContexts)
             {
-                if (context.Database.CurrentTransaction != null)
+                if (context.Database.CurrentTransaction != null && context.Database.CurrentTransaction.GetDbTransaction() == _transaction)
                 {
                     continue;
                 }
@@ -75,6 +76,7 @@ namespace OSharp.Entity.Transactions
                     context.Database.BeginTransaction();
                 }
             }
+            HasCommited = false;
         }
 
         /// <summary>
@@ -107,6 +109,7 @@ namespace OSharp.Entity.Transactions
                     await context.Database.BeginTransactionAsync(cancellationToken);
                 }
             }
+            HasCommited = false;
         }
 
         /// <summary>
@@ -151,18 +154,58 @@ namespace OSharp.Entity.Transactions
             {
                 return;
             }
-            
+
             _transaction.Commit();
             foreach (var context in DbContexts)
             {
                 if (context.IsRelationalTransaction())
                 {
+                    context.Database.CurrentTransaction.Dispose();
                     //关系型数据库共享事务
                     continue;
                 }
                 context.Database.CommitTransaction();
             }
             HasCommited = true;
+        }
+
+        /// <summary>
+        /// 将事务回滚
+        /// </summary>
+        public void Rollback()
+        {
+            //if (HasCommited || DbContexts.Count == 0 || _transaction == null)
+            //{
+            //    return;
+            //}
+            if (_transaction?.Connection != null)
+            {
+                _transaction.Rollback();
+            }
+            foreach (var context in DbContexts)
+            {
+                if (context.IsRelationalTransaction())
+                {
+                    CleanChanges(context);
+                    if (context.Database.CurrentTransaction != null)
+                    {
+                        context.Database.CurrentTransaction.Rollback();
+                        context.Database.CurrentTransaction.Dispose();
+                    }
+                    continue;
+                }
+                context.Database.RollbackTransaction();
+            }
+            HasCommited = true;
+        }
+
+        private static void CleanChanges(DbContext context)
+        {
+            var entries = context.ChangeTracker.Entries().ToArray();
+            for (int i = 0; i < entries.Length; i++)
+            {
+                entries[i].State = EntityState.Detached;
+            }
         }
 
         #region IDisposable

@@ -1,13 +1,15 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="AuditEntity.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="AuditEntityEntry.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-20 0:36</last-date>
+//  <last-date>2018-08-02 3:59</last-date>
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+
+using OSharp.Entity;
 
 
 namespace OSharp.Audits
@@ -15,24 +17,24 @@ namespace OSharp.Audits
     /// <summary>
     /// 实体审计信息
     /// </summary>
-    public class AuditEntity
+    public class AuditEntityEntry
     {
         /// <summary>
-        /// 初始化一个<see cref="AuditEntity"/>类型的新实例
+        /// 初始化一个<see cref="AuditEntityEntry"/>类型的新实例
         /// </summary>
-        public AuditEntity()
+        public AuditEntityEntry()
             : this(null, null, OperateType.Query)
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="AuditEntity"/>类型的新实例
+        /// 初始化一个<see cref="AuditEntityEntry"/>类型的新实例
         /// </summary>
-        public AuditEntity(string name, string typeName, OperateType operateType)
+        public AuditEntityEntry(string name, string typeName, OperateType operateType)
         {
             Name = name;
             TypeName = typeName;
             OperateType = operateType;
-            Properties = new List<AuditEntityProperty>();
+            PropertyEntries = new List<AuditPropertyEntry>();
         }
 
         /// <summary>
@@ -58,30 +60,11 @@ namespace OSharp.Audits
         /// <summary>
         /// 获取或设置 操作实体属性集合
         /// </summary>
-        public ICollection<AuditEntityProperty> Properties { get; set; }
-    }
+        public ICollection<AuditPropertyEntry> PropertyEntries { get; set; }
 
-
-    /// <summary>
-    /// 表示实体审计操作类型
-    /// </summary>
-    public enum OperateType
-    {
         /// <summary>
-        /// 查询
+        /// 获取或设置 关联实体
         /// </summary>
-        Query = 0,
-        /// <summary>
-        /// 新增
-        /// </summary>
-        Insert = 1,
-        /// <summary>
-        /// 更新
-        /// </summary>
-        Update = 2,
-        /// <summary>
-        /// 删除
-        /// </summary>
-        Delete = 3
+        public object Entity { get; set; }
     }
 }

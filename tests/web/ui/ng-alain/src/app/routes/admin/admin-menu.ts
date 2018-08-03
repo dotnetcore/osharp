@@ -34,7 +34,9 @@ export const adminMenu: Menu[] = [
     text: '系统模块', group: true, children: [
       {
         text: '系统管理', group: true, icon: 'icon-globe', children: [
-          { text: '系统设置', link: '/admin/system/settings', icon: 'icon-settings' }
+          { text: '系统设置', link: '/admin/system/settings', icon: 'icon-settings' },
+          { text: '操作审计', link: '/admin/system/audit-operation', icon: 'icon-settings' },
+          { text: '数据审计', link: '/admin/system/audit-entity', icon: 'icon-settings' },
         ]
       }
     ]

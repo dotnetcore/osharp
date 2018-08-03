@@ -1,6 +1,21 @@
 # OSharp .NetStandard 更新记录
 
 ### latest version
+1. 修复ModuleInfo提取时排序码不起作用的问题
+2. 修复登录时用户信息重复Track的问题
+3. 优化Repository的Update相关实现，使之按需更新
+5. 修复EntityInfoHandler查找实体信息不正确的问题4. 
+5. 增加一个基于Scoped生命周期的数据字典`ScopedDictionary`，用于在程序执行路径上下文传递Scoped的数据，如当前执行功能，当前用户，操作审计，数据审计等
+6. 完善操作审计`AuditOperationEntry`与数据审计`AuditEntityEntry`的基础实现
+    1. 添加操作审计AOP拦截器`AuditOperationAttribute`，用于获取正在执行的功能新建操作审计`AuditOperationEntry`信息
+    2. 操作审计将存入`ScopedDictionary`字典中向下传递
+    3. 数据层执行`context.SaveChanges`操作的时候，视`上下文选项、功能是否允许数据审计、实体是否允许数据审计`等条件决定是否允许数据审计，如都允许，获取操作中的数据变更`新增数据的所有属性及新值、更新数据的变化属性及变更值，删除数据的所有属性及原值`创建数据变更信息。
+    4. 数据变更信息由`事件总线`的`AuditEntityEventHandler`处理，附加到`ScopedDictionary`中的操作审计中
+    5. 操作审计拦截器`AuditOperationAttribute`在请求结束时执行审计信息的持久化。
+    6. 在Demo中实现了基于数据库的审计信息存储`AuditDatabaseStore`
+    7. 给操作审计添加操作系统，浏览器信息
+    8. 完善审计功能，收集操作结果，耗时，返回消息等数据
+7. UnitOfWork添加Rollback可用于两个事务间清理上一个事务的变更数据跟踪 
 
 ### 0.3.0-beta07
 1. 优化模块数据初始化流程，自动生成分类性质的模块信息，分类性质的模块信息是指在Area模块与Controller模块之间的模块信息，如下的`Identity`模块就是个分类模块信息：

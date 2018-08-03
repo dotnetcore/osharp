@@ -9,14 +9,15 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.Core;
+using OSharp.AspNetCore.Mvc.Filters;
+
 
 namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
     /// WebApi的区域控制器基类
     /// </summary>
-    [RoleLimit]
+    [AuditOperation]
     [ApiController]
     [Route("api/[area]/[controller]/[action]")]
     public abstract class AreaApiController : Controller

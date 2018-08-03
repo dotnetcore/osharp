@@ -52,5 +52,6 @@ namespace OSharp.Net
 
         [DllImport("wininet.dll")]
         private static extern bool InternetGetConnectedState(out int connectionDescription, int reservedValue);
+
     }
 }

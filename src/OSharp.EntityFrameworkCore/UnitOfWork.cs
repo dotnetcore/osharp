@@ -33,14 +33,13 @@ namespace OSharp.Entity
         public UnitOfWork(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            HasCommited = false;
             _dbContextMamager = serviceProvider.GetService<IDbContextManager>();
         }
 
         /// <summary>
         /// 获取 事务是否已提交
         /// </summary>
-        public bool HasCommited { get; private set; }
+        public bool HasCommited => _dbContextMamager.HasCommited;
 
         /// <summary>
         /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例，并将同数据库连接字符串的上下文实例进行分组归类
@@ -59,7 +58,7 @@ namespace OSharp.Entity
             IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
 
             //已存在上下文对象，直接返回
-            DbContextBase dbContext = _dbContextMamager.Get(resolveOptions.ConnectionString, dbContextType);
+            DbContextBase dbContext = _dbContextMamager.Get(dbContextType, resolveOptions.ConnectionString);
             if (dbContext != null)
             {
                 return dbContext;
@@ -83,12 +82,15 @@ namespace OSharp.Entity
         /// </summary>
         public void Commit()
         {
-            if (HasCommited)
-            {
-                return;
-            }
             _dbContextMamager.Commit();
-            HasCommited = true;
+        }
+
+        /// <summary>
+        /// 回滚所有事务
+        /// </summary>
+        public void Rollback()
+        {
+            _dbContextMamager.Rollback();
         }
 
         private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)

@@ -26,21 +26,31 @@ namespace OSharp.Entity.Transactions
     /// </summary>
     public class DbContextManager : IDbContextManager
     {
-        #region Implementation of IDbContextManager
-
         private readonly ConcurrentDictionary<string, DbContextGroup> _groups
             = new ConcurrentDictionary<string, DbContextGroup>();
 
         /// <summary>
+        /// 获取 事务是否已提交
+        /// </summary>
+        public bool HasCommited
+        {
+            get { return _groups.Values.All(m => m.HasCommited); }
+        }
+
+        /// <summary>
         /// 获取指定类型的数据上下文
         /// </summary>
-        /// <param name="connectionString">数据库连接字符串</param>
         /// <param name="contextType">数据上下文类型</param>
+        /// <param name="connectionString">数据库连接字符串</param>
         /// <returns>数据上下文对象</returns>
-        public DbContextBase Get(string connectionString, Type contextType)
+        public DbContextBase Get(Type contextType, string connectionString = null)
         {
+            if (connectionString == null)
+            {
+                return _groups.Values.SelectMany(m => m.DbContexts).FirstOrDefault(m => m.GetType() == contextType);
+            }
             DbContextGroup group = _groups.GetOrDefault(connectionString);
-            return group?.DbContexts.FirstOrDefault(m => m.GetType() == contextType);
+            return @group?.DbContexts.FirstOrDefault(m => m.GetType() == contextType);
         }
 
         /// <summary>
@@ -120,7 +130,16 @@ namespace OSharp.Entity.Transactions
             }
         }
 
-        #endregion
+        /// <summary>
+        /// 回滚所有事务
+        /// </summary>
+        public void Rollback()
+        {
+            foreach (DbContextGroup group in _groups.Values)
+            {
+                group.Rollback();
+            }
+        }
 
         #region Implementation of IDisposable
 

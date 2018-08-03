@@ -7,7 +7,7 @@
 //  <last-date>2017-09-01 20:36</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.AspNetCore.UI
+namespace OSharp.Data
 {
     /// <summary>
     /// 表示 ajax 操作结果类型的枚举
