@@ -59,6 +59,7 @@ namespace OSharp.Dependency
             ServiceLocator.Instance.SetServiceCollection(services);
 
             services.AddScoped<ScopedDictionary>();
+            services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
             //添加即时生命周期类型的服务
             Type[] dependencyTypes = ScanOptions.TransientTypeFinder.FindAll();

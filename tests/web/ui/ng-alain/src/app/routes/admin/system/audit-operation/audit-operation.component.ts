@@ -47,7 +47,7 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
       { field: "FunctionName", title: "功能", width: 150, filterable: this.osharp.data.stringFilterable },
       { field: "UserName", title: "用户名", width: 150, filterable: this.osharp.data.stringFilterable },
       { field: "NickName", title: "昵称", width: 150, filterable: this.osharp.data.stringFilterable },
-      { field: "Ip", title: "IP地址", width: 100, filterable: this.osharp.data.stringFilterable },
+      { field: "Ip", title: "IP地址", width: 120, filterable: this.osharp.data.stringFilterable },
       { field: "OperationSystem", title: "操作系统", width: 250, filterable: this.osharp.data.stringFilterable },
       { field: "Browser", title: "浏览器", width: 150, filterable: this.osharp.data.stringFilterable },
       {

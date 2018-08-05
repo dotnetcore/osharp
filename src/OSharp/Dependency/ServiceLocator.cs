@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -326,6 +327,15 @@ namespace OSharp.Dependency
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取指定节点的选项值
+        /// </summary>
+        public string GetConfiguration(string path)
+        {
+            IConfiguration config = GetService<IConfiguration>() ?? Singleton<IConfiguration>.Instance;
+            return config?[path];
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
