@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A403CAF1-B220-40CB-99E1-7594EC142AB9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>OSharp.CodeGenerator</RootNamespace>
+    <AssemblyName>OSharp.CodeGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="T4\ts_components\entity-info.component.txt" />
+    <Content Include="T4\ts_components\entity-role.component.txt" />
+    <Content Include="T4\ts_components\function.component.txt" />
+    <Content Include="T4\ts_components\module.component.txt" />
+    <Content Include="T4\ts_components\role.component.txt" />
+    <Content Include="T4\ts_components\user-role.component.txt" />
+    <Content Include="T4\ts_components\user.component.txt" />
+    <Content Include="T4\TypeScript_Component_Script.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeScript_Component_Script1.txt</LastGenOutput>
+      <LastOutputs>
+.\ts_components\entity-info.component.txt
+.\ts_components\entity-role.component.txt
+.\ts_components\function.component.txt
+.\ts_components\module.component.txt
+.\ts_components\role.component.txt
+.\ts_components\user.component.txt
+.\ts_components\user-role.component.txt
+.\TypeScript_Component_Script1.txt
+</LastOutputs>
+    </Content>
+    <Content Include="T4\TypeScript_Component_Script1.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeScript_Component_Script.tt</DependentUpon>
+    </Content>
+    <Content Include="T4\TypeScript_Component_Template.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj">
+      <Project>{dcf684c5-594a-471c-bd43-128f16b1e7a5}</Project>
+      <Name>OSharp.AspNetCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj">
+      <Project>{79640129-15a3-4ab6-9473-fe4ebac334e2}</Project>
+      <Name>OSharp.AutoMapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj">
+      <Project>{01974482-f9ca-41e7-a9ef-eb13c939570f}</Project>
+      <Name>OSharp.EntityFrameworkCore.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj">
+      <Project>{2acde867-4b21-40b1-ac52-a14bda260787}</Project>
+      <Name>OSharp.EntityFrameworkCore.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj">
+      <Project>{437f36cc-358e-41b4-a875-fa79f518dc6f}</Project>
+      <Name>OSharp.EntityFrameworkCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj">
+      <Project>{4f7b11ec-48c4-4f7f-afcc-45c6a402edd2}</Project>
+      <Name>OSharp.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj">
+      <Project>{18360bc4-577d-41f0-afa8-054af749dd8e}</Project>
+      <Name>OSharp.Permissions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\OSharp\OSharp.csproj">
+      <Project>{d1b8f25f-68ed-470b-b996-436fe321f74a}</Project>
+      <Name>OSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj">
+      <Project>{65289d82-d632-4804-9f00-ccbb39f8d561}</Project>
+      <Name>Liuliu.Demo.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

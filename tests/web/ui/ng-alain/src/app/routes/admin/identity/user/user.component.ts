@@ -77,7 +77,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         command: [
           { name: "setRoles", text: "", iconClass: "k-icon k-i-link-horizontal", click: e => this.roleWindowOpen(e) },
           { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.moduleWindowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => { return d.Deletable; } },
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable },
         ],
         width: 100
       },

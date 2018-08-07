@@ -7,14 +7,12 @@
 //  <last-date>2018-06-23 15:19</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
+using OSharp.Entity;
+using OSharp.Entity.Infrastructure;
 using OSharp.Reflection;
 
 
@@ -39,6 +37,9 @@ namespace OSharp.Core.Packs
         {
             services.AddSingleton<IAllAssemblyFinder, AppDomainAllAssemblyFinder>();
             services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
+            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
+            services.AddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
+            services.AddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
 
             return services;
         }

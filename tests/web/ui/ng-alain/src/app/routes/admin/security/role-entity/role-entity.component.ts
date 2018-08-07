@@ -59,7 +59,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
   }
 
   protected GetGridColumns(): kendo.ui.GridColumn[] {
-    const columns = [{
+    const columns: kendo.ui.GridColumn[] = [{
       command: [
         { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
       ],
@@ -122,8 +122,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
             this.filterGroup = new FilterGroup();
           }
           this.entityType = data.EntityType;
-        }
-        else {
+        } else {
           this.selectName = "未选择";
           this.filterGroup = new FilterGroup();
           this.entityType = null;

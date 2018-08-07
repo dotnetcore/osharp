@@ -25,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.CodeGenerator;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
@@ -116,19 +117,54 @@ namespace Liuliu.Demo.Web.Controllers
             return info;
         }
 
+        /// <summary>
+        /// 获取分类类型元数据
+        /// </summary>
+        /// <param name="type">类型分类，entity,inputdto,outputdto</param>
+        /// <param name="handler">类型元数据处理器</param>
+        /// <returns></returns>
         [HttpGet]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
-        [Description("测试")]
-        public object Test()
+        [ModuleInfo]
+        [Description("获取分类类型元数据")]
+        public TypeMetadata[] GetTypeMetadatas(string type, [FromServices]ITypeMetadataHandler handler)
         {
-            EntityRoleInputDto dto = new EntityRoleInputDto()
+            if (handler == null)
             {
-                RoleId = 3,
-                EntityId = Guid.Parse("a0f5a8cf-f774-45e2-be2f-a9130053ab73"),
-                FilterGroup = new FilterGroup()
-            };
-            dto.FilterGroup.AddRule(new FilterRule("Id", 5, FilterOperate.GreaterOrEqual));
-            return _securityManager.CreateEntityRoles(dto);
+                return new TypeMetadata[0];
+            }
+            switch (type?.ToLower())
+            {
+                case "entity":
+                    return handler.GetEntityTypeMetadatas();
+                case "inputdto":
+                    return handler.GetInputDtoMetadatas();
+                case "outputdto":
+                    return handler.GetOutputDtoMetadata();
+            }
+            return new TypeMetadata[0];
+        }
+
+        /// <summary>
+        /// 获取指定类型的元数据
+        /// </summary>
+        /// <param name="typeFullName">类型命名</param>
+        /// <param name="handler">处理器</param>
+        /// <returns>类型元数据</returns>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("获取类型元数据")]
+        public TypeMetadata GeTypeMetadata(string typeFullName, [FromServices] ITypeMetadataHandler handler)
+        {
+            if (handler == null)
+            {
+                return null;
+            }
+            Type type = Type.GetType(typeFullName);
+            if (type == null)
+            {
+                return null;
+            }
+            return handler.GetTypeMetadata(type);
         }
     }
 }

@@ -1,0 +1,173 @@
+﻿<#+
+// <copyright file="TypeScript_Component_Template.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+    public class TypeScriptComponentTemplate : CSharpTemplate
+    {
+        private TypeMetadata _inputDto;
+        private TypeMetadata _outputDto;
+        private string _entityName;
+        private string _lowerEntityName;
+
+        public TypeScriptComponentTemplate(string entityName, TypeMetadata inputDto, TypeMetadata outputDto)
+        {
+            _entityName = entityName;
+            _lowerEntityName = entityName.UpperToLowerAndSplit();
+            _inputDto = inputDto;
+            _outputDto = outputDto;
+        }
+
+        public string FileName
+        {
+            get{ return string.Format("{0}.component.txt", _lowerEntityName); }
+        }
+
+	    public override string TransformText()
+	    {
+		    base.TransformText();
+#>
+import { Component, AfterViewInit, Injector, } from '@angular/core';
+import { AuthConfig } from '@shared/osharp/osharp.model';
+import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+
+@Component({
+  selector: 'admin-<#=_lowerEntityName #>',
+  template: `<div id="grid-box-{{moduleName}}"></div>`
+})
+
+export class <#=_entityName #>Component extends GridComponentBase implements AfterViewInit {
+
+  constructor(injector: Injector) {
+    super(injector);
+    this.moduleName = "<#=_entityName.LowerFirstChar() #>";
+  }
+
+  async ngAfterViewInit() {
+    await this.checkAuth();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看此页面");
+    }
+  }
+  
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.Security.<#=_entityName #>", ["Read"]);
+  }
+
+  protected GetModel() {
+    return {
+      id: "Id",
+      fields: {
+<#+
+        if(_inputDto.PropertyMetadatas != null)
+        {
+            foreach(var dto in _inputDto.PropertyMetadatas)
+            {
+#>
+        <#=GetModelItem(dto) #>
+<#+
+            }
+        }
+ #>
+      }
+    }
+  }
+
+  protected GetGridColumns(): kendo.ui.GridColumn[] {
+    let columns: kendo.ui.GridColumn[] = [
+<#+
+            if(_outputDto != null && _outputDto.PropertyMetadatas != null)
+            {
+#>
+    {
+      command: [
+        { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
+      ],
+      width: 100
+    }<#+
+                foreach(var dto in _outputDto.PropertyMetadatas)
+                {
+                    if(dto.Name == "Updatable" || dto.Name == "Deletable")
+                    {
+                        continue;
+                    }
+#><#=GetColumn(dto) #><#+
+                }
+            }
+
+ #>];
+    return columns;
+  }
+}
+
+<#+
+            return this.GenerationEnvironment.ToString();
+	    }
+    }
+
+    private static string GetModelItem(PropertyMetadata input)
+    {
+        string line= string.Format("{0}: {{ type: \"{1}\"", input.Name, GetSingleTypeName(input.TypeName));
+        if(input.IsRequired != null && input.IsRequired.Value)
+        {
+            line += ", validation: { required: true }";
+        }
+
+        line+=" },";
+        return line;
+    }
+
+    private static string GetColumn(PropertyMetadata output)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(string.Format(", {{\n\t  field: \"{0}\", title: \"{1}\"", output.Name, output.Display));
+        if (output.TypeName == typeof(string).FullName)
+        {
+            sb.Append(",\n\t  filterable: this.osharp.data.stringFilterable");
+        }
+        if (output.TypeName == typeof(bool).FullName)
+        {
+            sb.Append(", width: 90");
+            sb.Append(string.Format(",\n\t  template: d => this.kendoui.Boolean(d.{0})", output.Name));
+            sb.Append(",\n\t  editor: (container, options) => this.kendoui.BooleanEditor(container, options)");
+        }
+        if (output.TypeName == typeof(int).FullName)
+        {
+            //枚举类型
+            if (output.EnumMetadatas != null)
+            {
+                sb.Append(string.Format(",\n\t  template: d => this.osharp.valueToText(d.{0}, this.osharp.data.ENUM_SELECT_SOURCE),", output.Name));
+                sb.Append(",\n\t  editor: (container, options) => this.kendoui.DropDownListEditor(container, options, this.osharp.data.ENUM_SELECT_SOURCE)");
+                sb.Append(",\n\t  filterable: { ui: el => this.kendoui.DropDownList(el, this.osharp.data.ENUM_SELECT_SOURCE) }");
+            }
+        }
+        if (output.TypeName == typeof(DateTime).FullName)
+        {
+            sb.Append(", width: 120");
+            sb.Append(",\n      format: \"{0:yy-MM-dd HH:mm}\"");
+        }
+        sb.Append("\n\t}");
+        return sb.ToString();
+    }
+
+    private static string GetSingleTypeName(string typeName)
+    {
+        switch(typeName)
+        {
+            case "System.Int32":
+            case "System.Long":
+                return "number";
+            case "System.String":
+                return "string";
+            case "System.Boolean":
+                return "boolean";
+            case "System.DateTime":
+                return "date";
+            default:
+                return "object";
+        }
+    }
+#>
