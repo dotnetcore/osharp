@@ -5,16 +5,14 @@
 
     public class TypeScriptComponentTemplate : CSharpTemplate
     {
-        private TypeMetadata _inputDto;
         private TypeMetadata _outputDto;
         private string _entityName;
         private string _lowerEntityName;
 
-        public TypeScriptComponentTemplate(string entityName, TypeMetadata inputDto, TypeMetadata outputDto)
+        public TypeScriptComponentTemplate(TypeMetadata outputDto)
         {
-            _entityName = entityName;
-            _lowerEntityName = entityName.UpperToLowerAndSplit();
-            _inputDto = inputDto;
+            _entityName = outputDto.Name.Substring("", "OutputDto");
+            _lowerEntityName = _entityName.UpperToLowerAndSplit();
             _outputDto = outputDto;
         }
 
@@ -62,9 +60,9 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
       id: "Id",
       fields: {
 <#+
-        if(_inputDto.PropertyMetadatas != null)
+        if(_outputDto.PropertyMetadatas != null)
         {
-            foreach(var dto in _inputDto.PropertyMetadatas)
+            foreach(var dto in _outputDto.PropertyMetadatas)
             {
 #>
         <#=GetModelItem(dto) #>
@@ -108,10 +106,10 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
 	    }
     }
 
-    private static string GetModelItem(PropertyMetadata input)
+    private static string GetModelItem(PropertyMetadata output)
     {
-        string line= string.Format("{0}: {{ type: \"{1}\"", input.Name, GetSingleTypeName(input.TypeName));
-        if(input.IsRequired != null && input.IsRequired.Value)
+        string line= string.Format("{0}: {{ type: \"{1}\"", output.Name, GetSingleTypeName(output.TypeName));
+        if(output.IsRequired != null && output.IsRequired.Value)
         {
             line += ", validation: { required: true }";
         }
@@ -161,6 +159,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
             case "System.Long":
                 return "number";
             case "System.String":
+            case "System.Guid":
                 return "string";
             case "System.Boolean":
                 return "boolean";

@@ -37,6 +37,7 @@ namespace OSharp.CodeGenerator
             {
                 return;
             }
+
             Name = property.Name;
             TypeName = property.PropertyType.FullName;
             Display = property.GetDescription();
@@ -63,9 +64,6 @@ namespace OSharp.CodeGenerator
             //枚举类型，作为数值类型返回
             if (property.PropertyType.IsEnum)
             {
-                Type intType = typeof(int);
-                TypeName = intType.FullName;
-                Display = property.PropertyType.GetDescription();
                 Type enumType = property.PropertyType;
                 Array values = enumType.GetEnumValues();
                 Enum[] enumItems = values.Cast<Enum>().ToArray();
@@ -74,12 +72,8 @@ namespace OSharp.CodeGenerator
                     EnumMetadatas = enumItems.Select(m => new EnumMetadata(m)).ToArray();
                 }
             }
-            else if (property.PropertyType == typeof(Guid))
-            {
-                TypeName = typeof(string).FullName;
-            }
         }
-
+        
         /// <summary>
         /// 获取或设置 属性名称
         /// </summary>

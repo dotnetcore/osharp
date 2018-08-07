@@ -1,7 +1,7 @@
 <#@ template language="C#" debug="True" #>
 <#@ output extension="txt" #>
 <#@ include file="T4Toolbox.tt" #>
-<#@ include file="TypeScript_Component_Template.tt" #>
+<#@ include file="Template_TypeScript_Component.tt" #>
 
 <#@ assembly name="netstandard.dll" #>
 <#@ assembly name="System.Core.dll" #>
@@ -22,19 +22,13 @@
     string outputPath = currentPath + "\\ts_components";
 
     HttpClient client = new HttpClient();
-    string url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=inputdto";
+    string url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=outputdto";
     string json = client.GetStringAsync(url).Result;
-    TypeMetadata[] inputs = json.FromJsonString<TypeMetadata[]>();
-    url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=outputdto";    
-    json = client.GetStringAsync(url).Result;
     TypeMetadata[] outputs = json.FromJsonString<TypeMetadata[]>();
  
-    foreach(var input in inputs)
+    foreach(var output in outputs.Where(m => m.Name.EndsWith("OutputDto")))
     {
-        string entityName = input.Name.Substring("", "InputDto");
-        TypeMetadata output = outputs.FirstOrDefault(m=>m.Name == entityName+"OutputDto");
-
-        TypeScriptComponentTemplate component = new TypeScriptComponentTemplate(entityName, input, output);
+        TypeScriptComponentTemplate component = new TypeScriptComponentTemplate(output);
         string fileName = Path.Combine(outputPath, component.FileName);
         component.Output.Encoding = Encoding.UTF8;
         component.RenderToFile(fileName);

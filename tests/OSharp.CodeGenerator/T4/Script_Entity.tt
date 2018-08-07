@@ -1,6 +1,9 @@
 <#@ template language="C#" debug="True" #>
-<#@ output extension="cs" #>
+<#@ output extension="generated.cs" #>
 <#@ include file="T4Toolbox.tt" #>
+<#@ include file="Template_Entity_Configuration.tt" #>
+<#@ include file="Template_Entity_InputDto.tt" #>
+<#@ include file="Template_Entity_OutputDto.tt" #>
 
 <#@ assembly name="netstandard.dll" #>
 <#@ assembly name="System.Core.dll" #>
@@ -22,8 +25,49 @@
     string inputDtoPath = currentPath + "\\cs_input";
     string outputDtoPath = currentPath + "\\cs_output";
 
+    bool generateConfig = true;
+    bool generateInputDto = true;
+    bool generateOutputDto = true;
+
     HttpClient client = new HttpClient();
     string url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=entity";
     string json = client.GetStringAsync(url).Result;
+    TypeMetadata[] entities = json.FromJsonString<TypeMetadata[]>();
+    string modulePattern=@"(?<=Demo\.)\w+(?=\.*Entities)";
+
+    // EntityConfiguration
+    if(generateConfig)
+    {
+        foreach(var entity in entities)
+        {
+            EntityConfigurationTemplate config = new EntityConfigurationTemplate(entity, modulePattern);
+            string fileName = Path.Combine(configPath, config.FileName);
+            config.Output.Encoding = Encoding.UTF8;
+            config.RenderToFile(fileName);
+        } 
+    }
+
+    //InputDto
+    if(generateInputDto) 
+    {
+        foreach(var entity in entities)
+        {
+            InputDtoTemplate input = new InputDtoTemplate(entity, modulePattern);
+            string fileName = Path.Combine(inputDtoPath, input.FileName);
+            input.Output.Encoding = Encoding.UTF8;
+            input.RenderToFile(fileName);
+        }
+    }
+
+    //OutputDto
+    if(generateOutputDto) 
+    {
+        foreach(var entity in entities)
+        {
+            OutputDtoTemplate output = new OutputDtoTemplate(entity, modulePattern);
+            string fileName = Path.Combine(outputDtoPath, output.FileName);
+            output.Output.Encoding = Encoding.UTF8;
+            output.RenderToFile(fileName);
+        }
+    }
 #>
-<#=json #>

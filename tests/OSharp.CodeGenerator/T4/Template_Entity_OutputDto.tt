@@ -1,0 +1,115 @@
+﻿<#+
+// <copyright file="Template_Entity_Configuration.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class OutputDtoTemplate : CSharpTemplate
+{
+        private readonly TypeMetadata _entity;
+        private readonly string _entityName;
+        private readonly string _lowerEntityName;
+        private readonly string _moduleName = null;
+        private readonly PropertyMetadata _key;
+
+        public OutputDtoTemplate(TypeMetadata entity, string modulePattern)
+        {
+            _entityName = entity.Name;
+            _lowerEntityName = entity.Name.UpperToLowerAndSplit();
+            _entity = entity;
+            _key = entity.PropertyMetadatas.First(m => m.Name == "Id");
+            if(modulePattern != null)
+            {
+                _moduleName = entity.Namespace.Match(modulePattern);
+                switch(entity.FullName)
+                {
+                    case "OSharp.Core.Functions.Function":
+                    case "OSharp.Core.EntityInfos.EntityInfo":
+                        _moduleName = "Security";
+                        break;
+                    case "OSharp.System.KeyValueCouple":
+                        _moduleName = "System";
+                        break;
+                }
+            }
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_moduleName)
+                    ? string.Format("Dtos\\{0}OutputDto.cs", _entityName)
+                    : string.Format("{0}\\Dtos\\{1}OutputDto.cs", _moduleName, _entityName);
+            }
+        }
+
+	    public override string TransformText()
+	    {
+		    base.TransformText();
+#>
+// -----------------------------------------------------------------------
+//  <copyright file="<#=_entityName #>OutputDto.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-<#=DateTime.Now.Year #> OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date><#=DateTime.Now.ToString("yyyy-MM-dd HH:mm") #></last-date>
+// -----------------------------------------------------------------------
+
+using System;
+
+using Liuliu.Demo<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
+
+using OSharp.Entity;
+using OSharp.Mapping;
+
+
+namespace Liuliu.Demo<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos
+{
+    /// <summary>
+    /// 输入DTO：<#=_entity.Display #>
+    /// </summary>
+    [MapFrom(typeof(<#=_entityName #>))]
+    public class <#=_entityName #>OutputDto : IOutputDto
+    {
+<#+
+        foreach(var prop in _entity.PropertyMetadatas.OrderBy(m=>m.Name != "Id"))
+        {
+#>
+        /// <summary>
+        /// 获取或设置 <#=prop.Display #>
+        /// </summary>
+        public <#=GetSingleTypeName(prop.TypeName) #> <#=prop.Name #> { get; set; }
+
+<#+
+        }
+ #>
+    }
+}
+<#+
+            return this.GenerationEnvironment.ToString();
+	    }
+
+        
+        private static string GetSingleTypeName(string typeName)
+        {
+            switch(typeName)
+            {
+                case "System.Int32":
+                    return "int";
+                case "System.Long":
+                    return "long";
+                case "System.String":
+                    return "string";                    
+                case "System.Guid":
+                    return "Guid";
+                case "System.Boolean":
+                    return "bool";
+                case "System.DateTime":
+                    return "DateTime";
+                default:
+                    return typeName;
+            }
+        }
+}
+#>
