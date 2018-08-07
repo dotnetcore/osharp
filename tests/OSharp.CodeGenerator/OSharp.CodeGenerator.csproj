@@ -47,12 +47,23 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T4\Script_Entity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Script_Entity.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="T4\Readme.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="T4\Script_Entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastOutputs>.\Script_Entity.cs</LastOutputs>
+      <LastGenOutput>Script_Entity.cs</LastGenOutput>
+    </Content>
     <Content Include="T4\ts_components\entity-info.component.txt" />
     <Content Include="T4\ts_components\entity-role.component.txt" />
     <Content Include="T4\ts_components\function.component.txt" />
@@ -60,9 +71,9 @@
     <Content Include="T4\ts_components\role.component.txt" />
     <Content Include="T4\ts_components\user-role.component.txt" />
     <Content Include="T4\ts_components\user.component.txt" />
-    <Content Include="T4\TypeScript_Component_Script.tt">
+    <Content Include="T4\Script_InputDto_OutputDto.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TypeScript_Component_Script1.txt</LastGenOutput>
+      <LastGenOutput>Script_InputDto_OutputDto.txt</LastGenOutput>
       <LastOutputs>
 .\ts_components\entity-info.component.txt
 .\ts_components\entity-role.component.txt
@@ -74,12 +85,12 @@
 .\TypeScript_Component_Script1.txt
 </LastOutputs>
     </Content>
-    <Content Include="T4\TypeScript_Component_Script1.txt">
+    <Content Include="T4\Script_InputDto_OutputDto.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TypeScript_Component_Script.tt</DependentUpon>
+      <DependentUpon>Script_InputDto_OutputDto.tt</DependentUpon>
     </Content>
-    <Content Include="T4\TypeScript_Component_Template.tt" />
+    <Content Include="T4\Template_TypeScript_Component.tt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

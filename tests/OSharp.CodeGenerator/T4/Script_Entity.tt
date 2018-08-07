@@ -1,0 +1,29 @@
+<#@ template language="C#" debug="True" #>
+<#@ output extension="cs" #>
+<#@ include file="T4Toolbox.tt" #>
+
+<#@ assembly name="netstandard.dll" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Net.Http.dll" #>
+<#@ assembly name="$(TargetDir)Newtonsoft.Json.dll" #>
+<#@ assembly name="$(TargetDir)OSharp.dll" #>
+
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ Import Namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Net.Http" #>
+<#@ import namespace="OSharp.CodeGenerator" #>
+<#@ import namespace="OSharp.Extensions" #>
+<#@ import namespace="OSharp.Json" #>
+<#
+    string currentPath = Path.GetDirectoryName(Host.TemplateFile);
+    string configPath = currentPath + "\\cs_config";
+    string inputDtoPath = currentPath + "\\cs_input";
+    string outputDtoPath = currentPath + "\\cs_output";
+
+    HttpClient client = new HttpClient();
+    string url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=entity";
+    string json = client.GetStringAsync(url).Result;
+#>
+<#=json #>
