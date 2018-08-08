@@ -52,8 +52,11 @@ namespace OSharp.CodeGenerator
                 MaxLength = stringLength.MaximumLength;
                 MinLength = stringLength.MinimumLength;
             }
-            MaxLength = property.GetAttribute<MaxLengthAttribute>()?.Length;
-            MinLength = property.GetAttribute<MinLengthAttribute>()?.Length;
+            else
+            {
+                MaxLength = property.GetAttribute<MaxLengthAttribute>()?.Length;
+                MinLength = property.GetAttribute<MinLengthAttribute>()?.Length;
+            }
             RangeAttribute range = property.GetAttribute<RangeAttribute>();
             if (range != null)
             {
@@ -123,5 +126,13 @@ namespace OSharp.CodeGenerator
         /// 获取或设置 枚举元数据
         /// </summary>
         public EnumMetadata[] EnumMetadatas { get; set; }
+
+        /// <summary>
+        /// 是否有验证属性 
+        /// </summary>
+        public bool HasValidateAttribute()
+        {
+            return IsRequired.HasValue || MaxLength.HasValue || MinLength.HasValue || Range != null || Max != null || Min != null;
+        }
     }
 }

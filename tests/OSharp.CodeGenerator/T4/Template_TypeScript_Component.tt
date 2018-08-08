@@ -3,17 +3,20 @@
 //  Copyright © . All Rights Reserved.
 // </copyright>
 
+// 设计思路：由OutputDto生成 model和columns，再由 InputDto 确定各个列的属性值
+
     public class TypeScriptComponentTemplate : CSharpTemplate
     {
-        private TypeMetadata _outputDto;
+        private TypeMetadata _outputDto, _inputDto;
         private string _entityName;
         private string _lowerEntityName;
 
-        public TypeScriptComponentTemplate(TypeMetadata outputDto)
+        public TypeScriptComponentTemplate(TypeMetadata outputDto, TypeMetadata inputDto)
         {
             _entityName = outputDto.Name.Substring("", "OutputDto");
             _lowerEntityName = _entityName.UpperToLowerAndSplit();
             _outputDto = outputDto;
+            _inputDto = inputDto;
         }
 
         public string FileName
@@ -62,10 +65,15 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
 <#+
         if(_outputDto.PropertyMetadatas != null)
         {
-            foreach(var dto in _outputDto.PropertyMetadatas)
+            foreach(var outProp in _outputDto.PropertyMetadatas)
             {
+                PropertyMetadata inProp = null;
+                if(_inputDto != null && _inputDto.PropertyMetadatas != null)
+                {
+                    inProp = _inputDto.PropertyMetadatas.FirstOrDefault(m => m.Name == outProp.Name);
+                }
 #>
-        <#=GetModelItem(dto) #>
+        <#=GetModelItem(outProp, inProp) #>
 <#+
             }
         }
@@ -106,15 +114,54 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
 	    }
     }
 
-    private static string GetModelItem(PropertyMetadata output)
+    private static string GetModelItem(PropertyMetadata outProp, PropertyMetadata inProp)
     {
-        string line= string.Format("{0}: {{ type: \"{1}\"", output.Name, GetSingleTypeName(output.TypeName));
-        if(output.IsRequired != null && output.IsRequired.Value)
-        {
-            line += ", validation: { required: true }";
-        }
+        string line= string.Format("{0}: {{ type: \"{1}\"", outProp.Name, GetSingleTypeName(outProp.TypeName));
+        line += GetModelItemValidation(inProp);
 
-        line+=" },";
+        line += " },";
+        return line;
+    }
+
+    private static string GetModelItemValidation(PropertyMetadata inProp)
+    {
+        if (inProp == null || !inProp.HasValidateAttribute())
+        {
+            return null;
+        }
+        string line = ", validation: { ";
+
+        List<string> list = new List<string>();
+        if (inProp.IsRequired != null && inProp.IsRequired.Value)
+        {
+            list.Add("required: true");
+        }
+        if (inProp.MinLength != null)
+        {
+            list.Add("minLength: " + inProp.MinLength.Value);
+        }
+        if (inProp.MaxLength != null)
+        {
+            list.Add("maxLength: " + inProp.MaxLength.Value);
+        }
+        
+        if (inProp.Min != null)
+        {
+            list.Add("min: " + inProp.Min);
+        }
+        if (inProp.Max != null)
+        {
+            list.Add("max: " + inProp.Max);
+        }
+        if (inProp.Range != null)
+        {
+            list.Add("min: " + inProp.Range[0]);
+            list.Add("max: " + inProp.Range[1]);
+        }
+            
+        line += list.ExpandAndToString(", ");
+
+        line += " }";
         return line;
     }
 

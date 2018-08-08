@@ -49,6 +49,47 @@ namespace OSharp.CodeGenerator
             Console.WriteLine(sb.ToString());
         }
 
-        
+
+        private static string GetModelItemValidation(PropertyMetadata inProp)
+        {
+            if (inProp == null || !inProp.HasValidateAttribute())
+            {
+                return null;
+            }
+            string line = ", validation: { ";
+
+            List<string> list = new List<string>();
+            if (inProp.IsRequired != null && inProp.IsRequired.Value)
+            {
+                list.Add("required: true");
+            }
+            if (inProp.MinLength != null)
+            {
+                list.Add("minLength: " + inProp.MinLength.Value);
+            }
+            if (inProp.MaxLength != null)
+            {
+                list.Add("maxLength: " + inProp.MaxLength.Value);
+            }
+            if (inProp.Min != null)
+            {
+                list.Add("min: " + inProp.Min);
+            }
+            if (inProp.Max != null)
+            {
+                list.Add("max: " + inProp.Max);
+            }
+            if (inProp.Range != null)
+            {
+                list.Add("min: " + inProp.Range[0]);
+                list.Add("max: " + inProp.Range[1]);
+            }
+            
+            line += list.ExpandAndToString(", ");
+
+            line += " }";
+            return line;
+        }
+
     }
 }

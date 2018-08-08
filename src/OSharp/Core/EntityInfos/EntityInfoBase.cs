@@ -41,9 +41,9 @@ namespace OSharp.Core.EntityInfos
         public string TypeName { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否启用数据日志
+        /// 获取或设置 是否启用数据审计
         /// </summary>
-        [DisplayName("是否启用数据日志")]
+        [DisplayName("是否数据审计")]
         public bool AuditEnabled { get; set; } = true;
 
         /// <summary>

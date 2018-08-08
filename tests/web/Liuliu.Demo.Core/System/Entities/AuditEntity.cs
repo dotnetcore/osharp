@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Audits;
 using OSharp.Entity;
@@ -45,26 +46,31 @@ namespace Liuliu.Demo.System.Entities
         /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
+        [Required, DisplayName("实体名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 类型名称
         /// </summary>
+        [Required, DisplayName("实体名称")]
         public string TypeName { get; set; }
 
         /// <summary>
         /// 获取或设置 数据编号
         /// </summary>
+        [Required, DisplayName("实体名称")]
         public string EntityKey { get; set; }
 
         /// <summary>
         /// 获取或设置 操作类型
         /// </summary>
+        [DisplayName("操作类型")]
         public OperateType OperateType { get; set; }
 
         /// <summary>
         /// 获取或设置 所属审计操作编号
         /// </summary>
+        [DisplayName("所属审计操作编号")]
         public Guid OperationId { get; set; }
 
         /// <summary>
