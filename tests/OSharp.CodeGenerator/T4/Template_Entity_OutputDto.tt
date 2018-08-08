@@ -43,6 +43,8 @@ public class OutputDtoTemplate : CSharpTemplate
             }
         }
 
+        public string ProjectName { get; set; }
+
 	    public override string TransformText()
 	    {
 		    base.TransformText();
@@ -58,13 +60,13 @@ public class OutputDtoTemplate : CSharpTemplate
 
 using System;
 
-using Liuliu.Demo<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
 
 using OSharp.Entity;
 using OSharp.Mapping;
 
 
-namespace Liuliu.Demo<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos
+namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos
 {
     /// <summary>
     /// 输入DTO：<#=_entity.Display #>

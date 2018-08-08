@@ -43,6 +43,8 @@ public class EntityConfigurationTemplate : CSharpTemplate
             }
         }
 
+        public string ProjectName { get; set; }
+
 	    public override string TransformText()
 	    {
 		    base.TransformText();
@@ -58,7 +60,7 @@ public class EntityConfigurationTemplate : CSharpTemplate
 
 using System;
 
-using Liuliu.Demo<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -66,7 +68,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OSharp.Entity;
 
 
-namespace Liuliu.Demo.EntityConfiguration<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
+namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>.EntityConfiguration<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
 {
     public partial class <#=_entityName #>Configuration : EntityTypeConfigurationBase<<#=_entityName #>, <#=GetSingleTypeName(_key.TypeName) #>>
     {

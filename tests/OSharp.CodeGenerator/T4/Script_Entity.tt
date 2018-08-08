@@ -24,6 +24,7 @@
     string configPath = currentPath + "\\cs_config";
     string inputDtoPath = currentPath + "\\cs_input";
     string outputDtoPath = currentPath + "\\cs_output";
+    string projectName = "Liuliu.Demo";
 
     bool generateConfig = true;
     bool generateInputDto = true;
@@ -41,6 +42,7 @@
         foreach(var entity in entities)
         {
             EntityConfigurationTemplate config = new EntityConfigurationTemplate(entity, modulePattern);
+            config.ProjectName = projectName;
             string fileName = Path.Combine(configPath, config.FileName);
             config.Output.Encoding = Encoding.UTF8;
             config.RenderToFile(fileName);
@@ -53,6 +55,7 @@
         foreach(var entity in entities)
         {
             InputDtoTemplate input = new InputDtoTemplate(entity, modulePattern);
+            input.ProjectName = projectName;
             string fileName = Path.Combine(inputDtoPath, input.FileName);
             input.Output.Encoding = Encoding.UTF8;
             input.RenderToFile(fileName);
@@ -65,6 +68,7 @@
         foreach(var entity in entities)
         {
             OutputDtoTemplate output = new OutputDtoTemplate(entity, modulePattern);
+            output.ProjectName = projectName;
             string fileName = Path.Combine(outputDtoPath, output.FileName);
             output.Output.Encoding = Encoding.UTF8;
             output.RenderToFile(fileName);
