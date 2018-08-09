@@ -99,7 +99,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
         }
  #>
       }
-    }
+    };
   }
 
   protected GetGridColumns(): kendo.ui.GridColumn[] {
@@ -224,6 +224,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
         {
             case "System.Int32":
             case "System.Long":
+            case "System.Decimal":
                 return "number";
             case "System.String":
             case "System.Guid":

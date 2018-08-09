@@ -81,6 +81,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
         /// <summary>
         /// 获取或设置 <#=prop.Display #>
         /// </summary>
+        [DisplayName("<#=prop.Display #>")]
         public <#=GetSingleTypeName(prop) #> <#=prop.Name #> { get; set; }
 
 <#+
