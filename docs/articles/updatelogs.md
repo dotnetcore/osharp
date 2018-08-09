@@ -1,6 +1,15 @@
 # OSharp .NetStandard 更新记录
 
-### latest version
+### least version
+1. 修复 UserStore 中的 FindByLoginAsync当userId为null时会引发异常的问题
+2. 支持Lazy<>的注入。将Repository的Query拆分为多个方法，解决查询不支持可选参数的问题。DbContextBase添加延迟加载代理LazyLoadingProxiesEnabled的开关
+3. OSharp.dll增加中增加Entity，InputDto，OutputDto 类型元数据生成功能，可用于自动生成代码。增加T4生成TS列表组件的代码生成功能
+4. 添加实体生成InputDto、OutputDto、EntityConfiguration类型的T4脚本
+5. 更新OutputDto生成TS组件代码的流程，验证信息由相应的InputDto提供
+6. 代码生成类型元数据支持可空属性支持，修复 T4 模板可空类型不使用可空属性类型的问题
+7. IQueryable相关扩展方法去除TEntity必须是实体类的限制，现可用于任意IQueryable<T>数据源
+
+### 0.3.0-beta08
 1. 修复ModuleInfo提取时排序码不起作用的问题
 2. 修复登录时用户信息重复Track的问题
 3. 优化Repository的Update相关实现，使之按需更新

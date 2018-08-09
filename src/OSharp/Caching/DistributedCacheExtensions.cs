@@ -21,10 +21,12 @@ using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Json;
 using OSharp.Properties;
+using OSharp.Reflection;
 
 
 namespace OSharp.Caching
@@ -729,16 +731,22 @@ namespace OSharp.Caching
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector, params object[] keyParams)
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {
@@ -767,16 +775,22 @@ namespace OSharp.Caching
             params object[] keyParams)
             where TOutputDto : IOutputDto
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {
