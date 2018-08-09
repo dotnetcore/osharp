@@ -116,7 +116,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
             }
             if(prop.IsNullable)
             {
-                name = prop.TypeName + "?";
+                name = name + "?";
             }
             return name;
         }
