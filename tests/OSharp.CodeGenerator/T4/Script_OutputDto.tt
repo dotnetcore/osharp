@@ -21,6 +21,7 @@
 <#
     string currentPath = Path.GetDirectoryName(Host.TemplateFile);
     string outputPath = currentPath + "\\ts_components";
+    string modulePattern=@"(?<=Liuliu\.Demo\.)\w+(?=\.*Dtos)";
 
     HttpClient client = new HttpClient();
     string url = "http://localhost:7001/api/Common/GetTypeMetadatas?type=outputdto";
@@ -35,7 +36,7 @@
     {
         string entityName = output.Name.Substring("", "OutputDto");
         TypeMetadata input = inputs.FirstOrDefault(m => m.Name == entityName + "InputDto");
-        TypeScriptComponentTemplate component = new TypeScriptComponentTemplate(output, input);
+        TypeScriptComponentTemplate component = new TypeScriptComponentTemplate(output, input, modulePattern);
         string fileName = Path.Combine(outputPath, component.FileName);
         component.Output.Encoding = Encoding.UTF8;
         component.RenderToFile(fileName);

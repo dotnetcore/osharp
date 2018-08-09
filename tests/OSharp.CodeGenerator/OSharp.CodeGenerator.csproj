@@ -115,77 +115,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="T4\cs_config\Identity\LoginLogConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\OrganizationConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\RoleClaimConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\RoleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserClaimConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserDetailConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserLoginConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserRoleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Identity\UserTokenConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\EntityInfoConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\EntityRoleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\EntityUserConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\FunctionConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\ModuleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\ModuleFunctionConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\ModuleRoleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\Security\ModuleUserConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\System\AuditEntityConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\System\AuditOperationConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\System\AuditPropertyConfiguration.generated.cs" />
-    <Compile Include="T4\cs_config\System\KeyValueCoupleConfiguration.generated.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\LoginLogInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\OrganizationInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\RoleClaimInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\RoleInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserClaimInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserDetailInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserLoginInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserRoleInputDto.cs" />
-    <Compile Include="T4\cs_input\Identity\Dtos\UserTokenInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\EntityInfoInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\EntityRoleInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\EntityUserInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\FunctionInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\ModuleFunctionInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\ModuleInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\ModuleRoleInputDto.cs" />
-    <Compile Include="T4\cs_input\Security\Dtos\ModuleUserInputDto.cs" />
-    <Compile Include="T4\cs_input\System\Dtos\AuditEntityInputDto.cs" />
-    <Compile Include="T4\cs_input\System\Dtos\AuditOperationInputDto.cs" />
-    <Compile Include="T4\cs_input\System\Dtos\AuditPropertyInputDto.cs" />
-    <Compile Include="T4\cs_input\System\Dtos\KeyValueCoupleInputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\LoginLogOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\OrganizationOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\RoleClaimOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\RoleOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserClaimOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserDetailOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserLoginOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserRoleOutputDto.cs" />
-    <Compile Include="T4\cs_output\Identity\Dtos\UserTokenOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\EntityInfoOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\EntityRoleOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\EntityUserOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\FunctionOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\ModuleFunctionOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\ModuleOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\ModuleRoleOutputDto.cs" />
-    <Compile Include="T4\cs_output\Security\Dtos\ModuleUserOutputDto.cs" />
-    <Compile Include="T4\cs_output\System\Dtos\AuditEntityOutputDto.cs" />
-    <Compile Include="T4\cs_output\System\Dtos\AuditOperationOutputDto.cs" />
-    <Compile Include="T4\cs_output\System\Dtos\AuditPropertyOutputDto.cs" />
-    <Compile Include="T4\cs_output\System\Dtos\KeyValueCoupleOutputDto.cs" />
-    <Compile Include="T4\Script_Entity.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Script_Entity.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -193,78 +122,149 @@
     <None Include="T4\Readme.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="T4\cs_config\Identity\LoginLogConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\OrganizationConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\RoleClaimConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\RoleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserClaimConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserDetailConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserLoginConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserRoleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Identity\UserTokenConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\EntityInfoConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\EntityRoleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\EntityUserConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\FunctionConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\ModuleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\ModuleFunctionConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\ModuleRoleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Security\ModuleUserConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\System\AuditEntityConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\System\AuditOperationConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\System\AuditPropertyConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\System\KeyValueCoupleConfiguration.generated.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\LoginLogInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\OrganizationInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\RoleClaimInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\RoleInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserClaimInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserDetailInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserLoginInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserRoleInputDto.txt" />
+    <Content Include="T4\cs_input\Identity\Dtos\UserTokenInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\EntityInfoInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\EntityRoleInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\EntityUserInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\FunctionInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\ModuleFunctionInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\ModuleInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\ModuleRoleInputDto.txt" />
+    <Content Include="T4\cs_input\Security\Dtos\ModuleUserInputDto.txt" />
+    <Content Include="T4\cs_input\System\Dtos\AuditEntityInputDto.txt" />
+    <Content Include="T4\cs_input\System\Dtos\AuditOperationInputDto.txt" />
+    <Content Include="T4\cs_input\System\Dtos\AuditPropertyInputDto.txt" />
+    <Content Include="T4\cs_input\System\Dtos\KeyValueCoupleInputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\LoginLogOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\OrganizationOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\RoleClaimOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\RoleOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserClaimOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserDetailOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserLoginOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserRoleOutputDto.txt" />
+    <Content Include="T4\cs_output\Identity\Dtos\UserTokenOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\EntityInfoOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\EntityRoleOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\EntityUserOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\FunctionOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\ModuleFunctionOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\ModuleOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\ModuleRoleOutputDto.txt" />
+    <Content Include="T4\cs_output\Security\Dtos\ModuleUserOutputDto.txt" />
+    <Content Include="T4\cs_output\System\Dtos\AuditEntityOutputDto.txt" />
+    <Content Include="T4\cs_output\System\Dtos\AuditOperationOutputDto.txt" />
+    <Content Include="T4\cs_output\System\Dtos\AuditPropertyOutputDto.txt" />
+    <Content Include="T4\cs_output\System\Dtos\KeyValueCoupleOutputDto.txt" />
     <Content Include="T4\Script_Entity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastOutputs>
-.\cs_config\Identity\LoginLogConfiguration.generated.cs
-.\cs_config\Identity\OrganizationConfiguration.generated.cs
-.\cs_config\Identity\RoleClaimConfiguration.generated.cs
-.\cs_config\Identity\RoleConfiguration.generated.cs
-.\cs_config\Identity\UserClaimConfiguration.generated.cs
-.\cs_config\Identity\UserConfiguration.generated.cs
-.\cs_config\Identity\UserDetailConfiguration.generated.cs
-.\cs_config\Identity\UserLoginConfiguration.generated.cs
-.\cs_config\Identity\UserRoleConfiguration.generated.cs
-.\cs_config\Identity\UserTokenConfiguration.generated.cs
-.\cs_config\Security\EntityInfoConfiguration.generated.cs
-.\cs_config\Security\EntityRoleConfiguration.generated.cs
-.\cs_config\Security\EntityUserConfiguration.generated.cs
-.\cs_config\Security\FunctionConfiguration.generated.cs
-.\cs_config\Security\ModuleConfiguration.generated.cs
-.\cs_config\Security\ModuleFunctionConfiguration.generated.cs
-.\cs_config\Security\ModuleRoleConfiguration.generated.cs
-.\cs_config\Security\ModuleUserConfiguration.generated.cs
-.\cs_config\System\AuditEntityConfiguration.generated.cs
-.\cs_config\System\AuditOperationConfiguration.generated.cs
-.\cs_config\System\AuditPropertyConfiguration.generated.cs
-.\cs_config\System\KeyValueCoupleConfiguration.generated.cs
-.\cs_input\Identity\Dtos\LoginLogInputDto.cs
-.\cs_input\Identity\Dtos\OrganizationInputDto.cs
-.\cs_input\Identity\Dtos\RoleClaimInputDto.cs
-.\cs_input\Identity\Dtos\RoleInputDto.cs
-.\cs_input\Identity\Dtos\UserClaimInputDto.cs
-.\cs_input\Identity\Dtos\UserDetailInputDto.cs
-.\cs_input\Identity\Dtos\UserInputDto.cs
-.\cs_input\Identity\Dtos\UserLoginInputDto.cs
-.\cs_input\Identity\Dtos\UserRoleInputDto.cs
-.\cs_input\Identity\Dtos\UserTokenInputDto.cs
-.\cs_input\Security\Dtos\EntityInfoInputDto.cs
-.\cs_input\Security\Dtos\EntityRoleInputDto.cs
-.\cs_input\Security\Dtos\EntityUserInputDto.cs
-.\cs_input\Security\Dtos\FunctionInputDto.cs
-.\cs_input\Security\Dtos\ModuleFunctionInputDto.cs
-.\cs_input\Security\Dtos\ModuleInputDto.cs
-.\cs_input\Security\Dtos\ModuleRoleInputDto.cs
-.\cs_input\Security\Dtos\ModuleUserInputDto.cs
-.\cs_input\System\Dtos\AuditEntityInputDto.cs
-.\cs_input\System\Dtos\AuditOperationInputDto.cs
-.\cs_input\System\Dtos\AuditPropertyInputDto.cs
-.\cs_input\System\Dtos\KeyValueCoupleInputDto.cs
-.\cs_output\Identity\Dtos\LoginLogOutputDto.cs
-.\cs_output\Identity\Dtos\OrganizationOutputDto.cs
-.\cs_output\Identity\Dtos\RoleClaimOutputDto.cs
-.\cs_output\Identity\Dtos\RoleOutputDto.cs
-.\cs_output\Identity\Dtos\UserClaimOutputDto.cs
-.\cs_output\Identity\Dtos\UserDetailOutputDto.cs
-.\cs_output\Identity\Dtos\UserLoginOutputDto.cs
-.\cs_output\Identity\Dtos\UserOutputDto.cs
-.\cs_output\Identity\Dtos\UserRoleOutputDto.cs
-.\cs_output\Identity\Dtos\UserTokenOutputDto.cs
-.\cs_output\Security\Dtos\EntityInfoOutputDto.cs
-.\cs_output\Security\Dtos\EntityRoleOutputDto.cs
-.\cs_output\Security\Dtos\EntityUserOutputDto.cs
-.\cs_output\Security\Dtos\FunctionOutputDto.cs
-.\cs_output\Security\Dtos\ModuleFunctionOutputDto.cs
-.\cs_output\Security\Dtos\ModuleOutputDto.cs
-.\cs_output\Security\Dtos\ModuleRoleOutputDto.cs
-.\cs_output\Security\Dtos\ModuleUserOutputDto.cs
-.\cs_output\System\Dtos\AuditEntityOutputDto.cs
-.\cs_output\System\Dtos\AuditOperationOutputDto.cs
-.\cs_output\System\Dtos\AuditPropertyOutputDto.cs
-.\cs_output\System\Dtos\KeyValueCoupleOutputDto.cs
-.\Script_Entity.generated.cs
+.\cs_config\Identity\LoginLogConfiguration.generated.txt
+.\cs_config\Identity\OrganizationConfiguration.generated.txt
+.\cs_config\Identity\RoleClaimConfiguration.generated.txt
+.\cs_config\Identity\RoleConfiguration.generated.txt
+.\cs_config\Identity\UserClaimConfiguration.generated.txt
+.\cs_config\Identity\UserConfiguration.generated.txt
+.\cs_config\Identity\UserDetailConfiguration.generated.txt
+.\cs_config\Identity\UserLoginConfiguration.generated.txt
+.\cs_config\Identity\UserRoleConfiguration.generated.txt
+.\cs_config\Identity\UserTokenConfiguration.generated.txt
+.\cs_config\Security\EntityInfoConfiguration.generated.txt
+.\cs_config\Security\EntityRoleConfiguration.generated.txt
+.\cs_config\Security\EntityUserConfiguration.generated.txt
+.\cs_config\Security\FunctionConfiguration.generated.txt
+.\cs_config\Security\ModuleConfiguration.generated.txt
+.\cs_config\Security\ModuleFunctionConfiguration.generated.txt
+.\cs_config\Security\ModuleRoleConfiguration.generated.txt
+.\cs_config\Security\ModuleUserConfiguration.generated.txt
+.\cs_config\System\AuditEntityConfiguration.generated.txt
+.\cs_config\System\AuditOperationConfiguration.generated.txt
+.\cs_config\System\AuditPropertyConfiguration.generated.txt
+.\cs_config\System\KeyValueCoupleConfiguration.generated.txt
+.\cs_input\Identity\Dtos\LoginLogInputDto.txt
+.\cs_input\Identity\Dtos\OrganizationInputDto.txt
+.\cs_input\Identity\Dtos\RoleClaimInputDto.txt
+.\cs_input\Identity\Dtos\RoleInputDto.txt
+.\cs_input\Identity\Dtos\UserClaimInputDto.txt
+.\cs_input\Identity\Dtos\UserDetailInputDto.txt
+.\cs_input\Identity\Dtos\UserInputDto.txt
+.\cs_input\Identity\Dtos\UserLoginInputDto.txt
+.\cs_input\Identity\Dtos\UserRoleInputDto.txt
+.\cs_input\Identity\Dtos\UserTokenInputDto.txt
+.\cs_input\Security\Dtos\EntityInfoInputDto.txt
+.\cs_input\Security\Dtos\EntityRoleInputDto.txt
+.\cs_input\Security\Dtos\EntityUserInputDto.txt
+.\cs_input\Security\Dtos\FunctionInputDto.txt
+.\cs_input\Security\Dtos\ModuleFunctionInputDto.txt
+.\cs_input\Security\Dtos\ModuleInputDto.txt
+.\cs_input\Security\Dtos\ModuleRoleInputDto.txt
+.\cs_input\Security\Dtos\ModuleUserInputDto.txt
+.\cs_input\System\Dtos\AuditEntityInputDto.txt
+.\cs_input\System\Dtos\AuditOperationInputDto.txt
+.\cs_input\System\Dtos\AuditPropertyInputDto.txt
+.\cs_input\System\Dtos\KeyValueCoupleInputDto.txt
+.\cs_output\Identity\Dtos\LoginLogOutputDto.txt
+.\cs_output\Identity\Dtos\OrganizationOutputDto.txt
+.\cs_output\Identity\Dtos\RoleClaimOutputDto.txt
+.\cs_output\Identity\Dtos\RoleOutputDto.txt
+.\cs_output\Identity\Dtos\UserClaimOutputDto.txt
+.\cs_output\Identity\Dtos\UserDetailOutputDto.txt
+.\cs_output\Identity\Dtos\UserLoginOutputDto.txt
+.\cs_output\Identity\Dtos\UserOutputDto.txt
+.\cs_output\Identity\Dtos\UserRoleOutputDto.txt
+.\cs_output\Identity\Dtos\UserTokenOutputDto.txt
+.\cs_output\Security\Dtos\EntityInfoOutputDto.txt
+.\cs_output\Security\Dtos\EntityRoleOutputDto.txt
+.\cs_output\Security\Dtos\EntityUserOutputDto.txt
+.\cs_output\Security\Dtos\FunctionOutputDto.txt
+.\cs_output\Security\Dtos\ModuleFunctionOutputDto.txt
+.\cs_output\Security\Dtos\ModuleOutputDto.txt
+.\cs_output\Security\Dtos\ModuleRoleOutputDto.txt
+.\cs_output\Security\Dtos\ModuleUserOutputDto.txt
+.\cs_output\System\Dtos\AuditEntityOutputDto.txt
+.\cs_output\System\Dtos\AuditOperationOutputDto.txt
+.\cs_output\System\Dtos\AuditPropertyOutputDto.txt
+.\cs_output\System\Dtos\KeyValueCoupleOutputDto.txt
+.\Script_Entity.txt
 </LastOutputs>
-      <LastGenOutput>Script_Entity.generated.cs</LastGenOutput>
+      <LastGenOutput>Script_Entity.txt</LastGenOutput>
+    </Content>
+    <Content Include="T4\Script_Entity.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Script_Entity.tt</DependentUpon>
     </Content>
     <Content Include="T4\Script_OutputDto.generated.txt">
       <AutoGen>True</AutoGen>
@@ -278,30 +278,30 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastOutputs>
 .\Script_OutputDto.generated.txt
-.\ts_components\audit-entity.component.txt
-.\ts_components\audit-operation.component.txt
-.\ts_components\audit-property.component.txt
-.\ts_components\entity-info.component.txt
-.\ts_components\entity-role.component.txt
-.\ts_components\function.component.txt
-.\ts_components\module.component.txt
-.\ts_components\role.component.txt
-.\ts_components\user.component.txt
-.\ts_components\user-role.component.txt
+.\ts_components\identity\role.component.txt
+.\ts_components\identity\user.component.txt
+.\ts_components\identity\user-role.component.txt
+.\ts_components\security\entity-info.component.txt
+.\ts_components\security\entity-role.component.txt
+.\ts_components\security\function.component.txt
+.\ts_components\security\module.component.txt
+.\ts_components\system\audit-entity.component.txt
+.\ts_components\system\audit-operation.component.txt
+.\ts_components\system\audit-property.component.txt
 </LastOutputs>
       <LastGenOutput>Script_OutputDto.generated.txt</LastGenOutput>
     </Content>
     <Content Include="T4\Template_TypeScript_Component.tt" />
-    <Content Include="T4\ts_components\audit-entity.component.txt" />
-    <Content Include="T4\ts_components\audit-operation.component.txt" />
-    <Content Include="T4\ts_components\audit-property.component.txt" />
-    <Content Include="T4\ts_components\entity-info.component.txt" />
-    <Content Include="T4\ts_components\entity-role.component.txt" />
-    <Content Include="T4\ts_components\function.component.txt" />
-    <Content Include="T4\ts_components\module.component.txt" />
-    <Content Include="T4\ts_components\role.component.txt" />
-    <Content Include="T4\ts_components\user-role.component.txt" />
-    <Content Include="T4\ts_components\user.component.txt" />
+    <Content Include="T4\ts_components\identity\role.component.txt" />
+    <Content Include="T4\ts_components\identity\user-role.component.txt" />
+    <Content Include="T4\ts_components\identity\user.component.txt" />
+    <Content Include="T4\ts_components\security\entity-info.component.txt" />
+    <Content Include="T4\ts_components\security\entity-role.component.txt" />
+    <Content Include="T4\ts_components\security\function.component.txt" />
+    <Content Include="T4\ts_components\security\module.component.txt" />
+    <Content Include="T4\ts_components\system\audit-entity.component.txt" />
+    <Content Include="T4\ts_components\system\audit-operation.component.txt" />
+    <Content Include="T4\ts_components\system\audit-property.component.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

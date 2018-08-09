@@ -38,8 +38,8 @@ public class InputDtoTemplate : CSharpTemplate
             get
             {
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("Dtos\\{0}InputDto.cs", _entityName)
-                    : string.Format("{0}\\Dtos\\{1}InputDto.cs", _moduleName, _entityName);
+                    ? string.Format("Dtos\\{0}InputDto.txt", _entityName)
+                    : string.Format("{0}\\Dtos\\{1}InputDto.txt", _moduleName, _entityName);
             }
         }
 
@@ -74,7 +74,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
     /// 输入DTO：<#=_entity.Display #>
     /// </summary>
     [MapTo(typeof(<#=_entityName #>))]
-    public class <#=_entityName #>InputDto : IInputDto<<#=GetSingleTypeName(_key.TypeName) #>>
+    public class <#=_entityName #>InputDto : IInputDto<<#=GetSingleTypeName(_key) #>>
     {
 <#+
         foreach(var prop in _entity.PropertyMetadatas.OrderBy(m=>m.Name != "Id"))
@@ -89,7 +89,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
 #><#="Required, " #><#+
             } 
 #>DisplayName("<#=prop.Display #>")]
-        public <#=GetSingleTypeName(prop.TypeName) #> <#=prop.Name #> { get; set; }
+        public <#=GetSingleTypeName(prop) #> <#=prop.Name #> { get; set; }
 
 <#+
         }
@@ -101,25 +101,38 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
 	    }
 
         
-        private static string GetSingleTypeName(string typeName)
+        private static string GetSingleTypeName(PropertyMetadata prop)
         {
-            switch(typeName)
+            string name = prop.TypeName;
+            switch(prop.TypeName)
             {
                 case "System.Int32":
-                    return "int";
+                    name = "int";
+                    break;
                 case "System.Long":
-                    return "long";
+                    name = "long";
+                    break;
+                case "System.Decimal":
+                    name = "decimal";
+                    break;
                 case "System.String":
-                    return "string";                    
+                    name = "string";                    
+                    break;
                 case "System.Guid":
-                    return "Guid";
+                    name = "Guid";
+                    break;
                 case "System.Boolean":
-                    return "bool";
+                    name = "bool";
+                    break;
                 case "System.DateTime":
-                    return "DateTime";
-                default:
-                    return typeName;
+                    name = "DateTime";
+                    break;
             }
+            if(prop.IsNullable)
+            {
+                name = prop.TypeName + "?";
+            }
+            return name;
         }
 }
 #>

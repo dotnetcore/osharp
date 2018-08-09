@@ -7,21 +7,41 @@
 
     public class TypeScriptComponentTemplate : CSharpTemplate
     {
-        private TypeMetadata _outputDto, _inputDto;
-        private string _entityName;
-        private string _lowerEntityName;
+        private readonly TypeMetadata _outputDto, _inputDto;
+        private readonly string _entityName;
+        private readonly string _lowerEntityName;
+        private readonly string _moduleName = null;
 
-        public TypeScriptComponentTemplate(TypeMetadata outputDto, TypeMetadata inputDto)
+        public TypeScriptComponentTemplate(TypeMetadata outputDto, TypeMetadata inputDto, string modulePattern)
         {
             _entityName = outputDto.Name.Substring("", "OutputDto");
             _lowerEntityName = _entityName.UpperToLowerAndSplit();
             _outputDto = outputDto;
             _inputDto = inputDto;
+            if(modulePattern != null)
+            {
+                _moduleName = outputDto.Namespace.Match(modulePattern);
+                switch(outputDto.FullName)
+                {
+                    case "OSharp.Core.Functions.Function":
+                    case "OSharp.Core.EntityInfos.EntityInfo":
+                        _moduleName = "Security";
+                        break;
+                    case "OSharp.System.KeyValueCouple":
+                        _moduleName = "System";
+                        break;
+                }
+            }
         }
 
         public string FileName
         {
-            get{ return string.Format("{0}.component.txt", _lowerEntityName); }
+            get
+            { 
+                return string.IsNullOrEmpty(_moduleName)
+                    ? string.Format("{0}.component.txt", _lowerEntityName)
+                    : string.Format("{0}\\{1}.component.txt", _moduleName.UpperToLowerAndSplit(), _lowerEntityName);
+            }
         }
 
 	    public override string TransformText()

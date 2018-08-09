@@ -64,6 +64,11 @@ namespace OSharp.CodeGenerator
                 Max = range.Maximum;
                 Min = range.Minimum;
             }
+            IsNullable = property.PropertyType.IsNullableType();
+            if (IsNullable)
+            {
+                TypeName = property.PropertyType.GetUnNullableType().FullName;
+            }
             //枚举类型，作为数值类型返回
             if (property.PropertyType.IsEnum)
             {
@@ -121,6 +126,11 @@ namespace OSharp.CodeGenerator
         /// 获取或设置 最小值
         /// </summary>
         public object Min { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否值类型可空
+        /// </summary>
+        public bool IsNullable { get; set; }
 
         /// <summary>
         /// 获取或设置 枚举元数据

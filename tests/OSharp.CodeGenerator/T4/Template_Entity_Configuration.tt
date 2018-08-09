@@ -38,8 +38,8 @@ public class EntityConfigurationTemplate : CSharpTemplate
             get
             {
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("{0}Configuration.generated.cs", _entityName)
-                    : string.Format("{0}\\{1}Configuration.generated.cs", _moduleName, _entityName);
+                    ? string.Format("{0}Configuration.generated.txt", _entityName)
+                    : string.Format("{0}\\{1}Configuration.generated.txt", _moduleName, _entityName);
             }
         }
 
@@ -70,7 +70,7 @@ using OSharp.Entity;
 
 namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>.EntityConfiguration<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
 {
-    public partial class <#=_entityName #>Configuration : EntityTypeConfigurationBase<<#=_entityName #>, <#=GetSingleTypeName(_key.TypeName) #>>
+    public partial class <#=_entityName #>Configuration : EntityTypeConfigurationBase<<#=_entityName #>, <#=GetSingleTypeName(_key) #>>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -87,25 +87,38 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
 	    }
 
         
-        private static string GetSingleTypeName(string typeName)
+        private static string GetSingleTypeName(PropertyMetadata prop)
         {
-            switch(typeName)
+            string name = prop.TypeName;
+            switch(prop.TypeName)
             {
                 case "System.Int32":
-                    return "int";
+                    name = "int";
+                    break;
                 case "System.Long":
-                    return "long";
+                    name = "long";
+                    break;
+                case "System.Decimal":
+                    name = "decimal";
+                    break;
                 case "System.String":
-                    return "string";                    
+                    name = "string";                    
+                    break;
                 case "System.Guid":
-                    return "Guid";
+                    name = "Guid";
+                    break;
                 case "System.Boolean":
-                    return "bool";
+                    name = "bool";
+                    break;
                 case "System.DateTime":
-                    return "DateTime";
-                default:
-                    return "string";
+                    name = "DateTime";
+                    break;
             }
+            if(prop.IsNullable)
+            {
+                name = prop.TypeName + "?";
+            }
+            return name;
         }
 }
 #>

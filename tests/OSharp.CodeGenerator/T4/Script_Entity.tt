@@ -1,5 +1,5 @@
 <#@ template language="C#" debug="True" #>
-<#@ output extension="generated.cs" #>
+<#@ output extension="txt" #>
 <#@ include file="T4Toolbox.tt" #>
 <#@ include file="Template_Entity_Configuration.tt" #>
 <#@ include file="Template_Entity_InputDto.tt" #>

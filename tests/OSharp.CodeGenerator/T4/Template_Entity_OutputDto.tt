@@ -38,8 +38,8 @@ public class OutputDtoTemplate : CSharpTemplate
             get
             {
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("Dtos\\{0}OutputDto.cs", _entityName)
-                    : string.Format("{0}\\Dtos\\{1}OutputDto.cs", _moduleName, _entityName);
+                    ? string.Format("Dtos\\{0}OutputDto.txt", _entityName)
+                    : string.Format("{0}\\Dtos\\{1}OutputDto.txt", _moduleName, _entityName);
             }
         }
 
@@ -81,7 +81,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
         /// <summary>
         /// 获取或设置 <#=prop.Display #>
         /// </summary>
-        public <#=GetSingleTypeName(prop.TypeName) #> <#=prop.Name #> { get; set; }
+        public <#=GetSingleTypeName(prop) #> <#=prop.Name #> { get; set; }
 
 <#+
         }
@@ -93,25 +93,38 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
 	    }
 
         
-        private static string GetSingleTypeName(string typeName)
+        private static string GetSingleTypeName(PropertyMetadata prop)
         {
-            switch(typeName)
+            string name = prop.TypeName;
+            switch(prop.TypeName)
             {
                 case "System.Int32":
-                    return "int";
+                    name = "int";
+                    break;
                 case "System.Long":
-                    return "long";
+                    name = "long";
+                    break;
+                case "System.Decimal":
+                    name = "decimal";
+                    break;
                 case "System.String":
-                    return "string";                    
+                    name = "string";                    
+                    break;
                 case "System.Guid":
-                    return "Guid";
+                    name = "Guid";
+                    break;
                 case "System.Boolean":
-                    return "bool";
+                    name = "bool";
+                    break;
                 case "System.DateTime":
-                    return "DateTime";
-                default:
-                    return typeName;
+                    name = "DateTime";
+                    break;
             }
+            if(prop.IsNullable)
+            {
+                name = prop.TypeName + "?";
+            }
+            return name;
         }
 }
 #>
