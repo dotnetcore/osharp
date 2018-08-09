@@ -12,6 +12,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Data;
 using OSharp.Finders;
 using OSharp.Reflection;
 
@@ -28,7 +29,7 @@ namespace OSharp.Dependency
         /// </summary>
         public TransientDependencyTypeFinder()
         {
-            AllAssemblyFinder = new AppDomainAllAssemblyFinder();
+            AllAssemblyFinder = Singleton<IAllAssemblyFinder>.Instance ?? new AppDomainAllAssemblyFinder();
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace OSharp.Dependency
         protected override Type[] FindAllItems()
         {
             Type baseType = typeof(ITransientDependency);
-            Type[] types = AllAssemblyFinder.FindAll(fromCache:true).SelectMany(assembly => assembly.GetTypes())
+            Type[] types = AllAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
                 .ToArray();
             return types;

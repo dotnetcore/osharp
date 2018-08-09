@@ -10,7 +10,6 @@
 using System;
 using System.Linq;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -153,10 +152,10 @@ namespace OSharp.Dependency
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            ServiceLocator.Instance.SetApplicationServiceProvider(app.ApplicationServices);
+            ServiceLocator.Instance.SetApplicationServiceProvider(provider);
             IsEnabled = true;
         }
     }

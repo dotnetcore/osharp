@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Builders;
+using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.UnitTest;
@@ -113,7 +114,7 @@ namespace OSharp.Tests.IEventBuses
             {
                 services.AddHttpContextAccessor().AddLogging();
 
-                services.AddOSharp(builder =>
+                services.AddOSharp<OsharpPackManager>(builder =>
                 {
                     builder.AddCorePack().AddPack<EventBusPack>();
                 });

@@ -7,6 +7,8 @@
 //  <last-date>2018-08-06 15:04</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,10 +53,10 @@ namespace Liuliu.Demo.Web.Startups
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IHostingEnvironment environment = app.ApplicationServices.GetService<IHostingEnvironment>();
+            IHostingEnvironment environment = provider.GetService<IHostingEnvironment>();
             if (environment.IsDevelopment())
             {
                 IsEnabled = true;

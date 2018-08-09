@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.Core.Packs;
 using OSharp.Data;
 
@@ -26,7 +27,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// Swagger Api模块 
     /// </summary>
-    public class SwaggerPack : OsharpPack
+    public class SwaggerPack : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动

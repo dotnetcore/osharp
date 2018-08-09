@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="OSharpBuilder.cs" company="OSharp开源团队">
+//  <copyright file="OsharpBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -22,12 +22,12 @@ namespace OSharp.Core.Builders
     /// <summary>
     /// OSharp构建器
     /// </summary>
-    public class OSharpBuilder : IOSharpBuilder
+    public class OsharpBuilder : IOsharpBuilder
     {
         /// <summary>
-        /// 初始化一个<see cref="OSharpBuilder"/>类型的新实例
+        /// 初始化一个<see cref="OsharpBuilder"/>类型的新实例
         /// </summary>
-        public OSharpBuilder()
+        public OsharpBuilder()
         {
             AddPacks = new List<Type>();
             ExceptPacks = new List<Type>();
@@ -52,7 +52,7 @@ namespace OSharp.Core.Builders
         /// 添加指定模块，执行此功能后将仅加载指定的模块
         /// </summary>
         /// <typeparam name="TPack">要添加的模块类型</typeparam>
-        public IOSharpBuilder AddPack<TPack>() where TPack : OsharpPack
+        public IOsharpBuilder AddPack<TPack>() where TPack : OsharpPack
         {
             List<Type> list = AddPacks.ToList();
             list.AddIfNotExist(typeof(TPack));
@@ -65,7 +65,7 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <typeparam name="TPack"></typeparam>
         /// <returns></returns>
-        public IOSharpBuilder ExceptPack<TPack>() where TPack : OsharpPack
+        public IOsharpBuilder ExceptPack<TPack>() where TPack : OsharpPack
         {
             List<Type> list = ExceptPacks.ToList();
             list.AddIfNotExist(typeof(TPack));
@@ -78,7 +78,7 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <param name="optionsAction">OSharp操作选项</param>
         /// <returns>OSharp构建器</returns>
-        public IOSharpBuilder AddOptions(Action<OSharpOptions> optionsAction)
+        public IOsharpBuilder AddOptions(Action<OSharpOptions> optionsAction)
         {
             Check.NotNull(optionsAction, nameof(optionsAction));
             OptionsAction = optionsAction;

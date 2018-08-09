@@ -21,7 +21,7 @@ using OSharp.Data;
 namespace Liuliu.Demo.Web
 {
     public class Startup
-    { 
+    {
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Singleton<IConfiguration>.Instance = configuration;
@@ -31,9 +31,9 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOSharp();
+            services.AddOSharp<AspOsharpPackManager>();
         }
-         
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {

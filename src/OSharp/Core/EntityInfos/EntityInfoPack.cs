@@ -9,7 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -43,10 +42,10 @@ namespace OSharp.Core.EntityInfos
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IEntityInfoHandler handler = app.ApplicationServices.GetService<IEntityInfoHandler>();
+            IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
             handler.Initialize();
             IsEnabled = true;
         }

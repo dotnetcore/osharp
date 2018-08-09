@@ -16,7 +16,6 @@ using OSharp.Core.Builders;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Reflection;
 
 
@@ -30,18 +29,26 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 将OSharp服务，各个<see cref="OsharpPack"/>模块的服务添加到服务容器中
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null)
+        public static IServiceCollection AddOSharp<TOsharpPackManager>(this IServiceCollection services, Action<IOsharpBuilder> builderAction = null)
+            where TOsharpPackManager : IOsharpPackManager, new()
         {
             Check.NotNull(services, nameof(services));
 
-            IOSharpBuilder builder = new OSharpBuilder();
+            //初始化所有程序集查找器，如需更改程序集查找逻辑，请事先赋予自定义查找器的实例
+            if (Singleton<IAllAssemblyFinder>.Instance == null)
+            {
+                Singleton<IAllAssemblyFinder>.Instance = new AppDomainAllAssemblyFinder();
+            }
+
+            IOsharpBuilder builder = new OsharpBuilder();
             if (builderAction != null)
             {
                 builderAction(builder);
             }
-            OSharpPackManager manager = new OSharpPackManager(builder, new AppDomainAllAssemblyFinder());
+            Singleton<IOsharpBuilder>.Instance = builder;
+            TOsharpPackManager manager = new TOsharpPackManager();
+            services.AddSingleton<IOsharpPackManager>(manager);
             manager.LoadPacks(services);
-            services.AddSingleton(provider => manager);
             return services;
         }
 
@@ -85,6 +92,14 @@ namespace Microsoft.Extensions.DependencyInjection
             return factory.CreateLogger(name);
         }
 
-
+        /// <summary>
+        /// OSharp框架初始化，适用于非AspNetCore环境
+        /// </summary>
+        public static IServiceProvider UseOsharp(this IServiceProvider provider)
+        {
+            OsharpPackManager packManager = provider.GetService<OsharpPackManager>();
+            packManager.UsePack(provider);
+            return provider;
+        }
     }
 }

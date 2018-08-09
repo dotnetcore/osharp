@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SqlServerDefaultDbContextMigrationModule.cs" company="OSharp开源团队">
+//  <copyright file="SqlServerDefaultDbContextMigrationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -18,7 +18,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// SqlServer-DefaultDbContext迁移模块
     /// </summary>
-    public class SqlServerDefaultDbContextMigrationModule : SqlServerMigrationModuleBase<DefaultDbContext>
+    public class SqlServerDefaultDbContextMigrationPack : SqlServerMigrationPackBase<DefaultDbContext>
     {
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，

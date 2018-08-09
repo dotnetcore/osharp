@@ -12,6 +12,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Data;
 using OSharp.Finders;
 using OSharp.Reflection;
 
@@ -28,7 +29,7 @@ namespace OSharp.Dependency
         /// </summary>
         public SingletonDependencyTypeFinder()
         {
-            AllAssemblyFinder = new AppDomainAllAssemblyFinder();
+            AllAssemblyFinder = Singleton<IAllAssemblyFinder>.Instance ?? new AppDomainAllAssemblyFinder();
         }
 
         /// <summary>

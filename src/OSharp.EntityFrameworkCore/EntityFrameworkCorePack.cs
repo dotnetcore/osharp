@@ -7,7 +7,8 @@
 //  <last-date>2018-06-23 15:24</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Builder;
+using System;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -46,10 +47,10 @@ namespace OSharp.Entity
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IEntityConfigurationTypeFinder finder = app.ApplicationServices.GetService<IEntityConfigurationTypeFinder>();
+            IEntityConfigurationTypeFinder finder = provider.GetService<IEntityConfigurationTypeFinder>();
             finder?.Initialize();
             IsEnabled = true;
         }

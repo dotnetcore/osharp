@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="OSharpCorePack.cs" company="OSharp开源团队">
+//  <copyright file="OsharpCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -21,7 +21,7 @@ namespace OSharp.Core.Packs
     /// <summary>
     /// OSharp核心模块
     /// </summary>
-    public class OSharpCorePack : OsharpPack
+    public class OsharpCorePack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别

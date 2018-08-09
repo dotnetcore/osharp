@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SqlServerMigrationModuleBase.cs" company="OSharp开源团队">
+//  <copyright file="SqlServerMigrationPackBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -9,7 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,7 +23,7 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServer数据迁移模块基类
     /// </summary>
-    public abstract class SqlServerMigrationModuleBase<TDbContext> : OsharpPack
+    public abstract class SqlServerMigrationPackBase<TDbContext> : OsharpPack
         where TDbContext : DbContext
     {
         /// <summary>
@@ -35,10 +34,9 @@ namespace OSharp.Entity.SqlServer
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IServiceProvider provider = app.ApplicationServices;
             using (IServiceScope scope = provider.CreateScope())
             {
                 ILogger logger = provider.GetService<ILoggerFactory>().CreateLogger(GetType());
@@ -60,11 +58,11 @@ namespace OSharp.Entity.SqlServer
                     if (contextOptions.AutoMigrationEnabled)
                     {
                         context.CheckAndMigration();
+                        IsEnabled = true;
                     }
                 }
             }
 
-            IsEnabled = true;
         }
 
         /// <summary>

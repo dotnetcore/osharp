@@ -17,19 +17,16 @@ using System.Reflection;
 
 using Liuliu.Demo.Common;
 using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.CodeGenerator;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
-using OSharp.Filter;
 using OSharp.Reflection;
 
 
@@ -96,7 +93,7 @@ namespace Liuliu.Demo.Web.Controllers
             IServiceProvider provider = HttpContext.RequestServices;
 
             dynamic info = new ExpandoObject();
-            OSharpPackManager packManager = provider.GetService<OSharpPackManager>();
+            IOsharpPackManager packManager = provider.GetService<IOsharpPackManager>();
             info.Packs = packManager.SourcePacks.OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).Select(m => new
             {
                 m.GetType().Name,
