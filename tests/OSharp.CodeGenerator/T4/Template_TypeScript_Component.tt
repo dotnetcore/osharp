@@ -75,7 +75,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
   }
   
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Security.<#=_entityName #>", ["Read"]);
+    return new AuthConfig("Root.Admin.<#=_moduleName #>.<#=_entityName #>", ["Read"]);
   }
 
   protected GetModel() {
@@ -108,12 +108,12 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
             if(_outputDto != null && _outputDto.PropertyMetadatas != null)
             {
 #>
-    {
-      command: [
-        { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
-      ],
-      width: 100
-    }<#+
+      {
+        command: [
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
+        ],
+        width: 100
+      }<#+
                 foreach(var dto in _outputDto.PropertyMetadatas)
                 {
                     if(dto.Name == "Updatable" || dto.Name == "Deletable")
@@ -124,11 +124,12 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
                 }
             }
 
- #>];
+ #>
+
+    ];
     return columns;
   }
 }
-
 <#+
             return this.GenerationEnvironment.ToString();
 	    }
@@ -136,7 +137,14 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
 
     private static string GetModelItem(PropertyMetadata outProp, PropertyMetadata inProp)
     {
-        string line= string.Format("{0}: {{ type: \"{1}\"", outProp.Name, GetSingleTypeName(outProp.TypeName));
+        string line= string.Format("{0}: {{ type: \"{1}\"", outProp.Name, GetSingleTypeName(outProp));
+
+        string[] noEditable = new []{"Id","CreatedTime","Updatable","Deletable"};
+        if(noEditable.Contains(outProp.Name))
+        {
+            line += ", editable: false";
+        }
+
         line += GetModelItemValidation(inProp);
 
         line += " },";
@@ -188,53 +196,67 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
     private static string GetColumn(PropertyMetadata output)
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append(string.Format(", {{\n\t  field: \"{0}\", title: \"{1}\"", output.Name, output.Display));
+        sb.Append(string.Format(", {{\n\t\tfield: \"{0}\", title: \"{1}\"", output.Name, output.Display));
         if (output.TypeName == typeof(string).FullName)
         {
-            sb.Append(",\n\t  filterable: this.osharp.data.stringFilterable");
+            sb.Append(",\n\t\tfilterable: this.osharp.data.stringFilterable");
         }
         if (output.TypeName == typeof(bool).FullName)
         {
             sb.Append(", width: 90");
-            sb.Append(string.Format(",\n\t  template: d => this.kendoui.Boolean(d.{0})", output.Name));
-            sb.Append(",\n\t  editor: (container, options) => this.kendoui.BooleanEditor(container, options)");
+            sb.Append(string.Format(",\n\t\ttemplate: d => this.kendoui.Boolean(d.{0})", output.Name));
+            sb.Append(",\n\t\teditor: (container, options) => this.kendoui.BooleanEditor(container, options)");
         }
         if (output.TypeName == typeof(int).FullName)
         {
-            //枚举类型
-            if (output.EnumMetadatas != null)
-            {
-                sb.Append(string.Format(",\n\t  template: d => this.osharp.valueToText(d.{0}, this.osharp.data.ENUM_SELECT_SOURCE),", output.Name));
-                sb.Append(",\n\t  editor: (container, options) => this.kendoui.DropDownListEditor(container, options, this.osharp.data.ENUM_SELECT_SOURCE)");
-                sb.Append(",\n\t  filterable: { ui: el => this.kendoui.DropDownList(el, this.osharp.data.ENUM_SELECT_SOURCE) }");
-            }
         }
         if (output.TypeName == typeof(DateTime).FullName)
         {
             sb.Append(", width: 120");
-            sb.Append(",\n      format: \"{0:yy-MM-dd HH:mm}\"");
+            sb.Append(",\n\t\tformat: \"{0:yy-MM-dd HH:mm}\"");
+        }        
+        if (output.EnumMetadatas != null)
+        {
+            sb.Append(string.Format(",\n\t\ttemplate: d => this.osharp.valueToText(d.{0}, this.osharp.data.{1})", output.Name, output.Name.LowerFirstChar()));
+            sb.Append(string.Format(",\n\t\teditor: ($container, options) => this.kendoui.DropDownListEditor($container, options, this.osharp.data.{0})", output.Name.LowerFirstChar()));
+            sb.Append(string.Format(",\n\t\tfilterable: {{ ui: el => this.kendoui.DropDownList(el, this.osharp.data.{0}) }}", output.Name.LowerFirstChar()));
+            sb.Append("\n\t\t// " + output.Name.LowerFirstChar() + ": [");
+            List<string> enums = new List<string>();
+            foreach(var item in output.EnumMetadatas)
+            {
+                enums.Add("{ id: " + item.Value + ", text: \"" + item.Display + "\" }");
+            }
+            sb.Append(enums.ExpandAndToString(", ") + "],");
         }
-        sb.Append("\n\t}");
+        sb.Append("\n\t  }");
         return sb.ToString();
     }
 
-    private static string GetSingleTypeName(string typeName)
+    private static string GetSingleTypeName(PropertyMetadata prop)
     {
-        switch(typeName)
+        string name = "object";
+        switch(prop.TypeName)
         {
             case "System.Int32":
             case "System.Long":
             case "System.Decimal":
-                return "number";
+                name = "number";
+                break;
             case "System.String":
             case "System.Guid":
-                return "string";
+                name = "string";
+                break;
             case "System.Boolean":
-                return "boolean";
+                name = "boolean";
+                break;
             case "System.DateTime":
-                return "date";
-            default:
-                return "object";
+                name = "date";
+                break;
         }
+        if(prop.EnumMetadatas != null)
+        {
+            name = "number";
+        }
+        return name;
     }
 #>
