@@ -97,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IServiceProvider UseOsharp(this IServiceProvider provider)
         {
-            OsharpPackManager packManager = provider.GetService<OsharpPackManager>();
+            IOsharpPackManager packManager = provider.GetService<IOsharpPackManager>();
             packManager.UsePack(provider);
             return provider;
         }
