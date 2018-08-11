@@ -62,8 +62,8 @@ export class AuditEntityComponent extends GridComponentBase implements AfterView
       },
       { field: "NickName", title: "执行人", width: 100, filterable: this.osharp.data.stringFilterable },
       { field: "FunctionName", title: "所属功能", width: 120, filterable: this.osharp.data.stringFilterable },
-      { field: "CreatedTime", title: "执行时间", width: 115, format: "{0:yy-MM-dd HH:mm}" }
-    ]
+      { field: "CreatedTime", title: "执行时间", width: 115, format: "{0:yy-MM-dd HH:mm}" },
+    ];
   }
 
   protected FieldReplace(field: string): string {

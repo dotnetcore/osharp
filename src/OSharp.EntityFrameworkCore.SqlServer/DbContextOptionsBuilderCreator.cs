@@ -34,9 +34,9 @@ namespace OSharp.Entity.SqlServer
         {
             if (existingConnection == null)
             {
-                return new DbContextOptionsBuilder().UseSqlServer(connectionString);
+                return new DbContextOptionsBuilder().UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
             }
-            return new DbContextOptionsBuilder().UseSqlServer(existingConnection);
+            return new DbContextOptionsBuilder().UseSqlServer(existingConnection, builder => builder.UseRowNumberForPaging());
         }
     }
 }

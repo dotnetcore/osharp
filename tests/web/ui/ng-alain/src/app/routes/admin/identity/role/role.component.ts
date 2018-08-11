@@ -66,7 +66,7 @@ export class RoleComponent extends GridComponentBase implements AfterViewInit {
       {
         command: [
           { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.windowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => { return d.Deletable; } }
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable }
         ],
         width: 100
       },

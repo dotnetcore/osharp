@@ -58,8 +58,7 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
-    options.toolbar.push({ template: '<span style="line-height:30px;">功能列表</span>' });
-    options.toolbar.push({ name: "refresh", template: `<button id="btn-refresh-function" class="k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
+    options.toolbar.unshift({ template: '<span>功能列表</span>' });
     return options;
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
@@ -71,15 +70,10 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
     options.filter = false;
     return options;
   }
-  protected ToolbarInit() {
-    let $toolbar = $(this.grid.element).find(".k-grid-toolbar");
-    if (!$toolbar) {
-      return;
-    }
-    $($toolbar).on("click", "#btn-refresh-function", e => this.grid.dataSource.read());
-  }
   protected ResizeGrid(init: boolean) {
     let $content = $("kendoui-function #grid-box-" + this.moduleName + " .k-grid-content");
-    $content.height(740);
+    let winHeight = window.innerHeight;
+    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 30;
+    $content.height(winHeight - otherHeight);
   }
 }
