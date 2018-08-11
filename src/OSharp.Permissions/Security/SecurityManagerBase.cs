@@ -826,6 +826,7 @@ namespace OSharp.Security
                     {
                         RoleName = role.Name,
                         EntityTypeFullName = entityInfo.TypeName,
+                        Operation = dto.Operation,
                         FilterGroup = dto.FilterGroup
                     });
                 });
