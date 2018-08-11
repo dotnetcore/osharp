@@ -11,11 +11,12 @@ using System;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using OSharp.Core.Systems;
 using OSharp.Entity;
-using OSharp.System;
+using OSharp.Systems;
 
 
-namespace Liuliu.Demo.EntityConfiguration.System
+namespace Liuliu.Demo.EntityConfiguration.Systems
 {
     public class KeyValueCoupleConfiguration : EntityTypeConfigurationBase<KeyValueCouple, Guid>
     {

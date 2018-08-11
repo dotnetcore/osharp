@@ -7,7 +7,7 @@
 //  <last-date>2018-06-25 21:26</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.System
+namespace OSharp.Core.Systems
 {
     /// <summary>
     /// 系统设置项键值

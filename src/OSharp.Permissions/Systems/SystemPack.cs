@@ -10,9 +10,10 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Core.Systems;
 
 
-namespace OSharp.System
+namespace OSharp.Systems
 {
     /// <summary>
     /// 系统模块

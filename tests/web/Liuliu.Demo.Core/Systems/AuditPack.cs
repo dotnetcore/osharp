@@ -13,7 +13,7 @@ using OSharp.Audits;
 using OSharp.Core.Packs;
 
 
-namespace Liuliu.Demo.System
+namespace Liuliu.Demo.Systems
 {
     /// <summary>
     /// 审计模块

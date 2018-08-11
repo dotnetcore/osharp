@@ -11,9 +11,9 @@ using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-using Liuliu.Demo.System;
-using Liuliu.Demo.System.Dtos;
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems;
+using Liuliu.Demo.Systems.Dtos;
+using Liuliu.Demo.Systems.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 

@@ -9,7 +9,7 @@
 
 using System;
 
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems.Entities;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +17,7 @@ using OSharp.Entity;
 
 
 
-namespace Liuliu.Demo.EntityConfiguration.System
+namespace Liuliu.Demo.EntityConfiguration.Systems
 {
     public class AuditEntityConfiguration : EntityTypeConfigurationBase<AuditEntity, Guid>
     {

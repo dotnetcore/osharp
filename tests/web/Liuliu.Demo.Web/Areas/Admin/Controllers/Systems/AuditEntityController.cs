@@ -12,9 +12,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Liuliu.Demo.System;
-using Liuliu.Demo.System.Dtos;
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems;
+using Liuliu.Demo.Systems.Dtos;
+using Liuliu.Demo.Systems.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +22,6 @@ using OSharp.Core.Modules;
 using OSharp.Entity;
 using OSharp.Filter;
 using OSharp.IO;
-
-using Z.EntityFramework.Plus;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers

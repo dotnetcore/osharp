@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems.Entities;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using OSharp.Entity;
 
 
-namespace Liuliu.Demo.EntityConfiguration.System
+namespace Liuliu.Demo.EntityConfiguration.Systems
 {
     public class AuditPropertyConfiguration : EntityTypeConfigurationBase<AuditProperty, Guid>
     {

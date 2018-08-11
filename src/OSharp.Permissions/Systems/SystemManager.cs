@@ -15,11 +15,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Caching;
+using OSharp.Core.Systems;
 using OSharp.Data;
 using OSharp.Entity;
 
 
-namespace OSharp.System
+namespace OSharp.Systems
 {
     /// <summary>
     /// 系统管理器

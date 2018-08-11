@@ -11,13 +11,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems.Entities;
 
 using OSharp.Data;
 using OSharp.Entity;
 
 
-namespace Liuliu.Demo.System
+namespace Liuliu.Demo.Systems
 {
     /// <summary>
     /// 服务实现：审计模块

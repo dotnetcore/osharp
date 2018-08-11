@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using OSharp.Data;
 
 
-namespace OSharp.System
+namespace OSharp.Core.Systems
 {
     /// <summary>
     /// 定义键值对数据存储

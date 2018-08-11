@@ -11,7 +11,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Liuliu.Demo.System.Entities;
+using Liuliu.Demo.Systems.Entities;
 
 using OSharp.Audits;
 using OSharp.Entity;
@@ -19,7 +19,7 @@ using OSharp.Mapping;
 using OSharp.Net;
 
 
-namespace Liuliu.Demo.System
+namespace Liuliu.Demo.Systems
 {
     /// <summary>
     /// 数据库审计存储

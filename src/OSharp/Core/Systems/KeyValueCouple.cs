@@ -21,7 +21,7 @@ using OSharp.Extensions;
 using OSharp.Json;
 
 
-namespace OSharp.System
+namespace OSharp.Core.Systems
 {
     /// <summary>
     /// 实体类：数据键值对

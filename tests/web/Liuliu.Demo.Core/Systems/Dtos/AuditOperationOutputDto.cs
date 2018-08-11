@@ -14,7 +14,7 @@ using OSharp.Data;
 using OSharp.Entity;
 
 
-namespace Liuliu.Demo.System.Dtos
+namespace Liuliu.Demo.Systems.Dtos
 {
     /// <summary>
     /// 输入DTO：操作审计信息

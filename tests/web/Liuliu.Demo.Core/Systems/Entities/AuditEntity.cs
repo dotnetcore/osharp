@@ -17,7 +17,7 @@ using OSharp.Entity;
 using OSharp.Mapping;
 
 
-namespace Liuliu.Demo.System.Entities
+namespace Liuliu.Demo.Systems.Entities
 {
     /// <summary>
     /// 实体类：审计实体信息

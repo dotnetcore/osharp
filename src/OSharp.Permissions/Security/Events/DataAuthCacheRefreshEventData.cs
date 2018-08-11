@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-05 4:22</last-date>
+//  <last-date>2018-08-12 1:47</last-date>
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -21,8 +21,21 @@ namespace OSharp.Security.Events
     public class DataAuthCacheRefreshEventData : EventDataBase
     {
         /// <summary>
-        /// 获取或设置 数据权限缓存项集合
+        /// 获取或设置 要更新的数据权限缓存项集合
         /// </summary>
-        public List<DataAuthCacheItem> CacheItems { get; set; }
+        public IList<DataAuthCacheItem> SetItems { get; } = new List<DataAuthCacheItem>();
+
+        /// <summary>
+        /// 获取或设置 要移除的数据权限缓存项信息
+        /// </summary>
+        public IList<DataAuthCacheItem> RemoveItems { get; } = new List<DataAuthCacheItem>();
+
+        /// <summary>
+        /// 是否有值
+        /// </summary>
+        public bool HasData()
+        {
+            return SetItems.Count > 0 || RemoveItems.Count > 0;
+        }
     }
 }
