@@ -2,7 +2,6 @@ import { Component, AfterViewInit, Injector } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig, FilterGroup, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
-import { container } from '../../../../../../node_modules/@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'admin-security-role-entity',

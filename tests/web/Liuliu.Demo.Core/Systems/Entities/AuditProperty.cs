@@ -9,7 +9,6 @@
 
 using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 using OSharp.Audits;
 using OSharp.Entity;
@@ -28,37 +27,31 @@ namespace Liuliu.Demo.Systems.Entities
         /// <summary>
         /// 获取或设置 名称
         /// </summary>
-        [Required, DisplayName("名称")]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// 获取或设置 字段
         /// </summary>
-        [Required, DisplayName("字段")]
         public string FieldName { get; set; }
 
         /// <summary>
         /// 获取或设置 旧值
         /// </summary>
-        [DisplayName("旧值")]
         public string OriginalValue { get; set; }
 
         /// <summary>
         /// 获取或设置 新值
         /// </summary>
-        [DisplayName("新值")]
         public string NewValue { get; set; }
 
         /// <summary>
         /// 获取或设置 数据类型
         /// </summary>
-        [DisplayName("数据类型")]
         public string DataType { get; set; }
 
         /// <summary>
         /// 获取或设置 所属审计实体编号
         /// </summary>
-        [DisplayName("所属审计实体编号")]
         public Guid AuditEntityId { get; set; }
 
         /// <summary>

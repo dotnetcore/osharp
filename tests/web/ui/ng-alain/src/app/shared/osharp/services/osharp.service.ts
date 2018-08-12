@@ -321,7 +321,7 @@ export class OsharpService {
     dataAuthOperations: [{ id: 0, text: "读取" }, { id: 1, text: "更新" }, { id: 2, text: "删除" }],
     operateType: [{ id: 1, text: "新增" }, { id: 2, text: "更新" }, { id: 3, text: "删除" }],
     ajaxResultType: [{ id: 200, text: "成功" }, { id: 203, text: "消息" }, { id: 401, text: "未登录" }, { id: 403, text: "无权操作" }, { id: 404, text: "不存在" }, { id: 423, text: "锁定" }, { id: 500, text: "错误" }]
-};
+  };
 
   // #endregion
 }

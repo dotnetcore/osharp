@@ -77,6 +77,23 @@ namespace Liuliu.Demo.Web.Controllers
                     await _userManager.UpdateAsync(user);
                 }
                 list.Add(result.Message);
+
+                dto = new RegisterDto()
+                {
+                    UserName ="mf.guo",
+                    Password = "gmf31529019",
+                    Email = "mf.guo@qq.com",
+                    NickName = "柳柳英侠",
+                    RegisterIp = HttpContext.GetClientIp()
+                };
+                result = await _identityContract.Register(dto);
+                if (result.Successed)
+                {
+                    User user = result.Data;
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                }
+                list.Add(result.Message);
             }
 
             return list.ExpandAndToString("\r\n");

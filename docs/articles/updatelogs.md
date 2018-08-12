@@ -1,6 +1,18 @@
 # OSharp .NetStandard 更新记录
 
-### least version
+### 0.3.0-beta10
+1. 新增AspOsharpPack基类，用于基于AspNetCore环境的Pack模块，将AspNetCore与非AspNetCore环境的OsharpPack分开，添加IOsharpPackManager 接口用于管理模块管理器
+2. 修复DistributedCacheExtensions缓存扩展方法中当功能缓存秒数设置为0时无法创建缓存的问题 更新T4模板
+3. 修复ng项目前端页面的众多小问题
+4. 判断数据权限时只判断有功能权限的角色数据权限。
+5. 修复更新数据权限时导致数据权限缓存项操作类型使用为Read的问题
+6. 修复数据权限信息更新时缓存不更新或不移除的问题。将System命名空间更名为Systems，以避免与.net的System命名空间冲突
+7. 优化系统启动时间：对系统初始化时从程序集中提取的Module，Function，EntityInfo 进行签名对比，与上次相同则不进行数据库数据同步
+8. EF Core 组件添加数据模型缓存，解决数据模型重复创建的问题
+9. 将系统的键值字典KeyValueCouple更名为KeyValue
+10. 给用户设置角色时，或者锁定用户角色分配时，移除相应的在线用户信息缓存，使用户角色即时生效
+
+### 0.3.0-beta09
 1. 修复 UserStore 中的 FindByLoginAsync当userId为null时会引发异常的问题
 2. 支持Lazy<>的注入。将Repository的Query拆分为多个方法，解决查询不支持可选参数的问题。DbContextBase添加延迟加载代理LazyLoadingProxiesEnabled的开关
 3. OSharp.dll增加中增加Entity，InputDto，OutputDto 类型元数据生成功能，可用于自动生成代码。增加T4生成TS列表组件的代码生成功能

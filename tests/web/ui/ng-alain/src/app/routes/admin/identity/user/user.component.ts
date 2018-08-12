@@ -81,7 +81,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         ],
         width: 100
       },
-      { field: "Id", title: "编号", width: 70 },
+      { field: "Id", title: "编号", width: 70, locked: true },
       {
         field: "UserName",
         title: "用户名",

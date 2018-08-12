@@ -34,8 +34,8 @@ namespace OSharp.Identity
         /// <summary>
         /// 移除在线用户信息
         /// </summary>
-        /// <param name="userName">用户名</param>
+        /// <param name="userNames">用户名</param>
         /// <returns>移除的用户信息</returns>
-        void Remove(string userName);
+        void Remove(params string[] userNames);
     }
 }

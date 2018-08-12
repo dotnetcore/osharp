@@ -7,7 +7,6 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using Liuliu.Demo.Web.Startups;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,8 +19,8 @@ using OSharp.Data;
 
 namespace Liuliu.Demo.Web
 {
-    public class Startup
-    {
+    public class Startup 
+    { 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Singleton<IConfiguration>.Instance = configuration;
@@ -33,7 +32,7 @@ namespace Liuliu.Demo.Web
         {
             services.AddOSharp<AspOsharpPackManager>();
         }
-
+         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
