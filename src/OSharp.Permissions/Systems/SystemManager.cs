@@ -25,15 +25,15 @@ namespace OSharp.Systems
     /// <summary>
     /// 系统管理器
     /// </summary>
-    public class SystemManager : IKeyValueCoupleStore
+    public class SystemManager : IKeyValueStore
     {
-        private readonly IRepository<KeyValueCouple, Guid> _keyValueRepository;
+        private readonly IRepository<KeyValue, Guid> _keyValueRepository;
         private readonly IDistributedCache _cache;
 
         /// <summary>
         /// 初始化一个<see cref="SystemManager"/>类型的新实例
         /// </summary>
-        public SystemManager(IRepository<KeyValueCouple, Guid> keyValueRepository,
+        public SystemManager(IRepository<KeyValue, Guid> keyValueRepository,
             IDistributedCache cache)
         {
             _keyValueRepository = keyValueRepository;
@@ -42,12 +42,12 @@ namespace OSharp.Systems
 
         #region Implementation of IKeyValueCoupleStore
 
-        private const string AllKeyValueCouplesKey = "All_KeyValueCouple_Key";
+        private const string AllKeyValuesKey = "All_KeyValue_Key";
 
         /// <summary>
         /// 获取 键值对数据查询数据集
         /// </summary>
-        public IQueryable<KeyValueCouple> KeyValueCouples
+        public IQueryable<KeyValue> KeyValues
         {
             get { return _keyValueRepository.Query(); }
         }
@@ -57,10 +57,10 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="key">键名</param>
         /// <returns>数据项</returns>
-        public KeyValueCouple GetKeyValueCouple(string key)
+        public KeyValue GetKeyValue(string key)
         {
             const int seconds = 60 * 1000;
-            KeyValueCouple[] pairs = _cache.Get(AllKeyValueCouplesKey, () => _keyValueRepository.Query().ToArray(), seconds);
+            KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.Query().ToArray(), seconds);
             return pairs.FirstOrDefault(m => m.Key == key);
         }
 
@@ -70,7 +70,7 @@ namespace OSharp.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的键值对信息编号</param>
         /// <returns>键值对信息是否存在</returns>
-        public Task<bool> CheckKeyValueCoupleExists(Expression<Func<KeyValueCouple, bool>> predicate, Guid id = default(Guid))
+        public Task<bool> CheckKeyValueExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid))
         {
             return _keyValueRepository.CheckExistsAsync(predicate, id);
         }
@@ -81,10 +81,10 @@ namespace OSharp.Systems
         /// <param name="key">键</param>
         /// <param name="value">值</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> CreateOrUpdateKeyValueCouple(string key, object value)
+        public Task<OperationResult> CreateOrUpdateKeyValue(string key, object value)
         {
-            KeyValueCouple pair = new KeyValueCouple(key, value);
-            return CreateOrUpdateKeyValueCouples(pair);
+            KeyValue pair = new KeyValue(key, value);
+            return CreateOrUpdateKeyValues(pair);
         }
 
         /// <summary>
@@ -92,12 +92,12 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> CreateOrUpdateKeyValueCouples(params KeyValueCouple[] dtos)
+        public async Task<OperationResult> CreateOrUpdateKeyValues(params KeyValue[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            foreach (KeyValueCouple dto in dtos)
+            foreach (KeyValue dto in dtos)
             {
-                KeyValueCouple pair = _keyValueRepository.TrackQuery().FirstOrDefault(m => m.Key == dto.Key);
+                KeyValue pair = _keyValueRepository.TrackQuery().FirstOrDefault(m => m.Key == dto.Key);
                 if (pair == null)
                 {
                     pair = dto;
@@ -109,7 +109,7 @@ namespace OSharp.Systems
                     await _keyValueRepository.UpdateAsync(pair);
                 }
             }
-            await _cache.RemoveAsync(AllKeyValueCouplesKey);
+            await _cache.RemoveAsync(AllKeyValuesKey);
             return OperationResult.Success;
         }
 
@@ -118,12 +118,12 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="ids">要删除的键值对信息编号</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> DeleteKeyValueCouples(params Guid[] ids)
+        public async Task<OperationResult> DeleteKeyValues(params Guid[] ids)
         {
             OperationResult result = await _keyValueRepository.DeleteAsync(ids);
             if (result.Successed)
             {
-                await _cache.RemoveAsync(AllKeyValueCouplesKey);
+                await _cache.RemoveAsync(AllKeyValuesKey);
             }
             return result;
         }
@@ -133,10 +133,10 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="rootKey">根键路径</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> DeleteKeyValueCouples(string rootKey)
+        public async Task<OperationResult> DeleteKeyValues(string rootKey)
         {
             Guid[] ids = _keyValueRepository.Query(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
-            return await DeleteKeyValueCouples(ids);
+            return await DeleteKeyValues(ids);
         }
 
         #endregion

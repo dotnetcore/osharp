@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="KeyValueCouple.cs" company="OSharp开源团队">
+//  <copyright file="KeyValue.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-25 21:32</last-date>
+//  <last-date>2018-08-12 16:00</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -27,29 +27,22 @@ namespace OSharp.Core.Systems
     /// 实体类：数据键值对
     /// </summary>
     [Description("键值对信息")]
-    public class KeyValueCouple : EntityBase<Guid>, ILockable, IKeyValueCouple
+    public class KeyValue : EntityBase<Guid>, ILockable, IKeyValue
     {
         /// <summary>
-        /// 初始化一个<see cref="KeyValueCouple"/>类型的新实例
+        /// 初始化一个<see cref="KeyValue"/>类型的新实例
         /// </summary>
-        public KeyValueCouple()
+        public KeyValue()
         { }
 
         /// <summary>
-        /// 初始化一个<see cref="KeyValueCouple"/>类型的新实例
+        /// 初始化一个<see cref="KeyValue"/>类型的新实例
         /// </summary>
-        public KeyValueCouple(string key, object value)
+        public KeyValue(string key, object value)
         {
             Key = key;
             Value = value;
         }
-
-        /// <summary>
-        /// 获取或设置 数据键名
-        /// </summary>
-        [Required]
-        [DisplayName("数据键名")]
-        public string Key { get; set; }
 
         /// <summary>
         /// 获取或设置 数据值JSON字符串
@@ -64,10 +57,11 @@ namespace OSharp.Core.Systems
         public string ValueType { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否锁定
+        /// 获取或设置 数据键名
         /// </summary>
-        [DisplayName("是否锁定")]
-        public bool IsLocked { get; set; }
+        [Required]
+        [DisplayName("数据键名")]
+        public string Key { get; set; }
 
         /// <summary>
         /// 获取或设置 数据值
@@ -96,6 +90,12 @@ namespace OSharp.Core.Systems
                 ValueJson = value?.ToJsonString();
             }
         }
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        [DisplayName("是否锁定")]
+        public bool IsLocked { get; set; }
 
         /// <summary>
         /// 获取强类型数据值

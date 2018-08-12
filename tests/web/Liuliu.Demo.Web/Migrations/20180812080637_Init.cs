@@ -13,7 +13,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FunctionName = table.Column<string>(nullable: true),
+                    FunctionName = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     NickName = table.Column<string>(nullable: true),
@@ -71,18 +71,18 @@ namespace Liuliu.Demo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KeyValueCouple",
+                name: "KeyValue",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Key = table.Column<string>(nullable: false),
                     ValueJson = table.Column<string>(nullable: true),
                     ValueType = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: false),
                     IsLocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KeyValueCouple", x => x.Id);
+                    table.PrimaryKey("PK_KeyValue", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,9 +188,9 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    TypeName = table.Column<string>(nullable: true),
-                    EntityKey = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    TypeName = table.Column<string>(nullable: false),
+                    EntityKey = table.Column<string>(nullable: false),
                     OperateType = table.Column<int>(nullable: false),
                     OperationId = table.Column<Guid>(nullable: false)
                 },
@@ -496,8 +496,8 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    DisplayName = table.Column<string>(nullable: true),
-                    FieldName = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: false),
+                    FieldName = table.Column<string>(nullable: false),
                     OriginalValue = table.Column<string>(nullable: true),
                     NewValue = table.Column<string>(nullable: true),
                     DataType = table.Column<string>(nullable: true),
@@ -515,12 +515,12 @@ namespace Liuliu.Demo.Web.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "KeyValueCouple",
+                table: "KeyValue",
                 columns: new[] { "Id", "IsLocked", "Key", "ValueJson", "ValueType" },
                 values: new object[,]
                 {
-                    { new Guid("81957c5d-994a-48cf-9bf8-a931004f11a1"), false, "Site.Name", "\"OSHARP\"", "System.String" },
-                    { new Guid("dd171fc0-1c96-4a10-a934-a931004f11a5"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
+                    { new Guid("a239920c-574f-4928-b7a8-a93a01097d29"), false, "Site.Name", "\"OSHARP\"", "System.String" },
+                    { new Guid("eba477b4-fc46-484a-8d04-a93a01097d30"), false, "Site.Description", "\"Osharp with .NetStandard2.0 & Angular6\"", "System.String" }
                 });
 
             migrationBuilder.InsertData(
@@ -531,7 +531,7 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "29f55a57-6575-4397-aad5-5adac4d25936", new DateTime(2018, 8, 3, 4, 47, 52, 898, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
+                values: new object[] { 1, "1b18fbe8-a1b9-4b9b-afc9-090eff89dcd6", new DateTime(2018, 8, 12, 16, 6, 36, 998, DateTimeKind.Local), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditEntity_OperationId",
@@ -701,7 +701,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "EntityUser");
 
             migrationBuilder.DropTable(
-                name: "KeyValueCouple");
+                name: "KeyValue");
 
             migrationBuilder.DropTable(
                 name: "LoginLog");
