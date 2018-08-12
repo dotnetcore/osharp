@@ -37,13 +37,13 @@ namespace OSharp.Entity.SqlServer
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
+            OSharpOptions options = provider.GetOSharpOptions();
             using (IServiceScope scope = provider.CreateScope())
             {
                 ILogger logger = provider.GetService<ILoggerFactory>().CreateLogger(GetType());
                 TDbContext context = CreateDbContext(scope.ServiceProvider);
                 if (context != null)
                 {
-                    OSharpOptions options = scope.ServiceProvider.GetOSharpOptions();
                     OSharpDbContextOptions contextOptions = options.GetDbContextOptions(context.GetType());
                     if (contextOptions == null)
                     {
@@ -58,11 +58,15 @@ namespace OSharp.Entity.SqlServer
                     if (contextOptions.AutoMigrationEnabled)
                     {
                         context.CheckAndMigration();
+                        DbContextModelCache modelCache = scope.ServiceProvider.GetService<DbContextModelCache>();
+                        if (modelCache != null)
+                        {
+                            modelCache.Set(context.GetType(), context.Model);
+                        }
                         IsEnabled = true;
                     }
                 }
             }
-
         }
 
         /// <summary>

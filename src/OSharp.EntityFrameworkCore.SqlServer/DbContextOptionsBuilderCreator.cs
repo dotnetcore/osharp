@@ -7,9 +7,12 @@
 //  <last-date>2017-08-21 1:07</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace OSharp.Entity.SqlServer
@@ -34,7 +37,9 @@ namespace OSharp.Entity.SqlServer
         {
             if (existingConnection == null)
             {
-                return new DbContextOptionsBuilder().UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
+                DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
+                
+                return optionsBuilder.UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
             }
             return new DbContextOptionsBuilder().UseSqlServer(existingConnection, builder => builder.UseRowNumberForPaging());
         }

@@ -97,6 +97,10 @@ namespace OSharp.Entity
             _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
         }
         
+        /// <summary>
+        /// 模型配置
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (_osharpDbOptions != null && _osharpDbOptions.LazyLoadingProxiesEnabled)
