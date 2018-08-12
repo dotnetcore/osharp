@@ -17,7 +17,7 @@ namespace OSharp.Core.Functions
     /// <summary>
     /// 定义功能信息
     /// </summary>
-    public interface IFunction : IEntity<Guid>, ILockable
+    public interface IFunction : IEntity<Guid>, ILockable, IEntityHash
     {
         /// <summary>
         /// 获取或设置 功能名称

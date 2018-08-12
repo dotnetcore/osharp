@@ -19,6 +19,8 @@ using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Extensions;
+using OSharp.Json;
 using OSharp.Reflection;
 
 
@@ -125,6 +127,12 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         protected virtual void SyncToDatabase(IServiceProvider scopedProvider, List<TEntityInfo> entityInfos)
         {
+            //检查指定实体的Hash值，决定是否需要进行数据库同步
+            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
+            {
+                return;
+            }
+
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
@@ -201,6 +209,5 @@ namespace OSharp.Core.EntityInfos
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             return repository.Query(null, false).ToArray();
         }
-
     }
 }
