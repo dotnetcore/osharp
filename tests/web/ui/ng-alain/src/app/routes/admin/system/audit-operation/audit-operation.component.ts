@@ -23,7 +23,7 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.System.AuditOperation", ["Read"]);
+    return new AuthConfig("Root.Admin.Systems.AuditOperation", ["Read"]);
   }
 
   protected GetModel() {

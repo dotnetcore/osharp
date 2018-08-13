@@ -36,6 +36,7 @@ export const adminMenu: Menu[] = [
           // { text: '系统设置', link: '/admin/system/settings', icon: 'icon-settings' },
           { text: '操作审计', link: '/admin/system/audit-operation', icon: 'icon-settings' },
           { text: '数据审计', link: '/admin/system/audit-entity', icon: 'icon-settings' },
+          { text: '模块包', link: '/admin/system/pack', icon: 'icon-settings' },
         ]
       }
     ]
