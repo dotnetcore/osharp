@@ -26,9 +26,15 @@ namespace OSharp.Security.Events
         public override void Handle(DataAuthCacheRefreshEventData eventData)
         {
             IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
-            foreach (DataAuthCacheItem cacheItem in eventData.CacheItems)
+            //更新缓存项
+            foreach (DataAuthCacheItem cacheItem in eventData.SetItems)
             {
                 cache.SetCache(cacheItem);
+            }
+            //移除缓存项
+            foreach (DataAuthCacheItem cacheItem in eventData.RemoveItems)
+            {
+                cache.RemoveCache(cacheItem);
             }
         }
     }

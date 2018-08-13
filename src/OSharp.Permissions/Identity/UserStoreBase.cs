@@ -582,7 +582,7 @@ namespace OSharp.Identity
             user.SecurityStamp = stamp;
 
             //移除用户在线缓存
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserName = user.UserName };
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
             _eventBus.Publish(eventData);
 
             return Task.CompletedTask;

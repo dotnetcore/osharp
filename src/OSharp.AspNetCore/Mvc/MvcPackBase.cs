@@ -24,7 +24,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// Mvc模块基类
     /// </summary>
-    public abstract class MvcPackBase : OsharpPack
+    public abstract class MvcPackBase : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动

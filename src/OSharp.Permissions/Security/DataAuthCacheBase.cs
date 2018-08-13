@@ -94,13 +94,11 @@ namespace OSharp.Security
         /// <summary>
         /// 移除指定角色名与实体类型的缓存项
         /// </summary>
-        /// <param name="roleName">角色名称</param>
-        /// <param name="entityTypeFullName">实体类型名称</param>
-        /// <param name="operation">数据权限操作</param>
-        public void RemoveCache(string roleName, string entityTypeFullName, DataAuthOperation operation)
+        /// <param name="item">要移除的数据权限缓存项信息</param>
+        public void RemoveCache(DataAuthCacheItem item)
         {
-            string key = GetKey(roleName, entityTypeFullName, operation);
-            string name = GetName(roleName, entityTypeFullName, operation);
+            string key = GetKey(item.RoleName, item.EntityTypeFullName, item.Operation);
+            string name = GetName(item.RoleName, item.EntityTypeFullName, item.Operation);
             _cache.Remove(key);
             _logger.LogDebug($"移除{name}的数据权限规则缓存");
         }

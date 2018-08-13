@@ -52,10 +52,8 @@ namespace OSharp.Entity
             IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
             Type entityType = typeof(TEntity);
             Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
-
             OSharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
             DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextOptions);
-            IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
 
             //已存在上下文对象，直接返回
             DbContextBase dbContext = _dbContextMamager.Get(dbContextType, resolveOptions.ConnectionString);
@@ -63,6 +61,7 @@ namespace OSharp.Entity
             {
                 return dbContext;
             }
+            IDbContextResolver contextResolver = _serviceProvider.GetService<IDbContextResolver>();
             dbContext = (DbContextBase)contextResolver.Resolve(resolveOptions);
             if (!dbContext.ExistsRelationalDatabase())
             {

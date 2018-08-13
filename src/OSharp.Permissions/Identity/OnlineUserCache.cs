@@ -114,12 +114,14 @@ namespace OSharp.Identity
         /// <summary>
         /// 移除在线用户信息
         /// </summary>
-        /// <param name="userName">用户名</param>
-        /// <returns>移除的用户信息</returns>
-        public void Remove(string userName)
+        /// <param name="userNames">用户名</param>
+        public void Remove(params string[] userNames)
         {
-            string key = $"Identity_OnlineUser_{userName}";
-            _cache.Remove(key);
+            foreach (string userName in userNames)
+            {
+                string key = $"Identity_OnlineUser_{userName}";
+                _cache.Remove(key);
+            }
         }
 
         /// <summary>

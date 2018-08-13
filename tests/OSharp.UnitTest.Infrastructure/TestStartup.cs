@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
+
 
 namespace OSharp.UnitTest.Infrastructure
 {
@@ -10,7 +12,7 @@ namespace OSharp.UnitTest.Infrastructure
         {
             services.AddHttpContextAccessor();
             services.AddLogging();
-            services.AddOSharp();
+            services.AddOSharp<AspOsharpPackManager>();
         }
 
         public virtual void Configure(IApplicationBuilder app)

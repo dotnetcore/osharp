@@ -5,7 +5,7 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 
 @Component({
-  selector: 'security-filter-group',
+  selector: 'admin-security-filter-group',
   templateUrl: './filter-group.component.html',
   styles: [`
   .group-box{margin:2px;padding:3px; border:dashed 2px #ddd;}

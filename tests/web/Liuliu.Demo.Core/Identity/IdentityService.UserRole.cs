@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Identity;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Identity;
+using OSharp.Identity.Events;
 
 
 namespace Liuliu.Demo.Identity
@@ -51,9 +52,22 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="dtos">用户角色信息集合</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
+        public async Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
         {
-            return _userRoleRepository.UpdateAsync(dtos);
+            List<string> userNames = new List<string>();
+            OperationResult result = await _userRoleRepository.UpdateAsync(dtos,
+                (dto, entity) =>
+                {
+                    string userName = _userManager.Users.FirstOrDefault(m => m.Id.Equals(dto.UserId))?.UserName;
+                    userNames.AddIfNotNull(userName);
+                    return Task.FromResult(0);
+                });
+            if (result.Successed && userNames.Count > 0)
+            {
+                OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = userNames.ToArray() };
+                _eventBus.Publish(eventData);
+            }
+            return result;
         }
 
         /// <summary>
@@ -92,6 +106,10 @@ namespace Liuliu.Demo.Identity
                     return result.ToOperationResult();
                 }
                 await _userManager.UpdateSecurityStampAsync(user);
+
+                //更新用户缓存使角色生效
+                OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
+                _eventBus.Publish(eventData);
             }
             catch (InvalidOperationException ex)
             {

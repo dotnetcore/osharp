@@ -13,7 +13,6 @@ using System.Linq;
 using AutoMapper;
 using AutoMapper.Configuration;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -50,14 +49,13 @@ namespace OSharp.AutoMapper
 
             return services;
         }
-
+        
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IServiceProvider provider = app.ApplicationServices;
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>() ?? new MapperConfigurationExpression();
 
             //各个模块DTO的 IAutoMapperConfiguration 映射实现类

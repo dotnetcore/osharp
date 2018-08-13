@@ -14,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -96,6 +95,18 @@ namespace OSharp.Entity
                 _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
             }
             _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
+        }
+        
+        /// <summary>
+        /// 模型配置
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_osharpDbOptions != null && _osharpDbOptions.LazyLoadingProxiesEnabled)
+            {
+                optionsBuilder.UseLazyLoadingProxies();
+            }
         }
 
         /// <summary>

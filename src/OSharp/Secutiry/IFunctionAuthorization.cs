@@ -26,5 +26,13 @@ namespace OSharp.Secutiry
         /// <param name="principal">在线用户信息</param>
         /// <returns>功能权限检查结果</returns>
         AuthorizationResult Authorize(IFunction function, IPrincipal principal);
+
+        /// <summary>
+        /// 获取功能权限检查通过的角色
+        /// </summary>
+        /// <param name="function">要检查的功能</param>
+        /// <param name="principal">在线用户信息</param>
+        /// <returns>通过的角色</returns>
+        string[] GetOkRoles(IFunction function, IPrincipal principal);
     }
 }

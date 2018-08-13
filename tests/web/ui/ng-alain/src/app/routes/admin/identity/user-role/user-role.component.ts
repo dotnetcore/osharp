@@ -66,12 +66,6 @@ export class UserRoleComponent extends GridComponentBase implements AfterViewIni
     ];
   }
 
-  protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
-    let options = super.GetGridOptions(dataSource);
-    options.toolbar.splice(0, 1);
-    return options;
-  }
-
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
     let options = super.GetDataSourceOptions();
     delete options.transport.destroy;

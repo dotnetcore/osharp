@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
@@ -358,12 +359,31 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
+        /// </summary>
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> Query()
+        {
+            return Query(null, true);
+        }
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
+        /// </summary>
+        /// <param name="predicate">数据查询谓语表达式</param>
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Query(predicate, true);
+        }
+
+        /// <summary>
         /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件及是否启用数据权限过滤
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
         /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
         /// <returns>符合条件的数据集</returns>
-        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate = null, bool filterByDataAuth = true)
+        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
         {
             return TrackQuery(predicate, filterByDataAuth).AsNoTracking();
         }
@@ -379,12 +399,31 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
+        /// </summary>
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> TrackQuery()
+        {
+            return TrackQuery(null, true);
+        }
+
+        /// <summary>
+        /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
+        /// </summary>
+        /// <param name="predicate">数据过滤表达式</param>
+        /// <returns>符合条件的数据集</returns>
+        public virtual IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate)
+        {
+            return TrackQuery(predicate, true);
+        }
+
+        /// <summary>
         /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可附加过滤条件及是否启用数据权限过滤
         /// </summary>
         /// <param name="predicate">数据过滤表达式</param>
         /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
         /// <returns>符合条件的数据集</returns>
-        public IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate = null, bool filterByDataAuth = true)
+        public IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
             if (filterByDataAuth)
@@ -407,12 +446,14 @@ namespace OSharp.Entity
         public virtual IQueryable<TEntity> TrackQuery(params Expression<Func<TEntity, object>>[] includePropertySelectors)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
-            if (includePropertySelectors != null && includePropertySelectors.Length > 0)
+            if (includePropertySelectors == null || includePropertySelectors.Length == 0)
             {
-                foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
-                {
-                    query = query.Include(selector);
-                }
+                return query;
+            }
+
+            foreach (Expression<Func<TEntity, object>> selector in includePropertySelectors)
+            {
+                query = query.Include(selector);
             }
             return query;
         }

@@ -144,7 +144,7 @@ namespace OSharp.Secutiry.Claims
             Check.NotNull(identity, nameof(identity));
             if (!(identity is ClaimsIdentity claimsIdentity))
             {
-                return null;
+                return new string[0];
             }
             return claimsIdentity.FindAll(ClaimTypes.Role).SelectMany(m =>
             {

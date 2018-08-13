@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Core.Modules;
@@ -42,7 +43,13 @@ namespace OSharp.Security
         {
             _locator = ServiceLocator.Instance;
             _moduleInfoPicker = _locator.GetService<IModuleInfoPicker>();
+            Logger = _locator.GetLogger(GetType());
         }
+
+        /// <summary>
+        /// 获取 日志记录对象
+        /// </summary>
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// 从程序集中获取模块信息
@@ -72,6 +79,12 @@ namespace OSharp.Security
             {
                 return;
             }
+
+            if (!moduleInfos.CheckSyncByHash(provider, Logger))
+            {
+                return;
+            }
+
             IModuleStore<TModule, TModuleInputDto, TModuleKey> moduleStore =
                 provider.GetService<IModuleStore<TModule, TModuleInputDto, TModuleKey>>();
             IModuleFunctionStore<TModuleFunction, TModuleKey> moduleFunctionStore =

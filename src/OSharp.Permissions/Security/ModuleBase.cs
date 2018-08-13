@@ -41,6 +41,7 @@ namespace OSharp.Security
         /// 获取或设置 模块代码
         /// </summary>
         [Required]
+        [DisplayName("模块代码")]
         public string Code { get; set; }
 
         /// <summary>

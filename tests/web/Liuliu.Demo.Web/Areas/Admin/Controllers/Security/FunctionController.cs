@@ -51,15 +51,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<FunctionOutputDto> Read(PageRequest request)
         {
-            if (request.PageCondition.SortConditions.Length == 0)
-            {
-                request.PageCondition.SortConditions = new[]
-                {
-                    new SortCondition("Area"),
-                    new SortCondition("Controller"),
-                    new SortCondition("IsController", ListSortDirection.Descending)
-                };
-            }
+            request.AddDefaultSortCondition(
+                new SortCondition("Area"),
+                new SortCondition("Controller"),
+                new SortCondition("IsController", ListSortDirection.Descending));
+
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
             PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();

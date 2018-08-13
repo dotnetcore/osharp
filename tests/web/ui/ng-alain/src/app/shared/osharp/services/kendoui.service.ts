@@ -25,8 +25,11 @@ export class KendouiService {
     if (!funcFieldReplace) {
       funcFieldReplace = field => field;
     }
-    if (!filter || !filter.filters || !filter.filters.length) {
+    if (!filter || !filter.filters) {
       return null;
+    }
+    if (filter.filters.length == 0) {
+      return new FilterGroup();
     }
     const group = new FilterGroup();
     filter.filters.forEach(item => {
@@ -58,7 +61,7 @@ export class KendouiService {
    * @param operate kendo的查询对比操作字符串
    */
   renderRuleOperate(operate): FilterOperate {
-    var dict: { [key: string]: FilterOperate } = {
+    let dict: { [key: string]: FilterOperate } = {
       "and": FilterOperate.And,
       "or": FilterOperate.Or,
       "eq": FilterOperate.Equal,
@@ -80,7 +83,7 @@ export class KendouiService {
         }
       }
     }
-    throw `后端服务器不支持${operate}的比较操作`;
+    throw new Error(`后端服务器不支持${operate}的比较操作`);
   }
   /**
    * 处理kendoui到osharp框架的查询参数
@@ -348,7 +351,7 @@ export class KendouiService {
   }
 
   RemoteDropDownList(element, url, textField = 'text', valueField = 'id') {
-    var dataSource = {
+    let dataSource = {
       transport: {
         dataType: "json",
         read: { url: url }
@@ -374,7 +377,7 @@ export class KendouiService {
 
   ComboBox(element, dataSource, textField = 'text', valueField = 'id') {
     return new kendo.ui.ComboBox(element, {
-      autoBind: true,
+      autoBind: false,
       filter: "contains",
       dataTextField: textField,
       dataValueField: valueField,
@@ -388,6 +391,30 @@ export class KendouiService {
         serverFiltering: true,
         dateType: "json",
         read: { url: url }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return this.ComboBox(element, dataSource, textField, valueField);
+  }
+
+  RemoteFilterComboBox(element, options, url, textField = 'text', valueField = 'id') {
+    let dataSource: kendo.data.DataSourceOptions = {
+      serverFiltering: true,
+      transport: {
+        read: { url: url, type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        parameterMap: (opts, type) => {
+          if (type == 'read') {
+            let filter = opts.filter;
+            if (options.buildFilter != undefined && filter && filter.filters.length) {
+              filter = options.buildFilter(filter);
+            }
+            let group = this.getFilterGroup(filter, field => field);
+            if (group == null) {
+              group = new FilterGroup();
+            }
+            return JSON.stringify(group);
+          }
+        }
       },
       requestStart: e => this.OnRequestStart(e)
     };
@@ -413,6 +440,42 @@ export class KendouiService {
     return this.ComboBoxEditor(container, options, dataSource, textField, valueField);
   }
 
+  RemoteFilterComboBoxEditor(container, options, url, textField = 'text', valueField = 'id') {
+    let input = $('<input/>');
+    input.attr('name', options.field);
+    input.appendTo(container);
+    let dataSource: kendo.data.DataSourceOptions = {
+      serverFiltering: true,
+      transport: {
+        read: { url: url, type: 'post', dataType: 'json', contentType: 'application/json;charset=utf-8' },
+        parameterMap: (opts, type) => {
+          if (type == 'read') {
+            let filter = opts.filter;
+            if (options.buildFilter != undefined && filter && filter.filters.length) {
+              filter = options.buildFilter(filter);
+            }
+            let group = this.getFilterGroup(filter, field => field);
+            if (group == null) {
+              group = new FilterGroup();
+            }
+            return JSON.stringify(group);
+          }
+        }
+      },
+      requestStart: e => this.OnRequestStart(e)
+    };
+    return new kendo.ui.ComboBox(input, {
+      autoBind: false,
+      filter: options.filter || 'contains',
+      dataTextField: textField,
+      dataValueField: valueField,
+      text: options.selectText || '',
+      value: options.selectValue || '',
+      minLength: options.minLength || 1,
+      delay: 800,
+      dataSource: dataSource
+    });
+  }
   // #endregion
 }
 
@@ -464,12 +527,15 @@ export abstract class GridComponentBase extends ComponentBase {
     if (!$toolbar) {
       return;
     }
+    $($toolbar).on("click", ".btn-refresh-function", e => this.grid.dataSource.read());
     // $($toolbar).on("click", ".toolbar-right .fullscreen", e => this.toggleGridFullScreen(e));
   }
 
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let columns = this.GetGridColumns();
-    return this.kendoui.CreateGridOptions(dataSource, columns);
+    let options = this.kendoui.CreateGridOptions(dataSource, columns);
+    options.toolbar.push({ name: "refresh", template: `<button class="btn-refresh-function k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
+    return options;
   }
 
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {
@@ -516,11 +582,12 @@ export abstract class GridComponentBase extends ComponentBase {
     if (!this.auth.Create) {
       this.osharp.remove(toolbar, m => m.name == "create");
     }
-    if (!this.auth.Update && !this.auth.Delete) {
+    // 新增、更新、删除都需要保存或取消
+    if (!this.auth.Create && !this.auth.Update && !this.auth.Delete) {
       this.osharp.remove(toolbar, m => m.name == "save");
       this.osharp.remove(toolbar, m => m.name == "cancel");
     }
-    //新增和更新的编辑状态
+    // 新增和更新的编辑状态
     options.beforeEdit = e => {
       if (e.model.isNew()) {
         if (!this.auth.Create) {
@@ -554,8 +621,8 @@ export abstract class GridComponentBase extends ComponentBase {
    */
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
-    let winWidth = window.innerWidth, winHeight = window.innerHeight;
-    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
+    let winHeight = window.innerHeight;
+    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 20;
     $content.height(winHeight - otherHeight);
   }
 
@@ -666,7 +733,7 @@ export abstract class TreeListComponentBase extends ComponentBase {
    * @param options TreeList选项
    */
   protected FilterTreeListAuth(options: kendo.ui.TreeListOptions) {
-    //命令列
+    // 命令列
     let cmdColumn = options.columns && options.columns.find(m => m.command != null);
     let cmds = cmdColumn && cmdColumn.command as kendo.ui.TreeListColumnCommandItem[];
     if (cmds) {

@@ -14,7 +14,7 @@ export class OsharpService {
   public msgSrv: NzMessageService;
   private router: Router;
   private http: HttpClient;
-  private cache: CacheService
+  private cache: CacheService;
 
   constructor(
     injector: Injector

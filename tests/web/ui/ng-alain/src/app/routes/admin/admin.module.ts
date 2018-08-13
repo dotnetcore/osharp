@@ -9,8 +9,13 @@ import { AdminRoutingModule } from './admin.routing';
 import { AdminLayoutModule } from './layout/layout.module';
 import { SharedModule } from '@shared/shared.module';
 
+const COMPONENTS = [
+
+];
+
 @NgModule({
   declarations: [
+    ...COMPONENTS
   ],
   imports: [
     AdminLayoutModule,

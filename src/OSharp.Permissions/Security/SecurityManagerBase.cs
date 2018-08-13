@@ -753,7 +753,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            List<DataAuthCacheItem> cacheItems = new List<DataAuthCacheItem>();
+            DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await _entityRoleRepository.InsertAsync(dtos,
                 async dto =>
                 {
@@ -776,17 +776,19 @@ namespace OSharp.Security
                     {
                         throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
-                    cacheItems.Add(new DataAuthCacheItem()
+                    if (!dto.IsLocked)
                     {
-                        RoleName = role.Name,
-                        EntityTypeFullName = entityInfo.TypeName,
-                        Operation = dto.Operation,
-                        FilterGroup = dto.FilterGroup
-                    });
+                        eventData.SetItems.Add(new DataAuthCacheItem()
+                        {
+                            RoleName = role.Name,
+                            EntityTypeFullName = entityInfo.TypeName,
+                            Operation = dto.Operation,
+                            FilterGroup = dto.FilterGroup
+                        });
+                    }
                 });
-            if (result.Successed && cacheItems.Count > 0)
+            if (result.Successed && eventData.HasData())
             {
-                DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData() { CacheItems = cacheItems };
                 _eventBus.Publish(eventData);
             }
             return result;
@@ -799,7 +801,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            List<DataAuthCacheItem> cacheItems = new List<DataAuthCacheItem>();
+            DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await _entityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
@@ -822,17 +824,25 @@ namespace OSharp.Security
                     {
                         throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
-                    cacheItems.Add(new DataAuthCacheItem()
+                    DataAuthCacheItem cacheItem = new DataAuthCacheItem()
                     {
                         RoleName = role.Name,
                         EntityTypeFullName = entityInfo.TypeName,
+                        Operation = dto.Operation,
                         FilterGroup = dto.FilterGroup
-                    });
+                    };
+                    if (dto.IsLocked)
+                    {
+                        eventData.RemoveItems.Add(cacheItem);
+                    }
+                    else
+                    {
+                        eventData.SetItems.Add(cacheItem);
+                    }
                 });
 
-            if (result.Successed && cacheItems.Count > 0)
+            if (result.Successed && eventData.HasData())
             {
-                DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData() { CacheItems = cacheItems };
                 _eventBus.Publish(eventData);
             }
             return result;
@@ -845,7 +855,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> DeleteEntityRoles(params Guid[] ids)
         {
-            List<(string, string)> list = new List<(string, string)>();
+            DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await _entityRoleRepository.DeleteAsync(ids,
                 async entity =>
                 {
@@ -853,17 +863,13 @@ namespace OSharp.Security
                     TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(entity.EntityId);
                     if (role != null && entityInfo != null)
                     {
-                        list.Add((role.Name, entityInfo.TypeName));
+                        eventData.RemoveItems.Add(new DataAuthCacheItem() { RoleName = role.Name, EntityTypeFullName = entityInfo.TypeName, Operation = entity.Operation });
                     }
                 });
-            if (result.Successed && list.Count > 0)
+            if (result.Successed && eventData.HasData())
             {
                 //移除数据权限缓存
-                IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
-                foreach ((string roleName, string typeName) in list)
-                {
-                    cache.RemoveCache(roleName, typeName, DataAuthOperation.Delete);
-                }
+                _eventBus.Publish(eventData);
             }
             return result;
         }

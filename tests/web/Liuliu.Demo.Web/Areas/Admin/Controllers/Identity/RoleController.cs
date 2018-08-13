@@ -23,9 +23,12 @@ using Liuliu.Demo.Security.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Caching;
 using OSharp.Collections;
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -62,8 +65,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<RoleOutputDto> Read(PageRequest request)
         {
-            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
-            var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
+            Check.NotNull(request, nameof(request));
+            IFunction function = this.GetExecuteFunction();
+
+            Expression<Func<Role, bool>> predicate = request.FilterGroup.ToExpression<Role>();
+            var page = _roleManager.Roles.ToPageCache<Role, RoleOutputDto>(predicate, request.PageCondition, function);
 
             return page.ToPageData();
         }
@@ -74,9 +80,16 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>角色节点列表</returns>
         [HttpGet]
         [Description("读取节点")]
-        public List<RoleNode> ReadNode()
+        public RoleNode[] ReadNode()
         {
-            List<RoleNode> nodes = _roleManager.Roles.Where(m => !m.IsLocked).OrderBy(m => m.Name).ToOutput<Role, RoleNode>().ToList();
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<Role, bool>> exp = m => !m.IsLocked;
+
+            RoleNode[] nodes = _roleManager.Roles.ToCacheArray(exp, m => new RoleNode()
+            {
+                RoleId = m.Id,
+                RoleName = m.Name
+            }, function);
             return nodes;
         }
 
