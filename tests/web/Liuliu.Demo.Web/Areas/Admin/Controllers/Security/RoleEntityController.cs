@@ -48,7 +48,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <summary>
         /// 读取角色数据权限列表信息
         /// </summary>
-        /// <returns>角色数据权限列表信息</returns>
+        /// <param name="request">页请求信息</param>
+        /// <returns>角色数据权限列表分页信息</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("ReadProperties", Controller = "EntityInfo")]

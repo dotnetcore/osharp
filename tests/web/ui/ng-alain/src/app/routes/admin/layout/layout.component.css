@@ -1,3 +1,9 @@
+@media (min-width: 768px){
+.content {
+    margin: 116px 10px 0 210px;
+}
+}
+
 ::ng-deep .k-grid .content {
     margin: 64px 10px 10px 10px;
 }

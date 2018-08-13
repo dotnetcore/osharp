@@ -47,7 +47,7 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
       { field: "FunctionName", title: "功能", width: 150, filterable: this.osharp.data.stringFilterable },
       { field: "UserName", title: "用户名", width: 150, filterable: this.osharp.data.stringFilterable },
       { field: "NickName", title: "昵称", width: 150, filterable: this.osharp.data.stringFilterable },
-      { field: "Ip", title: "IP地址", width: 100, filterable: this.osharp.data.stringFilterable },
+      { field: "Ip", title: "IP地址", width: 115, filterable: this.osharp.data.stringFilterable },
       { field: "OperationSystem", title: "操作系统", width: 250, filterable: this.osharp.data.stringFilterable },
       { field: "Browser", title: "浏览器", width: 150, filterable: this.osharp.data.stringFilterable },
       {
@@ -69,7 +69,7 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
   }
 
   auditEntityInit(e: kendo.ui.GridDetailInitEvent) {
-    var row = $(e.detailRow);
+    let row = $(e.detailRow);
     //splitter
     let $splitter = row.find('.detailSplitter');
     let splitter = new kendo.ui.Splitter($splitter, { panes: [{ size: "50%" }, { collapsible: false, collapsed: false }] });
@@ -98,9 +98,9 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
     gridOptions.toolbar = [];
     gridOptions.editable = false;
     gridOptions.selectable = true;
-    gridOptions.change = e => {
-      let row = e.sender.select();
-      let data: any = e.sender.dataItem(row);
+    gridOptions.change = () => {
+      let row2 = e.sender.select();
+      let data: any = e.sender.dataItem(row2);
       data = data.Properties;
       if (this.propertyGrid && data) {
         this.propertyGrid.dataSource.data(data);

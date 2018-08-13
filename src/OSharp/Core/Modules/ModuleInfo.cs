@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 using OSharp.Core.Functions;
+using OSharp.Entity;
 
 
 namespace OSharp.Core.Modules
@@ -19,7 +20,7 @@ namespace OSharp.Core.Modules
     /// 从程序集中提取的模块信息载体，包含模块基本信息和模块依赖的功能信息集合
     /// </summary>
     [DebuggerDisplay("{ToDebugDisplay()}")]
-    public class ModuleInfo
+    public class ModuleInfo : IEntityHash
     {
         /// <summary>
         /// 获取或设置 模块名称

@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -713,6 +714,75 @@ namespace OSharp.Extensions
                     }
                     return m.Value;
                 });
+        }
+
+        /// <summary>
+        /// 将驼峰字符串按单词拆分并转换成小写，再以-分隔
+        /// </summary>
+        /// <param name="str">待转换的字符串</param>
+        /// <returns></returns>
+        public static string UpperToLowerAndSplit(this string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return str;
+            }
+            List<string> words = new List<string>();
+            while (str.Length > 0)
+            {
+                char c = str.FirstOrDefault(m => char.IsUpper(m));
+                if (c == default(char))
+                {
+                    words.Add(str);
+                    break;
+                }
+                int upperIndex = str.IndexOf(c);
+                if (upperIndex < 0) //admin
+                {
+                    return str;
+                }
+                if (upperIndex > 0) //adminAdmin
+                {
+                    string first = str.Substring(0, upperIndex);
+                    words.Add(first);
+                    str = str.Substring(upperIndex, str.Length - upperIndex);
+                    continue;
+                }
+                str = char.ToLower(str[0]) + str.Substring(1, str.Length - 1);
+            }
+            return words.ExpandAndToString("-");
+        }
+
+        /// <summary>
+        /// 将驼峰字符串的第一个字符小写
+        /// </summary>
+        public static string LowerFirstChar(this string str)
+        {
+            if (string.IsNullOrEmpty(str) || !char.IsUpper(str[0]))
+            {
+                return str;
+            }
+            if (str.Length == 1)
+            {
+                return char.ToLower(str[0]).ToString();
+            }
+            return char.ToLower(str[0]) + str.Substring(1, str.Length - 1);
+        }
+
+        /// <summary>
+        /// 将小驼峰字符串的第一个字符大写
+        /// </summary>
+        public static string UpperFirstChar(this string str)
+        {
+            if (string.IsNullOrEmpty(str) || !char.IsLower(str[0]))
+            {
+                return str;
+            }
+            if (str.Length == 1)
+            {
+                return char.ToUpper(str[0]).ToString();
+            }
+            return char.ToUpper(str[0]) + str.Substring(1, str.Length - 1);
         }
 
         /// <summary>

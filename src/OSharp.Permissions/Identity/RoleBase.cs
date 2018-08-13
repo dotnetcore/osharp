@@ -34,15 +34,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 角色名称
         /// </summary>
-        [Required]
-        [DisplayName("角色名称")]
+        [Required, DisplayName("角色名称")]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化角色名称
         /// </summary>
-        [Required]
-        [DisplayName("标准化角色名称")]
+        [Required, DisplayName("标准化角色名称")]
         public string NormalizedName { get; set; }
 
         /// <summary>

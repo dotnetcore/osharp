@@ -21,10 +21,12 @@ using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Json;
 using OSharp.Properties;
+using OSharp.Reflection;
 
 
 namespace OSharp.Caching
@@ -41,7 +43,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-
+            
             string json = value.ToJsonString();
             if (options == null)
             {
@@ -79,7 +81,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0, true);
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
@@ -93,7 +95,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0, true);
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
@@ -109,11 +111,11 @@ namespace OSharp.Caching
             Check.NotNull(value, nameof(value));
             Check.NotNull(function, nameof(function));
 
-            if (function.CacheExpirationSeconds == 0)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
                 return;
             }
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
             cache.Set(key, value, options);
         }
 
@@ -125,12 +127,12 @@ namespace OSharp.Caching
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
             Check.NotNull(function, nameof(function));
-
-            if (function.CacheExpirationSeconds == 0)
+            
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
                 return Task.FromResult(0);
             }
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
             return cache.SetAsync(key, value, options);
         }
 
@@ -203,6 +205,8 @@ namespace OSharp.Caching
         /// </summary>
         public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, int cacheSeconds)
         {
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
+            
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
             return cache.Get<TResult>(key, getFunc, options);
@@ -213,6 +217,8 @@ namespace OSharp.Caching
         /// </summary>
         public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, int cacheSeconds)
         {
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
+
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
             return cache.GetAsync<TResult>(key, getAsyncFunc, options);
@@ -223,14 +229,10 @@ namespace OSharp.Caching
         /// </summary>
         public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, IFunction function)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            if (function.IsCacheSliding)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
-                options.SetSlidingExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            else
-            {
-                options.SetAbsoluteExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
+                return getFunc();
             }
             return cache.Get<TResult>(key, getFunc, options);
         }
@@ -240,14 +242,10 @@ namespace OSharp.Caching
         /// </summary>
         public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, IFunction function)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            if (function.IsCacheSliding)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
-                options.SetSlidingExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            else
-            {
-                options.SetAbsoluteExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
+                return getAsyncFunc();
             }
             return cache.GetAsync<TResult>(key, getAsyncFunc, options);
         }
@@ -729,16 +727,22 @@ namespace OSharp.Caching
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector, params object[] keyParams)
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {
@@ -767,16 +771,22 @@ namespace OSharp.Caching
             params object[] keyParams)
             where TOutputDto : IOutputDto
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {

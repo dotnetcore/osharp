@@ -24,6 +24,7 @@ namespace OSharp.Core.Options
         /// </summary>
         public OSharpDbContextOptions()
         {
+            LazyLoadingProxiesEnabled = false;
             AuditEntityEnabled = false;
             AutoMigrationEnabled = false;
         }
@@ -47,6 +48,11 @@ namespace OSharp.Core.Options
         /// 获取或设置 数据库类型
         /// </summary>
         public DatabaseType DatabaseType { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否启用延迟加载代理
+        /// </summary>
+        public bool LazyLoadingProxiesEnabled { get; set; }
 
         /// <summary>
         /// 获取或设置 是否允许审计实体

@@ -9,7 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Reflection;
@@ -51,8 +50,8 @@ namespace OSharp.Core.Packs
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public virtual void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public virtual void UsePack(IServiceProvider provider)
         {
             IsEnabled = true;
         }

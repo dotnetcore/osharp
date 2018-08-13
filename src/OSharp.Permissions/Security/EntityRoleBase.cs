@@ -39,6 +39,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 数据权限操作
         /// </summary>
+        [DisplayName("数据权限操作")]
         public DataAuthOperation Operation { get; set; }
 
         /// <summary>

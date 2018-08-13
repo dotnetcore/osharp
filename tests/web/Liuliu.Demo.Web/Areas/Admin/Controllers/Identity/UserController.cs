@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Common.Dtos;
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
@@ -23,10 +24,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Caching;
 using OSharp.Collections;
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -67,9 +70,31 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<UserOutputDto> Read(PageRequest request)
         {
-            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage<User, UserOutputDto>(predicate, request.PageCondition);
+            Check.NotNull(request, nameof(request));
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<User, bool>> predicate = request.FilterGroup.ToExpression<User>();
+            var page = _userManager.Users.ToPageCache<User, UserOutputDto>(predicate, request.PageCondition, function);
             return page.ToPageData();
+        }
+
+        /// <summary>
+        /// 读取用户节点信息
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("读取节点")]
+        public ListNode[] ReadNode(FilterGroup group)
+        {
+            Check.NotNull(group, nameof(group));
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<User, bool>> exp = group.ToExpression<User>();
+            ListNode[] nodes = _userManager.Users.ToCacheArray<User, ListNode>(exp, m => new ListNode()
+            {
+                Id = m.Id,
+                Name = m.NickName
+            }, function);
+            return nodes;
         }
 
         /// <summary>

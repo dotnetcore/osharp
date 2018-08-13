@@ -23,7 +23,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC功能点模块
     /// </summary>
-    public class MvcFunctionPack : OsharpPack
+    public class MvcFunctionPack : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别

@@ -19,6 +19,7 @@ using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Secutiry;
 using OSharp.Secutiry.Claims;
 
 
@@ -35,14 +36,21 @@ namespace OSharp.AspNetCore.Mvc.Filters
         {
             IServiceProvider provider = context.HttpContext.RequestServices;
             IFunction function = context.GetExecuteFunction();
-            if (function == null || !function.AuditOperationEnabled)
+            if (function == null)
             {
                 return;
             }
-
             ScopedDictionary dict = provider.GetService<ScopedDictionary>();
             dict.Function = function;
+            // 数据权限有效角色，即有当前功能权限的角色
+            IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
+            string[] roleName = functionAuthorization.GetOkRoles(function, context.HttpContext.User);
+            dict.DataAuthValidRoleNames = roleName;
 
+            if (!function.AuditOperationEnabled)
+            {
+                return;
+            }
             AuditOperationEntry operation = new AuditOperationEntry
             {
                 FunctionName = function.Name,

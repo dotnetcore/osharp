@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 using OSharp.Core.Functions;
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Secutiry.Claims;
 
@@ -22,11 +23,10 @@ namespace OSharp.Secutiry
     /// <summary>
     /// 功能权限检查基类
     /// </summary>
-    public abstract class FunctionAuthorizationBase<TFunction> : IFunctionAuthorization
-        where TFunction : class, IFunction, IEntity<Guid>
+    public abstract class FunctionAuthorizationBase : IFunctionAuthorization
     {
         /// <summary>
-        /// 初始化一个<see cref="FunctionAuthorizationBase{TFunction}"/>类型的新实例
+        /// 初始化一个<see cref="FunctionAuthorizationBase"/>类型的新实例
         /// </summary>
         protected FunctionAuthorizationBase(IFunctionAuthCache functionAuthCache)
         {
@@ -53,6 +53,25 @@ namespace OSharp.Secutiry
         public AuthorizationResult Authorize(IFunction function, IPrincipal principal)
         {
             return AuthorizeCore(function, principal);
+        }
+
+        /// <summary>
+        /// 获取功能权限检查通过的角色
+        /// </summary>
+        /// <param name="function">要检查的功能</param>
+        /// <param name="principal">在线用户信息</param>
+        /// <returns>通过的角色</returns>
+        public virtual string[] GetOkRoles(IFunction function, IPrincipal principal)
+        {
+            if (!principal.Identity.IsAuthenticated)
+            {
+                return new string[0];
+            }
+
+            string[] userRoles = principal.Identity.GetRoles();
+            string[] functionRoles = FunctionAuthCache.GetFunctionRoles(function.Id);
+            
+            return userRoles.Intersect(functionRoles).ToArray();
         }
 
         /// <summary>
@@ -101,26 +120,58 @@ namespace OSharp.Secutiry
             {
                 return new AuthorizationResult(AuthorizationStatus.Error, "当前用户标识IIdentity格式不正确，仅支持ClaimsIdentity类型的用户标识");
             }
-            if (!(function is TFunction func))
-            {
-                return new AuthorizationResult(AuthorizationStatus.Error, $"要检测的功能类型为“{function.GetType()}”，不是要求的“{typeof(TFunction)}”类型");
-            }
             //检查角色-功能的权限
             string[] userRoleNames = identity.GetRoles().ToArray();
-            //如果是超级管理员角色，直接通过
-            if (userRoleNames.Contains(SuperRoleName))
+            AuthorizationResult result = AuthorizeRoleNames(function, userRoleNames);
+            if (result.IsOk)
+            {
+                return result;
+            }
+            result = AuthorizeUserName(function, principal.Identity.GetUserName());
+            return result;
+        }
+
+        /// <summary>
+        /// 重写以实现指定角色是否有执行指定功能的权限
+        /// </summary>
+        /// <param name="function">功能信息</param>
+        /// <param name="roleNames">角色名称</param>
+        /// <returns>功能权限检查结果</returns>
+        protected virtual AuthorizationResult AuthorizeRoleNames(IFunction function, params string[] roleNames)
+        {
+            Check.NotNull(roleNames, nameof(roleNames));
+
+            if (roleNames.Length == 0)
+            {
+                return new AuthorizationResult(AuthorizationStatus.Forbidden);
+            }
+            if (function.AccessType != FunctionAccessType.RoleLimit || roleNames.Contains(SuperRoleName))
+            {
+                return AuthorizationResult.OK;
+            }
+            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(function.Id);
+            if (roleNames.Intersect(functionRoleNames).Any())
+            {
+                return AuthorizationResult.OK;
+            }
+            return new AuthorizationResult(AuthorizationStatus.Forbidden);
+        }
+
+        /// <summary>
+        /// 重写以实现指定用户是否有执行指定功能的权限
+        /// </summary>
+        /// <param name="function">功能信息</param>
+        /// <param name="userName">用户名</param>
+        /// <returns>功能权限检查结果</returns>
+        protected virtual AuthorizationResult AuthorizeUserName(IFunction function, string userName)
+        {
+            if (function.AccessType != FunctionAccessType.RoleLimit)
             {
                 return AuthorizationResult.OK;
             }
 
-            string[] functionRoleNames = FunctionAuthCache.GetFunctionRoles(func.Id);
-            if (userRoleNames.Intersect(functionRoleNames).Any())
-            {
-                return AuthorizationResult.OK;
-            }
-            //检查用户-功能的权限
-            Guid[] functionIds = FunctionAuthCache.GetUserFunctions(identity.GetUserName());
-            if (functionIds.Contains(func.Id))
+            Guid[] functionIds = FunctionAuthCache.GetUserFunctions(userName);
+            if (functionIds.Contains(function.Id))
             {
                 return AuthorizationResult.OK;
             }

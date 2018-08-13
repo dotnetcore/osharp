@@ -64,7 +64,7 @@ export class UserFunctionComponent extends GridComponentBase implements AfterVie
     let options = super.GetGridOptions(dataSource);
     options.editable = false;
     options.selectable = true;
-    options.toolbar.push({ template: '<span style="line-height:30px;">角色列表</span>' });
+    options.toolbar.unshift({ template: '<span>角色列表</span>' });
     options.change = e => {
       let row = this.grid.select();
       if (row) {

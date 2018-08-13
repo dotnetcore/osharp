@@ -10,6 +10,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.Core.Packs;
 
 
@@ -18,7 +19,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// SignalR模块
     /// </summary>
-    public class SignalRPack : OsharpPack
+    public class SignalRPack : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动

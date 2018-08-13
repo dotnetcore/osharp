@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
 
+using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Exceptions;
@@ -165,18 +166,24 @@ namespace OSharp.Filter
                 return exp;
             }
 
-            IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
-            if (cache == null)
+            IDataAuthCache dataAuthCache = ServiceLocator.Instance.GetService<IDataAuthCache>();
+            if (dataAuthCache == null)
             {
                 return exp;
             }
 
+            // 要判断数据权限功能,先要排除没有执行当前功能权限的角色,判断剩余角色的数据权限
             string[] roleNames = user.Identity.GetRoles();
-            string typeName = typeof(T).FullName;
+            ScopedDictionary scopedDict = ServiceLocator.Instance.GetService<ScopedDictionary>();
+            if (scopedDict?.Function != null)
+            {
+                roleNames = scopedDict.DataAuthValidRoleNames;
+            }
+            string typeName = typeof(T).GetFullNameWithModule();
             Expression<Func<T, bool>> subExp = null;
             foreach (string roleName in roleNames)
             {
-                FilterGroup subGroup = cache.GetFilterGroup(roleName, typeName, operation);
+                FilterGroup subGroup = dataAuthCache.GetFilterGroup(roleName, typeName, operation);
                 if (subGroup == null)
                 {
                     continue;

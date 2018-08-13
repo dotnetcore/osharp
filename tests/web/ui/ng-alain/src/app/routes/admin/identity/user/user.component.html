@@ -5,17 +5,3 @@
 <kendoui-window [options]="windowOptions" (init)="onModuleWinInit($event)" (submited)="onModuleWinSubmit()">
   <kendoui-treeview [options]="moduleTreeOptions" (init)="onModuleTreeInit($event)"></kendoui-treeview>
 </kendoui-window>
-<!-- <kendoui-window [options]="windowOptions" (init)="onWinInit($event)" (closing)="onWinClose()" (submited)="onWinSubmit()">
-  <kendoui-tabstrip [options]="tabstripOptions">
-    <ul>
-      <li class="k-state-active">角色</li>
-      <li>权限</li>
-    </ul>
-    <div style="overflow:auto;">
-      <kendoui-treeview [options]="roleTreeOptions" (init)="onRoleTreeInit($event)"></kendoui-treeview>
-    </div>
-    <div>
-      <kendoui-treeview [options]="moduleTreeOptions" (init)="onModuleTreeInit($event)"></kendoui-treeview>
-    </div>
-  </kendoui-tabstrip>
-</kendoui-window> -->

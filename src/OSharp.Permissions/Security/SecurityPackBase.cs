@@ -9,7 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.EntityInfos;
@@ -104,10 +103,9 @@ namespace OSharp.Security
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IServiceProvider provider = app.ApplicationServices;
             IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
             moduleHandler.Initialize();
 
