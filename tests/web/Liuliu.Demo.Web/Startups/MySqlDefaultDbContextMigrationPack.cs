@@ -18,7 +18,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// MySql-DefaultDbContext迁移模块
     /// </summary>
-    public class MySqlDefaultDbContextMigrationPack : MySqlMigrationModuleBase<DefaultDbContext>
+    public class MySqlDefaultDbContextMigrationPack : MySqlMigrationPackBase<DefaultDbContext>
     {
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，

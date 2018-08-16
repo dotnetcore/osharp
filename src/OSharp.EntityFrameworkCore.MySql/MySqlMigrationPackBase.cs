@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="MySqlMigrationModuleBase.cs" company="OSharp开源团队">
+//  <copyright file="MySqlMigrationPackBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -22,7 +22,7 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySql数据迁移模块基类
     /// </summary>
-    public abstract class MySqlMigrationModuleBase<TDbContext> : OsharpPack
+    public abstract class MySqlMigrationPackBase<TDbContext> : OsharpPack
         where TDbContext : DbContext
     {
         /// <summary>
