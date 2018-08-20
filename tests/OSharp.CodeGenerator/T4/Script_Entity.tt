@@ -5,9 +5,10 @@
 <#@ include file="Template_Entity_InputDto.tt" #>
 <#@ include file="Template_Entity_OutputDto.tt" #>
 
-<#@ assembly name="netstandard.dll" #>
 <#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Runtime.dll" #>
 <#@ assembly name="System.Net.Http.dll" #>
+<#@ assembly name="$(TargetDir)netstandard.dll" #>
 <#@ assembly name="$(TargetDir)Newtonsoft.Json.dll" #>
 <#@ assembly name="$(TargetDir)OSharp.dll" #>
 
@@ -16,6 +17,7 @@
 <#@ Import Namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Net.Http" #>
+<#@ import namespace="Newtonsoft.Json" #>
 <#@ import namespace="OSharp.CodeGenerator" #>
 <#@ import namespace="OSharp.Extensions" #>
 <#@ import namespace="OSharp.Json" #>

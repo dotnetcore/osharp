@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 
 using OSharp.Reflection;
 
@@ -38,14 +37,22 @@ namespace OSharp.CodeGenerator
             {
                 return;
             }
-            
+
             Name = type.Name;
             FullName = type.FullName;
             Namespace = type.Namespace;
             Display = type.GetDescription();
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (PropertyInfo property in properties.Where(m => !m.HasAttribute<IgnoreGenPropertyAttribute>()))
+            foreach (PropertyInfo property in properties)
             {
+                if (property.HasAttribute<IgnoreGenPropertyAttribute>())
+                {
+                    continue;
+                }
+                if (property.GetMethod.IsVirtual && !property.GetMethod.IsFinal)
+                {
+                    continue;
+                }
                 if (PropertyMetadatas == null)
                 {
                     PropertyMetadatas = new List<PropertyMetadata>();
@@ -53,7 +60,7 @@ namespace OSharp.CodeGenerator
                 PropertyMetadatas.Add(new PropertyMetadata(property));
             }
         }
-        
+
         /// <summary>
         /// 获取或设置 类型名
         /// </summary>

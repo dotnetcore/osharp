@@ -27,8 +27,8 @@
                     case "OSharp.Core.EntityInfos.EntityInfo":
                         _moduleName = "Security";
                         break;
-                    case "OSharp.System.KeyValueCouple":
-                        _moduleName = "System";
+                    case "OSharp.Core.Systems.KeyValue":
+                        _moduleName = "Systems";
                         break;
                 }
             }
