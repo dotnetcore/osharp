@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 using AutoMapper;
@@ -26,6 +27,7 @@ namespace OSharp.AutoMapper
     /// <summary>
     /// AutoMapper模块
     /// </summary>
+    [Description("AutoMapper模块")]
     public class AutoMapperPack : OsharpPack
     {
         /// <summary>

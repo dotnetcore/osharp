@@ -7,6 +7,8 @@
 //  <last-date>2018-08-02 15:16</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;

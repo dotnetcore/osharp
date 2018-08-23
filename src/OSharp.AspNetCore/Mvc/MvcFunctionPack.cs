@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC功能点模块
     /// </summary>
+    [Description("MVC功能点模块")]
     public class MvcFunctionPack : AspOsharpPack
     {
         /// <summary>

@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore模块
     /// </summary>
+    [Description("EntityFrameworkCore模块")]
     public class EntityFrameworkCorePack : OsharpPack
     {
         /// <summary>

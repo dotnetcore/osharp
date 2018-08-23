@@ -7,6 +7,8 @@
 //  <last-date>2018-06-23 15:24</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -18,6 +20,7 @@ namespace OSharp.Entity.MySql
     /// MySqlEntityFrameworkCore模块
     /// </summary>
     [DependsOnPacks(typeof(EntityFrameworkCorePack))]
+    [Description("MySqlEntityFrameworkCore模块")]
     public class MySqlEntityFrameworkCorePack : OsharpPack
     {
         /// <summary>
