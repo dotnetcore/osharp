@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 using OSharp.Reflection;
@@ -41,7 +40,7 @@ namespace OSharp.CodeGenerator
             Name = type.Name;
             FullName = type.FullName;
             Namespace = type.Namespace;
-            Display = type.GetDescription();
+            Display = type.GetDescription().Replace("пео╒", "");
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
