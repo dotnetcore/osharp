@@ -67,7 +67,6 @@ namespace OSharp.Core.Systems
         /// 获取或设置 数据值
         /// </summary>
         [NotMapped]
-        [JsonIgnore]
         [DisplayName("数据值")]
         public object Value
         {
