@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Distributed;
@@ -23,26 +24,24 @@ using OSharp.Entity;
 namespace OSharp.Systems
 {
     /// <summary>
-    /// 系统管理器
+    /// 键值数据存储
     /// </summary>
-    public class SystemManager : IKeyValueStore
+    public class KeyValueStore : IKeyValueStore
     {
         private readonly IRepository<KeyValue, Guid> _keyValueRepository;
         private readonly IDistributedCache _cache;
 
+        private const string AllKeyValuesKey = "All_KeyValue_Key";
+
         /// <summary>
-        /// 初始化一个<see cref="SystemManager"/>类型的新实例
+        /// 初始化一个<see cref="KeyValueStore"/>类型的新实例
         /// </summary>
-        public SystemManager(IRepository<KeyValue, Guid> keyValueRepository,
+        public KeyValueStore(IRepository<KeyValue, Guid> keyValueRepository,
             IDistributedCache cache)
         {
             _keyValueRepository = keyValueRepository;
             _cache = cache;
         }
-
-        #region Implementation of IKeyValueCoupleStore
-
-        private const string AllKeyValuesKey = "All_KeyValue_Key";
 
         /// <summary>
         /// 获取 键值对数据查询数据集
@@ -50,6 +49,39 @@ namespace OSharp.Systems
         public IQueryable<KeyValue> KeyValues
         {
             get { return _keyValueRepository.Query(); }
+        }
+
+        /// <summary>
+        /// 获取或创建设置信息
+        /// </summary>
+        /// <typeparam name="TSetting">设置类型</typeparam>
+        /// <returns>设置实例，数据库中不存在相应节点时返回默认值</returns>
+        public TSetting GetSetting<TSetting>() where TSetting : ISetting, new()
+        {
+            TSetting setting = new TSetting();
+            Type type = typeof(TSetting);
+            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(KeyValue)))
+            {
+                string key = ((KeyValue)property.GetValue(setting)).Key;
+                KeyValue keyValue = GetKeyValue(key);
+                if (keyValue != null)
+                {
+                    property.SetValue(setting, keyValue);
+                }
+            }
+            return setting;
+        }
+        
+        /// <summary>
+        /// 保存设置信息
+        /// </summary>
+        /// <param name="setting">设置信息</param>
+        public async Task<OperationResult> SaveSetting(ISetting setting)
+        {
+            Type type = setting.GetType();
+            KeyValue[] keyValues = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.PropertyType == typeof(KeyValue))
+                .Select(p => (KeyValue)p.GetValue(setting)).ToArray();
+            return await CreateOrUpdateKeyValues(keyValues);
         }
 
         /// <summary>
@@ -65,7 +97,7 @@ namespace OSharp.Systems
         }
 
         /// <summary>
-        /// 检查键值对信息信息是否存在
+        /// 检查键值对信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的键值对信息编号</param>
@@ -76,7 +108,7 @@ namespace OSharp.Systems
         }
 
         /// <summary>
-        /// 添加或更新键值对信息信息
+        /// 添加或更新键值对信息
         /// </summary>
         /// <param name="key">键</param>
         /// <param name="value">值</param>
@@ -88,7 +120,7 @@ namespace OSharp.Systems
         }
 
         /// <summary>
-        /// 添加或更新键值对信息信息
+        /// 添加或更新键值对信息
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -114,7 +146,7 @@ namespace OSharp.Systems
         }
 
         /// <summary>
-        /// 删除键值对信息信息
+        /// 删除键值对信息
         /// </summary>
         /// <param name="ids">要删除的键值对信息编号</param>
         /// <returns>业务操作结果</returns>
@@ -138,7 +170,5 @@ namespace OSharp.Systems
             Guid[] ids = _keyValueRepository.Query(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
             return await DeleteKeyValues(ids);
         }
-
-        #endregion
     }
 }

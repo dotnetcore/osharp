@@ -139,7 +139,7 @@ namespace OSharp.Security
         public IQueryable<TFunction> Functions => _functionRepository.Query();
 
         /// <summary>
-        /// 检查功能信息信息是否存在
+        /// 检查功能信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的功能信息编号</param>
@@ -150,7 +150,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 更新功能信息信息
+        /// 更新功能信息
         /// </summary>
         /// <param name="dtos">包含更新信息的功能信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -204,7 +204,7 @@ namespace OSharp.Security
         public IQueryable<TEntityInfo> EntityInfos => _entityInfoRepository.Query();
 
         /// <summary>
-        /// 检查实体信息信息是否存在
+        /// 检查实体信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的实体信息编号</param>
@@ -215,7 +215,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 更新实体信息信息
+        /// 更新实体信息
         /// </summary>
         /// <param name="dtos">包含更新信息的实体信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -235,7 +235,7 @@ namespace OSharp.Security
         public IQueryable<TModule> Modules => _moduleRepository.Query();
 
         /// <summary>
-        /// 检查模块信息信息是否存在
+        /// 检查模块信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块信息编号</param>
@@ -246,7 +246,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 添加模块信息信息
+        /// 添加模块信息
         /// </summary>
         /// <param name="dto">要添加的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -311,7 +311,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 更新模块信息信息
+        /// 更新模块信息
         /// </summary>
         /// <param name="dto">包含更新信息的模块信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -365,7 +365,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 删除模块信息信息
+        /// 删除模块信息
         /// </summary>
         /// <param name="id">要删除的模块信息编号</param>
         /// <returns>业务操作结果</returns>
@@ -424,7 +424,7 @@ namespace OSharp.Security
         public IQueryable<TModuleFunction> ModuleFunctions => _moduleFunctionRepository.Query();
 
         /// <summary>
-        /// 检查模块功能信息信息是否存在
+        /// 检查模块功能信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块功能信息编号</param>
@@ -507,7 +507,7 @@ namespace OSharp.Security
         public IQueryable<TModuleRole> ModuleRoles => _moduleRoleRepository.Query();
 
         /// <summary>
-        /// 检查模块角色信息信息是否存在
+        /// 检查模块角色信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块角色信息编号</param>
@@ -608,7 +608,7 @@ namespace OSharp.Security
         public IQueryable<TModuleUser> ModuleUsers => _moduleUserRepository.Query();
 
         /// <summary>
-        /// 检查模块用户信息信息是否存在
+        /// 检查模块用户信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块用户信息编号</param>
@@ -723,7 +723,7 @@ namespace OSharp.Security
         public virtual IQueryable<TEntityRole> EntityRoles => _entityRoleRepository.Query();
 
         /// <summary>
-        /// 检查实体角色信息信息是否存在
+        /// 检查实体角色信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的实体角色信息编号</param>
@@ -747,7 +747,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 添加实体角色信息信息
+        /// 添加实体角色信息
         /// </summary>
         /// <param name="dtos">要添加的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -795,7 +795,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 更新实体角色信息信息
+        /// 更新实体角色信息
         /// </summary>
         /// <param name="dtos">包含更新信息的实体角色信息DTO信息</param>
         /// <returns>业务操作结果</returns>
@@ -849,7 +849,7 @@ namespace OSharp.Security
         }
 
         /// <summary>
-        /// 删除实体角色信息信息
+        /// 删除实体角色信息
         /// </summary>
         /// <param name="ids">要删除的实体角色信息编号</param>
         /// <returns>业务操作结果</returns>

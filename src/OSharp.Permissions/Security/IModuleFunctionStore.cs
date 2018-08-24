@@ -32,7 +32,7 @@ namespace OSharp.Security
         IQueryable<TModuleFunction> ModuleFunctions { get; }
 
         /// <summary>
-        /// 检查模块功能信息信息是否存在
+        /// 检查模块功能信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块功能信息编号</param>
