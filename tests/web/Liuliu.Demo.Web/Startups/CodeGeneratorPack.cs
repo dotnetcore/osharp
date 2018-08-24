@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// 代码生成模块
     /// </summary>
+    [Description("代码生成模块")]
     public class CodeGeneratorPack : OsharpPack
     {
         /// <summary>

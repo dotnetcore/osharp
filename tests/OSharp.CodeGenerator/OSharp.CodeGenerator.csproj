@@ -74,10 +74,10 @@
     <Content Include="T4\cs_config\Security\ModuleFunctionConfiguration.generated.txt" />
     <Content Include="T4\cs_config\Security\ModuleRoleConfiguration.generated.txt" />
     <Content Include="T4\cs_config\Security\ModuleUserConfiguration.generated.txt" />
-    <Content Include="T4\cs_config\System\AuditEntityConfiguration.generated.txt" />
-    <Content Include="T4\cs_config\System\AuditOperationConfiguration.generated.txt" />
-    <Content Include="T4\cs_config\System\AuditPropertyConfiguration.generated.txt" />
-    <Content Include="T4\cs_config\System\KeyValueCoupleConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Systems\AuditEntityConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Systems\AuditOperationConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Systems\AuditPropertyConfiguration.generated.txt" />
+    <Content Include="T4\cs_config\Systems\KeyValueConfiguration.generated.txt" />
     <Content Include="T4\cs_input\Identity\Dtos\LoginLogInputDto.txt" />
     <Content Include="T4\cs_input\Identity\Dtos\OrganizationInputDto.txt" />
     <Content Include="T4\cs_input\Identity\Dtos\RoleClaimInputDto.txt" />
@@ -96,10 +96,10 @@
     <Content Include="T4\cs_input\Security\Dtos\ModuleInputDto.txt" />
     <Content Include="T4\cs_input\Security\Dtos\ModuleRoleInputDto.txt" />
     <Content Include="T4\cs_input\Security\Dtos\ModuleUserInputDto.txt" />
-    <Content Include="T4\cs_input\System\Dtos\AuditEntityInputDto.txt" />
-    <Content Include="T4\cs_input\System\Dtos\AuditOperationInputDto.txt" />
-    <Content Include="T4\cs_input\System\Dtos\AuditPropertyInputDto.txt" />
-    <Content Include="T4\cs_input\System\Dtos\KeyValueCoupleInputDto.txt" />
+    <Content Include="T4\cs_input\Systems\Dtos\AuditEntityInputDto.txt" />
+    <Content Include="T4\cs_input\Systems\Dtos\AuditOperationInputDto.txt" />
+    <Content Include="T4\cs_input\Systems\Dtos\AuditPropertyInputDto.txt" />
+    <Content Include="T4\cs_input\Systems\Dtos\KeyValueInputDto.txt" />
     <Content Include="T4\cs_output\Identity\Dtos\LoginLogOutputDto.txt" />
     <Content Include="T4\cs_output\Identity\Dtos\OrganizationOutputDto.txt" />
     <Content Include="T4\cs_output\Identity\Dtos\RoleClaimOutputDto.txt" />
@@ -118,10 +118,10 @@
     <Content Include="T4\cs_output\Security\Dtos\ModuleOutputDto.txt" />
     <Content Include="T4\cs_output\Security\Dtos\ModuleRoleOutputDto.txt" />
     <Content Include="T4\cs_output\Security\Dtos\ModuleUserOutputDto.txt" />
-    <Content Include="T4\cs_output\System\Dtos\AuditEntityOutputDto.txt" />
-    <Content Include="T4\cs_output\System\Dtos\AuditOperationOutputDto.txt" />
-    <Content Include="T4\cs_output\System\Dtos\AuditPropertyOutputDto.txt" />
-    <Content Include="T4\cs_output\System\Dtos\KeyValueCoupleOutputDto.txt" />
+    <Content Include="T4\cs_output\Systems\Dtos\AuditEntityOutputDto.txt" />
+    <Content Include="T4\cs_output\Systems\Dtos\AuditOperationOutputDto.txt" />
+    <Content Include="T4\cs_output\Systems\Dtos\AuditPropertyOutputDto.txt" />
+    <Content Include="T4\cs_output\Systems\Dtos\KeyValueOutputDto.txt" />
     <Content Include="T4\Script_Entity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastOutputs>
@@ -143,10 +143,10 @@
 .\cs_config\Security\ModuleFunctionConfiguration.generated.txt
 .\cs_config\Security\ModuleRoleConfiguration.generated.txt
 .\cs_config\Security\ModuleUserConfiguration.generated.txt
-.\cs_config\System\AuditEntityConfiguration.generated.txt
-.\cs_config\System\AuditOperationConfiguration.generated.txt
-.\cs_config\System\AuditPropertyConfiguration.generated.txt
-.\cs_config\System\KeyValueCoupleConfiguration.generated.txt
+.\cs_config\Systems\AuditEntityConfiguration.generated.txt
+.\cs_config\Systems\AuditOperationConfiguration.generated.txt
+.\cs_config\Systems\AuditPropertyConfiguration.generated.txt
+.\cs_config\Systems\KeyValueConfiguration.generated.txt
 .\cs_input\Identity\Dtos\LoginLogInputDto.txt
 .\cs_input\Identity\Dtos\OrganizationInputDto.txt
 .\cs_input\Identity\Dtos\RoleClaimInputDto.txt
@@ -165,10 +165,10 @@
 .\cs_input\Security\Dtos\ModuleInputDto.txt
 .\cs_input\Security\Dtos\ModuleRoleInputDto.txt
 .\cs_input\Security\Dtos\ModuleUserInputDto.txt
-.\cs_input\System\Dtos\AuditEntityInputDto.txt
-.\cs_input\System\Dtos\AuditOperationInputDto.txt
-.\cs_input\System\Dtos\AuditPropertyInputDto.txt
-.\cs_input\System\Dtos\KeyValueCoupleInputDto.txt
+.\cs_input\Systems\Dtos\AuditEntityInputDto.txt
+.\cs_input\Systems\Dtos\AuditOperationInputDto.txt
+.\cs_input\Systems\Dtos\AuditPropertyInputDto.txt
+.\cs_input\Systems\Dtos\KeyValueInputDto.txt
 .\cs_output\Identity\Dtos\LoginLogOutputDto.txt
 .\cs_output\Identity\Dtos\OrganizationOutputDto.txt
 .\cs_output\Identity\Dtos\RoleClaimOutputDto.txt
@@ -187,10 +187,10 @@
 .\cs_output\Security\Dtos\ModuleOutputDto.txt
 .\cs_output\Security\Dtos\ModuleRoleOutputDto.txt
 .\cs_output\Security\Dtos\ModuleUserOutputDto.txt
-.\cs_output\System\Dtos\AuditEntityOutputDto.txt
-.\cs_output\System\Dtos\AuditOperationOutputDto.txt
-.\cs_output\System\Dtos\AuditPropertyOutputDto.txt
-.\cs_output\System\Dtos\KeyValueCoupleOutputDto.txt
+.\cs_output\Systems\Dtos\AuditEntityOutputDto.txt
+.\cs_output\Systems\Dtos\AuditOperationOutputDto.txt
+.\cs_output\Systems\Dtos\AuditPropertyOutputDto.txt
+.\cs_output\Systems\Dtos\KeyValueOutputDto.txt
 .\Script_Entity.txt
 </LastOutputs>
       <LastGenOutput>Script_Entity.txt</LastGenOutput>

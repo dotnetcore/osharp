@@ -7,6 +7,8 @@
 //  <last-date>2018-07-26 12:15</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// SignalR模块
     /// </summary>
+    [Description("SignalR模块")]
     public class SignalRPack : AspOsharpPack
     {
         /// <summary>

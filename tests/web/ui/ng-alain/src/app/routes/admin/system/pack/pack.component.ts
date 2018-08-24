@@ -38,6 +38,7 @@ export class PackComponent extends GridComponentBase implements AfterViewInit {
       id: "Id",
       fields: {
         Name: { type: "string" },
+        Display: { type: "string" },
         Class: { type: "string" },
         Level: { type: "number" },
         Order: { type: "number" },
@@ -55,6 +56,7 @@ export class PackComponent extends GridComponentBase implements AfterViewInit {
         width: 100
       }, {
         field: "Name", title: "名称",
+        template: '#=Display#',
         filterable: this.osharp.data.stringFilterable
       }, {
         field: "Class", title: "名称",

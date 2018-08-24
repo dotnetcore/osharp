@@ -23,6 +23,7 @@ using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Filter;
+using OSharp.Reflection;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers.Systems
@@ -54,6 +55,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers.Systems
                 m => new PackOutputDto()
                 {
                     Name = m.GetType().Name,
+                    Display = m.GetType().GetDescription(false),
                     Class = m.GetType().FullName,
                     Level = m.Level,
                     Order = m.Order,

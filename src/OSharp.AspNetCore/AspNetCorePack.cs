@@ -7,6 +7,8 @@
 //  <last-date>2018-06-23 15:22</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -19,6 +21,7 @@ namespace OSharp.AspNetCore
     /// <summary>
     /// AspNetCore模块
     /// </summary>
+    [Description("AspNetCore模块")]
     public class AspNetCorePack : OsharpPack
     {
         /// <summary>

@@ -7,6 +7,8 @@
 //  <last-date>2018-06-23 15:19</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -21,6 +23,7 @@ namespace OSharp.Core.Packs
     /// <summary>
     /// OSharp核心模块
     /// </summary>
+    [Description("OSharp核心模块")]
     public class OsharpCorePack : OsharpPack
     {
         /// <summary>

@@ -27,9 +27,15 @@ namespace Liuliu.Demo.Systems.Dtos
         public string Name { get; set; }
 
         /// <summary>
-        /// 获取或设置 包路径
+        /// 获取或设置 显示名称
         /// </summary>
-        [DisplayName("名称")]
+        [DisplayName("显示名称")]
+        public string Display { get; set; }
+
+        /// <summary>
+        /// 获取或设置 类型路径
+        /// </summary>
+        [DisplayName("类型路径")]
         public string Class { get; set; }
 
         /// <summary>

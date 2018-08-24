@@ -7,6 +7,8 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Liuliu.Demo.Security.Dtos;
 using Liuliu.Demo.Security.Entities;
 
@@ -21,6 +23,7 @@ namespace Liuliu.Demo.Security
     /// <summary>
     /// 权限安全模块
     /// </summary>
+    [Description("权限安全模块")]
     public class SecurityPack
         : SecurityPackBase<SecurityManager, FunctionAuthorization, FunctionAuthCache, DataAuthCache, ModuleHandler,
             Function, FunctionInputDto, EntityInfo, EntityInfoInputDto, Module, ModuleInputDto, int, ModuleFunction,
