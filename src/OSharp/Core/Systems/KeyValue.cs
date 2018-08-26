@@ -12,13 +12,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Newtonsoft.Json;
-
 using OSharp.Core.Data;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Json;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.Systems
@@ -67,7 +66,6 @@ namespace OSharp.Core.Systems
         /// 获取或设置 数据值
         /// </summary>
         [NotMapped]
-        [JsonIgnore]
         [DisplayName("数据值")]
         public object Value
         {
@@ -86,7 +84,7 @@ namespace OSharp.Core.Systems
             }
             set
             {
-                ValueType = value?.GetType().ToString();
+                ValueType = value?.GetType().GetFullNameWithModule();
                 ValueJson = value?.ToJsonString();
             }
         }
@@ -111,7 +109,14 @@ namespace OSharp.Core.Systems
             {
                 return (T)value;
             }
-            throw new OsharpException($"获取强类型字典值时传入类型“{typeof(T)}”与实际数据类型“{ValueType}”不匹配");
+            try
+            {
+                return value.CastTo<T>();
+            }
+            catch (Exception)
+            {
+                throw new OsharpException($"获取强类型字典值时传入类型“{typeof(T)}”与实际数据类型“{ValueType}”不匹配");
+            }
         }
     }
 }

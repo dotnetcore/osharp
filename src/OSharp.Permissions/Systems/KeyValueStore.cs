@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Caching;
+using OSharp.Core.Data;
 using OSharp.Core.Systems;
 using OSharp.Data;
 using OSharp.Entity;
@@ -60,10 +61,10 @@ namespace OSharp.Systems
         {
             TSetting setting = new TSetting();
             Type type = typeof(TSetting);
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(KeyValue)))
+            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(IKeyValue)))
             {
                 string key = ((KeyValue)property.GetValue(setting)).Key;
-                KeyValue keyValue = GetKeyValue(key);
+                IKeyValue keyValue = GetKeyValue(key);
                 if (keyValue != null)
                 {
                     property.SetValue(setting, keyValue);
@@ -71,7 +72,7 @@ namespace OSharp.Systems
             }
             return setting;
         }
-        
+
         /// <summary>
         /// 保存设置信息
         /// </summary>
@@ -79,8 +80,8 @@ namespace OSharp.Systems
         public async Task<OperationResult> SaveSetting(ISetting setting)
         {
             Type type = setting.GetType();
-            KeyValue[] keyValues = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.PropertyType == typeof(KeyValue))
-                .Select(p => (KeyValue)p.GetValue(setting)).ToArray();
+            IKeyValue[] keyValues = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.PropertyType == typeof(IKeyValue))
+                .Select(p => (IKeyValue)p.GetValue(setting)).ToArray();
             return await CreateOrUpdateKeyValues(keyValues);
         }
 
@@ -89,7 +90,7 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="key">键名</param>
         /// <returns>数据项</returns>
-        public KeyValue GetKeyValue(string key)
+        public IKeyValue GetKeyValue(string key)
         {
             const int seconds = 60 * 1000;
             KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.Query().ToArray(), seconds);
@@ -115,7 +116,7 @@ namespace OSharp.Systems
         /// <returns>业务操作结果</returns>
         public Task<OperationResult> CreateOrUpdateKeyValue(string key, object value)
         {
-            KeyValue pair = new KeyValue(key, value);
+            IKeyValue pair = new KeyValue(key, value);
             return CreateOrUpdateKeyValues(pair);
         }
 
@@ -124,24 +125,28 @@ namespace OSharp.Systems
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> CreateOrUpdateKeyValues(params KeyValue[] dtos)
+        public async Task<OperationResult> CreateOrUpdateKeyValues(params IKeyValue[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            foreach (KeyValue dto in dtos)
+            int count = 0;
+            foreach (IKeyValue dto in dtos)
             {
                 KeyValue pair = _keyValueRepository.TrackQuery().FirstOrDefault(m => m.Key == dto.Key);
                 if (pair == null)
                 {
-                    pair = dto;
-                    await _keyValueRepository.InsertAsync(pair);
+                    pair = new KeyValue(dto.Key, dto.Value);
+                    count += await _keyValueRepository.InsertAsync(pair);
                 }
-                else
+                else if (pair.Value != dto.Value)
                 {
                     pair.Value = dto.Value;
-                    await _keyValueRepository.UpdateAsync(pair);
+                    count += await _keyValueRepository.UpdateAsync(pair);
                 }
             }
-            await _cache.RemoveAsync(AllKeyValuesKey);
+            if (count > 0)
+            {
+                await _cache.RemoveAsync(AllKeyValuesKey);
+            }
             return OperationResult.Success;
         }
 

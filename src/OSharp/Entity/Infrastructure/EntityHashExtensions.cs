@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
+using OSharp.Core.Data;
 using OSharp.Core.Systems;
 using OSharp.Data;
 using OSharp.Extensions;
@@ -43,14 +44,14 @@ namespace OSharp.Entity
             IKeyValueStore store = provider.GetService<IKeyValueStore>();
             string entityType = hashes[0].GetType().FullName;
             string key = $"OSharp.Initialize.SyncToDatabaseHash-{entityType}";
-            KeyValue couple = store.GetKeyValue(key);
-            if (couple != null && couple.Value?.ToString() == hash)
+            IKeyValue keyValue = store.GetKeyValue(key);
+            if (keyValue != null && keyValue.Value?.ToString() == hash)
             {
                 logger.LogInformation($"{hashes.Length}条基础数据“{entityType}”的内容签名 {hash} 与上次相同，取消数据库同步");
                 return false;
             }
             OperationResult result = store.CreateOrUpdateKeyValue(key, hash).Result;
-            logger.LogInformation($"{hashes.Length}条基础数据“{entityType}”的内容签名 {hash} 与上次 {couple?.Value} 不同，将进行数据库同步");
+            logger.LogInformation($"{hashes.Length}条基础数据“{entityType}”的内容签名 {hash} 与上次 {keyValue?.Value} 不同，将进行数据库同步");
             return true;
         }
 
