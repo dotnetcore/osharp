@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
@@ -60,6 +61,10 @@ namespace OSharp.Identity
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);
+
+            services.Replace(new ServiceDescriptor(typeof(IdentityErrorDescriber), typeof(IdentityErrorDescriber)));
+            services.AddScoped<IdentityErrorDescriber, IdentityErrorDescriberZhHans>();
+
             OnIdentityBuild(builder);
 
             Action<CookieAuthenticationOptions> cookieOptionsAction = CookieOptionsAction();
