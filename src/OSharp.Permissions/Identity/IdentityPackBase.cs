@@ -62,8 +62,7 @@ namespace OSharp.Identity
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);
 
-            services.Replace(new ServiceDescriptor(typeof(IdentityErrorDescriber), typeof(IdentityErrorDescriber)));
-            services.AddScoped<IdentityErrorDescriber, IdentityErrorDescriberZhHans>();
+            services.Replace(new ServiceDescriptor(typeof(IdentityErrorDescriber), typeof(IdentityErrorDescriberZhHans), ServiceLifetime.Scoped));
 
             OnIdentityBuild(builder);
 
