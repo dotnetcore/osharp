@@ -14,7 +14,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
@@ -356,6 +355,29 @@ namespace OSharp.Entity
             CheckEntityKey(key, nameof(key));
 
             return _dbSet.Find(key);
+        }
+
+        /// <summary>
+        /// 查找第一个符合条件的数据
+        /// </summary>
+        /// <param name="predicate">数据查询谓语表达式</param>
+        /// <returns>符合条件的实体，不存在时返回null</returns>
+        public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate)
+        {
+            predicate.CheckNotNull("predicate");
+            return GetFirst(predicate, true);
+        }
+
+        /// <summary>
+        /// 查找第一个符合条件的数据
+        /// </summary>
+        /// <param name="predicate">数据查询谓语表达式</param>
+        /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
+        /// <returns>符合条件的实体，不存在时返回null</returns>
+        public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
+        {
+            Check.NotNull(predicate, nameof(predicate));
+            return Query(predicate, filterByDataAuth).FirstOrDefault();
         }
 
         /// <summary>
