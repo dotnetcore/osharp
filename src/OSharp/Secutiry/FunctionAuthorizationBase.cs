@@ -67,10 +67,15 @@ namespace OSharp.Secutiry
             {
                 return new string[0];
             }
-
-            string[] userRoles = principal.Identity.GetRoles();
-            string[] functionRoles = FunctionAuthCache.GetFunctionRoles(function.Id);
             
+            string[] userRoles = principal.Identity.GetRoles();
+            if (function.AccessType != FunctionAccessType.RoleLimit)
+            {
+                //不是角色限制的功能，允许用户的所有角色
+                return userRoles;
+            }
+            string[] functionRoles = FunctionAuthCache.GetFunctionRoles(function.Id);
+
             return userRoles.Intersect(functionRoles).ToArray();
         }
 
