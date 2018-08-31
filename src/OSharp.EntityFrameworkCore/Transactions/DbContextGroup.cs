@@ -86,7 +86,7 @@ namespace OSharp.Entity.Transactions
         /// <param name="cancellationToken">异步取消标记</param>
         public async Task BeginOrUseTransactionAsync(DbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (_transaction == null)
+            if (_transaction?.Connection == null)
             {
                 if (connection.State != ConnectionState.Open)
                 {
@@ -133,10 +133,6 @@ namespace OSharp.Entity.Transactions
         /// <param name="cancellationToken">异步取消标记</param>
         public async Task BeginOrUseTransactionAsync(DbContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (context.Database.CurrentTransaction != null)
-            {
-                return;
-            }
             if (!DbContexts.Contains(context))
             {
                 return;
