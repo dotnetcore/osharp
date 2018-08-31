@@ -41,8 +41,7 @@ namespace OSharp.Entity
             services.AddSingleton<DbContextModelCache>();
 
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDbContextManager, DbContextManager>();
+            services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 
             return services;
         }

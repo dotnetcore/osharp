@@ -14,7 +14,6 @@ using System.Security.Principal;
 
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Entity;
 using OSharp.Secutiry.Claims;
 
 
@@ -67,7 +66,7 @@ namespace OSharp.Secutiry
             {
                 return new string[0];
             }
-            
+
             string[] userRoles = principal.Identity.GetRoles();
             if (function.AccessType != FunctionAccessType.RoleLimit)
             {
