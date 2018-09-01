@@ -1,45 +1,26 @@
 ﻿<#+
-// <copyright file="Template_Entity_Configuration.tt" company="">
-//  Copyright © . All Rights Reserved.
+// <copyright file="Template_Entity_IContract.tt" company="Microsoft">
+//  Copyright © Microsoft. All Rights Reserved.
 // </copyright>
 
-public class OutputDtoTemplate : CSharpTemplate
+public class EntityServiceTemplate : CSharpTemplate
 {
-        private readonly TypeMetadata _entity;
-        private readonly string _entityName;
-        private readonly string _lowerEntityName;
-        private readonly string _moduleName = null;
-        private readonly PropertyMetadata _key;
+        private IGrouping<string, TypeMetadata> _group;
+        private string _moduleName;
 
-        public OutputDtoTemplate(TypeMetadata entity, string modulePattern)
+        public EntityServiceTemplate(IGrouping<string, TypeMetadata> group)
         {
-            _entityName = entity.Name;
-            _lowerEntityName = entity.Name.UpperToLowerAndSplit();
-            _entity = entity;
-            _key = entity.PropertyMetadatas.First(m => m.Name == "Id");
-            if(modulePattern != null)
-            {
-                _moduleName = entity.Namespace.Match(modulePattern);
-                switch(entity.FullName)
-                {
-                    case "OSharp.Core.Functions.Function":
-                    case "OSharp.Core.EntityInfos.EntityInfo":
-                        _moduleName = "Security";
-                        break;
-                    case "OSharp.Core.Systems.KeyValue":
-                        _moduleName = "Systems";
-                        break;
-                }
-            }
+            _group = group;
+            _moduleName = group.Key;
         }
-
+       
         public string FileName
         {
             get
             {
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("Dtos\\{0}OutputDto.txt", _entityName)
-                    : string.Format("{0}\\Dtos\\{1}OutputDto.txt", _moduleName, _entityName);
+                    ? string.Format("{0}Service.txt", _moduleName)
+                    : string.Format("{0}\\{0}Service.txt", _moduleName);
             }
         }
 
@@ -50,7 +31,7 @@ public class OutputDtoTemplate : CSharpTemplate
 		    base.TransformText();
 #>
 // -----------------------------------------------------------------------
-//  <copyright file="<#=_entityName #>Configuration.cs" company="OSharp开源团队">
+//  <copyright file="<#=_moduleName #>Service.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-<#=DateTime.Now.Year #> OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -59,37 +40,49 @@ public class OutputDtoTemplate : CSharpTemplate
 // -----------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
 
 using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OSharp.Entity;
-using OSharp.Mapping;
 
 
-namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos
+namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
 {
     /// <summary>
-    /// 输入DTO：<#=_entity.Display #>
+    /// 业务实现：<#=_moduleName #>模块
     /// </summary>
-    [MapFrom(typeof(<#=_entityName #>))]
-    public class <#=_entityName #>OutputDto : IOutputDto
+    public partial class <#=_moduleName #>Service : I<#=_moduleName #>Contract
     {
-<#+
-        foreach(var prop in _entity.PropertyMetadatas.OrderBy(m=>m.Name != "Id"))
+        private readonly IServiceProvider _provider;
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 初始化一个<see cref="<#=_moduleName #>Service"/>类型的新实例
+        /// </summary>
+        public <#=_moduleName #>Service(IServiceProvider provider)
         {
+            _provider = provider;
+            _logger = provider.GetService<ILoggerFactory>().CreateLogger<<#=_moduleName #>Service>();
+        }
+
+<#+ 
+            foreach (TypeMetadata entity in _group)
+            {
+                var key = entity.PropertyMetadatas.First(m => m.Name == "Id");
 #>
         /// <summary>
-        /// 获取或设置 <#=prop.Display #>
+        /// 获取 <#=entity.Display #>信息仓储对象
         /// </summary>
-        [DisplayName("<#=prop.Display #>")]
-        public <#=GetSingleTypeName(prop) #> <#=prop.Name #> { get; set; }
+        protected IRepository<<#=entity.Name #>, <#=GetSingleTypeName(key) #>> <#=entity.Name #>Repository => _provider.GetService<IRepository<<#=entity.Name #>, <#=GetSingleTypeName(key) #>>>();
 
-<#+
-        }
- #>
+<#+ 
+            }
+#>
     }
 }
+
 <#+
             return this.GenerationEnvironment.ToString();
 	    }
@@ -126,7 +119,6 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
             {
                 name = name + "?";
             }
-            
             return name;
         }
 }

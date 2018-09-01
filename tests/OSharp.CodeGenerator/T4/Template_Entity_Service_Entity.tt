@@ -3,7 +3,7 @@
 //  Copyright © . All Rights Reserved.
 // </copyright>
 
-public class EntityConfigurationTemplate : CSharpTemplate
+public class EntityServiceEntityTemplate : CSharpTemplate
 {
         private readonly TypeMetadata _entity;
         private readonly string _entityName;
@@ -11,7 +11,7 @@ public class EntityConfigurationTemplate : CSharpTemplate
         private readonly string _moduleName = null;
         private readonly PropertyMetadata _key;
 
-        public EntityConfigurationTemplate(TypeMetadata entity, string modulePattern)
+        public EntityServiceEntityTemplate(TypeMetadata entity, string modulePattern)
         {
             _entityName = entity.Name;
             _lowerEntityName = entity.Name.UpperToLowerAndSplit();
@@ -38,8 +38,8 @@ public class EntityConfigurationTemplate : CSharpTemplate
             get
             {
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("{0}Configuration.txt", _entityName)
-                    : string.Format("{0}\\{1}Configuration.txt", _moduleName, _entityName);
+                    ? string.Format("{0}Service.{1}.txt", _moduleName, _entityName)
+                    : string.Format("{0}\\{0}Service.{1}.txt", _moduleName, _entityName);
             }
         }
 
@@ -50,7 +50,7 @@ public class EntityConfigurationTemplate : CSharpTemplate
 		    base.TransformText();
 #>
 // -----------------------------------------------------------------------
-//  <copyright file="<#=_entityName #>Configuration.cs" company="OSharp开源团队">
+//  <copyright file="<#=_moduleName #>Service.<#=_entityName #>.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-<#=DateTime.Now.Year #> OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -59,29 +59,75 @@ public class EntityConfigurationTemplate : CSharpTemplate
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos;
 using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using OSharp.Entity;
+using OSharp.Data;
+using OSharp.Extensions;
 
 
-namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>.EntityConfiguration<#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
+namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>
 {
     /// <summary>
-    /// 实体映射配置类：<#=_entity.Display #>
+    /// 服务实现：<#=_entity.Display #>
     /// </summary>
-    public partial class <#=_entityName #>Configuration : EntityTypeConfigurationBase<<#=_entityName #>, <#=GetSingleTypeName(_key) #>>
+    public partial class <#=_moduleName #>Service
     {
         /// <summary>
-        /// 重写以实现实体类型各个属性的数据库配置
+        /// 获取 <#=_entity.Display #>信息查询数据集
         /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<<#=_entityName #>> builder)
+        public IQueryable<<#=_entityName #>> <#=_entity.Name.ToPlural() #>
         {
-            
+            get { return <#=_entityName #>Repository.Query(); }
+        }
+
+        /// <summary>
+        /// 检查<#=_entity.Display #>信息是否存在
+        /// </summary>
+        /// <param name="predicate">检查谓语表达式</param>
+        /// <param name="id">更新的<#=_entity.Display #>信息编号</param>
+        /// <returns><#=_entity.Display #>信息是否存在</returns>
+        public Task<bool> Check<#=_entityName #>Exists(Expression<Func<<#=_entityName #>, bool>> predicate, int id = 0)
+        {
+            return <#=_entityName #>Repository.CheckExistsAsync(predicate, id);
+        }
+
+        /// <summary>
+        /// 添加<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="dtos">要添加的<#=_entity.Display #>信息DTO信息</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> Create<#=_entity.Name.ToPlural() #>(params <#=_entityName #>InputDto[] dtos)
+        {
+            Check.NotNull(dtos, nameof(dtos));
+            return <#=_entityName #>Repository.InsertAsync(dtos);
+        }
+
+        /// <summary>
+        /// 更新<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="dtos">包含更新信息的<#=_entity.Display #>信息DTO信息</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> Update<#=_entity.Name.ToPlural() #>(params <#=_entityName #>InputDto[] dtos)
+        {
+            Check.NotNull(dtos, nameof(dtos));
+            return <#=_entityName #>Repository.UpdateAsync(dtos);
+        }
+
+        /// <summary>
+        /// 删除<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="ids">要删除的<#=_entity.Display #>信息编号</param>
+        /// <returns>业务操作结果</returns>
+        public Task<OperationResult> Delete<#=_entity.Name.ToPlural() #>(params <#=GetSingleTypeName(_key) #>[] ids)
+        {
+            Check.NotNull(ids, nameof(ids));
+            return <#=_entityName #>Repository.DeleteAsync(ids);
         }
     }
 }
