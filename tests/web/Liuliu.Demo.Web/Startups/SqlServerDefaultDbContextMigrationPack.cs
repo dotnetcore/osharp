@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Entity;
 using OSharp.Entity.SqlServer;
@@ -18,6 +19,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// SqlServer-DefaultDbContext迁移模块
     /// </summary>
+    [Description("SqlServer-DefaultDbContext迁移模块")]
     public class SqlServerDefaultDbContextMigrationPack : SqlServerMigrationPackBase<DefaultDbContext>
     {
         /// <summary>

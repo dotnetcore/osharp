@@ -1,5 +1,23 @@
 # OSharp .NetStandard 更新记录
 
+### 0.3.0-beta11
+1. 后台管理的系统模块增加OsharpPack模块列表
+2. 添加MySql的迁移类MySqlDefaultDbContextMigrationPack和MySqlDesignTimeDefaultDbContextFactory
+3. 将MySql迁移模块基类由MySqlMigrationModuleBase重命名为MySqlMigrationPackBase
+4. 添加在线用户信息提供者注入IOnlineUserProvider，同时OnlineUser添加一个字典属性ExtendData作为在线用户扩展数据存储，有需要可注入替换IOnlineUserProvider服务来实现在线用户的自定义扩展数据
+5. 修复T4不能生成的问题。实体元数据的属性数据去掉virtual的属性
+6. 添加字符串的单复数转换的字符串扩展方法
+7. 给Pack模块添加中文名称描述
+8. 添加设置信息ISetting 对键值数据的获取与存储
+9. 添加设置模块的底层模型支持
+10. 优化KeyValue的类命名获取方式
+11. 添加 IdentityErrorDescriberZhHans 替换原有的IdentityErrorDescriber为Identity提供中文错误描述
+12. 修复数据权限验证不走缓存的问题，修复读取数据时启用了缓存仍然有读取数据库数据库的问题
+13. Repository添加GetFirst方法，简化查找符合条件的第一个数据
+14. 角色设置模块时，只设置有引用了角色限制的功能的模块
+15. 修复异步开启事务时报事务连接与上下文连接不匹配的问题
+16. 重构数据组件工作单元UnitOfWork，详见 [#35](https://github.com/i66soft/osharp-ns20/issues/35)
+
 ### 0.3.0-beta10
 1. 新增AspOsharpPack基类，用于基于AspNetCore环境的Pack模块，将AspNetCore与非AspNetCore环境的OsharpPack分开，添加IOsharpPackManager 接口用于管理模块管理器
 2. 修复DistributedCacheExtensions缓存扩展方法中当功能缓存秒数设置为0时无法创建缓存的问题 更新T4模板

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Core.Data;
 using OSharp.Data;
 
 
@@ -32,7 +33,7 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="key">键名</param>
         /// <returns>数据项</returns>
-        KeyValue GetKeyValue(string key);
+        IKeyValue GetKeyValue(string key);
 
         /// <summary>
         /// 检查键值对信息信息是否存在
@@ -55,7 +56,7 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateOrUpdateKeyValues(params KeyValue[] dtos);
+        Task<OperationResult> CreateOrUpdateKeyValues(params IKeyValue[] dtos);
 
         /// <summary>
         /// 删除键值对信息信息

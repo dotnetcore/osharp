@@ -14,7 +14,6 @@ using System.Security.Principal;
 
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Entity;
 using OSharp.Secutiry.Claims;
 
 
@@ -69,8 +68,13 @@ namespace OSharp.Secutiry
             }
 
             string[] userRoles = principal.Identity.GetRoles();
+            if (function.AccessType != FunctionAccessType.RoleLimit)
+            {
+                //不是角色限制的功能，允许用户的所有角色
+                return userRoles;
+            }
             string[] functionRoles = FunctionAuthCache.GetFunctionRoles(function.Id);
-            
+
             return userRoles.Intersect(functionRoles).ToArray();
         }
 

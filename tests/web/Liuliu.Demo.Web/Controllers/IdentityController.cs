@@ -19,6 +19,7 @@ using Liuliu.Demo.Identity.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
@@ -170,7 +171,7 @@ namespace Liuliu.Demo.Web.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWork unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 
             if (!result.Successed)
@@ -202,7 +203,7 @@ namespace Liuliu.Demo.Web.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWork unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 
             if (!result.Successed)

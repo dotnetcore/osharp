@@ -28,14 +28,14 @@ namespace OSharp.AspNetCore.Mvc.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class UnitOfWorkAttribute : ActionFilterAttribute
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkAttribute"/>类型的新实例
         /// </summary>
         public UnitOfWorkAttribute()
         {
-            _unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            _unitOfWorkManager = ServiceLocator.Instance.GetService<IUnitOfWorkManager>();
         }
 
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                     message = ajax.Content;
                     if (ajax.Successed())
                     {
-                        _unitOfWork?.Commit();
+                        _unitOfWorkManager?.Commit();
                     }
                 }
                 
@@ -65,10 +65,10 @@ namespace OSharp.AspNetCore.Mvc.Filters
                     message = ajax.Content;
                     if (ajax.Successed())
                     {
-                        _unitOfWork?.Commit();
+                        _unitOfWorkManager?.Commit();
                     }
                 }
-                _unitOfWork?.Commit();
+                _unitOfWorkManager?.Commit();
             }
             //普通请求
             else if (context.HttpContext.Response.StatusCode >= 400)
@@ -95,7 +95,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
             else
             {
                 type = AjaxResultType.Success;
-                _unitOfWork?.Commit();
+                _unitOfWorkManager?.Commit();
             }
             if (dict.AuditOperation != null)
             {

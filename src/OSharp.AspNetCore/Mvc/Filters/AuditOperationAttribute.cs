@@ -78,7 +78,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                 return;
             }
             dict.AuditOperation.EndedTime = DateTime.Now;
-            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork<Function, Guid>();
             //回滚之前业务处理中的未提交事务，防止审计信息保存时误提交
             unitOfWork?.Rollback();
 

@@ -26,7 +26,7 @@ namespace OSharp.Security
         IQueryable<TEntityInfo> EntityInfos { get; }
 
         /// <summary>
-        /// 检查实体信息信息是否存在
+        /// 检查实体信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的实体信息编号</param>
@@ -34,7 +34,7 @@ namespace OSharp.Security
         Task<bool> CheckEntityInfoExists(Expression<Func<TEntityInfo, bool>> predicate, Guid id = default(Guid));
 
         /// <summary>
-        /// 更新实体信息信息
+        /// 更新实体信息
         /// </summary>
         /// <param name="dtos">包含更新信息的实体信息DTO信息</param>
         /// <returns>业务操作结果</returns>

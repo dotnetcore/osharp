@@ -109,8 +109,8 @@ namespace OSharp.Entity
         /// <param name="predicate">查询条件的谓语表达式</param>
         /// <param name="updateExpression">属性更新表达式</param>
         /// <returns>操作影响的行数</returns>
-        int UpdateBatch(Expression<Func<TEntity, bool>>predicate, Expression<Func<TEntity, TEntity>>updateExpression);
-        
+        int UpdateBatch(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression);
+
         /// <summary>
         /// 检查实体是否存在
         /// </summary>
@@ -127,6 +127,21 @@ namespace OSharp.Entity
         TEntity Get(TKey key);
 
         /// <summary>
+        /// 查找第一个符合条件的数据
+        /// </summary>
+        /// <param name="predicate">数据查询谓语表达式</param>
+        /// <returns>符合条件的实体，不存在时返回null</returns>
+        TEntity GetFirst(Expression<Func<TEntity, bool>> predicate);
+        
+        /// <summary>
+        /// 查找第一个符合条件的数据
+        /// </summary>
+        /// <param name="predicate">数据查询谓语表达式</param>
+        /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
+        /// <returns>符合条件的实体，不存在时返回null</returns>
+        TEntity GetFirst(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth);
+
+        /// <summary>
         /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
         /// </summary>
         /// <returns>符合条件的数据集</returns>
@@ -138,7 +153,7 @@ namespace OSharp.Entity
         /// <param name="predicate">数据查询谓语表达式</param>
         /// <returns>符合条件的数据集</returns>
         IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate);
-        
+
         /// <summary>
         /// 获取<typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源，并可附加过滤条件及是否启用数据权限过滤
         /// </summary>
@@ -173,7 +188,7 @@ namespace OSharp.Entity
         /// <param name="predicate">数据过滤表达式</param>
         /// <param name="filterByDataAuth">是否使用数据权限过滤，数据权限一般用于存在用户实例的查询，系统查询不启用数据权限过滤</param>
         /// <returns>符合条件的数据集</returns>
-        IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>>predicate, bool filterByDataAuth);
+        IQueryable<TEntity> TrackQuery(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth);
 
         /// <summary>
         /// 获取<typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源，并可Include导航属性
@@ -262,7 +277,7 @@ namespace OSharp.Entity
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updateExpression">实体更新表达式</param>
         /// <returns>操作影响的行数</returns>
-        Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity,TEntity>>updateExpression);
+        Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression);
 
         /// <summary>
         /// 异步检查实体是否存在

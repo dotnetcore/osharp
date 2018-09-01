@@ -62,6 +62,20 @@ namespace OSharp.Data
         /// 获取 未变更的操作结果
         /// </summary>
         public new static OperationResult NoChanged { get; private set; }
+
+        /// <summary>
+        /// 将<see cref="OperationResult{TData}"/>转换为<see cref="OperationResult"/>
+        /// </summary>
+        /// <returns></returns>
+        public OperationResult<T> ToOperationResult<T>()
+        {
+            T data = default(T);
+            if (Data is T variable)
+            {
+                data = variable;
+            }
+            return new OperationResult<T>(ResultType, Message, data);
+        }
     }
 
 
@@ -136,6 +150,15 @@ namespace OSharp.Data
                 bool contains = new[] { OperationResultType.ValidError, OperationResultType.QueryNull, OperationResultType.Error }.Contains(ResultType);
                 return contains;
             }
+        }
+
+        /// <summary>
+        /// 将<see cref="OperationResult{TData}"/>转换为<see cref="OperationResult"/>
+        /// </summary>
+        /// <returns></returns>
+        public OperationResult ToOperationResult()
+        {
+            return new OperationResult(ResultType, Message, Data);
         }
     }
 }

@@ -19,6 +19,7 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -85,7 +86,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
-
+        
         private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
         {
             var modules = _securityManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
@@ -99,6 +100,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             List<object> nodes = new List<object>();
             foreach (var item in modules)
             {
+                if (item.ChildIds.Count == 0 && !IsRoleLimit(item.Id))
+                {
+                    continue;
+                }
                 var node = new
                 {
                     item.Id,
@@ -109,9 +114,22 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     item.Remark,
                     Items = item.ChildIds.Count > 0 ? GetModulesWithChecked(item.ChildIds.ToArray(), checkedModuleIds) : new List<object>()
                 };
+
+                if (node.Items.Count == 0 && !IsRoleLimit(node.Id))
+                {
+                    continue;
+                }
+
                 nodes.Add(node);
             }
             return nodes;
+        }
+
+        private bool IsRoleLimit(int moduleId)
+        {
+            return _securityManager.Functions
+                .Where(m => _securityManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
+                .Any(m => m.AccessType == FunctionAccessType.RoleLimit);
         }
 
         /// <summary>

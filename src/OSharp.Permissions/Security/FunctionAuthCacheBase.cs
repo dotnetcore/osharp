@@ -119,12 +119,20 @@ namespace OSharp.Security
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
                 TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
                     .ToArray();
+                if (moduleIds.Length == 0)
+                {
+                    return new string[0];
+                }
                 IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
                 TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+                if (roleIds.Length == 0)
+                {
+                    return new string[0];
+                }
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
                 return roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             });
-            if (roleNames.Length > 0)
+            if (roleNames != null)
             {
                 _cache.Set(key, roleNames);
                 _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存");

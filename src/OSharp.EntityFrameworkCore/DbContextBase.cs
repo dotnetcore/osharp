@@ -54,30 +54,30 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取或设置 所在上下文组
         /// </summary>
-        public DbContextGroup ContextGroup { get; set; }
+        public UnitOfWork UnitOfWork { get; set; }
 
         /// <summary>
         /// 开启或使用现有事务
         /// </summary>
         public void BeginOrUseTransaction()
         {
-            if (ContextGroup == null)
+            if (UnitOfWork == null)
             {
                 return;
             }
-            ContextGroup.BeginOrUseTransaction(this);
+            UnitOfWork.BeginOrUseTransaction();
         }
 
         /// <summary>
         /// 异步开启或使用现有事务
         /// </summary>
-        public async Task BeginOrUseTransactionAsync()
+        public async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken)
         {
-            if (ContextGroup == null)
+            if (UnitOfWork == null)
             {
                 return;
             }
-            await ContextGroup.BeginOrUseTransactionAsync(this, CancellationToken.None);
+            await UnitOfWork.BeginOrUseTransactionAsync(cancellationToken);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace OSharp.Entity
             }
 
             //开启或使用现有事务
-            await BeginOrUseTransactionAsync();
+            await BeginOrUseTransactionAsync(cancellationToken);
 
             int count = await base.SaveChangesAsync(cancellationToken);
             if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
@@ -203,7 +203,7 @@ namespace OSharp.Entity
         public override void Dispose()
         {
             base.Dispose();
-            ContextGroup = null;
+            UnitOfWork = null;
         }
 
         #endregion

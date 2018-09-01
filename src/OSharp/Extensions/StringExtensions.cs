@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -26,7 +25,7 @@ using OSharp.Secutiry;
 namespace OSharp.Extensions
 {
     /// <summary>
-    /// 字符串<see cref="String"/>类型的扩展辅助操作类
+    /// 字符串<see cref="string"/>类型的扩展辅助操作类
     /// </summary>
     public static class StringExtensions
     {
@@ -371,6 +370,70 @@ namespace OSharp.Extensions
         {
             value.CheckNotNull("value");
             return new string(value.Reverse().ToArray());
+        }
+
+        /// <summary>
+        /// 单词变成单数形式
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public static string ToSingular(this string word)
+        {
+            Regex plural1 = new Regex("(?<keep>[^aeiou])ies$");
+            Regex plural2 = new Regex("(?<keep>[aeiou]y)s$");
+            Regex plural3 = new Regex("(?<keep>[sxzh])es$");
+            Regex plural4 = new Regex("(?<keep>[^sxzhyu])s$");
+
+            if (plural1.IsMatch(word))
+            {
+                return plural1.Replace(word, "${keep}y");
+            }
+            if (plural2.IsMatch(word))
+            {
+                return plural2.Replace(word, "${keep}");
+            }
+            if (plural3.IsMatch(word))
+            {
+                return plural3.Replace(word, "${keep}");
+            }
+            if (plural4.IsMatch(word))
+            {
+                return plural4.Replace(word, "${keep}");
+            }
+
+            return word;
+        }
+
+        /// <summary>
+        /// 单词变成复数形式
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public static string ToPlural(this string word)
+        {
+            Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
+            Regex plural2 = new Regex("(?<keep>[aeiou]y)$");
+            Regex plural3 = new Regex("(?<keep>[sxzh])$");
+            Regex plural4 = new Regex("(?<keep>[^sxzhy])$");
+
+            if (plural1.IsMatch(word))
+            {
+                return plural1.Replace(word, "${keep}ies");
+            }
+            if (plural2.IsMatch(word))
+            {
+                return plural2.Replace(word, "${keep}s");
+            }
+            if (plural3.IsMatch(word))
+            {
+                return plural3.Replace(word, "${keep}es");
+            }
+            if (plural4.IsMatch(word))
+            {
+                return plural4.Replace(word, "${keep}s");
+            }
+
+            return word;
         }
 
         /// <summary>

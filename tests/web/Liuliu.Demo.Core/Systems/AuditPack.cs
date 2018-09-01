@@ -7,6 +7,8 @@
 //  <last-date>2018-08-02 4:33</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Audits;
@@ -18,6 +20,7 @@ namespace Liuliu.Demo.Systems
     /// <summary>
     /// 审计模块
     /// </summary>
+    [Description("审计模块")]
     public class AuditPack : AuditPackBase
     {
         /// <summary>

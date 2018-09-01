@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.ComponentModel;
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Packs;
@@ -9,6 +11,7 @@ namespace OSharp.Log4Net
     /// <summary>
     /// Log4Net模块
     /// </summary>
+    [Description("Log4Net模块")]
     public class Log4NetPack : OsharpPack
     {
         /// <summary>

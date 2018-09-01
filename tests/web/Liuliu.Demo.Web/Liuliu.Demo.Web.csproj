@@ -27,6 +27,11 @@
   </PropertyGroup>
 
   <Import Project="../../../build/version.props" />
+
+  <ItemGroup>
+    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
+    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -48,6 +53,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />

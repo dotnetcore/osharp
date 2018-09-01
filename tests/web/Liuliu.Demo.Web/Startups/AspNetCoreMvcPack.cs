@@ -7,6 +7,8 @@
 //  <last-date>2018-07-29 12:15</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using OSharp.AspNetCore.Mvc;
 
 
@@ -15,6 +17,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// MVC模块，此模块需要在Identity之后启动
     /// </summary>
+    [Description("MVC模块")]
     public class AspNetCoreMvcPack : MvcPackBase
     {
         /// <summary>

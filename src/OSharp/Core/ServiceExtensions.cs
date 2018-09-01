@@ -16,6 +16,7 @@ using OSharp.Core.Builders;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
+using OSharp.Entity;
 using OSharp.Reflection;
 
 
@@ -90,6 +91,15 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             ILoggerFactory factory = provider.GetService<ILoggerFactory>();
             return factory.CreateLogger(name);
+        }
+
+        /// <summary>
+        /// 获取指定实体类的上下文所在工作单元
+        /// </summary>
+        public static IUnitOfWork GetUnitOfWork<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
+        {
+            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
+            return unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
         }
 
         /// <summary>

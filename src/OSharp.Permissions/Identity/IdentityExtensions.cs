@@ -31,7 +31,7 @@ namespace OSharp.Identity
             return identityResult.Succeeded
                 ? new OperationResult(OperationResultType.Success)
                 : new OperationResult(OperationResultType.Error,
-                    identityResult.Errors.Select(m => m.Code.IsMissing() ? m.Description : $"{m.Code}:{m.Description}").ExpandAndToString());
+                    identityResult.Errors.Select(m => m.Description).ExpandAndToString());
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace OSharp.Identity
             return identityResult.Succeeded
                 ? new OperationResult<TUser>(OperationResultType.Success, "Success", user)
                 : new OperationResult<TUser>(OperationResultType.Error,
-                    identityResult.Errors.Select(m => m.Code.IsMissing() ? m.Description : $"{m.Code}:{m.Description}").ExpandAndToString());
+                    identityResult.Errors.Select(m => m.Description).ExpandAndToString());
         }
 
         /// <summary>

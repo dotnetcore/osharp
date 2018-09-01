@@ -23,7 +23,7 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.System.AuditOperation", ["Read"]);
+    return new AuthConfig("Root.Admin.Systems.AuditOperation", ["Read"]);
   }
 
   protected GetModel() {
@@ -98,9 +98,9 @@ export class AuditOperationComponent extends GridComponentBase implements AfterV
     gridOptions.toolbar = [];
     gridOptions.editable = false;
     gridOptions.selectable = true;
-    gridOptions.change = () => {
-      let row2 = e.sender.select();
-      let data: any = e.sender.dataItem(row2);
+    gridOptions.change = ex => {
+      let row2 = ex.sender.select();
+      let data: any = ex.sender.dataItem(row2);
       data = data.Properties;
       if (this.propertyGrid && data) {
         this.propertyGrid.dataSource.data(data);

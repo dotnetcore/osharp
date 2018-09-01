@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ namespace OSharp.Dependency
     /// <summary>
     /// 依赖注入模块
     /// </summary>
+    [Description("依赖注入模块")]
     public class DependencyPack : OsharpPack
     {
         /// <summary>
