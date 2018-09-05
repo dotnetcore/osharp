@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 
-namespace Abp.MailKit
+namespace OSharp.Net
 {
+    /// <summary>
+    /// Email扩展
+    /// </summary>
     public static class EmailExtensions
     {
         /// <summary>
-        /// A modified version of CreateFromMailMessage() method in https://github.com/jstedfast/MimeKit/blob/master/MimeKit/MimeMessage.cs
+        /// 一个修改后的版本，CreateFromMailMessage()方法在 https://github.com/jstedfast/MimeKit/blob/master/MimeKit/MimeMessage.cs
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
@@ -243,22 +246,20 @@ namespace Abp.MailKit
         }
 
         /// <summary>
-        /// Convert a <see cref="System.Net.Mail.MailAddress"/>
-        /// to a <see cref="MailboxAddress"/>.
+        /// 转换<see cref="System.Net.Mail.MailAddress"/>为<see cref="MailboxAddress"/>
         /// </summary>
-        /// <returns>The equivalent <see cref="MailboxAddress"/>.</returns>
-        /// <param name="address">The mail address.</param>
+        /// <param name="address">邮箱地址</param>
+        /// <returns>转换后的<see cref="MailboxAddress"/></returns>
         private static MailboxAddress ToMailboxAddress(this MailAddress address)
         {
             return address == null ? null : new MailboxAddress(address.DisplayName, address.Address);
         }
 
         /// <summary>
-        /// Convert a <see cref="System.Net.Mail.MailAddressCollection"/>
-        /// to a <see cref="InternetAddressList"/>.
+        /// 转换<see cref="System.Net.Mail.MailAddressCollection"/>为<see cref="InternetAddressList"/>.
         /// </summary>
-        /// <returns>The equivalent <see cref="InternetAddressList"/>.</returns>
-        /// <param name="addresses">The mail address.</param>
+        /// <param name="addresses">邮箱地址集合</param>
+        /// <returns>转换后的<see cref="InternetAddressList"/></returns>
         private static InternetAddressList ToInternetAddressList(this MailAddressCollection addresses)
         {
             if (addresses == null)

@@ -1,47 +1,85 @@
-﻿using System.Threading.Tasks;
-using Abp.Net.Mail;
+﻿using System;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
-using System.Net.Mail;
+using MailKit.Security;
 
-namespace Abp.MailKit
+namespace OSharp.Net
 {
-    public class MailKitEmailSender : EmailSenderBase
+    /// <summary>
+    /// 通过SMTP发送电子邮件
+    /// </summary>
+    public class MailKitEmailSender : DefaultEmailSender
     {
-        private readonly IMailKitSmtpBuilder _smtpBuilder;
-
-        public MailKitEmailSender(
-            IEmailSenderConfiguration smtpEmailSenderConfiguration,
-            IMailKitSmtpBuilder smtpBuilder)
-            : base(
-                  smtpEmailSenderConfiguration)
+        /// <summary>
+        /// 创建一个新的MailKitEmailSender实例 <see cref="MailKitEmailSender"/>.
+        /// </summary>
+        /// <param name="provider">provider</param>
+        public MailKitEmailSender(IServiceProvider provider)
+            :base(provider)
         {
-            _smtpBuilder = smtpBuilder;
         }
 
-        public override async Task SendAsync(string from, string to, string subject, string body, bool isBodyHtml = true)
+        /// <summary>
+        /// 创建发送邮件客户端
+        /// </summary>
+        /// <returns></returns>
+        public virtual SmtpClient BuildMailKitClient()
         {
-            using (var client = BuildSmtpClient())
+            var client = new SmtpClient();
+
+            try
             {
-                var message = BuildMimeMessage(from, to, subject, body, isBodyHtml);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                ConfigureClient(client);
+                return client;
+            }
+            catch
+            {
+                client.Dispose();
+                throw;
             }
         }
 
-        public override void Send(string from, string to, string subject, string body, bool isBodyHtml = true)
+        protected virtual void ConfigureClient(SmtpClient client)
         {
-            using (var client = BuildSmtpClient())
+            client.Connect(
+                mailSenderOptions.Host,
+                mailSenderOptions.Port,
+                GetSecureSocketOption()
+            );
+
+            if (mailSenderOptions.UseDefaultCredentials)
             {
-                var message = BuildMimeMessage(from, to, subject, body, isBodyHtml);
-                client.Send(message);
-                client.Disconnect(true);
+                return;
             }
+
+            client.Authenticate(
+                mailSenderOptions.UserName,
+                mailSenderOptions.Password
+            );
         }
 
-        protected override async Task SendEmailAsync(MailMessage mail)
+        protected virtual SecureSocketOptions GetSecureSocketOption()
         {
-            using (var client = BuildSmtpClient())
+            if (mailSenderOptions.SecureSocketOption.HasValue)
+            {
+                return mailSenderOptions.SecureSocketOption.Value;
+            }
+
+            return mailSenderOptions.EnableSsl
+                ? SecureSocketOptions.SslOnConnect
+                : SecureSocketOptions.StartTlsWhenAvailable;
+        }
+
+        /// <summary>
+        /// 异步发送邮件
+        /// </summary>
+        /// <param name="mail">要发送的邮件</param>
+        /// <returns></returns>
+        protected override async Task SendAsync(MailMessage mail)
+        {
+            using (var client = BuildMailKitClient())
             {
                 var message = mail.ToMimeMessage();
                 await client.SendAsync(message);
@@ -49,9 +87,13 @@ namespace Abp.MailKit
             }
         }
 
-        protected override void SendEmail(MailMessage mail)
+        /// <summary>
+        /// 同步发送邮件
+        /// </summary>
+        /// <param name="mail">要发送的邮件</param>
+        protected override void Send(MailMessage mail)
         {
-            using (var client = BuildSmtpClient())
+            using (var client = BuildMailKitClient())
             {
                 var message = mail.ToMimeMessage();
                 client.Send(message);
@@ -59,10 +101,45 @@ namespace Abp.MailKit
             }
         }
 
-        protected virtual SmtpClient BuildSmtpClient()
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="from">发送人Email</param>
+        /// <param name="to">接收人Email</param>
+        /// <param name="subject">Email标题</param>
+        /// <param name="body">Email内容</param>
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        /// <returns></returns>
+        public override void SendEmail(string from, string to, string subject, string body, bool isBodyHtml = true)
         {
-            return _smtpBuilder.Build();
+            using (var client = BuildMailKitClient())
+            {
+                var message = BuildMimeMessage(from, to, subject, body, isBodyHtml);
+                client.Send(message);
+                client.Disconnect(true);
+            }
         }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="from">发送人Email</param>
+        /// <param name="to">接收人Email</param>
+        /// <param name="subject">Email标题</param>
+        /// <param name="body">Email内容</param>
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        /// <returns></returns>
+        public override async Task SendEmailAsync(string from, string to, string subject, string body, bool isBodyHtml = true)
+        {
+            using (var client = BuildMailKitClient())
+            {
+                var message = BuildMimeMessage(from, to, subject, body, isBodyHtml);
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+            }
+        }
+
+
 
         private static MimeMessage BuildMimeMessage(string from, string to, string subject, string body, bool isBodyHtml = true)
         {
@@ -78,7 +155,7 @@ namespace Abp.MailKit
 
             message.From.Add(new MailboxAddress(from));
             message.To.Add(new MailboxAddress(to));
-            
+
             return message;
         }
     }

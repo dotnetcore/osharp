@@ -48,7 +48,7 @@ namespace OSharp.AspNetCore.Mvc
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDistributedMemoryCache();
-            services.AddSingleton<IEmailSender, SmtpEmailSender>();
+            services.AddSingleton<IEmailSender, MailKitEmailSender>();
 
             return services;
         }

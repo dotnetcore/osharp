@@ -1,12 +1,7 @@
-﻿using MailKit.Security;
-using Microsoft.Extensions.DependencyInjection;
-using OSharp.Core.Options;
-using OSharp.Extensions;
+﻿using OSharp.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OSharp.Net
@@ -14,13 +9,13 @@ namespace OSharp.Net
     /// <summary>
     /// 通过SMTP发送电子邮件
     /// </summary>
-    public class MailKitEmailSender : DefaultEmailSender
+    public class SmtpEmailSender : DefaultEmailSender
     {
         /// <summary>
         /// 创建一个新的SmtpEmailSender实例 <see cref="SmtpEmailSender"/>.
         /// </summary>
         /// <param name="provider">provider</param>
-        public MailKitEmailSender(IServiceProvider provider)
+        public SmtpEmailSender(IServiceProvider provider)
             :base(provider)
         {
         }
@@ -29,7 +24,7 @@ namespace OSharp.Net
         /// 创建发送邮件客户端
         /// </summary>
         /// <returns></returns>
-        public SmtpClient BuildClient()
+        public SmtpClient BuildSmtpClient()
         {
             var host = mailSenderOptions.Host;
             var port = mailSenderOptions.Port;
@@ -74,7 +69,7 @@ namespace OSharp.Net
         /// <returns></returns>
         protected override async Task SendAsync(MailMessage mail)
         {
-            using (var smtpClient = BuildClient())
+            using (var smtpClient = BuildSmtpClient())
             {
                 await smtpClient.SendMailAsync(mail);
             }
@@ -86,7 +81,7 @@ namespace OSharp.Net
         /// <param name="mail">要发送的邮件</param>
         protected override void Send(MailMessage mail)
         {
-            using (var smtpClient = BuildClient())
+            using (var smtpClient = BuildSmtpClient())
             {
                 smtpClient.Send(mail);
             }

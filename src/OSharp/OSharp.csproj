@@ -29,8 +29,14 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Remove="Net\DefaultEmailSender.cs" />
-    <Compile Remove="Net\IEmailSender.cs" />
+    <Compile Remove="Net\Smtp\IMailKitEmailSender.cs" />
+    <Compile Remove="Net\Smtp\MailKitEmailSender.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="Net\MailKit\EmailExtensions.cs" />
+    <Compile Include="Net\MailKit\IMailKitEmailSender.cs" />
+    <Compile Include="Net\MailKit\MailKitEmailSender.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,10 +71,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Net\MailKit\" />
   </ItemGroup>
 
 </Project>

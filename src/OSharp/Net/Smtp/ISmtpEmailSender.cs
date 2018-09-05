@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Net.Mail;
 
 namespace OSharp.Net
 {
@@ -16,6 +13,6 @@ namespace OSharp.Net
         /// <returns>
         /// 一个准备发送电子邮件的<see cref="SmtpClient"/>对象
         /// </returns>
-        SmtpClient BuildClient();
+        SmtpClient BuildSmtpClient();
     }
 }
