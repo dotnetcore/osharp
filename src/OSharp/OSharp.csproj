@@ -21,8 +21,26 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Net\MailKit\**" />
+    <EmbeddedResource Remove="Net\MailKit\**" />
+    <None Remove="Net\MailKit\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Net\Smtp\IMailKitEmailSender.cs" />
+    <Compile Remove="Net\Smtp\MailKitEmailSender.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="Net\MailKit\EmailExtensions.cs" />
+    <Compile Include="Net\MailKit\IMailKitEmailSender.cs" />
+    <Compile Include="Net\MailKit\MailKitEmailSender.cs" />
+  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.0.6" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />

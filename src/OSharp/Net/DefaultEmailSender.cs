@@ -8,14 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
@@ -25,54 +24,218 @@ namespace OSharp.Net
     /// <summary>
     /// 默认邮件发送者
     /// </summary>
-    public class DefaultEmailSender : IEmailSender
+    public abstract class DefaultEmailSender : IEmailSender
     {
         private readonly IServiceProvider _provider;
 
         /// <summary>
+        /// SMTP服务器配置参数
+        /// </summary>
+        public MailSenderOptions mailSenderOptions { get; }
+
+        /// <summary>
         /// 初始化一个<see cref="DefaultEmailSender"/>类型的新实例
         /// </summary>
-        public DefaultEmailSender(IServiceProvider provider)
+        protected DefaultEmailSender(IServiceProvider provider)
         {
             _provider = provider;
+            OSharpOptions options = _provider.GetOSharpOptions();
+            mailSenderOptions = options.MailSender;
+            if (mailSenderOptions == null ||
+                //mailSenderOptions.DisplayFromAddress.IsNullOrEmpty() ||
+                mailSenderOptions.Host.IsNullOrEmpty() ||
+                mailSenderOptions.Host.Contains("请替换") ||
+                mailSenderOptions.UserName.IsNullOrEmpty() ||
+                mailSenderOptions.Password.IsNullOrEmpty())
+            {
+                throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp.MailSender节点");
+            }
         }
 
         /// <summary>
         /// 发送Email
         /// </summary>
-        /// <param name="email">接收人Email</param>
+        /// <param name="to">接收人Email</param>
         /// <param name="subject">Email标题</param>
         /// <param name="body">Email内容</param>
-        /// <returns></returns>
-        public Task SendEmailAsync(string email, string subject, string body)
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        public virtual void SendEmail(string to, string subject, string body, bool isBodyHtml = true)
         {
-            OSharpOptions options = _provider.GetOSharpOptions();
-            MailSenderOptions mailSender = options.MailSender;
-            if (mailSender == null || mailSender.Host == null || mailSender.Host.Contains("请替换"))
+            SendEmail(new MailMessage
             {
-                throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp.MailSender节点");
-            }
-
-            string host = mailSender.Host,
-                displayName = mailSender.DisplayName,
-                userName = mailSender.UserName,
-                password = mailSender.Password;
-            SmtpClient client = new SmtpClient(host)
-            {
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(userName, password)
-            };
-
-            string fromEmail = userName.Contains("@") ? userName : "{0}@{1}".FormatWith(userName, client.Host.Replace("smtp.", ""));
-            MailMessage mail = new MailMessage
-            {
-                From = new MailAddress(fromEmail, displayName),
+                To = { to },
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = true
-            };
-            mail.To.Add(email);
-            return client.SendMailAsync(mail);
+                IsBodyHtml = isBodyHtml
+            });
         }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="to">接收人Email</param>
+        /// <param name="subject">Email标题</param>
+        /// <param name="body">Email内容</param>
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        public virtual async Task SendEmailAsync(string to, string subject, string body, bool isBodyHtml = true)
+        {
+            await SendEmailAsync(new MailMessage
+            {
+                To = { to },
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = isBodyHtml
+            });
+        }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="from">发送人Email</param>
+        /// <param name="to">接收人Email</param>
+        /// <param name="subject">Email标题</param>
+        /// <param name="body">Email内容</param>
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        /// <returns></returns>
+        public virtual void SendEmail(string from, string to, string subject, string body, bool isBodyHtml = true)
+        {
+            SendEmail(new MailMessage(from, to, subject, body) { IsBodyHtml = isBodyHtml });
+        }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="from">发送人Email</param>
+        /// <param name="to">接收人Email</param>
+        /// <param name="subject">Email标题</param>
+        /// <param name="body">Email内容</param>
+        /// <param name="isBodyHtml">Email内容是否是Html</param>
+        /// <returns></returns>
+        public virtual async Task SendEmailAsync(string from, string to, string subject, string body, bool isBodyHtml = true)
+        {
+            await SendEmailAsync(new MailMessage(from, to, subject, body) { IsBodyHtml = isBodyHtml });
+        }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="mail">要发送的邮件</param>
+        /// <param name="normalize">
+        /// 是否要标准化邮件
+        /// 如果是，如果他们没有设置地址/名称，他将自动设置，并且设置UTF-8编码
+        /// </param>
+        public virtual void SendEmail(MailMessage mail, bool normalize = true)
+        {
+            if (normalize)
+            {
+                NormalizeMail(mail);
+            }
+            Send(mail);
+        }
+
+        /// <summary>
+        /// 发送Email
+        /// </summary>
+        /// <param name="mail">要发送的邮件</param>
+        /// <param name="normalize">
+        /// 是否要标准化邮件
+        /// 如果是，如果他们没有设置地址/名称，他将自动设置，并且设置UTF-8编码
+        /// </param>
+        public virtual async Task SendEmailAsync(MailMessage mail, bool normalize = true)
+        {
+            if (normalize)
+            {
+                NormalizeMail(mail);
+            }
+            await SendAsync(mail);
+        }
+
+        /// <summary>
+        /// 在派生类中实现异步方法来发送电子邮件
+        /// </summary>
+        /// <param name="mail">发送邮件实体</param>
+        protected abstract Task SendAsync(MailMessage mail);
+
+        /// <summary>
+        /// 在派生类中实现同步方法来发送电子邮件
+        /// </summary>
+        /// <param name="mail">发送邮件实体</param>
+        protected abstract void Send(MailMessage mail);
+
+        /// <summary>
+        /// 标准化给定的电子邮件
+        /// 如果之前没有赋值则进行默认赋值 <see cref="MailMessage.From"/>
+        /// 如果未设置UTF8，则将编码设置为UTF8
+        /// </summary>
+        /// <param name="mail">要标准化的邮件</param>
+        protected virtual void NormalizeMail(MailMessage mail)
+        {
+            if (mail.From == null || mail.From.Address.IsNullOrEmpty())
+            {
+                mail.From = new MailAddress(
+                    mailSenderOptions.DisplayFromAddress,
+                    mailSenderOptions.DisplayName,
+                    Encoding.UTF8
+                    );
+            }
+
+            if (mail.HeadersEncoding == null)
+            {
+                mail.HeadersEncoding = Encoding.UTF8;
+            }
+
+            if (mail.SubjectEncoding == null)
+            {
+                mail.SubjectEncoding = Encoding.UTF8;
+            }
+
+            if (mail.BodyEncoding == null)
+            {
+                mail.BodyEncoding = Encoding.UTF8;
+            }
+        }
+
+        ///// <summary>
+        ///// 发送Email
+        ///// </summary>
+        ///// <param name="to">接收人Email</param>
+        ///// <param name="subject">Email标题</param>
+        ///// <param name="body">Email内容</param>
+        ///// <returns></returns>
+        //public Task SendEmailAsync(string to, string subject, string body)
+        //{
+        //    OSharpOptions options = _provider.GetOSharpOptions();
+        //    MailSenderOptions mailSender = options.MailSender;
+        //    if (mailSender == null || mailSender.Host == null || mailSender.Host.Contains("请替换"))
+        //    {
+        //        throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp.MailSender节点");
+        //    }
+
+        //    string host = mailSender.Host,
+        //        displayName = mailSender.DisplayName,
+        //        userName = mailSender.UserName,
+        //        password = mailSender.Password;
+        //    int port = mailSender.Port,
+        //        timeout = mailSender.Timeout;
+        //    bool enableSsl = mailSender.EnableSsl;
+        //    SmtpClient client = new SmtpClient(host, port)
+        //    {
+        //        EnableSsl = enableSsl,
+        //        Timeout = timeout,
+        //        UseDefaultCredentials = false,
+        //        Credentials = new NetworkCredential(userName, password)
+        //    };
+
+        //    string fromEmail = userName.Contains("@") ? userName : "{0}@{1}".FormatWith(userName, client.Host.Replace("smtp.", ""));
+        //    MailMessage mail = new MailMessage
+        //    {
+        //        From = new MailAddress(fromEmail, displayName),
+        //        Subject = subject,
+        //        Body = body,
+        //        IsBodyHtml = true
+        //    };
+        //    mail.To.Add(to);
+        //    return client.SendMailAsync(mail);
+        //}
     }
 }
