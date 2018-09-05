@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore模块
     /// </summary>
+    [Description("EntityFrameworkCore模块")]
     public class EntityFrameworkCorePack : OsharpPack
     {
         /// <summary>
@@ -39,8 +41,7 @@ namespace OSharp.Entity
             services.AddSingleton<DbContextModelCache>();
 
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDbContextManager, DbContextManager>();
+            services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 
             return services;
         }

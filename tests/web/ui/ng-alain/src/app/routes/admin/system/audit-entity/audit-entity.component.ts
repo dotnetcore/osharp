@@ -34,7 +34,7 @@ export class AuditEntityComponent extends GridComponentBase implements AfterView
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.System.AuditEntity", ["Read"]);
+    return new AuthConfig("Root.Admin.Systems.AuditEntity", ["Read"]);
   }
 
   protected GetModel() {

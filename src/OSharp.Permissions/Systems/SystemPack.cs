@@ -7,6 +7,8 @@
 //  <last-date>2018-06-25 21:12</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
@@ -16,8 +18,9 @@ using OSharp.Core.Systems;
 namespace OSharp.Systems
 {
     /// <summary>
-    /// 系统模块
+    /// 系统信息模块
     /// </summary>
+    [Description("系统信息模块")]
     public class SystemPack : OsharpPack
     {
         /// <summary>
@@ -38,8 +41,8 @@ namespace OSharp.Systems
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddScoped<SystemManager>();
-            services.AddScoped<IKeyValueStore>(provider => provider.GetService<SystemManager>());
+            services.AddScoped<KeyValueStore>();
+            services.AddScoped<IKeyValueStore>(provider => provider.GetService<KeyValueStore>());
 
             return services;
         }

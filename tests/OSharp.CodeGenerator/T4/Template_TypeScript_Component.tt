@@ -27,8 +27,8 @@
                     case "OSharp.Core.EntityInfos.EntityInfo":
                         _moduleName = "Security";
                         break;
-                    case "OSharp.System.KeyValueCouple":
-                        _moduleName = "System";
+                    case "OSharp.Core.Systems.KeyValue":
+                        _moduleName = "Systems";
                         break;
                 }
             }
@@ -39,8 +39,8 @@
             get
             { 
                 return string.IsNullOrEmpty(_moduleName)
-                    ? string.Format("{0}.component.txt", _lowerEntityName)
-                    : string.Format("{0}\\{1}.component.txt", _moduleName.UpperToLowerAndSplit(), _lowerEntityName);
+                    ? string.Format("{0}\\{0}.component.txt", _lowerEntityName)
+                    : string.Format("{0}\\{1}\\{1}.component.txt", _moduleName.UpperToLowerAndSplit(), _lowerEntityName);
             }
         }
 
@@ -50,14 +50,14 @@
 #>
 import { Component, AfterViewInit, Injector, } from '@angular/core';
 import { AuthConfig } from '@shared/osharp/osharp.model';
-import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
+import { KendoGridComponentBase } from '@shared/osharp/services/kendoui.service';
 
 @Component({
   selector: 'admin-<#=_lowerEntityName #>',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 
-export class <#=_entityName #>Component extends GridComponentBase implements AfterViewInit {
+export class <#=_entityName #>Component extends KendoGridComponentBase implements AfterViewInit {
 
   constructor(injector: Injector) {
     super(injector);
@@ -110,7 +110,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
 #>
       {
         command: [
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "" },
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable },
         ],
         width: 100
       }<#+
@@ -204,6 +204,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
         if (output.TypeName == typeof(bool).FullName)
         {
             sb.Append(", width: 90");
+            //sb.Append(", attributes: { class: \"k-center\" }");
             sb.Append(string.Format(",\n\t\ttemplate: d => this.kendoui.Boolean(d.{0})", output.Name));
             sb.Append(",\n\t\teditor: (container, options) => this.kendoui.BooleanEditor(container, options)");
         }
@@ -213,6 +214,7 @@ export class <#=_entityName #>Component extends GridComponentBase implements Aft
         if (output.TypeName == typeof(DateTime).FullName)
         {
             sb.Append(", width: 120");
+            //sb.Append(", attributes: { class: \"k-center\" }");
             sb.Append(",\n\t\tformat: \"{0:yy-MM-dd HH:mm}\"");
         }        
         if (output.EnumMetadatas != null)

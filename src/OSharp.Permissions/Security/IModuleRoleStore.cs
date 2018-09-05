@@ -30,7 +30,7 @@ namespace OSharp.Security
         IQueryable<TModuleRole> ModuleRoles { get; }
 
         /// <summary>
-        /// 检查模块角色信息信息是否存在
+        /// 检查模块角色信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块角色信息编号</param>

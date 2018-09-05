@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ namespace OSharp.EventBuses
     /// <summary>
     /// 事件总线模块
     /// </summary>
+    [Description("事件总线模块")]
     public class EventBusPack : OsharpPack
     {
         /// <summary>

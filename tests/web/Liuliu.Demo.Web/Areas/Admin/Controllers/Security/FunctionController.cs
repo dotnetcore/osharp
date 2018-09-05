@@ -19,8 +19,10 @@ using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Caching;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
@@ -51,13 +53,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<FunctionOutputDto> Read(PageRequest request)
         {
+            IFunction function = this.GetExecuteFunction();
             request.AddDefaultSortCondition(
                 new SortCondition("Area"),
                 new SortCondition("Controller"),
                 new SortCondition("IsController", ListSortDirection.Descending));
 
             Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
-            PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto>(predicate, request.PageCondition);
+            PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPageCache<Function, FunctionOutputDto>(predicate, request.PageCondition, function);
             return page.ToPageData();
         }
 

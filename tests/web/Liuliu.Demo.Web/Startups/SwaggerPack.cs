@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -27,6 +28,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// Swagger Api模块 
     /// </summary>
+    [Description("Swagger Api模块 ")]
     public class SwaggerPack : AspOsharpPack
     {
         /// <summary>

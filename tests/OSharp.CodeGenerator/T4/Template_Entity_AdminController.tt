@@ -1,0 +1,228 @@
+﻿<#+
+// <copyright file="Template_Entity_Configuration.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class AdminControllerTemplate : CSharpTemplate
+{
+        private readonly TypeMetadata _entity;
+        private readonly string _entityName;
+        private readonly string _lowerEntityName;
+        private readonly string _moduleName = null;
+        private readonly PropertyMetadata _key;
+
+        public AdminControllerTemplate(TypeMetadata entity, string modulePattern)
+        {
+            _entityName = entity.Name;
+            _lowerEntityName = entity.Name.UpperToLowerAndSplit();
+            _entity = entity;
+            _key = entity.PropertyMetadatas.First(m => m.Name == "Id");
+            if(modulePattern != null)
+            {
+                _moduleName = entity.Namespace.Match(modulePattern);
+                switch(entity.FullName)
+                {
+                    case "OSharp.Core.Functions.Function":
+                    case "OSharp.Core.EntityInfos.EntityInfo":
+                        _moduleName = "Security";
+                        break;
+                    case "OSharp.Core.Systems.KeyValue":
+                        _moduleName = "Systems";
+                        break;
+                }
+            }
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_moduleName)
+                    ? string.Format("{0}Controller.txt", _entityName)
+                    : string.Format("{0}\\{1}Controller.txt", _moduleName, _entityName);
+            }
+        }
+
+        public string ProjectName { get; set; }
+
+	    public override string TransformText()
+	    {
+		    base.TransformText();
+#>
+// -----------------------------------------------------------------------
+//  <copyright file="<#=_entityName #>Controller.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-<#=DateTime.Now.Year #> OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date><#=DateTime.Now.ToString("yyyy-MM-dd HH:mm") #></last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>.Common.Dtos;
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>;
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Dtos;
+using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
+
+using Microsoft.AspNetCore.Mvc;
+
+using OSharp.AspNetCore.Mvc;
+using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.AspNetCore.UI;
+using OSharp.Caching;
+using OSharp.Core.Functions;
+using OSharp.Core.Modules;
+using OSharp.Data;
+using OSharp.Filter;
+
+
+namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>.Web.Areas.Admin.Controllers
+{
+    /// <summary>
+    /// 控制器：<#=_entity.Display #>
+    /// </summary>
+    [ModuleInfo(Order = 模块顺序, Position = "<#=_moduleName #>", PositionName = 模块名称)]
+    [Description("管理-<#=_entity.Display #>")]
+    public partial class <#=_entityName #>Controller : AdminApiController
+    {
+        private readonly I<#=_moduleName #>Contract _<#=_moduleName.UpperToLowerAndSplit() #>Contract;
+
+        /// <summary>
+        /// 初始化一个<see cref="<#=_entityName #>Controller"/>类型的新实例
+        /// </summary>
+        public <#=_entityName #>Controller(I<#=_moduleName #>Contract <#=_moduleName.UpperToLowerAndSplit() #>Contract)
+        {
+            _<#=_moduleName.UpperToLowerAndSplit() #>Contract = <#=_moduleName.UpperToLowerAndSplit() #>Contract;
+        }
+
+        /// <summary>
+        /// 读取<#=_entity.Display #>列表信息
+        /// </summary>
+        /// <param name="request">页请求信息</param>
+        /// <returns><#=_entity.Display #>列表分页信息</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [Description("读取")]
+        public PageData<<#=_entityName #>OutputDto> Read(PageRequest request)
+        {
+            Check.NotNull(request, nameof(request));
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<<#=_entityName #>, bool>> predicate = FilterHelper.GetExpression<<#=_entityName #>>(request.FilterGroup);
+            var page = _<#=_moduleName.UpperToLowerAndSplit() #>Contract.<#=_entity.Name.ToPlural() #>.ToPageCache<<#=_entityName #>, <#=_entityName #>OutputDto>(predicate, request.PageCondition, function);
+            return page.ToPageData();
+        }
+
+        /// <summary>
+        /// 读取<#=_entity.Display #>节点
+        /// </summary>
+        /// <param name="group">列表查询条件组</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Description("读取节点")]
+        public ListNode[] ReadNode(FilterGroup group)
+        {
+            Check.NotNull(group, nameof(group));
+
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<<#=_entityName #>, bool>> predicate = FilterHelper.GetExpression<<#=_entityName #>>(group);
+            ListNode[] nodes = _<#=_moduleName.UpperToLowerAndSplit() #>Contract.<#=_entity.Name.ToPlural() #>.ToCacheArray<<#=_entityName #>, ListNode>(predicate, function);
+
+            return nodes;
+        }
+
+        /// <summary>
+        /// 新增<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="dtos"><#=_entity.Display #>信息输入DTO</param>
+        /// <returns>JSON操作结果</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("新增")]
+        public async Task<AjaxResult> Create(<#=_entityName #>InputDto[] dtos)
+        {
+            Check.NotNull(dtos, nameof(dtos));
+            OperationResult result = await _<#=_moduleName.UpperToLowerAndSplit() #>Contract.Create<#=_entity.Name.ToPlural() #>(dtos);
+            return result.ToAjaxResult();
+        }
+
+        /// <summary>
+        /// 更新<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="dtos"><#=_entity.Display #>信息输入DTO</param>
+        /// <returns>JSON操作结果</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("更新")]
+        public async Task<AjaxResult> Update(<#=_entityName #>InputDto[] dtos)
+        {
+            Check.NotNull(dtos, nameof(dtos));
+            OperationResult result = await _<#=_moduleName.UpperToLowerAndSplit() #>Contract.Update<#=_entity.Name.ToPlural() #>(dtos);
+            return result.ToAjaxResult();
+        }
+
+        /// <summary>
+        /// 删除<#=_entity.Display #>信息
+        /// </summary>
+        /// <param name="ids"><#=_entity.Display #>信息编号</param>
+        /// <returns>JSON操作结果</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [DependOnFunction("Read")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [Description("删除")]
+        public async Task<AjaxResult> Delete(<#=GetSingleTypeName(_key) #>[] ids)
+        {
+            Check.NotNull(ids, nameof(ids));
+            OperationResult result = await _<#=_moduleName.UpperToLowerAndSplit() #>Contract.Delete<#=_entity.Name.ToPlural() #>(ids);
+            return result.ToAjaxResult();
+        }
+    }
+}
+<#+
+            return this.GenerationEnvironment.ToString();
+	    }
+
+        
+        private static string GetSingleTypeName(PropertyMetadata prop)
+        {
+            string name = prop.TypeName;
+            switch(prop.TypeName)
+            {
+                case "System.Int32":
+                    name = "int";
+                    break;
+                case "System.Long":
+                    name = "long";
+                    break;
+                case "System.Decimal":
+                    name = "decimal";
+                    break;
+                case "System.String":
+                    name = "string";                    
+                    break;
+                case "System.Guid":
+                    name = "Guid";
+                    break;
+                case "System.Boolean":
+                    name = "bool";
+                    break;
+                case "System.DateTime":
+                    name = "DateTime";
+                    break;
+            }
+            if(prop.IsNullable)
+            {
+                name = name + "?";
+            }
+            return name;
+        }
+}
+#>

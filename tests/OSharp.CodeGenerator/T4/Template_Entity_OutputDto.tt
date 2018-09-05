@@ -26,8 +26,8 @@ public class OutputDtoTemplate : CSharpTemplate
                     case "OSharp.Core.EntityInfos.EntityInfo":
                         _moduleName = "Security";
                         break;
-                    case "OSharp.System.KeyValueCouple":
-                        _moduleName = "System";
+                    case "OSharp.Core.Systems.KeyValue":
+                        _moduleName = "Systems";
                         break;
                 }
             }
@@ -50,7 +50,7 @@ public class OutputDtoTemplate : CSharpTemplate
 		    base.TransformText();
 #>
 // -----------------------------------------------------------------------
-//  <copyright file="<#=_entityName #>OutputDto.cs" company="OSharp开源团队">
+//  <copyright file="<#=_entityName #>Configuration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-<#=DateTime.Now.Year #> OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -59,6 +59,7 @@ public class OutputDtoTemplate : CSharpTemplate
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#><#=(string.IsNullOrEmpty(_moduleName) ? "" : "."+_moduleName) #>.Entities;
 
@@ -125,6 +126,7 @@ namespace <#=(string.IsNullOrEmpty(ProjectName) ? "Liuliu.Demo" : ProjectName)#>
             {
                 name = name + "?";
             }
+            
             return name;
         }
 }

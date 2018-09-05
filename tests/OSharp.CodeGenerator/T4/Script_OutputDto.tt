@@ -3,9 +3,9 @@
 <#@ include file="T4Toolbox.tt" #>
 <#@ include file="Template_TypeScript_Component.tt" #>
 
-<#@ assembly name="netstandard.dll" #>
 <#@ assembly name="System.Core.dll" #>
 <#@ assembly name="System.Net.Http.dll" #>
+<#@ assembly name="$(TargetDir)netstandard.dll" #>
 <#@ assembly name="$(TargetDir)Newtonsoft.Json.dll" #>
 <#@ assembly name="$(TargetDir)OSharp.dll" #>
 

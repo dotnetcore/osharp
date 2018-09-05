@@ -31,12 +31,6 @@ namespace Liuliu.Demo.Identity.Entities
         }
 
         /// <summary>
-        /// 获取或设置 用户编号
-        /// </summary>
-        [DisplayName("用户编号")]
-        public int UserId { get; set; }
-
-        /// <summary>
         /// 获取或设置 登录IP
         /// </summary>
         [DisplayName("登录IP")]
@@ -59,5 +53,16 @@ namespace Liuliu.Demo.Identity.Entities
         /// </summary>
         [DisplayName("创建时间")]
         public DateTime CreatedTime { get; set; }
+
+        /// <summary>
+        /// 获取或设置 用户编号
+        /// </summary>
+        [DisplayName("用户编号")]
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 所属用户
+        /// </summary>
+        public virtual User User { get; set; }
     }
 }

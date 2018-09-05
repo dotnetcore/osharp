@@ -1,14 +1,16 @@
 import { NgModule, Component, } from '@angular/core';
 import { SystemRoutingModule, } from './system.routing';
+import { SharedModule } from '@shared/shared.module';
 import { SettingsComponent } from './settings/settings.component';
 import { AuditOperationComponent } from './audit-operation/audit-operation.component';
 import { AuditEntityComponent } from './audit-entity/audit-entity.component';
-import { SharedModule } from '@shared/shared.module';
+import { PackComponent } from './pack/pack.component';
 
 const COMPONENTS = [
   SettingsComponent,
   AuditOperationComponent,
-  AuditEntityComponent
+  AuditEntityComponent,
+  PackComponent
 ];
 
 @NgModule({

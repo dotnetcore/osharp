@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ namespace OSharp.Core.EntityInfos
     /// <summary>
     /// 实体信息模块
     /// </summary>
+    [Description("数据实体模块")]
     public class EntityInfoPack : OsharpPack
     {
         /// <summary>

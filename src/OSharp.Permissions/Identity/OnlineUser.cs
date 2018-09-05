@@ -7,6 +7,9 @@
 //  <last-date>2018-07-09 11:38</last-date>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
+
 namespace OSharp.Identity
 {
     /// <summary>
@@ -20,6 +23,7 @@ namespace OSharp.Identity
         public OnlineUser()
         {
             Roles = new string[0];
+            ExtendData = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -56,5 +60,10 @@ namespace OSharp.Identity
         /// 获取或设置 用户角色
         /// </summary>
         public string[] Roles { get; set; }
+
+        /// <summary>
+        /// 获取 扩展数据字典
+        /// </summary>
+        public IDictionary<string, object> ExtendData { get; }
     }
 }

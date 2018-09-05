@@ -137,9 +137,9 @@ namespace OSharp.Entity
         /// 将数据源映射为指定<typeparamref name="TOutputDto"/>的集合，
         /// 并验证数据的<see cref="DataAuthOperation.Update"/>,<see cref="DataAuthOperation.Delete"/>数据权限状态
         /// </summary>
-        public static IQueryable<TOutputDto> ToOutput<TEntity, TOutputDto>(this IQueryable<TEntity> source)
+        public static IQueryable<TOutputDto> ToOutput<TEntity, TOutputDto>(this IQueryable<TEntity> source, bool getKey = false)
         {
-            if (!typeof(TOutputDto).IsBaseOn<IDataAuthEnabled>())
+            if (!typeof(TOutputDto).IsBaseOn<IDataAuthEnabled>() || getKey)
             {
                 return MapperExtensions.ToOutput<TEntity, TOutputDto>(source);
             }

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>0.3.0-beta10</version>
+    <version>0.3.0-beta11</version>
     <title>OSharpFramework(.NetStandard2.0)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
@@ -15,13 +15,13 @@
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="OSharpNS.Core" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.EntityFrameworkCore.MySql" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.AutoMapper" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.AspNetCore" version="0.3.0-beta10" />
-        <dependency id="OSharpNS.Log4Net" version="0.3.0-beta10" />
+        <dependency id="OSharpNS.Core" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.EntityFrameworkCore.MySql" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.AutoMapper" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.AspNetCore" version="0.3.0-beta11" />
+        <dependency id="OSharpNS.Log4Net" version="0.3.0-beta11" />
       </group>
     </dependencies>
   </metadata>
