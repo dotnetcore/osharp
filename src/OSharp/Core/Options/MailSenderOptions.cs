@@ -7,8 +7,7 @@
 //  <last-date>2018-05-08 3:06</last-date>
 // -----------------------------------------------------------------------
 
-using System.Net;
-using System.Net.Mail;
+using MailKit.Security;
 
 namespace OSharp.Core.Options
 {
@@ -23,11 +22,6 @@ namespace OSharp.Core.Options
         public string Host { get; set; }
 
         /// <summary>
-        /// 获取或设置 发送方显示名
-        /// </summary>
-        public string DisplayName { get; set; }
-
-        /// <summary>
         /// 获取或设置 发送方用户名
         /// </summary>
         public string UserName { get; set; }
@@ -38,9 +32,24 @@ namespace OSharp.Core.Options
         public string Password { get; set; }
 
         /// <summary>
+        /// 获取或设置 发送方显示邮箱
+        /// </summary>
+        public string DisplayFromAddress { get; set; }
+
+        /// <summary>
+        /// 获取或设置 发送方显示名
+        /// </summary>
+        public string DisplayName { get; set; }
+
+        /// <summary>
         /// 获取或设置 邮件发送服务器端口
         /// </summary>
         public int Port { get; set; } = 25;
+
+        /// <summary>
+        /// 登录SMTP服务器的域名
+        /// </summary>
+        public string Domain { get; set; }
 
         /// <summary>
         /// 获取或设置 是否启用ssl
@@ -48,9 +57,19 @@ namespace OSharp.Core.Options
         public bool EnableSsl { get; set; } = false;
 
         /// <summary>
-        /// 获取或设置 邮件发送超时时间
+        /// 是否验证?
         /// </summary>
-        public int Timeout { get; set; } = 9999;
+        public bool UseDefaultCredentials { get; set; } = false;
+
+        /// <summary>
+        /// 安全套接字选项
+        /// </summary>
+        public SecureSocketOptions? SecureSocketOption { get; set; }
+
+        ///// <summary>
+        ///// 获取或设置 邮件发送超时时间
+        ///// </summary>
+        //public int Timeout { get; set; } = 9999;
 
         //public string TargetName { get; set; }
 
@@ -61,8 +80,6 @@ namespace OSharp.Core.Options
         //public SmtpDeliveryMethod DeliveryMethod { get; set; }
 
         //public SmtpDeliveryFormat DeliveryFormat { get; set; }
-
-        //public bool UseDefaultCredentials { get; set; }
 
         //public ICredentialsByHost Credentials { get; set; }
     }

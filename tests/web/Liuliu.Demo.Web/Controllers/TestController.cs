@@ -28,11 +28,7 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Dependency;
-using OSharp.Entity;
-using OSharp.Entity.Transactions;
-using OSharp.Identity;
-using OSharp.Json;
-
+using OSharp.Net;
 
 namespace Liuliu.Demo.Web.Controllers
 {
@@ -42,11 +38,13 @@ namespace Liuliu.Demo.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IIdentityContract _identityContract;
+        private readonly IEmailSender _emailSender;
 
-        public TestController(UserManager<User> userManager, IIdentityContract identityContract)
+        public TestController(UserManager<User> userManager, IIdentityContract identityContract, IEmailSender emailSender)
         {
             _userManager = userManager;
             _identityContract = identityContract;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -99,6 +97,18 @@ namespace Liuliu.Demo.Web.Controllers
             return list.ExpandAndToString("\r\n");
         }
 
+        [HttpGet]
+        public async Task<bool> SendEmail()
+        {
+            string body =
+                $"亲爱的用户 <strong>ArcherTrister</strong>[LX]，您好！<br>"
+                + $"欢迎注册，激活邮箱请 <a href=\"www.lxking.cn\" target=\"_blank\"><strong>点击这里</strong></a><br>"
+                + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>"
+                + $"www.lxking.cn<br>"
+                + $"祝您使用愉快！";
+            await _emailSender.SendEmailAsync("319807406@qq.com", "乐讯网络科技", body);
+            return true;
+        }
     }
 
 
