@@ -1,5 +1,2 @@
-T4/ts_components
-T4/cs_config
-T4/cs_dtos
-cs_admincontroller
-cs_service
+ts_*
+cs_*
