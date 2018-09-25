@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 using OSharp.Data;
+using OSharp.Extensions;
 
 
 namespace OSharp.Secutiry.Claims
@@ -51,7 +52,7 @@ namespace OSharp.Secutiry.Claims
         /// <summary>
         /// 获取用户ID
         /// </summary>
-        public static T GetUserId<T>(this IIdentity identity) where T : IConvertible
+        public static T GetUserId<T>(this IIdentity identity)
         {
             Check.NotNull(identity, nameof(identity));
             if (!(identity is ClaimsIdentity claimsIdentity))
@@ -63,7 +64,7 @@ namespace OSharp.Secutiry.Claims
             {
                 return default(T);
             }
-            return (T)Convert.ChangeType(value, typeof(T));
+            return value.CastTo<T>();
         }
 
         /// <summary>
