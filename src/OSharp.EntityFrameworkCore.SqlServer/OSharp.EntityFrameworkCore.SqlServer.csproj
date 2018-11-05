@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
 
 </Project>

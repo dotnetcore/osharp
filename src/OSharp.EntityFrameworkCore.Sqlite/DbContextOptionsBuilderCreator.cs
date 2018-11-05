@@ -1,31 +1,28 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SqlServerDbContextOptionsBuilderCreator.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="DbContextOptionsBuilderCreator.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-21 1:07</last-date>
+//  <last-date>2018-11-05 14:25</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 
 
-namespace OSharp.Entity.SqlServer
+namespace OSharp.Entity.Sqlite
 {
     /// <summary>
-    /// SqlServer的<see cref="DbContextOptionsBuilder"/>创建器
+    /// Sqlite的<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>
-        /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
+        /// 获取 数据库类型名称，如SqlServer，MySql，Sqlite等
         /// </summary>
-        public DatabaseType Type { get; } = DatabaseType.SqlServer;
+        public DatabaseType Type { get; } = DatabaseType.Sqlite;
 
         /// <summary>
         /// 创建<see cref="DbContextOptionsBuilder"/>对象
@@ -38,9 +35,9 @@ namespace OSharp.Entity.SqlServer
             if (existingConnection == null)
             {
                 DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
-                return optionsBuilder.UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
+                return optionsBuilder.UseSqlite(connectionString);
             }
-            return new DbContextOptionsBuilder().UseSqlServer(existingConnection, builder => builder.UseRowNumberForPaging());
+            return new DbContextOptionsBuilder().UseSqlite(existingConnection);
         }
     }
 }
