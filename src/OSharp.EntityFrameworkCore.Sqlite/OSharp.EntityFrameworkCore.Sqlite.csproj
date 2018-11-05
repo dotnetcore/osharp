@@ -12,11 +12,11 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\WorkSpace\Source\Repos\osharp-ns20\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\WorkSpace\Source\Repos\osharp-ns20\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

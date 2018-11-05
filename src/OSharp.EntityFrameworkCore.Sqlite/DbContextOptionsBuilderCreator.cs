@@ -4,13 +4,12 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-11-05 14:25</last-date>
+//  <last-date>2018-11-05 16:29</last-date>
 // -----------------------------------------------------------------------
 
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-
 
 namespace OSharp.Entity.Sqlite
 {
@@ -37,6 +36,7 @@ namespace OSharp.Entity.Sqlite
                 DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
                 return optionsBuilder.UseSqlite(connectionString);
             }
+
             return new DbContextOptionsBuilder().UseSqlite(existingConnection);
         }
     }

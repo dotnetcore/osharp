@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-11-05 14:25</last-date>
+//  <last-date>2018-11-05 16:29</last-date>
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
@@ -12,7 +12,6 @@ using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
-
 
 namespace OSharp.Entity.Sqlite
 {
@@ -27,7 +26,7 @@ namespace OSharp.Entity.Sqlite
         /// 获取 模块级别
         /// </summary>
         public override PackLevel Level => PackLevel.Framework;
-        
+
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
         /// </summary>

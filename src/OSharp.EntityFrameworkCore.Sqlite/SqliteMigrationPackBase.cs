@@ -4,7 +4,7 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-11-05 14:25</last-date>
+//  <last-date>2018-11-05 16:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,7 +15,6 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
-
 
 namespace OSharp.Entity.Sqlite
 {
@@ -49,11 +48,13 @@ namespace OSharp.Entity.Sqlite
                         logger.LogWarning($"上下文类型“{context.GetType()}”的数据库上下文配置不存在");
                         return;
                     }
+
                     if (contextOptions.DatabaseType != DatabaseType.Sqlite)
                     {
                         logger.LogWarning($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.Sqlite)} 类型");
                         return;
                     }
+
                     if (contextOptions.AutoMigrationEnabled)
                     {
                         context.CheckAndMigration();
@@ -62,6 +63,7 @@ namespace OSharp.Entity.Sqlite
                         {
                             modelCache.Set(context.GetType(), context.Model);
                         }
+
                         IsEnabled = true;
                     }
                 }
