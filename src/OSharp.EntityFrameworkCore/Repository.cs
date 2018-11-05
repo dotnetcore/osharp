@@ -378,7 +378,7 @@ namespace OSharp.Entity
         public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
         {
             Check.NotNull(predicate, nameof(predicate));
-            return Query(predicate, filterByDataAuth).FirstOrDefault();
+            return TrackQuery(predicate, filterByDataAuth).FirstOrDefault();
         }
 
         /// <summary>

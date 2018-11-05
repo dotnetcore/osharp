@@ -52,7 +52,7 @@ namespace OSharp.Security
         /// 获取 过滤条件组信息
         /// </summary>
         [NotMapped]
-        public FilterGroup FilgerGroup
+        public FilterGroup FilterGroup
         {
             get
             {

@@ -27,6 +27,19 @@ namespace OSharp.Core.Systems
         /// 获取 键值对数据查询数据集
         /// </summary>
         IQueryable<KeyValue> KeyValues { get; }
+        
+        /// <summary>
+        /// 获取或创建设置信息
+        /// </summary>
+        /// <typeparam name="TSetting">设置类型</typeparam>
+        /// <returns>设置实例，数据库中不存在相应节点时返回默认值</returns>
+        TSetting GetSetting<TSetting>() where TSetting : ISetting, new();
+
+        /// <summary>
+        /// 保存设置信息
+        /// </summary>
+        /// <param name="setting">设置信息</param>
+        Task<OperationResult> SaveSetting(ISetting setting);
 
         /// <summary>
         /// 获取指定键名的数据项
