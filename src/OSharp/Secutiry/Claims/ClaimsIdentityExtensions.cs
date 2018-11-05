@@ -64,7 +64,6 @@ namespace OSharp.Secutiry.Claims
             {
                 return default(T);
             }
-
             return value.CastTo<T>();
         }
 
