@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OSharp.EntityFrameworkCore.Sqlite</name>
+    </assembly>
+    <members>
+        <member name="T:OSharp.Entity.Sqlite.DbContextOptionsBuilderCreator">
+            <summary>
+            Sqlite的<see cref="T:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder"/>创建器
+            </summary>
+        </member>
+        <member name="P:OSharp.Entity.Sqlite.DbContextOptionsBuilderCreator.Type">
+            <summary>
+            获取 数据库类型名称，如SqlServer，MySql，Sqlite等
+            </summary>
+        </member>
+        <member name="M:OSharp.Entity.Sqlite.DbContextOptionsBuilderCreator.Create(System.String,System.Data.Common.DbConnection)">
+            <summary>
+            创建<see cref="T:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder"/>对象
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <param name="existingConnection">已存在的连接对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:OSharp.Entity.Sqlite.SqliteEntityFrameworkCorePack">
+            <summary>
+            SqliteEntityFrameworkCore模块
+            </summary>
+        </member>
+        <member name="P:OSharp.Entity.Sqlite.SqliteEntityFrameworkCorePack.Level">
+            <summary>
+            获取 模块级别
+            </summary>
+        </member>
+        <member name="P:OSharp.Entity.Sqlite.SqliteEntityFrameworkCorePack.Order">
+            <summary>
+            获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
+            </summary>
+        </member>
+        <member name="M:OSharp.Entity.Sqlite.SqliteEntityFrameworkCorePack.AddServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            将模块服务添加到依赖注入服务容器中
+            </summary>
+            <param name="services">依赖注入服务容器</param>
+            <returns></returns>
+        </member>
+        <member name="T:OSharp.Entity.Sqlite.SqliteMigrationPackBase`1">
+            <summary>
+            Sqlite数据迁移模块基类
+            </summary>
+        </member>
+        <member name="P:OSharp.Entity.Sqlite.SqliteMigrationPackBase`1.Level">
+            <summary>
+            获取 模块级别
+            </summary>
+        </member>
+        <member name="M:OSharp.Entity.Sqlite.SqliteMigrationPackBase`1.UsePack(System.IServiceProvider)">
+            <summary>
+            应用模块服务
+            </summary>
+            <param name="provider">服务提供者</param>
+        </member>
+        <member name="M:OSharp.Entity.Sqlite.SqliteMigrationPackBase`1.CreateDbContext(System.IServiceProvider)">
+            <summary>
+            重写实现获取数据上下文实例
+            </summary>
+            <param name="scopedProvider">服务提供者</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
