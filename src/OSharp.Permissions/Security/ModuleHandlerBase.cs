@@ -80,15 +80,27 @@ namespace OSharp.Security
                 return;
             }
 
-            if (!moduleInfos.CheckSyncByHash(provider, Logger))
+            IModuleStore<TModule, TModuleInputDto, TModuleKey> moduleStore =
+                provider.GetService<IModuleStore<TModule, TModuleInputDto, TModuleKey>>();
+            if (moduleStore == null)
             {
+                Logger.LogWarning("初始化模块数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
                 return;
             }
 
-            IModuleStore<TModule, TModuleInputDto, TModuleKey> moduleStore =
-                provider.GetService<IModuleStore<TModule, TModuleInputDto, TModuleKey>>();
             IModuleFunctionStore<TModuleFunction, TModuleKey> moduleFunctionStore =
                 provider.GetService<IModuleFunctionStore<TModuleFunction, TModuleKey>>();
+            if (moduleFunctionStore == null)
+            {
+                Logger.LogWarning("初始化模块功能数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                return;
+            }
+
+            if (!moduleInfos.CheckSyncByHash(provider, Logger))
+            {
+                Logger.LogInformation("同步模块数据时，数据签名与上次相同，取消同步");
+                return;
+            }
 
             //删除数据库中多余的模块
             TModule[] modules = moduleStore.Modules.ToArray();

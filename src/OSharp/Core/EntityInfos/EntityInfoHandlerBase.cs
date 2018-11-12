@@ -18,9 +18,6 @@ using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Json;
 using OSharp.Reflection;
 
 
@@ -127,17 +124,20 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         protected virtual void SyncToDatabase(IServiceProvider scopedProvider, List<TEntityInfo> entityInfos)
         {
-            //检查指定实体的Hash值，决定是否需要进行数据库同步
-            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
-            {
-                return;
-            }
-
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
-                throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                _logger.LogWarning("初始化实体数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                return;
             }
+
+            //检查指定实体的Hash值，决定是否需要进行数据库同步
+            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
+            {
+                _logger.LogInformation("同步实体数据时，数据签名与上次相同，取消同步");
+                return;
+            }
+
             TEntityInfo[] dbItems = repository.TrackQuery(null, false).ToArray();
 
             //删除的实体信息
@@ -207,6 +207,10 @@ namespace OSharp.Core.EntityInfos
         protected virtual TEntityInfo[] GetFromDatabase(IServiceProvider scopedProvider)
         {
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
+            if (repository == null)
+            {
+                return new TEntityInfo[0];
+            }
             return repository.Query(null, false).ToArray();
         }
     }
