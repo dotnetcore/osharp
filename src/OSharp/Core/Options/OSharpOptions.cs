@@ -49,6 +49,11 @@ namespace OSharp.Core.Options
         public RedisOptions Redis { get; set; }
 
         /// <summary>
+        /// 获取或设置 Swagger选项
+        /// </summary>
+        public SwaggerOptions Swagger { get; set; }
+
+        /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
         public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)

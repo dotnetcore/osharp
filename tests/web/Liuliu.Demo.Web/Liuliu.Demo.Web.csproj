@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\OSharp.Demo.WebApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\OSharp.Demo.Web.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
@@ -49,7 +49,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +59,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>

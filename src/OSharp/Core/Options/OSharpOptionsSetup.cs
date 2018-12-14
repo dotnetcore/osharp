@@ -76,6 +76,18 @@ namespace OSharp.Core.Options
                 }
                 options.Redis = redis;
             }
+
+            // SwaggerOptions
+            section = _configuration.GetSection("OSharp:Swagger");
+            SwaggerOptions swagger = section.Get<SwaggerOptions>();
+            if (swagger != null)
+            {
+                if (swagger.Url.IsMissing())
+                {
+                    throw new OsharpException("配置文件中Swagger节点的Url不能为空");
+                }
+                options.Swagger = swagger;
+            }
         }
 
         /// <summary>
