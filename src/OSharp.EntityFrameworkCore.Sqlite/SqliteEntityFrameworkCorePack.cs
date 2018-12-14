@@ -18,9 +18,8 @@ namespace OSharp.Entity.Sqlite
     /// <summary>
     /// SqliteEntityFrameworkCore模块
     /// </summary>
-    [DependsOnPacks(typeof(EntityFrameworkCorePack))]
     [Description("SqliteEntityFrameworkCore模块")]
-    public class SqliteEntityFrameworkCorePack : OsharpPack
+    public class SqliteEntityFrameworkCorePack : EntityFrameworkCorePack
     {
         /// <summary>
         /// 获取 模块级别
@@ -39,6 +38,8 @@ namespace OSharp.Entity.Sqlite
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services = base.AddServices(services);
+
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             return services;
         }

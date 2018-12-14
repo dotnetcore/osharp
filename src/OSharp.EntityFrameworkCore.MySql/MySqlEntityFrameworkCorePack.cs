@@ -19,9 +19,8 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySqlEntityFrameworkCore模块
     /// </summary>
-    [DependsOnPacks(typeof(EntityFrameworkCorePack))]
     [Description("MySqlEntityFrameworkCore模块")]
-    public class MySqlEntityFrameworkCorePack : OsharpPack
+    public class MySqlEntityFrameworkCorePack : EntityFrameworkCorePack
     {
         /// <summary>
         /// 获取 模块级别
@@ -40,6 +39,8 @@ namespace OSharp.Entity.MySql
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services = base.AddServices(services);
+
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             return services;
         }

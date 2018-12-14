@@ -23,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Data;
+using OSharp.Exceptions;
+using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
 
@@ -103,6 +105,10 @@ namespace Liuliu.Demo.Identity
             }).AddJwtBearer(jwt =>
             {
                 string secret = configuration["OSharp:Jwt:Secret"];
+                if (secret.IsNullOrEmpty())
+                {
+                    throw new OsharpException("配置文件中Jwt节点的Secret不能为空");
+                }
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"],

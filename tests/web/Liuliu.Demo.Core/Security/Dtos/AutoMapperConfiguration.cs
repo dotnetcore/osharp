@@ -30,7 +30,7 @@ namespace Liuliu.Demo.Security.Dtos
         public void CreateMaps(MapperConfigurationExpression mapper)
         {
             mapper.CreateMap<EntityRoleInputDto, EntityRole>()
-                .ForMember(mr => mr.FilterGroupJson, opt => opt.ResolveUsing(dto => dto.FilterGroup.ToJsonString()));
+                .ForMember(mr => mr.FilterGroupJson, opt => opt.MapFrom(dto => dto.FilterGroup.ToJsonString(false, false)));
 
             //mapper.CreateMap<EntityRole, EntityRoleOutputDto>()
             //    .ForMember(dto => dto.FilterGroup, opt => opt.ResolveUsing(mr => mr.FilterGroupJson?.FromJsonString<FilterGroup>()));
