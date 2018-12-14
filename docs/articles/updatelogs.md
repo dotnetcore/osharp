@@ -1,5 +1,17 @@
 # OSharp .NetStandard 更新记录
 
+### 0.3.0-beta12-13
+1. 将Repository中的GetFirst功能的数据源改为TrackQuery
+2. 键值存储中,将GetSetting，SaveSetting提升到接口IKeyValueStore中。 去除Identity.GetUserId的泛型约束。修复EntityRoleBase的FilterGroup命名错误
+3. 更新当OsharpResult的Message为null时，获取ResultType的描述作为消息内容
+4. 添加 OSharp.EntityFrameworkCore.Sqlite工程，支持EFCore的Sqlite数据库存储支持。
+5. 统一Sqlite组件版本号。修复Sqlite生成xml文档的路径
+6. 添加当仓储未初始化时，忽略Function，EntityInfo，Module数据初始化操作
+7. 将.net core 更新到2.2版本
+8. 将EntityFrameworkCorePack模块下沉为基模块，SqlServer，MySql，Sqlite等数据模块继承此基模块
+9. 添加Redis客户端项目 OSharp.Redis
+10. 添加Swagger项目OSharp.Swagger
+
 ### 0.3.0-beta11
 1. 后台管理的系统模块增加OsharpPack模块列表
 2. 添加MySql的迁移类MySqlDefaultDbContextMigrationPack和MySqlDesignTimeDefaultDbContextFactory
