@@ -27,6 +27,9 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * OSharp.EntityFrameworkCore.SqlServer【EFCore SqlServer 数据组件】：EFCore SqlServer数据访问组件，封装SqlServer的EntityFrameworkCore数据访问功能的实现
 * OSharp.EntityFrameworkCore.Sqlite【EFCore Sqlite 数据组件】：EFCore Sqlite数据访问组件，封装Sqlite的EntityFrameworkCore数据访问功能的实现
 * OSharp.Permissions【权限组件】：使用AspNetCore的Identity为基础实现身份认证的封装，以Security为基础实现以角色-功能、用户-功能的功能权限实现，以角色-数据，用户-数据的数据权限的封装
+* OSharp.Log4Net【日志组件】：基于Log4Net的日志记录组件
+* OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
+* OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
 
 ## <a id="02"/>OSharpNS特性
 
