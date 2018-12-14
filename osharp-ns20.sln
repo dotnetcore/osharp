@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{F5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGenerator", "tests\OSharp.CodeGenerator\OSharp.CodeGenerator.csproj", "{A403CAF1-B220-40CB-99E1-7594EC142AB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

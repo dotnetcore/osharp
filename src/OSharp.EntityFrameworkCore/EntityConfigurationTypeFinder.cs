@@ -29,6 +29,7 @@ namespace OSharp.Entity
     {
         private readonly IDictionary<Type, IEntityRegister[]> _entityRegistersDict
             = new Dictionary<Type, IEntityRegister[]>();
+        private bool _initialized = false;
 
         /// <summary>
         /// 初始化一个<see cref="EntityConfigurationTypeFinder"/>类型的新实例
@@ -43,12 +44,12 @@ namespace OSharp.Entity
         public void Initialize()
         {
             IDictionary<Type, IEntityRegister[]> dict = _entityRegistersDict;
-            dict.Clear();
             Type[] types = FindAll(true);
-            if (types.Length == 0)
+            if (types.Length == 0 || _initialized)
             {
                 return;
             }
+            dict.Clear();
             List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance(type) as IEntityRegister).ToList();
             List<IGrouping<Type, IEntityRegister>> groups = registers.GroupBy(m => m.DbContextType).ToList();
             Type key;
@@ -85,6 +86,8 @@ namespace OSharp.Entity
 
                 dict[key] = list.ToArray();
             }
+
+            _initialized = true;
         }
 
         /// <summary>

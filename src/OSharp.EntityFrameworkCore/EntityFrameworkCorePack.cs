@@ -4,25 +4,23 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 15:24</last-date>
+//  <last-date>2018-12-14 15:57</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Entity.Transactions;
 
 
 namespace OSharp.Entity
 {
     /// <summary>
-    /// EntityFrameworkCore模块
+    /// EntityFrameworkCore基模块
     /// </summary>
-    [Description("EntityFrameworkCore模块")]
-    public class EntityFrameworkCorePack : OsharpPack
+    public abstract class EntityFrameworkCorePack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -36,12 +34,12 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
-            services.AddSingleton<IDbContextResolver, DbContextResolver>();
-            services.AddSingleton<DbContextModelCache>();
+            services.TryAddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
+            services.TryAddSingleton<IDbContextResolver, DbContextResolver>();
+            services.TryAddSingleton<DbContextModelCache>();
 
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
+            services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 
             return services;
         }

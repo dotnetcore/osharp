@@ -19,9 +19,8 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServerEntityFrameworkCore模块
     /// </summary>
-    [DependsOnPacks(typeof(EntityFrameworkCorePack))]
     [Description("SqlServerEntityFrameworkCore模块")]
-    public class SqlServerEntityFrameworkCorePack : OsharpPack
+    public class SqlServerEntityFrameworkCorePack : EntityFrameworkCorePack
     {
         /// <summary>
         /// 获取 模块级别
@@ -40,6 +39,8 @@ namespace OSharp.Entity.SqlServer
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services = base.AddServices(services);
+
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             return services;
         }
