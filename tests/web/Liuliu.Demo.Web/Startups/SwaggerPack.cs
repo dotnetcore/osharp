@@ -26,9 +26,9 @@ using Swashbuckle.AspNetCore.Swagger;
 namespace Liuliu.Demo.Web.Startups
 {
     /// <summary>
-    /// Swagger Api模块 
+    /// SwaggerApi模块 
     /// </summary>
-    [Description("Swagger Api模块 ")]
+    [Description("SwaggerApi模块 ")]
     public class SwaggerPack : AspOsharpPack
     {
         /// <summary>

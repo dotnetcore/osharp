@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 
 
 namespace OSharp.Core.Options
@@ -62,6 +63,18 @@ namespace OSharp.Core.Options
                     jwt.Secret = _configuration["OSharp:Jwt:Secret"];
                 }
                 options.Jwt = jwt;
+            }
+
+            // RedisOptions
+            section = _configuration.GetSection("OSharp:Redis");
+            RedisOptions redis = section.Get<RedisOptions>();
+            if (redis != null)
+            {
+                if (redis.Configuration.IsMissing())
+                {
+                    throw new OsharpException("配置文件中Redis节点的Configuration不能为空");
+                }
+                options.Redis = redis;
             }
         }
 
