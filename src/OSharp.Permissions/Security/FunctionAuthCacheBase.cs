@@ -59,7 +59,7 @@ namespace OSharp.Security
         public virtual void BuildRoleCaches()
         {
             //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
-            TFunction[] functions = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            TFunction[] functions = ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 IRepository<TFunction, Guid> functionRepository = provider.GetService<IRepository<TFunction, Guid>>();
                 return functionRepository.Query(null, false).ToArray();
@@ -114,7 +114,7 @@ namespace OSharp.Security
                 _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存");
                 return roleNames;
             }
-            roleNames = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            roleNames = ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
                 TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
@@ -154,7 +154,7 @@ namespace OSharp.Security
                 _logger.LogDebug($"从缓存中获取到用户“{userName}”的“User-Function[]”缓存");
                 return functionIds;
             }
-            functionIds = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            functionIds = ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 IRepository<TUser, TUserKey> userRepository = provider.GetService<IRepository<TUser, TUserKey>>();
                 TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();

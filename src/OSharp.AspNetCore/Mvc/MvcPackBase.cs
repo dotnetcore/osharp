@@ -45,7 +45,7 @@ namespace OSharp.AspNetCore.Mvc
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDistributedMemoryCache();
 

@@ -20,7 +20,7 @@ namespace OSharp.Entity.MySql
     /// MySqlEntityFrameworkCore模块
     /// </summary>
     [Description("MySqlEntityFrameworkCore模块")]
-    public class MySqlEntityFrameworkCorePack : EntityFrameworkCorePack
+    public class MySqlEntityFrameworkCorePack : EntityFrameworkCorePackBase
     {
         /// <summary>
         /// 获取 模块级别
@@ -42,6 +42,8 @@ namespace OSharp.Entity.MySql
             services = base.AddServices(services);
 
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
+            services.AddScoped(typeof(ISqlExecutor<,>), typeof(MySqlDapperSqlExecutor<,>));
+
             return services;
         }
     }

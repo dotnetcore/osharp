@@ -61,7 +61,7 @@ namespace OSharp.Core.EntityInfos
                 _entityInfos.Add(entityInfo);
             }
 
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, _entityInfos);
             });
@@ -112,7 +112,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 _entityInfos.Clear();
                 _entityInfos.AddRange(GetFromDatabase(provider));

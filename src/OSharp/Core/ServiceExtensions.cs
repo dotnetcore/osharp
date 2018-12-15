@@ -103,6 +103,15 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// 获取指定实体类型的上下文对象
+        /// </summary>
+        public static IDbContext GetDbContext<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
+        {
+            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
+            return unitOfWorkManager.GetDbContext<TEntity, TKey>();
+        }
+
+        /// <summary>
         /// OSharp框架初始化，适用于非AspNetCore环境
         /// </summary>
         public static IServiceProvider UseOsharp(this IServiceProvider provider)

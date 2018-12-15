@@ -61,7 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{3E86C417-672D-491F-8177-93EDCBC0C70A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{3AE4A771-1F76-4792-8A88-F0FB9BA576C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{3AE4A771-1F76-4792-8A88-F0FB9BA576C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

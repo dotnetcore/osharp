@@ -20,7 +20,7 @@ namespace OSharp.Entity.SqlServer
     /// SqlServerEntityFrameworkCore模块
     /// </summary>
     [Description("SqlServerEntityFrameworkCore模块")]
-    public class SqlServerEntityFrameworkCorePack : EntityFrameworkCorePack
+    public class SqlServerEntityFrameworkCorePack : EntityFrameworkCorePackBase
     {
         /// <summary>
         /// 获取 模块级别
@@ -42,6 +42,8 @@ namespace OSharp.Entity.SqlServer
             services = base.AddServices(services);
 
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
+            services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
+
             return services;
         }
     }

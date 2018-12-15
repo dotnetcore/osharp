@@ -24,14 +24,14 @@ namespace OSharp.Entity
         /// 获取 工作单元的事务是否已提交
         /// </summary>
         bool HasCommited { get; }
-        
+
         /// <summary>
         /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns><typeparamref name="TEntity"/>所属上下文类的实例</returns>
-        IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey> where TKey : IEquatable<TKey>;
+        IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey>;
 
         /// <summary>
         /// 获取指定数据实体的上下文类型

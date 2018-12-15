@@ -20,7 +20,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore基模块
     /// </summary>
-    public abstract class EntityFrameworkCorePack : OsharpPack
+    public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动

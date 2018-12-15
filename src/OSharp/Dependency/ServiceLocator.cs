@@ -98,7 +98,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public void ExcuteScopedWork(Action<IServiceProvider> action)
+        public void ExecuteScopedWork(Action<IServiceProvider> action)
         {
             if (_provider == null)
             {
@@ -127,7 +127,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public async Task ExcuteScopedWorkAsync(Func<IServiceProvider, Task> action)
+        public async Task ExecuteScopedWorkAsync(Func<IServiceProvider, Task> action)
         {
             if (_provider == null)
             {
@@ -156,7 +156,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public TResult ExcuteScopedWork<TResult>(Func<IServiceProvider, TResult> func)
+        public TResult ExecuteScopedWork<TResult>(Func<IServiceProvider, TResult> func)
         {
             if (_provider == null)
             {
@@ -185,7 +185,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public async Task<TResult> ExcuteScopedWorkAsync<TResult>(Func<IServiceProvider, Task<TResult>> func)
+        public async Task<TResult> ExecuteScopedWorkAsync<TResult>(Func<IServiceProvider, Task<TResult>> func)
         {
             if (_provider == null)
             {
