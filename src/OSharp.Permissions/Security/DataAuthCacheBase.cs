@@ -52,7 +52,7 @@ namespace OSharp.Security
         /// </summary>
         public void BuildCaches()
         {
-            var entityRoles = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            var entityRoles = ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 IRepository<TEntityRole, Guid> entityRoleRepository = provider.GetService<IRepository<TEntityRole, Guid>>();
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();

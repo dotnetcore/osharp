@@ -67,7 +67,7 @@ namespace OSharp.Core.Functions
             TFunction[] functions = GetFunctions(functionTypes);
             Logger.LogInformation($"功能信息初始化，共找到{functions.Length}个功能信息");
 
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, functions);
             });
@@ -99,7 +99,7 @@ namespace OSharp.Core.Functions
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            ServiceLocator.Instance.ExecuteScopedWork(provider =>
             {
                 _functions.Clear();
                 _functions.AddRange(GetFromDatabase(provider));

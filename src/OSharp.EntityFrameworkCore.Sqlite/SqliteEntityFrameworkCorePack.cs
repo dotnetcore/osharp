@@ -19,7 +19,7 @@ namespace OSharp.Entity.Sqlite
     /// SqliteEntityFrameworkCore模块
     /// </summary>
     [Description("SqliteEntityFrameworkCore模块")]
-    public class SqliteEntityFrameworkCorePack : EntityFrameworkCorePack
+    public class SqliteEntityFrameworkCorePack : EntityFrameworkCorePackBase
     {
         /// <summary>
         /// 获取 模块级别
@@ -41,6 +41,8 @@ namespace OSharp.Entity.Sqlite
             services = base.AddServices(services);
 
             services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
+            services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqliteDapperSqlExecutor<,>));
+
             return services;
         }
     }

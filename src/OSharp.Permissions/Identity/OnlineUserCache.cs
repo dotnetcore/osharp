@@ -59,7 +59,7 @@ namespace OSharp.Identity
             return _cache.Get<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExcuteScopedWork<OnlineUser>(provider =>
+                    return ServiceLocator.Instance.ExecuteScopedWork<OnlineUser>(provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
                         return onlineUserProvider.Create(provider, userName).Result;
@@ -82,7 +82,7 @@ namespace OSharp.Identity
             return await _cache.GetAsync<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExcuteScopedWorkAsync<OnlineUser>(async provider =>
+                    return ServiceLocator.Instance.ExecuteScopedWorkAsync<OnlineUser>(async provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
                         return await onlineUserProvider.Create(provider, userName);

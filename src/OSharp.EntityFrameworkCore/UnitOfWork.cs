@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Options;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Reflection;
@@ -57,7 +56,7 @@ namespace OSharp.Entity
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns><typeparamref name="TEntity"/>所属上下文类的实例</returns>
-        public virtual IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey> where TKey : IEquatable<TKey>
+        public virtual IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey>
         {
             Type entityType = typeof(TEntity);
             return GetDbContext(entityType);
@@ -70,8 +69,7 @@ namespace OSharp.Entity
         /// <returns>实体所属上下文实例</returns>
         public IDbContext GetDbContext(Type entityType)
         {
-            Type baseType = typeof(IEntity<>);
-            if (!entityType.IsBaseOn(baseType))
+            if (!entityType.IsEntityType())
             {
                 throw new OsharpException($"类型“{entityType}”不是实体类型");
             }

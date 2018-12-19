@@ -61,7 +61,7 @@ namespace OSharp.Security
             {
                 return;
             }
-            _locator.ExcuteScopedWork(provider =>
+            _locator.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, moduleInfos);
             });

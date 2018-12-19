@@ -16,7 +16,6 @@ using OSharp.Core.Options;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Extensions;
-using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -45,6 +44,11 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 获取 服务提供器
+        /// </summary>
+        public IServiceProvider ServiceProvider => _serviceProvider;
+
+        /// <summary>
         /// 获取 事务是否已提交
         /// </summary>
         public bool HasCommited
@@ -71,25 +75,21 @@ namespace OSharp.Entity
         /// <returns>工作单元对象</returns>
         public IUnitOfWork GetUnitOfWork(Type entityType)
         {
-            Type baseType = typeof(IEntity<>);
-            if (!entityType.IsBaseOn(baseType))
+            if (!entityType.IsEntityType())
             {
                 throw new OsharpException($"类型“{entityType}”不是实体类型");
             }
-
             IUnitOfWork unitOfWork = _entityTypeUnitOfWorks.GetOrDefault(entityType);
             if (unitOfWork != null)
             {
                 return unitOfWork;
             }
-
             IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
             Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
             if (dbContextType == null)
             {
                 throw new OsharpException($"实体类“{entityType}”的所属上下文类型无法找到");
             }
-
             OSharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
             DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextOptions);
             unitOfWork = _connStringUnitOfWorks.GetOrDefault(resolveOptions.ConnectionString);
@@ -97,12 +97,37 @@ namespace OSharp.Entity
             {
                 return unitOfWork;
             }
-
             unitOfWork = ActivatorUtilities.CreateInstance<UnitOfWork>(_serviceProvider, resolveOptions);
             _entityTypeUnitOfWorks.TryAdd(entityType, unitOfWork);
             _connStringUnitOfWorks.TryAdd(resolveOptions.ConnectionString, unitOfWork);
 
             return unitOfWork;
+        }
+
+        /// <summary>
+        /// 获取指定实体类所属的上下文类型
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <returns>上下文类型</returns>
+        public Type GetDbContextType(Type entityType)
+        {
+            IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
+            return typeFinder.GetDbContextTypeForEntity(entityType);
+        }
+
+        /// <summary>
+        /// 获取数据上下文选项
+        /// </summary>
+        /// <param name="dbContextType">数据上下文类型</param>
+        /// <returns>数据上下文选项</returns>
+        public OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
+        {
+            OSharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
+            if (dbContextOptions == null)
+            {
+                throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
+            }
+            return dbContextOptions;
         }
 
         /// <summary>
@@ -126,19 +151,5 @@ namespace OSharp.Entity
 
             _connStringUnitOfWorks.Clear();
         }
-
-        #region 私有方法
-
-        private OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
-        {
-            OSharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
-            if (dbContextOptions == null)
-            {
-                throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
-            }
-            return dbContextOptions;
-        }
-
-        #endregion
     }
 }

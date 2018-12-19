@@ -18,6 +18,11 @@ namespace OSharp.Entity
     public interface IUnitOfWorkManager : IDisposable
     {
         /// <summary>
+        /// 获取 服务提供器
+        /// </summary>
+        IServiceProvider ServiceProvider { get; }
+
+        /// <summary>
         /// 获取 事务是否已提交
         /// </summary>
         bool HasCommited { get; }
@@ -36,6 +41,13 @@ namespace OSharp.Entity
         /// <param name="entityType">实体类型</param>
         /// <returns>工作单元对象</returns>
         IUnitOfWork GetUnitOfWork(Type entityType);
+
+        /// <summary>
+        /// 获取指定实体类所属的上下文类型
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <returns>上下文类型</returns>
+        Type GetDbContextType(Type entityType);
 
         /// <summary>
         /// 提交所有工作单元的事务更改
