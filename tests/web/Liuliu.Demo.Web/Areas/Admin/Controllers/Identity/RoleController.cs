@@ -45,18 +45,21 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     {
         private readonly IIdentityContract _identityContract;
         private readonly ICacheService _cacheService;
+        private readonly IFilterService _filterService;
         private readonly RoleManager<Role> _roleManager;
         private readonly SecurityManager _securityManager;
 
         public RoleController(RoleManager<Role> roleManager,
             SecurityManager securityManager,
             IIdentityContract identityContract,
-            ICacheService cacheService)
+            ICacheService cacheService,
+            IFilterService filterService)
         {
             _roleManager = roleManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
             _cacheService = cacheService;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
 
-            Expression<Func<Role, bool>> predicate = request.FilterGroup.ToExpression<Role>();
+            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
             var page = _cacheService.ToPageCache<Role, RoleOutputDto>(_roleManager.Roles, predicate, request.PageCondition, function);
 
             return page.ToPageData();

@@ -16,6 +16,7 @@ using OSharp.Caching;
 using OSharp.Core.Options;
 using OSharp.Entity;
 using OSharp.Entity.Infrastructure;
+using OSharp.Filter;
 using OSharp.Reflection;
 
 
@@ -46,6 +47,7 @@ namespace OSharp.Core.Packs
             services.AddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
 
             services.AddSingleton<ICacheService, CacheService>();
+            services.AddScoped<IFilterService, FilterService>();
 
             return services;
         }

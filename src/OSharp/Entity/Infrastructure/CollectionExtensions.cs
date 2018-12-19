@@ -16,7 +16,6 @@ using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
-using OSharp.Properties;
 using OSharp.Reflection;
 using OSharp.Secutiry;
 
@@ -47,11 +46,8 @@ namespace OSharp.Entity
             predicate.CheckNotNull("predicate");
             pageCondition.CheckNotNull("pageCondition");
             selector.CheckNotNull("selector");
-            return source.ToPage(predicate,
-                pageCondition.PageIndex,
-                pageCondition.PageSize,
-                pageCondition.SortConditions,
-                selector);
+
+            return source.ToPage(predicate, pageCondition.PageIndex, pageCondition.PageSize, pageCondition.SortConditions, selector);
         }
 
         /// <summary>
@@ -211,7 +207,7 @@ namespace OSharp.Entity
                 {
                     source = source.OrderBy("Id");
                 }
-                else if(typeof(TEntity).IsBaseOn<ICreatedTime>())
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
                 {
                     source = source.OrderBy("CreatedTime");
                 }

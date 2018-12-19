@@ -9,16 +9,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Data;
 using OSharp.EventBuses.Internal;
-using OSharp.Extensions;
-using OSharp.Reflection;
 
 
 namespace OSharp.EventBuses
@@ -28,13 +25,16 @@ namespace OSharp.EventBuses
     /// </summary>
     public abstract class EventBusBase : IEventBus
     {
+        private readonly IServiceProvider _serviceProvider;
+
         /// <summary>
         /// 初始化一个<see cref="EventBusBase"/>类型的新实例
         /// </summary>
-        protected EventBusBase(IEventStore eventStore, ILogger logger)
+        protected EventBusBase(IServiceProvider serviceProvider)
         {
-            EventStore = eventStore;
-            Logger = logger;
+            _serviceProvider = serviceProvider;
+            EventStore = serviceProvider.GetService<IEventStore>();
+            Logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace OSharp.EventBuses
         public virtual void SubscribeAll(Type[] eventHandlerTypes)
         {
             Check.NotNull(eventHandlerTypes, nameof(eventHandlerTypes));
-            
+
             foreach (Type handlerType in eventHandlerTypes)
             {
                 Type handlerInterface = handlerType.GetInterface("IEventHandler`1"); //获取该类实现的泛型接口
@@ -113,7 +113,8 @@ namespace OSharp.EventBuses
                     continue;
                 }
                 Type eventType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
-                IEventHandlerFactory factory = new IocEventHandlerFactory(handlerType);
+                IEventHandlerFactory factory =
+                    ActivatorUtilities.CreateInstance(_serviceProvider, typeof(IocEventHandlerFactory), new object[] { handlerType }) as IocEventHandlerFactory;// new IocEventHandlerFactory(handlerType);
                 EventStore.Add(eventType, factory);
                 Logger.LogDebug($"创建事件“{eventType}”到处理器“{handlerType}”的订阅配对");
             }

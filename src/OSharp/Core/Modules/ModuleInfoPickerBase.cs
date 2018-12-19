@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
@@ -33,11 +34,10 @@ namespace OSharp.Core.Modules
         /// <summary>
         /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例
         /// </summary>
-        protected ModuleInfoPickerBase()
+        protected ModuleInfoPickerBase(IServiceProvider serviceProvider)
         {
-            ServiceLocator locator = ServiceLocator.Instance;
-            Logger = locator.GetService<ILoggerFactory>().CreateLogger(GetType());
-            FunctionHandler = locator.GetService<IFunctionHandler>();
+            Logger = serviceProvider.GetLogger(GetType());
+            FunctionHandler = serviceProvider.GetService<IFunctionHandler>();
         }
 
         /// <summary>

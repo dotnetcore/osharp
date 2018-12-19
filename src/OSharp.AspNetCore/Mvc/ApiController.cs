@@ -8,10 +8,10 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Dependency;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -29,7 +29,7 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         protected ApiController()
         {
-            Logger = ServiceLocator.Instance.GetService<ILoggerFactory>().CreateLogger(GetType());
+            Logger = HttpContext.RequestServices.GetLogger(GetType());
         }
 
         /// <summary>

@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -72,6 +74,22 @@ namespace OSharp.Dependency
             using (IServiceScope scope = provider.CreateScope())
             {
                 return await func(scope.ServiceProvider);
+            }
+        }
+
+        /// <summary>
+        /// 获取当前用户
+        /// </summary>
+        public static ClaimsPrincipal GetCurrentUser(this IServiceProvider provider)
+        {
+            try
+            {
+                IPrincipal user = provider.GetService<IPrincipal>();
+                return user as ClaimsPrincipal;
+            }
+            catch
+            {
+                return null;
             }
         }
     }

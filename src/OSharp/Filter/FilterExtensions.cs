@@ -21,6 +21,7 @@ namespace OSharp.Filter
         /// <summary>
         /// 将条件组转换为查询表达式
         /// </summary>
+        [Obsolete("使用 IFilterService 服务代替，此类将在1.0版本中移除")]
         public static Expression<Func<TEntity, bool>> ToExpression<TEntity>(this FilterGroup group)
         {
             return FilterHelper.GetExpression<TEntity>(group);
@@ -29,6 +30,7 @@ namespace OSharp.Filter
         /// <summary>
         /// 将条件转换为查询表达式
         /// </summary>
+        [Obsolete("使用 IFilterService 服务代替，此类将在1.0版本中移除")]
         public static Expression<Func<TEntity, bool>> ToExpression<TEntity>(this FilterRule rule)
         {
             return FilterHelper.GetExpression<TEntity>(rule);

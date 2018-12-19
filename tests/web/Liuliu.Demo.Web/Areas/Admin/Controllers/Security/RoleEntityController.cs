@@ -20,6 +20,7 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -39,10 +40,13 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class RoleEntityController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly IFilterService _filterService;
 
-        public RoleEntityController(SecurityManager securityManager)
+        public RoleEntityController(SecurityManager securityManager,
+            IFilterService filterService)
         {
             _securityManager = securityManager;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<EntityRoleOutputDto> Read(PageRequest request)
         {
-            Expression<Func<EntityRole, bool>> predicate = FilterHelper.GetExpression<EntityRole>(request.FilterGroup);
+            Expression<Func<EntityRole, bool>> predicate = _filterService.GetExpression<EntityRole>(request.FilterGroup);
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[]
@@ -66,9 +70,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     new SortCondition("Operation")
                 };
             }
-            RoleManager<Role> roleManager = ServiceLocator.Instance.GetService<RoleManager<Role>>();
-            Func<EntityRole, bool> updateFunc = FilterHelper.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
-            Func<EntityRole, bool> deleteFunc = FilterHelper.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
+            RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
+            Func<EntityRole, bool> updateFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
+            Func<EntityRole, bool> deleteFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
             var page = _securityManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
                 m => new

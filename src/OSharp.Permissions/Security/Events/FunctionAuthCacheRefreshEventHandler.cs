@@ -11,6 +11,7 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Secutiry;
@@ -39,7 +40,7 @@ namespace OSharp.Security.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(FunctionAuthCacheRefreshEventData eventData)
         {
-            if (!ServiceLocator.InScoped())
+            if (!_provider.InHttpRequest())
             {
                 return;
             }

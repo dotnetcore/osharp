@@ -37,10 +37,13 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class EntityInfoController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly IFilterService _filterService;
 
-        public EntityInfoController(SecurityManager securityManager)
+        public EntityInfoController(SecurityManager securityManager,
+            IFilterService filterService)
         {
             _securityManager = securityManager;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
-            Expression<Func<EntityInfo, bool>> predicate = FilterHelper.GetExpression<EntityInfo>(request.FilterGroup);
+            Expression<Func<EntityInfo, bool>> predicate = _filterService.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }

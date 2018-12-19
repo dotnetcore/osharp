@@ -19,14 +19,17 @@ namespace OSharp.EventBuses.Internal
     /// </summary>
     internal class IocEventHandlerFactory : IEventHandlerFactory
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly Type _handlerType;
 
         /// <summary>
         /// 初始化一个<see cref="IocEventHandlerFactory"/>类型的新实例
         /// </summary>
+        /// <param name="serviceProvider">服务解析器</param>
         /// <param name="handlerType">事件处理器类型</param>
-        public IocEventHandlerFactory(Type handlerType)
+        public IocEventHandlerFactory(IServiceProvider serviceProvider, Type handlerType)
         {
+            _serviceProvider = serviceProvider;
             _handlerType = handlerType;
         }
 
@@ -36,7 +39,7 @@ namespace OSharp.EventBuses.Internal
         /// <returns></returns>
         public IEventHandler GetHandler()
         {
-            return ServiceLocator.Instance.GetService(_handlerType) as IEventHandler;
+            return _serviceProvider.GetService(_handlerType) as IEventHandler;
         }
 
         /// <summary>

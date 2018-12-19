@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -23,7 +22,7 @@ using OSharp.Entity;
 namespace OSharp.AspNetCore.Mvc.Filters
 {
     /// <summary>
-    /// 自动事务提交过滤器，在<see cref="OnActionExecuted"/>方法中执行<see cref="IUnitOfWork.Commit()"/>进行事务提交
+    /// 自动事务提交过滤器，在<see cref="OnResultExecuted"/>方法中执行<see cref="IUnitOfWork.Commit()"/>进行事务提交
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class UnitOfWorkAttribute : ActionFilterAttribute
@@ -33,12 +32,15 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkAttribute"/>类型的新实例
         /// </summary>
-        public UnitOfWorkAttribute()
+        public UnitOfWorkAttribute(IServiceProvider serviceProvider)
         {
-            _unitOfWorkManager = ServiceLocator.Instance.GetService<IUnitOfWorkManager>();
+            _unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 重写方法，实现事务自动提交功能
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnResultExecuted(ResultExecutedContext context)
         {
             ScopedDictionary dict = context.HttpContext.RequestServices.GetService<ScopedDictionary>();
@@ -55,7 +57,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                         _unitOfWorkManager?.Commit();
                     }
                 }
-                
+
             }
             else if (context.Result is ObjectResult result2)
             {
