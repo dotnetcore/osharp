@@ -46,6 +46,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class UserController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
+        private readonly CacheService _cacheService;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
 
@@ -53,12 +54,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             UserManager<User> userManager,
             SecurityManager securityManager,
             IIdentityContract identityContract,
-            ILoggerFactory loggerFactory
+            ILoggerFactory loggerFactory,
+            CacheService cacheService
         )
         {
             _userManager = userManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
+            _cacheService = cacheService;
         }
 
         /// <summary>
@@ -73,7 +76,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> predicate = request.FilterGroup.ToExpression<User>();
-            var page = _userManager.Users.ToPageCache<User, UserOutputDto>(predicate, request.PageCondition, function);
+            var page = _cacheService.ToPageCache<User, UserOutputDto>(_userManager.Users, predicate, request.PageCondition, function);
             return page.ToPageData();
         }
 
@@ -89,7 +92,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Check.NotNull(group, nameof(group));
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> exp = group.ToExpression<User>();
-            ListNode[] nodes = _userManager.Users.ToCacheArray<User, ListNode>(exp, m => new ListNode()
+            ListNode[] nodes = _cacheService.ToCacheArray<User, ListNode>(_userManager.Users, exp, m => new ListNode()
             {
                 Id = m.Id,
                 Name = m.NickName

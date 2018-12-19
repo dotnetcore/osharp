@@ -12,6 +12,7 @@ using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
+using OSharp.Caching;
 using OSharp.Core.Options;
 using OSharp.Entity;
 using OSharp.Entity.Infrastructure;
@@ -43,6 +44,8 @@ namespace OSharp.Core.Packs
             services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
             services.AddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
             services.AddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
+
+            services.AddSingleton<ICacheService, CacheService>();
 
             return services;
         }

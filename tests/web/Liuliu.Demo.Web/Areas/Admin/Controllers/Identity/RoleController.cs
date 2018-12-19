@@ -44,16 +44,19 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class RoleController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
+        private readonly ICacheService _cacheService;
         private readonly RoleManager<Role> _roleManager;
         private readonly SecurityManager _securityManager;
 
         public RoleController(RoleManager<Role> roleManager,
             SecurityManager securityManager,
-            IIdentityContract identityContract)
+            IIdentityContract identityContract,
+            ICacheService cacheService)
         {
             _roleManager = roleManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
+            _cacheService = cacheService;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
 
             Expression<Func<Role, bool>> predicate = request.FilterGroup.ToExpression<Role>();
-            var page = _roleManager.Roles.ToPageCache<Role, RoleOutputDto>(predicate, request.PageCondition, function);
+            var page = _cacheService.ToPageCache<Role, RoleOutputDto>(_roleManager.Roles, predicate, request.PageCondition, function);
 
             return page.ToPageData();
         }
@@ -85,7 +88,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<Role, bool>> exp = m => !m.IsLocked;
 
-            RoleNode[] nodes = _roleManager.Roles.ToCacheArray(exp, m => new RoleNode()
+            RoleNode[] nodes = _cacheService.ToCacheArray(_roleManager.Roles, exp, m => new RoleNode()
             {
                 RoleId = m.Id,
                 RoleName = m.Name

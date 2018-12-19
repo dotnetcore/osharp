@@ -42,6 +42,7 @@ namespace OSharp.AspNetCore
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
+            services.AddSingleton<IVerifyCodeService, VerifyCodeService>();
             services.AddScoped<UnitOfWorkAttribute>();
 
             return services;

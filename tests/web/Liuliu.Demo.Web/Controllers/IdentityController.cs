@@ -46,15 +46,18 @@ namespace Liuliu.Demo.Web.Controllers
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;
+        private readonly IVerifyCodeService _verifyCodeService;
         private readonly UserManager<User> _userManager;
 
         public IdentityController(IIdentityContract identityContract,
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IVerifyCodeService verifyCodeService)
         {
             _identityContract = identityContract;
             _userManager = userManager;
             _signInManager = signInManager;
+            _verifyCodeService = verifyCodeService;
         }
 
         /// <summary>
@@ -122,7 +125,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -357,7 +360,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -422,7 +425,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }

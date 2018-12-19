@@ -31,14 +31,16 @@ namespace OSharp.Core.Functions
     public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly List<TFunction> _functions = new List<TFunction>();
 
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
         /// </summary>
-        protected FunctionHandlerBase()
+        protected FunctionHandlerBase(IServiceProvider serviceProvider)
         {
-            Logger = ServiceLocator.Instance.GetLogger(GetType());
+            _serviceProvider = serviceProvider;
+            Logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace OSharp.Core.Functions
             TFunction[] functions = GetFunctions(functionTypes);
             Logger.LogInformation($"功能信息初始化，共找到{functions.Length}个功能信息");
 
-            ServiceLocator.Instance.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, functions);
             });
@@ -99,7 +101,7 @@ namespace OSharp.Core.Functions
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 _functions.Clear();
                 _functions.AddRange(GetFromDatabase(provider));

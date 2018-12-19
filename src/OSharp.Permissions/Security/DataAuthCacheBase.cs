@@ -35,16 +35,18 @@ namespace OSharp.Security
         where TEntityInfo : class, IEntityInfo
         where TRoleKey : IEquatable<TRoleKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
         private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="DataAuthCacheBase{TEntityRole, TRole, TEntityInfo, TRoleKey}"/>类型的新实例
         /// </summary>
-        protected DataAuthCacheBase()
+        protected DataAuthCacheBase(IServiceProvider serviceProvider)
         {
-            _cache = ServiceLocator.Instance.GetService<IDistributedCache>();
-            _logger = ServiceLocator.Instance.GetLogger(GetType());
+            _serviceProvider = serviceProvider;
+            _cache = serviceProvider.GetService<IDistributedCache>();
+            _logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace OSharp.Security
         /// </summary>
         public void BuildCaches()
         {
-            var entityRoles = ServiceLocator.Instance.ExecuteScopedWork(provider =>
+            var entityRoles = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TEntityRole, Guid> entityRoleRepository = provider.GetService<IRepository<TEntityRole, Guid>>();
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();

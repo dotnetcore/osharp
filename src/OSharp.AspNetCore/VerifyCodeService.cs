@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="VerifyCodeHandler.cs" company="OSharp开源团队">
+//  <copyright file="VerifyCodeService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-04-29 3:45</last-date>
+//  <last-date>2018-12-19 17:22</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,19 +15,26 @@ using System.IO;
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Extensions;
 
 
 namespace OSharp.AspNetCore
 {
     /// <summary>
-    /// 验证码处理类
+    /// 验证码处理服务
     /// </summary>
-    [Obsolete("使用IVerifyCodeService注入服务代替，此类将在1.0版本中移除")]
-    public static class VerifyCodeHandler
+    public class VerifyCodeService : IVerifyCodeService
     {
         private const string Separator = "#$#";
+        private readonly IDistributedCache _cache;
+
+        /// <summary>
+        /// 初始化一个<see cref="VerifyCodeService"/>类型的新实例
+        /// </summary>
+        public VerifyCodeService(IDistributedCache cache)
+        {
+            _cache = cache;
+        }
 
         /// <summary>
         /// 校验验证码有效性
@@ -36,38 +43,38 @@ namespace OSharp.AspNetCore
         /// <param name="id">验证码编号</param>
         /// <param name="removeIfSuccess">验证成功时是否移除</param>
         /// <returns></returns>
-        public static bool CheckCode(string code, string id, bool removeIfSuccess = true)
+        public bool CheckCode(string code, string id, bool removeIfSuccess = true)
         {
             if (string.IsNullOrEmpty(code))
             {
                 return false;
             }
+
             string key = $"{OsharpConstants.VerifyCodeKeyPrefix}_{id}";
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
-            bool flag = code.Equals(cache.GetString(key), StringComparison.OrdinalIgnoreCase);
+            bool flag = code.Equals(_cache.GetString(key), StringComparison.OrdinalIgnoreCase);
             if (removeIfSuccess && flag)
             {
-                cache.Remove(key);
+                _cache.Remove(key);
             }
+
             return flag;
         }
 
         /// <summary>
         /// 设置验证码到Session中
         /// </summary>
-        public static void SetCode(string code, out string id)
+        public void SetCode(string code, out string id)
         {
             id = Guid.NewGuid().ToString("N");
             string key = $"{OsharpConstants.VerifyCodeKeyPrefix}_{id}";
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             const int seconds = 60 * 3;
-            cache.SetString(key, code, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds) });
+            _cache.SetString(key, code, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds) });
         }
 
         /// <summary>
         /// 将图片序列化成字符串
         /// </summary>
-        public static string GetImageString(Image image, string id)
+        public string GetImageString(Image image, string id)
         {
             Check.NotNull(image, nameof(image));
             using (MemoryStream ms = new MemoryStream())

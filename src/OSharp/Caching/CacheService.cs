@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="DistributedCacheExtensions.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="CacheService.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-17 16:45</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2018-12-19 19:10</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -12,274 +12,82 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Json;
-using OSharp.Properties;
 using OSharp.Reflection;
 
 
 namespace OSharp.Caching
 {
     /// <summary>
-    /// <see cref="IDistributedCache"/>扩展方法
+    /// 缓存服务实现
     /// </summary>
-    public static class DistributedCacheExtensions
+    public class CacheService : ICacheService
     {
-        /// <summary>
-        /// 将对象存入缓存中
-        /// </summary>
-        public static void Set(this IDistributedCache cache, string key, object value, DistributedCacheEntryOptions options = null)
-        {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-            
-            string json = value.ToJsonString();
-            if (options == null)
-            {
-                cache.SetString(key, json);
-            }
-            else
-            {
-                cache.SetString(key, json, options);
-            }
-        }
+        private readonly IDistributedCache _cache;
 
         /// <summary>
-        /// 异步将对象存入缓存中
+        /// 初始化一个<see cref="CacheService"/>类型的新实例
         /// </summary>
-        public static async Task SetAsync(this IDistributedCache cache, string key, object value, DistributedCacheEntryOptions options = null)
+        public CacheService(IDistributedCache cache)
         {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-
-            string json = value.ToJsonString();
-            if (options == null)
-            {
-                await cache.SetStringAsync(key, json);
-            }
-            else
-            {
-                await cache.SetStringAsync(key, json, options);
-            }
+            _cache = cache;
         }
 
-        /// <summary>
-        /// 将对象存入缓存中，使用指定时长
-        /// </summary>
-        public static void Set(this IDistributedCache cache, string key, object value, int cacheSeconds)
-        {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
-
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            cache.Set(key, value, options);
-        }
-
-        /// <summary>
-        /// 异步将对象存入缓存中，使用指定时长
-        /// </summary>
-        public static Task SetAsync(this IDistributedCache cache, string key, object value, int cacheSeconds)
-        {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
-
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            return cache.SetAsync(key, value, options);
-        }
-
-        /// <summary>
-        /// 将对象存入缓存中，使用功能配置
-        /// </summary>
-        public static void Set(this IDistributedCache cache, string key, object value, IFunction function)
-        {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-            Check.NotNull(function, nameof(function));
-
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
-            if (options == null)
-            {
-                return;
-            }
-            cache.Set(key, value, options);
-        }
-
-        /// <summary>
-        /// 异步将对象存入缓存中，使用功能配置
-        /// </summary>
-        public static Task SetAsync(this IDistributedCache cache, string key, object value, IFunction function)
-        {
-            Check.NotNullOrEmpty(key, nameof(key));
-            Check.NotNull(value, nameof(value));
-            Check.NotNull(function, nameof(function));
-            
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
-            if (options == null)
-            {
-                return Task.FromResult(0);
-            }
-            return cache.SetAsync(key, value, options);
-        }
-
-        /// <summary>
-        /// 获取指定键的缓存项
-        /// </summary>
-        public static TResult Get<TResult>(this IDistributedCache cache, string key)
-        {
-            string json = cache.GetString(key);
-            if (json == null)
-            {
-                return default(TResult);
-            }
-            return json.FromJsonString<TResult>();
-        }
-
-        /// <summary>
-        /// 异步获取指定键的缓存项
-        /// </summary>
-        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key)
-        {
-            string json = await cache.GetStringAsync(key);
-            if (json == null)
-            {
-                return default(TResult);
-            }
-            return json.FromJsonString<TResult>();
-        }
-
-        /// <summary>
-        /// 获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, DistributedCacheEntryOptions options = null)
-        {
-            TResult result = cache.Get<TResult>(key);
-            if (!Equals(result, default(TResult)))
-            {
-                return result;
-            }
-            result = getFunc();
-            if (Equals(result, default(TResult)))
-            {
-                return default(TResult);
-            }
-            cache.Set(key, result, options);
-            return result;
-        }
-
-        /// <summary>
-        /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, DistributedCacheEntryOptions options = null)
-        {
-            TResult result = await cache.GetAsync<TResult>(key);
-            if (!Equals(result, default(TResult)))
-            {
-                return result;
-            }
-            result = await getAsyncFunc();
-            if (Equals(result, default(TResult)))
-            {
-                return default(TResult);
-            }
-            await cache.SetAsync(key, result, options);
-            return result;
-        }
-
-        /// <summary>
-        /// 获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, int cacheSeconds)
-        {
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
-            
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            return cache.Get<TResult>(key, getFunc, options);
-        }
-
-        /// <summary>
-        /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, int cacheSeconds)
-        {
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
-
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            return cache.GetAsync<TResult>(key, getAsyncFunc, options);
-        }
-
-        /// <summary>
-        /// 获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, IFunction function)
-        {
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
-            if (options == null)
-            {
-                return getFunc();
-            }
-            return cache.Get<TResult>(key, getFunc, options);
-        }
-
-        /// <summary>
-        /// 获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
-        /// </summary>
-        public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, IFunction function)
-        {
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
-            if (options == null)
-            {
-                return getAsyncFunc();
-            }
-            return cache.GetAsync<TResult>(key, getAsyncFunc, options);
-        }
+        #region Implementation of ICacheService
 
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
         /// </summary>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
-            Expression<Func<TEntity, bool>> pridicate,
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="pridicate">数据筛选表达式</param>
+        /// <param name="pageCondition">分页条件</param>
+        /// <param name="selector">数据投影表达式</param>
+        /// <param name="cacheSeconds">缓存时间</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public virtual PageResult<TResult> ToPageCache<TSource, TResult>(IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> pridicate,
             PageCondition pageCondition,
-            Expression<Func<TEntity, TResult>> selector,
+            Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, pridicate, pageCondition, selector, keyParams);
-            return cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), cacheSeconds);
+            return _cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), cacheSeconds);
         }
 
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
         /// </summary>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
-            Expression<Func<TEntity, bool>> pridicate,
+        /// <typeparam name="TSource">数据源的项数据类型</typeparam>
+        /// <typeparam name="TResult">结果集的项数据类型</typeparam>
+        /// <param name="source">数据源</param>
+        /// <param name="pridicate">数据筛选表达式</param>
+        /// <param name="pageCondition">分页条件</param>
+        /// <param name="selector">数据投影表达式</param>
+        /// <param name="function">当前功能信息</param>
+        /// <param name="keyParams">缓存键参数</param>
+        /// <returns></returns>
+        public virtual PageResult<TResult> ToPageCache<TSource, TResult>(IQueryable<TSource> source,
+            Expression<Func<TSource, bool>> pridicate,
             PageCondition pageCondition,
-            Expression<Func<TEntity, TResult>> selector,
+            Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, pridicate, pageCondition, selector, keyParams);
-            return cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), function);
+            return _cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), function);
         }
 
         /// <summary>
@@ -293,14 +101,13 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual List<TResult> ToCacheList<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheList(selector, cacheSeconds, keyParams);
+            return ToCacheList(source.Where(predicate), selector, cacheSeconds, keyParams);
         }
 
         /// <summary>
@@ -314,14 +121,13 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual TResult[] ToCacheArray<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheArray(selector, cacheSeconds, keyParams);
+            return ToCacheArray(source.Where(predicate), selector, cacheSeconds, keyParams);
         }
 
         /// <summary>
@@ -335,14 +141,13 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual List<TResult> ToCacheList<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheList(selector, function, keyParams);
+            return ToCacheList(source.Where(predicate), selector, function, keyParams);
         }
 
         /// <summary>
@@ -356,14 +161,13 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual TResult[] ToCacheArray<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheArray(selector, function, keyParams);
+            return ToCacheArray(source.Where(predicate), selector, function, keyParams);
         }
 
         /// <summary>
@@ -376,15 +180,13 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual List<TResult> ToCacheList<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, selector, keyParams);
-            return cache.Get(key, () => source.Select(selector).ToList(), cacheSeconds);
+            return _cache.Get(key, () => source.Select(selector).ToList(), cacheSeconds);
         }
 
         /// <summary>
@@ -397,15 +199,13 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual TResult[] ToCacheArray<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, selector, keyParams);
-            return cache.Get(key, () => source.Select(selector).ToArray(), cacheSeconds);
+            return _cache.Get(key, () => source.Select(selector).ToArray(), cacheSeconds);
         }
 
         /// <summary>
@@ -418,15 +218,13 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual List<TResult> ToCacheList<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, selector, keyParams);
-            return cache.Get(key, () => source.Select(selector).ToList(), function);
+            return _cache.Get(key, () => source.Select(selector).ToList(), function);
         }
 
         /// <summary>
@@ -439,15 +237,13 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
+        public virtual TResult[] ToCacheArray<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source, selector, keyParams);
-            return cache.Get(key, () => source.Select(selector).ToArray(), function);
+            return _cache.Get(key, () => source.Select(selector).ToArray(), function);
         }
 
         /// <summary>
@@ -458,12 +254,10 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
+        public virtual List<TSource> ToCacheList<TSource>(IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source.Expression, keyParams);
-            return cache.Get(key, source.ToList, cacheSeconds);
+            return _cache.Get(key, source.ToList, cacheSeconds);
         }
 
         /// <summary>
@@ -474,12 +268,10 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
+        public virtual TSource[] ToCacheArray<TSource>(IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey(source.Expression, keyParams);
-            return cache.Get(key, source.ToArray, cacheSeconds);
+            return _cache.Get(key, source.ToArray, cacheSeconds);
         }
 
         /// <summary>
@@ -490,16 +282,15 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
+        public virtual List<TSource> ToCacheList<TSource>(IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
             {
                 return source.ToList();
             }
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
+
             string key = GetKey(source.Expression, keyParams);
-            return cache.Get(key, source.ToList, function);
+            return _cache.Get(key, source.ToList, function);
         }
 
         /// <summary>
@@ -510,19 +301,16 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
+        public virtual TSource[] ToCacheArray<TSource>(IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
             {
                 return source.ToArray();
             }
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
+
             string key = GetKey(source.Expression, keyParams);
-            return cache.Get(key, source.ToArray, function);
+            return _cache.Get(key, source.ToArray, function);
         }
-
-        #region OutputDto
 
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
@@ -535,16 +323,14 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(this IQueryable<TEntity> source,
+        public virtual PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
-            int cacheSeconds = 60, params object[] keyParams)
-            where TOutputDto : IOutputDto
+            int cacheSeconds = 60,
+            params object[] keyParams) where TOutputDto : IOutputDto
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TEntity, TOutputDto>(source, predicate, pageCondition, keyParams);
-            return cache.Get(key, () => source.ToPage<TEntity, TOutputDto>(predicate, pageCondition), cacheSeconds);
+            return _cache.Get(key, () => source.ToPage<TEntity, TOutputDto>(predicate, pageCondition), cacheSeconds);
         }
 
         /// <summary>
@@ -558,16 +344,14 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(this IQueryable<TEntity> source,
+        public virtual PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
-            IFunction function, params object[] keyParams)
-            where TOutputDto : IOutputDto
+            IFunction function,
+            params object[] keyParams) where TOutputDto : IOutputDto
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TEntity, TOutputDto>(source, predicate, pageCondition, keyParams);
-            return cache.Get(key, () => source.ToPage<TEntity, TOutputDto>(predicate, pageCondition), function);
+            return _cache.Get(key, () => source.ToPage<TEntity, TOutputDto>(predicate, pageCondition), function);
         }
 
         /// <summary>
@@ -580,13 +364,12 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
+        public virtual List<TOutputDto> ToCacheList<TSource, TOutputDto>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheList<TSource, TOutputDto>(cacheSeconds, keyParams);
+            return ToCacheList<TSource, TOutputDto>(source.Where(predicate), cacheSeconds, keyParams);
         }
 
         /// <summary>
@@ -599,13 +382,12 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
+        public virtual TOutputDto[] ToCacheArray<TSource, TOutputDto>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheArray<TSource, TOutputDto>(cacheSeconds, keyParams);
+            return ToCacheArray<TSource, TOutputDto>(source.Where(predicate), cacheSeconds, keyParams);
         }
 
         /// <summary>
@@ -618,13 +400,12 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
+        public virtual List<TOutputDto> ToCacheList<TSource, TOutputDto>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             IFunction function,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheList<TSource, TOutputDto>(function, keyParams);
+            return ToCacheList<TSource, TOutputDto>(source.Where(predicate), function, keyParams);
         }
 
         /// <summary>
@@ -637,13 +418,12 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
+        public virtual TOutputDto[] ToCacheArray<TSource, TOutputDto>(IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             IFunction function,
             params object[] keyParams)
         {
-            return source.Where(predicate).ToCacheArray<TSource, TOutputDto>(function, keyParams);
+            return ToCacheArray<TSource, TOutputDto>(source.Where(predicate), function, keyParams);
         }
 
         /// <summary>
@@ -655,14 +435,10 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
-            int cacheSeconds = 60,
-            params object[] keyParams)
+        public virtual List<TOutputDto> ToCacheList<TSource, TOutputDto>(IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), cacheSeconds);
+            return _cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), cacheSeconds);
         }
 
         /// <summary>
@@ -674,14 +450,10 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
-            int cacheSeconds = 60,
-            params object[] keyParams)
+        public virtual TOutputDto[] ToCacheArray<TSource, TOutputDto>(IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), cacheSeconds);
+            return _cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), cacheSeconds);
         }
 
         /// <summary>
@@ -693,14 +465,10 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
-            IFunction function,
-            params object[] keyParams)
+        public virtual List<TOutputDto> ToCacheList<TSource, TOutputDto>(IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), function);
+            return _cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToList(), function);
         }
 
         /// <summary>
@@ -712,44 +480,21 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
-        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
-        public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
-            IFunction function,
-            params object[] keyParams)
+        public virtual TOutputDto[] ToCacheArray<TSource, TOutputDto>(IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
-            IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
             string key = GetKey<TSource, TOutputDto>(source, keyParams);
-            return cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), function);
+            return _cache.Get(key, () => source.ToOutput<TSource, TOutputDto>().ToArray(), function);
         }
 
         #endregion
 
-        /// <summary>
-        /// 将<see cref="IFunction"/>的缓存配置转换为<see cref="DistributedCacheEntryOptions"/>
-        /// </summary>
-        public static DistributedCacheEntryOptions ToCacheOptions(this IFunction function)
-        {
-            Check.NotNull(function, nameof(function));
-            if (function.CacheExpirationSeconds == 0)
-            {
-                return null;
-            }
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            if (!function.IsCacheSliding)
-            {
-                options.SetAbsoluteExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            else
-            {
-                options.SetSlidingExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            return options;
-        }
+        #region 私有方法
 
         private static string GetKey<TEntity, TResult>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
-            Expression<Func<TEntity, TResult>> selector, params object[] keyParams)
+            Expression<Func<TEntity, TResult>> selector,
+            params object[] keyParams)
         {
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
@@ -779,8 +524,10 @@ namespace OSharp.Caching
                         : CollectionPropertySorter<TEntity>.ThenBy(orderSource, sortCondition.SortField, sortCondition.ListSortDirection);
                     count++;
                 }
+
                 source = orderSource;
             }
+
             int pageIndex = pageCondition.PageIndex, pageSize = pageCondition.PageSize;
             source = source != null
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
@@ -823,8 +570,10 @@ namespace OSharp.Caching
                         : CollectionPropertySorter<TEntity>.ThenBy(orderSource, sortCondition.SortField, sortCondition.ListSortDirection);
                     count++;
                 }
+
                 source = orderSource;
             }
+
             int pageIndex = pageCondition.PageIndex, pageSize = pageCondition.PageSize;
             source = source != null
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
@@ -859,7 +608,10 @@ namespace OSharp.Caching
             {
                 key = new StringCacheKeyGenerator().GetKey(keyParams);
             }
+
             return key.ToMd5Hash();
         }
+
+        #endregion
     }
 }

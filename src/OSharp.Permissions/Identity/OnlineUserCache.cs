@@ -35,14 +35,16 @@ namespace OSharp.Identity
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
 
         /// <summary>
         /// 初始化一个<see cref="OnlineUserCache{TUser, TUserKey, TRole, TRoleKey}"/>类型的新实例
         /// </summary>
-        public OnlineUserCache(IDistributedCache cache)
+        public OnlineUserCache(IServiceProvider serviceProvider)
         {
-            _cache = cache;
+            _serviceProvider = serviceProvider;
+            _cache = serviceProvider.GetService<IDistributedCache>();
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace OSharp.Identity
             return _cache.Get<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExecuteScopedWork<OnlineUser>(provider =>
+                    return _serviceProvider.ExecuteScopedWork<OnlineUser>(provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
                         return onlineUserProvider.Create(provider, userName).Result;
@@ -82,7 +84,7 @@ namespace OSharp.Identity
             return await _cache.GetAsync<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExecuteScopedWorkAsync<OnlineUser>(async provider =>
+                    return _serviceProvider.ExecuteScopedWorkAsync<OnlineUser>(async provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
                         return await onlineUserProvider.Create(provider, userName);

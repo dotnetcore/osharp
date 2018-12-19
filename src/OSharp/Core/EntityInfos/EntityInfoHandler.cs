@@ -7,7 +7,7 @@
 //  <last-date>2017-09-14 18:27</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.Extensions.Logging;
+using System;
 
 
 namespace OSharp.Core.EntityInfos
@@ -20,8 +20,8 @@ namespace OSharp.Core.EntityInfos
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
-        public EntityInfoHandler(ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public EntityInfoHandler(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         { }
     }
 }
