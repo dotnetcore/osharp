@@ -25,16 +25,8 @@ namespace OSharp.AspNetCore.Mvc
     public abstract class ApiController : Controller
     {
         /// <summary>
-        /// 初始化一个<see cref="ApiController"/>类型的新实例
-        /// </summary>
-        protected ApiController()
-        {
-            Logger = HttpContext.RequestServices.GetLogger(GetType());
-        }
-
-        /// <summary>
         /// 获取或设置 日志对象
         /// </summary>
-        protected ILogger Logger { get; }
+        protected ILogger Logger => HttpContext.RequestServices.GetLogger(GetType());
     }
 }

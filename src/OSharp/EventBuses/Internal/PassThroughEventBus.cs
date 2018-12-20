@@ -9,7 +9,7 @@
 
 using System;
 
-using Microsoft.Extensions.Logging;
+using OSharp.Dependency;
 
 
 namespace OSharp.EventBuses.Internal
@@ -22,8 +22,8 @@ namespace OSharp.EventBuses.Internal
         /// <summary>
         /// 初始化一个<see cref="PassThroughEventBus"/>类型的新实例
         /// </summary>
-        public PassThroughEventBus(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        public PassThroughEventBus(IHybridServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
+            : base(serviceScopeFactory, serviceProvider)
         { }
     }
 }

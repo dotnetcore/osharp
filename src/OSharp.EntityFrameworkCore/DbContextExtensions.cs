@@ -60,12 +60,9 @@ namespace OSharp.Entity
             if (migrations.Length > 0)
             {
                 dbContext.Database.Migrate();
-                if (ServiceLocator.InScoped())
-                {
-                    LoggerFactory loggerFactory = dbContext.GetService<LoggerFactory>();
-                    ILogger logger = loggerFactory.CreateLogger("OSharp.Entity.DbContextExtensions");
-                    logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
-                }
+                ILoggerFactory loggerFactory = dbContext.GetService<ILoggerFactory>();
+                ILogger logger = loggerFactory.CreateLogger("OSharp.Entity.DbContextExtensions");
+                logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
             }
         }
 

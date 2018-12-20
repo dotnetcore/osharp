@@ -113,7 +113,7 @@ namespace OSharp.Core.Options
                     ConnectionString = connectionString,
                     DatabaseType = DatabaseType.SqlServer
                 };
-                options.DbContextOptionses.Add("DefaultDbContext", dbContextOptions);
+                options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;
             }
             var repeated = dict.Values.GroupBy(m => m.DbContextType).FirstOrDefault(m => m.Count() > 1);
@@ -124,7 +124,7 @@ namespace OSharp.Core.Options
 
             foreach (KeyValuePair<string, OSharpDbContextOptions> pair in dict)
             {
-                options.DbContextOptionses.Add(pair.Key, pair.Value);
+                options.DbContexts.Add(pair.Key, pair.Value);
             }
         }
     }

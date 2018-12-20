@@ -10,6 +10,7 @@
 using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
@@ -42,6 +43,7 @@ namespace OSharp.AspNetCore
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
+            services.Replace(new ServiceDescriptor(typeof(IHybridServiceScopeFactory), typeof(HttpContextServiceScopeFactory), ServiceLifetime.Singleton));
             services.AddSingleton<IVerifyCodeService, VerifyCodeService>();
             services.AddScoped<UnitOfWorkAttribute>();
 

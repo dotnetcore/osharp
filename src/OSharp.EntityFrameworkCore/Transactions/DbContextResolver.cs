@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
@@ -50,12 +51,14 @@ namespace OSharp.Entity
                 throw new OsharpException($"无法解析类型为“{resolveOptions.DatabaseType}”的 {typeof(IDbContextOptionsBuilderCreator).FullName} 实例");
             }
             DbContextOptionsBuilder optionsBuilder = builderCreator.Create(resolveOptions.ConnectionString, resolveOptions.ExistingConnection);
+
             DbContextModelCache modelCache = _serviceProvider.GetService<DbContextModelCache>();
             IModel model = modelCache.Get(dbContextType);
             if (model != null)
             {
                 optionsBuilder.UseModel(model);
             }
+
             DbContextOptions options = optionsBuilder.Options;
 
             //创建上下文实例

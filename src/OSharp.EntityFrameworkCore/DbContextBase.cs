@@ -42,12 +42,9 @@ namespace OSharp.Entity
             : base(options)
         {
             _typeFinder = typeFinder;
-            if (ServiceLocator.InScoped())
-            {
-                IOptions<OSharpOptions> osharpOptions = this.GetService<IOptions<OSharpOptions>>();
-                _osharpDbOptions = osharpOptions?.Value.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == GetType());
-                _logger = this.GetService<LoggerFactory>().CreateLogger(GetType());
-            }
+            IOptions<OSharpOptions> osharpOptions = this.GetService<IOptions<OSharpOptions>>();
+            _osharpDbOptions = osharpOptions?.Value.DbContexts.Values.FirstOrDefault(m => m.DbContextType == GetType());
+            _logger = this.GetService<ILoggerFactory>().CreateLogger(GetType());
         }
 
         /// <summary>
