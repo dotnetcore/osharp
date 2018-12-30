@@ -22,26 +22,23 @@ namespace OSharp.Dependency
     /// <summary>
     /// <see cref="ServiceLifetime.Scoped"/>生命周期类型的服务映射查找器
     /// </summary>
-    public class ScopedDependencyTypeFinder : FinderBase<Type>, ITypeFinder
+    public class ScopedDependencyTypeFinder : FinderBase<Type>, IScopedDependencyTypeFinder
     {
+        private readonly IAllAssemblyFinder _allAssemblyFinder;
+
         /// <summary>
         /// 初始化一个<see cref="ScopedDependencyTypeFinder"/>类型的新实例
         /// </summary>
-        public ScopedDependencyTypeFinder()
+        public ScopedDependencyTypeFinder(IAllAssemblyFinder allAssemblyFinder)
         {
-            AllAssemblyFinder = Singleton<IAllAssemblyFinder>.Instance ?? new AppDomainAllAssemblyFinder();
+            _allAssemblyFinder = allAssemblyFinder;
         }
-
-        /// <summary>
-        /// 获取或设置 全部程序集查找器
-        /// </summary>
-        public IAllAssemblyFinder AllAssemblyFinder { get; set; }
 
         /// <inheritdoc />
         protected override Type[] FindAllItems()
         {
             Type baseType = typeof(IScopeDependency);
-            Type[] types = AllAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
+            Type[] types = _allAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
                 .ToArray();
             return types;

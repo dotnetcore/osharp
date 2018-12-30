@@ -14,8 +14,10 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Collections;
 using OSharp.Core.Builders;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Reflection;
 
 
@@ -26,18 +28,13 @@ namespace OSharp.Core.Packs
     /// </summary>
     public class OsharpPackManager : IOsharpPackManager
     {
-        private readonly IOsharpBuilder _builder;
         private readonly List<OsharpPack> _sourcePacks;
-        private readonly OsharpPackTypeFinder _typeFinder;
 
         /// <summary>
         /// 初始化一个<see cref="OsharpPackManager"/>类型的新实例
         /// </summary>
         public OsharpPackManager()
         {
-            _builder = Singleton<IOsharpBuilder>.Instance;
-            IAllAssemblyFinder allAssemblyFinder = Singleton<IAllAssemblyFinder>.Instance;
-            _typeFinder = new OsharpPackTypeFinder(allAssemblyFinder);
             _sourcePacks = new List<OsharpPack>();
             LoadedPacks = new List<OsharpPack>();
         }
@@ -59,21 +56,29 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public virtual IServiceCollection LoadPacks(IServiceCollection services)
         {
-            Type[] packTypes = _typeFinder.FindAll();
+            IServiceCollection services1 = services;
+            IOsharpPackTypeFinder packTypeFinder = services.GetOrAddSingletonInstance<IOsharpPackTypeFinder>(() =>
+            {
+                IAllAssemblyFinder allAssemblyFinder = services1.GetSingletonInstance<IAllAssemblyFinder>();
+                return new OsharpPackTypeFinder(allAssemblyFinder);
+            });
+            Type[] packTypes = packTypeFinder.FindAll();
             _sourcePacks.Clear();
             _sourcePacks.AddRange(packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)));
+
+            IOsharpBuilder builder = services.GetSingletonInstance<IOsharpBuilder>();
             List<OsharpPack> packs;
-            if (_builder.AddPacks.Any())
+            if (builder.AddPacks.Any())
             {
                 packs = _sourcePacks.Where(m => m.Level == PackLevel.Core)
-                    .Union(_sourcePacks.Where(m => _builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
+                    .Union(_sourcePacks.Where(m => builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
                 IEnumerable<Type> dependModuleTypes = packs.SelectMany(m => m.GetDependModuleTypes());
                 packs = packs.Union(_sourcePacks.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
             }
             else
             {
                 packs = _sourcePacks.ToList();
-                packs.RemoveAll(m => _builder.ExceptPacks.Contains(m.GetType()));
+                packs.RemoveAll(m => builder.ExceptPacks.Contains(m.GetType()));
             }
             packs = packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             LoadedPacks = packs;

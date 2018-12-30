@@ -7,6 +7,8 @@
 //  <last-date>2018-12-20 13:01</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Linq;
 
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -17,8 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
-using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Extensions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Hangfire
@@ -46,12 +49,21 @@ namespace OSharp.Hangfire
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = services.GetConfiguration();
             bool enabled = configuration["OSharp:Hangfire:Enabled"].CastTo(false);
-            if (enabled)
+            if (!enabled)
             {
-                services.AddHangfire(config => AddHangfireAction(config));
+                return services;
             }
+
+            IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
+            services.GetOrAddSingletonInstance<IFireAndForgetJobFinder>(() => new FireAndForgetJobFinder(allAssemblyFinder));
+            services.GetOrAddSingletonInstance<IDelayedJobFinder>(() => new DelayedJobFinder(allAssemblyFinder));
+            services.GetOrAddSingletonInstance<IRecurringJobFinder>(() => new RecurringJobFinder(allAssemblyFinder));
+
+            AddJobServices(services);
+
+            services.AddHangfire(config => AddHangfireAction(config));
             return services;
         }
 
@@ -61,7 +73,7 @@ namespace OSharp.Hangfire
         /// <param name="app">Asp应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
             bool enabled = configuration["OSharp:Hangfire:Enabled"].CastTo(false);
             if (!enabled)
             {
@@ -75,12 +87,43 @@ namespace OSharp.Hangfire
             DashboardOptions dashboardOptions = GetDashboardOptions(configuration);
             app.UseHangfireDashboard(url, dashboardOptions);
 
+            ExecuteJobs(app.ApplicationServices);
+
             IsEnabled = true;
         }
 
         protected virtual void AddHangfireAction(IGlobalConfiguration config)
         {
             config.UseMemoryStorage();
+        }
+
+        protected virtual IServiceCollection AddJobServices(IServiceCollection services)
+        {
+            //Fire-and-forget jobs
+            IFireAndForgetJobFinder fireAndForgetJobFinder = services.GetSingletonInstance<IFireAndForgetJobFinder>();
+            Type[] fireAndForgetJobTypes = fireAndForgetJobFinder.FindAll();
+            foreach (Type type in fireAndForgetJobTypes)
+            {
+                services.AddSingleton(typeof(IFireAndForgetJob), type);
+            }
+
+            //Delayed jobs
+            IDelayedJobFinder delayedJobFinder = services.GetSingletonInstance<IDelayedJobFinder>();
+            Type[] delayedJobTypes = delayedJobFinder.FindAll();
+            foreach (Type type in delayedJobTypes)
+            {
+                services.AddSingleton(typeof(IDelayedJob), type);
+            }
+
+            //Recurring jobs
+            IRecurringJobFinder recurringJobFinder = services.GetSingletonInstance<IRecurringJobFinder>();
+            Type[] recurringJobTypes = recurringJobFinder.FindAll();
+            foreach (Type type in recurringJobTypes)
+            {
+                services.AddSingleton(typeof(IRecurringJob), type);
+            }
+
+            return services;
         }
 
         protected virtual BackgroundJobServerOptions GetBackgroundJobServerOptions(IConfiguration configuration)
@@ -104,6 +147,30 @@ namespace OSharp.Hangfire
                 dashboardOptions.Authorization = new[] { new RoleDashboardAuthorizationFilter(roles) };
             }
             return dashboardOptions;
+        }
+
+        protected virtual void ExecuteJobs(IServiceProvider serviceProvider)
+        {
+            //Fire-and-forget jobs
+            IFireAndForgetJob[] fireAndForgetJobs = serviceProvider.GetServices<IFireAndForgetJob>().ToArray();
+            foreach (IFireAndForgetJob job in fireAndForgetJobs)
+            {
+                job.Execute();
+            }
+
+            //Delayed jobs
+            IDelayedJob[] delayedJobs = serviceProvider.GetServices<IDelayedJob>().ToArray();
+            foreach (IDelayedJob job in delayedJobs)
+            {
+                job.Execute();
+            }
+
+            //Recurring jobs
+            IRecurringJob[] recurringJobs = serviceProvider.GetServices<IRecurringJob>().ToArray();
+            foreach (IRecurringJob job in recurringJobs)
+            {
+                job.Execute();
+            }
         }
     }
 }

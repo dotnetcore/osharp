@@ -22,26 +22,23 @@ namespace OSharp.Dependency
     /// <summary>
     /// <see cref="ServiceLifetime.Transient"/>生命周期类型的服务映射类型查找器
     /// </summary>
-    public class TransientDependencyTypeFinder : FinderBase<Type>, ITypeFinder
+    public class TransientDependencyTypeFinder : FinderBase<Type>, ITransientDependencyTypeFinder
     {
+        private readonly IAllAssemblyFinder _allAssemblyFinder;
+
         /// <summary>
         /// 初始化一个<see cref="TransientDependencyTypeFinder"/>类型的新实例
         /// </summary>
-        public TransientDependencyTypeFinder()
+        public TransientDependencyTypeFinder(IAllAssemblyFinder allAssemblyFinder)
         {
-            AllAssemblyFinder = Singleton<IAllAssemblyFinder>.Instance ?? new AppDomainAllAssemblyFinder();
+            _allAssemblyFinder = allAssemblyFinder;
         }
-
-        /// <summary>
-        /// 获取或设置 全部程序集查找器
-        /// </summary>
-        public IAllAssemblyFinder AllAssemblyFinder { get; set; }
 
         /// <inheritdoc />
         protected override Type[] FindAllItems()
         {
             Type baseType = typeof(ITransientDependency);
-            Type[] types = AllAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
+            Type[] types = _allAssemblyFinder.FindAll(fromCache: true).SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseType.IsAssignableFrom(type) && !type.HasAttribute<IgnoreDependencyAttribute>() && !type.IsAbstract && !type.IsInterface)
                 .ToArray();
             return types;

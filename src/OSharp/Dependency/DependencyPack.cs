@@ -27,14 +27,6 @@ namespace OSharp.Dependency
     public class DependencyPack : OsharpPack
     {
         /// <summary>
-        /// 初始化一个<see cref="DependencyPack"/>类型的新实例
-        /// </summary>
-        public DependencyPack()
-        {
-            ScanOptions = new ServiceScanOptions();
-        }
-
-        /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public override PackLevel Level => PackLevel.Core;
@@ -44,11 +36,6 @@ namespace OSharp.Dependency
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
         public override int Order => 1;
-
-        /// <summary>
-        /// 获取或设置 服务搜索选项
-        /// </summary>
-        protected virtual ServiceScanOptions ScanOptions { get; }
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -63,16 +50,23 @@ namespace OSharp.Dependency
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
             services.AddSingleton<IHybridServiceScopeFactory, DefaultServiceScopeFactory>();
 
+            IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
             //添加即时生命周期类型的服务
-            Type[] dependencyTypes = ScanOptions.TransientTypeFinder.FindAll();
+            ITransientDependencyTypeFinder transientDependencyTypeFinder =
+                services.GetOrAddSingletonInstance<ITransientDependencyTypeFinder>(() => new TransientDependencyTypeFinder(allAssemblyFinder));
+            Type[] dependencyTypes = transientDependencyTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Transient);
 
             //添加作用域生命周期类型的服务
-            dependencyTypes = ScanOptions.ScopedTypeFinder.FindAll();
+            IScopedDependencyTypeFinder scopedDependencyTypeFinder =
+                services.GetOrAddSingletonInstance<IScopedDependencyTypeFinder>(() => new ScopedDependencyTypeFinder(allAssemblyFinder));
+            dependencyTypes = scopedDependencyTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Scoped);
 
             //添加单例生命周期类型的服务
-            dependencyTypes = ScanOptions.SingletonTypeFinder.FindAll();
+            ISingletonDependencyTypeFinder singletonDependencyTypeFinder =
+                services.GetOrAddSingletonInstance<ISingletonDependencyTypeFinder>(() => new SingletonDependencyTypeFinder(allAssemblyFinder));
+            dependencyTypes = singletonDependencyTypeFinder.FindAll();
             AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Singleton);
 
             return services;

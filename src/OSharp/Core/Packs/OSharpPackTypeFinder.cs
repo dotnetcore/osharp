@@ -15,7 +15,7 @@ namespace OSharp.Core.Packs
     /// <summary>
     /// OSharp模块类型查找器
     /// </summary>
-    public class OsharpPackTypeFinder : BaseTypeFinderBase<OsharpPack>, ITypeFinder
+    public class OsharpPackTypeFinder : BaseTypeFinderBase<OsharpPack>, IOsharpPackTypeFinder
     {
         /// <summary>
         /// 初始化一个<see cref="OsharpPackTypeFinder"/>类型的新实例

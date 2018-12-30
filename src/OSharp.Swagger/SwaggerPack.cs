@@ -55,7 +55,7 @@ namespace OSharp.Swagger
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = services.GetConfiguration();
             _url = configuration["OSharp:Swagger:Url"];
             if (_url.IsNullOrEmpty())
             {

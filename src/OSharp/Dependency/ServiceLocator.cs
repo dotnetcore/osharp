@@ -336,7 +336,7 @@ namespace OSharp.Dependency
         /// </summary>
         public string GetConfiguration(string path)
         {
-            IConfiguration config = GetService<IConfiguration>() ?? Singleton<IConfiguration>.Instance;
+            IConfiguration config = GetService<IConfiguration>() ?? _services.GetConfiguration();
             return config?[path];
         }
 
