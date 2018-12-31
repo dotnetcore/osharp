@@ -13,8 +13,10 @@ using System.Drawing.Imaging;
 using System.IO;
 
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Extensions;
 
 
@@ -23,6 +25,7 @@ namespace OSharp.AspNetCore
     /// <summary>
     /// 验证码处理服务
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class VerifyCodeService : IVerifyCodeService
     {
         private const string Separator = "#$#";

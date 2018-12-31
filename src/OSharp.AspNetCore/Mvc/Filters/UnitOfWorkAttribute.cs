@@ -25,6 +25,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
     /// 自动事务提交过滤器，在<see cref="OnResultExecuted"/>方法中执行<see cref="IUnitOfWork.Commit()"/>进行事务提交
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class UnitOfWorkAttribute : ActionFilterAttribute
     {
         private readonly IUnitOfWorkManager _unitOfWorkManager;
