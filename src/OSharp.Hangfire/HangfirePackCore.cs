@@ -8,20 +8,18 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
 
 using Hangfire;
-using Hangfire.MemoryStorage;
+using Hangfire.AspNetCore;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
-using OSharp.Dependency;
 using OSharp.Extensions;
-using OSharp.Reflection;
 
 
 namespace OSharp.Hangfire
@@ -56,14 +54,8 @@ namespace OSharp.Hangfire
                 return services;
             }
 
-            IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
-            services.GetOrAddSingletonInstance<IFireAndForgetJobFinder>(() => new FireAndForgetJobFinder(allAssemblyFinder));
-            services.GetOrAddSingletonInstance<IDelayedJobFinder>(() => new DelayedJobFinder(allAssemblyFinder));
-            services.GetOrAddSingletonInstance<IRecurringJobFinder>(() => new RecurringJobFinder(allAssemblyFinder));
-
-            AddJobServices(services);
-
-            services.AddHangfire(config => AddHangfireAction(config));
+            Action<IGlobalConfiguration> hangfireAction = GetHangfireAction(services);
+            services.AddHangfire(hangfireAction);
             return services;
         }
 
@@ -80,6 +72,9 @@ namespace OSharp.Hangfire
                 return;
             }
 
+            IGlobalConfiguration globalConfiguration = app.ApplicationServices.GetService<IGlobalConfiguration>();
+            globalConfiguration.UseLogProvider(new AspNetCoreLogProvider(app.ApplicationServices.GetService<ILoggerFactory>()));
+
             BackgroundJobServerOptions serverOptions = GetBackgroundJobServerOptions(configuration);
             app.UseHangfireServer(serverOptions);
 
@@ -87,45 +82,31 @@ namespace OSharp.Hangfire
             DashboardOptions dashboardOptions = GetDashboardOptions(configuration);
             app.UseHangfireDashboard(url, dashboardOptions);
 
-            ExecuteJobs(app.ApplicationServices);
-
             IsEnabled = true;
         }
 
-        protected virtual void AddHangfireAction(IGlobalConfiguration config)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        protected virtual Action<IGlobalConfiguration> GetHangfireAction(IServiceCollection services)
         {
-            config.UseMemoryStorage();
+            IConfiguration configuration = services.GetConfiguration();
+            string storageConnectionString = configuration["OSharp:Hangfire:StorageConnectionString"].CastTo<string>();
+            if (storageConnectionString != null)
+            {
+                return config => config.UseSqlServerStorage(storageConnectionString);
+            }
+
+            return config => { };
         }
 
-        protected virtual IServiceCollection AddJobServices(IServiceCollection services)
-        {
-            //Fire-and-forget jobs
-            IFireAndForgetJobFinder fireAndForgetJobFinder = services.GetSingletonInstance<IFireAndForgetJobFinder>();
-            Type[] fireAndForgetJobTypes = fireAndForgetJobFinder.FindAll();
-            foreach (Type type in fireAndForgetJobTypes)
-            {
-                services.AddSingleton(typeof(IFireAndForgetJob), type);
-            }
-
-            //Delayed jobs
-            IDelayedJobFinder delayedJobFinder = services.GetSingletonInstance<IDelayedJobFinder>();
-            Type[] delayedJobTypes = delayedJobFinder.FindAll();
-            foreach (Type type in delayedJobTypes)
-            {
-                services.AddSingleton(typeof(IDelayedJob), type);
-            }
-
-            //Recurring jobs
-            IRecurringJobFinder recurringJobFinder = services.GetSingletonInstance<IRecurringJobFinder>();
-            Type[] recurringJobTypes = recurringJobFinder.FindAll();
-            foreach (Type type in recurringJobTypes)
-            {
-                services.AddSingleton(typeof(IRecurringJob), type);
-            }
-
-            return services;
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         protected virtual BackgroundJobServerOptions GetBackgroundJobServerOptions(IConfiguration configuration)
         {
             BackgroundJobServerOptions serverOptions = new BackgroundJobServerOptions();
@@ -137,6 +118,11 @@ namespace OSharp.Hangfire
             return serverOptions;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         protected virtual DashboardOptions GetDashboardOptions(IConfiguration configuration)
         {
             string[] roles = configuration["OSharp:Hangfire:Roles"].CastTo("").Split(",", true);
@@ -147,30 +133,6 @@ namespace OSharp.Hangfire
                 dashboardOptions.Authorization = new[] { new RoleDashboardAuthorizationFilter(roles) };
             }
             return dashboardOptions;
-        }
-
-        protected virtual void ExecuteJobs(IServiceProvider serviceProvider)
-        {
-            //Fire-and-forget jobs
-            IFireAndForgetJob[] fireAndForgetJobs = serviceProvider.GetServices<IFireAndForgetJob>().ToArray();
-            foreach (IFireAndForgetJob job in fireAndForgetJobs)
-            {
-                job.Execute();
-            }
-
-            //Delayed jobs
-            IDelayedJob[] delayedJobs = serviceProvider.GetServices<IDelayedJob>().ToArray();
-            foreach (IDelayedJob job in delayedJobs)
-            {
-                job.Execute();
-            }
-
-            //Recurring jobs
-            IRecurringJob[] recurringJobs = serviceProvider.GetServices<IRecurringJob>().ToArray();
-            foreach (IRecurringJob job in recurringJobs)
-            {
-                job.Execute();
-            }
         }
     }
 }

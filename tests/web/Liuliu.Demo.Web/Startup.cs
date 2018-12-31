@@ -7,7 +7,7 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-
+using Liuliu.Demo.Web.Hangfire;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +46,8 @@ namespace Liuliu.Demo.Web
                 .UseDefaultFiles()
                 .UseStaticFiles()
                 .UseOSharp();
+
+            HangfireJobRunner.Start();
         }
     }
 }
