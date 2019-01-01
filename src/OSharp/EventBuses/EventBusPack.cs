@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
 using OSharp.Dependency;
-using OSharp.Reflection;
 
 
 namespace OSharp.EventBuses
@@ -43,11 +42,8 @@ namespace OSharp.EventBuses
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            IEventHandlerTypeFinder handlerTypeFinder = services.GetOrAddSingletonInstance<IEventHandlerTypeFinder>(() =>
-            {
-                IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
-                return new EventHandlerTypeFinder(allAssemblyFinder);
-            });
+            IEventHandlerTypeFinder handlerTypeFinder =
+                services.GetOrAddTypeFinder<IEventHandlerTypeFinder>(assemblyFinder => new EventHandlerTypeFinder(assemblyFinder));
             //向服务窗口注册所有事件处理器类型
             Type[] eventHandlerTypes = handlerTypeFinder.FindAll();
             foreach (Type handlerType in eventHandlerTypes)

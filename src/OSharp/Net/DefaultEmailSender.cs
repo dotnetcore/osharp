@@ -25,6 +25,7 @@ namespace OSharp.Net
     /// <summary>
     /// 默认邮件发送者
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DefaultEmailSender : IEmailSender
     {
         private readonly IServiceProvider _provider;

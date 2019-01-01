@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Builders;
 using OSharp.Dependency;
-using OSharp.Reflection;
 
 
 namespace OSharp.Core.Packs
@@ -54,12 +53,8 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public virtual IServiceCollection LoadPacks(IServiceCollection services)
         {
-            IServiceCollection services1 = services;
-            IOsharpPackTypeFinder packTypeFinder = services.GetOrAddSingletonInstance<IOsharpPackTypeFinder>(() =>
-            {
-                IAllAssemblyFinder allAssemblyFinder = services1.GetSingletonInstance<IAllAssemblyFinder>();
-                return new OsharpPackTypeFinder(allAssemblyFinder);
-            });
+            IOsharpPackTypeFinder packTypeFinder =
+                services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
             Type[] packTypes = packTypeFinder.FindAll();
             _sourcePacks.Clear();
             _sourcePacks.AddRange(packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)));

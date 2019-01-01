@@ -11,6 +11,9 @@ using System;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using OSharp.Reflection;
 
 
 namespace OSharp.Dependency
@@ -33,6 +36,19 @@ namespace OSharp.Dependency
 
             services.Add(toAdDescriptor);
             return toAdDescriptor;
+        }
+
+        /// <summary>
+        /// 获取或添加指定类型查找器
+        /// </summary>
+        public static TTypeFinder GetOrAddTypeFinder<TTypeFinder>(this IServiceCollection services, Func<IAllAssemblyFinder, TTypeFinder> factory)
+            where TTypeFinder : class
+        {
+            return services.GetOrAddSingletonInstance<TTypeFinder>(() =>
+            {
+                IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
+                return factory(allAssemblyFinder);
+            });
         }
 
         /// <summary>

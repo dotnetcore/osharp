@@ -35,8 +35,7 @@ namespace OSharp.AspNetCore.Mvc
         public MvcFunctionHandler(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            IAllAssemblyFinder allAssemblyFinder = serviceProvider.GetService<IAllAssemblyFinder>();
-            FunctionTypeFinder = new MvcControllerTypeFinder(allAssemblyFinder);
+            FunctionTypeFinder = serviceProvider.GetService<IFunctionTypeFinder>();
             MethodInfoFinder = new PublicInstanceMethodInfoFinder();
         }
 
