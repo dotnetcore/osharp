@@ -17,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
@@ -53,73 +52,15 @@ namespace OSharp.Dependency
 
             //查找所有自动注册的服务实现类型
             IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
-            IDependencyTypeFinder dependencyTypeFinder = 
+            IDependencyTypeFinder dependencyTypeFinder =
                 services.GetOrAddSingletonInstance<IDependencyTypeFinder>(() => new DependencyTypeFinder(allAssemblyFinder));
+
             Type[] dependencyTypes = dependencyTypeFinder.FindAll();
             foreach (Type dependencyType in dependencyTypes)
             {
                 AddToServices(services, dependencyType);
             }
 
-            return services;
-        }
-        
-        /// <summary>
-        /// 以类型实现的接口进行服务添加，需排除
-        /// <see cref="IDisposable"/>等非业务接口，如无接口则注册自身
-        /// </summary>
-        /// <param name="services">服务映射信息集合</param>
-        /// <param name="implementationTypes">要注册的实现类型集合</param>
-        /// <param name="lifetime">注册的生命周期类型</param>
-        protected virtual IServiceCollection AddTypeWithInterfaces(IServiceCollection services, Type[] implementationTypes, ServiceLifetime lifetime)
-        {
-            foreach (Type implementationType in implementationTypes)
-            {
-                if (implementationType.IsAbstract || implementationType.IsInterface)
-                {
-                    continue;
-                }
-                Type[] interfaceTypes = GetImplementedInterfaces(implementationType);
-                if (interfaceTypes.Length == 0)
-                {
-                    services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime));
-                    continue;
-                }
-                for (int i = 0; i < interfaceTypes.Length; i++)
-                {
-                    Type interfaceType = interfaceTypes[i];
-                    if (lifetime == ServiceLifetime.Transient)
-                    {
-                        services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        continue;
-                    }
-                    bool multiple = interfaceType.HasAttribute<MultipleDependencyAttribute>();
-                    if (i == 0)
-                    {
-                        if (multiple)
-                        {
-                            services.Add(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        }
-                        else
-                        {
-                            services.TryAdd(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        }
-                    }
-                    else
-                    {
-                        //有多个接口时，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一个实例
-                        Type firstInterfaceType = interfaceTypes[0];
-                        if (multiple)
-                        {
-                            services.Add(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
-                        }
-                        else
-                        {
-                            services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
-                        }
-                    }
-                }
-            }
             return services;
         }
 
@@ -228,7 +169,7 @@ namespace OSharp.Dependency
 
             return null;
         }
-        
+
         /// <summary>
         /// 重写以实现 获取实现类型的所有可注册服务接口
         /// </summary>

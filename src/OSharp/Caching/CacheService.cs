@@ -17,7 +17,6 @@ using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Collections;
 using OSharp.Core.Functions;
-using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;

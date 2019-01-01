@@ -151,7 +151,7 @@ namespace OSharp.Filter
         public virtual Expression<Func<T, bool>> GetExpression<T>(FilterGroup group)
         {
             Check.NotNull(group, nameof(group));
-            
+
             ParameterExpression param = Expression.Parameter(typeof(T), "m");
             Expression body = GetExpressionBody(param, group);
             Expression<Func<T, bool>> expression = Expression.Lambda<Func<T, bool>>(body, param);
@@ -253,11 +253,11 @@ namespace OSharp.Filter
         #endregion
 
         #region 私有方法
-        
+
         private Expression GetExpressionBody(ParameterExpression param, FilterGroup group)
         {
             Check.NotNull(param, nameof(param));
-            
+
             //如果无条件或条件为空，直接返回 true表达式
             if (group == null || (group.Rules.Count == 0 && group.Groups.Count == 0))
             {
@@ -277,7 +277,7 @@ namespace OSharp.Filter
             }
             throw new OsharpException(Resources.Filter_GroupOperateError);
         }
-        
+
         private Expression GetExpressionBody(ParameterExpression param, FilterRule rule)
         {
             if (rule == null || rule.Value == null || string.IsNullOrEmpty(rule.Value.ToString()))
@@ -288,7 +288,7 @@ namespace OSharp.Filter
             Expression constant = ChangeTypeToExpression(rule, expression.Body.Type);
             return ExpressionDict[rule.Operate](expression.Body, constant);
         }
-        
+
         private static LambdaExpression GetPropertyLambdaExpression(ParameterExpression param, FilterRule rule)
         {
             string[] propertyNames = rule.Field.Split('.');

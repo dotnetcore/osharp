@@ -22,7 +22,7 @@ namespace OSharp.Security.Events
     /// <summary>
     /// 功能信息缓存刷新事件处理器
     /// </summary>
-    public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>, ITransientDependency
+    public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>
     {
         private readonly IServiceProvider _provider;
 

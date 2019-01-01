@@ -109,17 +109,17 @@ namespace OSharp.EventBuses
         {
             Check.NotNull(eventHandlerTypes, nameof(eventHandlerTypes));
 
-            foreach (Type handlerType in eventHandlerTypes)
+            foreach (Type eventHandlerType in eventHandlerTypes)
             {
-                Type handlerInterface = handlerType.GetInterface("IEventHandler`1"); //获取该类实现的泛型接口
+                Type handlerInterface = eventHandlerType.GetInterface("IEventHandler`1"); //获取该类实现的泛型接口
                 if (handlerInterface == null)
                 {
                     continue;
                 }
-                Type eventType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
-                IEventHandlerFactory factory = new IocEventHandlerFactory(ServiceScopeFactory, handlerType);
-                EventStore.Add(eventType, factory);
-                Logger.LogDebug($"创建事件“{eventType}”到处理器“{handlerType}”的订阅配对");
+                Type eventDataType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
+                IEventHandlerFactory factory = new IocEventHandlerFactory(ServiceScopeFactory, eventHandlerType);
+                EventStore.Add(eventDataType, factory);
+                Logger.LogDebug($"创建事件“{eventDataType}”到处理器“{eventHandlerType}”的订阅配对");
             }
             Logger.LogInformation($"共从程序集创建了{eventHandlerTypes.Length}个事件处理器的事件订阅");
         }

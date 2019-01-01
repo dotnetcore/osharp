@@ -22,7 +22,7 @@ namespace OSharp.Security.Events
     /// <summary>
     /// 功能权限缓存刷新事件处理器
     /// </summary>
-    public class FunctionAuthCacheRefreshEventHandler : EventHandlerBase<FunctionAuthCacheRefreshEventData>, ITransientDependency
+    public class FunctionAuthCacheRefreshEventHandler : EventHandlerBase<FunctionAuthCacheRefreshEventData>
     {
         private readonly IServiceProvider _provider;
 

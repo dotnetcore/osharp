@@ -10,6 +10,7 @@
 using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 using OSharp.Caching;
@@ -17,7 +18,6 @@ using OSharp.Core.Options;
 using OSharp.Entity;
 using OSharp.Entity.Infrastructure;
 using OSharp.Filter;
-using OSharp.Reflection;
 
 
 namespace OSharp.Core.Packs
@@ -40,14 +40,13 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IAllAssemblyFinder, AppDomainAllAssemblyFinder>();
-            services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
-            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
-            services.AddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
-            services.AddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
+            services.TryAddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
+            services.TryAddSingleton<IEntityTypeFinder, EntityTypeFinder>();
+            services.TryAddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
+            services.TryAddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
 
-            services.AddSingleton<ICacheService, CacheService>();
-            services.AddScoped<IFilterService, FilterService>();
+            services.TryAddSingleton<ICacheService, CacheService>();
+            services.TryAddScoped<IFilterService, FilterService>();
 
             return services;
         }

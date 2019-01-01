@@ -38,13 +38,13 @@ namespace OSharp.Dependency
         /// <summary>
         /// 如果指定服务不存在，创建实例并添加
         /// </summary>
-        public static T GetOrAddSingletonInstance<T>(this IServiceCollection services, Func<T> factory) where T : class
+        public static TServiceType GetOrAddSingletonInstance<TServiceType>(this IServiceCollection services, Func<TServiceType> factory) where TServiceType : class
         {
-            T item = (T)services.FirstOrDefault(m => m.ServiceType == typeof(T) && m.Lifetime == ServiceLifetime.Singleton)?.ImplementationInstance;
+            TServiceType item = (TServiceType)services.FirstOrDefault(m => m.ServiceType == typeof(TServiceType) && m.Lifetime == ServiceLifetime.Singleton)?.ImplementationInstance;
             if (item == null)
             {
                 item = factory();
-                services.AddSingleton<T>(item);
+                services.AddSingleton<TServiceType>(item);
             }
             return item;
         }

@@ -20,7 +20,7 @@ namespace OSharp.Identity.Events
     /// <summary>
     /// 在线用户信息缓存移除事件处理器
     /// </summary>
-    public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>, ITransientDependency
+    public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>
     {
         private readonly IServiceProvider _provider;
 

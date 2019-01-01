@@ -12,8 +12,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Reflection;
 
 
@@ -22,6 +25,7 @@ namespace OSharp.EventBuses.Internal
     /// <summary>
     /// 内存事件存储
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     internal class InMemoryEventStore : IEventStore
     {
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;

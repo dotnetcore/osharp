@@ -35,12 +35,12 @@ namespace OSharp.Dependency
         public ServiceLifetime Lifetime { get; }
 
         /// <summary>
-        /// 获取或设置 是否为TryAdd方式注册，通常用于“你们不来我来”的默认服务实现
+        /// 获取或设置 是否为TryAdd方式注册，通常用于默认服务，当服务可能被替换时，应设置为true
         /// </summary>
         public bool TryAdd { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否替换已存在的服务实现，通常用于“舍我其谁”的主要服务实现
+        /// 获取或设置 是否替换已存在的服务实现，通常用于主要服务，当服务存在时即优先使用时，应设置为true
         /// </summary>
         public bool ReplaceExisting { get; set; }
 
