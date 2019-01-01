@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 using OSharp.Core.Packs;
 
 
@@ -24,17 +21,5 @@ namespace OSharp.Log4Net
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
         public override int Order => 1;
-
-        /// <summary>
-        /// 将模块服务添加到依赖注入服务容器中
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        public override IServiceCollection AddServices(IServiceCollection services)
-        {
-            services.AddSingleton<ILoggerProvider, Log4NetLoggerProvider>();
-
-            return services;
-        }
     }
 }
