@@ -13,6 +13,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 using OSharp.Core.Options;
+using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -23,6 +24,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 工作单元管理器
     /// </summary>
+    [Dependency(ServiceLifetime.Scoped, TryAdd = true)]
     public class UnitOfWorkManager : IUnitOfWorkManager
     {
         private readonly IServiceProvider _serviceProvider;

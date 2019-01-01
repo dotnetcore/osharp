@@ -10,12 +10,17 @@
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
+
 
 namespace OSharp.Entity.Sqlite
 {
     /// <summary>
     /// Sqlite的<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>

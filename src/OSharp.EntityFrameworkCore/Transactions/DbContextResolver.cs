@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Dependency;
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
 
@@ -24,6 +25,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 数据上下文对象解析器
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DbContextResolver : IDbContextResolver
     {
         private readonly IServiceProvider _serviceProvider;

@@ -11,8 +11,9 @@ using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
 
 
 namespace OSharp.Entity.SqlServer
@@ -20,6 +21,7 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServer的<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>

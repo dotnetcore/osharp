@@ -41,7 +41,6 @@ namespace OSharp.Entity.MySql
         {
             services = base.AddServices(services);
 
-            services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(MySqlDapperSqlExecutor<,>));
 
             return services;

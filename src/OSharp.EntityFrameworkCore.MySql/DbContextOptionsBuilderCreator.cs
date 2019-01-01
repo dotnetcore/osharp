@@ -10,6 +10,9 @@
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
 
 
 namespace OSharp.Entity.MySql
@@ -17,6 +20,7 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySql上下文选项建立者创建器
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>
