@@ -11,6 +11,8 @@ using AutoMapper.Configuration;
 
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.AutoMapper;
 using OSharp.Dependency;
 
@@ -20,7 +22,8 @@ namespace Liuliu.Demo.Identity.Dtos
     /// <summary>
     /// DTO对象映射配置
     /// </summary>
-    public class AutoMapperConfiguration : IAutoMapperConfiguration, ISingletonDependency
+    [Dependency(ServiceLifetime.Singleton)]
+    public class AutoMapperConfiguration : IAutoMapperConfiguration
     {
         /// <summary>
         /// 创建对象映射

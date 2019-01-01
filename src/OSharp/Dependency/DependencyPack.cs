@@ -51,7 +51,8 @@ namespace OSharp.Dependency
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
             //查找所有自动注册的服务实现类型
-            IDependencyTypeFinder dependencyTypeFinder = services.GetOrAddTypeFinder<IDependencyTypeFinder>(assemblyFinder => new DependencyTypeFinder(assemblyFinder));
+            IDependencyTypeFinder dependencyTypeFinder = 
+                services.GetOrAddTypeFinder<IDependencyTypeFinder>(assemblyFinder => new DependencyTypeFinder(assemblyFinder));
 
             Type[] dependencyTypes = dependencyTypeFinder.FindAll();
             foreach (Type dependencyType in dependencyTypes)
