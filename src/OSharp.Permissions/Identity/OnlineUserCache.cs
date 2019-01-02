@@ -75,7 +75,7 @@ namespace OSharp.Identity
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns>在线用户信息</returns>
-        public async Task<OnlineUser> GetOrRefreshAsync(string userName)
+        public virtual async Task<OnlineUser> GetOrRefreshAsync(string userName)
         {
             string key = $"Identity_OnlineUser_{userName}";
 
@@ -97,7 +97,7 @@ namespace OSharp.Identity
         /// 移除在线用户信息
         /// </summary>
         /// <param name="userNames">用户名</param>
-        public void Remove(params string[] userNames)
+        public virtual void Remove(params string[] userNames)
         {
             foreach (string userName in userNames)
             {

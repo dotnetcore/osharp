@@ -11,7 +11,6 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Dependency;
 using OSharp.EventBuses;
 
 
