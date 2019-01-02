@@ -20,11 +20,7 @@ using log4net.Filter;
 using log4net.Layout;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
-
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using OSharp.Dependency;
 
 
 namespace OSharp.Log4Net
@@ -32,7 +28,6 @@ namespace OSharp.Log4Net
     /// <summary>
     /// log4net 日志对象提供者
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class Log4NetLoggerProvider : ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, Log4NetLogger> _loggers = new ConcurrentDictionary<string, Log4NetLogger>();
