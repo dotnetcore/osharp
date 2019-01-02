@@ -48,7 +48,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class UserController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
-        private readonly CacheService _cacheService;
+        private readonly ICacheService _cacheService;
         private readonly IFilterService _filterService;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             SecurityManager securityManager,
             IIdentityContract identityContract,
             ILoggerFactory loggerFactory,
-            CacheService cacheService,
+            ICacheService cacheService,
             IFilterService filterService)
         {
             _userManager = userManager;

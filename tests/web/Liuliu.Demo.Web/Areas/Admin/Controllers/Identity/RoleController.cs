@@ -210,7 +210,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("ReadRoleModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置模块")]
-        public async Task<ActionResult> SetModules([FromBody] RoleSetModuleDto dto)
+        public async Task<ActionResult> SetModules(RoleSetModuleDto dto)
         {
             OperationResult result = await _securityManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return Json(result.ToAjaxResult());
