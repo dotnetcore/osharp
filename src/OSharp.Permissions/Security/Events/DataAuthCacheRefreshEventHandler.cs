@@ -7,6 +7,8 @@
 //  <last-date>2018-07-05 4:28</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Secutiry;
@@ -17,24 +19,33 @@ namespace OSharp.Security.Events
     /// <summary>
     /// 数据权限缓存刷新事件处理器
     /// </summary>
-    public class DataAuthCacheRefreshEventHandler : EventHandlerBase<DataAuthCacheRefreshEventData>, ITransientDependency
+    public class DataAuthCacheRefreshEventHandler : EventHandlerBase<DataAuthCacheRefreshEventData>
     {
+        private readonly IDataAuthCache _authCache;
+
+        /// <summary>
+        /// 初始化一个<see cref="DataAuthCacheRefreshEventHandler"/>类型的新实例
+        /// </summary>
+        public DataAuthCacheRefreshEventHandler(IDataAuthCache authCache)
+        {
+            _authCache = authCache;
+        }
+
         /// <summary>
         /// 事件处理
         /// </summary>
         /// <param name="eventData">事件源数据</param>
         public override void Handle(DataAuthCacheRefreshEventData eventData)
         {
-            IDataAuthCache cache = ServiceLocator.Instance.GetService<IDataAuthCache>();
             //更新缓存项
             foreach (DataAuthCacheItem cacheItem in eventData.SetItems)
             {
-                cache.SetCache(cacheItem);
+                _authCache.SetCache(cacheItem);
             }
             //移除缓存项
             foreach (DataAuthCacheItem cacheItem in eventData.RemoveItems)
             {
-                cache.RemoveCache(cacheItem);
+                _authCache.RemoveCache(cacheItem);
             }
         }
     }

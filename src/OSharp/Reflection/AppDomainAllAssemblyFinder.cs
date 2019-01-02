@@ -16,7 +16,6 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
 
 using OSharp.Collections;
-using OSharp.Dependency;
 using OSharp.Finders;
 
 namespace OSharp.Reflection

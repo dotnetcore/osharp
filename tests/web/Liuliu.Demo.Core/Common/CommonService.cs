@@ -7,6 +7,7 @@
 //  <last-date>2018-07-03 12:59</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
@@ -21,6 +22,16 @@ namespace Liuliu.Demo.Common
     /// </summary>
     public class CommonService : ICommonContract, IScopeDependency
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        /// <summary>
+        /// 初始化一个<see cref="CommonService"/>类型的新实例
+        /// </summary>
+        public CommonService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
         /// <summary>
         /// 测试测试
         /// </summary>
@@ -28,7 +39,7 @@ namespace Liuliu.Demo.Common
         {
             List<object> list = new List<object>();
 
-            ClaimsPrincipal user = ServiceLocator.Instance.GetCurrentUser();
+            ClaimsPrincipal user = _serviceProvider.GetCurrentUser();
             list.Add(user == null);
             list.Add(user?.GetType());
             list.Add(user?.Identity.Name);

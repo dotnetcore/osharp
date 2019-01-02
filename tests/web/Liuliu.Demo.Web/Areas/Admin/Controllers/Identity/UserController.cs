@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -37,6 +38,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
+using OSharp.Secutiry;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -46,6 +48,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class UserController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
+        private readonly ICacheService _cacheService;
+        private readonly IFilterService _filterService;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
 
@@ -53,12 +57,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             UserManager<User> userManager,
             SecurityManager securityManager,
             IIdentityContract identityContract,
-            ILoggerFactory loggerFactory
-        )
+            ILoggerFactory loggerFactory,
+            ICacheService cacheService,
+            IFilterService filterService)
         {
             _userManager = userManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
+            _cacheService = cacheService;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -72,8 +79,21 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<User, bool>> predicate = request.FilterGroup.ToExpression<User>();
-            var page = _userManager.Users.ToPageCache<User, UserOutputDto>(predicate, request.PageCondition, function);
+
+            Func<User, bool> updateFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Update).Compile();
+            Func<User, bool> deleteFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Delete).Compile();
+            Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
+            var page = _cacheService.ToPageCache(_userManager.Users, predicate, request.PageCondition, m => new
+            {
+                D = m,
+                Roles = _identityContract.UserRoles.Where(n => !n.IsLocked && n.UserId == m.Id)
+                    .SelectMany(n => _identityContract.Roles.Where(o => o.Id == n.RoleId).Select(o => o.Name)).Distinct().ToArray()
+            }, function).ToPageResult(data => data.Select(m => new UserOutputDto(m.D)
+            {
+                Roles = m.Roles,
+                Updatable = updateFunc(m.D),
+                Deletable = deleteFunc(m.D)
+            }).ToArray());
             return page.ToPageData();
         }
 
@@ -88,8 +108,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(group, nameof(group));
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<User, bool>> exp = group.ToExpression<User>();
-            ListNode[] nodes = _userManager.Users.ToCacheArray<User, ListNode>(exp, m => new ListNode()
+            Expression<Func<User, bool>> exp = _filterService.GetExpression<User>(group);
+            ListNode[] nodes = _cacheService.ToCacheArray<User, ListNode>(_userManager.Users, exp, m => new ListNode()
             {
                 Id = m.Id,
                 Name = m.NickName

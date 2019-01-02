@@ -21,16 +21,12 @@ namespace OSharp.AspNetCore
     /// </summary>
     public abstract class AspOsharpPack : OsharpPack
     {
-        #region Overrides of OsharpPack
-
         /// <summary>
         /// 应用模块服务
         /// </summary>
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         { }
-
-        #endregion
 
         /// <summary>
         /// 应用AspNetCore的服务业务

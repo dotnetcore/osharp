@@ -9,13 +9,17 @@
 
 using System;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using OSharp.Collections;
 using OSharp.Core.Builders;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Reflection;
 
@@ -35,22 +39,25 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             Check.NotNull(services, nameof(services));
 
-            //初始化所有程序集查找器，如需更改程序集查找逻辑，请事先赋予自定义查找器的实例
-            if (Singleton<IAllAssemblyFinder>.Instance == null)
-            {
-                Singleton<IAllAssemblyFinder>.Instance = new AppDomainAllAssemblyFinder();
-            }
+            //初始化所有程序集查找器
+            services.TryAddSingleton<IAllAssemblyFinder>(new AppDomainAllAssemblyFinder());
 
-            IOsharpBuilder builder = new OsharpBuilder();
-            if (builderAction != null)
-            {
-                builderAction(builder);
-            }
-            Singleton<IOsharpBuilder>.Instance = builder;
+            IOsharpBuilder builder = services.GetSingletonInstanceOrNull<IOsharpBuilder>() ?? new OsharpBuilder();
+            builderAction?.Invoke(builder);
+            services.TryAddSingleton<IOsharpBuilder>(builder);
+
             TOsharpPackManager manager = new TOsharpPackManager();
             services.AddSingleton<IOsharpPackManager>(manager);
             manager.LoadPacks(services);
             return services;
+        }
+
+        /// <summary>
+        /// 获取<see cref="IConfiguration"/>配置信息
+        /// </summary>
+        public static IConfiguration GetConfiguration(this IServiceCollection services)
+        {
+            return services.GetSingletonInstance<IConfiguration>();
         }
 
         /// <summary>

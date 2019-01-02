@@ -1,4 +1,4 @@
-﻿ // -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="EventBusBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -8,9 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Reflection;
 
-using OSharp.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
 
 
 namespace OSharp.EventBuses.Internal
@@ -18,6 +19,7 @@ namespace OSharp.EventBuses.Internal
     /// <summary>
     /// EventBus初始化
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     internal class EventBusBuilder : IEventBusBuilder
     {
         private readonly IEventHandlerTypeFinder _typeFinder;

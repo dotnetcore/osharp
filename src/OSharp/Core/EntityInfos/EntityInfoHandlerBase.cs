@@ -31,15 +31,19 @@ namespace OSharp.Core.EntityInfos
     public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler
         where TEntityInfo : class, IEntityInfo, new()
     {
-        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IEntityTypeFinder _entityTypeFinder;
         private readonly ILogger _logger;
+        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
-        protected EntityInfoHandlerBase(ILoggerFactory loggerFactory)
+        protected EntityInfoHandlerBase(IServiceProvider serviceProvider)
         {
-            _logger = loggerFactory.CreateLogger<TEntityInfoHandler>();
+            _serviceProvider = serviceProvider;
+            _entityTypeFinder = serviceProvider.GetService<IEntityTypeFinder>();
+            _logger = serviceProvider.GetLogger<TEntityInfoHandler>();
         }
 
         /// <summary>
@@ -47,8 +51,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void Initialize()
         {
-            IEntityTypeFinder entityTypeFinder = ServiceLocator.Instance.GetService<IEntityTypeFinder>();
-            Type[] entityTypes = entityTypeFinder.FindAll(true);
+            Type[] entityTypes = _entityTypeFinder.FindAll(true);
             _logger.LogInformation($"数据实体处理器开始初始化，共找到 {entityTypes.Length} 个实体类");
             foreach (Type entityType in entityTypes)
             {
@@ -61,7 +64,7 @@ namespace OSharp.Core.EntityInfos
                 _entityInfos.Add(entityInfo);
             }
 
-            ServiceLocator.Instance.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, _entityInfos);
             });
@@ -112,7 +115,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 _entityInfos.Clear();
                 _entityInfos.AddRange(GetFromDatabase(provider));

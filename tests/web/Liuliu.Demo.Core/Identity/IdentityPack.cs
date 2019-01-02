@@ -97,7 +97,7 @@ namespace Liuliu.Demo.Identity
         /// <param name="services">服务集合</param>
         protected override void AddAuthentication(IServiceCollection services)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = services.GetConfiguration();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core;
 using OSharp.Core.Modules;
+using OSharp.Core.Options;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
@@ -46,15 +48,18 @@ namespace Liuliu.Demo.Web.Controllers
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;
+        private readonly IVerifyCodeService _verifyCodeService;
         private readonly UserManager<User> _userManager;
 
         public IdentityController(IIdentityContract identityContract,
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IVerifyCodeService verifyCodeService)
         {
             _identityContract = identityContract;
             _userManager = userManager;
             _signInManager = signInManager;
+            _verifyCodeService = verifyCodeService;
         }
 
         /// <summary>
@@ -122,7 +127,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -218,10 +223,11 @@ namespace Liuliu.Demo.Web.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
-            string token = JwtHelper.CreateToken(claims);
+            OSharpOptions options = HttpContext.RequestServices.GetService<IOptions<OSharpOptions>>().Value;
+            string token = JwtHelper.CreateToken(claims, options);
 
             //在线用户缓存
-            IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
+            IOnlineUserCache onlineUserCache = HttpContext.RequestServices.GetService<IOnlineUserCache>();
             if (onlineUserCache != null)
             {
                 await onlineUserCache.GetOrRefreshAsync(user.UserName);
@@ -309,7 +315,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return null;
             }
-            OnlineUser onlineUser = ServiceLocator.Instance.GetService<IOnlineUserCache>()?.GetOrRefresh(User.Identity.Name);
+            OnlineUser onlineUser = HttpContext.RequestServices.GetService<IOnlineUserCache>()?.GetOrRefresh(User.Identity.Name);
             return onlineUser;
         }
 
@@ -357,7 +363,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -422,7 +428,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeHandler.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -434,7 +440,7 @@ namespace Liuliu.Demo.Web.Controllers
             }
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
             token = UrlBase64ReplaceChar(token);
-            IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
+            IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
             string url = $"{Request.Scheme}://{Request.Host}/#/identity/reset-password?userId={user.Id}&token={token}";
             string body = $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
                 + $"欢迎使用柳柳软件账户密码重置功能，请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
@@ -469,9 +475,9 @@ namespace Liuliu.Demo.Web.Controllers
             return result.ToOperationResult().ToAjaxResult();
         }
 
-        private static async Task SendMailAsync(string email, string subject, string body)
+        private async Task SendMailAsync(string email, string subject, string body)
         {
-            IEmailSender sender = ServiceLocator.Instance.GetService<IEmailSender>();
+            IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
             await sender.SendEmailAsync(email, subject, body);
         }
 

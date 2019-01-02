@@ -33,7 +33,6 @@ namespace OSharp.Log4Net
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddSingleton<ILoggerProvider, Log4NetLoggerProvider>();
-
             return services;
         }
     }

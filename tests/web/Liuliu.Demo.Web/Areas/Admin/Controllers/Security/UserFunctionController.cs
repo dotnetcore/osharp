@@ -33,15 +33,18 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-用户功能")]
     public class UserFunctionController : AdminApiController
     {
-        private readonly RoleManager<Role> _roleManager;
+        private readonly IFilterService _filterService;
         private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
 
-        public UserFunctionController(SecurityManager securityManager, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public UserFunctionController(SecurityManager securityManager,
+            UserManager<User> userManager, 
+            RoleManager<Role> roleManager,
+            IFilterService filterService)
         {
             _securityManager = securityManager;
             _userManager = userManager;
-            _roleManager = roleManager;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<UserOutputDto2> Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<User, bool>> predicate = FilterHelper.GetExpression<User>(request.FilterGroup);
+            Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
             var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
@@ -84,7 +87,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }
 
             PageRequest request = new PageRequest();
-            Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {

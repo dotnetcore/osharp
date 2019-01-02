@@ -14,13 +14,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
 using OSharp.Dependency;
-using OSharp.Entity.Transactions;
 using OSharp.EventBuses;
 
 
@@ -42,13 +42,9 @@ namespace OSharp.Entity
             : base(options)
         {
             _typeFinder = typeFinder;
-            if (ServiceLocator.Instance.IsProviderEnabled)
-            {
-                IOptions<OSharpOptions> osharpOptions = ServiceLocator.Instance.GetService<IOptions<OSharpOptions>>();
-                _osharpDbOptions = osharpOptions?.Value.DbContextOptionses.Values.FirstOrDefault(m => m.DbContextType == GetType());
-
-                _logger = ServiceLocator.Instance.GetLogger(GetType());
-            }
+            IOptions<OSharpOptions> osharpOptions = this.GetService<IOptions<OSharpOptions>>();
+            _osharpDbOptions = osharpOptions?.Value.DbContexts.Values.FirstOrDefault(m => m.DbContextType == GetType());
+            _logger = this.GetService<ILoggerFactory>().CreateLogger(GetType());
         }
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace OSharp.Entity
             }
             _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
         }
-        
+
         /// <summary>
         /// 模型配置
         /// </summary>
@@ -131,19 +127,18 @@ namespace OSharp.Entity
         public override int SaveChanges()
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
             {
                 auditEntities = this.GetAuditEntities();
             }
-            var d = this.Database;
             //开启或使用现有事务
             BeginOrUseTransaction();
 
             int count = base.SaveChanges();
-            if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
+            if (count > 0 && auditEntities.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
+                IEventBus eventBus = this.GetService<IEventBus>();
                 eventBus.Publish(this, eventData);
             }
             return count;
@@ -177,7 +172,7 @@ namespace OSharp.Entity
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled && ServiceLocator.InScoped())
+            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
             {
                 auditEntities = this.GetAuditEntities();
             }
@@ -186,10 +181,10 @@ namespace OSharp.Entity
             await BeginOrUseTransactionAsync(cancellationToken);
 
             int count = await base.SaveChangesAsync(cancellationToken);
-            if (count > 0 && auditEntities.Count > 0 && ServiceLocator.InScoped())
+            if (count > 0 && auditEntities.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = ServiceLocator.Instance.GetService<IEventBus>();
+                IEventBus eventBus = this.GetService<IEventBus>();
                 await eventBus.PublishAsync(this, eventData);
             }
             return count;

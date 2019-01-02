@@ -32,6 +32,19 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers.Systems
     [Description("管理-模块包信息")]
     public class PackController : AdminApiController
     {
+        private readonly ICacheService _cacheService;
+        private readonly IFilterService _filterService;
+
+        /// <summary>
+        /// 初始化一个<see cref="PackController"/>类型的新实例
+        /// </summary>
+        public PackController(ICacheService cacheService,
+            IFilterService filterService)
+        {
+            _cacheService = cacheService;
+            _filterService = filterService;
+        }
+
         /// <summary>
         /// 读取模块包列表信息
         /// </summary>
@@ -47,10 +60,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers.Systems
                 new SortCondition("Order")
             );
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<OsharpPack, bool>> exp = request.FilterGroup.ToExpression<OsharpPack>();
+            Expression<Func<OsharpPack, bool>> exp = _filterService.GetExpression<OsharpPack>(request.FilterGroup);
             IServiceProvider provider = HttpContext.RequestServices;
             IOsharpPackManager manager = provider.GetService<IOsharpPackManager>();
-            return manager.SourcePacks.AsQueryable().ToPageCache(exp,
+            return _cacheService.ToPageCache(manager.SourcePacks.AsQueryable(), exp,
                 request.PageCondition,
                 m => new PackOutputDto()
                 {

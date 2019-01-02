@@ -7,6 +7,11 @@
 //  <last-date>2017-09-19 1:27</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+using OSharp.EventBuses.Internal;
+
+
 namespace OSharp.EventBuses
 {
     /// <summary>
@@ -18,12 +23,6 @@ namespace OSharp.EventBuses
         /// 获取事件处理器实例
         /// </summary>
         /// <returns></returns>
-        IEventHandler GetHandler();
-
-        /// <summary>
-        /// 释放事件处理器实例
-        /// </summary>
-        /// <param name="handler"></param>
-        void ReleaseHandler(IEventHandler handler);
+        EventHandlerDisposeWrapper GetHandler();
     }
 }

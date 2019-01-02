@@ -85,7 +85,7 @@ namespace OSharp.Tests.IEventBuses
         }
 
 
-        private class HelloEventHandler : EventHandlerBase<HelloEventData>, ITransientDependency
+        private class HelloEventHandler : EventHandlerBase<HelloEventData>
         {
             /// <summary>
             /// 事件处理

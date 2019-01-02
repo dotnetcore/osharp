@@ -10,7 +10,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-
 using OSharp.Finders;
 using OSharp.Reflection;
 

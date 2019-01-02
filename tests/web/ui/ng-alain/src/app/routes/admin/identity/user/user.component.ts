@@ -61,6 +61,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         EmailConfirmed: { type: "boolean" },
         PhoneNumber: { type: "string" },
         PhoneNumberConfirmed: { type: "boolean" },
+        IsLocked: { type: "boolean" },
         LockoutEnabled: { type: "boolean" },
         LockoutEnd: { type: "date", editable: false },
         AccessFailedCount: { type: "number", editable: false },
@@ -120,10 +121,10 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         width: 180,
         template: d => this.osharp.expandAndToString(d.Roles)
       }, {
-        field: "Locked",
+        field: "IsLocked",
         title: "是否锁定",
         width: 95,
-        template: d => this.kendoui.Boolean(d.Locked),
+        template: d => this.kendoui.Boolean(d.IsLocked),
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       }, {
         field: "LockoutEnabled",

@@ -38,10 +38,16 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class FunctionController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly ICacheService _cacheService;
+        private readonly IFilterService _filterService;
 
-        public FunctionController(SecurityManager securityManager)
+        public FunctionController(SecurityManager securityManager,
+            ICacheService cacheService,
+            IFilterService filterService)
         {
             _securityManager = securityManager;
+            _cacheService = cacheService;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -59,8 +65,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 new SortCondition("Controller"),
                 new SortCondition("IsController", ListSortDirection.Descending));
 
-            Expression<Func<Function, bool>> predicate = FilterHelper.GetExpression<Function>(request.FilterGroup);
-            PageResult<FunctionOutputDto> page = _securityManager.Functions.ToPageCache<Function, FunctionOutputDto>(predicate, request.PageCondition, function);
+            Expression<Func<Function, bool>> predicate = _filterService.GetExpression<Function>(request.FilterGroup);
+            PageResult<FunctionOutputDto> page = _cacheService.ToPageCache<Function, FunctionOutputDto>(_securityManager.Functions, predicate, request.PageCondition, function);
             return page.ToPageData();
         }
 

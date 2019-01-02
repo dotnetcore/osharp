@@ -13,9 +13,11 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
+using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -25,6 +27,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类配置类型查找器
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class EntityConfigurationTypeFinder : BaseTypeFinderBase<IEntityRegister>, IEntityConfigurationTypeFinder
     {
         private readonly IDictionary<Type, IEntityRegister[]> _entityRegistersDict

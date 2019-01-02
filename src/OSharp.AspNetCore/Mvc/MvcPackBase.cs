@@ -49,8 +49,6 @@ namespace OSharp.AspNetCore.Mvc
 
             services.AddDistributedMemoryCache();
 
-            services.AddSingleton<IEmailSender, DefaultEmailSender>();
-
             return services;
         }
 

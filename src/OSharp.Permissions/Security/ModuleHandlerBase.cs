@@ -33,17 +33,17 @@ namespace OSharp.Security
         where TModuleKey : struct, IEquatable<TModuleKey>
         where TModuleFunction : ModuleFunctionBase<TModuleKey>
     {
-        private readonly ServiceLocator _locator;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IModuleInfoPicker _moduleInfoPicker;
 
         /// <summary>
         /// 初始化一个<see cref="ModuleHandlerBase{TModule, TModuleInputDto, TModuleKey, TModuleFunction}"/>类型的新实例
         /// </summary>
-        protected ModuleHandlerBase()
+        protected ModuleHandlerBase(IServiceProvider serviceProvider)
         {
-            _locator = ServiceLocator.Instance;
-            _moduleInfoPicker = _locator.GetService<IModuleInfoPicker>();
-            Logger = _locator.GetLogger(GetType());
+            _serviceProvider = serviceProvider;
+            _moduleInfoPicker = serviceProvider.GetService<IModuleInfoPicker>();
+            Logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace OSharp.Security
             {
                 return;
             }
-            _locator.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, moduleInfos);
             });

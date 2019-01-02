@@ -60,7 +60,8 @@ namespace OSharp.Entity
             if (migrations.Length > 0)
             {
                 dbContext.Database.Migrate();
-                ILogger logger = ServiceLocator.Instance.GetLogger("OSharp.Entity.DbContextExtensions");
+                ILoggerFactory loggerFactory = dbContext.GetService<ILoggerFactory>();
+                ILogger logger = loggerFactory.CreateLogger("OSharp.Entity.DbContextExtensions");
                 logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
             }
         }
@@ -128,13 +129,13 @@ namespace OSharp.Entity
         {
             List<AuditEntityEntry> result = new List<AuditEntityEntry>();
             //当前操作的功能是否允许数据审计
-            ScopedDictionary scopedDict = ServiceLocator.Instance.GetService<ScopedDictionary>();
+            ScopedDictionary scopedDict = context.GetService<ScopedDictionary>();
             IFunction function = scopedDict?.Function;
             if (function == null || !function.AuditEntityEnabled)
             {
                 return result;
             }
-            IEntityInfoHandler entityInfoHandler = ServiceLocator.Instance.GetService<IEntityInfoHandler>();
+            IEntityInfoHandler entityInfoHandler = context.GetService<IEntityInfoHandler>();
             if (entityInfoHandler == null)
             {
                 return result;

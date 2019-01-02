@@ -7,7 +7,10 @@
 //  <last-date>2018-07-09 16:07</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Dependency;
+using System;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.EventBuses;
 
 
@@ -16,15 +19,25 @@ namespace OSharp.Identity.Events
     /// <summary>
     /// 在线用户信息缓存移除事件处理器
     /// </summary>
-    public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>, ITransientDependency
+    public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>
     {
+        private readonly IServiceProvider _provider;
+
+        /// <summary>
+        /// 初始化一个<see cref="OnlineUserCacheRemoveEventHandler"/>类型的新实例
+        /// </summary>
+        public OnlineUserCacheRemoveEventHandler(IServiceProvider provider)
+        {
+            _provider = provider;
+        }
+
         /// <summary>
         /// 事件处理
         /// </summary>
         /// <param name="eventData">事件源数据</param>
         public override void Handle(OnlineUserCacheRemoveEventData eventData)
         {
-            IOnlineUserCache onlineUserCache = ServiceLocator.Instance.GetService<IOnlineUserCache>();
+            IOnlineUserCache onlineUserCache = _provider.GetService<IOnlineUserCache>();
             onlineUserCache.Remove(eventData.UserNames);
         }
     }

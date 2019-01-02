@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="MySqlMigrationPackBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="MigrationPackBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-21 22:14</last-date>
+//  <last-date>2019-01-03 0:24</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -14,21 +14,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
-using OSharp.Exceptions;
 
 
-namespace OSharp.Entity.MySql
+namespace OSharp.Entity
 {
     /// <summary>
-    /// MySql数据迁移模块基类
+    /// 数据迁移模块基类
     /// </summary>
-    public abstract class MySqlMigrationPackBase<TDbContext> : OsharpPack
+    /// <typeparam name="TDbContext">数据上下文类型</typeparam>
+    public abstract class MigrationPackBase<TDbContext> : OsharpPack
         where TDbContext : DbContext
     {
         /// <summary>
-        /// 获取 模块级别
+        /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public override PackLevel Level => PackLevel.Framework;
+
+        /// <summary>
+        /// 获取 数据库类型
+        /// </summary>
+        protected abstract DatabaseType DatabaseType { get; }
 
         /// <summary>
         /// 应用模块服务
@@ -36,24 +41,21 @@ namespace OSharp.Entity.MySql
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
+            OSharpOptions options = provider.GetOSharpOptions();
+            OSharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(TDbContext));
+            if (contextOptions?.DatabaseType != DatabaseType)
+            {
+                return;
+            }
+
             using (IServiceScope scope = provider.CreateScope())
             {
                 TDbContext context = CreateDbContext(scope.ServiceProvider);
-                if (context != null)
+                if (context != null && contextOptions.AutoMigrationEnabled)
                 {
-                    OSharpOptions options = scope.ServiceProvider.GetOSharpOptions();
-                    OSharpDbContextOptions contextOptions = options.GetDbContextOptions(context.GetType());
-                    if (contextOptions != null)
-                    {
-                        if (contextOptions.DatabaseType != DatabaseType.MySql)
-                        {
-                            throw new OsharpException($"上下文类型“{contextOptions.DatabaseType}”不是 {nameof(DatabaseType.MySql)} 类型");
-                        }
-                        if (contextOptions.AutoMigrationEnabled)
-                        {
-                            context.CheckAndMigration();
-                        }
-                    }
+                    context.CheckAndMigration();
+                    DbContextModelCache modelCache = scope.ServiceProvider.GetService<DbContextModelCache>();
+                    modelCache?.Set(context.GetType(), context.Model);
                 }
             }
 
