@@ -31,10 +31,6 @@
 
   <ItemGroup>
     <Compile Remove="Hangfire\TestIocRecurringJob.cs" />
-    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
   </ItemGroup>
   
   <ItemGroup>
@@ -43,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="log\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
