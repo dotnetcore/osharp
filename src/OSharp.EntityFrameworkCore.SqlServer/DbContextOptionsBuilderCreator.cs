@@ -21,7 +21,7 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServer的<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
+    [Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>

@@ -20,7 +20,7 @@ namespace OSharp.Entity.MySql
     /// <summary>
     /// MySql上下文选项建立者创建器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
+    [Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
     {
         /// <summary>
