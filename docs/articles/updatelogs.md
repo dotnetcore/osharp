@@ -1,5 +1,16 @@
 # OSharp .NetStandard 更新记录
 
+### 0.4.0-beta01
+1. 通过ISqlExecutor<TEntity, TKey>接口，添加基于Dapper的Sql查询支持。给IUnitOfWorkManager添加一些实用的扩展方法
+2. 将验证码处理类、IQueryable相关的缓存扩展方法改为服务类，相应类型或方法标记为过时
+3. 添加IFilterService服务，代替FilterHelper获取表达式的功能
+4. 添加 HttpContextServiceScopeFactory 类，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
+5. 添加 OSharp.Hangfire 后台任务项目，添加Hangfire的角色权限过滤RoleDashboardAuthorizationFilter
+6. 优化IServiceCollection服务集合中的服务替换机制，各个TypeFinder已可在初始化时替换
+7. 添加[DependencyAttribute]特性，用于控制依赖注入的实现类型在自动注册时的行为。统一查找并注册三种生命周期的所有类型，不再分别查找分别注册。
+8. 调整EventBus模块的EventHandler处理器自动注册机制，在模块的AddService时自动查找所有处理器并注册为Transient生命周期服务，处理器不需要再实现ITransientDependency接口
+9. 使用[Dependency]标签优化Audit，Caching，EntityInfo，EventBus，Mvc，EFCore，Log4Net，权限等各个Pack模块的服务注册行为。
+
 ### 0.3.0-beta12-13
 1. 将Repository中的GetFirst功能的数据源改为TrackQuery
 2. 键值存储中,将GetSetting，SaveSetting提升到接口IKeyValueStore中。 去除Identity.GetUserId的泛型约束。修复EntityRoleBase的FilterGroup命名错误

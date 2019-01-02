@@ -17,19 +17,16 @@ using System.Reflection;
 
 using Liuliu.Demo.Common;
 using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
-using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.CodeGenerator;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Drawing;
-using OSharp.Filter;
 using OSharp.Reflection;
 
 
@@ -39,13 +36,14 @@ namespace Liuliu.Demo.Web.Controllers
     [ModuleInfo(Order = 3)]
     public class CommonController : ApiController
     {
-        private readonly ICommonContract _commonContract;
-        private readonly SecurityManager _securityManager;
+        private readonly IVerifyCodeService _verifyCodeService;
 
-        public CommonController(ICommonContract commonContract, SecurityManager securityManager)
+        public CommonController(
+            ICommonContract commonContract,
+            SecurityManager securityManager,
+            IVerifyCodeService verifyCodeService)
         {
-            _commonContract = commonContract;
-            _securityManager = securityManager;
+            _verifyCodeService = verifyCodeService;
         }
 
         /// <summary>
@@ -66,8 +64,8 @@ namespace Liuliu.Demo.Web.Controllers
                 RandomPosition = true
             };
             Bitmap bitmap = coder.CreateImage(4, out string code);
-            VerifyCodeHandler.SetCode(code, out string id);
-            return VerifyCodeHandler.GetImageString(bitmap, id);
+            _verifyCodeService.SetCode(code, out string id);
+            return _verifyCodeService.GetImageString(bitmap, id);
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("验证验证码的有效性")]
         public bool CheckVerifyCode(string code, string id)
         {
-            return VerifyCodeHandler.CheckCode(code, id, false);
+            return _verifyCodeService.CheckCode(code, id, false);
         }
 
         /// <summary>

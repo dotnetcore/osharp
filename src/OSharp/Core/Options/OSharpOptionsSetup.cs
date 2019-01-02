@@ -12,7 +12,6 @@ using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -97,7 +96,7 @@ namespace OSharp.Core.Options
         /// </summary>
         /// <param name="options"></param>
         private void SetDbContextOptionses(OSharpOptions options)
-        { 
+        {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
             IDictionary<string, OSharpDbContextOptions> dict = section.Get<Dictionary<string, OSharpDbContextOptions>>();
             if (dict == null || dict.Count == 0)
@@ -113,7 +112,7 @@ namespace OSharp.Core.Options
                     ConnectionString = connectionString,
                     DatabaseType = DatabaseType.SqlServer
                 };
-                options.DbContextOptionses.Add("DefaultDbContext", dbContextOptions);
+                options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;
             }
             var repeated = dict.Values.GroupBy(m => m.DbContextType).FirstOrDefault(m => m.Count() > 1);
@@ -124,7 +123,7 @@ namespace OSharp.Core.Options
 
             foreach (KeyValuePair<string, OSharpDbContextOptions> pair in dict)
             {
-                options.DbContextOptionses.Add(pair.Key, pair.Value);
+                options.DbContexts.Add(pair.Key, pair.Value);
             }
         }
     }

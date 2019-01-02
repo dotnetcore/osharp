@@ -28,6 +28,13 @@ namespace OSharp.AspNetCore.Mvc
     public class MvcModuleInfoPicker : ModuleInfoPickerBase<Function>
     {
         /// <summary>
+        /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例
+        /// </summary>
+        public MvcModuleInfoPicker(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        { }
+
+        /// <summary>
         /// 重写以实现从类型中提取模块信息
         /// </summary>
         /// <param name="type">类型信息</param>
@@ -139,7 +146,7 @@ namespace OSharp.AspNetCore.Mvc
             {
                 //无区域，使用Root.Site位置
                 return attrPosition == null
-                    ? $"Root.Site"
+                    ? "Root.Site"
                     : $"Root.Site.{attrPosition}";
             }
             return attrPosition == null

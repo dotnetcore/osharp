@@ -29,10 +29,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class AuditOperationController : AdminApiController
     {
         private readonly IAuditContract _auditContract;
+        private readonly IFilterService _filterService;
 
-        public AuditOperationController(IAuditContract auditContract)
+        public AuditOperationController(IAuditContract auditContract, IFilterService filterService)
         {
             _auditContract = auditContract;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<AuditOperationOutputDto> Read(PageRequest request)
         {
-            Expression<Func<AuditOperation, bool>> predicate = FilterHelper.GetExpression<AuditOperation>(request.FilterGroup);
+            Expression<Func<AuditOperation, bool>> predicate = _filterService.GetExpression<AuditOperation>(request.FilterGroup);
             request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
             var page = _auditContract.AuditOperations.ToPage<AuditOperation, AuditOperationOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();

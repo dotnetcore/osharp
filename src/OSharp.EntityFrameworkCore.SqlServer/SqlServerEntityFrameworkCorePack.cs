@@ -12,6 +12,7 @@ using System.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Dependency;
 
 
 namespace OSharp.Entity.SqlServer
@@ -41,7 +42,6 @@ namespace OSharp.Entity.SqlServer
         {
             services = base.AddServices(services);
 
-            services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
 
             return services;

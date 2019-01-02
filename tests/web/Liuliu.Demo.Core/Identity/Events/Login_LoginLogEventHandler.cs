@@ -23,7 +23,7 @@ namespace Liuliu.Demo.Identity.Events
     /// <summary>
     /// 用户登录事件：登录日志
     /// </summary>
-    public class LoginLoginLogEventHandler : EventHandlerBase<LoginEventData>, ITransientDependency
+    public class LoginLoginLogEventHandler : EventHandlerBase<LoginEventData>
     {
         private readonly IRepository<LoginLog, Guid> _loginLogRepository;
 

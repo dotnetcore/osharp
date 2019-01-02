@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Extensions;
@@ -21,6 +23,7 @@ namespace OSharp.Audits
     /// <summary>
     /// 数据审计信息处理器
     /// </summary>
+    [Dependency(ServiceLifetime.Transient, AddSelf = true)]
     public class AuditEntityEventHandler : EventHandlerBase<AuditEntityEventData>
     {
         private readonly ScopedDictionary _scopedDictionary;

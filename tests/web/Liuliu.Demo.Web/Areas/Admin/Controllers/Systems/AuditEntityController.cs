@@ -30,13 +30,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class AuditEntityController : AdminApiController
     {
         private readonly IAuditContract _auditContract;
+        private readonly IFilterService _filterService;
 
         /// <summary>
         /// 初始化一个<see cref="AuditEntityController"/>类型的新实例
         /// </summary>
-        public AuditEntityController(IAuditContract auditContract)
+        public AuditEntityController(IAuditContract auditContract, IFilterService filterService)
         {
             _auditContract = auditContract;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<AuditEntityOutputDto> Read(PageRequest request)
         {
-            Expression<Func<AuditEntity, bool>> predicate = FilterHelper.GetExpression<AuditEntity>(request.FilterGroup);
+            Expression<Func<AuditEntity, bool>> predicate = _filterService.GetExpression<AuditEntity>(request.FilterGroup);
             PageResult<AuditEntityOutputDto> page;
             //有操作参数，是从操作列表来的
             if (request.FilterGroup.Rules.Any(m => m.Field == "OperationId"))

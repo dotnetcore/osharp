@@ -28,6 +28,7 @@ namespace OSharp.Dependency
     /// 如果当前处于HttpContext有效的范围内，可正常解析<see cref="ServiceLifetime.Scoped"/>的服务
     /// 注：服务定位器尚不能正常解析 RootServiceProvider.CreateScope() 生命周期内的 Scoped 的服务
     /// </summary>
+    [Obsolete("此类将在1.0版本中移除")]
     public sealed class ServiceLocator : IDisposable
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
@@ -335,7 +336,7 @@ namespace OSharp.Dependency
         /// </summary>
         public string GetConfiguration(string path)
         {
-            IConfiguration config = GetService<IConfiguration>() ?? Singleton<IConfiguration>.Instance;
+            IConfiguration config = GetService<IConfiguration>() ?? _services.GetConfiguration();
             return config?[path];
         }
 

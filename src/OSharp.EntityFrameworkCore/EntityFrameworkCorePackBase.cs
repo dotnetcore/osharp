@@ -34,12 +34,7 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.TryAddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
-            services.TryAddSingleton<IDbContextResolver, DbContextResolver>();
-            services.TryAddSingleton<DbContextModelCache>();
-
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 
             return services;
         }

@@ -11,6 +11,7 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.EventBuses;
@@ -21,7 +22,7 @@ namespace OSharp.Security.Events
     /// <summary>
     /// 功能信息缓存刷新事件处理器
     /// </summary>
-    public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>, ITransientDependency
+    public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>
     {
         private readonly IServiceProvider _provider;
 
@@ -39,7 +40,7 @@ namespace OSharp.Security.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(FunctionCacheRefreshEventData eventData)
         {
-            if (!ServiceLocator.InScoped())
+            if (!_provider.InHttpRequest())
             {
                 return;
             }

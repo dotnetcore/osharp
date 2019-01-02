@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
@@ -47,12 +48,13 @@ namespace OSharp.Entity
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
         /// </summary>
-        public Repository(IUnitOfWorkManager unitOfWorkManager)
+        public Repository(IServiceProvider serviceProvider)
         {
+            IUnitOfWorkManager unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
             UnitOfWork = unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
             _dbContext = (DbContext)UnitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
-            _logger = ServiceLocator.Instance.GetLogger<Repository<TEntity, TKey>>();
+            _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
         }
 
         /// <summary>

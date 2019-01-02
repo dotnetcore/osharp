@@ -41,7 +41,7 @@ namespace OSharp.Redis
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = services.GetConfiguration();
             string config = configuration["OSharp:Redis:Configuration"];
             if (config.IsNullOrEmpty())
             {

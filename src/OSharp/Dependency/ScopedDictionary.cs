@@ -11,6 +11,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Audits;
 using OSharp.Core.Functions;
 
@@ -20,6 +22,7 @@ namespace OSharp.Dependency
     /// <summary>
     /// 基于Scoped生命周期的数据字典
     /// </summary>
+    [Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class ScopedDictionary : ConcurrentDictionary<string, object>, IDisposable
     {
         /// <summary>

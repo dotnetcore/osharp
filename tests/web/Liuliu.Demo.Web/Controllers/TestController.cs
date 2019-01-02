@@ -20,6 +20,7 @@ using Liuliu.Demo.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
@@ -104,16 +105,12 @@ namespace Liuliu.Demo.Web.Controllers
 
     public class ClassFilter : ActionFilterAttribute, IExceptionFilter
     {
-        private readonly ILogger _logger;
-
-        public ClassFilter()
-        {
-            _logger = ServiceLocator.Instance.GetLogger(GetType());
-        }
+        private ILogger _logger;
 
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            _logger = context.HttpContext.RequestServices.GetLogger<ClassFilter>();
             _logger.LogInformation("ClassFilter - OnActionExecuting");
         }
 
@@ -148,16 +145,12 @@ namespace Liuliu.Demo.Web.Controllers
 
     public class MethodFilter : ActionFilterAttribute
     {
-        private readonly ILogger _logger;
-
-        public MethodFilter()
-        {
-            _logger = ServiceLocator.Instance.GetLogger(GetType());
-        }
+        private ILogger _logger;
 
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            _logger = context.HttpContext.RequestServices.GetLogger<MethodFilter>();
             _logger.LogInformation("MethodFilter - OnActionExecuting");
         }
 

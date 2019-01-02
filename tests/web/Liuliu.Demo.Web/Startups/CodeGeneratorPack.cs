@@ -10,13 +10,12 @@
 using System;
 using System.ComponentModel;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.CodeGenerator;
 using OSharp.Core.Packs;
-using OSharp.Data;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -45,7 +44,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            if (Singleton<IHostingEnvironment>.Instance.IsDevelopment())
+            if (services.GetHostingEnvironment().IsDevelopment())
             {
                 services.AddSingleton<ITypeMetadataHandler, TypeMetadataHandler>();
             }

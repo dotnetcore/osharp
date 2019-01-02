@@ -29,6 +29,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * OSharp.Permissions【权限组件】：使用AspNetCore的Identity为基础实现身份认证的封装，以Security为基础实现以角色-功能、用户-功能的功能权限实现，以角色-数据，用户-数据的数据权限的封装
 * OSharp.Log4Net【日志组件】：基于Log4Net的日志记录组件
 * OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
+* OSharp.Hangfire【后台任务组件】：封装基于Hangfire后台任务的服务端实现
 * OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
 
 ## <a id="02"/>OSharpNS特性

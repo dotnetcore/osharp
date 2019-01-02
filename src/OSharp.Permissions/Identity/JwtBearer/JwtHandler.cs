@@ -30,9 +30,8 @@ namespace OSharp.Identity.JwtBearer
         /// <summary>
         /// 生成JwtToken
         /// </summary>
-        public static string CreateToken(Claim[] claims)
+        public static string CreateToken(Claim[] claims, OSharpOptions options)
         {
-            OSharpOptions options = ServiceLocator.Instance.GetService<IOptions<OSharpOptions>>().Value;
             JwtOptions jwtOptions = options.Jwt;
             string secret = jwtOptions.Secret;
             if (secret == null)

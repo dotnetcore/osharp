@@ -14,6 +14,10 @@ using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
+
 using IMapper = OSharp.Mapping.IMapper;
 
 
@@ -22,6 +26,7 @@ namespace OSharp.AutoMapper
     /// <summary>
     /// AutoMapper映射执行类
     /// </summary>
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class AutoMapperMapper : IMapper
     {
         /// <summary>
