@@ -65,15 +65,16 @@ namespace OSharp.Hangfire
         /// <param name="app">Asp应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
             bool enabled = configuration["OSharp:Hangfire:Enabled"].CastTo(false);
             if (!enabled)
             {
                 return;
             }
 
-            IGlobalConfiguration globalConfiguration = app.ApplicationServices.GetService<IGlobalConfiguration>();
-            globalConfiguration.UseLogProvider(new AspNetCoreLogProvider(app.ApplicationServices.GetService<ILoggerFactory>()));
+            IGlobalConfiguration globalConfiguration = serviceProvider.GetService<IGlobalConfiguration>();
+            globalConfiguration.UseLogProvider(new AspNetCoreLogProvider(serviceProvider.GetService<ILoggerFactory>()));
 
             BackgroundJobServerOptions serverOptions = GetBackgroundJobServerOptions(configuration);
             app.UseHangfireServer(serverOptions);
@@ -82,13 +83,16 @@ namespace OSharp.Hangfire
             DashboardOptions dashboardOptions = GetDashboardOptions(configuration);
             app.UseHangfireDashboard(url, dashboardOptions);
 
+            IHangfireJobRunner jobRunner = serviceProvider.GetService<IHangfireJobRunner>();
+            jobRunner?.Start();
+
             IsEnabled = true;
         }
 
         /// <summary>
-        /// 
+        /// AddHangfire委托，重写可配置Hangfire服务，比如使用UseSqlServerStorage等
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services">服务容器</param>
         /// <returns></returns>
         protected virtual Action<IGlobalConfiguration> GetHangfireAction(IServiceCollection services)
         {
@@ -103,9 +107,9 @@ namespace OSharp.Hangfire
         }
 
         /// <summary>
-        /// 
+        /// 获取后台作业服务器选项
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">系统配置信息</param>
         /// <returns></returns>
         protected virtual BackgroundJobServerOptions GetBackgroundJobServerOptions(IConfiguration configuration)
         {
@@ -119,9 +123,9 @@ namespace OSharp.Hangfire
         }
 
         /// <summary>
-        /// 
+        /// 获取Hangfire仪表盘选项
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">系统配置信息</param>
         /// <returns></returns>
         protected virtual DashboardOptions GetDashboardOptions(IConfiguration configuration)
         {

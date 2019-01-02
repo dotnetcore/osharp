@@ -46,8 +46,6 @@ namespace Liuliu.Demo.Web
                 .UseDefaultFiles()
                 .UseStaticFiles()
                 .UseOSharp();
-
-            HangfireJobRunner.Start();
         }
     }
 }

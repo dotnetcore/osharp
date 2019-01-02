@@ -17,15 +17,19 @@ using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Collections;
+using OSharp.Dependency;
+using OSharp.Hangfire;
 
 
 namespace Liuliu.Demo.Web.Hangfire
 {
-    public static class HangfireJobRunner
+    [Dependency(ServiceLifetime.Singleton)]
+    public class HangfireJobRunner : IHangfireJobRunner
     {
-        public static void Start()
+        public void Start()
         {
             BackgroundJob.Enqueue<UserManager<User>>(m => m.FindByIdAsync("1"));
             string jobId = BackgroundJob.Schedule<UserManager<User>>(m => m.FindByIdAsync("2"), TimeSpan.FromMinutes(2));
