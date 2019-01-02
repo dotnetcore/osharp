@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Redis", "src\OSharp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{3AE4A771-1F76-4792-8A88-F0FB9BA576C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{863E44A5-D60B-4831-976D-6D34AE8DA14D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{863E44A5-D60B-4831-976D-6D34AE8DA14D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
