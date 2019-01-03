@@ -40,7 +40,7 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
-        {
+        { 
             OSharpOptions options = provider.GetOSharpOptions();
             OSharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(TDbContext));
             if (contextOptions?.DatabaseType != DatabaseType)
