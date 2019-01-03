@@ -7,7 +7,9 @@
 //  <last-date>2018-11-05 16:29</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +45,21 @@ namespace OSharp.Entity.Sqlite
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqliteDapperSqlExecutor<,>));
 
             return services;
+        }
+        
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
+        {
+            bool? hasSqlite = provider.GetOSharpOptions()?.DbContexts?.Values.Any(m => m.DatabaseType == DatabaseType.Sqlite);
+            if (hasSqlite == null || !hasSqlite.Value)
+            {
+                return;
+            }
+
+            base.UsePack(provider);
         }
     }
 }
