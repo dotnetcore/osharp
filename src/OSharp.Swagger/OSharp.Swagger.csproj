@@ -8,6 +8,12 @@
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <None Remove="index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="index.html" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />

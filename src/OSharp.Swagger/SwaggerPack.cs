@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -104,6 +105,7 @@ namespace OSharp.Swagger
                 app.UseSwagger().UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint(_url, $"{_title} V{_version}");
+                    options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
                 });
                 IsEnabled = true;
             }

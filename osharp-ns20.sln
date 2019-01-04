@@ -65,7 +65,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OShar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{863E44A5-D60B-4831-976D-6D34AE8DA14D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{464B2C6E-3C31-4FD3-BD29-B7168245B985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{464B2C6E-3C31-4FD3-BD29-B7168245B985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,10 @@ Global
 		{464B2C6E-3C31-4FD3-BD29-B7168245B985}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{464B2C6E-3C31-4FD3-BD29-B7168245B985}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{464B2C6E-3C31-4FD3-BD29-B7168245B985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +185,7 @@ Global
 		{3AE4A771-1F76-4792-8A88-F0FB9BA576C2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{863E44A5-D60B-4831-976D-6D34AE8DA14D} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{464B2C6E-3C31-4FD3-BD29-B7168245B985} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
+		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

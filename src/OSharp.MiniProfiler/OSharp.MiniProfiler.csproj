@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.138" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.138" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
