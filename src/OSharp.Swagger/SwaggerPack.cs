@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
-using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
@@ -47,7 +47,7 @@ namespace OSharp.Swagger
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
         public override int Order => 2;
-        
+
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
@@ -65,7 +65,7 @@ namespace OSharp.Swagger
             _title = configuration["OSharp:Swagger:Title"];
             _version = configuration["OSharp:Swagger:Version"].CastTo(1);
             _enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
-            
+
             if (_enabled)
             {
                 services.AddMvcCore().AddApiExplorer();
@@ -75,6 +75,18 @@ namespace OSharp.Swagger
                     Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                     {
                         options.IncludeXmlComments(file);
+                    });
+                    //权限Token
+                    options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                    {
+                        Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
+                    });
+                    options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
+                    {
+                        { "Bearer", Enumerable.Empty<string>() }
                     });
                 });
             }

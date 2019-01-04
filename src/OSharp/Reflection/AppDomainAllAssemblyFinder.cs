@@ -98,11 +98,7 @@ namespace OSharp.Reflection
             string[] files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
                 .Concat(Directory.GetFiles(path, "*.exe", SearchOption.TopDirectoryOnly))
                 .ToArray();
-            if (_filterNetAssembly)
-            {
-                string[] files1 = files;
-                files = files.WhereIf(m => files1.Any(n => m.StartsWith(n, StringComparison.OrdinalIgnoreCase)), _filterNetAssembly).ToArray();
-            }
+
             return files.Select(Assembly.LoadFrom).ToArray();
         }
 
