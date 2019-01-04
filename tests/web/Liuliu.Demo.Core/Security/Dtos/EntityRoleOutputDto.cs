@@ -12,6 +12,7 @@ using System;
 using Liuliu.Demo.Security.Entities;
 
 using OSharp.Entity;
+using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Secutiry;
@@ -25,6 +26,26 @@ namespace Liuliu.Demo.Security.Dtos
     [MapFrom(typeof(EntityRole))]
     public class EntityRoleOutputDto : IOutputDto, IDataAuthEnabled
     {
+        /// <summary>
+        /// 初始化一个<see cref="EntityRoleOutputDto"/>类型的新实例
+        /// </summary>
+        public EntityRoleOutputDto()
+        { }
+
+        /// <summary>
+        /// 初始化一个<see cref="EntityRoleOutputDto"/>类型的新实例
+        /// </summary>
+        public EntityRoleOutputDto(EntityRole entityRole)
+        {
+            Id = entityRole.Id;
+            RoleId = entityRole.RoleId;
+            EntityId = entityRole.EntityId;
+            IsLocked = entityRole.IsLocked;
+            Operation = entityRole.Operation;
+            CreatedTime = entityRole.CreatedTime;
+            FilterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
+        }
+
         /// <summary>
         /// 获取或设置 编号
         /// </summary>

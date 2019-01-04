@@ -21,7 +21,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Entity.Transactions;
 using OSharp.Exceptions;
-using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -231,7 +230,7 @@ namespace OSharp.Entity
             }
             HasCommited = true;
         }
-        
+
         private static void CleanChanges(DbContext context)
         {
             var entries = context.ChangeTracker.Entries().ToArray();

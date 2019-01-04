@@ -31,6 +31,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
 * OSharp.Hangfire【后台任务组件】：封装基于Hangfire后台任务的服务端实现
 * OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
+* OSharp.MiniProfiler【MiniProfiler组件】：基于MiniProfiler实现的性能监测组件
 
 ## <a id="02"/>OSharpNS特性
 

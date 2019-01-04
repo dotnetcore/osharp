@@ -10,6 +10,7 @@
 using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
 using OSharp.Core.Systems;
@@ -41,8 +42,7 @@ namespace OSharp.Systems
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddScoped<KeyValueStore>();
-            services.AddScoped<IKeyValueStore>(provider => provider.GetService<KeyValueStore>());
+            services.TryAddScoped<IKeyValueStore, KeyValueStore>();
 
             return services;
         }

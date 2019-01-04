@@ -1,5 +1,12 @@
 # OSharp .NetStandard 更新记录
 
+### 0.4.0-beta04
+1. Swagger模块的UI添加权限Token填写按钮，以方便测试需要权限验证的API
+2. 添加SignalR实时通信框架支持。添加系统设置API入口System/SettingsController
+3. 添加Bitmap图像处理扩展操作类 OSharp.Drawing.BitmapExtensions
+4. 将IHttpContextAccessor，IPrincipal 的注入调整到AspNetCorePack模块中
+5. 添加性能监测工具MiniProfiler项目 OSharp.MiniProfiler，并集成到Swagger中
+
 ### 0.4.0-beta02-03
 1. 合并EFCore的Migration迁移基类，各个数据库驱动技术的迁移基类合并为 `MigrationPackBase<TDbContext>`
 2. 各个数据库EFCore模块根据配置决定是否初始化模块

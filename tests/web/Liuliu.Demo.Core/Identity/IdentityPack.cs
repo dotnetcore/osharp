@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity.Entities;
 
@@ -113,11 +114,27 @@ namespace Liuliu.Demo.Identity
                 {
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"],
                     ValidAudience = configuration["OSharp:Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
+                    LifetimeValidator = (before, expires, token, param) => expires > DateTime.Now,
+                    ValidateLifetime = true
                 };
 
                 jwt.SecurityTokenValidators.Clear();
                 jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
+                jwt.Events = new JwtBearerEvents()
+                {
+                    // 生成SignalR的用户信息
+                    OnMessageReceived = context =>
+                    {
+                        string token = context.Request.Query["access_token"];
+                        string path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(token) && path.Contains("hub"))
+                        {
+                            context.Token = token;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             //}).AddQQ(qq =>
             //{
             //    qq.AppId = configuration["Authentication:QQ:AppId"];

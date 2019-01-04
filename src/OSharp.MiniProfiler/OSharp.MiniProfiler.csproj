@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>OSharpNS.MiniProfiler</PackageId>
+    <Summary>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件</Summary>
+    <Description>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <ItemGroup>
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.138" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.138" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

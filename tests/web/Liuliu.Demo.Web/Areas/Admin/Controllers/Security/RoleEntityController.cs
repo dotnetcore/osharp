@@ -26,7 +26,6 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Modules;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -77,34 +76,20 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 request.PageCondition,
                 m => new
                 {
-                    Data = m,
-                    m.Id,
-                    m.RoleId,
-                    m.EntityId,
-                    m.Operation,
-                    m.FilterGroupJson,
-                    m.IsLocked,
-                    m.CreatedTime,
+                    D = m,
                     RoleName = roleManager.Roles.First(n => n.Id == m.RoleId).Name,
                     Entity = _securityManager.EntityInfos.Where(n => n.Id == m.EntityId).Select(n => new
                     {
                         n.Name,
                         n.TypeName
                     }).FirstOrDefault()
-                }).ToPageResult(data => data.Select(n => new EntityRoleOutputDto()
+                }).ToPageResult(data => data.Select(m => new EntityRoleOutputDto(m.D)
                 {
-                    Id = n.Id,
-                    RoleId = n.RoleId,
-                    EntityId = n.EntityId,
-                    RoleName = n.RoleName,
-                    EntityName = n.Entity.Name,
-                    EntityType = n.Entity.TypeName,
-                    Operation = n.Operation,
-                    FilterGroup = n.FilterGroupJson.FromJsonString<FilterGroup>(),
-                    IsLocked = n.IsLocked,
-                    CreatedTime = n.CreatedTime,
-                    Updatable = updateFunc(n.Data),
-                    Deletable = deleteFunc(n.Data)
+                    RoleName = m.RoleName,
+                    EntityName = m.Entity.Name,
+                    EntityType = m.Entity.TypeName,
+                    Updatable = updateFunc(m.D),
+                    Deletable = deleteFunc(m.D)
                 }).ToArray());
             return page.ToPageData();
         }
