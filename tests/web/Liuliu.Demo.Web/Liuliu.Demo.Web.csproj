@@ -30,15 +30,14 @@
   <Import Project="../../../build/version.props" />
 
   <ItemGroup>
-    <Compile Remove="Hangfire\TestIocRecurringJob.cs" />
     <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
+    <Compile Remove="Startups\PostgreSqlDefaultDbContextMigrationPack.cs" />
+    <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqlServerDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqlServerDesignTimeDefaultDbContextFactory.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />

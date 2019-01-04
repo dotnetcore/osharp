@@ -10,14 +10,14 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20180812080637_Init")]
+    [Migration("20190104081715_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -100,8 +100,19 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Role");
 
                     b.HasData(
-                        new { Id = 1, ConcurrencyStamp = "1b18fbe8-a1b9-4b9b-afc9-090eff89dcd6", CreatedTime = new DateTime(2018, 8, 12, 16, 6, 36, 998, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
+                            CreatedTime = new DateTime(2019, 1, 4, 16, 17, 15, 580, DateTimeKind.Local).AddTicks(4000),
+                            IsAdmin = true,
+                            IsDefault = false,
+                            IsLocked = false,
+                            IsSystem = true,
+                            Name = "系统管理员",
+                            NormalizedName = "系统管理员",
+                            Remark = "系统最高权限管理角色"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.RoleClaim", b =>
@@ -376,8 +387,15 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Module");
 
                     b.HasData(
-                        new { Id = 1, Code = "Root", Name = "根节点", OrderCode = 1.0, Remark = "系统根节点", TreePathString = "$1$" }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            Code = "Root",
+                            Name = "根节点",
+                            OrderCode = 1.0,
+                            Remark = "系统根节点",
+                            TreePathString = "$1$"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
@@ -447,18 +465,15 @@ namespace Liuliu.Demo.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("EntityKey")
-                        .IsRequired();
+                    b.Property<string>("EntityKey");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<int>("OperateType");
 
                     b.Property<Guid>("OperationId");
 
-                    b.Property<string>("TypeName")
-                        .IsRequired();
+                    b.Property<string>("TypeName");
 
                     b.HasKey("Id");
 
@@ -478,8 +493,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<int>("Elapsed");
 
-                    b.Property<string>("FunctionName")
-                        .IsRequired();
+                    b.Property<string>("FunctionName");
 
                     b.Property<string>("Ip");
 
@@ -511,11 +525,9 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("DataType");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired();
+                    b.Property<string>("DisplayName");
 
-                    b.Property<string>("FieldName")
-                        .IsRequired();
+                    b.Property<string>("FieldName");
 
                     b.Property<string>("NewValue");
 
@@ -613,14 +625,27 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("KeyValue");
 
                     b.HasData(
-                        new { Id = new Guid("a239920c-574f-4928-b7a8-a93a01097d29"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
-                        new { Id = new Guid("eba477b4-fc46-484a-8d04-a93a01097d30"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
-                    );
+                        new
+                        {
+                            Id = new Guid("534d7813-0eea-44cc-b88e-a9cb010c6981"),
+                            IsLocked = false,
+                            Key = "Site.Name",
+                            ValueJson = "\"OSHARP\"",
+                            ValueType = "System.String,System.Private.CoreLib"
+                        },
+                        new
+                        {
+                            Id = new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"),
+                            IsLocked = false,
+                            Key = "Site.Description",
+                            ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"",
+                            ValueType = "System.String,System.Private.CoreLib"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.LoginLog", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
