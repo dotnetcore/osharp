@@ -47,10 +47,7 @@ namespace OSharp.Systems
         /// <summary>
         /// 获取 键值对数据查询数据集
         /// </summary>
-        public IQueryable<KeyValue> KeyValues
-        {
-            get { return _keyValueRepository.Query(); }
-        }
+        public IQueryable<KeyValue> KeyValues => _keyValueRepository.Query();
 
         /// <summary>
         /// 获取或创建设置信息

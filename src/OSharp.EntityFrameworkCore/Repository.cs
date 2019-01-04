@@ -20,7 +20,6 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -50,8 +49,7 @@ namespace OSharp.Entity
         /// </summary>
         public Repository(IServiceProvider serviceProvider)
         {
-            IUnitOfWorkManager unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
-            UnitOfWork = unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
+            UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
             _dbContext = (DbContext)UnitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();

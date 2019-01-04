@@ -92,12 +92,19 @@ namespace OSharp.Dependency
             DependencyAttribute dependencyAttribute = implementationType.GetAttribute<DependencyAttribute>();
             Type[] serviceTypes = GetImplementedInterfaces(implementationType);
 
-            //服务数量为0或者类型显示要求自注册，则注册自身
-            if (serviceTypes.Length == 0 || dependencyAttribute?.AddSelf == true)
+            //服务数量为0时注册自身
+            if (serviceTypes.Length == 0)
             {
                 services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime.Value));
                 return;
             }
+
+            //服务实现显示要求注册身处时，注册自身并且继续注册接口
+            if (dependencyAttribute?.AddSelf == true)
+            {
+                services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime.Value));
+            }
+
             //注册服务
             for (int i = 0; i < serviceTypes.Length; i++)
             {
