@@ -21,10 +21,12 @@ using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Json;
 using OSharp.Properties;
+using OSharp.Reflection;
 
 
 namespace OSharp.Caching
@@ -41,7 +43,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-
+            
             string json = value.ToJsonString();
             if (options == null)
             {
@@ -79,7 +81,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0, true);
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
@@ -93,7 +95,7 @@ namespace OSharp.Caching
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
-            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0, true);
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
@@ -109,11 +111,11 @@ namespace OSharp.Caching
             Check.NotNull(value, nameof(value));
             Check.NotNull(function, nameof(function));
 
-            if (function.CacheExpirationSeconds == 0)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
                 return;
             }
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
             cache.Set(key, value, options);
         }
 
@@ -125,12 +127,12 @@ namespace OSharp.Caching
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
             Check.NotNull(function, nameof(function));
-
-            if (function.CacheExpirationSeconds == 0)
+            
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
                 return Task.FromResult(0);
             }
-            DistributedCacheEntryOptions options = function.ToCacheOptions();
             return cache.SetAsync(key, value, options);
         }
 
@@ -203,6 +205,8 @@ namespace OSharp.Caching
         /// </summary>
         public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, int cacheSeconds)
         {
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
+            
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
             return cache.Get<TResult>(key, getFunc, options);
@@ -213,6 +217,8 @@ namespace OSharp.Caching
         /// </summary>
         public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, int cacheSeconds)
         {
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
+
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
             return cache.GetAsync<TResult>(key, getAsyncFunc, options);
@@ -223,14 +229,10 @@ namespace OSharp.Caching
         /// </summary>
         public static TResult Get<TResult>(this IDistributedCache cache, string key, Func<TResult> getFunc, IFunction function)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            if (function.IsCacheSliding)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
-                options.SetSlidingExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            else
-            {
-                options.SetAbsoluteExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
+                return getFunc();
             }
             return cache.Get<TResult>(key, getFunc, options);
         }
@@ -240,14 +242,10 @@ namespace OSharp.Caching
         /// </summary>
         public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, IFunction function)
         {
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
-            if (function.IsCacheSliding)
+            DistributedCacheEntryOptions options = function.ToCacheOptions();
+            if (options == null)
             {
-                options.SetSlidingExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
-            }
-            else
-            {
-                options.SetAbsoluteExpiration(TimeSpan.FromSeconds(function.CacheExpirationSeconds));
+                return getAsyncFunc();
             }
             return cache.GetAsync<TResult>(key, getAsyncFunc, options);
         }
@@ -255,6 +253,7 @@ namespace OSharp.Caching
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
         /// </summary>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> pridicate,
             PageCondition pageCondition,
@@ -270,6 +269,7 @@ namespace OSharp.Caching
         /// <summary>
         /// 查询分页数据结果，如缓存存在，直接返回，否则从数据源查找分页结果，并存入缓存中再返回
         /// </summary>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static PageResult<TResult> ToPageCache<TEntity, TResult>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> pridicate,
             PageCondition pageCondition,
@@ -293,6 +293,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
@@ -313,6 +314,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
@@ -333,6 +335,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
@@ -353,6 +356,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             Expression<Func<TSource, TResult>> selector,
@@ -372,6 +376,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
@@ -392,6 +397,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
@@ -412,6 +418,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TResult> ToCacheList<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
@@ -432,6 +439,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TResult[] ToCacheArray<TSource, TResult>(this IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
@@ -450,6 +458,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
@@ -465,6 +474,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, int cacheSeconds = 60, params object[] keyParams)
         {
             IDistributedCache cache = ServiceLocator.Instance.GetService<IDistributedCache>();
@@ -480,6 +490,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TSource> ToCacheList<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
@@ -499,6 +510,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TSource[] ToCacheArray<TSource>(this IQueryable<TSource> source, IFunction function, params object[] keyParams)
         {
             if (function == null || function.CacheExpirationSeconds <= 0)
@@ -523,6 +535,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
@@ -545,6 +558,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询的分页结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static PageResult<TOutputDto> ToPageCache<TEntity, TOutputDto>(this IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
@@ -566,6 +580,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             int cacheSeconds = 60,
@@ -584,6 +599,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存时间：秒</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             int cacheSeconds = 60,
@@ -602,6 +618,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             IFunction function,
@@ -620,6 +637,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
             Expression<Func<TSource, bool>> predicate,
             IFunction function,
@@ -637,6 +655,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
             int cacheSeconds = 60,
             params object[] keyParams)
@@ -655,6 +674,7 @@ namespace OSharp.Caching
         /// <param name="cacheSeconds">缓存的秒数</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
             int cacheSeconds = 60,
             params object[] keyParams)
@@ -673,6 +693,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static List<TOutputDto> ToCacheList<TSource, TOutputDto>(this IQueryable<TSource> source,
             IFunction function,
             params object[] keyParams)
@@ -691,6 +712,7 @@ namespace OSharp.Caching
         /// <param name="function">缓存策略相关功能</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns>查询结果</returns>
+        [Obsolete("使用 ICacheService 服务替换，此方法将在1.0版本中移除")]
         public static TOutputDto[] ToCacheArray<TSource, TOutputDto>(this IQueryable<TSource> source,
             IFunction function,
             params object[] keyParams)
@@ -729,16 +751,22 @@ namespace OSharp.Caching
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector, params object[] keyParams)
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {
@@ -767,16 +795,22 @@ namespace OSharp.Caching
             params object[] keyParams)
             where TOutputDto : IOutputDto
         {
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             source = source.Where(predicate);
             SortCondition[] sortConditions = pageCondition.SortConditions;
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {
@@ -795,7 +829,7 @@ namespace OSharp.Caching
             source = source != null
                 ? source.Skip((pageIndex - 1) * pageSize).Take(pageSize)
                 : Enumerable.Empty<TEntity>().AsQueryable();
-            IQueryable<TOutputDto> query = source.ToOutput<TEntity, TOutputDto>();
+            IQueryable<TOutputDto> query = source.ToOutput<TEntity, TOutputDto>(true);
             return GetKey(query.Expression, keyParams);
         }
 

@@ -8,9 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 
-using Microsoft.AspNetCore.Builder;
+using JetBrains.Annotations;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -23,16 +25,9 @@ namespace OSharp.Dependency
     /// <summary>
     /// 依赖注入模块
     /// </summary>
+    [Description("依赖注入模块")]
     public class DependencyPack : OsharpPack
     {
-        /// <summary>
-        /// 初始化一个<see cref="DependencyPack"/>类型的新实例
-        /// </summary>
-        public DependencyPack()
-        {
-            ScanOptions = new ServiceScanOptions();
-        }
-
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
@@ -45,11 +40,6 @@ namespace OSharp.Dependency
         public override int Order => 1;
 
         /// <summary>
-        /// 获取或设置 服务搜索选项
-        /// </summary>
-        protected virtual ServiceScanOptions ScanOptions { get; }
-
-        /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
         /// <param name="services">依赖注入服务容器</param>
@@ -58,81 +48,133 @@ namespace OSharp.Dependency
         {
             ServiceLocator.Instance.SetServiceCollection(services);
 
-            //添加即时生命周期类型的服务
-            Type[] dependencyTypes = ScanOptions.TransientTypeFinder.FindAll();
-            AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Transient);
+            services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
-            //添加作用域生命周期类型的服务
-            dependencyTypes = ScanOptions.ScopedTypeFinder.FindAll();
-            AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Scoped);
+            //查找所有自动注册的服务实现类型
+            IDependencyTypeFinder dependencyTypeFinder = 
+                services.GetOrAddTypeFinder<IDependencyTypeFinder>(assemblyFinder => new DependencyTypeFinder(assemblyFinder));
 
-            //添加单例生命周期类型的服务
-            dependencyTypes = ScanOptions.SingletonTypeFinder.FindAll();
-            AddTypeWithInterfaces(services, dependencyTypes, ServiceLifetime.Singleton);
+            Type[] dependencyTypes = dependencyTypeFinder.FindAll();
+            foreach (Type dependencyType in dependencyTypes)
+            {
+                AddToServices(services, dependencyType);
+            }
 
             return services;
         }
-        
+
         /// <summary>
-        /// 以类型实现的接口进行服务添加，需排除
-        /// <see cref="IDisposable"/>等非业务接口，如无接口则注册自身
+        /// 应用模块服务
         /// </summary>
-        /// <param name="services">服务映射信息集合</param>
-        /// <param name="implementationTypes">要注册的实现类型集合</param>
-        /// <param name="lifetime">注册的生命周期类型</param>
-        protected virtual IServiceCollection AddTypeWithInterfaces(IServiceCollection services, Type[] implementationTypes, ServiceLifetime lifetime)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            foreach (Type implementationType in implementationTypes)
+            ServiceLocator.Instance.SetApplicationServiceProvider(provider);
+            IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 将服务实现类型注册到服务集合中
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        /// <param name="implementationType">要注册的服务实现类型</param>
+        protected virtual void AddToServices(IServiceCollection services, Type implementationType)
+        {
+            if (implementationType.IsAbstract || implementationType.IsInterface)
             {
-                if (implementationType.IsAbstract || implementationType.IsInterface)
+                return;
+            }
+            ServiceLifetime? lifetime = GetLifetimeOrNull(implementationType);
+            if (lifetime == null)
+            {
+                return;
+            }
+            DependencyAttribute dependencyAttribute = implementationType.GetAttribute<DependencyAttribute>();
+            Type[] serviceTypes = GetImplementedInterfaces(implementationType);
+
+            //服务数量为0或者类型显示要求自注册，则注册自身
+            if (serviceTypes.Length == 0 || dependencyAttribute?.AddSelf == true)
+            {
+                services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime.Value));
+                return;
+            }
+            //注册服务
+            for (int i = 0; i < serviceTypes.Length; i++)
+            {
+                Type serviceType = serviceTypes[i];
+                ServiceDescriptor descriptor = new ServiceDescriptor(serviceType, implementationType, lifetime.Value);
+                if (lifetime.Value == ServiceLifetime.Transient)
                 {
+                    services.TryAddEnumerable(descriptor);
                     continue;
                 }
-                Type[] interfaceTypes = GetImplementedInterfaces(implementationType);
-                if (interfaceTypes.Length == 0)
+
+                bool multiple = serviceType.HasAttribute<MultipleDependencyAttribute>();
+                if (i == 0)
                 {
-                    services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime));
-                    continue;
-                }
-                for (int i = 0; i < interfaceTypes.Length; i++)
-                {
-                    Type interfaceType = interfaceTypes[i];
-                    if (lifetime == ServiceLifetime.Transient)
+                    if (multiple)
                     {
-                        services.TryAddEnumerable(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        continue;
-                    }
-                    bool multiple = interfaceType.HasAttribute<MultipleDependencyAttribute>();
-                    if (i == 0)
-                    {
-                        if (multiple)
-                        {
-                            services.Add(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        }
-                        else
-                        {
-                            services.TryAdd(new ServiceDescriptor(interfaceType, implementationType, lifetime));
-                        }
+                        services.Add(descriptor);
                     }
                     else
                     {
-                        //有多个接口时，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一个实例
-                        Type firstInterfaceType = interfaceTypes[0];
-                        if (multiple)
-                        {
-                            services.Add(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
-                        }
-                        else
-                        {
-                            services.TryAdd(new ServiceDescriptor(interfaceType, provider => provider.GetService(firstInterfaceType), lifetime));
-                        }
+                        AddSingleService(services, descriptor, dependencyAttribute);
+                    }
+                }
+                else
+                {
+                    //有多个接口，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一实例
+                    Type firstServiceType = serviceTypes[0];
+                    descriptor = new ServiceDescriptor(serviceType, provider => provider.GetService(firstServiceType), lifetime.Value);
+                    if (multiple)
+                    {
+                        services.Add(descriptor);
+                    }
+                    else
+                    {
+                        AddSingleService(services, descriptor, dependencyAttribute);
                     }
                 }
             }
-            return services;
         }
 
-        private static Type[] GetImplementedInterfaces(Type type)
+        /// <summary>
+        /// 重写以实现 从类型获取要注册的<see cref="ServiceLifetime"/>生命周期类型
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <returns>生命周期类型</returns>
+        protected virtual ServiceLifetime? GetLifetimeOrNull(Type type)
+        {
+            DependencyAttribute attribute = type.GetAttribute<DependencyAttribute>();
+            if (attribute != null)
+            {
+                return attribute.Lifetime;
+            }
+
+            if (type.IsDeriveClassFrom<ITransientDependency>())
+            {
+                return ServiceLifetime.Transient;
+            }
+
+            if (type.IsDeriveClassFrom<IScopeDependency>())
+            {
+                return ServiceLifetime.Scoped;
+            }
+
+            if (type.IsDeriveClassFrom<ISingletonDependency>())
+            {
+                return ServiceLifetime.Singleton;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 重写以实现 获取实现类型的所有可注册服务接口
+        /// </summary>
+        /// <param name="type">依赖注入实现类型</param>
+        /// <returns>可注册的服务接口</returns>
+        protected virtual Type[] GetImplementedInterfaces(Type type)
         {
             Type[] exceptInterfaces = { typeof(IDisposable) };
             Type[] interfaceTypes = type.GetInterfaces().Where(t => !exceptInterfaces.Contains(t) && !t.HasAttribute<IgnoreDependencyAttribute>()).ToArray();
@@ -147,14 +189,22 @@ namespace OSharp.Dependency
             return interfaceTypes;
         }
 
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        private static void AddSingleService(IServiceCollection services,
+            ServiceDescriptor descriptor,
+            [CanBeNull] DependencyAttribute dependencyAttribute)
         {
-            ServiceLocator.Instance.SetApplicationServiceProvider(app.ApplicationServices);
-            IsEnabled = true;
+            if (dependencyAttribute?.ReplaceExisting == true)
+            {
+                services.Replace(descriptor);
+            }
+            else if (dependencyAttribute?.TryAdd == true)
+            {
+                services.TryAdd(descriptor);
+            }
+            else
+            {
+                services.Add(descriptor);
+            }
         }
     }
 }

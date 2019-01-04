@@ -22,18 +22,10 @@ namespace OSharp.EventBuses.Internal
         /// 获取事件处理器实例
         /// </summary>
         /// <returns></returns>
-        public IEventHandler GetHandler()
+        public EventHandlerDisposeWrapper GetHandler()
         {
-            return new TEventHandler();
-        }
-
-        /// <summary>
-        /// 释放事件处理器实例
-        /// </summary>
-        /// <param name="handler"></param>
-        public void ReleaseHandler(IEventHandler handler)
-        {
-            (handler as IDisposable)?.Dispose();
+            IEventHandler handler = new TEventHandler();
+            return new EventHandlerDisposeWrapper(handler, () => (handler as IDisposable)?.Dispose());
         }
     }
 }

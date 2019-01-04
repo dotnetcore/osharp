@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -25,7 +26,9 @@ namespace OSharp.Dependency
     /// <summary>
     /// 应用程序服务定位器，可随时正常解析<see cref="ServiceLifetime.Singleton"/>与<see cref="ServiceLifetime.Transient"/>生命周期类型的服务
     /// 如果当前处于HttpContext有效的范围内，可正常解析<see cref="ServiceLifetime.Scoped"/>的服务
+    /// 注：服务定位器尚不能正常解析 RootServiceProvider.CreateScope() 生命周期内的 Scoped 的服务
     /// </summary>
+    [Obsolete("此类将在1.0版本中移除")]
     public sealed class ServiceLocator : IDisposable
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
@@ -96,7 +99,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public void ExcuteScopedWork(Action<IServiceProvider> action)
+        public void ExecuteScopedWork(Action<IServiceProvider> action)
         {
             if (_provider == null)
             {
@@ -125,7 +128,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public async Task ExcuteScopedWorkAsync(Func<IServiceProvider, Task> action)
+        public async Task ExecuteScopedWorkAsync(Func<IServiceProvider, Task> action)
         {
             if (_provider == null)
             {
@@ -154,7 +157,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public TResult ExcuteScopedWork<TResult>(Func<IServiceProvider, TResult> func)
+        public TResult ExecuteScopedWork<TResult>(Func<IServiceProvider, TResult> func)
         {
             if (_provider == null)
             {
@@ -183,7 +186,7 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public async Task<TResult> ExcuteScopedWorkAsync<TResult>(Func<IServiceProvider, Task<TResult>> func)
+        public async Task<TResult> ExecuteScopedWorkAsync<TResult>(Func<IServiceProvider, Task<TResult>> func)
         {
             if (_provider == null)
             {
@@ -326,6 +329,15 @@ namespace OSharp.Dependency
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取指定节点的选项值
+        /// </summary>
+        public string GetConfiguration(string path)
+        {
+            IConfiguration config = GetService<IConfiguration>() ?? _services.GetConfiguration();
+            return config?[path];
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

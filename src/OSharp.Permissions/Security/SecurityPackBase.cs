@@ -9,7 +9,6 @@
 
 using System;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.EntityInfos;
@@ -83,13 +82,12 @@ namespace OSharp.Security
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddScoped<TSecurityManager>();
-
             services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
             services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
             services.AddSingleton(typeof(IDataAuthCache), typeof(TDataAuthCache));
             services.AddSingleton(typeof(IModuleHandler), typeof(TModuleHandler));
 
+            services.AddScoped<TSecurityManager>();
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TSecurityManager>());
             services.AddScoped(typeof(IModuleStore<TModule, TModuleInputDto, TModuleKey>), provider => provider.GetService<TSecurityManager>());
@@ -104,10 +102,9 @@ namespace OSharp.Security
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IServiceProvider provider = app.ApplicationServices;
             IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
             moduleHandler.Initialize();
 

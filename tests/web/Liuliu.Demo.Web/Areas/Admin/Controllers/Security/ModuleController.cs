@@ -19,6 +19,7 @@ using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -27,15 +28,17 @@ using OSharp.Filter;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 1, Position = "Security")]
+    [ModuleInfo(Order = 1, Position = "Security", PositionName = "权限安全模块")]
     [Description("管理-模块信息")]
     public class ModuleController : AdminApiController
     {
         private readonly SecurityManager _securityManager;
+        private readonly IFilterService _filterService;
 
-        public ModuleController(SecurityManager securityManager)
+        public ModuleController(SecurityManager securityManager, IFilterService filterService)
         {
             _securityManager = securityManager;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -85,7 +88,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
-
+        
         private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
         {
             var modules = _securityManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
@@ -99,6 +102,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             List<object> nodes = new List<object>();
             foreach (var item in modules)
             {
+                if (item.ChildIds.Count == 0 && !IsRoleLimit(item.Id))
+                {
+                    continue;
+                }
                 var node = new
                 {
                     item.Id,
@@ -109,9 +116,22 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                     item.Remark,
                     Items = item.ChildIds.Count > 0 ? GetModulesWithChecked(item.ChildIds.ToArray(), checkedModuleIds) : new List<object>()
                 };
+
+                if (node.Items.Count == 0 && !IsRoleLimit(node.Id))
+                {
+                    continue;
+                }
+
                 nodes.Add(node);
             }
             return nodes;
+        }
+
+        private bool IsRoleLimit(int moduleId)
+        {
+            return _securityManager.Functions
+                .Where(m => _securityManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
+                .Any(m => m.AccessType == FunctionAccessType.RoleLimit);
         }
 
         /// <summary>
@@ -128,7 +148,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 return new PageData<FunctionOutputDto2>();
             }
-            Expression<Func<Module, bool>> moduleExp = FilterHelper.GetExpression<Module>(request.FilterGroup);
+            Expression<Func<Module, bool>> moduleExp = _filterService.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();

@@ -8,11 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Linq;
 
 using Liuliu.Demo.Identity.Entities;
-
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Mapping;
 
@@ -25,6 +22,25 @@ namespace Liuliu.Demo.Identity.Dtos
     [MapFrom(typeof(User))]
     public class UserOutputDto : IOutputDto, IDataAuthEnabled
     {
+        /// <summary>
+        /// 初始化一个<see cref="UserOutputDto"/>类型的新实例
+        /// </summary>
+        public UserOutputDto(User u)
+        {
+            Id = u.Id;
+            UserName = u.UserName;
+            NickName = u.NickName;
+            Email = u.Email;
+            EmailConfirmed = u.EmailConfirmed;
+            PhoneNumber = u.PhoneNumber;
+            PhoneNumberConfirmed = u.PhoneNumberConfirmed;
+            LockoutEnd = u.LockoutEnd;
+            LockoutEnabled = u.LockoutEnabled;
+            AccessFailedCount = u.AccessFailedCount;
+            IsLocked = u.IsLocked;
+            CreatedTime = u.CreatedTime;
+        }
+
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
@@ -88,15 +104,7 @@ namespace Liuliu.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 角色信息集合
         /// </summary>
-        public string[] Roles
-        {
-            get
-            {
-                IIdentityContract identityContract = ServiceLocator.Instance.GetService<IIdentityContract>();
-                return identityContract.UserRoles.Where(m => !m.IsLocked).Where(m => m.UserId == Id)
-                    .SelectMany(m => identityContract.Roles.Where(n => n.Id == m.RoleId).Select(n => n.Name)).Distinct().ToArray();
-            }
-        }
+        public string[] Roles { get; set; }
 
         #region Implementation of IDataAuthEnabled
 

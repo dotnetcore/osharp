@@ -10,8 +10,10 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text;
 
 using OSharp.Entity;
+using OSharp.Extensions;
 
 
 namespace OSharp.Core.Functions

@@ -20,9 +20,7 @@ using log4net.Filter;
 using log4net.Layout;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
-
 using Microsoft.Extensions.Logging;
-
 
 
 namespace OSharp.Log4Net

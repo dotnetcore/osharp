@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>OSharp.Entity.PostgreSql</RootNamespace>
+    <PackageId>OSharpNS.EntityFrameworkCore.PostgreSql</PackageId>
+    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的PostgreSql数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.0)数据访问组件PostgreSql</Summary>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.PostgreSql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.PostgreSql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

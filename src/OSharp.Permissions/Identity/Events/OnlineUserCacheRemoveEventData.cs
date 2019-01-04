@@ -20,6 +20,6 @@ namespace OSharp.Identity.Events
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
-        public string UserName { get; set; }
+        public string[] UserNames { get; set; } = new string[0];
     }
 }

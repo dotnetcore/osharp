@@ -35,14 +35,16 @@ namespace OSharp.Identity
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
 
         /// <summary>
         /// 初始化一个<see cref="OnlineUserCache{TUser, TUserKey, TRole, TRoleKey}"/>类型的新实例
         /// </summary>
-        public OnlineUserCache(IDistributedCache cache)
+        public OnlineUserCache(IServiceProvider serviceProvider)
         {
-            _cache = cache;
+            _serviceProvider = serviceProvider;
+            _cache = serviceProvider.GetService<IDistributedCache>();
         }
 
         /// <summary>
@@ -59,20 +61,10 @@ namespace OSharp.Identity
             return _cache.Get<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExcuteScopedWork<OnlineUser>(provider =>
+                    return _serviceProvider.ExecuteScopedWork<OnlineUser>(provider =>
                     {
-                        UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
-                        TUser user = userManager.FindByNameAsync(userName).Result;
-                        if (user == null)
-                        {
-                            return null;
-                        }
-                        IList<string> roles = userManager.GetRolesAsync(user).Result;
-
-                        RoleManager<TRole> roleManager = provider.GetService<RoleManager<TRole>>();
-                        bool isAdmin = roleManager.Roles.Any(m => roles.Contains(m.Name) && m.IsAdmin);
-
-                        return GetOnlineUser(user, roles.ToArray(), isAdmin);
+                        IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
+                        return onlineUserProvider.Create(provider, userName).Result;
                     });
                 },
                 options);
@@ -83,7 +75,7 @@ namespace OSharp.Identity
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns>在线用户信息</returns>
-        public async Task<OnlineUser> GetOrRefreshAsync(string userName)
+        public virtual async Task<OnlineUser> GetOrRefreshAsync(string userName)
         {
             string key = $"Identity_OnlineUser_{userName}";
 
@@ -92,20 +84,10 @@ namespace OSharp.Identity
             return await _cache.GetAsync<OnlineUser>(key,
                 () =>
                 {
-                    return ServiceLocator.Instance.ExcuteScopedWorkAsync<OnlineUser>(async provider =>
+                    return _serviceProvider.ExecuteScopedWorkAsync<OnlineUser>(async provider =>
                     {
-                        UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
-                        TUser user = await userManager.FindByNameAsync(userName);
-                        if (user == null)
-                        {
-                            return null;
-                        }
-                        IList<string> roles = await userManager.GetRolesAsync(user);
-
-                        RoleManager<TRole> roleManager = provider.GetService<RoleManager<TRole>>();
-                        bool isAdmin = roleManager.Roles.Any(m => roles.Contains(m.Name) && m.IsAdmin);
-
-                        return GetOnlineUser(user, roles.ToArray(), isAdmin);
+                        IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
+                        return await onlineUserProvider.Create(provider, userName);
                     });
                 },
                 options);
@@ -114,33 +96,14 @@ namespace OSharp.Identity
         /// <summary>
         /// 移除在线用户信息
         /// </summary>
-        /// <param name="userName">用户名</param>
-        /// <returns>移除的用户信息</returns>
-        public void Remove(string userName)
+        /// <param name="userNames">用户名</param>
+        public virtual void Remove(params string[] userNames)
         {
-            string key = $"Identity_OnlineUser_{userName}";
-            _cache.Remove(key);
-        }
-
-        /// <summary>
-        /// 从用户实例中获取在线用户信息
-        /// </summary>
-        /// <param name="user">来自数据库的用户实例</param>
-        /// <param name="roles">用户拥有的角色</param>
-        /// <param name="isAdmin">是否管理</param>
-        /// <returns>在线用户信息</returns>
-        private static OnlineUser GetOnlineUser(TUser user, string[] roles, bool isAdmin)
-        {
-            return new OnlineUser()
+            foreach (string userName in userNames)
             {
-                Id = user.Id.ToString(),
-                UserName = user.UserName,
-                NickName = user.NickName,
-                Email = user.Email,
-                HeadImg = user.HeadImg,
-                IsAdmin = isAdmin,
-                Roles = roles
-            };
+                string key = $"Identity_OnlineUser_{userName}";
+                _cache.Remove(key);
+            }
         }
     }
 }

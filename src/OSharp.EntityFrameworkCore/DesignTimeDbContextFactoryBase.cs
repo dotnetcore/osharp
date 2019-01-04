@@ -29,6 +29,10 @@ namespace OSharp.Entity
         public virtual TDbContext CreateDbContext(string[] args)
         {
             string connString = GetConnectionString();
+            if (connString == null)
+            {
+                return null;
+            }
             IEntityConfigurationTypeFinder typeFinder = GetEntityConfigurationTypeFinder();
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
             builder = UseSql(builder, connString);

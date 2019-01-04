@@ -7,9 +7,14 @@
 //  <last-date>2018-06-23 15:24</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using System.Linq;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Dependency;
 
 
 namespace OSharp.Entity.SqlServer
@@ -17,8 +22,8 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServerEntityFrameworkCore模块
     /// </summary>
-    [DependsOnPacks(typeof(EntityFrameworkCorePack))]
-    public class SqlServerEntityFrameworkCorePack : OsharpPack
+    [Description("SqlServerEntityFrameworkCore模块")]
+    public class SqlServerEntityFrameworkCorePack : EntityFrameworkCorePackBase
     {
         /// <summary>
         /// 获取 模块级别
@@ -37,8 +42,26 @@ namespace OSharp.Entity.SqlServer
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IDbContextOptionsBuilderCreator, DbContextOptionsBuilderCreator>();
+            services = base.AddServices(services);
+
+            services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
+
             return services;
+        }
+        
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
+        {
+            bool? hasMsSql = provider.GetOSharpOptions()?.DbContexts?.Values.Any(m => m.DatabaseType == DatabaseType.SqlServer);
+            if (hasMsSql == null || !hasMsSql.Value)
+            {
+                return;
+            }
+
+            base.UsePack(provider);
         }
     }
 }

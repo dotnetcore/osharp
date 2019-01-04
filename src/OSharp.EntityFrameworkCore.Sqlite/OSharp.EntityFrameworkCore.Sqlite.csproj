@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>OSharp.Entity.Sqlite</RootNamespace>
+    <PackageId>OSharpNS.EntityFrameworkCore.Sqlite</PackageId>
+    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的Sqlite数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.0)数据访问组件Sqlite</Summary>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

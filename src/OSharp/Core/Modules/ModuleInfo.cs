@@ -7,9 +7,11 @@
 //  <last-date>2018-06-23 11:38</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 using OSharp.Core.Functions;
+using OSharp.Entity;
 
 
 namespace OSharp.Core.Modules
@@ -18,7 +20,7 @@ namespace OSharp.Core.Modules
     /// 从程序集中提取的模块信息载体，包含模块基本信息和模块依赖的功能信息集合
     /// </summary>
     [DebuggerDisplay("{ToDebugDisplay()}")]
-    public class ModuleInfo
+    public class ModuleInfo : IEntityHash
     {
         /// <summary>
         /// 获取或设置 模块名称
@@ -41,6 +43,11 @@ namespace OSharp.Core.Modules
         public string Position { get; set; }
 
         /// <summary>
+        /// 获取或设置 父级模块名称，需要创建父级模块的时候设置值
+        /// </summary>
+        public string PositionName { get; set; }
+
+        /// <summary>
         /// 获取或设置 依赖功能
         /// </summary>
         public IFunction[] DependOnFunctions { get; set; } = new IFunction[0];
@@ -49,5 +56,21 @@ namespace OSharp.Core.Modules
         {
             return $"{Name}[{Code}]({Position}),FunctionCount:{DependOnFunctions.Length}";
         }
+
+        #region Overrides of Object
+
+        /// <summary>Determines whether the specified object is equal to the current object.</summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ModuleInfo info))
+            {
+                return false;
+            }
+            return $"{info.Position}.{info.Code}" == $"{Position}.{Code}";
+        }
+
+        #endregion
     }
 }

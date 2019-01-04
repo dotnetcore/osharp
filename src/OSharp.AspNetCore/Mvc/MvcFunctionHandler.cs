@@ -13,11 +13,11 @@ using System.Reflection;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core;
 using OSharp.Core.Functions;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -32,10 +32,10 @@ namespace OSharp.AspNetCore.Mvc
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
         /// </summary>
-        public MvcFunctionHandler()
+        public MvcFunctionHandler(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            IAllAssemblyFinder allAssemblyFinder = ServiceLocator.Instance.GetService<IAllAssemblyFinder>();
-            FunctionTypeFinder = new MvcControllerTypeFinder(allAssemblyFinder);
+            FunctionTypeFinder = serviceProvider.GetService<IFunctionTypeFinder>();
             MethodInfoFinder = new PublicInstanceMethodInfoFinder();
         }
 

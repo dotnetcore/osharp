@@ -11,8 +11,10 @@ using System;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.UI;
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 
@@ -23,45 +25,86 @@ namespace OSharp.AspNetCore.Mvc.Filters
     /// 自动事务提交过滤器，在<see cref="OnResultExecuted"/>方法中执行<see cref="IUnitOfWork.Commit()"/>进行事务提交
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class UnitOfWorkAttribute : ActionFilterAttribute
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkAttribute"/>类型的新实例
         /// </summary>
-        public UnitOfWorkAttribute()
+        public UnitOfWorkAttribute(IServiceProvider serviceProvider)
         {
-            _unitOfWork = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            _unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 重写方法，实现事务自动提交功能
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnResultExecuted(ResultExecutedContext context)
         {
+            ScopedDictionary dict = context.HttpContext.RequestServices.GetService<ScopedDictionary>();
+            AjaxResultType type = AjaxResultType.Success;
+            string message = null;
             if (context.Result is JsonResult result1)
             {
-                if (result1.Value is AjaxResult ajax && !ajax.Successed())
+                if (result1.Value is AjaxResult ajax)
                 {
-                    return;
+                    type = ajax.Type;
+                    message = ajax.Content;
+                    if (ajax.Successed())
+                    {
+                        _unitOfWorkManager?.Commit();
+                    }
                 }
-                _unitOfWork?.Commit();
-                return;
+
             }
-            if (context.Result is ObjectResult result2)
+            else if (context.Result is ObjectResult result2)
             {
-                if (result2.Value is AjaxResult ajax && !ajax.Successed())
+                if (result2.Value is AjaxResult ajax)
                 {
-                    return;
+                    type = ajax.Type;
+                    message = ajax.Content;
+                    if (ajax.Successed())
+                    {
+                        _unitOfWorkManager?.Commit();
+                    }
                 }
-                _unitOfWork?.Commit();
-                return;
+                _unitOfWorkManager?.Commit();
             }
             //普通请求
-            if (context.HttpContext.Response.StatusCode >= 400)
+            else if (context.HttpContext.Response.StatusCode >= 400)
             {
-                return;
+                switch (context.HttpContext.Response.StatusCode)
+                {
+                    case 401:
+                        type = AjaxResultType.UnAuth;
+                        break;
+                    case 403:
+                        type = AjaxResultType.UnAuth;
+                        break;
+                    case 404:
+                        type = AjaxResultType.UnAuth;
+                        break;
+                    case 423:
+                        type = AjaxResultType.UnAuth;
+                        break;
+                    default:
+                        type = AjaxResultType.Error;
+                        break;
+                }
             }
-            _unitOfWork?.Commit();
+            else
+            {
+                type = AjaxResultType.Success;
+                _unitOfWorkManager?.Commit();
+            }
+            if (dict.AuditOperation != null)
+            {
+                dict.AuditOperation.ResultType = type;
+                dict.AuditOperation.Message = message;
+            }
         }
     }
 }

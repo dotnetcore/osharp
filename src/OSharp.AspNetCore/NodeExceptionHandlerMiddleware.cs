@@ -55,6 +55,10 @@ namespace OSharp.AspNetCore
                 _logger.LogError(new EventId(), ex, ex.Message);
                 if (context.Request.IsAjaxRequest() || context.Request.IsJsonContextType())
                 {
+                    if (context.Response.HasStarted)
+                    {
+                        return;
+                    }
                     context.Response.StatusCode = 500;
                     context.Response.Clear();
                     context.Response.ContentType = "application/json; charset=utf-8";

@@ -24,6 +24,7 @@ namespace OSharp.AspNetCore
     /// <summary>
     /// 验证码处理类
     /// </summary>
+    [Obsolete("使用IVerifyCodeService注入服务代替，此类将在1.0版本中移除")]
     public static class VerifyCodeHandler
     {
         private const string Separator = "#$#";

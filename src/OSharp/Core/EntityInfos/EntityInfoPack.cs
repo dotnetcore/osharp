@@ -8,12 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
-using OSharp.Entity;
 
 
 namespace OSharp.Core.EntityInfos
@@ -21,6 +20,7 @@ namespace OSharp.Core.EntityInfos
     /// <summary>
     /// 实体信息模块
     /// </summary>
+    [Description("数据实体模块")]
     public class EntityInfoPack : OsharpPack
     {
         /// <summary>
@@ -29,25 +29,12 @@ namespace OSharp.Core.EntityInfos
         public override PackLevel Level => PackLevel.Application;
 
         /// <summary>
-        /// 将模块服务添加到依赖注入服务容器中
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        public override IServiceCollection AddServices(IServiceCollection services)
-        {
-            services.AddSingleton<IEntityTypeFinder, EntityTypeFinder>();
-            services.AddSingleton<IEntityInfoHandler, EntityInfoHandler>();
-
-            return services;
-        }
-
-        /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IEntityInfoHandler handler = app.ApplicationServices.GetService<IEntityInfoHandler>();
+            IEntityInfoHandler handler = provider.GetService<IEntityInfoHandler>();
             handler.Initialize();
             IsEnabled = true;
         }

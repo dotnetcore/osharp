@@ -25,13 +25,13 @@ namespace OSharp.Core.Options
         /// </summary>
         public OSharpOptions()
         {
-            DbContextOptionses = new ConcurrentDictionary<string, OSharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
+            DbContexts = new ConcurrentDictionary<string, OSharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// 获取 数据上下文配置信息
         /// </summary>
-        public IDictionary<string, OSharpDbContextOptions> DbContextOptionses { get; }
+        public IDictionary<string, OSharpDbContextOptions> DbContexts { get; }
 
         /// <summary>
         /// 获取或设置 邮件发送选项
@@ -44,11 +44,21 @@ namespace OSharp.Core.Options
         public JwtOptions Jwt { get; set; }
 
         /// <summary>
+        /// 获取或设置 Redis选项
+        /// </summary>
+        public RedisOptions Redis { get; set; }
+
+        /// <summary>
+        /// 获取或设置 Swagger选项
+        /// </summary>
+        public SwaggerOptions Swagger { get; set; }
+
+        /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
         public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)
         {
-            return DbContextOptionses.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
+            return DbContexts.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
         }
     }
 }

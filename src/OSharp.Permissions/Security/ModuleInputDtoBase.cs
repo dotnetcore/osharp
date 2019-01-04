@@ -26,6 +26,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
+        [DisplayName("编号")]
         public TModuleKey Id { get; set; }
 
         /// <summary>
@@ -44,6 +45,7 @@ namespace OSharp.Security
         /// 获取或设置 模块代码
         /// </summary>
         [Required]
+        [DisplayName("模块代码")]
         public string Code { get; set; }
 
         /// <summary>
@@ -55,6 +57,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
+        [DisplayName("父模块编号")]
         public TModuleKey? ParentId { get; set; }
     }
 }

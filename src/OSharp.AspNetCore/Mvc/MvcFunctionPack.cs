@@ -7,15 +7,18 @@
 //  <last-date>2018-06-23 15:26</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+using System.ComponentModel;
 using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
+using OSharp.Dependency;
+using OSharp.Reflection;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -23,7 +26,8 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC功能点模块
     /// </summary>
-    public class MvcFunctionPack : OsharpPack
+    [Description("MVC功能点模块")]
+    public class MvcFunctionPack : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别
@@ -37,8 +41,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.GetOrAddTypeFinder<IFunctionTypeFinder>(assemblyFinder => new MvcControllerTypeFinder(assemblyFinder));
             services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
-            services.AddSingleton<IModuleInfoPicker, MvcModuleInfoPicker>();
+            services.TryAddSingleton<IModuleInfoPicker, MvcModuleInfoPicker>();
 
             return services;
         }

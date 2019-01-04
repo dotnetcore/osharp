@@ -24,7 +24,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// Mvc模块基类
     /// </summary>
-    public abstract class MvcPackBase : OsharpPack
+    public abstract class MvcPackBase : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -45,10 +45,9 @@ namespace OSharp.AspNetCore.Mvc
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDistributedMemoryCache();
-            services.AddSingleton<IEmailSender, DefaultEmailSender>();
 
             return services;
         }
@@ -60,6 +59,7 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseMvcWithAreaRoute();
+            IsEnabled = true;
         }
     }
 }

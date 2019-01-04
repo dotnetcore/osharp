@@ -25,7 +25,12 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * OSharp.EntityFrameworkCore【EFCore 数据组件】：EFCore数据访问组件，封装EntityFrameworkCore数据访问功能的实现
 * OSharp.EntityFrameworkCore.MySql【EFCore MySql 数据组件】：EFCore MySql数据访问组件，封装MySql的EntityFrameworkCore数据访问功能的实现
 * OSharp.EntityFrameworkCore.SqlServer【EFCore SqlServer 数据组件】：EFCore SqlServer数据访问组件，封装SqlServer的EntityFrameworkCore数据访问功能的实现
+* OSharp.EntityFrameworkCore.Sqlite【EFCore Sqlite 数据组件】：EFCore Sqlite数据访问组件，封装Sqlite的EntityFrameworkCore数据访问功能的实现
 * OSharp.Permissions【权限组件】：使用AspNetCore的Identity为基础实现身份认证的封装，以Security为基础实现以角色-功能、用户-功能的功能权限实现，以角色-数据，用户-数据的数据权限的封装
+* OSharp.Log4Net【日志组件】：基于Log4Net的日志记录组件
+* OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
+* OSharp.Hangfire【后台任务组件】：封装基于Hangfire后台任务的服务端实现
+* OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
 
 ## <a id="02"/>OSharpNS特性
 
@@ -149,10 +154,15 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 前端项目使用了`ng-alain`和`kendoui`作为UI进行开发的，需要熟悉`nodejs`,`angular6`等技术。
 
 #### 安装`NodeJS`，搭建前端技术环境
-* 安装最新版本 NodeJS：angular6需要最新版本的 NodeJS，请到 [NodeJS官方网站](https://nodejs.org/en/) 下载最新版本的NodeJS进行安装。
+* 安装最新版本 NodeJS：angular6需要最新版本(node 8.x 和 npm 5.x 以上的版本)的 NodeJS，请到 [NodeJS官方网站](https://nodejs.org/en/) 下载最新版本的NodeJS进行安装。
 * 设置npm的淘宝镜像仓库：由于npm的国外仓储会很慢，所以最好把npm仓库地址指定国内镜像，推荐淘宝镜像：
 
-> `npm config set registry https://registry.npm.taobao.org`
+  > `npm config set registry https://registry.npm.taobao.org`
+
+* 安装全局Angular/Cli：如果Angular/Cli没有安装，执行如下命令全局安装Angular
+    Angular的快速启动，请参考[Angular官方文档](https://angular.cn/guide/quickstart)
+
+  > npm install -g @angular/cli
 
 * 下载安装 Visual Studio Code：前端最好用的IDE，[官方下载](https://code.visualstudio.com/)
 
@@ -163,10 +173,10 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0005.png)
 
 * 按`Ctrl+Tab`快捷键，调出VS Code的命令行控制台，输入NodeJS包安装命令：
-> npm install
+  > npm install
 
 * 包安装完成后，输入项目启动命令：
-> npm start
+  > npm start
 
 此命令将会执行如下命令：`ng serve --port 4201 --proxy-config proxy.config.json --open`，其中`--proxy-config proxy.config.json`对前端项目发起的API请求进行了代理，所有以 `/api/`开头的请求，都会转发到服务端项目中进行处理，代理的实际配置如下：
 ```

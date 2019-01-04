@@ -28,11 +28,19 @@ namespace OSharp.AspNetCore.Mvc
     public class MvcModuleInfoPicker : ModuleInfoPickerBase<Function>
     {
         /// <summary>
+        /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例
+        /// </summary>
+        public MvcModuleInfoPicker(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        { }
+
+        /// <summary>
         /// 重写以实现从类型中提取模块信息
         /// </summary>
         /// <param name="type">类型信息</param>
+        /// <param name="existPaths">已存在的路径集合</param>
         /// <returns>提取到的模块信息</returns>
-        protected override ModuleInfo GetModule(Type type)
+        protected override ModuleInfo[] GetModules(Type type, string[] existPaths)
         {
             ModuleInfoAttribute infoAttr = type.GetAttribute<ModuleInfoAttribute>();
             ModuleInfo info = new ModuleInfo()
@@ -40,11 +48,42 @@ namespace OSharp.AspNetCore.Mvc
                 Name = infoAttr.Name ?? GetName(type),
                 Code = infoAttr.Code ?? type.Name.Replace("Controller", ""),
                 Order = infoAttr.Order,
-                Position = GetPosition(type, infoAttr.Position)
+                Position = GetPosition(type, infoAttr.Position),
+                PositionName = infoAttr.PositionName
             };
-            return info;
-        }
+            List<ModuleInfo> infos = new List<ModuleInfo>() { info };
+            //获取中间分类模块
+            if (infoAttr.Position != null)
+            {
+                info = new ModuleInfo()
+                {
+                    Name = infoAttr.PositionName ?? infoAttr.Position,
+                    Code = infoAttr.Position,
+                    Position = GetPosition(type, null)
+                };
+                if (!existPaths.Contains($"{info.Position}.{info.Code}"))
+                {
+                    infos.Insert(0, info);
+                }
+            }
+            //获取区域模块
+            string area = type.GetAttribute<AreaAttribute>(true)?.RouteValue ?? "Site";
+            string name = area == "Site" ? "站点" : area == "Admin" ? "管理" : null;
+            info = new ModuleInfo()
+            {
+                Name = name ?? area,
+                Code = area,
+                Position = "Root",
+                PositionName = area == "Site" ? "站点" : area == "Admin" ? "管理" : null
+            };
+            if (!existPaths.Contains($"{info.Position}.{info.Code}"))
+            {
+                infos.Insert(0, info);
+            }
 
+            return infos.ToArray();
+        }
+         
         /// <summary>
         /// 重写以实现从方法信息中提取模块信息
         /// </summary>
@@ -59,7 +98,7 @@ namespace OSharp.AspNetCore.Mvc
             {
                 Name = infoAttr.Name ?? method.GetDescription() ?? method.Name,
                 Code = infoAttr.Code ?? method.Name,
-                Order = infoAttr.Order > 0 ? infoAttr.Order : index + 1
+                Order = infoAttr.Order > 0 ? infoAttr.Order : index + 1,
             };
             string controller = method.DeclaringType?.Name.Replace("Controller", "");
             info.Position = $"{typeInfo.Position}.{controller}";
@@ -107,7 +146,7 @@ namespace OSharp.AspNetCore.Mvc
             {
                 //无区域，使用Root.Site位置
                 return attrPosition == null
-                    ? $"Root.Site"
+                    ? "Root.Site"
                     : $"Root.Site.{attrPosition}";
             }
             return attrPosition == null

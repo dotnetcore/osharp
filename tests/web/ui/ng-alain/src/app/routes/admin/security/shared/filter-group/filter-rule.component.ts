@@ -2,10 +2,9 @@ import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core
 import { FilterRule, EntityProperty, FilterOperate, FilterOperateEntry } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { List } from 'linqts';
-import { isArray } from 'util';
 
 @Component({
-  selector: 'security-filter-rule',
+  selector: 'admin-security-filter-rule',
   templateUrl: './filter-rule.component.html',
   styles: [`
     .rule-box{margin:3px 3px;}

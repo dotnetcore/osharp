@@ -1,0 +1,264 @@
+﻿<#+
+// <copyright file="TypeScript_Component_Template.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+// 设计思路：由OutputDto生成 model和columns，再由 InputDto 确定各个列的属性值
+
+    public class TypeScriptComponentTemplate : CSharpTemplate
+    {
+        private readonly TypeMetadata _outputDto, _inputDto;
+        private readonly string _entityName;
+        private readonly string _lowerEntityName;
+        private readonly string _moduleName = null;
+
+        public TypeScriptComponentTemplate(TypeMetadata outputDto, TypeMetadata inputDto, string modulePattern)
+        {
+            _entityName = outputDto.Name.Substring("", "OutputDto");
+            _lowerEntityName = _entityName.UpperToLowerAndSplit();
+            _outputDto = outputDto;
+            _inputDto = inputDto;
+            if(modulePattern != null)
+            {
+                _moduleName = outputDto.Namespace.Match(modulePattern);
+                switch(outputDto.FullName)
+                {
+                    case "OSharp.Core.Functions.Function":
+                    case "OSharp.Core.EntityInfos.EntityInfo":
+                        _moduleName = "Security";
+                        break;
+                    case "OSharp.Core.Systems.KeyValue":
+                        _moduleName = "Systems";
+                        break;
+                }
+            }
+        }
+
+        public string FileName
+        {
+            get
+            { 
+                return string.IsNullOrEmpty(_moduleName)
+                    ? string.Format("{0}\\{0}.component.txt", _lowerEntityName)
+                    : string.Format("{0}\\{1}\\{1}.component.txt", _moduleName.UpperToLowerAndSplit(), _lowerEntityName);
+            }
+        }
+
+	    public override string TransformText()
+	    {
+		    base.TransformText();
+#>
+import { Component, AfterViewInit, Injector, } from '@angular/core';
+import { AuthConfig } from '@shared/osharp/osharp.model';
+import { KendoGridComponentBase } from '@shared/osharp/services/kendoui.service';
+
+@Component({
+  selector: 'admin-<#=_lowerEntityName #>',
+  template: `<div id="grid-box-{{moduleName}}"></div>`
+})
+
+export class <#=_entityName #>Component extends KendoGridComponentBase implements AfterViewInit {
+
+  constructor(injector: Injector) {
+    super(injector);
+    this.moduleName = "<#=_entityName.LowerFirstChar() #>";
+  }
+
+  async ngAfterViewInit() {
+    await this.checkAuth();
+    if (this.auth.Read) {
+      super.InitBase();
+      super.ViewInitBase();
+    } else {
+      this.osharp.error("无权查看此页面");
+    }
+  }
+  
+  protected AuthConfig(): AuthConfig {
+    return new AuthConfig("Root.Admin.<#=_moduleName #>.<#=_entityName #>", ["Read"]);
+  }
+
+  protected GetModel() {
+    return {
+      id: "Id",
+      fields: {
+<#+
+        if(_outputDto.PropertyMetadatas != null)
+        {
+            foreach(var outProp in _outputDto.PropertyMetadatas)
+            {
+                PropertyMetadata inProp = null;
+                if(_inputDto != null && _inputDto.PropertyMetadatas != null)
+                {
+                    inProp = _inputDto.PropertyMetadatas.FirstOrDefault(m => m.Name == outProp.Name);
+                }
+#>
+        <#=GetModelItem(outProp, inProp) #>
+<#+
+            }
+        }
+ #>
+      }
+    };
+  }
+
+  protected GetGridColumns(): kendo.ui.GridColumn[] {
+    let columns: kendo.ui.GridColumn[] = [
+<#+
+            if(_outputDto != null && _outputDto.PropertyMetadatas != null)
+            {
+#>
+      {
+        command: [
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable },
+        ],
+        width: 100
+      }<#+
+                foreach(var dto in _outputDto.PropertyMetadatas)
+                {
+                    if(dto.Name == "Updatable" || dto.Name == "Deletable")
+                    {
+                        continue;
+                    }
+#><#=GetColumn(dto) #><#+
+                }
+            }
+
+ #>
+
+    ];
+    return columns;
+  }
+}
+<#+
+            return this.GenerationEnvironment.ToString();
+	    }
+    }
+
+    private static string GetModelItem(PropertyMetadata outProp, PropertyMetadata inProp)
+    {
+        string line= string.Format("{0}: {{ type: \"{1}\"", outProp.Name, GetSingleTypeName(outProp));
+
+        string[] noEditable = new []{"Id","CreatedTime","Updatable","Deletable"};
+        if(noEditable.Contains(outProp.Name))
+        {
+            line += ", editable: false";
+        }
+
+        line += GetModelItemValidation(inProp);
+
+        line += " },";
+        return line;
+    }
+
+    private static string GetModelItemValidation(PropertyMetadata inProp)
+    {
+        if (inProp == null || !inProp.HasValidateAttribute())
+        {
+            return null;
+        }
+        string line = ", validation: { ";
+
+        List<string> list = new List<string>();
+        if (inProp.IsRequired != null && inProp.IsRequired.Value)
+        {
+            list.Add("required: true");
+        }
+        if (inProp.MinLength != null)
+        {
+            list.Add("minLength: " + inProp.MinLength.Value);
+        }
+        if (inProp.MaxLength != null)
+        {
+            list.Add("maxLength: " + inProp.MaxLength.Value);
+        }
+        
+        if (inProp.Min != null)
+        {
+            list.Add("min: " + inProp.Min);
+        }
+        if (inProp.Max != null)
+        {
+            list.Add("max: " + inProp.Max);
+        }
+        if (inProp.Range != null)
+        {
+            list.Add("min: " + inProp.Range[0]);
+            list.Add("max: " + inProp.Range[1]);
+        }
+            
+        line += list.ExpandAndToString(", ");
+
+        line += " }";
+        return line;
+    }
+
+    private static string GetColumn(PropertyMetadata output)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(string.Format(", {{\n\t\tfield: \"{0}\", title: \"{1}\"", output.Name, output.Display));
+        if (output.TypeName == typeof(string).FullName)
+        {
+            sb.Append(",\n\t\tfilterable: this.osharp.data.stringFilterable");
+        }
+        if (output.TypeName == typeof(bool).FullName)
+        {
+            sb.Append(", width: 90");
+            //sb.Append(", attributes: { class: \"k-center\" }");
+            sb.Append(string.Format(",\n\t\ttemplate: d => this.kendoui.Boolean(d.{0})", output.Name));
+            sb.Append(",\n\t\teditor: (container, options) => this.kendoui.BooleanEditor(container, options)");
+        }
+        if (output.TypeName == typeof(int).FullName)
+        {
+        }
+        if (output.TypeName == typeof(DateTime).FullName)
+        {
+            sb.Append(", width: 120");
+            //sb.Append(", attributes: { class: \"k-center\" }");
+            sb.Append(",\n\t\tformat: \"{0:yy-MM-dd HH:mm}\"");
+        }        
+        if (output.EnumMetadatas != null)
+        {
+            sb.Append(string.Format(",\n\t\ttemplate: d => this.osharp.valueToText(d.{0}, this.osharp.data.{1})", output.Name, output.Name.LowerFirstChar()));
+            sb.Append(string.Format(",\n\t\teditor: ($container, options) => this.kendoui.DropDownListEditor($container, options, this.osharp.data.{0})", output.Name.LowerFirstChar()));
+            sb.Append(string.Format(",\n\t\tfilterable: {{ ui: el => this.kendoui.DropDownList(el, this.osharp.data.{0}) }}", output.Name.LowerFirstChar()));
+            sb.Append("\n\t\t// " + output.Name.LowerFirstChar() + ": [");
+            List<string> enums = new List<string>();
+            foreach(var item in output.EnumMetadatas)
+            {
+                enums.Add("{ id: " + item.Value + ", text: \"" + item.Display + "\" }");
+            }
+            sb.Append(enums.ExpandAndToString(", ") + "],");
+        }
+        sb.Append("\n\t  }");
+        return sb.ToString();
+    }
+
+    private static string GetSingleTypeName(PropertyMetadata prop)
+    {
+        string name = "object";
+        switch(prop.TypeName)
+        {
+            case "System.Int32":
+            case "System.Long":
+            case "System.Decimal":
+                name = "number";
+                break;
+            case "System.String":
+            case "System.Guid":
+                name = "string";
+                break;
+            case "System.Boolean":
+                name = "boolean";
+                break;
+            case "System.DateTime":
+                name = "date";
+                break;
+        }
+        if(prop.EnumMetadatas != null)
+        {
+            name = "number";
+        }
+        return name;
+    }
+#>

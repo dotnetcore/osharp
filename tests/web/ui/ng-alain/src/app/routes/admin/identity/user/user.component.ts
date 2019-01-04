@@ -61,6 +61,7 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         EmailConfirmed: { type: "boolean" },
         PhoneNumber: { type: "string" },
         PhoneNumberConfirmed: { type: "boolean" },
+        IsLocked: { type: "boolean" },
         LockoutEnabled: { type: "boolean" },
         LockoutEnd: { type: "date", editable: false },
         AccessFailedCount: { type: "number", editable: false },
@@ -77,11 +78,11 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         command: [
           { name: "setRoles", text: "", iconClass: "k-icon k-i-link-horizontal", click: e => this.roleWindowOpen(e) },
           { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.moduleWindowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => { return d.Deletable; } },
+          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable },
         ],
         width: 100
       },
-      { field: "Id", title: "编号", width: 70 },
+      { field: "Id", title: "编号", width: 70, locked: true },
       {
         field: "UserName",
         title: "用户名",
@@ -120,10 +121,10 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
         width: 180,
         template: d => this.osharp.expandAndToString(d.Roles)
       }, {
-        field: "Locked",
+        field: "IsLocked",
         title: "是否锁定",
         width: 95,
-        template: d => this.kendoui.Boolean(d.Locked),
+        template: d => this.kendoui.Boolean(d.IsLocked),
         editor: (container, options) => this.kendoui.BooleanEditor(container, options)
       }, {
         field: "LockoutEnabled",

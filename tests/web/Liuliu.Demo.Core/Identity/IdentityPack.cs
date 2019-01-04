@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Text;
 
 using Liuliu.Demo.Identity.Entities;
@@ -22,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Data;
+using OSharp.Exceptions;
+using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
 
@@ -31,6 +34,7 @@ namespace Liuliu.Demo.Identity
     /// <summary>
     /// 身份认证模块，此模块必须在MVC模块之前启动
     /// </summary>
+    [Description("身份认证模块")]
     public class IdentityPack : IdentityPackBase<UserStore, RoleStore, User, Role, int, int>
     {
         /// <summary>
@@ -93,7 +97,7 @@ namespace Liuliu.Demo.Identity
         /// <param name="services">服务集合</param>
         protected override void AddAuthentication(IServiceCollection services)
         {
-            IConfiguration configuration = Singleton<IConfiguration>.Instance;
+            IConfiguration configuration = services.GetConfiguration();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -101,6 +105,10 @@ namespace Liuliu.Demo.Identity
             }).AddJwtBearer(jwt =>
             {
                 string secret = configuration["OSharp:Jwt:Secret"];
+                if (secret.IsNullOrEmpty())
+                {
+                    throw new OsharpException("配置文件中Jwt节点的Secret不能为空");
+                }
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"],

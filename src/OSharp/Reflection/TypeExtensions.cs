@@ -249,5 +249,13 @@ namespace OSharp.Reflection
             Type baseType = typeof(TBaseType);
             return type.IsBaseOn(baseType);
         }
+
+        /// <summary>
+        /// 获取类型的全名，附带所在类库
+        /// </summary>
+        public static string GetFullNameWithModule(this Type type)
+        {
+            return $"{type.FullName},{type.Module.Name.Replace(".dll", "").Replace(".exe", "")}";
+        }
     }
 }

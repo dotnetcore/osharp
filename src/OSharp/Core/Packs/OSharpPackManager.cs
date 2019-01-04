@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="OSharpPackManager.cs" company="OSharp开源团队">
+//  <copyright file="OsharpPackManager.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -11,12 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Builders;
-using OSharp.Reflection;
+using OSharp.Dependency;
 
 
 namespace OSharp.Core.Packs
@@ -24,19 +23,15 @@ namespace OSharp.Core.Packs
     /// <summary>
     /// OSharp模块管理器
     /// </summary>
-    public class OSharpPackManager
+    public class OsharpPackManager : IOsharpPackManager
     {
-        private readonly IOSharpBuilder _builder;
         private readonly List<OsharpPack> _sourcePacks;
-        private readonly OSharpPackTypeFinder _typeFinder;
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpPackManager"/>类型的新实例
+        /// 初始化一个<see cref="OsharpPackManager"/>类型的新实例
         /// </summary>
-        public OSharpPackManager(IOSharpBuilder builder, IAllAssemblyFinder allAssemblyFinder)
+        public OsharpPackManager()
         {
-            _builder = builder;
-            _typeFinder = new OSharpPackTypeFinder(allAssemblyFinder);
             _sourcePacks = new List<OsharpPack>();
             LoadedPacks = new List<OsharpPack>();
         }
@@ -56,23 +51,27 @@ namespace OSharp.Core.Packs
         /// </summary>
         /// <param name="services">服务容器</param>
         /// <returns></returns>
-        public IServiceCollection LoadPacks(IServiceCollection services)
+        public virtual IServiceCollection LoadPacks(IServiceCollection services)
         {
-            Type[] packTypes = _typeFinder.FindAll();
+            IOsharpPackTypeFinder packTypeFinder =
+                services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
+            Type[] packTypes = packTypeFinder.FindAll();
             _sourcePacks.Clear();
             _sourcePacks.AddRange(packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)));
+
+            IOsharpBuilder builder = services.GetSingletonInstance<IOsharpBuilder>();
             List<OsharpPack> packs;
-            if (_builder.AddPacks.Any())
+            if (builder.AddPacks.Any())
             {
                 packs = _sourcePacks.Where(m => m.Level == PackLevel.Core)
-                    .Union(_sourcePacks.Where(m => _builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
+                    .Union(_sourcePacks.Where(m => builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
                 IEnumerable<Type> dependModuleTypes = packs.SelectMany(m => m.GetDependModuleTypes());
                 packs = packs.Union(_sourcePacks.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
             }
             else
             {
                 packs = _sourcePacks.ToList();
-                packs.RemoveAll(m => _builder.ExceptPacks.Contains(m.GetType()));
+                packs.RemoveAll(m => builder.ExceptPacks.Contains(m.GetType()));
             }
             packs = packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             LoadedPacks = packs;
@@ -86,21 +85,23 @@ namespace OSharp.Core.Packs
         }
 
         /// <summary>
-        /// 启用模块
+        /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public void UsePacks(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public virtual void UsePack(IServiceProvider provider)
         {
-            ILogger<OSharpPackManager> logger = app.ApplicationServices.GetService<ILogger<OSharpPackManager>>();
+            ILogger logger = provider.GetLogger<OsharpPackManager>();
             logger.LogInformation("OSharp框架初始化开始");
+            DateTime dtStart = DateTime.Now;
 
             foreach (OsharpPack pack in LoadedPacks)
             {
-                pack.UsePack(app);
+                pack.UsePack(provider);
                 logger.LogInformation($"模块{pack.GetType()}加载成功");
             }
 
-            logger.LogInformation("OSharp框架初始化完成");
+            TimeSpan ts = DateTime.Now.Subtract(dtStart);
+            logger.LogInformation($"Osharp框架初始化完成，耗时：{ts:g}");
         }
     }
 }

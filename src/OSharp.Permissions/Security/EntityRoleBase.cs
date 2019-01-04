@@ -39,6 +39,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 数据权限操作
         /// </summary>
+        [DisplayName("数据权限操作")]
         public DataAuthOperation Operation { get; set; }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace OSharp.Security
         /// 获取 过滤条件组信息
         /// </summary>
         [NotMapped]
-        public FilterGroup FilgerGroup
+        public FilterGroup FilterGroup
         {
             get
             {

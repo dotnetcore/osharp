@@ -18,7 +18,7 @@ using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.EntityInfos
@@ -31,15 +31,19 @@ namespace OSharp.Core.EntityInfos
     public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler
         where TEntityInfo : class, IEntityInfo, new()
     {
-        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IEntityTypeFinder _entityTypeFinder;
         private readonly ILogger _logger;
+        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
         /// </summary>
-        protected EntityInfoHandlerBase(ILoggerFactory loggerFactory)
+        protected EntityInfoHandlerBase(IServiceProvider serviceProvider)
         {
-            _logger = loggerFactory.CreateLogger<TEntityInfoHandler>();
+            _serviceProvider = serviceProvider;
+            _entityTypeFinder = serviceProvider.GetService<IEntityTypeFinder>();
+            _logger = serviceProvider.GetLogger<TEntityInfoHandler>();
         }
 
         /// <summary>
@@ -47,8 +51,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void Initialize()
         {
-            IEntityTypeFinder entityTypeFinder = ServiceLocator.Instance.GetService<IEntityTypeFinder>();
-            Type[] entityTypes = entityTypeFinder.FindAll(true);
+            Type[] entityTypes = _entityTypeFinder.FindAll(true);
             _logger.LogInformation($"数据实体处理器开始初始化，共找到 {entityTypes.Length} 个实体类");
             foreach (Type entityType in entityTypes)
             {
@@ -61,7 +64,7 @@ namespace OSharp.Core.EntityInfos
                 _entityInfos.Add(entityInfo);
             }
 
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, _entityInfos);
             });
@@ -81,8 +84,18 @@ namespace OSharp.Core.EntityInfos
             {
                 RefreshCache();
             }
-            return _entityInfos.FirstOrDefault(m => m.TypeName == type.FullName)
-                ?? _entityInfos.FirstOrDefault(m => type.BaseType != null && m.TypeName == type.BaseType.FullName);
+            string typeName = type.GetFullNameWithModule();
+            IEntityInfo entityInfo = _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
+            if (entityInfo != null)
+            {
+                return entityInfo;
+            }
+            if (type.BaseType == null)
+            {
+                return null;
+            }
+            typeName = type.BaseType.GetFullNameWithModule();
+            return _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
         }
 
         /// <summary>
@@ -102,7 +115,7 @@ namespace OSharp.Core.EntityInfos
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 _entityInfos.Clear();
                 _entityInfos.AddRange(GetFromDatabase(provider));
@@ -117,8 +130,17 @@ namespace OSharp.Core.EntityInfos
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
-                throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                _logger.LogWarning("初始化实体数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                return;
             }
+
+            //检查指定实体的Hash值，决定是否需要进行数据库同步
+            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
+            {
+                _logger.LogInformation("同步实体数据时，数据签名与上次相同，取消同步");
+                return;
+            }
+
             TEntityInfo[] dbItems = repository.TrackQuery(null, false).ToArray();
 
             //删除的实体信息
@@ -188,8 +210,11 @@ namespace OSharp.Core.EntityInfos
         protected virtual TEntityInfo[] GetFromDatabase(IServiceProvider scopedProvider)
         {
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
+            if (repository == null)
+            {
+                return new TEntityInfo[0];
+            }
             return repository.Query(null, false).ToArray();
         }
-
     }
 }

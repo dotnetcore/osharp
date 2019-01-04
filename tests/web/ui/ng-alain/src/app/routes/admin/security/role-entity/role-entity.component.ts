@@ -2,7 +2,6 @@ import { Component, AfterViewInit, Injector } from '@angular/core';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig, FilterGroup, AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 import { HttpClient } from '@angular/common/http';
-import { container } from '../../../../../../node_modules/@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'admin-security-role-entity',
@@ -36,7 +35,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Security.RoleEntity", ["Read", "Create", "Update", "Delete"])
+    return new AuthConfig("Root.Admin.Security.RoleEntity", ["Read", "Create", "Update", "Delete"]);
   }
 
   protected GetModel() {
@@ -69,28 +68,28 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
       title: "角色",
       width: 120,
       template: "#=RoleId#.#=RoleName#",
-      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/role/ReadNode", "RoleName", "RoleId"),
+      editor: ($container, options) => this.kendoui.RemoteDropDownListEditor($container, options, "api/admin/role/ReadNode", "RoleName", "RoleId"),
       filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/role/ReadNode", "RoleName", "RoleId") }
     }, {
       field: "EntityId",
       title: "数据实体",
       width: 300,
       template: "#=EntityName# [#=EntityType#]",
-      editor: (container, options) => this.kendoui.RemoteDropDownListEditor(container, options, "api/admin/entityinfo/ReadNode", "Name", "Id"),
+      editor: ($container, options) => this.kendoui.RemoteDropDownListEditor($container, options, "api/admin/entityinfo/ReadNode", "Name", "Id"),
       filterable: { ui: el => this.kendoui.RemoteDropDownList(el, "api/admin/entityinfo/ReadNode", "Name", "Id") }
     }, {
       field: "Operation",
       title: "操作",
       width: 75,
       template: d => this.osharp.valueToText(d.Operation, this.osharp.data.dataAuthOperations),
-      editor: (container, options) => this.kendoui.DropDownListEditor(container, options, this.osharp.data.dataAuthOperations),
+      editor: ($container, options) => this.kendoui.DropDownListEditor($container, options, this.osharp.data.dataAuthOperations),
       filterable: { ui: el => this.kendoui.DropDownList(el, this.osharp.data.dataAuthOperations) }
     }, {
       field: "IsLocked",
       title: "锁定",
       width: 95,
       template: d => this.kendoui.Boolean(d.IsLocked),
-      editor: (container, options) => this.kendoui.BooleanEditor(container, options)
+      editor: ($container, options) => this.kendoui.BooleanEditor($container, options)
     }, {
       field: "CreatedTime",
       title: "注册时间",
@@ -122,8 +121,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
             this.filterGroup = new FilterGroup();
           }
           this.entityType = data.EntityType;
-        }
-        else {
+        } else {
           this.selectName = "未选择";
           this.filterGroup = new FilterGroup();
           this.entityType = null;
@@ -133,7 +131,7 @@ export class RoleEntityComponent extends GridComponentBase implements AfterViewI
         this.filterGroup = new FilterGroup();
         this.entityType = null;
       }
-    }
+    };
 
     return options;
   }

@@ -29,17 +29,21 @@ using OSharp.Linq;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 3, Position = "Security")]
+    [ModuleInfo(Order = 3, Position = "Security", PositionName = "权限安全模块")]
     [Description("管理-角色功能")]
     public class RoleFunctionController : AdminApiController
     {
         private readonly RoleManager<Role> _roleManager;
+        private readonly IFilterService _filterService;
         private readonly SecurityManager _securityManager;
 
-        public RoleFunctionController(SecurityManager securityManager, RoleManager<Role> roleManager)
+        public RoleFunctionController(SecurityManager securityManager, 
+            RoleManager<Role> roleManager,
+            IFilterService filterService)
         {
             _securityManager = securityManager;
             _roleManager = roleManager;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public PageData<RoleOutputDto2> Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
+            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
             PageResult<RoleOutputDto2> page = _roleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
@@ -81,7 +85,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }
 
             PageRequest request = new PageRequest();
-            Expression<Func<Function, bool>> funcExp = FilterHelper.GetExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {

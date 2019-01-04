@@ -8,12 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.EventBuses.Internal;
+using OSharp.Dependency;
 
 
 namespace OSharp.EventBuses
@@ -21,6 +22,7 @@ namespace OSharp.EventBuses
     /// <summary>
     /// 事件总线模块
     /// </summary>
+    [Description("事件总线模块")]
     public class EventBusPack : OsharpPack
     {
         /// <summary>
@@ -40,13 +42,14 @@ namespace OSharp.EventBuses
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IEventHandlerTypeFinder, EventHandlerTypeFinder>();
-            services.AddSingleton<IEventBus, PassThroughEventBus>();
-            services.AddSingleton<IEventSubscriber>(provider => provider.GetService<IEventBus>());
-            services.AddSingleton<IEventPublisher>(provider => provider.GetService<IEventBus>());
-
-            services.AddSingleton<IEventStore, InMemoryEventStore>();
-            services.AddSingleton<IEventBusBuilder, EventBusBuilder>();
+            IEventHandlerTypeFinder handlerTypeFinder =
+                services.GetOrAddTypeFinder<IEventHandlerTypeFinder>(assemblyFinder => new EventHandlerTypeFinder(assemblyFinder));
+            //向服务窗口注册所有事件处理器类型
+            Type[] eventHandlerTypes = handlerTypeFinder.FindAll();
+            foreach (Type handlerType in eventHandlerTypes)
+            {
+                services.TryAddTransient(handlerType);
+            }
 
             return services;
         }
@@ -54,10 +57,10 @@ namespace OSharp.EventBuses
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
+        /// <param name="provider">服务提供者</param>
+        public override void UsePack(IServiceProvider provider)
         {
-            IEventBusBuilder builder = app.ApplicationServices.GetService<IEventBusBuilder>();
+            IEventBusBuilder builder = provider.GetService<IEventBusBuilder>();
             builder.Build();
             IsEnabled = true;
         }

@@ -12,10 +12,10 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using OSharp.Collections;
+using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
-using OSharp.Properties;
 using OSharp.Reflection;
 using OSharp.Secutiry;
 
@@ -46,11 +46,8 @@ namespace OSharp.Entity
             predicate.CheckNotNull("predicate");
             pageCondition.CheckNotNull("pageCondition");
             selector.CheckNotNull("selector");
-            return source.ToPage(predicate,
-                pageCondition.PageIndex,
-                pageCondition.PageSize,
-                pageCondition.SortConditions,
-                selector);
+
+            return source.ToPage(predicate, pageCondition.PageIndex, pageCondition.PageSize, pageCondition.SortConditions, selector);
         }
 
         /// <summary>
@@ -136,9 +133,9 @@ namespace OSharp.Entity
         /// 将数据源映射为指定<typeparamref name="TOutputDto"/>的集合，
         /// 并验证数据的<see cref="DataAuthOperation.Update"/>,<see cref="DataAuthOperation.Delete"/>数据权限状态
         /// </summary>
-        public static IQueryable<TOutputDto> ToOutput<TEntity, TOutputDto>(this IQueryable<TEntity> source)
+        public static IQueryable<TOutputDto> ToOutput<TEntity, TOutputDto>(this IQueryable<TEntity> source, bool getKey = false)
         {
-            if (!typeof(TOutputDto).IsBaseOn<IDataAuthEnabled>())
+            if (!typeof(TOutputDto).IsBaseOn<IDataAuthEnabled>() || getKey)
             {
                 return MapperExtensions.ToOutput<TEntity, TOutputDto>(source);
             }
@@ -202,16 +199,22 @@ namespace OSharp.Entity
             pageIndex.CheckGreaterThan("pageIndex", 0);
             pageSize.CheckGreaterThan("pageSize", 0);
 
-            if (!typeof(TEntity).IsEntityType())
-            {
-                throw new InvalidOperationException(Resources.QueryCacheExtensions_TypeNotEntityType.FormatWith(typeof(TEntity).FullName));
-            }
-
             total = source.Count(predicate);
             source = source.Where(predicate);
             if (sortConditions == null || sortConditions.Length == 0)
             {
-                source = source.OrderBy("Id");
+                if (typeof(TEntity).IsEntityType())
+                {
+                    source = source.OrderBy("Id");
+                }
+                else if (typeof(TEntity).IsBaseOn<ICreatedTime>())
+                {
+                    source = source.OrderBy("CreatedTime");
+                }
+                else
+                {
+                    throw new OsharpException($"类型“{typeof(TEntity)}”未添加默认排序方式");
+                }
             }
             else
             {

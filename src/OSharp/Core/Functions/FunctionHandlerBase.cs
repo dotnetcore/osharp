@@ -31,14 +31,16 @@ namespace OSharp.Core.Functions
     public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly List<TFunction> _functions = new List<TFunction>();
 
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
         /// </summary>
-        protected FunctionHandlerBase()
+        protected FunctionHandlerBase(IServiceProvider serviceProvider)
         {
-            Logger = ServiceLocator.Instance.GetLogger(GetType());
+            _serviceProvider = serviceProvider;
+            Logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace OSharp.Core.Functions
             TFunction[] functions = GetFunctions(functionTypes);
             Logger.LogInformation($"功能信息初始化，共找到{functions.Length}个功能信息");
 
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, functions);
             });
@@ -99,7 +101,7 @@ namespace OSharp.Core.Functions
         /// </summary>
         public void RefreshCache()
         {
-            ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 _functions.Clear();
                 _functions.AddRange(GetFromDatabase(provider));
@@ -228,8 +230,16 @@ namespace OSharp.Core.Functions
             IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
             if (repository == null)
             {
-                throw new OsharpException("IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                Logger.LogWarning("初始化功能数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                return;
             }
+
+            if (!functions.CheckSyncByHash(scopedProvider, Logger))
+            {
+                Logger.LogInformation("同步功能数据时，数据签名与上次相同，取消同步");
+                return;
+            }
+
             TFunction[] dbItems = repository.TrackQuery(null, false).ToArray();
 
             //删除的功能
@@ -323,6 +333,10 @@ namespace OSharp.Core.Functions
         protected virtual TFunction[] GetFromDatabase(IServiceProvider scopedProvider)
         {
             IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
+            if (repository == null)
+            {
+                return new TFunction[0];
+            }
             return repository.Query(null, false).ToArray();
         }
 

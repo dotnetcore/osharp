@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Data;
 using OSharp.Entity;
@@ -35,6 +36,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
+        [DisplayName("编号")]
         public Guid Id
         {
             get { return _id; }
@@ -51,26 +53,31 @@ namespace OSharp.Security
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
+        [DisplayName("角色编号")]
         public TRoleKey RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 数据编号
         /// </summary>
+        [DisplayName("数据编号")]
         public Guid EntityId { get; set; }
 
         /// <summary>
         /// 获取或设置 数据权限操作
         /// </summary>
+        [DisplayName("数据权限操作")]
         public DataAuthOperation Operation { get; set; }
 
         /// <summary>
         /// 获取或设置 过滤条件组
         /// </summary>
+        [DisplayName("数据筛选条件组")]
         public FilterGroup FilterGroup { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
         /// </summary>
+        [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
     }
 }

@@ -23,9 +23,12 @@ using Liuliu.Demo.Security.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Caching;
 using OSharp.Collections;
+using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
@@ -36,21 +39,27 @@ using OSharp.Mapping;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 2, Position = "Identity")]
+    [ModuleInfo(Order = 2, Position = "Identity", PositionName = "身份认证模块")]
     [Description("管理-角色信息")]
     public class RoleController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
+        private readonly ICacheService _cacheService;
+        private readonly IFilterService _filterService;
         private readonly RoleManager<Role> _roleManager;
         private readonly SecurityManager _securityManager;
 
         public RoleController(RoleManager<Role> roleManager,
             SecurityManager securityManager,
-            IIdentityContract identityContract)
+            IIdentityContract identityContract,
+            ICacheService cacheService,
+            IFilterService filterService)
         {
             _roleManager = roleManager;
             _securityManager = securityManager;
             _identityContract = identityContract;
+            _cacheService = cacheService;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -62,8 +71,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<RoleOutputDto> Read(PageRequest request)
         {
-            Expression<Func<Role, bool>> predicate = FilterHelper.GetExpression<Role>(request.FilterGroup);
-            var page = _roleManager.Roles.ToPage<Role, RoleOutputDto>(predicate, request.PageCondition);
+            Check.NotNull(request, nameof(request));
+            IFunction function = this.GetExecuteFunction();
+
+            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
+            var page = _cacheService.ToPageCache<Role, RoleOutputDto>(_roleManager.Roles, predicate, request.PageCondition, function);
 
             return page.ToPageData();
         }
@@ -74,9 +86,16 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>角色节点列表</returns>
         [HttpGet]
         [Description("读取节点")]
-        public List<RoleNode> ReadNode()
+        public RoleNode[] ReadNode()
         {
-            List<RoleNode> nodes = _roleManager.Roles.Where(m => !m.IsLocked).OrderBy(m => m.Name).ToOutput<Role, RoleNode>().ToList();
+            IFunction function = this.GetExecuteFunction();
+            Expression<Func<Role, bool>> exp = m => !m.IsLocked;
+
+            RoleNode[] nodes = _cacheService.ToCacheArray(_roleManager.Roles, exp, m => new RoleNode()
+            {
+                RoleId = m.Id,
+                RoleName = m.Name
+            }, function);
             return nodes;
         }
 
@@ -191,7 +210,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("ReadRoleModules", Controller = "Module")]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("设置模块")]
-        public async Task<ActionResult> SetModules([FromBody] RoleSetModuleDto dto)
+        public async Task<ActionResult> SetModules(RoleSetModuleDto dto)
         {
             OperationResult result = await _securityManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return Json(result.ToAjaxResult());

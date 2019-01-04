@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OSharp.Entity;
 
 namespace Liuliu.Demo.Web.Migrations
@@ -15,7 +15,7 @@ namespace Liuliu.Demo.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -98,8 +98,19 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Role");
 
                     b.HasData(
-                        new { Id = 1, ConcurrencyStamp = "5f8e54eb-15bf-4c6b-b5b7-ce51c926bf60", CreatedTime = new DateTime(2018, 7, 15, 14, 10, 35, 578, DateTimeKind.Local), IsAdmin = true, IsDefault = false, IsLocked = false, IsSystem = true, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色" }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
+                            CreatedTime = new DateTime(2019, 1, 4, 16, 17, 15, 580, DateTimeKind.Local).AddTicks(4000),
+                            IsAdmin = true,
+                            IsDefault = false,
+                            IsLocked = false,
+                            IsSystem = true,
+                            Name = "系统管理员",
+                            NormalizedName = "系统管理员",
+                            Remark = "系统最高权限管理角色"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.RoleClaim", b =>
@@ -374,13 +385,15 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Module");
 
                     b.HasData(
-                        new { Id = 1, Code = "Root", Name = "根节点", OrderCode = 1.0, Remark = "系统根节点", TreePathString = "$1$" },
-                        new { Id = 2, Code = "Site", Name = "网站", OrderCode = 1.0, ParentId = 1, Remark = "网站前台", TreePathString = "$1$,$2$" },
-                        new { Id = 3, Code = "Admin", Name = "管理", OrderCode = 2.0, ParentId = 1, Remark = "管理后台", TreePathString = "$1$,$3$" },
-                        new { Id = 4, Code = "Identity", Name = "身份认证模块", OrderCode = 1.0, ParentId = 3, Remark = "身份认证模块节点", TreePathString = "$1$,$3$,$4$" },
-                        new { Id = 5, Code = "Security", Name = "权限安全模块", OrderCode = 2.0, ParentId = 3, Remark = "权限安全模块节点", TreePathString = "$1$,$3$,$5$" },
-                        new { Id = 6, Code = "System", Name = "系统管理模块", OrderCode = 3.0, ParentId = 3, Remark = "系统管理模块节点", TreePathString = "$1$,$3$,$6$" }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            Code = "Root",
+                            Name = "根节点",
+                            OrderCode = 1.0,
+                            Remark = "系统根节点",
+                            TreePathString = "$1$"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
@@ -443,6 +456,86 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasName("ModuleUserIndex");
 
                     b.ToTable("ModuleUser");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("EntityKey");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("OperateType");
+
+                    b.Property<Guid>("OperationId");
+
+                    b.Property<string>("TypeName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperationId");
+
+                    b.ToTable("AuditEntity");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditOperation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Browser");
+
+                    b.Property<DateTime>("CreatedTime");
+
+                    b.Property<int>("Elapsed");
+
+                    b.Property<string>("FunctionName");
+
+                    b.Property<string>("Ip");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("NickName");
+
+                    b.Property<string>("OperationSystem");
+
+                    b.Property<int>("ResultType");
+
+                    b.Property<string>("UserAgent");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditOperation");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditProperty", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AuditEntityId");
+
+                    b.Property<string>("DataType");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<string>("FieldName");
+
+                    b.Property<string>("NewValue");
+
+                    b.Property<string>("OriginalValue");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditEntityId");
+
+                    b.ToTable("AuditProperty");
                 });
 
             modelBuilder.Entity("OSharp.Core.EntityInfos.EntityInfo", b =>
@@ -511,7 +604,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Function");
                 });
 
-            modelBuilder.Entity("OSharp.System.KeyValueCouple", b =>
+            modelBuilder.Entity("OSharp.Core.Systems.KeyValue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -527,17 +620,30 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KeyValueCouple");
+                    b.ToTable("KeyValue");
 
                     b.HasData(
-                        new { Id = new Guid("426b3368-9841-4e17-85c8-a91e00e99f43"), IsLocked = false, Key = "Site.Name", ValueJson = "\"OSHARP\"", ValueType = "System.String" },
-                        new { Id = new Guid("9d176145-6058-4b7f-868d-a91e00e99f47"), IsLocked = false, Key = "Site.Description", ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"", ValueType = "System.String" }
-                    );
+                        new
+                        {
+                            Id = new Guid("534d7813-0eea-44cc-b88e-a9cb010c6981"),
+                            IsLocked = false,
+                            Key = "Site.Name",
+                            ValueJson = "\"OSHARP\"",
+                            ValueType = "System.String,System.Private.CoreLib"
+                        },
+                        new
+                        {
+                            Id = new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"),
+                            IsLocked = false,
+                            Key = "Site.Description",
+                            ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"",
+                            ValueType = "System.String,System.Private.CoreLib"
+                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.LoginLog", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -672,6 +778,22 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasOne("Liuliu.Demo.Identity.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditEntity", b =>
+                {
+                    b.HasOne("Liuliu.Demo.Systems.Entities.AuditOperation", "Operation")
+                        .WithMany("AuditEntities")
+                        .HasForeignKey("OperationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditProperty", b =>
+                {
+                    b.HasOne("Liuliu.Demo.Systems.Entities.AuditEntity", "AuditEntity")
+                        .WithMany("Properties")
+                        .HasForeignKey("AuditEntityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

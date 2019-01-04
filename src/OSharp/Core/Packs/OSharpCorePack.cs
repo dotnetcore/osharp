@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="OSharpCorePack.cs" company="OSharp开源团队">
+//  <copyright file="OsharpCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -7,15 +7,17 @@
 //  <last-date>2018-06-23 15:19</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+using System.ComponentModel;
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
+using OSharp.Caching;
 using OSharp.Core.Options;
-using OSharp.Dependency;
-using OSharp.Reflection;
+using OSharp.Entity;
+using OSharp.Entity.Infrastructure;
+using OSharp.Filter;
 
 
 namespace OSharp.Core.Packs
@@ -23,7 +25,8 @@ namespace OSharp.Core.Packs
     /// <summary>
     /// OSharp核心模块
     /// </summary>
-    public class OSharpCorePack : OsharpPack
+    [Description("OSharp核心模块")]
+    public class OsharpCorePack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别
@@ -37,8 +40,13 @@ namespace OSharp.Core.Packs
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IAllAssemblyFinder, AppDomainAllAssemblyFinder>();
-            services.AddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
+            services.TryAddSingleton<IConfigureOptions<OSharpOptions>, OSharpOptionsSetup>();
+            services.TryAddSingleton<IEntityTypeFinder, EntityTypeFinder>();
+            services.TryAddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
+            services.TryAddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
+
+            services.TryAddSingleton<ICacheService, CacheService>();
+            services.TryAddScoped<IFilterService, FilterService>();
 
             return services;
         }

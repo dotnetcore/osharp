@@ -10,6 +10,7 @@
 using System;
 
 using OSharp.Entity;
+using OSharp.Entity.Infrastructure;
 
 
 namespace OSharp.Core.EntityInfos
@@ -17,7 +18,7 @@ namespace OSharp.Core.EntityInfos
     /// <summary>
     /// 定义数据实体信息
     /// </summary>
-    public interface IEntityInfo : IEntity<Guid>
+    public interface IEntityInfo : IEntity<Guid>, IEntityHash
     {
         /// <summary>
         /// 获取或设置 实体名称

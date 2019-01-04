@@ -12,9 +12,9 @@ using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 
 
 namespace OSharp.Core.Options
@@ -63,6 +63,30 @@ namespace OSharp.Core.Options
                 }
                 options.Jwt = jwt;
             }
+
+            // RedisOptions
+            section = _configuration.GetSection("OSharp:Redis");
+            RedisOptions redis = section.Get<RedisOptions>();
+            if (redis != null)
+            {
+                if (redis.Configuration.IsMissing())
+                {
+                    throw new OsharpException("配置文件中Redis节点的Configuration不能为空");
+                }
+                options.Redis = redis;
+            }
+
+            // SwaggerOptions
+            section = _configuration.GetSection("OSharp:Swagger");
+            SwaggerOptions swagger = section.Get<SwaggerOptions>();
+            if (swagger != null)
+            {
+                if (swagger.Url.IsMissing())
+                {
+                    throw new OsharpException("配置文件中Swagger节点的Url不能为空");
+                }
+                options.Swagger = swagger;
+            }
         }
 
         /// <summary>
@@ -72,7 +96,7 @@ namespace OSharp.Core.Options
         /// </summary>
         /// <param name="options"></param>
         private void SetDbContextOptionses(OSharpOptions options)
-        { 
+        {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
             IDictionary<string, OSharpDbContextOptions> dict = section.Get<Dictionary<string, OSharpDbContextOptions>>();
             if (dict == null || dict.Count == 0)
@@ -88,7 +112,7 @@ namespace OSharp.Core.Options
                     ConnectionString = connectionString,
                     DatabaseType = DatabaseType.SqlServer
                 };
-                options.DbContextOptionses.Add("DefaultDbContext", dbContextOptions);
+                options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;
             }
             var repeated = dict.Values.GroupBy(m => m.DbContextType).FirstOrDefault(m => m.Count() > 1);
@@ -99,7 +123,7 @@ namespace OSharp.Core.Options
 
             foreach (KeyValuePair<string, OSharpDbContextOptions> pair in dict)
             {
-                options.DbContextOptionses.Add(pair.Key, pair.Value);
+                options.DbContexts.Add(pair.Key, pair.Value);
             }
         }
     }

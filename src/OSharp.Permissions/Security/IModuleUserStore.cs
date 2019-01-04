@@ -32,7 +32,7 @@ namespace OSharp.Security
         IQueryable<TModuleUser> ModuleUsers { get; }
 
         /// <summary>
-        /// 检查模块用户信息信息是否存在
+        /// 检查模块用户信息是否存在
         /// </summary>
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的模块用户信息编号</param>

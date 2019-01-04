@@ -1,6 +1,108 @@
 # OSharp .NetStandard 更新记录
 
-### 0.3.0-beta05
+### 0.4.0-beta02-03
+1. 合并EFCore的Migration迁移基类，各个数据库驱动技术的迁移基类合并为 `MigrationPackBase<TDbContext>`
+2. 各个数据库EFCore模块根据配置决定是否初始化模块
+3. 添加 OSharp.EntityFrameworkCore.PostgreSql 项目，实现 `PostgreSql` 数据库的数据存储
+4. 排除其他驱动的数据库迁移模块文件，确保迁移命令正常执行
+
+### 0.4.0-beta01
+1. 通过ISqlExecutor<TEntity, TKey>接口，添加基于Dapper的Sql查询支持。给IUnitOfWorkManager添加一些实用的扩展方法
+2. 将验证码处理类、IQueryable相关的缓存扩展方法改为服务类，相应类型或方法标记为过时
+3. 添加IFilterService服务，代替FilterHelper获取表达式的功能
+4. 添加 HttpContextServiceScopeFactory 类，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
+5. 添加 OSharp.Hangfire 后台任务项目，添加Hangfire的角色权限过滤RoleDashboardAuthorizationFilter
+6. 优化IServiceCollection服务集合中的服务替换机制，各个TypeFinder已可在初始化时替换
+7. 添加[DependencyAttribute]特性，用于控制依赖注入的实现类型在自动注册时的行为。统一查找并注册三种生命周期的所有类型，不再分别查找分别注册。
+8. 调整EventBus模块的EventHandler处理器自动注册机制，在模块的AddService时自动查找所有处理器并注册为Transient生命周期服务，处理器不需要再实现ITransientDependency接口
+9. 使用[Dependency]标签优化Audit，Caching，EntityInfo，EventBus，Mvc，EFCore，Log4Net，权限等各个Pack模块的服务注册行为。
+
+### 0.3.0-beta12-13
+1. 将Repository中的GetFirst功能的数据源改为TrackQuery
+2. 键值存储中,将GetSetting，SaveSetting提升到接口IKeyValueStore中。 去除Identity.GetUserId的泛型约束。修复EntityRoleBase的FilterGroup命名错误
+3. 更新当OsharpResult的Message为null时，获取ResultType的描述作为消息内容
+4. 添加 OSharp.EntityFrameworkCore.Sqlite工程，支持EFCore的Sqlite数据库存储支持。
+5. 统一Sqlite组件版本号。修复Sqlite生成xml文档的路径
+6. 添加当仓储未初始化时，忽略Function，EntityInfo，Module数据初始化操作
+7. 将.net core 更新到2.2版本
+8. 将EntityFrameworkCorePack模块下沉为基模块，SqlServer，MySql，Sqlite等数据模块继承此基模块
+9. 添加Redis客户端项目 OSharp.Redis
+10. 添加Swagger项目OSharp.Swagger
+
+### 0.3.0-beta11
+1. 后台管理的系统模块增加OsharpPack模块列表
+2. 添加MySql的迁移类MySqlDefaultDbContextMigrationPack和MySqlDesignTimeDefaultDbContextFactory
+3. 将MySql迁移模块基类由MySqlMigrationModuleBase重命名为MySqlMigrationPackBase
+4. 添加在线用户信息提供者注入IOnlineUserProvider，同时OnlineUser添加一个字典属性ExtendData作为在线用户扩展数据存储，有需要可注入替换IOnlineUserProvider服务来实现在线用户的自定义扩展数据
+5. 修复T4不能生成的问题。实体元数据的属性数据去掉virtual的属性
+6. 添加字符串的单复数转换的字符串扩展方法
+7. 给Pack模块添加中文名称描述
+8. 添加设置信息ISetting 对键值数据的获取与存储
+9. 添加设置模块的底层模型支持
+10. 优化KeyValue的类命名获取方式
+11. 添加 IdentityErrorDescriberZhHans 替换原有的IdentityErrorDescriber为Identity提供中文错误描述
+12. 修复数据权限验证不走缓存的问题，修复读取数据时启用了缓存仍然有读取数据库数据库的问题
+13. Repository添加GetFirst方法，简化查找符合条件的第一个数据
+14. 角色设置模块时，只设置有引用了角色限制的功能的模块
+15. 修复异步开启事务时报事务连接与上下文连接不匹配的问题
+16. 重构数据组件工作单元UnitOfWork，详见 [#35](https://github.com/i66soft/osharp-ns20/issues/35)
+
+### 0.3.0-beta10
+1. 新增AspOsharpPack基类，用于基于AspNetCore环境的Pack模块，将AspNetCore与非AspNetCore环境的OsharpPack分开，添加IOsharpPackManager 接口用于管理模块管理器
+2. 修复DistributedCacheExtensions缓存扩展方法中当功能缓存秒数设置为0时无法创建缓存的问题 更新T4模板
+3. 修复ng项目前端页面的众多小问题
+4. 判断数据权限时只判断有功能权限的角色数据权限。
+5. 修复更新数据权限时导致数据权限缓存项操作类型使用为Read的问题
+6. 修复数据权限信息更新时缓存不更新或不移除的问题。将System命名空间更名为Systems，以避免与.net的System命名空间冲突
+7. 优化系统启动时间：对系统初始化时从程序集中提取的Module，Function，EntityInfo 进行签名对比，与上次相同则不进行数据库数据同步
+8. EF Core 组件添加数据模型缓存，解决数据模型重复创建的问题
+9. 将系统的键值字典KeyValueCouple更名为KeyValue
+10. 给用户设置角色时，或者锁定用户角色分配时，移除相应的在线用户信息缓存，使用户角色即时生效
+
+### 0.3.0-beta09
+1. 修复 UserStore 中的 FindByLoginAsync当userId为null时会引发异常的问题
+2. 支持Lazy<>的注入。将Repository的Query拆分为多个方法，解决查询不支持可选参数的问题。DbContextBase添加延迟加载代理LazyLoadingProxiesEnabled的开关
+3. OSharp.dll增加中增加Entity，InputDto，OutputDto 类型元数据生成功能，可用于自动生成代码。增加T4生成TS列表组件的代码生成功能
+4. 添加实体生成InputDto、OutputDto、EntityConfiguration类型的T4脚本
+5. 更新OutputDto生成TS组件代码的流程，验证信息由相应的InputDto提供
+6. 代码生成类型元数据支持可空属性支持，修复 T4 模板可空类型不使用可空属性类型的问题
+7. IQueryable相关扩展方法去除TEntity必须是实体类的限制，现可用于任意IQueryable<T>数据源
+
+### 0.3.0-beta08
+1. 修复ModuleInfo提取时排序码不起作用的问题
+2. 修复登录时用户信息重复Track的问题
+3. 优化Repository的Update相关实现，使之按需更新
+5. 修复EntityInfoHandler查找实体信息不正确的问题4. 
+5. 增加一个基于Scoped生命周期的数据字典`ScopedDictionary`，用于在程序执行路径上下文传递Scoped的数据，如当前执行功能，当前用户，操作审计，数据审计等
+6. 完善操作审计`AuditOperationEntry`与数据审计`AuditEntityEntry`的基础实现
+    1. 添加操作审计AOP拦截器`AuditOperationAttribute`，用于获取正在执行的功能新建操作审计`AuditOperationEntry`信息
+    2. 操作审计将存入`ScopedDictionary`字典中向下传递
+    3. 数据层执行`context.SaveChanges`操作的时候，视`上下文选项、功能是否允许数据审计、实体是否允许数据审计`等条件决定是否允许数据审计，如都允许，获取操作中的数据变更`新增数据的所有属性及新值、更新数据的变化属性及变更值，删除数据的所有属性及原值`创建数据变更信息。
+    4. 数据变更信息由`事件总线`的`AuditEntityEventHandler`处理，附加到`ScopedDictionary`中的操作审计中
+    5. 操作审计拦截器`AuditOperationAttribute`在请求结束时执行审计信息的持久化。
+    6. 在Demo中实现了基于数据库的审计信息存储`AuditDatabaseStore`
+    7. 给操作审计添加操作系统，浏览器信息
+    8. 完善审计功能，收集操作结果，耗时，返回消息等数据
+7. UnitOfWork添加Rollback可用于两个事务间清理上一个事务的变更数据跟踪 
+
+### 0.3.0-beta07
+1. 优化模块数据初始化流程，自动生成分类性质的模块信息，分类性质的模块信息是指在Area模块与Controller模块之间的模块信息，如下的`Identity`模块就是个分类模块信息：
+    ```
+    namespace Liuliu.Demo.Web.Areas.Admin.Controllers
+    {
+        [ModuleInfo(Order = 1, Position = "Identity", PositionName = "身份认证模块")]
+        [Description("管理-用户信息")]
+        public class UserController : AdminApiController
+        { }
+    }
+    ```
+    将生成如下模块结构：
+    > 根节点 - Root
+    > > 管理 - Admin
+    > > > **身份认证模块 - Identity**
+    > > > > 用户信息 - User
+
+### 0.3.0-beta05-06
 1. 客户端代码移除部分多余布局文件
 2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
 3. 优化前台header样式，固定header不随滚动条滚动
@@ -10,6 +112,10 @@
 7. 将依赖注入功能提取为`DependencyPack`模块
 8. 提取MVC模块基类 MvcPackBase，AspNetCoreMvcPack还是需要在Hosting项目中定义，以方便调整启动顺序（MVC模块需要在Identity模块之后启动，否则Identity无法生效）
 9. 将事务开启更改为由DbConnection对象来开启，DbContext只是使用此事务，不负责开启事务
+10. 简化数据存储模块OSharp.EntityFrameworkCore的上下文获取与管理，优化数据存储模块的初始化机制
+11. 修复未开启事务时提交事务出错的问题
+12. 修复部分模块状态启动不正确的问题
+13. 修复因IEntityConfigurationTypeFinder未初始化导致迁移时获取不到实体类的问题
 
 ### 0.3.0-beta04
 1. `OSharp.Permissions`增加QQ登录的支持

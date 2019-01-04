@@ -7,6 +7,11 @@
 //  <last-date>2015-08-03 18:29</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+using OSharp.Extensions;
+
+
 namespace OSharp.Data
 {
     /// <summary>
@@ -83,6 +88,10 @@ namespace OSharp.Data
         /// </summary>
         protected OsharpResult(TResultType type, string message, TData data)
         {
+            if (message == null && typeof(TResultType).IsEnum)
+            {
+                message = (type as Enum)?.ToDescription();
+            }
             ResultType = type;
             _message = message;
             Data = data;

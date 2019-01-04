@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
 
 using OSharp.Entity;
 
@@ -20,13 +21,16 @@ namespace OSharp.Security
     public abstract class EntityInfoInputDtoBase : IInputDto<Guid>
     {
         /// <summary>
-        /// 获取或设置 是否启用数据审计
-        /// </summary>
-        public bool AuditEnabled { get; set; }
-
-        /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
+        [DisplayName("编号")]
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否启用数据审计
+        /// </summary>
+        [DisplayName("是否数据审计")]
+        public bool AuditEnabled { get; set; }
+
     }
 }

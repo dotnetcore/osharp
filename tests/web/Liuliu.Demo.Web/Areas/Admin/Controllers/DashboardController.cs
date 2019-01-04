@@ -14,14 +14,11 @@ using System.Linq.Expressions;
 
 using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Security;
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Caching;
-using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Entity;
@@ -29,21 +26,27 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
+    [ModuleInfo(Order = 1)]
     [Description("管理-信息汇总")]
     public class DashboardController : AdminApiController
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly SecurityManager _securityManager;
+        private readonly ICacheService _cacheService;
 
         /// <summary>
         /// 初始化一个<see cref="DashboardController"/>类型的新实例
         /// </summary>
-        public DashboardController(UserManager<User> userManager, RoleManager<Role> roleManager, SecurityManager securityManager)
+        public DashboardController(UserManager<User> userManager,
+            RoleManager<Role> roleManager,
+            SecurityManager securityManager,
+            ICacheService cacheService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _securityManager = securityManager;
+            _cacheService = cacheService;
         }
 
         /// <summary>
@@ -60,36 +63,37 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
 
-            var users = _userManager.Users.Where(userExp).GroupBy(m => 1).Select(g => new
+            var users = _cacheService.ToCacheList(_userManager.Users.Where(userExp).GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(m => 1),
                 ValidCount = g.Count(n => n.EmailConfirmed)
-            }).ToCacheList(function, "Dashboard_Summary_User", start, end).FirstOrDefault()
+            }), function, "Dashboard_Summary_User", start, end).FirstOrDefault()
                 ?? new { TotalCount = 0, ValidCount = 0 };
-            var roles = _roleManager.Roles.GroupBy(m => 1).Select(g => new
+
+            var roles = _cacheService.ToCacheList(_roleManager.Roles.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(m => 1),
                 AdminCount = g.Count(m => m.IsAdmin)
-            }).ToCacheList(function, "Dashboard_Summary_Role", start, end).FirstOrDefault()
+            }), function, "Dashboard_Summary_Role", start, end).FirstOrDefault()
                 ?? new { TotalCount = 0, AdminCount = 0 };
-            var modules = _securityManager.Modules.GroupBy(m => 1).Select(g => new
+            var modules = _cacheService.ToCacheList(_securityManager.Modules.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(m => 1),
                 SiteCount = g.Count(m => m.TreePathString.Contains("$2$")),
                 AdminCount = g.Count(m => m.TreePathString.Contains("$3$"))
-            }).ToCacheList(function, "Dashboard_Summary_Module").FirstOrDefault()
-            ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
-            var functions = _securityManager.Functions.GroupBy(m => 1).Select(g => new
+            }), function, "Dashboard_Summary_Module").FirstOrDefault()
+                ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
+            var functions = _cacheService.ToCacheList(_securityManager.Functions.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(m => 1),
                 ControllerCount = g.Count(m => m.IsController)
-            }).ToCacheList(function, "Dashboard_Summary_Function").FirstOrDefault()
+            }), function, "Dashboard_Summary_Function").FirstOrDefault()
                 ?? new { TotalCount = 0, ControllerCount = 0 };
-            var entityInfos = _securityManager.EntityInfos.GroupBy(m => 1).Select(g => new
+            var entityInfos = _cacheService.ToCacheList(_securityManager.EntityInfos.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(m => 1),
                 AuditCount = g.Count(m => m.AuditEnabled)
-            }).ToCacheList(function, "Dashboard_Summary_EntityInfo").FirstOrDefault()
+            }), function, "Dashboard_Summary_EntityInfo").FirstOrDefault()
                 ?? new { TotalCount = 0, AuditCount = 0 };
 
             var data = new { users, roles, modules, functions, entityInfos };
@@ -104,11 +108,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
 
-            var userData = _userManager.Users.Where(userExp).GroupBy(m => m.CreatedTime.Date).Select(g => new
+            var userData = _cacheService.ToCacheList(_userManager.Users.Where(userExp).GroupBy(m => m.CreatedTime.Date).Select(g => new
             {
                 Date = g.Key,
                 DailyCount = g.Count()
-            }).ToCacheList(function, "Dashboard_Line_User", start, end);
+            }), function, "Dashboard_Line_User", start, end);
             var users = userData.Select(m => new
             {
                 Date = m.Date.ToString("d"),

@@ -9,13 +9,18 @@
 
 using System;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using OSharp.Collections;
 using OSharp.Core.Builders;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
 using OSharp.Dependency;
+using OSharp.Entity;
 using OSharp.Reflection;
 
 
@@ -29,19 +34,30 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 将OSharp服务，各个<see cref="OsharpPack"/>模块的服务添加到服务容器中
         /// </summary>
-        public static IServiceCollection AddOSharp(this IServiceCollection services, Action<IOSharpBuilder> builderAction = null)
+        public static IServiceCollection AddOSharp<TOsharpPackManager>(this IServiceCollection services, Action<IOsharpBuilder> builderAction = null)
+            where TOsharpPackManager : IOsharpPackManager, new()
         {
             Check.NotNull(services, nameof(services));
 
-            IOSharpBuilder builder = new OSharpBuilder();
-            if (builderAction != null)
-            {
-                builderAction(builder);
-            }
-            OSharpPackManager manager = new OSharpPackManager(builder, new AppDomainAllAssemblyFinder());
+            //初始化所有程序集查找器
+            services.TryAddSingleton<IAllAssemblyFinder>(new AppDomainAllAssemblyFinder());
+
+            IOsharpBuilder builder = services.GetSingletonInstanceOrNull<IOsharpBuilder>() ?? new OsharpBuilder();
+            builderAction?.Invoke(builder);
+            services.TryAddSingleton<IOsharpBuilder>(builder);
+
+            TOsharpPackManager manager = new TOsharpPackManager();
+            services.AddSingleton<IOsharpPackManager>(manager);
             manager.LoadPacks(services);
-            services.AddSingleton(provider => manager);
             return services;
+        }
+
+        /// <summary>
+        /// 获取<see cref="IConfiguration"/>配置信息
+        /// </summary>
+        public static IConfiguration GetConfiguration(this IServiceCollection services)
+        {
+            return services.GetSingletonInstance<IConfiguration>();
         }
 
         /// <summary>
@@ -50,6 +66,66 @@ namespace Microsoft.Extensions.DependencyInjection
         public static OSharpOptions GetOSharpOptions(this IServiceProvider provider)
         {
             return provider.GetService<IOptions<OSharpOptions>>()?.Value;
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <typeparam name="T">非静态强类型</typeparam>
+        /// <returns>日志对象</returns>
+        public static ILogger<T> GetLogger<T>(this IServiceProvider provider)
+        {
+            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            return factory.CreateLogger<T>();
+        }
+
+        /// <summary>
+        /// 获取指定类型的日志对象
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="type">指定类型</param>
+        /// <returns>日志对象</returns>
+        public static ILogger GetLogger(this IServiceProvider provider, Type type)
+        {
+            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            return factory.CreateLogger(type);
+        }
+
+        /// <summary>
+        /// 获取指定名称的日志对象
+        /// </summary>
+        public static ILogger GetLogger(this IServiceProvider provider, string name)
+        {
+            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            return factory.CreateLogger(name);
+        }
+
+        /// <summary>
+        /// 获取指定实体类的上下文所在工作单元
+        /// </summary>
+        public static IUnitOfWork GetUnitOfWork<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
+        {
+            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
+            return unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
+        }
+
+        /// <summary>
+        /// 获取指定实体类型的上下文对象
+        /// </summary>
+        public static IDbContext GetDbContext<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
+        {
+            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
+            return unitOfWorkManager.GetDbContext<TEntity, TKey>();
+        }
+
+        /// <summary>
+        /// OSharp框架初始化，适用于非AspNetCore环境
+        /// </summary>
+        public static IServiceProvider UseOsharp(this IServiceProvider provider)
+        {
+            IOsharpPackManager packManager = provider.GetService<IOsharpPackManager>();
+            packManager.UsePack(provider);
+            return provider;
         }
     }
 }

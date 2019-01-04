@@ -11,12 +11,15 @@ using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
 
+using OSharp.Dependency;
+
 
 namespace OSharp.Entity
 {
     /// <summary>
     /// 定义<see cref="DbContextOptionsBuilder"/>创建器
     /// </summary>
+    [MultipleDependency]
     public interface IDbContextOptionsBuilderCreator
     {
         /// <summary>

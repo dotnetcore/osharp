@@ -313,7 +313,7 @@ namespace OSharp.Identity
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
 
-            return Task.FromResult(_userRepository.Query().FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
+            return Task.FromResult(_userRepository.TrackQuery().FirstOrDefault(m => m.NormalizedUserName == normalizedUserName));
         }
 
         #endregion
@@ -401,6 +401,10 @@ namespace OSharp.Identity
 
             TUserKey userId = _userLoginRepository.TrackQuery(m => m.LoginProvider == loginProvider && m.ProviderKey == providerKey)
                 .Select(m => m.UserId).FirstOrDefault();
+            if (Equals(userId, default(TUserKey)))
+            {
+                return Task.FromResult(default(TUser));
+            }
             TUser user = _userRepository.Get(userId);
             return Task.FromResult(user);
         }
@@ -578,7 +582,7 @@ namespace OSharp.Identity
             user.SecurityStamp = stamp;
 
             //移除用户在线缓存
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserName = user.UserName };
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
             _eventBus.Publish(eventData);
 
             return Task.CompletedTask;

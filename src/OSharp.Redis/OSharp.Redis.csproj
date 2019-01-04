@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>OSharpNS.Redis</PackageId>
+    <Summary>OSharp(.NetStandard2.0) Redis 缓存组件</Summary>
+    <Description>OSharp(.NetStandard2.0) Redis 缓存组件，封装基于Redis客户端的缓存实现</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Redis.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Redis.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+  </ItemGroup>
+
+</Project>

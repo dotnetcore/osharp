@@ -1,88 +1,99 @@
+@media (min-width: 768px){
+.content {
+    margin: 116px 10px 0 210px;
+}
+}
+
 ::ng-deep .k-grid .content {
-  margin: 64px 10px 10px 10px;
+    margin: 64px 10px 10px 10px;
 }
 
-::ng-deep .k-grid .c-checkbox span, .c-radio span {
-  width: 17px;
-  height: 17px;
+::ng-deep .k-grid .c-checkbox span,
+.c-radio span {
+    width: 17px;
+    height: 17px;
 }
 
-::ng-deep .k-grid-header th.k-header, ::ng-deep .k-filter-row th {
-  padding-left: .1em;
+::ng-deep .k-grid-header th.k-header,
+::ng-deep .k-filter-row th {
+    padding-left: .1em;
 }
 
 ::ng-deep .k-grid-header th.k-with-icon .k-link {
-  margin-right: 0;
-  overflow: visible;
+    margin-right: 0;
+    overflow: visible;
 }
 
-::ng-deep .k-header>.k-grid-filter, ::ng-deep .k-header>.k-header-column-menu {
-  float: left;
-  margin-right: -0.2em;
+::ng-deep .k-header>.k-grid-filter,
+::ng-deep .k-header>.k-header-column-menu {
+    float: left;
+    margin-right: -0.2em;
 }
 
 ::ng-deep .k-grid .c-checkbox input[type=checkbox]:checked+span {
-  border-width: 0;
-  background-color: rgb(170, 170, 170)
+    border-width: 0;
+    background-color: rgb(170, 170, 170)
 }
 
 ::ng-deep .k-grid .c-checkbox {
-  margin: 0 0 0 4px;
+    margin: 0 0 0 4px;
 }
 
-::ng-deep .k-treelist tbody button.k-button, ::ng-deep .k-grid tbody a.k-button {
-  min-width: 0;
+::ng-deep .k-treelist tbody button.k-button,
+::ng-deep .k-grid tbody a.k-button {
+    min-width: 0;
 }
 
 ::ng-deep .k-window .win-footer {
-  padding: 10px;
-  border-top: 1px solid #eee;
-  margin: .7em -0.58em -0.58em -0.58em;
-  height: 30px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    margin: .7em -0.58em -0.58em -0.58em;
+    height: 30px;
 }
 
 ::ng-deep .k-window .win-footer .k-button {
-  float: right;
-  margin-right: 10px;
+    float: right;
+    margin-right: 10px;
 }
 
 ::ng-deep .k-window .win-content {
-  overflow: auto;
+    overflow: auto;
 }
 
-::ng-deep .k-tabstrip>.k-content, ::ng-deep.k-panelbar .k-tabstrip>.k-content {
-  margin: 0 1px 1px;
+::ng-deep .k-tabstrip>.k-content,
+::ng-deep.k-panelbar .k-tabstrip>.k-content {
+    margin: 0 1px 1px;
 }
 
 ::ng-deep .k-tabstrip-items .k-state-active {
-  background-color: #7282dc
+    background-color: #7282dc
 }
 
 ::ng-deep .k-grid .checker {
-  margin: -7px 0 0 3px;
-  padding: 0;
-  width: 19px;
-  height: 19px;
-  position: relative;
-  vertical-align: middle;
-  display: inline-block;
-  zoom: 1;
+    margin: -7px 0 0 3px;
+    padding: 0;
+    width: 19px;
+    height: 19px;
+    position: relative;
+    vertical-align: middle;
+    display: inline-block;
+    zoom: 1;
 }
 
 ::ng-deep .k-grid .checker span {
-  margin: 0;
-  padding: 0;
-  width: 19px;
-  height: 19px;
-  text-align: center;
-  display: inline-block;
-  background-position: 0 -260px;
-  background-image: url(/assets/tmp/img/sprite.png);
-  background-repeat: no-repeat;
-  zoom: 1;
-  -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+    width: 19px;
+    height: 19px;
+    text-align: center;
+    display: inline-block;
+    background-position: 0 -260px;
+    background-image: url(/assets/res/sprite.png);
+    background-repeat: no-repeat;
+    zoom: 1;
+    -webkit-font-smoothing: antialiased;
 }
 
 ::ng-deep .k-grid .checker span.checked {
-  background-position: -76px -260px;
+    background-position: -76px -260px;
 }

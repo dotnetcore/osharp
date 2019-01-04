@@ -41,16 +41,18 @@ namespace OSharp.Security
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
         private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthCacheBase{TModuleFunction, TModuleRole, TModuleUser, TFunction, TModule, TModuleKey,TRole, TRoleKey, TUser, TUserKey}"/>类型的新实例
         /// </summary>
-        protected FunctionAuthCacheBase()
+        protected FunctionAuthCacheBase(IServiceProvider serviceProvider)
         {
-            _cache = ServiceLocator.Instance.GetService<IDistributedCache>();
-            _logger = ServiceLocator.Instance.GetLogger(GetType());
+            _serviceProvider = serviceProvider;
+            _cache = serviceProvider.GetService<IDistributedCache>();
+            _logger = serviceProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace OSharp.Security
         public virtual void BuildRoleCaches()
         {
             //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
-            TFunction[] functions = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            TFunction[] functions = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TFunction, Guid> functionRepository = provider.GetService<IRepository<TFunction, Guid>>();
                 return functionRepository.Query(null, false).ToArray();
@@ -114,17 +116,25 @@ namespace OSharp.Security
                 _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存");
                 return roleNames;
             }
-            roleNames = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            roleNames = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
                 TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
                     .ToArray();
+                if (moduleIds.Length == 0)
+                {
+                    return new string[0];
+                }
                 IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
                 TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+                if (roleIds.Length == 0)
+                {
+                    return new string[0];
+                }
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
                 return roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             });
-            if (roleNames.Length > 0)
+            if (roleNames != null)
             {
                 _cache.Set(key, roleNames);
                 _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存");
@@ -146,7 +156,7 @@ namespace OSharp.Security
                 _logger.LogDebug($"从缓存中获取到用户“{userName}”的“User-Function[]”缓存");
                 return functionIds;
             }
-            functionIds = ServiceLocator.Instance.ExcuteScopedWork(provider =>
+            functionIds = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TUser, TUserKey> userRepository = provider.GetService<IRepository<TUser, TUserKey>>();
                 TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
