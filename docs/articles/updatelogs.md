@@ -1,5 +1,11 @@
 # OSharp .NetStandard 更新记录
 
+### 0.4.0-beta02-03
+1. 合并EFCore的Migration迁移基类，各个数据库驱动技术的迁移基类合并为 `MigrationPackBase<TDbContext>`
+2. 各个数据库EFCore模块根据配置决定是否初始化模块
+3. 添加 OSharp.EntityFrameworkCore.PostgreSql 项目，实现 `PostgreSql` 数据库的数据存储
+4. 排除其他驱动的数据库迁移模块文件，确保迁移命令正常执行
+
 ### 0.4.0-beta01
 1. 通过ISqlExecutor<TEntity, TKey>接口，添加基于Dapper的Sql查询支持。给IUnitOfWorkManager添加一些实用的扩展方法
 2. 将验证码处理类、IQueryable相关的缓存扩展方法改为服务类，相应类型或方法标记为过时
