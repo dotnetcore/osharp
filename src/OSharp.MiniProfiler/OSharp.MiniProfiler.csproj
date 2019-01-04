@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>OSharpNS.MiniProfiler</PackageId>
     <Summary>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件</Summary>
     <Description>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
