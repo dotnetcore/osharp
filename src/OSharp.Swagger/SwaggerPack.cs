@@ -36,7 +36,6 @@ namespace OSharp.Swagger
     {
         private string _title, _url;
         private int _version;
-        private bool _enabled = false;
 
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -65,9 +64,9 @@ namespace OSharp.Swagger
 
             _title = configuration["OSharp:Swagger:Title"];
             _version = configuration["OSharp:Swagger:Version"].CastTo(1);
-            _enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+            bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
 
-            if (_enabled)
+            if (enabled)
             {
                 services.AddMvcCore().AddApiExplorer();
                 services.AddSwaggerGen(options =>
@@ -100,12 +99,18 @@ namespace OSharp.Swagger
         /// <param name="app">应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            if (_enabled)
+            IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+            bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+            bool miniProfilerEnabled = configuration["OSharp:Swagger:MiniProfiler"].CastTo(false);
+            if (enabled)
             {
                 app.UseSwagger().UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint(_url, $"{_title} V{_version}");
-                    options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
+                    if (miniProfilerEnabled)
+                    {
+                        options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html"); 
+                    }
                 });
                 IsEnabled = true;
             }
