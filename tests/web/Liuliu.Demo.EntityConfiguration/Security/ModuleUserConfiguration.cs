@@ -33,8 +33,8 @@ namespace Liuliu.Demo.EntityConfiguration.Security
         {
             builder.HasIndex(m => new { m.ModuleId, m.UserId }).HasName("ModuleUserIndex").IsUnique();
 
-            builder.HasOne<Module>().WithMany().HasForeignKey(m => m.ModuleId);
-            builder.HasOne<User>().WithMany().HasForeignKey(m => m.UserId);
+            builder.HasOne<Module>(mu => mu.Module).WithMany().HasForeignKey(m => m.ModuleId);
+            builder.HasOne<User>(mu => mu.User).WithMany().HasForeignKey(m => m.UserId);
         }
     }
 }

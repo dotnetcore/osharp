@@ -9,6 +9,9 @@
 
 using System.ComponentModel;
 
+using Liuliu.Demo.Identity.Entities;
+
+using OSharp.Core.EntityInfos;
 using OSharp.Security;
 
 
@@ -19,5 +22,15 @@ namespace Liuliu.Demo.Security.Entities
     /// </summary>
     [Description("数据用户信息")]
     public class EntityUser : EntityUserBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 所属用户信息
+        /// </summary>
+        public virtual User User { get; set; }
+
+        /// <summary>
+        /// 获取或设置 所属实体信息
+        /// </summary>
+        public virtual EntityInfo EntityInfo { get; set; }
+    }
 }

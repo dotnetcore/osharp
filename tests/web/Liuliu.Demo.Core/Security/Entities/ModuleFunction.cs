@@ -9,6 +9,7 @@
 
 using System.ComponentModel;
 
+using OSharp.Core.Functions;
 using OSharp.Security;
 
 
@@ -19,5 +20,15 @@ namespace Liuliu.Demo.Security.Entities
     /// </summary>
     [Description("模块功能信息")]
     public class ModuleFunction : ModuleFunctionBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 模块信息
+        /// </summary>
+        public virtual Module Module { get; set; }
+
+        /// <summary>
+        /// 获取或设置 功能信息
+        /// </summary>
+        public virtual Function Function { get; set; }
+    }
 }

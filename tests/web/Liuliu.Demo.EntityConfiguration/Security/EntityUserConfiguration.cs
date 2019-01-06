@@ -31,8 +31,8 @@ namespace Liuliu.Demo.EntityConfiguration.Security
         {
             builder.HasIndex(m => new { m.EntityId, m.UserId }).HasName("EntityUserIndex");
 
-            builder.HasOne<EntityInfo>().WithMany().HasForeignKey(m => m.EntityId);
-            builder.HasOne<User>().WithMany().HasForeignKey(m => m.UserId);
+            builder.HasOne<EntityInfo>(eu => eu.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
+            builder.HasOne<User>(eu => eu.User).WithMany().HasForeignKey(m => m.UserId);
         }
     }
 }

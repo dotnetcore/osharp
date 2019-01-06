@@ -34,21 +34,21 @@ namespace Liuliu.Demo.Identity.Entities
         /// <summary>
         /// 获取或设置 分配的用户角色信息集合
         /// </summary>
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
         /// <summary>
         /// 获取或设置 用户的声明信息集合
         /// </summary>
-        public virtual ICollection<UserClaim> UserClaims { get; set; }
+        public virtual ICollection<UserClaim> UserClaims { get; set; } = new List<UserClaim>();
 
         /// <summary>
         /// 获取或设置 用户的第三方登录信息集合
         /// </summary>
-        public virtual ICollection<UserLogin> UserLogins { get; set; }
+        public virtual ICollection<UserLogin> UserLogins { get; set; } = new List<UserLogin>();
 
         /// <summary>
         /// 获取或设置 用户令牌信息集合
         /// </summary>
-        public virtual ICollection<UserToken> UserTokens { get; set; }
+        public virtual ICollection<UserToken> UserTokens { get; set; } = new List<UserToken>();
     }
 }

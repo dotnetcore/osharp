@@ -100,14 +100,14 @@ namespace Liuliu.Demo.Web.Controllers
         {
             IServiceProvider services = HttpContext.RequestServices;
             IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
-            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.FunctionId).ToArray();
-            if (functionIds.Length == 0)
+          
+            Function[] functions = _securityManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.Function).ToArray();
+            empty = functions.Length == 0;
+            if (empty)
             {
-                empty = true;
                 return true;
             }
-            empty = false;
-            Function[] functions = _securityManager.Functions.Where(m => functionIds.Contains(m.Id)).ToArray();
+
             foreach (Function function in functions)
             {
                 if (!authorization.Authorize(function, User).IsOk)

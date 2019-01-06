@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.ComponentModel;
 
 using OSharp.Security;
@@ -19,5 +20,15 @@ namespace Liuliu.Demo.Security.Entities
     /// </summary>
     [Description("模块信息")]
     public class Module : ModuleBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 父模块信息
+        /// </summary>
+        public virtual Module Parent { get; set; }
+
+        /// <summary>
+        /// 获取或设置 子模块信息集合
+        /// </summary>
+        public virtual ICollection<Module> Children { get; set; } = new List<Module>();
+    }
 }

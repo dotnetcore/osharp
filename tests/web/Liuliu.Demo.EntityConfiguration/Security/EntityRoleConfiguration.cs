@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="EntityRoleConfiguration.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:48</last-date>
+//  <last-date>2019-01-06 15:16</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -31,8 +31,8 @@ namespace Liuliu.Demo.EntityConfiguration.Security
         {
             builder.HasIndex(m => new { m.EntityId, m.RoleId, m.Operation }).HasName("EntityRoleIndex").IsUnique();
 
-            builder.HasOne<EntityInfo>().WithMany().HasForeignKey(m => m.EntityId);
-            builder.HasOne<Role>().WithMany().HasForeignKey(m => m.RoleId);
+            builder.HasOne<EntityInfo>(er => er.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
+            builder.HasOne<Role>(er => er.Role).WithMany().HasForeignKey(m => m.RoleId);
         }
     }
 }

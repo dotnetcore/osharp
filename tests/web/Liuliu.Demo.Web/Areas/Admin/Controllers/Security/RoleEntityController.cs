@@ -78,16 +78,13 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 {
                     D = m,
                     RoleName = roleManager.Roles.First(n => n.Id == m.RoleId).Name,
-                    Entity = _securityManager.EntityInfos.Where(n => n.Id == m.EntityId).Select(n => new
-                    {
-                        n.Name,
-                        n.TypeName
-                    }).FirstOrDefault()
+                    EntityName = m.EntityInfo.Name,
+                    EntityType = m.EntityInfo.TypeName,
                 }).ToPageResult(data => data.Select(m => new EntityRoleOutputDto(m.D)
                 {
                     RoleName = m.RoleName,
-                    EntityName = m.Entity.Name,
-                    EntityType = m.Entity.TypeName,
+                    EntityName = m.EntityName,
+                    EntityType = m.EntityType,
                     Updatable = updateFunc(m.D),
                     Deletable = deleteFunc(m.D)
                 }).ToArray());
@@ -108,7 +105,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("新增")]
         public async Task<AjaxResult> Create(params EntityRoleInputDto[] dtos)
         {
-            dtos.CheckNotNull("dtos");
+            Check.NotNull(dtos, nameof(dtos));
+            
             OperationResult result = await _securityManager.CreateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
@@ -127,7 +125,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("更新")]
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
         {
-            dtos.CheckNotNull("dtos");
+            Check.NotNull(dtos, nameof(dtos));
             OperationResult result = await _securityManager.UpdateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
@@ -144,7 +142,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("删除")]
         public async Task<AjaxResult> Delete(params Guid[] ids)
         {
-            ids.CheckNotNull("ids");
+            Check.NotNull(ids, nameof(ids));
+            
             OperationResult result = await _securityManager.DeleteEntityRoles(ids);
             return result.ToAjaxResult();
         }
