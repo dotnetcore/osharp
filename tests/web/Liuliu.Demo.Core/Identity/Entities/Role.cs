@@ -7,9 +7,9 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 using OSharp.Identity;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 
 namespace Liuliu.Demo.Identity.Entities
@@ -19,5 +19,10 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("角色信息")]
     public class Role : RoleBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 分配的用户角色信息集合
+        /// </summary>
+        public virtual ICollection<UserRole> UserRoles { get; set; }
+    }
 }

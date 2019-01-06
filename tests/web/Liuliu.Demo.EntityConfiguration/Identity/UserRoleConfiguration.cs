@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="UserRoleConfiguration.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:48</last-date>
+//  <last-date>2019-01-06 14:27</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -28,8 +28,8 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<UserRole> builder)
         {
             builder.HasIndex(m => new { m.UserId, m.RoleId }).HasName("UserRoleIndex").IsUnique();
-            builder.HasOne<Role>().WithMany().HasForeignKey(m => m.RoleId);
-            builder.HasOne<User>().WithMany().HasForeignKey(m => m.UserId);
+            builder.HasOne<Role>(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(m => m.RoleId);
+            builder.HasOne<User>(ur => ur.User).WithMany(u => u.UserRoles).HasForeignKey(m => m.UserId);
         }
     }
 }

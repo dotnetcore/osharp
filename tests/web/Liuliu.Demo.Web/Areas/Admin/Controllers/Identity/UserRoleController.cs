@@ -60,8 +60,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             PageResult<UserRoleOutputDto> page = _identityContract.UserRoles.ToPage(predicate, request.PageCondition, m => new
             {
                 D = m,
-                UserName = _identityContract.Users.Where(n => n.Id == m.UserId).Select(n => n.UserName).FirstOrDefault(),
-                RoleName = _identityContract.Roles.Where(n => n.Id == m.RoleId).Select(n => n.Name).FirstOrDefault()
+                UserName = m.User.UserName,
+                RoleName = m.Role.Name,
             }).ToPageResult(data => data.Select(m => new UserRoleOutputDto(m.D)
             {
                 UserName = m.UserName,

@@ -7,12 +7,10 @@
 //  <last-date>2018-08-12 16:02</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using OSharp.Core.Systems;
 using OSharp.Entity;
+using System;
 
 
 namespace Liuliu.Demo.EntityConfiguration.Systems
@@ -26,8 +24,8 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         public override void Configure(EntityTypeBuilder<KeyValue> builder)
         {
             builder.HasData(
-                new KeyValue() { Key = SystemSettingKeys.SiteName, Value = "OSHARP" },
-                new KeyValue() { Key = SystemSettingKeys.SiteDescription, Value = "Osharp with .NetStandard2.0 & Angular6" }
+                new KeyValue() { Id = Guid.Parse("534d7813-0eea-44cc-b88e-a9cb010c6981"), Key = SystemSettingKeys.SiteName, Value = "OSHARP" },
+                new KeyValue() { Id = Guid.Parse("977e4bba-97b2-4759-a768-a9cb010c698c"), Key = SystemSettingKeys.SiteDescription, Value = "Osharp with .NetStandard2.0 & Angular6" }
             );
         }
     }
