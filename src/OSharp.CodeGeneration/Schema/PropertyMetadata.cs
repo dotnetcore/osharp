@@ -83,11 +83,6 @@ namespace OSharp.CodeGeneration.Schema
         public bool IsVirtual { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否主键
-        /// </summary>
-        public bool IsPrimaryKey { get; set; }
-
-        /// <summary>
         /// 获取或设置 是否外键
         /// </summary>
         public bool IsForeignKey { get; set; }

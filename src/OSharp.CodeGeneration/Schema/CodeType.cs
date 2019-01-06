@@ -19,6 +19,14 @@ namespace OSharp.CodeGeneration.Schema
         /// </summary>
         Entity,
         /// <summary>
+        /// 输入DTO类
+        /// </summary>
+        InputDto,
+        /// <summary>
+        /// 输出DTO类
+        /// </summary>
+        OutputDto,
+        /// <summary>
         /// 服务接口
         /// </summary>
         ServiceContract,

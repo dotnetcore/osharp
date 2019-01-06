@@ -8,6 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Linq;
+
+using OSharp.Exceptions;
 
 
 namespace OSharp.CodeGeneration.Schema
@@ -46,5 +49,18 @@ namespace OSharp.CodeGeneration.Schema
         /// 获取或设置 实体属性元数据集合
         /// </summary>
         public ICollection<PropertyMetadata> PropertyMetadatas { get; set; } = new List<PropertyMetadata>();
+
+        /// <summary>
+        /// 获取主键属性元数据
+        /// </summary>
+        public PropertyMetadata GetPrimaryKey()
+        {
+            PropertyMetadata prop = PropertyMetadatas.FirstOrDefault(m => m.Name == "Id");
+            if (prop == null)
+            {
+                throw new OsharpException($"实体类元数据“{Name}”中无法获取到主键属性元数据");
+            }
+            return prop;
+        }
     }
 }
