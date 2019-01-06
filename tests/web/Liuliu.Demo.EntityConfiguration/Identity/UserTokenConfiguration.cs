@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="UserTokenConfiguration.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:48</last-date>
+//  <last-date>2019-01-06 14:57</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -28,6 +28,7 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<UserToken> builder)
         {
             builder.HasIndex(m => new { m.UserId, m.LoginProvider, m.Name }).HasName("UserTokenIndex").IsUnique();
+            builder.HasOne(ut => ut.User).WithMany(u => u.UserTokens).HasForeignKey(ut => ut.UserId).IsRequired();
         }
     }
 }

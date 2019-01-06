@@ -28,6 +28,7 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<UserLogin> builder)
         {
             builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasName("UserLoginIndex").IsUnique();
+            builder.HasOne(ul => ul.User).WithMany(u => u.UserLogins).HasForeignKey(ul => ul.UserId).IsRequired();
         }
     }
 }

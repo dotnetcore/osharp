@@ -23,6 +23,8 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         /// </summary>
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<RoleClaim> builder)
-        { }
+        {
+            builder.HasOne(rc => rc.Role).WithMany(r => r.RoleClaims).HasForeignKey(m => m.RoleId).IsRequired();
+        }
     }
 }

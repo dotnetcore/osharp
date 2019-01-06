@@ -19,5 +19,10 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("用户的身份认证令牌")]
     public class UserToken : UserTokenBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 所属用户信息
+        /// </summary>
+        public virtual User User { get; set; }
+    }
 }

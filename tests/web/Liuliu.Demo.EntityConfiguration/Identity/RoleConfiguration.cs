@@ -29,9 +29,6 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 
-            builder.HasMany<RoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
-            builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
-
             builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc", IsAdmin = true, IsSystem = true });
         }
     }

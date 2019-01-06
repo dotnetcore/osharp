@@ -19,5 +19,10 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("用户声明信息")]
     public class UserClaim : UserClaimBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 所属用户
+        /// </summary>
+        public virtual User User { get; set; }
+    }
 }

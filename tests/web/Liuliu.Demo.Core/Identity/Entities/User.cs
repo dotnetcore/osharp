@@ -27,8 +27,28 @@ namespace Liuliu.Demo.Identity.Entities
         public string Remark { get; set; }
 
         /// <summary>
+        /// 获取或设置 用户详细信息
+        /// </summary>
+        public virtual UserDetail UserDetail { get; set; }
+
+        /// <summary>
         /// 获取或设置 分配的用户角色信息集合
         /// </summary>
         public virtual ICollection<UserRole> UserRoles { get; set; }
+
+        /// <summary>
+        /// 获取或设置 用户的声明信息集合
+        /// </summary>
+        public virtual ICollection<UserClaim> UserClaims { get; set; }
+
+        /// <summary>
+        /// 获取或设置 用户的第三方登录信息集合
+        /// </summary>
+        public virtual ICollection<UserLogin> UserLogins { get; set; }
+
+        /// <summary>
+        /// 获取或设置 用户令牌信息集合
+        /// </summary>
+        public virtual ICollection<UserToken> UserTokens { get; set; }
     }
 }

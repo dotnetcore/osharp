@@ -30,6 +30,11 @@ namespace Liuliu.Demo.Identity.Entities
         /// 获取或设置 用户编号
         /// </summary>
         [DisplayName("用户编号")]
-        public virtual int UserId { get; set; }
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 所属用户信息
+        /// </summary>
+        public virtual User User { get; set; }
     }
 }

@@ -23,6 +23,8 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         /// </summary>
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<UserClaim> builder)
-        { }
+        {
+            builder.HasOne(uc => uc.User).WithMany(u => u.UserClaims).HasForeignKey(uc => uc.UserId).IsRequired();
+        }
     }
 }

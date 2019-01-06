@@ -19,5 +19,10 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("用户登录及其提供程序")]
     public class UserLogin : UserLoginBase<int>
-    { }
+    {
+        /// <summary>
+        /// 获取或设置 所属用户信息
+        /// </summary>
+        public virtual User User { get; set; }
+    }
 }

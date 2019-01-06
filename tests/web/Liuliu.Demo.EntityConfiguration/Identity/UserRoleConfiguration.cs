@@ -28,8 +28,8 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<UserRole> builder)
         {
             builder.HasIndex(m => new { m.UserId, m.RoleId }).HasName("UserRoleIndex").IsUnique();
-            builder.HasOne<Role>(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(m => m.RoleId);
-            builder.HasOne<User>(ur => ur.User).WithMany(u => u.UserRoles).HasForeignKey(m => m.UserId);
+            builder.HasOne(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(m => m.RoleId);
+            builder.HasOne(ur => ur.User).WithMany(u => u.UserRoles).HasForeignKey(m => m.UserId);
         }
     }
 }

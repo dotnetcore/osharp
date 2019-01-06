@@ -29,13 +29,6 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
             builder.HasIndex(m => m.NormalizeEmail).HasName("EmailIndex");
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
-
-            builder.HasOne<UserDetail>().WithOne().HasForeignKey<UserDetail>(ud => ud.UserId).IsRequired();
-            builder.HasMany<UserClaim>().WithOne().HasForeignKey(uc => uc.UserId).IsRequired();
-            builder.HasMany<UserLogin>().WithOne().HasForeignKey(ul => ul.UserId).IsRequired();
-            builder.HasMany<UserToken>().WithOne().HasForeignKey(ut => ut.UserId).IsRequired();
-
-            builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
         }
     }
 }
