@@ -59,6 +59,5 @@ namespace Liuliu.Demo.Systems
         Task<OperationResult> DeleteAuditEntitys(params Guid[] ids);
 
         #endregion
-
     }
 }
