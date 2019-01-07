@@ -21,9 +21,11 @@
   <Import Project="../../build/version.props" />
   <ItemGroup>
     <None Remove="Templates\Entity.cshtml" />
+    <None Remove="Templates\EntityConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Entity.cshtml" />
+    <EmbeddedResource Include="Templates\EntityConfiguration.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
