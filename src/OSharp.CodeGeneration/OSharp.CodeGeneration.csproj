@@ -20,6 +20,7 @@
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
+    <None Remove="Templates\AdminController.cshtml" />
     <None Remove="Templates\Entity.cshtml" />
     <None Remove="Templates\EntityConfiguration.cshtml" />
     <None Remove="Templates\ServiceContract.cshtml" />
@@ -27,6 +28,7 @@
     <None Remove="Templates\ServiceMainImpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Templates\AdminController.cshtml" />
     <EmbeddedResource Include="Templates\Entity.cshtml" />
     <EmbeddedResource Include="Templates\EntityConfiguration.cshtml" />
     <EmbeddedResource Include="Templates\ServiceEntityImpl.cshtml" />

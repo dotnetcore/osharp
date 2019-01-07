@@ -90,6 +90,13 @@ namespace OSharp.CodeGeneration.Tests
             AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.Article.cs");
         }
 
+        [Fact]
+        public void GenerateAdminControllerTest()
+        {
+            CodeFile code = _generator.GenerateAdminController(_entity);
+            AssertCodeFile(code,"Liuliu.Site.Web/Areas/Admin/Controllers/Infos/ArticleController.cs");
+        }
+
         private static void AssertCodeFile(CodeFile code, string checkFileName)
         {
             code.FileName.ShouldBe(checkFileName);
