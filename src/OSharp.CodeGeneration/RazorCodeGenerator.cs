@@ -18,7 +18,9 @@ using OSharp.Exceptions;
 using OSharp.Extensions;
 
 using RazorEngine;
+using RazorEngine.Configuration;
 using RazorEngine.Templating;
+using RazorEngine.Text;
 
 
 namespace OSharp.CodeGeneration

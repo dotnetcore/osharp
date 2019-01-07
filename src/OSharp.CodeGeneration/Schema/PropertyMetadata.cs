@@ -91,6 +91,16 @@ namespace OSharp.CodeGeneration.Schema
         public bool IsForeignKey { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否包含在输入Dto
+        /// </summary>
+        public bool IsInputDto { get; set; } = true;
+
+        /// <summary>
+        /// 获取或设置 是否包含在输出Dto
+        /// </summary>
+        public bool IsOutputDto { get; set; } = true;
+
+        /// <summary>
         /// 获取或设置 枚举元数据
         /// </summary>
         public EnumMetadata[] EnumMetadatas { get; set; }

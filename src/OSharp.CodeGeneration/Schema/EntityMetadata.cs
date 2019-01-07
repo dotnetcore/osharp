@@ -40,6 +40,11 @@ namespace OSharp.CodeGeneration.Schema
         public string PrimaryKeyTypeFullName { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否数据权限控制
+        /// </summary>
+        public bool IsDataAuth { get; set; }
+
+        /// <summary>
         /// 获取或设置 所属模块信息
         /// </summary>
         public ModuleMetadata Module

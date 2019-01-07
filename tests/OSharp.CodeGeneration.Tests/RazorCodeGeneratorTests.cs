@@ -43,6 +43,7 @@ namespace OSharp.CodeGeneration.Tests
                 Name = "Article",
                 Display = "文章",
                 Module = _module,
+                IsDataAuth = true,
                 PrimaryKeyTypeFullName = typeof(int).FullName,
                 Properties = new List<PropertyMetadata>()
                 {
@@ -50,9 +51,16 @@ namespace OSharp.CodeGeneration.Tests
                     new PropertyMetadata() { Name = "Content", Display = "正文", TypeName = typeof(string).FullName },
                     new PropertyMetadata() { Name = "IsHot", Display = "是否热点", TypeName = typeof(bool).FullName },
                     new PropertyMetadata() { Name = "IsLocked", Display = "是否锁定", TypeName = typeof(bool).FullName },
-                    new PropertyMetadata() { Name = "IsDeleted", Display = "是否删除", TypeName = typeof(bool).FullName },
+                    new PropertyMetadata() { Name = "IsDeleted", Display = "是否删除", TypeName = typeof(bool).FullName, IsInputDto = false},
                 }
             };
+        }
+
+        [Fact]
+        public void GenerateProjectCodeTest()
+        {
+            CodeFile[] codes = _generator.GenerateProjectCode(_module.Project);
+
         }
 
         [Fact]
@@ -67,6 +75,20 @@ namespace OSharp.CodeGeneration.Tests
         {
             CodeFile code = _generator.GenerateEntityConfiguration(_entity);
             AssertCodeFile(code, "Liuliu.Site.EntityConfiguration/Infos/ArticleConfiguration.cs");
+        }
+
+        [Fact]
+        public void GenerateInputDtoCodeTest()
+        {
+            CodeFile code = _generator.GenerateInputDtoCode(_entity);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleInputDto.cs");
+        }
+
+        [Fact]
+        public void GenerateOutputDtoCodeTest()
+        {
+            CodeFile code = _generator.GenerateOutputDtoCode(_entity);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleOutputDto.cs");
         }
 
         [Fact]
