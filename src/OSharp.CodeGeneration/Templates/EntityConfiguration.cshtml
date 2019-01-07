@@ -1,14 +1,15 @@
 ﻿@using System;
 @using OSharp.CodeGeneration.Schema;
 @{
-    string keyType = TypeHelper.ToSingleTypeName(Model.PrimaryKeyTypeFullName);
+    EntityMetadata entity = Model;
+    string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
 }
 // -----------------------------------------------------------------------
-//  <copyright file="@(Model.Name).cs" company="@Model.Module.Project.Company">
-//      @Model.Module.Project.Copyright
+//  <copyright file="@(entity.Name)Configuration.cs" company="@entity.Module.Project.Company">
+//      @entity.Module.Project.Copyright
 //  </copyright>
-//  <site>@Model.Module.Project.SiteUrl</site>
-//  <last-editor>@Model.Module.Project.Creator</last-editor>
+//  <site>@entity.Module.Project.SiteUrl</site>
+//  <last-editor>@entity.Module.Project.Creator</last-editor>
 //  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
 // -----------------------------------------------------------------------
 
@@ -19,21 +20,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using OSharp.Entity;
 
-using @(Model.Module.Namespace).Entities;
+using @(entity.Module.Namespace).Entities;
 
 
-namespace @(Model.Module.Project.NamespacePrefix).EntityConfiguration.@Model.Module.Name
+namespace @(entity.Module.Project.NamespacePrefix).EntityConfiguration.@entity.Module.Name
 {
     /// &lt;summary&gt;
-    /// 实体数据配置类：@(Model.Display)信息
+    /// 实体数据配置类：@(entity.Display)信息
     /// &lt;/summary&gt;
-    public class @(Model.Name)Configuration : EntityTypeConfigurationBase&lt;@($"{Model.Name}, {keyType}")&gt;
+    public class @(entity.Name)Configuration : EntityTypeConfigurationBase&lt;@($"{entity.Name}, {keyType}")&gt;
     {
         /// &lt;summary&gt;
         /// 重写以实现实体类型各个属性的数据库配置
         /// &lt;/summary&gt;
         /// &lt;param name="builder"&gt;实体类型创建器&lt;/param&gt;
-        public override void Configure(EntityTypeBuilder&lt;@Model.Name&gt; builder)
+        public override void Configure(EntityTypeBuilder&lt;@entity.Name&gt; builder)
         {
             
         }

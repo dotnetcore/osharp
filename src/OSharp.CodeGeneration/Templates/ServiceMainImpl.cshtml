@@ -3,14 +3,14 @@
 @using OSharp.Extensions;
 @using OSharp.CodeGeneration.Schema;
 @{
-    
+    ModuleMetadata module = Model;
 }
 // -----------------------------------------------------------------------
-//  <copyright file="I@(Model.Name)Contract.cs" company="@Model.Project.Company">
-//      @Model.Project.Copyright
+//  <copyright file="I@(module.Name)Service.cs" company="@module.Project.Company">
+//      @module.Project.Copyright
 //  </copyright>
-//  <site>@Model.Project.SiteUrl</site>
-//  <last-editor>@Model.Project.Creator</last-editor>
+//  <site>@module.Project.SiteUrl</site>
+//  <last-editor>@module.Project.Creator</last-editor>
 //  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
 // -----------------------------------------------------------------------
 
@@ -24,32 +24,32 @@ using OSharp.EventBuses;
 using OSharp.Extensions;
 using OSharp.Identity;
 
-using @(Model.Namespace).Dtos;
-using @(Model.Namespace).Entities;
-using @(Model.Namespace).Events;
+using @(module.Namespace).Dtos;
+using @(module.Namespace).Entities;
+using @(module.Namespace).Events;
 
 
-namespace @(Model.Namespace)
+namespace @(module.Namespace)
 {
     /// <summary>
-    /// 业务实现：@(Model.Display)模块
+    /// 业务实现：@(module.Display)模块
     /// </summary>
-    public partial class @(Model.Name)Service : I@(Model.Name)Contract
+    public partial class @(module.Name)Service : I@(module.Name)Contract
     {
         private readonly IServiceProvider _provider;
         private readonly ILogger _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="@(Model.Name)Service"/>类型的新实例
+        /// 初始化一个<see cref="@(module.Name)Service"/>类型的新实例
         /// </summary>
-        public @(Model.Name)Service(IServiceProvider provider)
+        public @(module.Name)Service(IServiceProvider provider)
         {
             _provider = provider;
-            _logger = provider.GetService<ILoggerFactory>().CreateLogger<@(Model.Name)Service>();
+            _logger = provider.GetService<ILoggerFactory>().CreateLogger<@(module.Name)Service>();
         }
     
         #region 属性
-@foreach (EntityMetadata entity in Model.Entities)
+@foreach (EntityMetadata entity in module.Entities)
 {
     string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
     <text>

@@ -2,14 +2,15 @@
 @using OSharp.Extensions;
 @using OSharp.CodeGeneration.Schema;
 @{
-    string keyType = TypeHelper.ToSingleTypeName(Model.PrimaryKeyTypeFullName);
+    EntityMetadata entity = Model;
+    string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
 }
 // -----------------------------------------------------------------------
-//  <copyright file="@(Model.Name).cs" company="@Model.Module.Project.Company">
-//      @Model.Module.Project.Copyright
+//  <copyright file="@(entity.Module.Name)Service.@(entity.Name).cs" company="@entity.Module.Project.Company">
+//      @entity.Module.Project.Copyright
 //  </copyright>
-//  <site>@Model.Module.Project.SiteUrl</site>
-//  <last-editor>@Model.Module.Project.Creator</last-editor>
+//  <site>@entity.Module.Project.SiteUrl</site>
+//  <last-editor>@entity.Module.Project.Creator</last-editor>
 //  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
 // -----------------------------------------------------------------------
 
@@ -23,65 +24,65 @@ using OSharp.Dependency;
 using OSharp.Extensions;
 using OSharp.Mapping;
 
-using @(Model.Module.Namespace).Dtos;
-using @(Model.Module.Namespace).Entities;
-using @(Model.Module.Namespace).Events;
+using @(entity.Module.Namespace).Dtos;
+using @(entity.Module.Namespace).Entities;
+using @(entity.Module.Namespace).Events;
 
 
-namespace @(Model.Module.Namespace)
+namespace @(entity.Module.Namespace)
 {
-    public partial class @(Model.Module.Name)Service
+    public partial class @(entity.Module.Name)Service
     {
         /// &lt;summary&gt;
-        /// 获取 @(Model.Display)信息查询数据集
+        /// 获取 @(entity.Display)信息查询数据集
         /// &lt;/summary&gt;
-        public IQueryable&lt;@(Model.Name)&gt; @(Model.Name.ToPlural())
+        public IQueryable&lt;@(entity.Name)&gt; @(entity.Name.ToPlural())
         {
-            get { return @(Model.Name)Repository.Query(); }
+            get { return @(entity.Name)Repository.Query(); }
         }
 
         /// &lt;summary&gt;
-        /// 检查@(Model.Display)信息是否存在
+        /// 检查@(entity.Display)信息是否存在
         /// &lt;/summary&gt;
         /// &lt;param name="predicate"&gt;检查谓语表达式&lt;/param&gt;
-        /// &lt;param name="id"&gt;更新的@(Model.Display)信息编号&lt;/param&gt;
-        /// &lt;returns&gt;@(Model.Display)信息是否存在&lt;/returns&gt;
-        public virtual Task&lt;bool&gt; Check@(Model.Name)Exists(Expression&lt;Func&lt;@(Model.Name), bool&gt;&gt; predicate, @(keyType) id = default(@(keyType))
+        /// &lt;param name="id"&gt;更新的@(entity.Display)信息编号&lt;/param&gt;
+        /// &lt;returns&gt;@(entity.Display)信息是否存在&lt;/returns&gt;
+        public virtual Task&lt;bool&gt; Check@(entity.Name)Exists(Expression&lt;Func&lt;@(entity.Name), bool&gt;&gt; predicate, @(keyType) id = default(@(keyType))
         {
-            return @(Model.Name)Repository.CheckExistsAsync(predicate, id);
+            return @(entity.Name)Repository.CheckExistsAsync(predicate, id);
         }
 
         /// &lt;summary&gt;
-        /// 添加@(Model.Display)信息
+        /// 添加@(entity.Display)信息
         /// &lt;/summary&gt;
-        /// &lt;param name="dtos"&gt;要添加的@(Model.Display)信息DTO信息&lt;/param&gt;
+        /// &lt;param name="dtos"&gt;要添加的@(entity.Display)信息DTO信息&lt;/param&gt;
         /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
-        public virtual Task&lt;OperationResult&gt; Create@(Model.Name.ToPlural())(params @(Model.Name)InputDto[] dtos)
-        {
-            Check.NotNull(dtos, nameof(dtos));
-            return @(Model.Name)Repository.InsertAsync(dtos);
-        }
-
-        /// &lt;summary&gt;
-        /// 更新@(Model.Display)信息
-        /// &lt;/summary&gt;
-        /// &lt;param name="dtos"&gt;包含更新信息的@(Model.Display)信息DTO信息&lt;/param&gt;
-        /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
-        public virtual Task&lt;OperationResult&gt; Update@(Model.Name.ToPlural())(params @(Model.Name)InputDto[] dtos)
+        public virtual Task&lt;OperationResult&gt; Create@(entity.Name.ToPlural())(params @(entity.Name)InputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            return @(Model.Name)Repository.UpdateAsync(dtos);
+            return @(entity.Name)Repository.InsertAsync(dtos);
         }
 
         /// &lt;summary&gt;
-        /// 删除@(Model.Display)信息
+        /// 更新@(entity.Display)信息
         /// &lt;/summary&gt;
-        /// &lt;param name="ids"&gt;要删除的@(Model.Display)信息编号&lt;/param&gt;
+        /// &lt;param name="dtos"&gt;包含更新信息的@(entity.Display)信息DTO信息&lt;/param&gt;
         /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
-        public virtual Task&lt;OperationResult&gt; Delete@(Model.Name.ToPlural())(params @(keyType)[] ids)
+        public virtual Task&lt;OperationResult&gt; Update@(entity.Name.ToPlural())(params @(entity.Name)InputDto[] dtos)
+        {
+            Check.NotNull(dtos, nameof(dtos));
+            return @(entity.Name)Repository.UpdateAsync(dtos);
+        }
+
+        /// &lt;summary&gt;
+        /// 删除@(entity.Display)信息
+        /// &lt;/summary&gt;
+        /// &lt;param name="ids"&gt;要删除的@(entity.Display)信息编号&lt;/param&gt;
+        /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
+        public virtual Task&lt;OperationResult&gt; Delete@(entity.Name.ToPlural())(params @(keyType)[] ids)
         {
             Check.NotNull(ids, nameof(ids));
-            return @(Model.Name)Repository.DeleteAsync(ids);
+            return @(entity.Name)Repository.DeleteAsync(ids);
         }
     }
 }

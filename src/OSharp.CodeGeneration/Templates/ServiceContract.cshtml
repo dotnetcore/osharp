@@ -2,14 +2,14 @@
 @using OSharp.Extensions;
 @using OSharp.CodeGeneration.Schema;
 @{
-    
+    ModuleMetadata module = Model;
 }
 // -----------------------------------------------------------------------
-//  <copyright file="I@(Model.Name)Contract.cs" company="@Model.Project.Company">
-//      @Model.Project.Copyright
+//  <copyright file="I@(module.Name)Contract.cs" company="@module.Project.Company">
+//      @module.Project.Copyright
 //  </copyright>
-//  <site>@Model.Project.SiteUrl</site>
-//  <last-editor>@Model.Project.Creator</last-editor>
+//  <site>@module.Project.SiteUrl</site>
+//  <last-editor>@module.Project.Creator</last-editor>
 //  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
 // -----------------------------------------------------------------------
 
@@ -21,18 +21,18 @@ using System.Threading.Tasks;
 using OSharp.Data;
 using OSharp.Extensions;
 
-using @(Model.Namespace).Dtos;
-using @(Model.Namespace).Entities;
+using @(module.Namespace).Dtos;
+using @(module.Namespace).Entities;
 
 
-namespace @(Model.Namespace)
+namespace @(module.Namespace)
 {
     /// <summary>
-    /// 业务契约接口：@(Model.Display)模块
+    /// 业务契约接口：@(module.Display)模块
     /// </summary>
-    public interface I@(Model.Name)Contract
+    public interface I@(module.Name)Contract
     {
-@foreach (EntityMetadata entity in Model.Entities)
+@foreach (EntityMetadata entity in module.Entities)
 {
     string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
     <text>
