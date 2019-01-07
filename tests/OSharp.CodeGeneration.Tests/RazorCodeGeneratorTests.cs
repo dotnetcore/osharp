@@ -60,7 +60,7 @@ namespace OSharp.CodeGeneration.Tests
         public void GenerateProjectCodeTest()
         {
             CodeFile[] codes = _generator.GenerateProjectCode(_module.Project);
-
+            codes.Length.ShouldBeGreaterThan(0);
         }
 
         [Fact]

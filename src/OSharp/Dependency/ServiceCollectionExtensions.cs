@@ -46,7 +46,8 @@ namespace OSharp.Dependency
         {
             return services.GetOrAddSingletonInstance<TTypeFinder>(() =>
             {
-                IAllAssemblyFinder allAssemblyFinder = services.GetSingletonInstance<IAllAssemblyFinder>();
+                IAllAssemblyFinder allAssemblyFinder =
+                    services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder(true));
                 return factory(allAssemblyFinder);
             });
         }
