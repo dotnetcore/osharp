@@ -24,16 +24,16 @@ using @(Model.Module.Namespace).Entities;
 
 namespace @(Model.Module.Project.NamespacePrefix).EntityConfiguration.@Model.Module.Name
 {
-    /// <summary>
+    /// &lt;summary&gt;
     /// 实体数据配置类：@(Model.Display)信息
-    /// </summary>
-    public class @(Model.Name)Configuration : EntityTypeConfigurationBase<@($"{Model.Name}, {keyType}")>
+    /// &lt;/summary&gt;
+    public class @(Model.Name)Configuration : EntityTypeConfigurationBase&lt;@($"{Model.Name}, {keyType}")&gt;
     {
-        /// <summary>
+        /// &lt;summary&gt;
         /// 重写以实现实体类型各个属性的数据库配置
-        /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<@Model.Name> builder)
+        /// &lt;/summary&gt;
+        /// &lt;param name="builder"&gt;实体类型创建器&lt;/param&gt;
+        public override void Configure(EntityTypeBuilder&lt;@Model.Name&gt; builder)
         {
             
         }

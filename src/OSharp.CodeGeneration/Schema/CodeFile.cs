@@ -7,6 +7,9 @@
 //  <last-date>2019-01-07 2:33</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Extensions;
+
+
 namespace OSharp.CodeGeneration.Schema
 {
     /// <summary>
@@ -14,10 +17,16 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class CodeFile
     {
+        private string _sourceCode;
+
         /// <summary>
         /// 获取或设置 源代码字符串
         /// </summary>
-        public string SourceCode { get; set; }
+        public string SourceCode
+        {
+            get => _sourceCode;
+            set => _sourceCode = value.ToHtmlDecode();
+        }
 
         /// <summary>
         /// 获取或设置 代码存储路径

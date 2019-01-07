@@ -27,9 +27,9 @@ namespace @(Model.Module.Namespace).Entities
 @foreach (var prop in Model.Properties)
 {
     <text>
-        /// <summary>
+        /// &lt;summary&gt;
         /// 获取或设置 @prop.Display
-        /// </summary>
+        /// &lt;/summary&gt;
         [DisplayName("@prop.Display")]
         public string @prop.Name { get; set; }
     </text>

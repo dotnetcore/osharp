@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 
 using OSharp.CodeGeneration.Schema;
+using OSharp.Extensions;
 
 using Shouldly;
 
@@ -16,9 +17,12 @@ namespace OSharp.CodeGeneration.Tests
     {
         private readonly ModuleMetadata _module;
         private readonly EntityMetadata _entity;
+        private readonly ICodeGenerator _generator;
 
         public RazorCodeGeneratorTests()
         {
+            _generator = new RazorCodeGenerator();
+
             ProjectMetadata project = new ProjectMetadata()
             {
                 Display = "XXX系统",
@@ -44,7 +48,7 @@ namespace OSharp.CodeGeneration.Tests
                 {
                     new PropertyMetadata() { Name = "Title", Display = "标题", TypeName = typeof(string).FullName },
                     new PropertyMetadata() { Name = "Content", Display = "正文", TypeName = typeof(string).FullName },
-                    new PropertyMetadata() { Name = "IsHoted", Display = "是否热点", TypeName = typeof(bool).FullName },
+                    new PropertyMetadata() { Name = "IsHot", Display = "是否热点", TypeName = typeof(bool).FullName },
                     new PropertyMetadata() { Name = "IsLocked", Display = "是否锁定", TypeName = typeof(bool).FullName },
                     new PropertyMetadata() { Name = "IsDeleted", Display = "是否删除", TypeName = typeof(bool).FullName },
                 }
@@ -54,22 +58,39 @@ namespace OSharp.CodeGeneration.Tests
         [Fact]
         public void GenerateEntityCodeTest()
         {
-            CodeFile code = new RazorCodeGenerator().GenerateEntityCode(_entity);
-            AssertCodeFile(code);
+            CodeFile code = _generator.GenerateEntityCode(_entity);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Entities/Article.cs");
         }
 
         [Fact]
         public void GenerateEntityConfigurationTest()
         {
-            CodeFile code = new RazorCodeGenerator().GenerateEntityConfiguration(_entity);
-            AssertCodeFile(code);
+            CodeFile code = _generator.GenerateEntityConfiguration(_entity);
+            AssertCodeFile(code, "Liuliu.Site.EntityConfiguration/Infos/ArticleConfiguration.cs");
         }
 
-        private void AssertCodeFile(CodeFile code)
+        [Fact]
+        public void GenerateServiceContractTest()
         {
-            code.FileName.ShouldBe("Liuliu.Site.EntityConfiguration/Infos/ArticleConfiguration.cs");
-            code.SourceCode.ShouldContain("namespace");
-            code.SourceCode.ShouldContain("public class");
+            CodeFile code = _generator.GenerateServiceContract(_module);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/IInfosContract.cs");
         }
+
+        [Fact]
+        public void GenerateServiceMainImplTest()
+        {
+            CodeFile code = _generator.GenerateServiceMainImpl(_module);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.cs");
+        }
+
+        private static void AssertCodeFile(CodeFile code, string checkFileName)
+        {
+            code.FileName.ShouldBe(checkFileName);
+            code.SourceCode.ShouldContain("namespace");
+            code.SourceCode.ShouldContain("using");
+            code.SourceCode.ShouldContain("{");
+            code.SourceCode.ShouldContain("}");
+        }
+
     }
 }

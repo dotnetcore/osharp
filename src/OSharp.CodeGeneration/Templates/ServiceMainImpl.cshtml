@@ -1,0 +1,75 @@
+﻿@using System;
+@using OSharp.Data
+@using OSharp.Extensions;
+@using OSharp.CodeGeneration.Schema;
+@{
+    
+}
+// -----------------------------------------------------------------------
+//  <copyright file="I@(Model.Name)Contract.cs" company="@Model.Project.Company">
+//      @Model.Project.Copyright
+//  </copyright>
+//  <site>@Model.Project.SiteUrl</site>
+//  <last-editor>@Model.Project.Creator</last-editor>
+//  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using OSharp.Data;
+using OSharp.Entity;
+using OSharp.EventBuses;
+using OSharp.Extensions;
+using OSharp.Identity;
+
+using @(Model.Namespace).Dtos;
+using @(Model.Namespace).Entities;
+using @(Model.Namespace).Events;
+
+
+namespace @(Model.Namespace)
+{
+    /// <summary>
+    /// 业务实现：@(Model.Display)模块
+    /// </summary>
+    public partial class @(Model.Name)Service : I@(Model.Name)Contract
+    {
+        private readonly IServiceProvider _provider;
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 初始化一个<see cref="@(Model.Name)Service"/>类型的新实例
+        /// </summary>
+        public @(Model.Name)Service(IServiceProvider provider)
+        {
+            _provider = provider;
+            _logger = provider.GetService<ILoggerFactory>().CreateLogger<@(Model.Name)Service>();
+        }
+    
+        #region 属性
+@foreach (EntityMetadata entity in Model.Entities)
+{
+    string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+    <text>
+        /// &lt;summary&gt;
+        /// 获取或设置 @(entity.Display)信息仓储对象
+        /// &lt;/summary&gt;
+        protected IRepository&lt;@(entity.Name), @(keyType)&gt; @(entity.Name)Repository => _provider.GetService&lt;IRepository&lt;@(entity.Name), @(keyType)&gt;&gt;();
+
+    </text>
+}
+        /// &lt;summary&gt;
+        /// 获取 事件总线
+        /// &lt;/summary&gt;
+        protected IEventBus EventBus => _provider.GetService&lt;IEventBus&gt;();
+
+        /// &lt;summary&gt;
+        /// 获取 设置存储对象
+        /// &lt;/summary&gt;
+        protected IKeyValueStore KeyValueStore => _provider.GetService&lt;IKeyValueStore&gt;();
+
+        #endregion
+    }
+}

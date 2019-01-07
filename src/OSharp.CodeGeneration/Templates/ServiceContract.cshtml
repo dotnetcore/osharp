@@ -1,0 +1,80 @@
+﻿@using System;
+@using OSharp.Extensions;
+@using OSharp.CodeGeneration.Schema;
+@{
+    
+}
+// -----------------------------------------------------------------------
+//  <copyright file="I@(Model.Name)Contract.cs" company="@Model.Project.Company">
+//      @Model.Project.Copyright
+//  </copyright>
+//  <site>@Model.Project.SiteUrl</site>
+//  <last-editor>@Model.Project.Creator</last-editor>
+//  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+using OSharp.Data;
+using OSharp.Extensions;
+
+using @(Model.Namespace).Dtos;
+using @(Model.Namespace).Entities;
+
+
+namespace @(Model.Namespace)
+{
+    /// <summary>
+    /// 业务契约接口：@(Model.Display)模块
+    /// </summary>
+    public interface I@(Model.Name)Contract
+    {
+@foreach (EntityMetadata entity in Model.Entities)
+{
+    string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+    <text>
+        #region @(entity.Display)信息业务
+
+        /// &lt;summary&gt;
+        /// 获取 @(entity.Display)信息查询数据集
+        /// &lt;/summary&gt;
+        IQueryable&lt;@(entity.Name)&gt; @(entity.Name.ToPlural()) { get; }
+
+        /// &lt;summary&gt;
+        /// 检查@(entity.Display)信息信息是否存在
+        /// &lt;/summary&gt;
+        /// &lt;param name="predicate"&gt;检查谓语表达式&lt;/param&gt;
+        /// &lt;param name="id"&gt;更新的@(entity.Display)信息编号&lt;/param&gt;
+        /// &lt;returns&gt;@(entity.Display)信息是否存在&lt;/returns&gt;
+        Task&lt;bool&gt; CheckEntityExists(Expression&lt;Func&lt;@(entity.Name), bool&gt;&gt; predicate, @keyType id = 0);
+
+        /// &lt;summary&gt;
+        /// 添加@(entity.Display)信息信息
+        /// &lt;/summary&gt;
+        /// &lt;param name="dtos"&gt;要添加的@(entity.Display)信息DTO信息&lt;/param&gt;
+        /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
+        Task&lt;OperationResult&gt; Create@(entity.Name.ToPlural())(params EntityInputDto[] dtos);
+
+        /// &lt;summary&gt;
+        /// 更新@(entity.Display)信息信息
+        /// &lt;/summary&gt;
+        /// &lt;param name="dtos"&gt;包含更新信息的@(entity.Display)信息DTO信息&lt;/param&gt;
+        /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
+        Task&lt;OperationResult&gt; Update@(entity.Name.ToPlural())(params EntityInputDto[] dtos);
+
+        /// &lt;summary&gt;
+        /// 删除@(entity.Display)信息信息
+        /// &lt;/summary&gt;
+        /// &lt;param name="ids"&gt;要删除的@(entity.Display)信息编号&lt;/param&gt;
+        /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
+        Task&lt;OperationResult&gt; Delete@(entity.Name.ToPlural())(params @(keyType)[] ids);
+
+        #endregion
+
+    </text>
+}
+    }
+}
