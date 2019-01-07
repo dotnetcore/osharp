@@ -83,6 +83,13 @@ namespace OSharp.CodeGeneration.Tests
             AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.cs");
         }
 
+        [Fact]
+        public void GenerateServiceEntityImplTest()
+        {
+            CodeFile code = _generator.GenerateServiceEntityImpl(_entity);
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.Article.cs");
+        }
+
         private static void AssertCodeFile(CodeFile code, string checkFileName)
         {
             code.FileName.ShouldBe(checkFileName);

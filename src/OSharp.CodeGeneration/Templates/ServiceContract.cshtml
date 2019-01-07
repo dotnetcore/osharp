@@ -49,7 +49,7 @@ namespace @(Model.Namespace)
         /// &lt;param name="predicate"&gt;检查谓语表达式&lt;/param&gt;
         /// &lt;param name="id"&gt;更新的@(entity.Display)信息编号&lt;/param&gt;
         /// &lt;returns&gt;@(entity.Display)信息是否存在&lt;/returns&gt;
-        Task&lt;bool&gt; CheckEntityExists(Expression&lt;Func&lt;@(entity.Name), bool&gt;&gt; predicate, @keyType id = 0);
+        Task&lt;bool&gt; CheckEntityExists(Expression&lt;Func&lt;@(entity.Name), bool&gt;&gt; predicate, @keyType id = default(@(keyType));
 
         /// &lt;summary&gt;
         /// 添加@(entity.Display)信息信息

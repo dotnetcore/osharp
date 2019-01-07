@@ -23,11 +23,13 @@
     <None Remove="Templates\Entity.cshtml" />
     <None Remove="Templates\EntityConfiguration.cshtml" />
     <None Remove="Templates\ServiceContract.cshtml" />
+    <None Remove="Templates\ServiceEntityImpl.cshtml" />
     <None Remove="Templates\ServiceMainImpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Entity.cshtml" />
     <EmbeddedResource Include="Templates\EntityConfiguration.cshtml" />
+    <EmbeddedResource Include="Templates\ServiceEntityImpl.cshtml" />
     <EmbeddedResource Include="Templates\ServiceContract.cshtml" />
     <EmbeddedResource Include="Templates\ServiceMainImpl.cshtml" />
   </ItemGroup>
