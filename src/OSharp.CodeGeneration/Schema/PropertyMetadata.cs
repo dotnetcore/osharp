@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
+using OSharp.Collections;
 using OSharp.Reflection;
 
 
@@ -22,6 +23,8 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class PropertyMetadata
     {
+        private EntityMetadata _entity;
+
         /// <summary>
         /// 获取或设置 属性名称
         /// </summary>
@@ -93,6 +96,19 @@ namespace OSharp.CodeGeneration.Schema
         public EnumMetadata[] EnumMetadatas { get; set; }
 
         /// <summary>
+        /// 获取或设置 所属实体信息
+        /// </summary>
+        public EntityMetadata Entity
+        {
+            get => _entity;
+            set
+            {
+                _entity = value;
+                value.Properties.AddIfNotExist(this);
+            }
+        }
+
+        /// <summary>
         /// 是否有验证属性 
         /// </summary>
         public bool HasValidateAttribute()
@@ -105,46 +121,7 @@ namespace OSharp.CodeGeneration.Schema
         /// </summary>
         public string ToSingleTypeName()
         {
-            PropertyMetadata prop = this;
-            string name = prop.TypeName;
-            switch (prop.TypeName)
-            {
-                case "System.Byte":
-                    name = "byte";
-                    break;
-                case "System.Int32":
-                    name = "int";
-                    break;
-                case "System.Int64":
-                    name = "long";
-                    break;
-                case "System.Decimal":
-                    name = "decimal";
-                    break;
-                case "System.Single":
-                    name = "float";
-                    break;
-                case "System.Double":
-                    name = "double";
-                    break;
-                case "System.String":
-                    name = "string";
-                    break;
-                case "System.Guid":
-                    name = "Guid";
-                    break;
-                case "System.Boolean":
-                    name = "bool";
-                    break;
-                case "System.DateTime":
-                    name = "DateTime";
-                    break;
-            }
-            if (prop.IsNullable)
-            {
-                name = name + "?";
-            }
-            return name;
+            return TypeHelper.ToSingleTypeName(TypeName, IsNullable);
         }
 
         /// <summary>

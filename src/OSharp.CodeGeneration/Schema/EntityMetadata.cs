@@ -7,9 +7,11 @@
 //  <last-date>2018-08-06 12:25</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using OSharp.Collections;
 using OSharp.Exceptions;
 
 
@@ -20,20 +22,12 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class EntityMetadata
     {
+        private ModuleMetadata _module;
+
         /// <summary>
         /// 获取或设置 类型名称
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// 获取或设置 类型全名
-        /// </summary>
-        public string FullName { get; set; }
-
-        /// <summary>
-        /// 获取或设置 命名空间
-        /// </summary>
-        public string Namespace { get; set; }
 
         /// <summary>
         /// 获取或设置 类型显示名称
@@ -41,26 +35,26 @@ namespace OSharp.CodeGeneration.Schema
         public string Display { get; set; }
 
         /// <summary>
+        /// 获取或设置 主键类型全名
+        /// </summary>
+        public string PrimaryKeyTypeFullName { get; set; }
+
+        /// <summary>
         /// 获取或设置 所属模块信息
         /// </summary>
-        public ModuleMetadata Module { get; set; }
+        public ModuleMetadata Module
+        {
+            get => _module;
+            set
+            {
+                _module = value;
+                value.Entities.AddIfNotExist(this);
+            }
+        }
 
         /// <summary>
         /// 获取或设置 实体属性元数据集合
         /// </summary>
-        public ICollection<PropertyMetadata> PropertyMetadatas { get; set; } = new List<PropertyMetadata>();
-
-        /// <summary>
-        /// 获取主键属性元数据
-        /// </summary>
-        public PropertyMetadata GetPrimaryKey()
-        {
-            PropertyMetadata prop = PropertyMetadatas.FirstOrDefault(m => m.Name == "Id");
-            if (prop == null)
-            {
-                throw new OsharpException($"实体类元数据“{Name}”中无法获取到主键属性元数据");
-            }
-            return prop;
-        }
+        public ICollection<PropertyMetadata> Properties { get; set; } = new List<PropertyMetadata>();
     }
 }

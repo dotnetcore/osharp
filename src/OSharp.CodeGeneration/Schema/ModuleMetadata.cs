@@ -9,6 +9,8 @@
 
 using System.Collections.Generic;
 
+using OSharp.Collections;
+
 
 namespace OSharp.CodeGeneration.Schema
 {
@@ -17,10 +19,20 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class ModuleMetadata
     {
+        private ProjectMetadata _project;
+
         /// <summary>
         /// 获取或设置 所属项目
         /// </summary>
-        public ProjectMetadata Project { get; set; }
+        public ProjectMetadata Project
+        {
+            get => _project;
+            set
+            {
+                _project = value;
+                value.Modules.AddIfNotExist(this);
+            }
+        }
 
         /// <summary>
         /// 获取或设置 模块名称
@@ -40,6 +52,6 @@ namespace OSharp.CodeGeneration.Schema
         /// <summary>
         /// 获取或设置 实体元数据集合
         /// </summary>
-        public ICollection<EntityMetadata> Entities { get; set; }
+        public ICollection<EntityMetadata> Entities { get; set; } = new List<EntityMetadata>();
     }
 }

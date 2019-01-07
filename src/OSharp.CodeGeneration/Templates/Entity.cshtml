@@ -1,12 +1,39 @@
-﻿using System;
-
-namespace Liuliu.Demo.Core
-{
-    public class Hello
-    {
-@foreach (var entity in Model.EntityMetadatas)
-{
-    @entity.Display
+﻿@using System;
+@using OSharp.CodeGeneration.Schema;
+@{
+    string keyType = TypeHelper.ToSingleTypeName(Model.PrimaryKeyTypeFullName);
 }
+// -----------------------------------------------------------------------
+//  <copyright file="@(Model.Name).cs" company="@Model.Module.Project.Company">
+//      @Model.Module.Project.Copyright
+//  </copyright>
+//  <site>@Model.Module.Project.SiteUrl</site>
+//  <last-editor>@Model.Module.Project.Creator</last-editor>
+//  <last-date>@DateTime.Now.ToString("yyyy/MM/dd HH:mm")</last-date>
+// -----------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+
+namespace @(Model.Module.Namespace).Entities
+{
+    /// <summary>
+    /// 实体类：@(Model.Display)信息
+    /// </summary>
+    [Description("@(Model.Display)信息")]
+    public class @Model.Name : EntityBase<@(keyType)>
+    {
+@foreach (var prop in Model.Properties)
+{
+    <text>
+        /// <summary>
+        /// 获取或设置 @prop.Display
+        /// </summary>
+        [DisplayName("@prop.Display")]
+        public string @prop.Name { get; set; }
+    </text>
+}
+
     }
 }

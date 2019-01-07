@@ -34,12 +34,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("生成代码")]
         public ActionResult Generate()
         {
-            GenerateContext generateContext = new GenerateContext()
-            {
-                
-            };
-
-            string code = _generator.Generate(generateContext);
+            string code = null;//_generator.Generate(generateContext);
 
             return Content(code);
         }

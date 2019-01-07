@@ -71,6 +71,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.MiniProfiler", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration.Tests", "tests\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +167,10 @@ Global
 		{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{464B2C6E-3C31-4FD3-BD29-B7168245B985} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{7678985E-9A4D-4521-A721-4EF8ABA8FA6F} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{7151D8F9-067E-48D5-BA1B-951AF6DA7F83} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
+		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

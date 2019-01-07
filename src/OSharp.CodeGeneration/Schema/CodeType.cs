@@ -45,6 +45,6 @@ namespace OSharp.CodeGeneration.Schema
         /// <summary>
         /// 实体控制器类
         /// </summary>
-        EntityController
+        AdminController
     }
 }

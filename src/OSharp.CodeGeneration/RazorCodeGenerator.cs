@@ -16,6 +16,7 @@ using OSharp.CodeGeneration.Schema;
 using OSharp.Exceptions;
 
 using RazorEngine;
+using RazorEngine.Configuration;
 using RazorEngine.Templating;
 
 
@@ -50,6 +51,8 @@ namespace OSharp.CodeGeneration
             return codeFiles.OrderBy(m => m.FileName).ToArray();
         }
 
+        private static ITemplateKey _entityKey;
+
         /// <summary>
         /// 由实体元数据生成实体类代码
         /// </summary>
@@ -57,8 +60,17 @@ namespace OSharp.CodeGeneration
         /// <returns>实体类代码</returns>
         public virtual CodeFile GenerateEntityCode(EntityMetadata entity)
         {
-            string template = GetInternalTemplate(CodeType.Entity);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string code;
+            if (_entityKey == null)
+            {
+                _entityKey = Engine.Razor.GetKey("Entity");
+                string template = GetInternalTemplate(CodeType.Entity);
+                code = Engine.Razor.RunCompile(template, _entityKey, entity.GetType(), entity);
+            }
+            else
+            {
+                code = Engine.Razor.Run(_entityKey, entity.GetType(), entity);
+            }
             return new CodeFile()
             {
                 SourceCode = code,
@@ -74,7 +86,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateInputDtoCode(EntityMetadata entity)
         {
             string template = GetInternalTemplate(CodeType.InputDto);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string code = Engine.Razor.RunCompile(template, "InputDto", entity.GetType(), entity);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -90,7 +102,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateOutputDtoCode(EntityMetadata entity)
         {
             string template = GetInternalTemplate(CodeType.OutputDto);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string code = Engine.Razor.RunCompile(template, "OutputDto", entity.GetType(), entity);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -106,7 +118,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateServiceContract(ModuleMetadata module)
         {
             string template = GetInternalTemplate(CodeType.ServiceContract);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), module.GetType(), module);
+            string code = Engine.Razor.RunCompile(template, "ServiceContract", module.GetType(), module);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -122,7 +134,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateServiceMainImpl(ModuleMetadata module)
         {
             string template = GetInternalTemplate(CodeType.ServiceMainImpl);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), module.GetType(), module);
+            string code = Engine.Razor.RunCompile(template, "ServiceMainImpl", module.GetType(), module);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -138,7 +150,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateServiceEntityImpl(EntityMetadata entity)
         {
             string template = GetInternalTemplate(CodeType.ServiceEntityImpl);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string code = Engine.Razor.RunCompile(template, "ServiceEntityImpl", entity.GetType(), entity);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -154,7 +166,7 @@ namespace OSharp.CodeGeneration
         public virtual CodeFile GenerateEntityConfiguration(EntityMetadata entity)
         {
             string template = GetInternalTemplate(CodeType.EntityConfiguration);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string code = Engine.Razor.RunCompile(template, "EntityConfiguration", entity.GetType(), entity);
             return new CodeFile()
             {
                 SourceCode = code,
@@ -169,8 +181,8 @@ namespace OSharp.CodeGeneration
         /// <returns>实体管理控制器类代码</returns>
         public virtual CodeFile GenerateAdminController(EntityMetadata entity)
         {
-            string template = GetInternalTemplate(CodeType.EntityController);
-            string code = Engine.Razor.RunCompile(template, Guid.NewGuid().ToString(), entity.GetType(), entity);
+            string template = GetInternalTemplate(CodeType.AdminController);
+            string code = Engine.Razor.RunCompile(template, "AdminController", entity.GetType(), entity);
             return new CodeFile()
             {
                 SourceCode = code,
