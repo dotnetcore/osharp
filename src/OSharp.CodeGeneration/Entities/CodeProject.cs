@@ -1,21 +1,26 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ProjectMetadata.cs" company="OSharp开源团队">
+//  <copyright file="CodeProject.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-01-07 0:21</last-date>
+//  <last-date>2019-01-08 14:12</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+
+using OSharp.Entity;
 
 
-namespace OSharp.CodeGeneration.Schema
+namespace OSharp.CodeGeneration.Entities
 {
     /// <summary>
-    /// 项目元数据信息
+    /// 实体类：代码项目信息
     /// </summary>
-    public class ProjectMetadata
+    [Description("代码项目信息")]
+    public class CodeProject : EntityBase<Guid>
     {
         /// <summary>
         /// 获取或设置 项目名称
@@ -50,6 +55,6 @@ namespace OSharp.CodeGeneration.Schema
         /// <summary>
         /// 获取或设置 模块信息集合
         /// </summary>
-        public ICollection<ModuleMetadata> Modules { get; set; } = new List<ModuleMetadata>();
+        public virtual ICollection<CodeModule> Modules { get; set; } = new List<CodeModule>();
     }
 }

@@ -1,11 +1,6 @@
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 
 using OSharp.CodeGeneration.Schema;
-using OSharp.Extensions;
 
 using Shouldly;
 
@@ -25,7 +20,7 @@ namespace OSharp.CodeGeneration.Tests
 
             ProjectMetadata project = new ProjectMetadata()
             {
-                Display = "XXX系统",
+                Name = "XXX系统",
                 Company = "柳柳软件",
                 Copyright = "Copyright (c) 2014-2019 OSharp. All rights reserved.",
                 Creator = "郭明锋",
@@ -116,7 +111,7 @@ namespace OSharp.CodeGeneration.Tests
         public void GenerateAdminControllerTest()
         {
             CodeFile code = _generator.GenerateAdminController(_entity);
-            AssertCodeFile(code,"Liuliu.Site.Web/Areas/Admin/Controllers/Infos/ArticleController.cs");
+            AssertCodeFile(code, "Liuliu.Site.Web/Areas/Admin/Controllers/Infos/ArticleController.cs");
         }
 
         private static void AssertCodeFile(CodeFile code, string checkFileName)

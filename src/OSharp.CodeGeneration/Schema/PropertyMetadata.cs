@@ -41,11 +41,6 @@ namespace OSharp.CodeGeneration.Schema
         public string Display { get; set; }
 
         /// <summary>
-        /// 获取或设置 属性描述
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
         /// 获取或设置 是否必须
         /// </summary>
         public bool? IsRequired { get; set; }
