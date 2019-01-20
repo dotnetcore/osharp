@@ -19,6 +19,16 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class ModuleMetadata
     {
+        /// <summary>
+        /// 获取或设置 模块名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 获取或设置 模块显示名称
+        /// </summary>
+        public string Display { get; set; }
+
         private ProjectMetadata _project;
 
         /// <summary>
@@ -33,16 +43,6 @@ namespace OSharp.CodeGeneration.Schema
                 value.Modules.AddIfNotExist(this);
             }
         }
-
-        /// <summary>
-        /// 获取或设置 模块名称
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 获取或设置 模块显示名称
-        /// </summary>
-        public string Display { get; set; }
 
         /// <summary>
         /// 获取 模块命名空间

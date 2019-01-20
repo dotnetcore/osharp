@@ -7,13 +7,8 @@
 //  <last-date>2018-08-06 12:31</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 
 using OSharp.Collections;
-using OSharp.Reflection;
 
 
 namespace OSharp.CodeGeneration.Schema
@@ -23,8 +18,6 @@ namespace OSharp.CodeGeneration.Schema
     /// </summary>
     public class PropertyMetadata
     {
-        private EntityMetadata _entity;
-
         /// <summary>
         /// 获取或设置 属性名称
         /// </summary>
@@ -100,6 +93,7 @@ namespace OSharp.CodeGeneration.Schema
         /// </summary>
         public EnumMetadata[] EnumMetadatas { get; set; }
 
+        private EntityMetadata _entity;
         /// <summary>
         /// 获取或设置 所属实体信息
         /// </summary>
