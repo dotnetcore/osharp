@@ -46,7 +46,7 @@ namespace OSharp.CodeGeneration.Tests
                     new PropertyMetadata() { Name = "Content", Display = "正文", TypeName = typeof(string).FullName },
                     new PropertyMetadata() { Name = "IsHot", Display = "是否热点", TypeName = typeof(bool).FullName },
                     new PropertyMetadata() { Name = "IsLocked", Display = "是否锁定", TypeName = typeof(bool).FullName },
-                    new PropertyMetadata() { Name = "IsDeleted", Display = "是否删除", TypeName = typeof(bool).FullName, IsInputDto = false},
+                    new PropertyMetadata() { Name = "IsDeleted", Display = "是否删除", TypeName = typeof(bool).FullName, IsInputDto = false, IsOutputDto = false }
                 }
             };
         }
