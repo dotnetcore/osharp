@@ -6,10 +6,13 @@
 //  <last-date>2014-07-18 18:25</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+
+using OSharp.Data;
 
 
 namespace OSharp.IO
@@ -127,6 +130,93 @@ namespace OSharp.IO
                     return sb.ToString();
                 }
             }
+        }
+        
+        /// <summary>
+        /// 获取文本文件的编码方式
+        /// </summary>
+        /// <param name="fileName"> 文件名 例如：path = @"D:\test.txt"</param>
+        /// <returns>返回编码方式</returns>
+        public static Encoding GetEncoding(string fileName )
+        {
+            return GetEncoding(fileName, Encoding.Default);
+        }
+        
+        /// <summary>
+        /// 获取文本流的编码方式
+        /// </summary>
+        /// <param name="fs">文本流</param>
+        /// <returns>返回系统默认的编码方式</returns>
+        public static Encoding GetEncoding(FileStream fs)
+        {
+            //Encoding.Default 系统默认的编码方式
+            return GetEncoding(fs, Encoding.Default);
+        }
+        
+        /// <summary>
+        /// 获取一个文本流的编码方式
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <param name="defaultEncoding">默认编码方式。当该方法无法从文件的头部取得有效的前导符时，将返回该编码方式。</param>
+        /// <returns></returns>
+        public static Encoding GetEncoding(string fileName, Encoding defaultEncoding)
+        {
+            using (FileStream fs = File.Open(fileName, FileMode.Open))
+            {
+                return GetEncoding(fs, defaultEncoding);
+            }
+        }
+
+        /// <summary>
+        /// 获取一个文本流的编码方式
+        /// </summary>
+        /// <param name="fs">文本流</param>
+        /// <param name="defaultEncoding">默认编码方式。当该方法无法从文件的头部取得有效的前导符时，将返回该编码方式。</param>
+        /// <returns></returns>
+        public static Encoding GetEncoding(FileStream fs, Encoding defaultEncoding)
+        {
+            Encoding targetEncoding = defaultEncoding;
+            if (fs != null && fs.Length >= 2)
+            {
+                byte b1 = 0;
+                byte b2 = 0;
+                byte b3 = 0;
+                byte b4 = 0;
+
+                long oriPos = fs.Seek(0, SeekOrigin.Begin);
+                fs.Seek(0, SeekOrigin.Begin);
+
+                b1 = Convert.ToByte(fs.ReadByte());
+                b2 = Convert.ToByte(fs.ReadByte());
+                if (fs.Length > 2)
+                {
+                    b3 = Convert.ToByte(fs.ReadByte());
+                }
+                if (fs.Length > 3)
+                {
+                    b4 = Convert.ToByte(fs.ReadByte());
+                }
+
+                //根据文件流的前4个字节判断Encoding
+                //Unicode {0xFF, 0xFE};
+                //BE-Unicode {0xFE, 0xFF};
+                //UTF8 = {0xEF, 0xBB, 0xBF};
+                if (b1 == 0xFE && b2 == 0xFF)//UnicodeBe
+                {
+                    targetEncoding = Encoding.BigEndianUnicode;
+                }
+                if (b1 == 0xFF && b2 == 0xFE && b3 != 0xFF)//Unicode
+                {
+                    targetEncoding = Encoding.Unicode;
+                }
+                if (b1 == 0xEF && b2 == 0xBB && b3 == 0xBF)//UTF8
+                {
+                    targetEncoding = Encoding.UTF8;
+                }
+
+                fs.Seek(0, SeekOrigin.Begin);
+            }
+            return targetEncoding;
         }
     }
 }
