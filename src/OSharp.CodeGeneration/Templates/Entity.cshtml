@@ -32,7 +32,7 @@ namespace @(entity.Module.Namespace).Entities
         /// 获取或设置 @prop.Display
         /// &lt;/summary&gt;
         [DisplayName("@prop.Display")]
-        public string @prop.Name { get; set; }
+        public @TypeHelper.ToSingleTypeName(prop.TypeName) @prop.Name { get; set; }
     </text>
 }
 

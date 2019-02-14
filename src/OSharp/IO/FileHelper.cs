@@ -32,6 +32,12 @@ namespace OSharp.IO
             {
                 return;
             }
+
+            string dir = Path.GetDirectoryName(fileName);
+            if (dir != null)
+            {
+                DirectoryHelper.CreateIfNotExists(dir);
+            }
             File.Create(fileName);
         }
 

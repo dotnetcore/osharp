@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using OSharp.Data;
@@ -25,10 +24,11 @@ namespace OSharp.Collections
         /// <summary>
         /// 如果不存在，添加项
         /// </summary>
-        public static void AddIfNotExist<T>(this ICollection<T> collection, T value)
+        public static void AddIfNotExist<T>(this ICollection<T> collection, T value, Func<T, bool> existFunc = null)
         {
             Check.NotNull(collection, nameof(collection));
-            if (!collection.Contains(value))
+            bool exists = existFunc == null ? collection.Contains(value) : existFunc(value);
+            if (!exists)
             {
                 collection.Add(value);
             }
@@ -49,7 +49,7 @@ namespace OSharp.Collections
         /// <summary>
         /// 获取对象，不存在对使用委托添加对象
         /// </summary>
-        public static T GetOrAdd<T>(this ICollection<T> collection, Func<T,bool>selector, Func<T>factory)
+        public static T GetOrAdd<T>(this ICollection<T> collection, Func<T, bool> selector, Func<T> factory)
         {
             Check.NotNull(collection, nameof(collection));
             T item = collection.FirstOrDefault(selector);
