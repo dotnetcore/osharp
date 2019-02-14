@@ -50,7 +50,7 @@ if(entity.IsDataAuth)
         /// 获取或设置 @(prop.Display)
         /// &lt;/summary&gt;
         [DisplayName("@(prop.Display)")]
-        public bool @prop.Name { get; set; }
+        public @TypeHelper.ToSingleTypeName(prop.TypeName) @prop.Name { get; set; }
     </text>
 }
 @if(entity.IsDataAuth)

@@ -31,21 +31,21 @@ using @(module.Namespace).Events;
 
 namespace @(module.Namespace)
 {
-    /// <summary>
+    /// &lt;summary&gt;
     /// 业务实现：@(module.Display)模块
-    /// </summary>
+    /// &lt;/summary&gt;
     public partial class @(module.Name)Service : I@(module.Name)Contract
     {
         private readonly IServiceProvider _provider;
         private readonly ILogger _logger;
 
-        /// <summary>
-        /// 初始化一个<see cref="@(module.Name)Service"/>类型的新实例
-        /// </summary>
+        /// &lt;summary&gt;
+        /// 初始化一个&lt;see cref="@(module.Name)Service"/&gt;类型的新实例
+        /// &lt;/summary&gt;
         public @(module.Name)Service(IServiceProvider provider)
         {
             _provider = provider;
-            _logger = provider.GetService<ILoggerFactory>().CreateLogger<@(module.Name)Service>();
+            _logger = provider.GetService&lt;ILoggerFactory&gt;().CreateLogger&lt;@(module.Name)Service&gt;();
         }
     
         #region 属性
