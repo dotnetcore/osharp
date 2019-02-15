@@ -20,14 +20,14 @@ namespace OSharp.Core.Packs
         /// <summary>
         /// 初始化一个 OSharp模块依赖<see cref="DependsOnPacksAttribute"/>类型的新实例
         /// </summary>
-        public DependsOnPacksAttribute(params Type[] dependedModuleTypes)
+        public DependsOnPacksAttribute(params Type[] dependedPackTypes)
         {
-            DependedModuleTypes = dependedModuleTypes;
+            DependedPackTypes = dependedPackTypes;
         }
 
         /// <summary>
         /// 获取 当前模块的依赖模块类型集合
         /// </summary>
-        public Type[] DependedModuleTypes { get; }
+        public Type[] DependedPackTypes { get; }
     }
 }

@@ -14,8 +14,10 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Collections;
 using OSharp.Core.Builders;
 using OSharp.Dependency;
+using OSharp.Exceptions;
 
 
 namespace OSharp.Core.Packs
@@ -64,9 +66,23 @@ namespace OSharp.Core.Packs
             if (builder.AddPacks.Any())
             {
                 packs = _sourcePacks.Where(m => m.Level == PackLevel.Core)
-                    .Union(_sourcePacks.Where(m => builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
-                IEnumerable<Type> dependModuleTypes = packs.SelectMany(m => m.GetDependPackTypes());
-                packs = packs.Union(_sourcePacks.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
+                    .Union(_sourcePacks.Where(m => builder.AddPacks.Contains(m.GetType()))).Distinct()
+                    .OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
+                List<OsharpPack> dependPacks = new List<OsharpPack>();
+                foreach (OsharpPack pack in packs)
+                {
+                    Type[] dependPackTypes = pack.GetDependPackTypes();
+                    foreach (Type dependPackType in dependPackTypes)
+                    {
+                        OsharpPack dependPack = _sourcePacks.Find(m => m.GetType() == dependPackType);
+                        if (dependPack == null)
+                        {
+                            throw new OsharpException($"加载模块{pack.GetType().FullName}时无法找到依赖模块{dependPackType.FullName}");
+                        }
+                        dependPacks.AddIfNotExist(dependPack);
+                    }
+                }
+                packs = packs.Union(dependPacks).Distinct().ToList();
             }
             else
             {

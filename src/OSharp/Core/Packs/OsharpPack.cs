@@ -62,15 +62,33 @@ namespace OSharp.Core.Packs
         /// 获取当前模块的依赖模块类型
         /// </summary>
         /// <returns></returns>
-        internal Type[] GetDependPackTypes()
+        internal Type[] GetDependPackTypes(Type packType = null)
         {
-            DependsOnPacksAttribute[] depends = this.GetType().GetAttributes<DependsOnPacksAttribute>(true);
-            if (depends.Length == 0)
+            if (packType == null)
+            {
+                packType = GetType();
+            }
+            DependsOnPacksAttribute[] dependAttrs = packType.GetAttributes<DependsOnPacksAttribute>(true);
+            if (dependAttrs.Length == 0)
             {
                 return new Type[0];
             }
+            List<Type> dependTypes = new List<Type>();
+            foreach (DependsOnPacksAttribute dependAttr in dependAttrs)
+            {
+                Type[] packTypes = dependAttr.DependedPackTypes;
+                if (packTypes.Length == 0)
+                {
+                    continue;
+                }
+                dependTypes.AddRange(packTypes);
+                foreach (Type type in packTypes)
+                {
+                    dependTypes.AddRange(GetDependPackTypes(type));
+                }
+            }
 
-            return depends.SelectMany(depend => depend.DependedModuleTypes).Distinct().ToArray();
+            return dependTypes.Distinct().ToArray();
         }
     }
 }
