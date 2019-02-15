@@ -78,7 +78,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Entities/{entity.Name}.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Entities/{entity.Name}.generated.cs"
             };
         }
 
@@ -104,7 +104,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Dtos/{entity.Name}InputDto.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Dtos/{entity.Name}InputDto.generated.cs"
             };
         }
 
@@ -130,7 +130,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Dtos/{entity.Name}OutputDto.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/Dtos/{entity.Name}OutputDto.generated.cs"
             };
         }
 
@@ -156,7 +156,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{module.Project.NamespacePrefix}.Core/{module.Name}/I{module.Name}Contract.cs"
+                FileName = $"{module.Project.NamespacePrefix}.Core/{module.Name}/I{module.Name}Contract.generated.cs"
             };
         }
 
@@ -182,7 +182,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{module.Project.NamespacePrefix}.Core/{module.Name}/{module.Name}Service.cs"
+                FileName = $"{module.Project.NamespacePrefix}.Core/{module.Name}/{module.Name}Service.generated.cs"
             };
         }
 
@@ -208,7 +208,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/{entity.Module.Name}Service.{entity.Name}.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.Core/{entity.Module.Name}/{entity.Module.Name}Service.{entity.Name}.generated.cs"
             };
         }
 
@@ -234,7 +234,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.EntityConfiguration/{entity.Module.Name}/{entity.Name}Configuration.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.EntityConfiguration/{entity.Module.Name}/{entity.Name}Configuration.generated.cs"
             };
         }
 
@@ -260,7 +260,7 @@ namespace OSharp.CodeGeneration
             return new CodeFile()
             {
                 SourceCode = code,
-                FileName = $"{entity.Module.Project.NamespacePrefix}.Web/Areas/Admin/Controllers/{entity.Module.Name}/{entity.Name}Controller.cs"
+                FileName = $"{entity.Module.Project.NamespacePrefix}.Web/Areas/Admin/Controllers/{entity.Module.Name}/{entity.Name}Controller.generated.cs"
             };
         }
 
