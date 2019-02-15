@@ -31,6 +31,7 @@ namespace OSharp.Swagger
     /// <summary>
     /// SwaggerApi模块
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     [Description("SwaggerApi模块 ")]
     public class SwaggerPack : AspOsharpPack
     {

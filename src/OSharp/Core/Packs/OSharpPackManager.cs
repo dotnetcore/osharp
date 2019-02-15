@@ -65,7 +65,7 @@ namespace OSharp.Core.Packs
             {
                 packs = _sourcePacks.Where(m => m.Level == PackLevel.Core)
                     .Union(_sourcePacks.Where(m => builder.AddPacks.Contains(m.GetType()))).Distinct().ToList();
-                IEnumerable<Type> dependModuleTypes = packs.SelectMany(m => m.GetDependModuleTypes());
+                IEnumerable<Type> dependModuleTypes = packs.SelectMany(m => m.GetDependPackTypes());
                 packs = packs.Union(_sourcePacks.Where(m => dependModuleTypes.Contains(m.GetType()))).Distinct().ToList();
             }
             else

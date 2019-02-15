@@ -10,7 +10,9 @@
 using System;
 using System.ComponentModel;
 
+using OSharp.Core.Packs;
 using OSharp.Entity;
+using OSharp.Entity.PostgreSql;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -18,6 +20,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// PostgreSql-DefaultDbContext迁移模块
     /// </summary>
+    [DependsOnPacks(typeof(PostgreSqlEntityFrameworkCorePack))]
     [Description("PostgreSql-DefaultDbContext迁移模块")]
     public class PostgreSqlDefaultDbContextMigrationPack : MigrationPackBase<DefaultDbContext>
     {

@@ -1,11 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 
+using OSharp.Core.Packs;
 using OSharp.Entity;
+using OSharp.Entity.Sqlite;
 
 
 namespace Liuliu.Demo.Web.Startups
 {
+    /// <summary>
+    /// Sqlite-DefaultDbContext迁移模块
+    /// </summary>
+    [DependsOnPacks(typeof(SqliteEntityFrameworkCorePack))]
     [Description("Sqlite-DefaultDbContext迁移模块")]
     public class SqliteDefaultDbContextMigrationPack : MigrationPackBase<DefaultDbContext>
     {

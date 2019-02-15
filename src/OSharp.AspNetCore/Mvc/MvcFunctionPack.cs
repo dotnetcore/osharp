@@ -18,7 +18,6 @@ using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
-using OSharp.Reflection;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -26,6 +25,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC功能点模块
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     [Description("MVC功能点模块")]
     public class MvcFunctionPack : AspOsharpPack
     {

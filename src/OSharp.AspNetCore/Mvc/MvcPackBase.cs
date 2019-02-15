@@ -23,6 +23,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// Mvc模块基类
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class MvcPackBase : AspOsharpPack
     {
         /// <summary>

@@ -10,7 +10,9 @@
 using System;
 using System.ComponentModel;
 
+using OSharp.Core.Packs;
 using OSharp.Entity;
+using OSharp.Entity.MySql;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -18,6 +20,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// MySql-DefaultDbContext迁移模块
     /// </summary>
+    [DependsOnPacks(typeof(MySqlEntityFrameworkCorePack))]
     [Description("MySql-DefaultDbContext迁移模块")]
     public class MySqlDefaultDbContextMigrationPack : MigrationPackBase<DefaultDbContext>
     {

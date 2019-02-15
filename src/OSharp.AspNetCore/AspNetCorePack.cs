@@ -34,8 +34,6 @@ namespace OSharp.AspNetCore
         /// </summary>
         public override int Order => 2;
 
-        #region Overrides of OsharpPack
-
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
@@ -54,7 +52,5 @@ namespace OSharp.AspNetCore
 
             return services;
         }
-
-        #endregion
     }
 }

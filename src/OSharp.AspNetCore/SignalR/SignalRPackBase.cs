@@ -24,6 +24,7 @@ namespace OSharp.AspNetCore.SignalR
     /// <summary>
     /// SignalR模块基类
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class SignalRPackBase : AspOsharpPack
     {
         /// <summary>

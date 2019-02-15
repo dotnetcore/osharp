@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
+using OSharp.EventBuses;
 
 
 namespace OSharp.Entity
@@ -20,6 +21,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore基模块
     /// </summary>
+    [DependsOnPacks(typeof(EventBusPack))]
     public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
         /// <summary>

@@ -23,6 +23,7 @@ namespace OSharp.MiniProfiler
     /// <summary>
     /// MiniProfiler模块基类
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class MiniProfilerPackBase : AspOsharpPack
     {
         /// <summary>

@@ -8,16 +8,15 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Security.Principal;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
+using OSharp.EventBuses;
 
 
 namespace OSharp.Identity
@@ -25,6 +24,7 @@ namespace OSharp.Identity
     /// <summary>
     /// 身份论证模块基类
     /// </summary>
+    [DependsOnPacks(typeof(EventBusPack), typeof(AspNetCorePack))]
     public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TRole, TUserKey, TRoleKey> : AspOsharpPack
         where TUserStore : class, IUserStore<TUser>
         where TRoleStore : class, IRoleStore<TRole>
