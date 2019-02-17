@@ -20,6 +20,14 @@ namespace OSharp.IO
     public static class DirectoryHelper
     {
         /// <summary>
+        /// 获取程序根目录
+        /// </summary>
+        public static string RootPath()
+        {
+            return Path.GetDirectoryName(typeof(DirectoryHelper).Assembly.Location);
+        }
+
+        /// <summary>
         /// 创建文件夹，如果不存在
         /// </summary>
         /// <param name="directory">要创建的文件夹路径</param>

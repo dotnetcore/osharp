@@ -1,5 +1,13 @@
 # OSharp .NetStandard 更新记录
 
+### 0.4.0-beta05-06
+1. 给框架级的数据实体添加导航属性，简化相关数据查询操作
+2. 添加 OSharp.CodeGeneration 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等
+3. 修复单元测试时IAllAssemblyFinder未注入的问题
+4. FileHelper添加文件操作 获取文本文件的编码方式，SerializeHelper添加新一种对象二进制序列化方式
+5. 明确各个Pack的依赖关系及加载顺序
+6. 更新代码生成的扩展名为generated.cs，更新代码模板的手动更新警告
+
 ### 0.4.0-beta04
 1. Swagger模块的UI添加权限Token填写按钮，以方便测试需要权限验证的API
 2. 添加SignalR实时通信框架支持。添加系统设置API入口System/SettingsController

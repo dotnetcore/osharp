@@ -62,56 +62,56 @@ namespace OSharp.CodeGeneration.Tests
         public void GenerateEntityCodeTest()
         {
             CodeFile code = _generator.GenerateEntityCode(_entity);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Entities/Article.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Entities/Article.generated.cs");
         }
 
         [Fact]
         public void GenerateEntityConfigurationTest()
         {
             CodeFile code = _generator.GenerateEntityConfiguration(_entity);
-            AssertCodeFile(code, "Liuliu.Site.EntityConfiguration/Infos/ArticleConfiguration.cs");
+            AssertCodeFile(code, "Liuliu.Site.EntityConfiguration/Infos/ArticleConfiguration.generated.cs");
         }
 
         [Fact]
         public void GenerateInputDtoCodeTest()
         {
             CodeFile code = _generator.GenerateInputDtoCode(_entity);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleInputDto.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleInputDto.generated.cs");
         }
 
         [Fact]
         public void GenerateOutputDtoCodeTest()
         {
             CodeFile code = _generator.GenerateOutputDtoCode(_entity);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleOutputDto.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/Dtos/ArticleOutputDto.generated.cs");
         }
 
         [Fact]
         public void GenerateServiceContractTest()
         {
             CodeFile code = _generator.GenerateServiceContract(_module);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/IInfosContract.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/IInfosContract.generated.cs");
         }
 
         [Fact]
         public void GenerateServiceMainImplTest()
         {
             CodeFile code = _generator.GenerateServiceMainImpl(_module);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.generated.cs");
         }
 
         [Fact]
         public void GenerateServiceEntityImplTest()
         {
             CodeFile code = _generator.GenerateServiceEntityImpl(_entity);
-            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.Article.cs");
+            AssertCodeFile(code, "Liuliu.Site.Core/Infos/InfosService.Article.generated.cs");
         }
 
         [Fact]
         public void GenerateAdminControllerTest()
         {
             CodeFile code = _generator.GenerateAdminController(_entity);
-            AssertCodeFile(code, "Liuliu.Site.Web/Areas/Admin/Controllers/Infos/ArticleController.cs");
+            AssertCodeFile(code, "Liuliu.Site.Web/Areas/Admin/Controllers/Infos/ArticleController.generated.cs");
         }
 
         private static void AssertCodeFile(CodeFile code, string checkFileName)
