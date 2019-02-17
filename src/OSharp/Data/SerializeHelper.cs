@@ -6,7 +6,9 @@
 //  <last-date>2015-01-02 15:54</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
@@ -22,6 +24,33 @@ namespace OSharp.Data
     public static class SerializeHelper
     {
         #region 二进制序列化
+
+        /// <summary>
+        /// 将对象序列化为byte[]，此方法不需要源类型标记可<see cref="SerializableAttribute"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(object value)
+        {
+            byte[] bytes = new byte[Marshal.SizeOf(value)];
+            IntPtr ptr = Marshal.UnsafeAddrOfPinnedArrayElement(bytes, 0);
+            Marshal.StructureToPtr(value, ptr, true);
+            return bytes;
+        }
+
+        /// <summary>
+        /// 将byte[]反序列化为对象，此方法不需要源类型标记可<see cref="SerializableAttribute"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static T FromBytes<T>(byte[] bytes)
+        {
+            Type type = typeof(T);
+            IntPtr ptr = Marshal.UnsafeAddrOfPinnedArrayElement(bytes, 0);
+            object obj = Marshal.PtrToStructure(ptr, type);
+            return (T)obj;
+        }
 
         /// <summary>
         /// 将数据序列化为二进制数组
