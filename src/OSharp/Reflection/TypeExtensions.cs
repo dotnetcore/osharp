@@ -91,7 +91,7 @@ namespace OSharp.Reflection
         /// <param name="type">类型对象</param>
         /// <param name="inherit">是否搜索类型的继承链以查找描述特性</param>
         /// <returns>返回Description特性描述信息，如不存在则返回类型的全名</returns>
-        public static string GetDescription(this Type type, bool inherit = false)
+        public static string GetDescription(this Type type, bool inherit = true)
         {
             DescriptionAttribute desc = type.GetAttribute<DescriptionAttribute>(inherit);
             return desc == null ? type.FullName : desc.Description;
@@ -103,7 +103,7 @@ namespace OSharp.Reflection
         /// <param name="member">成员元数据对象</param>
         /// <param name="inherit">是否搜索成员的继承链以查找描述特性</param>
         /// <returns>返回Description特性描述信息，如不存在则返回成员的名称</returns>
-        public static string GetDescription(this MemberInfo member, bool inherit = false)
+        public static string GetDescription(this MemberInfo member, bool inherit = true)
         {
             DescriptionAttribute desc = member.GetAttribute<DescriptionAttribute>(inherit);
             if (desc != null)
@@ -142,10 +142,10 @@ namespace OSharp.Reflection
         /// <param name="memberInfo">类型类型成员</param>
         /// <param name="inherit">是否从继承中查找</param>
         /// <returns>存在返回第一个，不存在返回null</returns>
-        public static T GetAttribute<T>(this MemberInfo memberInfo, bool inherit = false) where T : Attribute
+        public static T GetAttribute<T>(this MemberInfo memberInfo, bool inherit = true) where T : Attribute
         {
-            var descripts = memberInfo.GetCustomAttributes(typeof(T), inherit);
-            return descripts.FirstOrDefault() as T;
+            var attributes = memberInfo.GetCustomAttributes(typeof(T), inherit);
+            return attributes.FirstOrDefault() as T;
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace OSharp.Reflection
         /// <param name="memberInfo">类型类型成员</param>
         /// <param name="inherit">是否从继承中查找</param>
         /// <returns>返回所有指定Attribute特性的数组</returns>
-        public static T[] GetAttributes<T>(this MemberInfo memberInfo, bool inherit = false) where T : Attribute
+        public static T[] GetAttributes<T>(this MemberInfo memberInfo, bool inherit = true) where T : Attribute
         {
             return memberInfo.GetCustomAttributes(typeof(T), inherit).Cast<T>().ToArray();
         }

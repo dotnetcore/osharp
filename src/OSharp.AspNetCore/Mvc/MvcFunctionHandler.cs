@@ -122,7 +122,7 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         private static string GetArea(Type type)
         {
-            AreaAttribute attribute = type.GetAttribute<AreaAttribute>(true);
+            AreaAttribute attribute = type.GetAttribute<AreaAttribute>();
             return attribute?.RouteValue;
         }
     }

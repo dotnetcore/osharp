@@ -43,6 +43,10 @@ namespace OSharp.AspNetCore.Mvc
         protected override ModuleInfo[] GetModules(Type type, string[] existPaths)
         {
             ModuleInfoAttribute infoAttr = type.GetAttribute<ModuleInfoAttribute>();
+            if (infoAttr == null)
+            {
+                return new ModuleInfo[0];
+            }
             ModuleInfo info = new ModuleInfo()
             {
                 Name = infoAttr.Name ?? GetName(type),
@@ -67,7 +71,7 @@ namespace OSharp.AspNetCore.Mvc
                 }
             }
             //获取区域模块
-            string area = type.GetAttribute<AreaAttribute>(true)?.RouteValue ?? "Site";
+            string area = type.GetAttribute<AreaAttribute>()?.RouteValue ?? "Site";
             string name = area == "Site" ? "站点" : area == "Admin" ? "管理" : null;
             info = new ModuleInfo()
             {
@@ -94,6 +98,10 @@ namespace OSharp.AspNetCore.Mvc
         protected override ModuleInfo GetModule(MethodInfo method, ModuleInfo typeInfo, int index)
         {
             ModuleInfoAttribute infoAttr = method.GetAttribute<ModuleInfoAttribute>();
+            if (infoAttr == null)
+            {
+                return null;
+            }
             ModuleInfo info = new ModuleInfo()
             {
                 Name = infoAttr.Name ?? method.GetDescription() ?? method.Name,
@@ -103,7 +111,7 @@ namespace OSharp.AspNetCore.Mvc
             string controller = method.DeclaringType?.Name.Replace("Controller", "");
             info.Position = $"{typeInfo.Position}.{controller}";
             //依赖的功能
-            string area = method.DeclaringType.GetAttribute<AreaAttribute>(true)?.RouteValue;
+            string area = method.DeclaringType.GetAttribute<AreaAttribute>()?.RouteValue;
             List<IFunction> dependOnFunctions = new List<IFunction>()
             {
                 FunctionHandler.GetFunction(area, controller, method.Name)
@@ -141,7 +149,7 @@ namespace OSharp.AspNetCore.Mvc
 
         private static string GetPosition(Type type, string attrPosition)
         {
-            string area = type.GetAttribute<AreaAttribute>(true)?.RouteValue;
+            string area = type.GetAttribute<AreaAttribute>()?.RouteValue;
             if (area == null)
             {
                 //无区域，使用Root.Site位置

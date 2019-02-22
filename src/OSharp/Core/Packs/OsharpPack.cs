@@ -68,7 +68,7 @@ namespace OSharp.Core.Packs
             {
                 packType = GetType();
             }
-            DependsOnPacksAttribute[] dependAttrs = packType.GetAttributes<DependsOnPacksAttribute>(true);
+            DependsOnPacksAttribute[] dependAttrs = packType.GetAttributes<DependsOnPacksAttribute>();
             if (dependAttrs.Length == 0)
             {
                 return new Type[0];

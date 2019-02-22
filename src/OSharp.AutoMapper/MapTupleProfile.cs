@@ -56,7 +56,7 @@ namespace OSharp.AutoMapper
             Type[] types = _mapFromAttributeTypeFinder.FindAll(true);
             foreach (Type targetType in types)
             {
-                MapFromAttribute attribute = targetType.GetAttribute<MapFromAttribute>();
+                MapFromAttribute attribute = targetType.GetAttribute<MapFromAttribute>(true);
                 foreach (Type sourceType in attribute.SourceTypes)
                 {
                     var tuple = ValueTuple.Create(sourceType, targetType);
@@ -67,7 +67,7 @@ namespace OSharp.AutoMapper
             types = _mapToAttributeTypeFinder.FindAll(true);
             foreach (Type sourceType in types)
             {
-                MapToAttribute attribute = sourceType.GetAttribute<MapToAttribute>();
+                MapToAttribute attribute = sourceType.GetAttribute<MapToAttribute>(true);
                 foreach (Type targetType in attribute.TargetTypes)
                 {
                     var tuple = ValueTuple.Create(sourceType, targetType);
