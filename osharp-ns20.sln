@@ -55,8 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{F5
 		docs\articles\updatelogs.md = docs\articles\updatelogs.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGenerator", "tests\OSharp.CodeGenerator\OSharp.CodeGenerator.csproj", "{A403CAF1-B220-40CB-99E1-7594EC142AB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{3E86C417-672D-491F-8177-93EDCBC0C70A}"
@@ -69,9 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{7678985E-9A4D-4521-A721-4EF8ABA8FA6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{7151D8F9-067E-48D5-BA1B-951AF6DA7F83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration.Tests", "tests\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration.Tests", "tests\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{3681B94F-96EE-4AEE-9E9C-357C551C1B3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,10 +133,6 @@ Global
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A403CAF1-B220-40CB-99E1-7594EC142AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A403CAF1-B220-40CB-99E1-7594EC142AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A403CAF1-B220-40CB-99E1-7594EC142AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A403CAF1-B220-40CB-99E1-7594EC142AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8C3E97A-31C5-4DE2-81E5-47D97AE33970}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -191,7 +185,6 @@ Global
 		{B0BC26F8-5011-44DE-B516-643683DB7655} = {0E239259-0BC3-4521-AD60-07CB87263140}
 		{4F7B11EC-48C4-4F7F-AFCC-45C6A402EDD2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{F5AE9B1E-523E-4ED0-BC3F-A2D722C2A48C} = {806C30F7-24C2-4506-9E06-AF1B5534C098}
-		{A403CAF1-B220-40CB-99E1-7594EC142AB9} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{D8C3E97A-31C5-4DE2-81E5-47D97AE33970} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{3E86C417-672D-491F-8177-93EDCBC0C70A} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{3AE4A771-1F76-4792-8A88-F0FB9BA576C2} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
