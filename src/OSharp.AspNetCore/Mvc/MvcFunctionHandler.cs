@@ -36,7 +36,7 @@ namespace OSharp.AspNetCore.Mvc
             : base(serviceProvider)
         {
             FunctionTypeFinder = serviceProvider.GetService<IFunctionTypeFinder>();
-            MethodInfoFinder = new PublicInstanceMethodInfoFinder();
+            MethodInfoFinder = new MvcMethodInfoFinder();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace OSharp.AspNetCore.Mvc
             {
                 Name = controllerType.GetDescription(),
                 Area = GetArea(controllerType),
-                Controller = controllerType.Name.Replace("Controller", string.Empty),
+                Controller = controllerType.Name.Replace("ControllerBase", string.Empty).Replace("Controller", string.Empty),
                 IsController = true,
                 AccessType = accessType
             };

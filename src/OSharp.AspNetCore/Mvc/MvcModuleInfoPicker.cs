@@ -87,7 +87,7 @@ namespace OSharp.AspNetCore.Mvc
 
             return infos.ToArray();
         }
-         
+
         /// <summary>
         /// 重写以实现从方法信息中提取模块信息
         /// </summary>
@@ -108,7 +108,7 @@ namespace OSharp.AspNetCore.Mvc
                 Code = infoAttr.Code ?? method.Name,
                 Order = infoAttr.Order > 0 ? infoAttr.Order : index + 1,
             };
-            string controller = method.DeclaringType?.Name.Replace("Controller", "");
+            string controller = method.DeclaringType?.Name.Replace("ControllerBase", string.Empty).Replace("Controller", string.Empty);
             info.Position = $"{typeInfo.Position}.{controller}";
             //依赖的功能
             string area = method.DeclaringType.GetAttribute<AreaAttribute>()?.RouteValue;
