@@ -1,5 +1,13 @@
 # OSharp .NetStandard 更新记录
 
+### 0.4.0-beta07
+1. 取消Filter和Cache辅助文法的Obsolete特性，有时候静态方法和扩展方法还是挺有用的
+2. dev数据库连接改本地账号密码登录，以方便使用docker环境
+3. 配合代码生成器生成的代码结构，类型操作的扩展方法默认开启继承查找
+4. 添加MVC功能查找器MvcMethodInfoFinder，处理继承关系的Controller功能查找。
+5. 此版本发布升级主要为了兼容代码生成器生成的继承结构的代码
+6. 发布了一个`代码生成器`VSIX插件，在VS2017可以搜索`osharp`关键词找到，也可以到[下载地址](https://marketplace.visualstudio.com/items?itemName=LiuliuSoft.osharp)进行下载安装
+
 ### 0.4.0-beta05-06
 1. 给框架级的数据实体添加导航属性，简化相关数据查询操作
 2. 添加 OSharp.CodeGeneration 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等
