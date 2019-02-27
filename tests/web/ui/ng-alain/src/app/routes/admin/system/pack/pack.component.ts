@@ -8,7 +8,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 
 @Component({
-  selector: 'admin-pack',
+  selector: 'admin-system-pack',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
 

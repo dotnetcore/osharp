@@ -26,7 +26,7 @@ using OSharp.Filter;
 using OSharp.Reflection;
 
 
-namespace Liuliu.Demo.Web.Areas.Admin.Controllers.Systems
+namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [ModuleInfo(Order = 4, Position = "Systems", PositionName = "系统管理模块")]
     [Description("管理-模块包信息")]
