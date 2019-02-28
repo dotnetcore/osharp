@@ -12,7 +12,7 @@
 {
   "OSharp": {
     "Exceptionless": {
-      "ApiKey": "5vEShlT1CRvsmZ4Q7XL8NdF5t4IxQkXtMRmiUUSE",
+      "ApiKey": "你的ApiKey",
       "ServerUrl": null,
       "Enabled": true
     } 
