@@ -42,7 +42,8 @@ namespace Liuliu.Demo.Web
                 app.UseHsts().UseHttpsRedirection();
             }
 
-            app.UseMiddleware<NodeNoFoundHandlerMiddleware>()
+            app
+                //.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles()

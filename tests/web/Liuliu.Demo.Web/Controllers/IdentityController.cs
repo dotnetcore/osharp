@@ -31,7 +31,6 @@ using OSharp.Core;
 using OSharp.Core.Modules;
 using OSharp.Core.Options;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
@@ -254,6 +253,7 @@ namespace Liuliu.Demo.Web.Controllers
 
         /// <summary>
         /// OAuth2登录回调
+        /// todo: 通过第三方信息查找用户信息，如果用户信息存在，则自动登录。不存在则跳转到注册页面
         /// </summary>
         /// <param name="returnUrl">登录成功返回URL</param>
         /// <param name="remoteError">远程错误信息</param>
@@ -272,7 +272,6 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return Unauthorized();
             }
-            Logger.LogWarning($"ExternalLoginInfo:{info.ToJsonString()}");
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
             Logger.LogWarning($"SignInResult:{result.ToJsonString()}");
             if (result.Succeeded)

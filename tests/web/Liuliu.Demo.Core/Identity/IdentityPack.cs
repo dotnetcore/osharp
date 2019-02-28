@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -99,21 +100,22 @@ namespace Liuliu.Demo.Identity
         protected override void AddAuthentication(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
-            services.AddAuthentication(options =>
+            AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
             {
-                string secret = configuration["OSharp:Jwt:Secret"];
+                string secret = configuration["Authentication:Jwt:Secret"];
                 if (secret.IsNullOrEmpty())
                 {
-                    throw new OsharpException("配置文件中Jwt节点的Secret不能为空");
+                    throw new OsharpException("配置文件中Authentication配置的Jwt节点的Secret不能为空");
                 }
+
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = configuration["OSharp:Jwt:Issuer"],
-                    ValidAudience = configuration["OSharp:Jwt:Audience"],
+                    ValidIssuer = configuration["Authentication:Jwt:Issuer"]?? "osharp identity",
+                    ValidAudience = configuration["Authentication:Jwt:Audience"]?? "osharp client",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.Now,
                     ValidateLifetime = true
@@ -132,15 +134,51 @@ namespace Liuliu.Demo.Identity
                         {
                             context.Token = token;
                         }
+
                         return Task.CompletedTask;
                     }
                 };
-            //}).AddQQ(qq =>
-            //{
-            //    qq.AppId = configuration["Authentication:QQ:AppId"];
-            //    qq.AppKey = configuration["Authentication:QQ:AppKey"];
-            //    qq.CallbackPath = new PathString("/api/identity/OAuth2Callback");
             });
+
+            bool enabled = configuration["Authentication:QQ:Enabled"].CastTo(false);
+            if (enabled)
+            {
+                string appId = configuration["Authentication:QQ:AppId"];
+                if (!string.IsNullOrEmpty(appId))
+                {
+                    throw new OsharpException("配置文件中Authentication配置的QQ节点的AppId不能为空");
+                }
+                string appKey = configuration["Authentication:QQ:AppKey"];
+                if (!string.IsNullOrEmpty(appKey))
+                {
+                    throw new OsharpException("配置文件中Authentication配置的QQ节点的AppKey不能为空");
+                }
+                authenticationBuilder.AddQQ(qq =>
+                {
+                    qq.AppId = appId;
+                    qq.AppKey = appKey;
+                });
+            }
+
+            enabled = configuration["Authentication:Microsoft:Enabled"].CastTo(false);
+            if (enabled)
+            {
+                string clientId = configuration["Authentication:Microsoft:ClientId"];
+                if (string.IsNullOrEmpty(clientId))
+                {
+                    throw new OsharpException("配置文件中Authentication配置的Microsoft节点的ClientId不能为空");
+                }
+                string clientSecret = configuration["Authentication:Microsoft:ClientSecret"];
+                if (string.IsNullOrEmpty(clientSecret))
+                {
+                    throw new OsharpException("配置文件中Authentication配置的Microsoft节点的ClientSecret不能为空");
+                }
+                authenticationBuilder.AddMicrosoftAccount(ms =>
+                {
+                    ms.ClientId = clientId;
+                    ms.ClientSecret = clientSecret;
+                });
+            }
         }
 
         /// <summary>

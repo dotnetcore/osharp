@@ -22,15 +22,15 @@ namespace OSharp.Identity
     public abstract class UserLoginBase<TUserKey> : EntityBase<Guid>
     {
         /// <summary>
-        /// 获取或设置 登录的登录提供程序（例如facebook, google）。
+        /// 获取或设置 登录的登录提供程序（例如facebook, google, qq）。
         /// </summary>
         [DisplayName("登录的登录提供程序")]
         public string LoginProvider { get; set; }
 
         /// <summary>
-        /// 获取或设置 此登录的提供者唯一标识符。
+        /// 获取或设置 第三方登录用户的唯一标识，即用户编号
         /// </summary>
-        [DisplayName("此登录的提供者唯一标识符")]
+        [DisplayName("第三方登录用户的唯一标识")]
         public string ProviderKey { get; set; }
 
         /// <summary>
