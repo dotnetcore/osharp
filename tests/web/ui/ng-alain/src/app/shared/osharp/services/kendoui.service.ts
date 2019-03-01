@@ -580,12 +580,12 @@ export abstract class GridComponentBase extends ComponentBase {
     // 工具栏
     let toolbar = options.toolbar;
     if (!this.auth.Create) {
-      this.osharp.remove(toolbar, m => m.name == "create");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "create");
     }
     // 新增、更新、删除都需要保存或取消
     if (!this.auth.Create && !this.auth.Update && !this.auth.Delete) {
-      this.osharp.remove(toolbar, m => m.name == "save");
-      this.osharp.remove(toolbar, m => m.name == "cancel");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "save");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "cancel");
     }
     // 新增和更新的编辑状态
     options.beforeEdit = e => {
@@ -622,7 +622,7 @@ export abstract class GridComponentBase extends ComponentBase {
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
     let winHeight = window.innerHeight;
-    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 20;
+    let otherHeight = $(".alain-default__header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
     $content.height(winHeight - otherHeight);
   }
 

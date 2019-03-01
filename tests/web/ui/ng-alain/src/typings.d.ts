@@ -7,3 +7,6 @@ interface NodeModule {
 }
 declare var System: any;
 declare var $: any;
+declare var G2: any;
+declare var DataSet: any;
+declare var Slider: any;

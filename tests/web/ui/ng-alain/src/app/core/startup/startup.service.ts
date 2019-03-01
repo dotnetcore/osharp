@@ -6,6 +6,10 @@ import { User } from '@shared/osharp/osharp.model';
 import { ACLService } from '@delon/acl';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 
+import { NzIconService } from 'ng-zorro-antd';
+import { ICONS_AUTO } from '../../../style-icons-auto';
+import { ICONS } from '../../../style-icons';
+
 /**
  * 用于应用启动时
  * 一般用来获取应用所需要的基础数据等
@@ -13,11 +17,14 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 @Injectable()
 export class StartupService {
   constructor(
+    iconSrv: NzIconService,
     private settingSrv: SettingsService,
     private aclSrv: ACLService,
     private titleService: TitleService,
     private http: HttpClient,
-  ) { }
+  ) {
+    iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
+   }
 
   load(): Promise<any> {
     return this.http.get('assets/osharp/app-data.json').map((data: any) => {

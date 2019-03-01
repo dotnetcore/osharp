@@ -2,32 +2,22 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
-    "module": "commonjs",
     "types": [
       "jasmine",
       "node"
     ],
     "paths": {
       "@shared": [
-        "app/shared"
+        "app/shared/index"
       ],
       "@shared/*": [
         "app/shared/*"
       ],
       "@core": [
-        "app/core"
+        "app/core/index"
       ],
       "@core/*": [
         "app/core/*"
-      ],
-      "@testing": [
-        "testing"
-      ],
-      "@testing/*": [
-        "testing/*"
-      ],
-      "@env": [
-        "environments"
       ],
       "@env/*": [
         "environments/*"

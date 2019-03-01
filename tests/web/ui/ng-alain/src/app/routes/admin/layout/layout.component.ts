@@ -1,37 +1,45 @@
-import { Component, HostBinding, } from '@angular/core';
-import { SettingsService, ScrollService, MenuService } from '@delon/theme';
-import { Router, RouteConfigLoadStart, NavigationError, NavigationEnd } from '@angular/router';
+import {
+  Component,
+  ViewChild,
+  ComponentFactoryResolver,
+  ViewContainerRef,
+  AfterViewInit,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  Renderer2,
+  Inject,
+} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  Router,
+  NavigationEnd,
+  RouteConfigLoadStart,
+  NavigationError,
+  NavigationCancel,
+} from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
-import { OsharpService } from '@shared/osharp/services/osharp.service';
-import { IdentityService } from '@shared/osharp/services/identity.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { updateHostClass } from '@delon/util';
+import { SettingsService } from '@delon/theme';
 
 @Component({
   selector: 'admin-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class AdminLayoutComponent {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   isFetching = false;
-
-  @HostBinding('class.layout-fixed')
-  get isFixed() {
-    return this.settings.layout.fixed;
-  }
-  @HostBinding('class.layout-boxed')
-  get isBoxed() {
-    return this.settings.layout.boxed;
-  }
-  @HostBinding('class.aside-collapsed')
-  get isCollapsed() {
-    return this.settings.layout.collapsed;
-  }
 
   constructor(
     router: Router,
-    scroll: ScrollService,
     _message: NzMessageService,
-    public menuSrv: MenuService,
-    public settings: SettingsService,
+    private settings: SettingsService,
+    private el: ElementRef,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private doc: any,
   ) {
     if (!settings.user.isAdmin) {
       _message.error("你无权查看后台管理页面，即将跳转到首页");
@@ -40,23 +48,53 @@ export class AdminLayoutComponent {
       }, 100);
       return;
     }
-    router.events.subscribe(evt => {
+    // scroll to top in change page
+    router.events.pipe(takeUntil(this.unsubscribe$)).subscribe(evt => {
       if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
         this.isFetching = true;
       }
-      if (evt instanceof NavigationError) {
+      if (evt instanceof NavigationError || evt instanceof NavigationCancel) {
         this.isFetching = false;
-        console.log(evt);
-        _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
+        if (evt instanceof NavigationError) {
+          _message.error(`无法加载${evt.url}路由`, { nzDuration: 1000 * 3 });
+        }
         return;
       }
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
       setTimeout(() => {
-        scroll.scrollToTop();
         this.isFetching = false;
       }, 100);
     });
+  }
+
+  private setClass() {
+    const { el, doc, renderer, settings } = this;
+    const layout = settings.layout;
+    updateHostClass(
+      el.nativeElement,
+      renderer,
+      {
+        ['alain-default']: true,
+        [`alain-default__fixed`]: layout.fixed,
+        [`alain-default__collapsed`]: layout.collapsed,
+      },
+    );
+
+    doc.body.classList[layout.colorWeak ? 'add' : 'remove']('color-weak');
+  }
+
+  ngOnInit() {
+
+    const { settings, unsubscribe$ } = this;
+    settings.notify.pipe(takeUntil(unsubscribe$)).subscribe(() => this.setClass());
+    this.setClass();
+  }
+
+  ngOnDestroy() {
+    const { unsubscribe$ } = this;
+    unsubscribe$.next();
+    unsubscribe$.complete();
   }
 }

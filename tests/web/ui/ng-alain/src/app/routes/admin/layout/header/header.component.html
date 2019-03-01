@@ -1,39 +1,39 @@
-<div class="logo">
-  <a [routerLink]="['/']">
-    <img class="expanded" src="{{app.logo_full}}" alt="{{app.name}}" style="max-height:40px;" />
-    <img class="collapsed" src="{{app.logo}}" alt="{{app.name}}" style="max-height:30px;" />
+<div class="alain-default__header-logo">
+  <a [routerLink]="['/']" class="alain-default__header-log-link">
+    <img class="alain-default__header-logo-expanded" src="{{app.logo_full}}" alt="{{app.name}}" style="max-height:40px;" />
+    <img class="alain-default__header-logo-collapsed" src="{{app.logo}}" alt="{{app.name}}" style="max-height:30px;" />
   </a>
 </div>
-<div class="top-nav-wrap">
-  <ul class="top-nav">
+<div class="alain-default__nav-wrap">
+  <ul class="alain-default__nav">
     <!-- Menu -->
     <li>
-      <div class="item" (click)="toggleCollapsedSideabar()">
-        <i class="anticon anticon-menu-{{settings.layout.collapsed ? 'unfold' : 'fold'}}"></i>
+      <div class="alain-default__nav-item" (click)="toggleCollapsedSidebar()">
+        <i nz-icon type="menu-{{settings.layout.collapsed ? 'unfold' : 'fold'}}"></i>
       </div>
     </li>
     <!-- Lock Page -->
-    <li class="hidden-xs">
-      <div class="item" [routerLink]="['/lock']">
-        <i class="anticon anticon-lock"></i>
+    <li class="hidden-mobile">
+      <div class="alain-default__nav-item" [routerLink]="['/lock']">
+        <i nz-icon type="lock"></i>
       </div>
     </li>
   </ul>
-  <ul class="top-nav"></ul>
-  <ul class="top-nav">
+  <ul class="alain-default__nav"></ul>
+  <ul class="alain-default__nav">
     <!-- Notify -->
     <li>
       <header-notify></header-notify>
     </li>
     <!-- App Icons -->
-    <li class="hidden-xs">
+    <li class="hidden-mobile">
       <header-icon></header-icon>
     </li>
     <!-- Settings -->
-    <li class="hidden-xs" *ngIf="user.name">
+    <li class="hidden-mobile">
       <nz-dropdown nzTrigger="click" nzPlacement="bottomRight">
-        <div class="item" nz-dropdown>
-          <i class="anticon anticon-setting"></i>
+        <div class="alain-default__nav-item" nz-dropdown>
+          <i nz-icon type="setting"></i>
         </div>
         <div nz-menu style="width:200px;">
           <div nz-menu-item>
@@ -45,12 +45,12 @@
         </div>
       </nz-dropdown>
     </li>
-    <li class="hidden-xs">
-      <a class="item" href="//github.com/i66soft/osharp-ns20" target="_blank" title="前往 GitHub 获取源代码">
-        <i class="anticon anticon-github"></i>
+    <li>
+      <a class="alain-default__nav-item" href="//github.com/i66soft/osharp-ns20" target="_blank" title="前往 GitHub 获取源代码">
+        <i nz-icon type="github"></i>
       </a>
     </li>
-    <li class="hidden-xs">
+    <li class="hidden-mobile">
       <header-user *ngIf="user.name"></header-user>
       <div *ngIf="!user.name">
         <a [routerLink]="[ '/identity/login' ]">

@@ -22,7 +22,7 @@ export class HeaderComponent {
     return this.settings.user;
   }
 
-  toggleCollapsedSideabar() {
+  toggleCollapsedSidebar() {
     this.settings.setLayout('collapsed', !this.settings.layout.collapsed);
   }
 
