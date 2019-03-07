@@ -18,20 +18,20 @@ namespace OSharp.Core.Options
     /// <summary>
     /// OSharp框架配置选项信息
     /// </summary>
-    public class OSharpOptions
+    public class OsharpOptions
     {
         /// <summary>
-        /// 初始化一个<see cref="OSharpOptions"/>类型的新实例
+        /// 初始化一个<see cref="OsharpOptions"/>类型的新实例
         /// </summary>
-        public OSharpOptions()
+        public OsharpOptions()
         {
-            DbContexts = new ConcurrentDictionary<string, OSharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
+            DbContexts = new ConcurrentDictionary<string, OsharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// 获取 数据上下文配置信息
         /// </summary>
-        public IDictionary<string, OSharpDbContextOptions> DbContexts { get; }
+        public IDictionary<string, OsharpDbContextOptions> DbContexts { get; }
 
         /// <summary>
         /// 获取或设置 邮件发送选项
@@ -56,7 +56,7 @@ namespace OSharp.Core.Options
         /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
-        public OSharpDbContextOptions GetDbContextOptions(Type dbContextType)
+        public OsharpDbContextOptions GetDbContextOptions(Type dbContextType)
         {
             return DbContexts.Values.SingleOrDefault(m => m.DbContextType == dbContextType);
         }

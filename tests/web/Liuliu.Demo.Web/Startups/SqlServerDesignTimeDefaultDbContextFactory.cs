@@ -45,8 +45,8 @@ namespace Liuliu.Demo.Web.Startups
                 }
                 return str;
             }
-            OSharpOptions options = _serviceProvider.GetOSharpOptions();
-            OSharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
+            OsharpOptions options = _serviceProvider.GetOSharpOptions();
+            OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
             if (contextOptions == null)
             {
                 throw new OsharpException($"上下文“{typeof(DefaultDbContext)}”的配置信息不存在");

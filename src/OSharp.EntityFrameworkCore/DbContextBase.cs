@@ -32,7 +32,7 @@ namespace OSharp.Entity
     public abstract class DbContextBase : DbContext, IDbContext
     {
         private readonly ILogger _logger;
-        private readonly OSharpDbContextOptions _osharpDbOptions;
+        private readonly OsharpDbContextOptions _osharpDbOptions;
         private readonly IEntityConfigurationTypeFinder _typeFinder;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace OSharp.Entity
             : base(options)
         {
             _typeFinder = typeFinder;
-            IOptions<OSharpOptions> osharpOptions = this.GetService<IOptions<OSharpOptions>>();
+            IOptions<OsharpOptions> osharpOptions = this.GetService<IOptions<OsharpOptions>>();
             _osharpDbOptions = osharpOptions?.Value.DbContexts.Values.FirstOrDefault(m => m.DbContextType == GetType());
             _logger = this.GetService<ILoggerFactory>().CreateLogger(GetType());
         }

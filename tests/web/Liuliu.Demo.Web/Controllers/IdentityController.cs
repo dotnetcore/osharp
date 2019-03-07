@@ -222,7 +222,7 @@ namespace Liuliu.Demo.Web.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
-            OSharpOptions options = HttpContext.RequestServices.GetService<IOptions<OSharpOptions>>().Value;
+            OsharpOptions options = HttpContext.RequestServices.GetService<IOptions<OsharpOptions>>().Value;
             string token = JwtHelper.CreateToken(claims, options);
 
             //在线用户缓存

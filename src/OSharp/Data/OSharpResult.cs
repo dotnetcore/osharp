@@ -55,7 +55,7 @@ namespace OSharp.Data
     /// </summary>
     /// <typeparam name="TResultType">结果类型</typeparam>
     /// <typeparam name="TData">结果数据类型</typeparam>
-    public abstract class OsharpResult<TResultType, TData> : IOSharpResult<TResultType, TData>
+    public abstract class OsharpResult<TResultType, TData> : IOsharpResult<TResultType, TData>
     {
         /// <summary>
         /// 内部消息

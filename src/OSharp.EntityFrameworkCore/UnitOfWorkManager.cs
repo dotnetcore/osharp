@@ -92,7 +92,7 @@ namespace OSharp.Entity
             {
                 throw new OsharpException($"实体类“{entityType}”的所属上下文类型无法找到");
             }
-            OSharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
+            OsharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
             DbContextResolveOptions resolveOptions = new DbContextResolveOptions(dbContextOptions);
             unitOfWork = _connStringUnitOfWorks.GetOrDefault(resolveOptions.ConnectionString);
             if (unitOfWork != null)
@@ -122,9 +122,9 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="dbContextType">数据上下文类型</param>
         /// <returns>数据上下文选项</returns>
-        public OSharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
+        public OsharpDbContextOptions GetDbContextResolveOptions(Type dbContextType)
         {
-            OSharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
+            OsharpDbContextOptions dbContextOptions = _serviceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
             if (dbContextOptions == null)
             {
                 throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");

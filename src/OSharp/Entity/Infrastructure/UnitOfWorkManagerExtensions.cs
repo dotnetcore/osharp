@@ -50,7 +50,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取指定实体类型的数据上下文选项
         /// </summary>
-        public static OSharpDbContextOptions GetDbContextResolveOptions<TEntity,TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
+        public static OsharpDbContextOptions GetDbContextResolveOptions<TEntity,TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
         {
             Type entityType = typeof(TEntity);
             return unitOfWorkManager.GetDbContextResolveOptions(entityType);
@@ -59,10 +59,10 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取指定实体类型的数据上下文选项
         /// </summary>
-        public static OSharpDbContextOptions GetDbContextResolveOptions(this IUnitOfWorkManager unitOfWorkManager, Type entityType)
+        public static OsharpDbContextOptions GetDbContextResolveOptions(this IUnitOfWorkManager unitOfWorkManager, Type entityType)
         {
             Type dbContextType = unitOfWorkManager.GetDbContextType(entityType);
-            OSharpDbContextOptions dbContextOptions = unitOfWorkManager.ServiceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
+            OsharpDbContextOptions dbContextOptions = unitOfWorkManager.ServiceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
             if (dbContextOptions == null)
             {
                 throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
@@ -75,7 +75,7 @@ namespace OSharp.Entity
         /// </summary>
         public static ISqlExecutor<TEntity,TKey> GetSqlExecutor<TEntity,TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
         {
-            OSharpDbContextOptions options = unitOfWorkManager.GetDbContextResolveOptions(typeof(TEntity));
+            OsharpDbContextOptions options = unitOfWorkManager.GetDbContextResolveOptions(typeof(TEntity));
             DatabaseType databaseType = options.DatabaseType;
             IList<ISqlExecutor<TEntity, TKey>> executors = unitOfWorkManager.ServiceProvider.GetServices<ISqlExecutor<TEntity, TKey>>().ToList();
             return executors.FirstOrDefault(m => m.DatabaseType == databaseType);

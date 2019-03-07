@@ -63,9 +63,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 从服务提供者中获取OSharpOptions
         /// </summary>
-        public static OSharpOptions GetOSharpOptions(this IServiceProvider provider)
+        public static OsharpOptions GetOSharpOptions(this IServiceProvider provider)
         {
-            return provider.GetService<IOptions<OSharpOptions>>()?.Value;
+            return provider.GetService<IOptions<OsharpOptions>>()?.Value;
         }
 
         /// <summary>

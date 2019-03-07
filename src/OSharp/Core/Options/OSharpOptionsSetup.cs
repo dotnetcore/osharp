@@ -22,21 +22,21 @@ namespace OSharp.Core.Options
     /// <summary>
     /// OSharp配置选项创建器
     /// </summary>
-    public class OSharpOptionsSetup : IConfigureOptions<OSharpOptions>
+    public class OsharpOptionsSetup : IConfigureOptions<OsharpOptions>
     {
         private readonly IConfiguration _configuration;
 
         /// <summary>
-        /// 初始化一个<see cref="OSharpOptionsSetup"/>类型的新实例
+        /// 初始化一个<see cref="OsharpOptionsSetup"/>类型的新实例
         /// </summary>
-        public OSharpOptionsSetup(IConfiguration configuration)
+        public OsharpOptionsSetup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         /// <summary>Invoked to configure a TOptions instance.</summary>
         /// <param name="options">The options instance to configure.</param>
-        public void Configure(OSharpOptions options)
+        public void Configure(OsharpOptions options)
         {
             SetDbContextOptionses(options);
 
@@ -95,10 +95,10 @@ namespace OSharp.Core.Options
         /// 保证同一上下文类型只有一个配置节点
         /// </summary>
         /// <param name="options"></param>
-        private void SetDbContextOptionses(OSharpOptions options)
+        private void SetDbContextOptionses(OsharpOptions options)
         {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
-            IDictionary<string, OSharpDbContextOptions> dict = section.Get<Dictionary<string, OSharpDbContextOptions>>();
+            IDictionary<string, OsharpDbContextOptions> dict = section.Get<Dictionary<string, OsharpDbContextOptions>>();
             if (dict == null || dict.Count == 0)
             {
                 string connectionString = _configuration["ConnectionStrings:DefaultDbContext"];
@@ -106,7 +106,7 @@ namespace OSharp.Core.Options
                 {
                     return;
                 }
-                OSharpDbContextOptions dbContextOptions = new OSharpDbContextOptions()
+                OsharpDbContextOptions dbContextOptions = new OsharpDbContextOptions()
                 {
                     DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
                     ConnectionString = connectionString,
@@ -121,7 +121,7 @@ namespace OSharp.Core.Options
                 throw new OsharpException($"数据上下文配置中存在多个配置节点指向同一个上下文类型：{repeated.First().DbContextTypeName}");
             }
 
-            foreach (KeyValuePair<string, OSharpDbContextOptions> pair in dict)
+            foreach (KeyValuePair<string, OsharpDbContextOptions> pair in dict)
             {
                 options.DbContexts.Add(pair.Key, pair.Value);
             }

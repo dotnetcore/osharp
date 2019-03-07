@@ -46,7 +46,7 @@ namespace OSharp.Core.Builders
         /// <summary>
         /// 获取 OSharp选项配置委托
         /// </summary>
-        public Action<OSharpOptions> OptionsAction { get; private set; }
+        public Action<OsharpOptions> OptionsAction { get; private set; }
 
         /// <summary>
         /// 添加指定模块，执行此功能后将仅加载指定的模块
@@ -78,7 +78,7 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <param name="optionsAction">OSharp操作选项</param>
         /// <returns>OSharp构建器</returns>
-        public IOsharpBuilder AddOptions(Action<OSharpOptions> optionsAction)
+        public IOsharpBuilder AddOptions(Action<OsharpOptions> optionsAction)
         {
             Check.NotNull(optionsAction, nameof(optionsAction));
             OptionsAction = optionsAction;

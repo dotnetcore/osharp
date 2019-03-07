@@ -29,7 +29,7 @@ namespace OSharp.Entity.Transactions
         /// <summary>
         /// 初始化一个<see cref="DbContextResolveOptions"/>类型的新实例
         /// </summary>
-        public DbContextResolveOptions(OSharpDbContextOptions options)
+        public DbContextResolveOptions(OsharpDbContextOptions options)
         {
             DbContextType = options.DbContextType;
             ConnectionString = options.ConnectionString;
