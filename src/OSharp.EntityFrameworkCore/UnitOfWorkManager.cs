@@ -86,8 +86,9 @@ namespace OSharp.Entity
             {
                 return unitOfWork;
             }
-            IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
-            Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
+
+            IEntityManager entityManager = _serviceProvider.GetService<IEntityManager>();
+            Type dbContextType = entityManager.GetDbContextTypeForEntity(entityType);
             if (dbContextType == null)
             {
                 throw new OsharpException($"实体类“{entityType}”的所属上下文类型无法找到");
@@ -113,8 +114,8 @@ namespace OSharp.Entity
         /// <returns>上下文类型</returns>
         public Type GetDbContextType(Type entityType)
         {
-            IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
-            return typeFinder.GetDbContextTypeForEntity(entityType);
+            IEntityManager entityManager = _serviceProvider.GetService<IEntityManager>();
+            return entityManager.GetDbContextTypeForEntity(entityType);
         }
 
         /// <summary>

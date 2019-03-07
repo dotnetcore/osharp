@@ -38,11 +38,8 @@ namespace Liuliu.Demo.Web.Startups
         {
             if (_serviceProvider == null)
             {
-                string str = AppSettingsManager.Get("OSharp:DbContexts:SqlServer:ConnectionString");
-                if (str == null)
-                {
-                    str = AppSettingsManager.Get("ConnectionStrings:DefaultDbContext");
-                }
+                string str = AppSettingsManager.Get("OSharp:DbContexts:SqlServer:ConnectionString")
+                    ?? AppSettingsManager.Get("ConnectionStrings:DefaultDbContext");
                 return str;
             }
             OsharpOptions options = _serviceProvider.GetOSharpOptions();
@@ -54,15 +51,16 @@ namespace Liuliu.Demo.Web.Startups
             return contextOptions.ConnectionString;
         }
 
-        public override IEntityConfigurationTypeFinder GetEntityConfigurationTypeFinder()
+        public override IEntityManager GetEntityManager()
         {
             if (_serviceProvider != null)
             {
-                return _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
+                return _serviceProvider.GetService<IEntityManager>();
             }
             IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new AppDomainAllAssemblyFinder());
-            typeFinder.Initialize();
-            return typeFinder;
+            IEntityManager entityManager = new EntityManager(typeFinder);
+            entityManager.Initialize();
+            return entityManager;
         }
 
         public override DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString)

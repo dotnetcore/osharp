@@ -31,8 +31,8 @@ namespace Liuliu.Demo.Web.Startups
                 string str = AppSettingsManager.Get("OSharp:DbContexts:PostgreSql:ConnectionString");
                 return str;
             }
-            OSharpOptions options = _serviceProvider.GetOSharpOptions();
-            OSharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
+            OsharpOptions options = _serviceProvider.GetOSharpOptions();
+            OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
             if (contextOptions == null)
             {
                 throw new OsharpException($"上下文“{typeof(DefaultDbContext)}”的配置信息不存在");
@@ -40,15 +40,16 @@ namespace Liuliu.Demo.Web.Startups
             return contextOptions.ConnectionString;
         }
 
-        public override IEntityConfigurationTypeFinder GetEntityConfigurationTypeFinder()
+        public override IEntityManager GetEntityManager()
         {
             if (_serviceProvider != null)
             {
-                return _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
+                return _serviceProvider.GetService<IEntityManager>();
             }
             IEntityConfigurationTypeFinder typeFinder = new EntityConfigurationTypeFinder(new AppDomainAllAssemblyFinder());
-            typeFinder.Initialize();
-            return typeFinder;
+            IEntityManager entityManager = new EntityManager(typeFinder);
+            entityManager.Initialize();
+            return entityManager;
         }
 
         public override DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString)

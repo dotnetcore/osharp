@@ -25,7 +25,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 数据上下文对象解析器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
+    [Dependency(ServiceLifetime.Scoped, TryAdd = true)]
     public class DbContextResolver : IDbContextResolver
     {
         private readonly IServiceProvider _serviceProvider;
@@ -60,7 +60,7 @@ namespace OSharp.Entity
             {
                 optionsBuilder.UseModel(model);
             }
-
+            
             DbContextOptions options = optionsBuilder.Options;
 
             //创建上下文实例

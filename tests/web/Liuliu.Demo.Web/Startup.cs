@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Builders;
+using OSharp.Entity;
 
 
 namespace Liuliu.Demo.Web
@@ -25,6 +26,7 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DefaultDbContext>();
             services.AddOSharp<AspOsharpPackManager>();
         }
 

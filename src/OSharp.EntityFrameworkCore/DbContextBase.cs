@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
 //  <copyright file="DbContextBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-01 17:54</last-date>
+//  <last-date>2019-03-08 4:39</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,8 +15,8 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
@@ -31,79 +31,35 @@ namespace OSharp.Entity
     /// </summary>
     public abstract class DbContextBase : DbContext, IDbContext
     {
+        private readonly IEntityManager _entityManager;
         private readonly ILogger _logger;
         private readonly OsharpDbContextOptions _osharpDbOptions;
-        private readonly IEntityConfigurationTypeFinder _typeFinder;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// 初始化一个<see cref="DbContextBase"/>类型的新实例
         /// </summary>
-        protected DbContextBase(DbContextOptions options, IEntityConfigurationTypeFinder typeFinder)
+        protected DbContextBase(DbContextOptions options, IServiceProvider serviceProvider)
+            : this(options, serviceProvider.GetService<IEntityManager>())
+        {
+            _serviceProvider = serviceProvider;
+            _osharpDbOptions = serviceProvider.GetOSharpOptions()?.DbContexts?.Values.FirstOrDefault(m => m.DbContextType == GetType());
+            _logger = serviceProvider.GetLogger(GetType());
+        }
+
+        /// <summary>
+        /// 初始化一个<see cref="DbContextBase"/>类型的新实例
+        /// </summary>
+        protected DbContextBase(DbContextOptions options, IEntityManager entityManager)
             : base(options)
         {
-            _typeFinder = typeFinder;
-            IOptions<OsharpOptions> osharpOptions = this.GetService<IOptions<OsharpOptions>>();
-            _osharpDbOptions = osharpOptions?.Value.DbContexts.Values.FirstOrDefault(m => m.DbContextType == GetType());
-            _logger = this.GetService<ILoggerFactory>().CreateLogger(GetType());
+            _entityManager = entityManager;
         }
 
         /// <summary>
         /// 获取或设置 所在上下文组
         /// </summary>
         public UnitOfWork UnitOfWork { get; set; }
-
-        /// <summary>
-        /// 开启或使用现有事务
-        /// </summary>
-        public void BeginOrUseTransaction()
-        {
-            if (UnitOfWork == null)
-            {
-                return;
-            }
-            UnitOfWork.BeginOrUseTransaction();
-        }
-
-        /// <summary>
-        /// 异步开启或使用现有事务
-        /// </summary>
-        public async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken)
-        {
-            if (UnitOfWork == null)
-            {
-                return;
-            }
-            await UnitOfWork.BeginOrUseTransactionAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// 创建上下文数据模型时，对各个实体类的数据库映射细节进行配置
-        /// </summary>
-        /// <param name="modelBuilder">上下文数据模型构建器</param>
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //通过实体配置信息将实体注册到当前上下文
-            Type contextType = GetType();
-            IEntityRegister[] registers = _typeFinder.GetEntityRegisters(contextType);
-            foreach (IEntityRegister register in registers)
-            {
-                register.RegistTo(modelBuilder);
-                _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
-            }
-            _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
-        }
-
-        /// <summary>
-        /// 模型配置
-        /// </summary>
-        /// <param name="optionsBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (_osharpDbOptions != null && _osharpDbOptions.LazyLoadingProxiesEnabled)
-            {
-                optionsBuilder.UseLazyLoadingProxies();
-            }
-        }
 
         /// <summary>
         ///     将在此上下文中所做的所有更改保存到数据库中，同时自动开启事务或使用现有同连接事务
@@ -129,18 +85,21 @@ namespace OSharp.Entity
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
             if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
             {
-                auditEntities = this.GetAuditEntities();
+                IAuditEntityProvider auditEntityProvider = _serviceProvider?.GetService<IAuditEntityProvider>();
+                auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
             }
+
             //开启或使用现有事务
             BeginOrUseTransaction();
 
             int count = base.SaveChanges();
-            if (count > 0 && auditEntities.Count > 0)
+            if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = this.GetService<IEventBus>();
-                eventBus.Publish(this, eventData);
+                IEventBus eventBus = _serviceProvider?.GetService<IEventBus>();
+                eventBus?.Publish(this, eventData);
             }
+
             return count;
         }
 
@@ -174,20 +133,81 @@ namespace OSharp.Entity
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
             if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
             {
-                auditEntities = this.GetAuditEntities();
+                IAuditEntityProvider auditEntityProvider = _serviceProvider?.GetService<IAuditEntityProvider>();
+                auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
             }
 
             //开启或使用现有事务
             await BeginOrUseTransactionAsync(cancellationToken);
 
             int count = await base.SaveChangesAsync(cancellationToken);
-            if (count > 0 && auditEntities.Count > 0)
+            if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = this.GetService<IEventBus>();
-                await eventBus.PublishAsync(this, eventData);
+                IEventBus eventBus = _serviceProvider?.GetService<IEventBus>();
+                if (eventBus != null)
+                {
+                    await eventBus.PublishAsync(this, eventData);
+                }
             }
+
             return count;
+        }
+
+        /// <summary>
+        /// 开启或使用现有事务
+        /// </summary>
+        public void BeginOrUseTransaction()
+        {
+            if (UnitOfWork == null)
+            {
+                return;
+            }
+
+            UnitOfWork.BeginOrUseTransaction();
+        }
+
+        /// <summary>
+        /// 异步开启或使用现有事务
+        /// </summary>
+        public async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken)
+        {
+            if (UnitOfWork == null)
+            {
+                return;
+            }
+
+            await UnitOfWork.BeginOrUseTransactionAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// 创建上下文数据模型时，对各个实体类的数据库映射细节进行配置
+        /// </summary>
+        /// <param name="modelBuilder">上下文数据模型构建器</param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //通过实体配置信息将实体注册到当前上下文
+            Type contextType = GetType();
+            IEntityRegister[] registers = _entityManager.GetEntityRegisters(contextType);
+            foreach (IEntityRegister register in registers)
+            {
+                register.RegistTo(modelBuilder);
+                _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
+            }
+
+            _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
+        }
+
+        /// <summary>
+        /// 模型配置
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_osharpDbOptions != null && _osharpDbOptions.LazyLoadingProxiesEnabled)
+            {
+                optionsBuilder.UseLazyLoadingProxies();
+            }
         }
 
         #region Overrides of DbContext

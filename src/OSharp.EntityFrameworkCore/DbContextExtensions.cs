@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Audits;
@@ -120,104 +121,6 @@ namespace OSharp.Entity
                     context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取上下文实体审计数据
-        /// </summary>
-        public static IList<AuditEntityEntry> GetAuditEntities(this DbContext context)
-        {
-            List<AuditEntityEntry> result = new List<AuditEntityEntry>();
-            //当前操作的功能是否允许数据审计
-            ScopedDictionary scopedDict = context.GetService<ScopedDictionary>();
-            IFunction function = scopedDict?.Function;
-            if (function == null || !function.AuditEntityEnabled)
-            {
-                return result;
-            }
-            IEntityInfoHandler entityInfoHandler = context.GetService<IEntityInfoHandler>();
-            if (entityInfoHandler == null)
-            {
-                return result;
-            }
-            EntityState[] states = { EntityState.Added, EntityState.Modified, EntityState.Deleted };
-            List<EntityEntry> entries = context.ChangeTracker.Entries().Where(m => m.Entity != null && states.Contains(m.State)).ToList();
-            if (entries.Count == 0)
-            {
-                return result;
-            }
-            foreach (EntityEntry entry in entries)
-            {
-                //当前操作的实体是否允许数据审计
-                IEntityInfo entityInfo = entityInfoHandler.GetEntityInfo(entry.Entity.GetType());
-                if (entityInfo == null || !entityInfo.AuditEnabled)
-                {
-                    continue;
-                }
-                result.AddIfNotNull(GetAuditEntity(entry, entityInfo));
-            }
-            return result;
-        }
-
-        private static AuditEntityEntry GetAuditEntity(EntityEntry entry, IEntityInfo entityInfo)
-        {
-            AuditEntityEntry audit = new AuditEntityEntry
-            {
-                Name = entityInfo.Name,
-                TypeName = entityInfo.TypeName,
-                OperateType = entry.State == EntityState.Added
-                    ? OperateType.Insert
-                    : entry.State == EntityState.Modified
-                        ? OperateType.Update
-                        : entry.State == EntityState.Deleted
-                            ? OperateType.Delete
-                            : OperateType.Query,
-                Entity = entry.Entity
-            };
-            EntityProperty[] entityProperties = entityInfo.Properties;
-            foreach (IProperty property in entry.CurrentValues.Properties)
-            {
-                if (property.IsConcurrencyToken)
-                {
-                    continue;
-                }
-                string name = property.Name;
-                if (property.IsPrimaryKey())
-                {
-                    audit.EntityKey = entry.State == EntityState.Deleted
-                        ? entry.Property(property.Name).OriginalValue?.ToString()
-                        : entry.Property(property.Name).CurrentValue?.ToString();
-                }
-                AuditPropertyEntry auditProperty = new AuditPropertyEntry()
-                {
-                    FieldName = name,
-                    DisplayName = entityProperties.First(m => m.Name == name).Display,
-                    DataType = property.ClrType.ToString()
-                };
-                if (entry.State == EntityState.Added)
-                {
-                    auditProperty.NewValue = entry.Property(property.Name).CurrentValue?.ToString();
-                    audit.PropertyEntries.Add(auditProperty);
-                }
-                else if (entry.State == EntityState.Deleted)
-                {
-                    auditProperty.OriginalValue = entry.Property(property.Name).OriginalValue?.ToString();
-                    audit.PropertyEntries.Add(auditProperty);
-                }
-                else if (entry.State == EntityState.Modified)
-                {
-                    string currentValue = entry.Property(property.Name).CurrentValue?.ToString();
-                    string originalValue = entry.Property(property.Name).OriginalValue?.ToString();
-                    if (currentValue == originalValue)
-                    {
-                        continue;
-                    }
-                    auditProperty.NewValue = currentValue;
-                    auditProperty.OriginalValue = originalValue;
-                    audit.PropertyEntries.Add(auditProperty);
-                }
-            }
-            return audit.PropertyEntries.Count == 0 ? null : audit;
         }
     }
 }

@@ -73,8 +73,8 @@ namespace OSharp.Entity
                 throw new OsharpException($"类型“{entityType}”不是实体类型");
             }
 
-            IEntityConfigurationTypeFinder typeFinder = _serviceProvider.GetService<IEntityConfigurationTypeFinder>();
-            Type dbContextType = typeFinder.GetDbContextTypeForEntity(entityType);
+            IEntityManager manager = _serviceProvider.GetService<IEntityManager>();
+            Type dbContextType = manager.GetDbContextTypeForEntity(entityType);
 
             //已存在上下文对象，直接返回
             DbContextBase dbContext = _dbContexts.FirstOrDefault(m => m.GetType() == dbContextType);
