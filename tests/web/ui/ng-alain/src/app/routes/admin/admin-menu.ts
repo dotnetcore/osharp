@@ -1,9 +1,6 @@
 import { Menu } from "@delon/theme";
 
 // 导航菜单
-const headingMain: Menu = { text: '导航菜单', group: true, children: [] };
-const home: Menu = { text: '主页', link: '/admin/dashboard', icon: 'icon-home' };
-
 export const adminMenu: Menu[] = [
   {
     text: '导航菜单', group: true, children: [

@@ -1,0 +1,27 @@
+<div class="content__title">
+  <h1>信息汇总
+    <small>欢迎使用</small>
+  </h1>
+  <div class="blank-grow"></div>
+  <div class="data-range">
+    <span>时间范围：</span>
+    <nz-range-picker [(ngModel)]="pickerRanges['最近30天']" [nzFormat]="dateFormat" [nzRanges]="pickerRanges" (ngModelChange)="rangePickerChange($event)"></nz-range-picker>
+  </div>
+</div>
+<nz-row nzGutter="32" *ngIf="summaries">
+  <div *ngFor="let summary of summaries" nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+    <div nz-row nzType="flex" nzAlign="middle" [ngClass]="summary.bgColor" class="rounded-md">
+      <div nz-col nzSpan="12" class="p-md text-white">
+        <div class="h2 mt0">{{summary.data}}</div>
+        <p class="text-nowrap mb0">{{summary.text}}</p>
+      </div>
+    </div>
+  </div>
+</nz-row>
+<nz-row nzGutter="8">
+  <nz-col nzSpan="24">
+    <nz-card nzTitle="用户数量日增长/日累计">
+      <div id="user-line"></div>
+    </nz-card>
+  </nz-col>
+</nz-row>
