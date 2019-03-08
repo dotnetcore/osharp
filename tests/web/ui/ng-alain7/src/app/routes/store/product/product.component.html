@@ -1,0 +1,11 @@
+<!-- <page-header [action]="phActionTpl" [fixed]="false" [autoBreadcrumb]="false">
+  <ng-template #phActionTpl>
+    <button (click)="add()" nz-button nzType="primary">新建</button>
+    <button (click)="reload()" nz-button nzType="default">刷新</button>
+    <button (click)="reload()" nz-button nzType="default">高级搜索</button>
+  </ng-template>
+</page-header> -->
+<nz-card>
+  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+  <st #st [data]="url" [columns]="columns" size="small"></st>
+</nz-card>

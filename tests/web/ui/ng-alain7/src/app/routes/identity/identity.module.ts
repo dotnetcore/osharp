@@ -6,6 +6,10 @@ import { UserRoleComponent } from './user-role/user-role.component';
 import { SharedModule } from '@shared';
 import { IdentityRoutingModule } from './identity.routing';
 
+import '@progress/kendo-ui/js/kendo.web.js';
+import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN';
+import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
+
 @NgModule({
   imports: [
     CommonModule,

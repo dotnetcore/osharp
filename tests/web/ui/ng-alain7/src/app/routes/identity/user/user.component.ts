@@ -4,7 +4,6 @@ import { List } from 'linqts';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
-
 @Component({
   selector: 'app-identity-user',
   templateUrl: './user.component.html'

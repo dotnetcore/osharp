@@ -7,6 +7,10 @@ import { AuditOperationComponent } from './audit-operation/audit-operation.compo
 import { PackComponent } from './pack/pack.component';
 import { SettingsComponent } from './settings/settings.component';
 
+import '@progress/kendo-ui/js/kendo.web.js';
+import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN';
+import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
+
 @NgModule({
   imports: [
     CommonModule,

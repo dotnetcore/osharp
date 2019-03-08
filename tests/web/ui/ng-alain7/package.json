@@ -73,7 +73,6 @@
     "@delon/testing": "^7.0.2",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/jquery": "^3.3.29",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
@@ -87,6 +86,7 @@
     "ng-alain": "^7.0.2",
     "ng-alain-codelyzer": "^0.0.1",
     "protractor": "~5.4.0",
+    "source-map-explorer": "^1.7.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"

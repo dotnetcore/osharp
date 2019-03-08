@@ -1,0 +1,10 @@
+<page-header [title]="'编辑 ' + id + ' 信息'"></page-header>
+<nz-card>
+  <nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+  <sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
+    <footer-toolbar errorCollect>
+      <button nz-button type="button" (click)="location.back()" [nzLoading]="http.loading">返回</button>
+      <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
+    </footer-toolbar>
+  </sf>
+</nz-card>

@@ -93,14 +93,6 @@ import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 
-// #region kendo
-
-import '@progress/kendo-ui';
-import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN';
-import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
-
-// #endregion
-
 @NgModule({
   declarations: [
     AppComponent

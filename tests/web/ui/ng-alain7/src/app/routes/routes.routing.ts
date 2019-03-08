@@ -15,22 +15,23 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
-import { MenuService } from '@delon/theme';
-import { navMenus } from './routes-menu';
+
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
     canActivate: [SimpleGuard],
+    data: { title: '主页' },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full', data: { title: '主页' } },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       // 业务子模块
       { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
       { path: 'security', loadChildren: './security/security.module#SecurityModule' },
       { path: 'systems', loadChildren: './systems/systems.module#SystemsModule' },
+      { path: 'store', loadChildren: './store/store.module#StoreModule' },
     ]
   },
   // 全屏布局

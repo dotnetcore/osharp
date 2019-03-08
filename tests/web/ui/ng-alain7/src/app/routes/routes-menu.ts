@@ -34,6 +34,12 @@ export const navMenus: Menu[] = [
           { text: '数据审计', link: '/systems/audit-entity', icon: 'icon-settings' },
           { text: '模块包', link: '/systems/pack', icon: 'icon-settings' },
         ]
+      }, {
+        text: '商城管理', group: true, icon: 'icon-globe', children: [
+          { text: '产品管理', link: '/store/product', icon: 'icon-settings' },
+          { text: '商品管理', link: '/store/goods', icon: 'icon-settings' },
+          { text: '订单管理', link: '/store/order', icon: 'icon-settings' },
+        ]
       }
     ]
   }
