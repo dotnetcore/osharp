@@ -1,7 +1,7 @@
 import { Directive, forwardRef, Input } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, AbstractControl } from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
+import { _HttpClient } from '@delon/theme';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -16,7 +16,7 @@ export class RemoteValidator implements AsyncValidator {
   @Input('remote') url: string;
   private timeout;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: _HttpClient) { }
 
   validate(elem: AbstractControl): Promise<{ [key: string]: any; }> | Observable<{ [key: string]: any; }> {
     let value = elem.value;

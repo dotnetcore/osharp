@@ -1,8 +1,8 @@
 import { Directive, forwardRef, Input } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, AbstractControl } from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { _HttpClient } from '@delon/theme';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -18,7 +18,7 @@ export class RemoteInverseValidator implements AsyncValidator {
   private timeout;
 
   constructor(
-    private http: HttpClient,
+    private http: _HttpClient,
     private osharp: OsharpService
   ) { }
 

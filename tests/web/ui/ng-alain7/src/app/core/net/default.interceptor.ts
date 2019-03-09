@@ -6,7 +6,7 @@ import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
-import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { DA_SERVICE_TOKEN, ITokenService, JWTTokenModel } from '@delon/auth';
 
 const CODEMESSAGE = {
   200: '服务器成功返回请求的数据。',
@@ -107,7 +107,18 @@ export class DefaultInterceptor implements HttpInterceptor {
       url = environment.SERVER_URL + url;
     }
 
-    const newReq = req.clone({ url });
+    let newReq = req.clone({ url });
+
+    // 设置 JWT-Token
+    let tokenModel = this.injector.get(DA_SERVICE_TOKEN).get<JWTTokenModel>(JWTTokenModel);
+    if (tokenModel && tokenModel.token && !tokenModel.isExpired()) {
+      newReq = newReq.clone({
+        setHeaders: {
+          Authorization: `Bearer ${tokenModel.token}`
+        }
+      });
+    }
+
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {
         // 允许统一对请求错误处理

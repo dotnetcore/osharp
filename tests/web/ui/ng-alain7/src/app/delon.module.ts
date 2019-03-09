@@ -53,7 +53,7 @@ import { DelonAuthConfig } from '@delon/auth';
 export function fnDelonAuthConfig(): DelonAuthConfig {
   return {
     ...new DelonAuthConfig(),
-    ...{ login_url: '/passport/login' } as DelonAuthConfig
+    ...{ login_url: '/passport/login', ignores: [/\/login/, /assets\//, /api\/(?!admin)[\w_-]+\/\S*/] } as DelonAuthConfig
   };
 }
 

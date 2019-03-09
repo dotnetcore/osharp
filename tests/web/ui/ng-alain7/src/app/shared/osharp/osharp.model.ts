@@ -183,6 +183,7 @@ export class VerifyCode {
 
 //#region Identity Model
 export class LoginDto {
+  Type: number;
   Account: string;
   Password: string;
   VerifyCode: string;
@@ -220,12 +221,12 @@ export class ResetPasswordDto {
   NewPassword: string;
   ConfirmPassword: string;
 }
-/**权限配置信息 */
+/** 权限配置信息 */
 export class AuthConfig {
   constructor(
-    /**当前模块的位置，即上级模块的路径，如Root,Root.Admin,Root.Admin.Identity */
+    /** 当前模块的位置，即上级模块的路径，如Root,Root.Admin,Root.Admin.Identity */
     public position: string,
-    /**要权限控制的功能名称，可以是节点名称或全路径 */
+    /** 要权限控制的功能名称，可以是节点名称或全路径 */
     public funcs: string[]
   ) { }
 }
@@ -271,7 +272,7 @@ export class AdResult {
    * 是否显示结果框
    */
   show: boolean = false;
-  /**结果类型，可选为： 'success' | 'error' | 'minus-circle-o'*/
+  /** 结果类型，可选为： 'success' | 'error' | 'minus-circle-o' */
   type: 'success' | 'error' | 'minus-circle-o';
   /** 结果标题 */
   title: string;

@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'role-function', component: RoleFunctionComponent, data: { title: '角色功能管理', reuse: true } },
   { path: 'user-function', component: UserFunctionComponent, data: { title: '用户功能管理', reuse: true } },
   { path: 'entityinfo', component: EntityinfoComponent, data: { title: '实体管理', reuse: true } },
-  { path: 'role-entity', component: RoleEntityinfoComponent, data: { title: '角色数据管理', reuse: true } },
+  { path: 'role-entityinfo', component: RoleEntityinfoComponent, data: { title: '角色数据管理', reuse: true } },
 ];
 
 @NgModule({

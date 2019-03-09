@@ -22,6 +22,10 @@ import { OsharpModule } from "./osharp/osharp.module";
 // #endregion
 
 
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
+
 
 // #region your componets & directives
 const COMPONENTS = [];

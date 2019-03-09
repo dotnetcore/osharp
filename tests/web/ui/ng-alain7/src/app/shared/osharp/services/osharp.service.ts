@@ -3,17 +3,17 @@ import { ListNode, AjaxResult, AjaxResultType, AuthConfig, VerifyCode } from '@s
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { List } from "linqts";
 import { CacheService } from '@shared/osharp/cache/cache.service';
+import { _HttpClient } from '@delon/theme';
 
 @Injectable()
 export class OsharpService {
 
   public msgSrv: NzMessageService;
   private router: Router;
-  private http: HttpClient;
+  private http: _HttpClient;
   private cache: CacheService;
 
   constructor(
@@ -21,7 +21,7 @@ export class OsharpService {
   ) {
     this.msgSrv = injector.get(NzMessageService);
     this.router = injector.get(Router);
-    this.http = injector.get(HttpClient);
+    this.http = injector.get(_HttpClient);
     this.cache = injector.get(CacheService);
   }
 
@@ -339,7 +339,7 @@ export abstract class ComponentBase {
   /**
    * 权限字典，以模块代码为键，是否有权限为值
    */
-  public auth: { [key: string]: boolean; } = {};
+  public auth: any | { [key: string]: boolean; } = {};
   private authConfig: AuthConfig = null;
 
   constructor(injector: Injector) {

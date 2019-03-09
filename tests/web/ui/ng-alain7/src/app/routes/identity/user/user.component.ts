@@ -1,8 +1,8 @@
 import { Component, AfterViewInit, Injector, } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { List } from 'linqts';
 import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
+import { _HttpClient } from '@delon/theme';
 
 @Component({
   selector: 'app-identity-user',
@@ -19,11 +19,11 @@ export class UserComponent extends GridComponentBase implements AfterViewInit {
   moduleTreeOptions: kendo.ui.TreeViewOptions;
   moduleTree: kendo.ui.TreeView;
 
-  http: HttpClient;
+  http: _HttpClient;
 
   constructor(injector: Injector) {
     super(injector);
-    this.http = injector.get(HttpClient);
+    this.http = injector.get(_HttpClient);
     this.moduleName = "user";
     this.windowOptions = {
       visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],

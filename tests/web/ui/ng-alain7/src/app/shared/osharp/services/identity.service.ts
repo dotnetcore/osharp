@@ -1,27 +1,31 @@
 import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { HttpClient } from '@angular/common/http';
-import { SettingsService } from '@delon/theme';
+import { SettingsService, _HttpClient } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
+import { ReuseTabService } from '@delon/abc';
+
 
 @Injectable()
 export class IdentityService {
 
   constructor(
-    private http: HttpClient,
+    public http: _HttpClient,
     private osharp: OsharpService,
     @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService,
     private settingSrv: SettingsService,
-    private aclSrv: ACLService
+    private aclSrv: ACLService,
+    private reuseTabSrv: ReuseTabService
   ) { }
 
   login(dto: LoginDto): Promise<AjaxResult> {
     let url = "api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type == AjaxResultType.Success) {
+        // 清空路由复用信息
+        this.reuseTabSrv.clear();
         // 设置Token
         this.tokenSrv.set({ token: result.Data });
         // 刷新用户信息

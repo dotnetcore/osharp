@@ -1,6 +1,6 @@
 {
   "name": "osharpns",
-  "version": "0.0.0",
+  "version": "0.4.7",
   "scripts": {
     "ng": "ng",
     "start": "npm run color-less && ng serve -o --port 4202 --proxy-config proxy.config.json",

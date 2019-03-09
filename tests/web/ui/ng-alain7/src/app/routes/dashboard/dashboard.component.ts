@@ -3,7 +3,7 @@ import { Component, OnInit, } from '@angular/core';
 import * as G2 from '@antv/g2';
 import * as DataSet from '@antv/data-set'
 import * as moment from 'moment';
-import { HttpClient } from '@angular/common/http';
+import { _HttpClient } from '@delon/theme';
 
 
 @Component({
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   summaries: Summary[] = [];
   userLineChart: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: _HttpClient) { }
 
   ngOnInit(): void {
     this.rangePickerChange(this.pickerRanges.最近30天);

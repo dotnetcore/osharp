@@ -1,8 +1,8 @@
 import { Injectable, InjectionToken, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { addSeconds } from 'date-fns';
 import { tap, map } from 'rxjs/operators';
+import { _HttpClient } from '@delon/theme';
 export const OSHARP_LOCAL_CACHE_TOKEN = new InjectionToken<ICacheStore>('OSHARP_LOCAL_CACHE_TOKEN');
 export const OSHARP_MEMORY_CACHE_TOKEN = new InjectionToken<ICacheStore>('OSHARP_MEMORY_CACHE_TOKEN');
 
@@ -15,7 +15,7 @@ export class CacheService {
   constructor(
     @Inject(OSHARP_LOCAL_CACHE_TOKEN) private local: ICacheStore,
     @Inject(OSHARP_MEMORY_CACHE_TOKEN) private memory: ICacheStore,
-    private http: HttpClient
+    private http: _HttpClient
   ) {
     this.loadMeta();
   }
@@ -77,7 +77,7 @@ export class CacheService {
     if (!value || (value.e && value.e > 0 && value.e < new Date().valueOf())) {
       if (isPromise) {
         return this.http.get(key).pipe(
-          map((ret: any) => this._deepGet(ret, [] as string[], null), ),
+          map((ret: any) => this._deepGet(ret, [] as string[], null)),
           tap(v => this.set(key, v, { type, expire }))
         );
       }
