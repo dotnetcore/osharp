@@ -8,13 +8,8 @@ import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.compo
 import { LayoutPassportComponent } from '../layout/passport/passport.component';
 // dashboard pages
 import { DashboardComponent } from './dashboard/dashboard.component';
-// passport pages
-import { UserLoginComponent } from './passport/login/login.component';
-import { UserRegisterComponent } from './passport/register/register.component';
-import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
 // single pages
 import { CallbackComponent } from './callback/callback.component';
-import { UserLockComponent } from './passport/lock/lock.component';
 
 
 const routes: Routes = [
@@ -24,9 +19,8 @@ const routes: Routes = [
     canActivate: [SimpleGuard],
     data: { title: '主页' },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full', data: { title: '主页' } },
-      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
-      // { path: 'passport', loadChildren: './passport/passport.module#PassportModule' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: "menu.nav.home" } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       // 业务子模块
       { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },

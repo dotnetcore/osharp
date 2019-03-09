@@ -30,5 +30,9 @@
   "menu.nav.system.systems.settings": "系统设置",
   "menu.nav.system.systems.data-dictionary": "数据字典",
   "menu.nav.system.systems.pack": "模块包",
-  "menu.nav.business": "业务模块"
+  "menu.nav.business": "业务模块",
+  "app.passport.login": "用户登录",
+  "app.passport.register": "新用户注册",
+  "app.passport.forgot-password": "忘记密码",
+  "app.passport.lock": "锁屏"
 }

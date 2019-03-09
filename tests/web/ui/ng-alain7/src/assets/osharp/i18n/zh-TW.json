@@ -30,5 +30,9 @@
   "menu.nav.system.systems.settings": "系統設置",
   "menu.nav.system.systems.data-dictionary": "數據字典",
   "menu.nav.system.systems.pack": "模塊包",
-  "menu.nav.business": "業務模塊"
+  "menu.nav.business": "業務模塊",
+  "app.passport.login": "用戶登錄",
+  "app.passport.register": "新用戶註冊",
+  "app.passport.forgot-password": "忘記密碼",
+  "app.passport.lock": "鎖屏"
 }

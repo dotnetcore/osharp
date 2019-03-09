@@ -30,5 +30,9 @@
   "menu.nav.system.systems.settings": "System Settings",
   "menu.nav.system.systems.data-dictionary": "Data Dictionary",
   "menu.nav.system.systems.pack": "Packs",
-  "menu.nav.business": "Business"
+  "menu.nav.business": "Business",
+  "app.passport.login": "Login",
+  "app.passport.register": "Register",
+  "app.passport.forgot-password": "Forgot Password",
+  "app.passport.lock": "Lock"
 }

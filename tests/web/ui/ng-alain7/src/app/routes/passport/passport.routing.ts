@@ -6,11 +6,11 @@ import { UserRegisterResultComponent } from './register-result/register-result.c
 import { UserLockComponent } from './lock/lock.component';
 
 const routes: Routes = [
-  { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
-  { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
-  { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果' } },
-  { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } },
-
+  { path: 'login', component: UserLoginComponent, data: { title: '用户登录', titleI18n: "app.passport.login" } },
+  { path: 'register', component: UserRegisterComponent, data: { title: '新用户注册', titleI18n: "app.passport.register" } },
+  { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: "app.passport.register" } },
+  { path: 'forgot-password', component: UserLoginComponent, data: { title: '忘记密码', titleI18n: "app.passport.forgot-password" } },
+  { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: "app.passport.lock" } }
 ];
 
 @NgModule({
