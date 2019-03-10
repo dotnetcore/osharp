@@ -1,12 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { DA_SERVICE_TOKEN, ITokenService, JWTTokenModel } from '@delon/auth';
+import { AjaxResult, AjaxResultType } from '@shared/osharp/osharp.model';
 
 const CODEMESSAGE = {
   200: '服务器成功返回请求的数据。',
@@ -52,6 +53,7 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   private handleData(ev: HttpResponseBase): Observable<any> {
+    const loginUrl = '/passport/login';
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
     if (ev.status > 0) {
       this.injector.get(_HttpClient).end();
@@ -79,6 +81,26 @@ export class DefaultInterceptor implements HttpInterceptor {
         //         return of(event);
         //     }
         // }
+        if (event instanceof HttpResponse) {
+          const result = event.body as AjaxResult;
+          if (result && result.Type) {
+            switch (result.Type) {
+              case AjaxResultType.Success:
+              case AjaxResultType.Info:
+              case AjaxResultType.Error:
+              case AjaxResultType.Locked:
+                return of(event);
+              case AjaxResultType.UnAuth:
+                this.msg.warning('用户未登录或者登录已过期');
+                this.goTo(loginUrl);
+                break;
+              default:
+                const type = result.Type as number;
+                this.goTo(`/exception/${type}`);
+                break;
+            }
+          }
+        }
         break;
       case 401: // 未登录状态码
         // 请求错误 401: https://preview.pro.ant.design/api/401 用户没有权限（令牌、用户名、密码错误）。
