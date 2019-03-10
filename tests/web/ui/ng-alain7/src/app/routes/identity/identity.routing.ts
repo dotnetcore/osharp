@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { RoleComponent } from './role/role.component';
 import { UserRoleComponent } from './user-role/user-role.component';
+import { OsharpGuard } from '@shared/osharp/services/osharp.guard';
 
 const routes: Routes = [
-  { path: 'user', component: UserComponent, data: { title: '用户信息管理', reuse: true, titleI18n: "menu.nav.permission.identity.user" } },
-  { path: 'role', component: RoleComponent, data: { title: '角色信息管理', reuse: true, titleI18n: "menu.nav.permission.identity.role" } },
-  { path: 'user-role', component: UserRoleComponent, data: { title: '用户角色管理', reuse: true, titleI18n: "menu.nav.permission.identity.user-role" } },
+  { path: 'user', component: UserComponent, canActivate: [OsharpGuard], data: { title: '用户信息管理', reuse: true, titleI18n: "menu.nav.permission.identity.user", guard: 'Root.Admin.Identity.User.Read' } },
+  { path: 'role', component: RoleComponent, canActivate: [OsharpGuard], data: { title: '角色信息管理', reuse: true, titleI18n: "menu.nav.permission.identity.role", guard: 'Root.Admin.Identity.Role.Read' } },
+  { path: 'user-role', component: UserRoleComponent, canActivate: [OsharpGuard], data: { title: '用户角色管理', reuse: true, titleI18n: "menu.nav.permission.identity.user-role", guard: 'Root.Admin.Identity.UserRole.Read' } },
 ];
 
 @NgModule({

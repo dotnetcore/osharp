@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SimpleGuard } from '@delon/auth';
+import { OsharpGuard } from '@shared/osharp/services/osharp.guard';
 import { environment } from '@env/environment';
 // layout
 import { LayoutDefaultComponent } from '../layout/default/default.component';
@@ -11,21 +12,20 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 
-
 const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    canActivate: [SimpleGuard],
+    canActivate: [],
     data: { title: '主页' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: "menu.nav.home" } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       // 业务子模块
-      { path: 'identity', loadChildren: './identity/identity.module#IdentityModule' },
-      { path: 'security', loadChildren: './security/security.module#SecurityModule' },
-      { path: 'systems', loadChildren: './systems/systems.module#SystemsModule' },
+      { path: 'identity', loadChildren: './identity/identity.module#IdentityModule', canActivateChild: [OsharpGuard], data: { guard: 'Root.Admin.Identity' } },
+      { path: 'security', loadChildren: './security/security.module#SecurityModule', canActivateChild: [OsharpGuard], data: { guard: 'Root.Admin.Security' } },
+      { path: 'systems', loadChildren: './systems/systems.module#SystemsModule', canActivateChild: [OsharpGuard], data: { guard: 'Root.Admin.Systems' } },
       { path: 'store', loadChildren: './store/store.module#StoreModule' },
     ]
   },

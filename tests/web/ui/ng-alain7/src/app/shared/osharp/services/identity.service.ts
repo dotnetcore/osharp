@@ -4,11 +4,13 @@ import { SettingsService, _HttpClient } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ReuseTabService } from '@delon/abc';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class IdentityService {
 
   constructor(
@@ -74,7 +76,8 @@ export class IdentityService {
         this.settingSrv.setUser({});
         this.aclSrv.setRole([]);
         // 更新权限
-        this.osharp.refreshAuthInfo();
+        this.osharp.getAuthInfo(true).subscribe();
+
         return {};
       }
       let user: User = {
@@ -85,7 +88,7 @@ export class IdentityService {
       // 更新角色
       this.aclSrv.setRole(user.roles);
       // 更新权限
-      this.osharp.refreshAuthInfo();
+      this.osharp.getAuthInfo(true).subscribe();
       return user;
     });
   }

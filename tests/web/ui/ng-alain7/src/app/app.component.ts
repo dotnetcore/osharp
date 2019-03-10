@@ -4,6 +4,8 @@ import { filter } from 'rxjs/operators';
 import { TitleService } from '@delon/theme';
 import { VERSION as VERSION_ALAIN } from '@delon/theme';
 import { VERSION as VERSION_ZORRO, NzModalService } from 'ng-zorro-antd';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleSrv: TitleService,
     private modalSrv: NzModalService,
+    private osharp: OsharpService,
+    private aclSrv: ACLService
   ) {
     renderer.setAttribute(
       el.nativeElement,
@@ -29,10 +33,10 @@ export class AppComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.router.events
       .pipe(filter(evt => evt instanceof NavigationEnd))
-      .subscribe(() => {
+      .subscribe(async () => {
         this.titleSrv.setTitle();
         this.modalSrv.closeAll();
       });

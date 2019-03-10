@@ -3,18 +3,21 @@ import { ListNode, AjaxResult, AjaxResultType, AuthConfig, VerifyCode } from '@s
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from "buffer";
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { List } from "linqts";
 import { CacheService } from '@shared/osharp/cache/cache.service';
 import { _HttpClient } from '@delon/theme';
+import { ACLService } from '@delon/acl';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class OsharpService {
 
   public msgSrv: NzMessageService;
   private router: Router;
   private http: _HttpClient;
-  private cache: CacheService;
+  private aclSrv: ACLService;
 
   constructor(
     injector: Injector
@@ -22,7 +25,7 @@ export class OsharpService {
     this.msgSrv = injector.get(NzMessageService);
     this.router = injector.get(Router);
     this.http = injector.get(_HttpClient);
-    this.cache = injector.get(CacheService);
+    this.aclSrv = injector.get(ACLService);
   }
 
   // #region 工具方法
@@ -194,6 +197,7 @@ export class OsharpService {
         break;
     }
   }
+
   /**
    * 处理Ajax错误
    * @param xhr 错误响应
@@ -240,8 +244,7 @@ export class OsharpService {
   getTreeNodes(root: any, array: Array<any>) {
     array.push(root);
     if (root.hasChildren) {
-      for (let i = 0; i < root.Items.length; i++) {
-        const item = root.Items[i];
+      for (const item of root.Items) {
         this.getTreeNodes(item, array);
       }
     }
@@ -261,12 +264,19 @@ export class OsharpService {
   }
 
   /**
-   * 刷新权限信息，缓存10分钟有效
+   * 获取当前用户的权限点数据(string[])，如本地 ACLServer 中不存在，则从远程获取，并更新到 ACLServer 中
    */
-  refreshAuthInfo(): Promise<string[]> {
-    let key = "api/security/getauthinfo";
-    this.cache.remove(key);
-    return this.cache.get<string[]>(key, { expire: 60 * 10 }).toPromise();
+  getAuthInfo(refresh?: boolean): Observable<string[]> {
+    if (!refresh && this.aclSrv.data.abilities && this.aclSrv.data.abilities.length) {
+      let authInfo: string[] = this.aclSrv.data.abilities as string[];
+      return of(authInfo);
+    }
+
+    let url = "api/security/getauthinfo";
+    return this.http.get<string[]>(url).map(auth => {
+      this.aclSrv.setAbility(auth);
+      return auth;
+    });
   }
 
   // #endregion
@@ -360,7 +370,7 @@ export abstract class ComponentBase {
       this.authConfig.funcs.forEach(key => this.auth[key] = true);
     }
     let position = this.authConfig.position;
-    let codes = await this.osharp.refreshAuthInfo();
+    let codes = await this.osharp.getAuthInfo().toPromise();
     if (!codes) {
       return this.auth;
     }

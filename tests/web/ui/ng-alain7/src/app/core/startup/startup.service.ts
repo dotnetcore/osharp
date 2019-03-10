@@ -29,7 +29,7 @@ export class StartupService {
     private aclService: ACLService,
     private titleService: TitleService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
-    private httpClient: HttpClient,
+    private httpClient: HttpClient
   ) {
     iconSrv.addIcon(...ICONS_AUTO, ...ICONS, ...ANT_ICONS);
   }
@@ -37,14 +37,15 @@ export class StartupService {
   private viaHttp(resolve: any, reject: any) {
     zip(
       this.httpClient.get(`assets/osharp/i18n/${this.i18n.defaultLang}.json`),
-      this.httpClient.get('assets/osharp/app-data.json')
+      this.httpClient.get('assets/osharp/app-data.json'),
+      this.httpClient.get('api/security/getauthinfo') // 获取当前用户的权限点string[]
     ).pipe(
       // 接收其他拦截器后产生的异常消息
-      catchError(([langData, appData]) => {
+      catchError(([langData, appData, authInfo]) => {
         resolve(null);
-        return [langData, appData];
+        return [langData, appData, authInfo];
       })
-    ).subscribe(([langData, appData]) => {
+    ).subscribe(([langData, appData, authInfo]) => {
       // setting language data
       this.translate.setTranslation(this.i18n.defaultLang, langData);
       this.translate.setDefaultLang(this.i18n.defaultLang);
@@ -55,8 +56,9 @@ export class StartupService {
       this.settingService.setApp(res.app);
       // 用户信息：包括姓名、头像、邮箱地址
       // this.settingService.setUser(res.user);
-      // ACL：设置权限为全量
-      this.aclService.setFull(true);
+      // ACL：刷新权限数据
+      this.aclService.setAbility(authInfo);
+      // this.aclService.setFull(true);
       // 初始化菜单
       this.menuService.add(res.menu);
       // 设置页面标题的后缀

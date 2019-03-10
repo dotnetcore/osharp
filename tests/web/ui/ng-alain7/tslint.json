@@ -19,6 +19,7 @@
       true,
       250
     ],
+    "one-variable-per-declaration": false,
     "member-access": false,
     "member-ordering": [
       true,
