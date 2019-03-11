@@ -57,7 +57,6 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("测试01")]
         public async Task<string> Test01()
         {
-            throw new OsharpException("测试01引发的一个异常");
             List<object> list = new List<object>();
 
             if (!_userManager.Users.Any())
