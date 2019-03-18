@@ -20,6 +20,8 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 
 ### 框架组件组织
 
+![image](https://wx4.sinaimg.cn/large/005LWXBzgy1g154t3srivj30950dmjrz.jpg)
+
 * OSharp【框架核心组件】：框架的核心组件，包含一系列快速开发中经常用到的Utility辅助工具功能，框架各个组件的核心接口定义，部分核心功能的实现
 * OSharp.AspNetCore【AspNetCore组件】：AspNetCore组件，提供AspNetCore的服务端功能的封装
 * OSharp.AutoMapper【对象映射组件】：AutoMapper 对象映射组件，封装基于AutoMapper的对象映射实现

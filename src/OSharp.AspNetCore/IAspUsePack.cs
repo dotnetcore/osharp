@@ -20,7 +20,7 @@ namespace OSharp.AspNetCore
     public interface IAspUsePack
     {
         /// <summary>
-        /// 应用模块服务，仅在AspNetCore环境下调用，非AspNetCore环境请执行<see cref="UsePack(IServiceProvider)"/>功能
+        /// 应用模块服务，仅在AspNetCore环境下调用，非AspNetCore环境请执行 UsePack(IServiceProvider) 功能
         /// </summary>
         /// <param name="app">应用程序构建器</param>
         void UsePack(IApplicationBuilder app);
