@@ -89,9 +89,10 @@ namespace OSharp.Core.Packs
                 packs = _sourcePacks.ToList();
                 packs.RemoveAll(m => builder.ExceptPacks.Contains(m.GetType()));
             }
+
+            // 按先层级后顺序的规则进行排序
             packs = packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
             LoadedPacks = packs;
-
             foreach (OsharpPack pack in LoadedPacks)
             {
                 services = pack.AddServices(services);
