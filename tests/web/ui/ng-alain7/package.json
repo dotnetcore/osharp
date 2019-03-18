@@ -52,6 +52,7 @@
     "moment": "^2.24.0",
     "ng-alain": "^7.0.2",
     "ng-zorro-antd": "^7.0.1",
+    "node-sass": "^4.11.0",
     "prettier": "^1.16.1",
     "prettier-stylelint": "^0.4.2",
     "rxjs": "6.3.3",

@@ -35,8 +35,6 @@ namespace OSharp.Exceptionless
         /// </summary>
         public override PackLevel Level => PackLevel.Application;
 
-        #region Overrides of OsharpPack
-
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
         /// </summary>
@@ -53,8 +51,6 @@ namespace OSharp.Exceptionless
 
             return services;
         }
-
-        #endregion
 
         /// <summary>
         /// 应用AspNetCore的服务业务

@@ -78,8 +78,8 @@ namespace OSharp.AspNetCore.SignalR
         /// <summary>
         /// 重写以获取Hub路由创建委托
         /// </summary>
-        /// <param name="provider">服务提供者</param>
+        /// <param name="serviceProvider">服务提供者</param>
         /// <returns></returns>
-        protected abstract Action<HubRouteBuilder> GetHubRouteBuildAction(IServiceProvider provider);
+        protected abstract Action<HubRouteBuilder> GetHubRouteBuildAction(IServiceProvider serviceProvider);
     }
 }
