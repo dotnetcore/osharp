@@ -5,7 +5,7 @@ import { UserRegisterComponent } from './register/register.component';
 import { UserRegisterResultComponent } from './register-result/register-result.component';
 import { UserLockComponent } from './lock/lock.component';
 import { SharedModule } from '@shared';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './password/forgot-password.component';
 import { PassportRoutingModule } from './passport.routing';
 
 @NgModule({
