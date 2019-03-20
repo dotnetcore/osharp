@@ -6,6 +6,7 @@ import { UserRegisterResultComponent } from './register-result/register-result.c
 import { UserLockComponent } from './lock/lock.component';
 import { SharedModule } from '@shared';
 import { ForgotPasswordComponent } from './password/forgot-password.component';
+import { ResetPasswordComponent } from './password/reset-password.component';
 import { PassportRoutingModule } from './passport.routing';
 import { SendMailComponent } from './shared/send-mail/send-mail.component';
 import { SendConfirmMailComponent } from './email/send-confirm-mail.component';
@@ -18,6 +19,7 @@ import { ConfirmEmailComponent } from './email/confirm-email.component';
     UserRegisterResultComponent,
     UserLockComponent,
     ForgotPasswordComponent,
+    ResetPasswordComponent,
     SendMailComponent,
     SendConfirmMailComponent,
     ConfirmEmailComponent

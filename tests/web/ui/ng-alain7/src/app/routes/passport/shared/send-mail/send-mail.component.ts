@@ -1,4 +1,12 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { SFSchema, CustomWidget, SFComponent } from '@delon/form';
 import { SendMailDto, VerifyCode, AdResult } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
@@ -16,7 +24,6 @@ import { _HttpClient } from '@delon/theme';
   `]
 })
 export class SendMailComponent implements OnInit, AfterViewInit {
-
   schema: SFSchema;
   dto: SendMailDto = new SendMailDto();
   code: VerifyCode = new VerifyCode();
@@ -24,7 +31,7 @@ export class SendMailComponent implements OnInit, AfterViewInit {
 
   @Input() title: string;
   @Output() submited = new EventEmitter<SendMailDto>();
-  @ViewChild("sf") sf: SFComponent;
+  @ViewChild('sf') sf: SFComponent;
 
   constructor(
     public router: Router,
@@ -49,7 +56,7 @@ export class SendMailComponent implements OnInit, AfterViewInit {
         },
         VerifyCodeId: { type: 'string', ui: { hidden: true } }
       },
-      required: ["Email", "VerifyCode"],
+      required: ['Email', 'VerifyCode'],
       ui: { grid: { gutter: 16, xs: 24 } }
     };
   }

@@ -14,9 +14,8 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-control>
-      <nz-popover [nzPlacement]="'right'" [nzTrigger]="'focus'" [(nzVisible)]="visible" nzOverlayClassName="register-password-cdk"
-        [nzOverlayStyle]="{'width.px': 240}">
-        <nz-input-group nzSize="large" nz-popover nzAddonBeforeIcon="anticon anticon-lock">
+      <nz-popover [nzPlacement]="'right'" [nzTrigger]="'focus'" [(nzVisible)]="visible" nzOverlayClassName="register-password-cdk" [nzOverlayStyle]="{'width.px': 240}">
+        <nz-input-group nzSize="large" nz-popover nzAddonBeforeIcon="lock">
           <input nz-input type="password" formControlName="password" placeholder="Password">
         </nz-input-group>
         <nz-form-explain *ngIf="password.dirty && password.errors">{{ 'validation.password.required' | translate }}</nz-form-explain>
@@ -28,8 +27,7 @@
               <div *ngSwitchDefault class="error">{{ 'validation.password.strength.short' | translate }}</div>
             </ng-container>
             <div class="progress-{{status}}">
-              <nz-progress [nzPercent]="progress" [nzStatus]="passwordProgressMap[status]" [nzStrokeWidth]="6"
-                [nzShowInfo]="false"></nz-progress>
+              <nz-progress [nzPercent]="progress" [nzStatus]="passwordProgressMap[status]" [nzStrokeWidth]="6" [nzShowInfo]="false"></nz-progress>
             </div>
             <p class="mt-sm">{{ 'validation.password.strength.msg' | translate }}</p>
           </div>
