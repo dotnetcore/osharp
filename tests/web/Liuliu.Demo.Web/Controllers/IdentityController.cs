@@ -140,7 +140,7 @@ namespace Liuliu.Demo.Web.Controllers
                 User user = result.Data;
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = UrlBase64ReplaceChar(code);
-                string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
+                string url = $"{Request.Scheme}://{Request.Host}/#/passport/confirm-email?userId={user.Id}&code={code}";
                 string body =
                     $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
                     + $"欢迎注册，激活邮箱请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
@@ -377,7 +377,7 @@ namespace Liuliu.Demo.Web.Controllers
             }
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = UrlBase64ReplaceChar(code);
-            string url = $"{Request.Scheme}://{Request.Host}/#/identity/confirm-email?userId={user.Id}&code={code}";
+            string url = $"{Request.Scheme}://{Request.Host}/#/passport/confirm-email?userId={user.Id}&code={code}";
             string body =
                 $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，你好！<br>"
                 + $"欢迎注册，激活邮箱请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
@@ -440,7 +440,7 @@ namespace Liuliu.Demo.Web.Controllers
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
             token = UrlBase64ReplaceChar(token);
             IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
-            string url = $"{Request.Scheme}://{Request.Host}/#/identity/reset-password?userId={user.Id}&token={token}";
+            string url = $"{Request.Scheme}://{Request.Host}/#/passport/reset-password?userId={user.Id}&token={token}";
             string body = $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
                 + $"欢迎使用柳柳软件账户密码重置功能，请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
                 + $"如果上面的链接无法点击，您可以复制以下地址，并粘贴到浏览器的地址栏中打开。<br>"

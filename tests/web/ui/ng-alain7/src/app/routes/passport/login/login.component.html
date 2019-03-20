@@ -2,6 +2,9 @@
   <!-- <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
     <nz-tab [nzTitle]="'app.login.tab-login-credentials' | translate"> -->
   <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+  <p class="text-center">
+    <a *ngIf="resendConfirmMail" href="/#/passport/send-confirm-mail">{{'app.passport.send-confirm-mail'|translate}}</a>
+  </p>
   <nz-form-item>
     <nz-form-control>
       <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">

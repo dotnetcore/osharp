@@ -97,7 +97,7 @@ export class IdentityService {
     let url = 'api/identity/SendConfirmMail';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
-      if (res.Type != AjaxResultType.Success) {
+      if (res.Type !== AjaxResultType.Success) {
         result.type = 'error';
         result.title = '重发激活邮件失败';
         result.description = res.Content;

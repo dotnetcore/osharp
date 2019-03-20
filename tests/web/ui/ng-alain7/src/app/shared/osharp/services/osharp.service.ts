@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { Buffer } from "buffer";
 import { Observable, of } from 'rxjs';
 import { List } from "linqts";
-import { CacheService } from '@shared/osharp/cache/cache.service';
 import { _HttpClient } from '@delon/theme';
 import { ACLService } from '@delon/acl';
+import { ErrorData } from '@delon/form';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class OsharpService {
 
   public msgSrv: NzMessageService;
   private router: Router;
-  private http: _HttpClient;
+  public http: _HttpClient;
   private aclSrv: ACLService;
 
   constructor(
@@ -181,7 +181,7 @@ export class OsharpService {
         break;
       case AjaxResultType.UnAuth:
         this.warning("用户未登录或登录已失效");
-        this.router.navigateByUrl("/identity/login");
+        this.router.navigateByUrl("/passport/login");
         break;
       case AjaxResultType.Success:
         this.success(content);
@@ -217,6 +217,41 @@ export class OsharpService {
     }
   }
 
+  //#region 远程验证
+
+  private timeout1;
+  remoteSFValidator(url: string, error: ErrorData): ErrorData[] | Observable<ErrorData[]> {
+    clearTimeout(this.timeout1);
+    return new Observable(observer => {
+      this.timeout1 = setTimeout(() => {
+        this.http.get(url).subscribe(res => {
+          if (res !== true) {
+            observer.next([]);
+          } else {
+            observer.next([error]);
+          }
+        });
+      }, 800);
+    });
+  }
+
+  private timeout2;
+  remoteInverseSFValidator(url: string, error: ErrorData): ErrorData[] | Observable<ErrorData[]> {
+    clearTimeout(this.timeout2);
+    return new Observable(observer => {
+      this.timeout2 = setTimeout(() => {
+        this.http.get(url).subscribe(res => {
+          if (res !== true) {
+            observer.next([error]);
+          } else {
+            observer.next([]);
+          }
+        });
+      }, 800);
+    });
+  }
+  //#endregion
+
   //#region 验证码处理
 
   /**
@@ -224,7 +259,7 @@ export class OsharpService {
    */
   refreshVerifyCode(): Observable<VerifyCode> {
     let url = "api/common/verifycode";
-    return this.http.get(url, { responseType: 'text' }).map(res => {
+    return this.http.get(url, null, { responseType: 'text' }).map(res => {
       let str = this.fromBase64(res.toString());
       let strs: string[] = str.split("#$#");
       let code: VerifyCode = new VerifyCode();
