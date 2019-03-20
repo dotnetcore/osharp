@@ -9,7 +9,7 @@ import { _HttpClient } from '@delon/theme';
 @Component({
   selector: 'admin-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit {
   dateFormat = 'yyyy/MM/dd';
