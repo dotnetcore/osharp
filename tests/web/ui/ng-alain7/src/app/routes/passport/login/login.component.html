@@ -79,8 +79,7 @@
 </form>
 <div class="other">
   {{ 'app.login.sign-in-with' | translate }}
-  <i nz-tooltip="in fact Auth0 via window" (click)="open('auth0', 'window')" nz-icon type="alipay-circle" class="icon"></i>
-  <i nz-tooltip="in fact Github via redirect" (click)="open('github')" nz-icon type="taobao-circle" class="icon"></i>
-  <i (click)="open('weibo', 'window')" nz-icon type="weibo-circle" class="icon"></i>
+  <i nz-icon type="qq" nz-tooltip="使用QQ登录" theme="outline" class="icon" (click)="open('QQ')"></i>
+  <i nz-icon type="windows" nz-tooltip="使用Microsoft Account登录" theme="outline" class="icon" (click)="open('Microsoft')"></i>
   <a class="register" routerLink="/passport/register">{{ 'app.login.signup' | translate }}</a>
 </div>

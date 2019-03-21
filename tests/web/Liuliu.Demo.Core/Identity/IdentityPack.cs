@@ -142,12 +142,12 @@ namespace Liuliu.Demo.Identity
             if (enabled)
             {
                 string appId = configuration["Authentication:QQ:AppId"];
-                if (!string.IsNullOrEmpty(appId))
+                if (string.IsNullOrEmpty(appId))
                 {
                     throw new OsharpException("配置文件中Authentication配置的QQ节点的AppId不能为空");
                 }
                 string appKey = configuration["Authentication:QQ:AppKey"];
-                if (!string.IsNullOrEmpty(appKey))
+                if (string.IsNullOrEmpty(appKey))
                 {
                     throw new OsharpException("配置文件中Authentication配置的QQ节点的AppKey不能为空");
                 }

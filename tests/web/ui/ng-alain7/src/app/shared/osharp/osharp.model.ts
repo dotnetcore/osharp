@@ -219,6 +219,12 @@ export class ResetPasswordDto {
   NewPassword: string;
   ConfirmPassword: string;
 }
+export class UserLoginInfoEx {
+  LoginProvider: string;
+  ProviderKey: string;
+  ProviderDisplayName: string;
+  AvatarUrl: string;
+}
 /** 权限配置信息 */
 export class AuthConfig {
   constructor(

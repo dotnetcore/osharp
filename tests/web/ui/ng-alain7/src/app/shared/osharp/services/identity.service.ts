@@ -84,7 +84,6 @@ export class IdentityService {
       let user: User = {
         id: res.Id, name: res.UserName, nickName: res.NickName, avatar: res.HeadImg, email: res.Email, roles: res.Roles, isAdmin: res.IsAdmin
       };
-      console.log(user);
       this.settingSrv.setUser(user);
       // 更新角色
       this.aclSrv.setRole(user.roles);

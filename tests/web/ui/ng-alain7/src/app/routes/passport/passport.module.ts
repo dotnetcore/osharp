@@ -11,6 +11,7 @@ import { PassportRoutingModule } from './passport.routing';
 import { SendMailComponent } from './shared/send-mail/send-mail.component';
 import { SendConfirmMailComponent } from './email/send-confirm-mail.component';
 import { ConfirmEmailComponent } from './email/confirm-email.component';
+import { OauthCallbackComponent } from './oauth-callback/oauth-callback.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ConfirmEmailComponent } from './email/confirm-email.component';
     ResetPasswordComponent,
     SendMailComponent,
     SendConfirmMailComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    OauthCallbackComponent
   ],
   imports: [CommonModule, SharedModule, PassportRoutingModule],
   exports: [],

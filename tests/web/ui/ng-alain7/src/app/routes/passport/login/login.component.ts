@@ -3,12 +3,7 @@ import { Component, OnDestroy, Inject, Optional, Injector } from '@angular/core'
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import {
-  SocialService,
-  SocialOpenType,
-  ITokenService,
-  DA_SERVICE_TOKEN,
-} from '@delon/auth';
+import { SocialService, SocialOpenType, ITokenService, DA_SERVICE_TOKEN, } from '@delon/auth';
 import { ReuseTabService } from '@delon/abc';
 import { environment } from '@env/environment';
 import { StartupService } from '@core';
@@ -174,30 +169,29 @@ export class UserLoginComponent extends ComponentBase implements OnDestroy {
   // #region social
 
   open(type: string, openType: SocialOpenType = 'href') {
-    let url = ``;
-    let callback = ``;
-    if (environment.production) {
-      callback = 'https://ng-alain.github.io/ng-alain/#/callback/' + type;
-    } else {
-      callback = 'http://localhost:4200/#/callback/' + type;
-    }
-    switch (type) {
-      case 'auth0':
-        url = `//cipchk.auth0.com/login?client=8gcNydIDzGBYxzqV0Vm1CX_RXH-wsWo5&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-      case 'github':
-        url = `//github.com/login/oauth/authorize?client_id=9d6baae4b04a23fcafa2&response_type=code&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-      case 'weibo':
-        url = `https://api.weibo.com/oauth2/authorize?client_id=1239507802&response_type=code&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-    }
+    let callback = `/#/callback/${type}`;
+    let url = `api/identity/OAuth2?provider=${type}&returnUrl=${this.osharp.urlEncode(callback)}`;
+
+    // switch (type) {
+    //   case 'QQ':
+    //     url = 'api/identity/OAuth2?provider=';
+    //     break;
+    //   case 'auth0':
+    //     url = `//cipchk.auth0.com/login?client=8gcNydIDzGBYxzqV0Vm1CX_RXH-wsWo5&redirect_uri=${decodeURIComponent(
+    //       callback,
+    //     )}`;
+    //     break;
+    //   case 'github':
+    //     url = `//github.com/login/oauth/authorize?client_id=9d6baae4b04a23fcafa2&response_type=code&redirect_uri=${decodeURIComponent(
+    //       callback,
+    //     )}`;
+    //     break;
+    //   case 'weibo':
+    //     url = `https://api.weibo.com/oauth2/authorize?client_id=1239507802&response_type=code&redirect_uri=${decodeURIComponent(
+    //       callback,
+    //     )}`;
+    //     break;
+    // }
     if (openType === 'window') {
       this.socialService
         .login(url, '/', {

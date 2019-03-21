@@ -36,9 +36,13 @@ using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
+using OSharp.Identity.OAuth2;
 using OSharp.Json;
 using OSharp.Net;
 using OSharp.Secutiry.Claims;
+
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using UserLoginInfo = Microsoft.AspNetCore.Identity.UserLoginInfo;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -257,33 +261,38 @@ namespace Liuliu.Demo.Web.Controllers
 
         /// <summary>
         /// OAuth2登录回调
-        /// todo: 通过第三方信息查找用户信息，如果用户信息存在，则自动登录。不存在则跳转到注册页面
+        /// todo: 登录成功直接返回Token
+        /// todo: 如果登录不成功，把第三方信息返回到前端，由用户选择绑定现有账号还是创建新账号
         /// </summary>
         /// <param name="returnUrl">登录成功返回URL</param>
         /// <param name="remoteError">远程错误信息</param>
         /// <returns></returns>
         [HttpGet]
         [Description("OAuth2登录回调")]
-        public async Task<IActionResult> OAuth2Callback(string returnUrl = null, string remoteError = null)
+        public async Task<ActionResult> OAuth2Callback(string returnUrl = null, string remoteError = null)
         {
+            var req = Request;
             if (remoteError != null)
             {
                 Logger.LogError($"第三方登录错误：{remoteError}");
-                return Unauthorized();
+                return Json(new AjaxResult($"第三方登录错误：{remoteError}", AjaxResultType.UnAuth));
             }
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return Unauthorized();
+                return Json(new AjaxResult("第三方返回的用户信息为空", AjaxResultType.UnAuth));
             }
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
-            Logger.LogWarning($"SignInResult:{result.ToJsonString()}");
-            if (result.Succeeded)
+            SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            // 登录不成功，将用户信息返回前端，让用户选择绑定现有账号还是创建新账号
+            if (!result.Succeeded)
             {
-                Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
-                return Ok();
+                UserLoginInfoEx loginInfo = info.ToUserLoginInfoEx();
+                //return Json(new AjaxResult("第三方账号本地登录失败", AjaxResultType.UnAuth, loginInfo));
+                string url = $"/#/passport/oauth-callback?provider={loginInfo.LoginProvider}&key={loginInfo.ProviderKey}&name={loginInfo.ProviderDisplayName.ToUrlEncode()}&avatar={loginInfo.AvatarUrl.ToUrlEncode()}";
+                return Redirect(url);
             }
-            return Unauthorized();
+            Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
+            return Json(new AjaxResult("success"));
         }
 
         /// <summary>

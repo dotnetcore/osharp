@@ -3,7 +3,7 @@
   "version": "0.4.7",
   "scripts": {
     "ng": "ng",
-    "start": "npm run color-less && ng serve -o --port 4202 --proxy-config proxy.config.json",
+    "start": "npm run color-less && ng serve -o --port 4201 --proxy-config proxy.config.json",
     "build": "npm run color-less && ng build --prod --build-optimizer",
     "test": "ng test",
     "lint": "npm run lint:ts && npm run lint:style",
