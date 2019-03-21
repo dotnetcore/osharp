@@ -81,15 +81,15 @@ export class DefaultInterceptor implements HttpInterceptor {
         //         return of(event);
         //     }
         // }
-        if (event instanceof HttpResponse) {
-          const result = event.body as AjaxResult;
+        if (ev instanceof HttpResponse) {
+          const result = ev.body as AjaxResult;
           if (result && result.Type) {
             switch (result.Type) {
               case AjaxResultType.Success:
               case AjaxResultType.Info:
               case AjaxResultType.Error:
               case AjaxResultType.Locked:
-                return of(event);
+                return of(ev);
               case AjaxResultType.UnAuth:
                 this.msg.warning('用户未登录或者登录已过期');
                 this.goTo(loginUrl);

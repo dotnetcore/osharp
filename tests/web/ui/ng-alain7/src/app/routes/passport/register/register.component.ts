@@ -1,149 +1,98 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
-} from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd';
-import { _HttpClient } from '@delon/theme';
+import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { IdentityService } from '@shared/osharp/services/identity.service';
+import { AdResult, RegisterDto, VerifyCode } from '@shared/osharp/osharp.model';
+import { SFSchema, FormProperty, PropertyGroup, CustomWidget } from '@delon/form';
 
 @Component({
-  selector: 'passport-register',
+  selector: 'app-passport-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.less'],
+  styles: [`
+  :host {
+    display: block;
+    width: 400px;
+    margin: 0 auto;
+  `]
 })
-export class UserRegisterComponent implements OnDestroy {
-  form: FormGroup;
-  error = '';
-  type = 0;
-  visible = false;
-  status = 'pool';
-  progress = 0;
-  passwordProgressMap = {
-    ok: 'success',
-    pass: 'normal',
-    pool: 'exception',
-  };
+export class UserRegisterComponent implements OnInit, AfterViewInit {
 
-  constructor(
-    fb: FormBuilder,
-    private router: Router,
-    public http: _HttpClient,
-    public msg: NzMessageService,
-  ) {
-    this.form = fb.group({
-      mail: [null, [Validators.required, Validators.email]],
-      password: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(6),
-          UserRegisterComponent.checkPassword.bind(this),
-        ],
-      ],
-      confirm: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(6),
-          UserRegisterComponent.passwordEquar,
-        ],
-      ],
-      mobilePrefix: ['+86'],
-      mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      captcha: [null, [Validators.required]],
+  schema: SFSchema;
+  dto: RegisterDto = new RegisterDto();
+  code: VerifyCode = new VerifyCode();
+  result: AdResult = new AdResult();
+
+  constructor(public router: Router, public osharp: OsharpService, public identity: IdentityService) { }
+
+  ngOnInit(): void {
+    this.schema = {
+      properties: {
+        Email: {
+          title: '电子邮箱', type: 'string', format: 'regex', pattern: '^[\\w\\._-]+@[\\w_\-]+\\.[A-Za-z]{2,4}$', ui: {
+            placeholder: '请输入电子邮箱', size: 'large', prefixIcon: 'mail', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
+            errors: { pattern: '电子邮箱格式不正确，应形如xxx@xxx.xxx' }, validator: (value) => {
+              if (!value) {
+                return [{ keyword: 'required', message: '电子邮箱不能为空' }];
+              }
+              return this.osharp.remoteSFValidator(`api/identity/CheckEmailExists?email=${value}`, { keyword: 'remote', message: '输入的电子邮箱已存在，请更换' });
+            }
+          }
+        },
+        Password: { title: '新密码', type: 'string', minLength: 6, ui: { widget: 'custom', spanLabel: 6, spanControl: 16, grid: { xs: 24 }, errors: { minLength: '密码至少6位' } } },
+        ConfirmPassword: {
+          title: '确认密码', type: 'string', ui: {
+            widget: 'custom', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
+            validator: (value: any, formProperty: FormProperty, form: PropertyGroup) => form.value && value !== form.value.Password ? [{ keyword: 'equalto', message: '两次输入的密码一致' }] : []
+          }
+        },
+        VerifyCode: {
+          title: '验证码', type: 'string', ui: {
+            widget: 'custom', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
+            validator: (value: any) => {
+              if (!value || !this.code.id) {
+                return [{ keyword: 'required', message: '验证码不能为空' }];
+              }
+              return this.osharp.remoteInverseSFValidator(`api/common/CheckVerifyCode?code=${value}&id=${this.code.id}`, { keyword: 'remote', message: '验证码不正确，请刷新重试' });
+            }
+          }
+        },
+        VerifyCodeId: { type: 'string', ui: { hidden: true } }
+      },
+      required: ["Email", "Password", "ConfirmPassword", "VerifyCode"],
+      ui: { grid: { gutter: 16, xs: 24 } }
+    };
+  }
+
+  ngAfterViewInit() {
+    this.refreshCode();
+  }
+
+  passwordChange(me: CustomWidget, value: string) {
+    me.setValue(value);
+  }
+
+  confirmPasswordChange(me: CustomWidget, value: string) {
+    me.setValue(value);
+  }
+
+  refreshCode() {
+    this.osharp.refreshVerifyCode().subscribe(vc => {
+      this.code = vc;
+      this.dto.VerifyCodeId = vc.id;
     });
   }
-
-  static checkPassword(control: FormControl) {
-    if (!control) return null;
-    const self: any = this;
-    self.visible = !!control.value;
-    if (control.value && control.value.length > 9) {
-      self.status = 'ok';
-    } else if (control.value && control.value.length > 5) {
-      self.status = 'pass';
-    } else {
-      self.status = 'pool';
-    }
-
-    if (self.visible) {
-      self.progress =
-        control.value.length * 10 > 100 ? 100 : control.value.length * 10;
-    }
+  verifyCodeChange(me: CustomWidget, value: string) {
+    me.setValue(value);
   }
 
-  static passwordEquar(control: FormControl) {
-    if (!control || !control.parent) {
-      return null;
-    }
-    if (control.value !== control.parent.get('password').value) {
-      return { equar: true };
-    }
-    return null;
-  }
-
-  // #region fields
-
-  get mail() {
-    return this.form.controls.mail;
-  }
-  get password() {
-    return this.form.controls.password;
-  }
-  get confirm() {
-    return this.form.controls.confirm;
-  }
-  get mobile() {
-    return this.form.controls.mobile;
-  }
-  get captcha() {
-    return this.form.controls.captcha;
-  }
-
-  // #endregion
-
-  // #region get captcha
-
-  count = 0;
-  interval$: any;
-
-  getCaptcha() {
-    if (this.mobile.invalid) {
-      this.mobile.markAsDirty({ onlySelf: true });
-      this.mobile.updateValueAndValidity({ onlySelf: true });
-      return;
-    }
-    this.count = 59;
-    this.interval$ = setInterval(() => {
-      this.count -= 1;
-      if (this.count <= 0) clearInterval(this.interval$);
-    }, 1000);
-  }
-
-  // #endregion
-
-  submit() {
-    this.error = '';
-    for (const i in this.form.controls) {
-      this.form.controls[i].markAsDirty();
-      this.form.controls[i].updateValueAndValidity();
-    }
-    if (this.form.invalid) {
-      return;
-    }
-
-    const data = this.form.value;
-    this.http.post('/register', data).subscribe(() => {
-      this.router.navigateByUrl('/passport/register-result', {
-        queryParams: { email: data.mail },
-      });
+  submit(value: RegisterDto) {
+    this.dto.Email = value.Email;
+    this.dto.Password = value.Password;
+    this.dto.ConfirmPassword = value.ConfirmPassword,
+      this.dto.VerifyCode = value.VerifyCode;
+    this.identity.register(this.dto).then(res => {
+      res.show = true;
+      this.result = res;
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.interval$) clearInterval(this.interval$);
   }
 }

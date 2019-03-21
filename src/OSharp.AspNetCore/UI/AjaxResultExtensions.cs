@@ -7,6 +7,8 @@
 //  <last-date>2017-09-01 20:39</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Data;
 using OSharp.Extensions;
 
@@ -21,11 +23,12 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 将业务操作结果转ajax操作结果
         /// </summary>
-        public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result)
+        public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result, Func<T, object> dataFunc = null)
         {
             string content = result.Message ?? result.ResultType.ToDescription();
             AjaxResultType type = result.ResultType.ToAjaxResultType();
-            return new AjaxResult(content, type, result.Data);
+            object data = dataFunc == null ? result.Data : dataFunc(result.Data);
+            return new AjaxResult(content, type, data);
         }
 
         /// <summary>

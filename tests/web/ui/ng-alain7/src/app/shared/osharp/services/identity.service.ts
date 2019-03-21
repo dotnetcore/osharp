@@ -40,8 +40,8 @@ export class IdentityService {
   logout() {
     let url = "api/identity/logout";
     return this.http.post<AjaxResult>(url, {}).map(res => {
-      if (res.Type == AjaxResultType.Success) {
-        //清除Token
+      if (res.Type === AjaxResultType.Success) {
+        // 清除Token
         this.tokenSrv.clear();
         // 刷新用户信息
         this.refreshUser().subscribe();
@@ -54,10 +54,11 @@ export class IdentityService {
     let url = 'api/identity/register';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
-      if (res.Type == AjaxResultType.Success) {
+      if (res.Type === AjaxResultType.Success) {
+        let data: any = res.Data;
         result.type = "success";
         result.title = "新用户注册成功";
-        result.description = `你的账户：${dto.UserName}[${dto.NickName}] 注册成功，请及时登录邮箱 ${dto.Email} 接收邮件激活账户。`;
+        result.description = `你的账户：${data.UserName}[${data.NickName}] 注册成功，请及时登录邮箱 ${data.Email} 接收邮件激活账户。`;
         return result;
       }
       result.type = 'error';
@@ -72,7 +73,7 @@ export class IdentityService {
     let url = "api/identity/profile";
     console.log(url);
     return this.http.get(url).map((res: any) => {
-      if (!res || res == {}) {
+      if (!res || res === {}) {
         this.settingSrv.setUser({});
         this.aclSrv.setRole([]);
         // 更新权限

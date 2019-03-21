@@ -192,11 +192,9 @@ export class LoginDto {
   ReturnUrl: string;
 }
 export class RegisterDto {
-  UserName: string;
+  Email: string;
   Password: string;
   ConfirmPassword: string;
-  NickName: string;
-  Email: string;
   VerifyCode: string;
   VerifyCodeId: string;
 }

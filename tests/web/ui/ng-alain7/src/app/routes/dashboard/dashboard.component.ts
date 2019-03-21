@@ -1,7 +1,7 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, AfterViewInit, } from '@angular/core';
 
 import * as G2 from '@antv/g2';
-import * as DataSet from '@antv/data-set'
+import * as DataSet from '@antv/data-set';
 import * as moment from 'moment';
 import { _HttpClient } from '@delon/theme';
 
@@ -11,7 +11,8 @@ import { _HttpClient } from '@delon/theme';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements AfterViewInit {
+
   dateFormat = 'yyyy/MM/dd';
   pickerRanges = {
     '今天': [moment().toDate(), moment().toDate()],
@@ -28,12 +29,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(private http: _HttpClient) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.rangePickerChange(this.pickerRanges.最近30天);
   }
 
   rangePickerChange(e) {
-    if (e.length == 0) {
+    if (e.length === 0) {
       return;
     }
     const start = e[0].toLocaleDateString()
@@ -42,7 +43,7 @@ export class DashboardComponent implements OnInit {
     this.userLine(start, end);
   }
 
-  /**统计数据 */
+  /** 统计数据 */
   summaryData(start, end) {
     const url = `api/admin/dashboard/SummaryData?start=${start}&end=${end}`;
     this.http.get(url).subscribe((res: any) => {
@@ -54,7 +55,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  /**用户曲线 */
+  /** 用户曲线 */
   userLine(start, end) {
     let url = `api/admin/dashboard/LineData?start=${start}&end=${end}`;
     this.http.get(url).subscribe((res: any) => {

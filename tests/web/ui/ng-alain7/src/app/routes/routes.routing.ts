@@ -20,7 +20,7 @@ const routes: Routes = [
     data: { title: '主页' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: "menu.nav.home" } },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [OsharpGuard], data: { title: '仪表盘', titleI18n: "menu.nav.home", guard: 'Root.Admin.Dashboard' } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       // 业务子模块
       { path: 'identity', loadChildren: './identity/identity.module#IdentityModule', canActivateChild: [OsharpGuard], data: { guard: 'Root.Admin.Identity' } },

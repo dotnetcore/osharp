@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, } from '@angular/core';
 import { SFSchema, CustomWidget, SFComponent } from '@delon/form';
 import { SendMailDto, VerifyCode, AdResult } from '@shared/osharp/osharp.model';
 import { Router } from '@angular/router';
@@ -44,7 +36,7 @@ export class SendMailComponent implements OnInit, AfterViewInit {
       properties: {
         Email: {
           title: '邮箱', type: 'string', format: 'regex', pattern: '^[\\w\\._-]+@[\\w_\-]+\\.[A-Za-z]{2,4}$', ui: {
-            placeholder: '请输入电子邮箱', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
+            placeholder: '请输入电子邮箱', prefixIcon: 'mail', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
             errors: { pattern: '电子邮箱格式不正确，应形如xxx@xxx.xxx' }, validator: (value: any) => this.osharp.remoteInverseSFValidator(`api/identity/CheckEmailExists?email=${value}`, { keyword: 'remote', message: '输入的电子邮箱不存在' })
           }
         },

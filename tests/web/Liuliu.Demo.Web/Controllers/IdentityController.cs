@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
@@ -32,6 +33,7 @@ using OSharp.Core.Modules;
 using OSharp.Core.Options;
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
 using OSharp.Json;
@@ -131,6 +133,8 @@ namespace Liuliu.Demo.Web.Controllers
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
 
+            dto.UserName = dto.Email;
+            dto.NickName = $"User_{new Random().NextLetterAndNumberString(8)}"; //随机用户昵称
             dto.RegisterIp = HttpContext.GetClientIp();
 
             OperationResult<User> result = await _identityContract.Register(dto);
@@ -150,7 +154,7 @@ namespace Liuliu.Demo.Web.Controllers
                 await SendMailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
             }
 
-            return result.ToAjaxResult();
+            return result.ToAjaxResult(m => new { m.UserName, m.NickName, m.Email });
         }
 
         /// <summary>
