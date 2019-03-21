@@ -52,13 +52,13 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 电子邮箱
         /// </summary>
-        [Required, DisplayName("电子邮箱"), DataType(DataType.EmailAddress)]
+        [DisplayName("电子邮箱"), DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的电子邮箱
         /// </summary>
-        [Required, DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress)]
+        [DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress)]
         public string NormalizeEmail { get; set; }
 
         /// <summary>

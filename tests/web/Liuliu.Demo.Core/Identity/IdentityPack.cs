@@ -18,13 +18,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Identity;
@@ -71,7 +69,7 @@ namespace Liuliu.Demo.Identity
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 //用户
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
                 //锁定
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             };

@@ -250,11 +250,11 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            if (user.Email.IsMissing())
+            if (string.IsNullOrEmpty(user.Email))
             {
                 user.EmailConfirmed = false;
             }
-            if (user.PhoneNumber.IsMissing())
+            if (string.IsNullOrEmpty(user.PhoneNumber))
             {
                 user.PhoneNumberConfirmed = false;
             }
