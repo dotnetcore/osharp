@@ -57,12 +57,13 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
   };
 }
 
-import { DelonACLConfig } from "@delon/acl";
+import { DelonACLConfig, ACLService } from "@delon/acl";
 export function fnDelonACLConfig() {
   return { guard_url: '/exception/403' } as DelonACLConfig;
 }
 
 import { STConfig } from '@delon/abc';
+import { OsharpACLService } from '@shared/osharp/services/osharp-acl.service.ts.service';
 export function fnSTConfig(): STConfig {
   return {
     ...new STConfig(),
@@ -77,7 +78,8 @@ const GLOBAL_CONFIG_PROVIDES = [
   { provide: STConfig, useFactory: fnSTConfig },
   { provide: PageHeaderConfig, useFactory: fnPageHeaderConfig },
   { provide: DelonAuthConfig, useFactory: fnDelonAuthConfig },
-  { provide: DelonACLConfig, useFactory: fnDelonACLConfig }
+  { provide: DelonACLConfig, useFactory: fnDelonACLConfig },
+  { provide: ACLService, useClass: OsharpACLService }
 ];
 
 // #endregion

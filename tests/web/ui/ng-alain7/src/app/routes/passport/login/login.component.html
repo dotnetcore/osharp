@@ -68,11 +68,11 @@
       <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
     </nz-col>
     <nz-col [nzSpan]="12" class="text-right">
-      <a class="forgot" *ngIf="auth.SendResetPasswordMail" [routerLink]="[ '/passport/forgot-password' ]">{{ 'app.login.forgot-password' | translate }}</a>
+      <a class="forgot" *ngIf="auth.SendResetPasswordMail" [routerLink]="[ '/passport/forgot-password' ]" acl="Root.Site.Identity.SendResetPasswordMail">{{ 'app.login.forgot-password' | translate }}</a>
     </nz-col>
   </nz-form-item>
   <nz-form-item>
-    <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="http.loading" nzBlock [disabled]="!auth.Jwtoken || http.loading">
+    <button nz-button type="submit" nzType="primary" nzSize="large" acl="Root.Site.Identity.Jwtoken" [nzLoading]="http.loading" nzBlock [disabled]="!auth.Jwtoken || http.loading">
       {{ 'app.login.login' | translate }}
     </button>
   </nz-form-item>
@@ -81,5 +81,5 @@
   {{ 'app.login.sign-in-with' | translate }}
   <i nz-icon type="qq" nz-tooltip="使用QQ登录" theme="outline" class="icon" (click)="open('QQ')"></i>
   <i nz-icon type="windows" nz-tooltip="使用Microsoft Account登录" theme="outline" class="icon" (click)="open('Microsoft')"></i>
-  <a class="register" routerLink="/passport/register">{{ 'app.login.signup' | translate }}</a>
+  <a class="register" routerLink="/passport/register" acl="Root.Site.Identity.Register">{{ 'app.login.signup' | translate }}</a>
 </div>
