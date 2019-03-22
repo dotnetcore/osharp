@@ -25,7 +25,9 @@ export class IdentityService {
   login(dto: LoginDto): Promise<AjaxResult> {
     let url = "api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
-      this.loginEnd(result);
+      if (result.Type === AjaxResultType.Success) {
+        this.loginEnd(result.Data);
+      }
       return result;
     }).toPromise();
   }
