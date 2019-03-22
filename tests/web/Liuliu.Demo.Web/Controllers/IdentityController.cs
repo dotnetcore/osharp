@@ -7,23 +7,15 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
@@ -40,9 +32,12 @@ using OSharp.Identity.OAuth2;
 using OSharp.Json;
 using OSharp.Net;
 using OSharp.Secutiry.Claims;
-
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using UserLoginInfo = Microsoft.AspNetCore.Identity.UserLoginInfo;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -223,22 +218,7 @@ namespace Liuliu.Demo.Web.Controllers
                 return result.ToAjaxResult();
             }
             User user = result.Data;
-
-            //生成Token，这里只包含最基本信息，其他信息从在线用户缓存中获取
-            Claim[] claims =
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-            OsharpOptions options = HttpContext.RequestServices.GetService<IOptions<OsharpOptions>>().Value;
-            string token = JwtHelper.CreateToken(claims, options);
-
-            //在线用户缓存
-            IOnlineUserCache onlineUserCache = HttpContext.RequestServices.GetService<IOnlineUserCache>();
-            if (onlineUserCache != null)
-            {
-                await onlineUserCache.GetOrRefreshAsync(user.UserName);
-            }
+            string token = await CreateJwtToken(user);
 
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
@@ -271,7 +251,6 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("OAuth2登录回调")]
         public async Task<ActionResult> OAuth2Callback(string returnUrl = null, string remoteError = null)
         {
-            var req = Request;
             if (remoteError != null)
             {
                 Logger.LogError($"第三方登录错误：{remoteError}");
@@ -280,19 +259,77 @@ namespace Liuliu.Demo.Web.Controllers
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return Json(new AjaxResult("第三方返回的用户信息为空", AjaxResultType.UnAuth));
+                Logger.LogError("第三方登录返回的用户信息为空");
+                return Redirect("/#/exception/500");
             }
             SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
             // 登录不成功，将用户信息返回前端，让用户选择绑定现有账号还是创建新账号
             if (!result.Succeeded)
             {
                 UserLoginInfoEx loginInfo = info.ToUserLoginInfoEx();
-                //return Json(new AjaxResult("第三方账号本地登录失败", AjaxResultType.UnAuth, loginInfo));
-                string url = $"/#/passport/oauth-callback?provider={loginInfo.LoginProvider}&key={loginInfo.ProviderKey}&name={loginInfo.ProviderDisplayName.ToUrlEncode()}&avatar={loginInfo.AvatarUrl.ToUrlEncode()}";
+                string url = $"/#/passport/oauth-callback?data={loginInfo.ToJsonString().ToUrlEncode()}";
                 return Redirect(url);
             }
             Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
             return Json(new AjaxResult("success"));
+        }
+
+        /// <summary>
+        /// 登录并绑定账号
+        /// </summary>
+        [HttpPost]
+        [ModuleInfo]
+        [Description("登录并绑定账号")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        public async Task<AjaxResult> LoginBind(UserLoginInfoEx loginInfo)
+        {
+            loginInfo.RegisterIp = HttpContext.GetClientIp();
+            OperationResult<User> result = await _identityContract.LoginBind(loginInfo);
+
+            return null;
+        }
+
+        /// <summary>
+        /// 使用第三方账号一键登录
+        /// </summary>
+        [HttpPost]
+        [ModuleInfo]
+        [Description("第三方一键登录")]
+        public async Task<AjaxResult> LoginOneKey(UserLoginInfoEx loginInfo)
+        {
+            loginInfo.RegisterIp = HttpContext.GetClientIp();
+            OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo);
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
+            unitOfWork.Commit();
+
+            if (!result.Successed)
+            {
+                return result.ToAjaxResult();
+            }
+
+            User user = result.Data;
+            string token = await CreateJwtToken(user);
+            return new AjaxResult("登录成功", AjaxResultType.Success, token);
+        }
+
+        private async Task<string> CreateJwtToken(User user)
+        {
+            //在线用户缓存
+            IOnlineUserCache onlineUserCache = HttpContext.RequestServices.GetService<IOnlineUserCache>();
+            if (onlineUserCache != null)
+            {
+                await onlineUserCache.GetOrRefreshAsync(user.UserName);
+            }
+
+            //生成Token，这里只包含最基本信息，其他信息从在线用户缓存中获取
+            Claim[] claims =
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+            OsharpOptions options = HttpContext.RequestServices.GetService<IOptions<OsharpOptions>>().Value;
+            string token = JwtHelper.CreateToken(claims, options);
+            return token;
         }
 
         /// <summary>

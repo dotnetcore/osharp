@@ -15,7 +15,7 @@ namespace Liuliu.Demo.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -102,7 +102,7 @@ namespace Liuliu.Demo.Web.Migrations
                         {
                             Id = 1,
                             ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
-                            CreatedTime = new DateTime(2019, 1, 4, 16, 17, 15, 580, DateTimeKind.Local).AddTicks(4000),
+                            CreatedTime = new DateTime(2019, 3, 22, 23, 24, 39, 946, DateTimeKind.Local).AddTicks(3333),
                             IsAdmin = true,
                             IsDefault = false,
                             IsLocked = false,
@@ -145,8 +145,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<DateTime>("CreatedTime");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -162,8 +161,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("NickName");
 
-                    b.Property<string>("NormalizeEmail")
-                        .IsRequired();
+                    b.Property<string>("NormalizeEmail");
 
                     b.Property<string>("NormalizedUserName")
                         .IsRequired();
@@ -658,65 +656,65 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.RoleClaim", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserClaim", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany("UserClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserDetail", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
-                        .WithOne()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithOne("UserDetail")
                         .HasForeignKey("Liuliu.Demo.Identity.Entities.UserDetail", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserLogin", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany("UserLogins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserRole", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserToken", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany("UserTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityRole", b =>
                 {
-                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo")
+                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo", "EntityInfo")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -724,12 +722,12 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityUser", b =>
                 {
-                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo")
+                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo", "EntityInfo")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -737,19 +735,19 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.Module", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module")
-                        .WithMany()
+                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Parent")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
                 {
-                    b.HasOne("OSharp.Core.Functions.Function")
+                    b.HasOne("OSharp.Core.Functions.Function", "Function")
                         .WithMany()
                         .HasForeignKey("FunctionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module")
+                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
                         .WithMany()
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -757,12 +755,12 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleRole", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module")
+                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
                         .WithMany()
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -770,12 +768,12 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleUser", b =>
                 {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module")
+                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
                         .WithMany()
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User")
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

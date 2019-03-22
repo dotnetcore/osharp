@@ -38,5 +38,11 @@ namespace OSharp.Identity.OAuth2
         /// 获取或设置 头像URL
         /// </summary>
         public string AvatarUrl { get; set; }
+
+        /// <summary>
+        /// 获取或设置 注册IP
+        /// </summary>
+        public string RegisterIp { get; set; }
+
     }
 }

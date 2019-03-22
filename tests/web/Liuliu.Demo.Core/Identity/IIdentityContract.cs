@@ -16,6 +16,7 @@ using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 
 using OSharp.Data;
+using OSharp.Identity.OAuth2;
 
 
 namespace Liuliu.Demo.Identity
@@ -90,6 +91,20 @@ namespace Liuliu.Demo.Identity
         /// <param name="dto">登录信息</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult<User>> Login(LoginDto dto);
+
+        /// <summary>
+        /// 登录并绑定现有账号
+        /// </summary>
+        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult<User>> LoginBind(UserLoginInfoEx loginInfoEx);
+
+        /// <summary>
+        /// 一键创建新用户并登录
+        /// </summary>
+        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult<User>> LoginOneKey(UserLoginInfoEx loginInfoEx);
 
         /// <summary>
         /// 账号退出

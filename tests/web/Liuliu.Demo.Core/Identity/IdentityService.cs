@@ -7,22 +7,20 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Identity.Events;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Extensions;
 using OSharp.Identity;
+using OSharp.Identity.OAuth2;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Liuliu.Demo.Identity
@@ -37,6 +35,7 @@ namespace Liuliu.Demo.Identity
         private readonly IRepository<Role, int> _roleRepository;
         private readonly SignInManager<User> _signInManager;
         private readonly IRepository<UserDetail, int> _userDetailRepository;
+        private readonly IRepository<UserLogin, Guid> _userLoginRepository;
         private readonly UserManager<User> _userManager;
         private readonly IRepository<User, int> _userRepository;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
@@ -53,7 +52,8 @@ namespace Liuliu.Demo.Identity
             IRepository<User, int> userRepository,
             IRepository<Role, int> roleRepository,
             IRepository<UserRole, Guid> userRoleRepository,
-            IRepository<UserDetail, int> userDetailRepository)
+            IRepository<UserDetail, int> userDetailRepository,
+            IRepository<UserLogin, Guid> userLoginRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -64,6 +64,7 @@ namespace Liuliu.Demo.Identity
             _logger = loggerFactory.CreateLogger<IdentityService>();
             _userRoleRepository = userRoleRepository;
             _userDetailRepository = userDetailRepository;
+            _userLoginRepository = userLoginRepository;
         }
 
         /// <summary>
@@ -80,6 +81,14 @@ namespace Liuliu.Demo.Identity
         public IQueryable<User> Users
         {
             get { return _userManager.Users; }
+        }
+
+        /// <summary>
+        /// 获取 第三方登录用户信息查询数据集
+        /// </summary>
+        public IQueryable<UserLogin> UserLogins
+        {
+            get { return _userLoginRepository.Query(); }
         }
 
         /// <summary>
@@ -141,6 +150,64 @@ namespace Liuliu.Demo.Identity
             _eventBus.Publish(loginEventData);
 
             return result;
+        }
+
+        /// <summary>
+        /// 登录并绑定现有账号
+        /// </summary>
+        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <returns>业务操作结果</returns>
+        public virtual async Task<OperationResult<User>> LoginBind(UserLoginInfoEx loginInfoEx)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 一键创建新用户并登录
+        /// </summary>
+        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <returns>业务操作结果</returns>
+        public virtual async Task<OperationResult<User>> LoginOneKey(UserLoginInfoEx loginInfoEx)
+        {
+            IdentityResult result;
+            User user = await _userManager.FindByLoginAsync(loginInfoEx.LoginProvider, loginInfoEx.ProviderKey);
+            if (user == null)
+            {
+                user = new User()
+                {
+                    UserName = $"{loginInfoEx.LoginProvider}_{loginInfoEx.ProviderKey}",
+                    NickName = loginInfoEx.ProviderDisplayName,
+                    HeadImg = loginInfoEx.AvatarUrl
+                };
+                result = await _userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return result.ToOperationResult(user);
+                }
+                UserDetail detail = new UserDetail() { RegisterIp = loginInfoEx.RegisterIp, UserId = user.Id };
+                int count = await _userDetailRepository.InsertAsync(detail);
+                if (count == 0)
+                {
+                    return new OperationResult<User>(OperationResultType.NoChanged);
+                }
+            }
+
+            UserLogin userLogin = _userLoginRepository.GetFirst(m =>
+                m.LoginProvider == loginInfoEx.LoginProvider && m.ProviderKey == loginInfoEx.ProviderKey);
+            if (userLogin == null)
+            {
+                result = await _userManager.AddLoginAsync(user, loginInfoEx);
+                if (!result.Succeeded)
+                {
+                    return result.ToOperationResult(user);
+                }
+            }
+            else
+            {
+                userLogin.UserId = user.Id;
+                await _userLoginRepository.UpdateAsync(userLogin);
+            }
+            return new OperationResult<User>(OperationResultType.Success, "第三方用户一键登录成功", user);
         }
 
         /// <summary>

@@ -224,6 +224,8 @@ export class UserLoginInfoEx {
   ProviderKey: string;
   ProviderDisplayName: string;
   AvatarUrl: string;
+  Email?: string;
+  Password?: string;
 }
 /** 权限配置信息 */
 export class AuthConfig {

@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { SettingsService, _HttpClient } from '@delon/theme';
 import { ACLService } from '@delon/acl';
-import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto } from '@shared/osharp/osharp.model';
+import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto, UserLoginInfoEx } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { Observable, of } from 'rxjs';
 import { ReuseTabService } from '@delon/abc';
@@ -25,14 +25,7 @@ export class IdentityService {
   login(dto: LoginDto): Promise<AjaxResult> {
     let url = "api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
-      if (result.Type == AjaxResultType.Success) {
-        // 清空路由复用信息
-        this.reuseTabSrv.clear();
-        // 设置Token
-        this.tokenSrv.set({ token: result.Data });
-        // 刷新用户信息
-        this.refreshUser().subscribe();
-      }
+      this.loginEnd(result);
       return result;
     }).toPromise();
   }
@@ -68,10 +61,37 @@ export class IdentityService {
     }).toPromise();
   }
 
+  loginBind(info: UserLoginInfoEx) {
+    let url = 'api/identity/LoginBind';
+    return this.http.post<AjaxResult>(url, info).map(result => {
+      this.loginEnd(result);
+      return result;
+    }).toPromise();
+  }
+
+  loginOneKey(info: UserLoginInfoEx) {
+    let url = 'api/identity/LoginOneKey';
+    return this.http.post<AjaxResult>(url, info).map(result => {
+      this.loginEnd(result);
+      return result;
+    }).toPromise();
+  }
+
+  private loginEnd(result: AjaxResult): AjaxResult {
+    if (result.Type === AjaxResultType.Success) {
+      // 清空路由复用信息
+      this.reuseTabSrv.clear();
+      // 设置Token
+      this.tokenSrv.set({ token: result.Data });
+      // 刷新用户信息
+      this.refreshUser().subscribe();
+    }
+    return result;
+  }
+
   /** 刷新用户信息 */
   refreshUser(): Observable<User> {
     let url = "api/identity/profile";
-    console.log(url);
     return this.http.get(url).map((res: any) => {
       if (!res || res === {}) {
         this.settingSrv.setUser({});
