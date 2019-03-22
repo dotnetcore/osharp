@@ -84,7 +84,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }
             ISetting setting = JsonConvert.DeserializeObject(dto.SettingJson, type) as ISetting;
             OperationResult result = await _keyValueStore.SaveSetting(setting);
-            if (result.Successed)
+            if (result.Succeeded)
             {
                 return new AjaxResult("设置保存成功");
             }

@@ -155,7 +155,7 @@ namespace OSharp.Systems
         public async Task<OperationResult> DeleteKeyValues(params Guid[] ids)
         {
             OperationResult result = await _keyValueRepository.DeleteAsync(ids);
-            if (result.Successed)
+            if (result.Succeeded)
             {
                 await _cache.RemoveAsync(AllKeyValuesKey);
             }

@@ -178,7 +178,7 @@ namespace OSharp.Security
                         entity.IsAccessTypeChanged = true;
                     }
                 });
-            if (result.Successed)
+            if (result.Succeeded)
             {
                 //功能信息缓存刷新事件
                 FunctionCacheRefreshEventData clearEventData = new FunctionCacheRefreshEventData();
@@ -388,7 +388,7 @@ namespace OSharp.Security
             OperationResult result = await _moduleRepository.DeleteAsync(entity) > 0
                 ? new OperationResult(OperationResultType.Success, $"模块“{entity.Name}”删除成功")
                 : OperationResult.NoChanged;
-            if (result.Successed)
+            if (result.Succeeded)
             {
                 //功能权限缓存刷新事件
                 Guid[] functionIds = _moduleFunctionRepository.Query(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
@@ -772,7 +772,7 @@ namespace OSharp.Security
                         throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                     }
                     OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
-                    if (!checkResult.Successed)
+                    if (!checkResult.Succeeded)
                     {
                         throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
@@ -787,7 +787,7 @@ namespace OSharp.Security
                         });
                     }
                 });
-            if (result.Successed && eventData.HasData())
+            if (result.Succeeded && eventData.HasData())
             {
                 _eventBus.Publish(eventData);
             }
@@ -820,7 +820,7 @@ namespace OSharp.Security
                         throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                     }
                     OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
-                    if (!checkResult.Successed)
+                    if (!checkResult.Succeeded)
                     {
                         throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
                     }
@@ -841,7 +841,7 @@ namespace OSharp.Security
                     }
                 });
 
-            if (result.Successed && eventData.HasData())
+            if (result.Succeeded && eventData.HasData())
             {
                 _eventBus.Publish(eventData);
             }
@@ -866,7 +866,7 @@ namespace OSharp.Security
                         eventData.RemoveItems.Add(new DataAuthCacheItem() { RoleName = role.Name, EntityTypeFullName = entityInfo.TypeName, Operation = entity.Operation });
                     }
                 });
-            if (result.Successed && eventData.HasData())
+            if (result.Succeeded && eventData.HasData())
             {
                 //移除数据权限缓存
                 _eventBus.Publish(eventData);
@@ -906,7 +906,7 @@ namespace OSharp.Security
                 foreach (FilterGroup g in group.Groups)
                 {
                     result = CheckFilterGroup(g, entityInfo);
-                    if (!result.Successed)
+                    if (!result.Succeeded)
                     {
                         return result;
                     }
@@ -914,7 +914,7 @@ namespace OSharp.Security
             }
             Type entityType = Type.GetType(entityInfo.TypeName);
             result = FilterHelper.CheckFilterGroup(group, entityType);
-            if (!result.Successed)
+            if (!result.Succeeded)
             {
                 return result;
             }

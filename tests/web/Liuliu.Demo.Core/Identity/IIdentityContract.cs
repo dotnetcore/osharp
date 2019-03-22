@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.AspNetCore.Identity;
+
 using OSharp.Data;
 using OSharp.Identity.OAuth2;
 
@@ -91,6 +93,13 @@ namespace Liuliu.Demo.Identity
         /// <param name="dto">登录信息</param>
         /// <returns>业务操作结果</returns>
         Task<OperationResult<User>> Login(LoginDto dto);
+
+        /// <summary>
+        /// 使用第三方用户信息进行OAuth2登录
+        /// </summary>
+        /// <param name="loginInfo">第三方用户信息</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult<User>> LoginOAuth2(UserLoginInfo loginInfo);
 
         /// <summary>
         /// 登录并绑定现有账号

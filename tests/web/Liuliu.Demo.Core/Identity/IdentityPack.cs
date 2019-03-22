@@ -64,7 +64,7 @@ namespace Liuliu.Demo.Identity
             return options =>
             {
                 //登录
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
                 //密码
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;

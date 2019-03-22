@@ -62,7 +62,7 @@ namespace Liuliu.Demo.Identity
                     userNames.AddIfNotNull(userName);
                     return Task.FromResult(0);
                 });
-            if (result.Successed && userNames.Count > 0)
+            if (result.Succeeded && userNames.Count > 0)
             {
                 OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = userNames.ToArray() };
                 _eventBus.Publish(eventData);

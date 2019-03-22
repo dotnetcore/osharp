@@ -46,11 +46,16 @@ namespace OSharp.Identity.JwtBearer
                 {
                     return null;
                 }
-                identity.AddClaims(new[]
+
+                if (!string.IsNullOrEmpty(user.NickName))
                 {
-                    new Claim(ClaimTypes.GivenName, user.NickName),
-                    new Claim(ClaimTypes.Email, user.Email)
-                });
+                    identity.AddClaim(new Claim(ClaimTypes.GivenName, user.NickName));
+                }
+                if (!string.IsNullOrEmpty(user.Email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+                }
+
                 if (user.Roles.Length > 0)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, user.Roles.ExpandAndToString()));

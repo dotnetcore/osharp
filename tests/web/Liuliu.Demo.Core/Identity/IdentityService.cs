@@ -139,7 +139,7 @@ namespace Liuliu.Demo.Identity
             }
             SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
             OperationResult<User> result = ToOperationResult(signInResult, user);
-            if (!result.Successed)
+            if (!result.Succeeded)
             {
                 return result;
             }
@@ -150,6 +150,23 @@ namespace Liuliu.Demo.Identity
             _eventBus.Publish(loginEventData);
 
             return result;
+        }
+
+        /// <summary>
+        /// 使用第三方用户信息进行OAuth2登录
+        /// </summary>
+        /// <param name="loginInfo">第三方用户信息</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult<User>> LoginOAuth2(UserLoginInfo loginInfo)
+        {
+            SignInResult result = await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, true);
+            if (!result.Succeeded)
+            {
+                return new OperationResult<User>(OperationResultType.Error, "登录失败");
+            }
+
+            User user = await _userManager.FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
+            return new OperationResult<User>(OperationResultType.Success, "登录成功", user);
         }
 
         /// <summary>

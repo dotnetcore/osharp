@@ -135,7 +135,7 @@ namespace OSharp.Data
         /// <summary>
         /// 获取 是否成功
         /// </summary>
-        public bool Successed
+        public bool Succeeded
         {
             get { return ResultType == OperationResultType.Success; }
         }

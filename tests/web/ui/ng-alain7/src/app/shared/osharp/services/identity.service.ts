@@ -64,7 +64,9 @@ export class IdentityService {
   loginBind(info: UserLoginInfoEx) {
     let url = 'api/identity/LoginBind';
     return this.http.post<AjaxResult>(url, info).map(result => {
-      this.loginEnd(result);
+      if (result.Type === AjaxResultType.Success) {
+        this.loginEnd(result.Data);
+      }
       return result;
     }).toPromise();
   }
@@ -72,21 +74,20 @@ export class IdentityService {
   loginOneKey(info: UserLoginInfoEx) {
     let url = 'api/identity/LoginOneKey';
     return this.http.post<AjaxResult>(url, info).map(result => {
-      this.loginEnd(result);
+      if (result.Type === AjaxResultType.Success) {
+        this.loginEnd(result.Data);
+      }
       return result;
     }).toPromise();
   }
 
-  private loginEnd(result: AjaxResult): AjaxResult {
-    if (result.Type === AjaxResultType.Success) {
-      // 清空路由复用信息
-      this.reuseTabSrv.clear();
-      // 设置Token
-      this.tokenSrv.set({ token: result.Data });
-      // 刷新用户信息
-      this.refreshUser().subscribe();
-    }
-    return result;
+  loginEnd(token: string) {
+    // 清空路由复用信息
+    this.reuseTabSrv.clear();
+    // 设置Token
+    this.tokenSrv.set({ token });
+    // 刷新用户信息
+    this.refreshUser().subscribe();
   }
 
   /** 刷新用户信息 */

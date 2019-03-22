@@ -37,7 +37,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -138,7 +137,7 @@ namespace Liuliu.Demo.Web.Controllers
 
             OperationResult<User> result = await _identityContract.Register(dto);
 
-            if (result.Successed)
+            if (result.Succeeded)
             {
                 User user = result.Data;
                 string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -181,7 +180,7 @@ namespace Liuliu.Demo.Web.Controllers
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 
-            if (!result.Successed)
+            if (!result.Succeeded)
             {
                 return result.ToAjaxResult();
             }
@@ -213,7 +212,7 @@ namespace Liuliu.Demo.Web.Controllers
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 
-            if (!result.Successed)
+            if (!result.Succeeded)
             {
                 return result.ToAjaxResult();
             }
@@ -256,22 +255,27 @@ namespace Liuliu.Demo.Web.Controllers
                 Logger.LogError($"第三方登录错误：{remoteError}");
                 return Json(new AjaxResult($"第三方登录错误：{remoteError}", AjaxResultType.UnAuth));
             }
+
+            string url;
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
+                url = "/#/exception/500";
                 Logger.LogError("第三方登录返回的用户信息为空");
-                return Redirect("/#/exception/500");
+                return Redirect(url);
             }
-            SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            UserLoginInfoEx loginInfo = info.ToUserLoginInfoEx();
+            var result = await _identityContract.LoginOAuth2(loginInfo);
             // 登录不成功，将用户信息返回前端，让用户选择绑定现有账号还是创建新账号
             if (!result.Succeeded)
             {
-                UserLoginInfoEx loginInfo = info.ToUserLoginInfoEx();
-                string url = $"/#/passport/oauth-callback?data={loginInfo.ToJsonString().ToUrlEncode()}";
+                url = $"/#/passport/oauth-callback?data={loginInfo.ToJsonString().ToUrlEncode()}";
                 return Redirect(url);
             }
             Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
-            return Json(new AjaxResult("success"));
+            string token = await CreateJwtToken(result.Data);
+            url = $"/#/passport/oauth-callback?token={token}";
+            return Redirect(url);
         }
 
         /// <summary>
@@ -302,7 +306,7 @@ namespace Liuliu.Demo.Web.Controllers
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 
-            if (!result.Successed)
+            if (!result.Succeeded)
             {
                 return result.ToAjaxResult();
             }

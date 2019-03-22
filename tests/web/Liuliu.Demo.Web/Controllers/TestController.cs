@@ -72,7 +72,7 @@ namespace Liuliu.Demo.Web.Controllers
                 };
 
                 OperationResult<User> result = await _identityContract.Register(dto);
-                if (result.Successed)
+                if (result.Succeeded)
                 {
                     User user = result.Data;
                     user.EmailConfirmed = true;
@@ -89,7 +89,7 @@ namespace Liuliu.Demo.Web.Controllers
                     RegisterIp = HttpContext.GetClientIp()
                 };
                 result = await _identityContract.Register(dto);
-                if (result.Successed)
+                if (result.Succeeded)
                 {
                     User user = result.Data;
                     user.EmailConfirmed = true;

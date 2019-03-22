@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 export class OauthCallbackComponent implements OnInit {
 
   error = '';
-  loginInfo: UserLoginInfoEx = new UserLoginInfoEx();
+  loginInfo: UserLoginInfoEx;
   bindSchema: SFSchema;
   oneKeySchema: SFSchema;
 
@@ -35,6 +35,9 @@ export class OauthCallbackComponent implements OnInit {
 
   ngOnInit() {
     this.getUrlParams();
+    if (!this.loginInfo) {
+      return;
+    }
     this.oneKeySchema = {
       properties: {
         LoginProvider: { title: '登录方式', type: 'string', default: this.loginInfo.LoginProvider, ui: { widget: 'text', size: 'large', spanLabel: 6, spanControl: 16, grid: { xs: 24 } } },
@@ -58,10 +61,18 @@ export class OauthCallbackComponent implements OnInit {
   private getUrlParams() {
     let url = window.location.hash;
     let json = this.osharp.getHashURLSearchParams(url, 'data');
-    if (!json) {
-      return;
+    if (json) {
+      this.loginInfo = JSON.parse(json);
     }
-    this.loginInfo = JSON.parse(json);
+    let token = this.osharp.getHashURLSearchParams(url, 'token');
+    if (token) {
+      this.identity.loginEnd(token);
+      this.startupSrv.load().then(() => {
+        url = this.tokenService.referrer && this.tokenService.referrer.url || '/';
+        if (url.includes('/passport')) url = '/';
+        this.router.navigateByUrl(url);
+      });
+    }
   }
 
   passwordChange(me: CustomWidget, value: string) {

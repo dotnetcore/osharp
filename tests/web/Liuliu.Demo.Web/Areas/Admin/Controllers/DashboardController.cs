@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Caching;
+using OSharp.Core;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Entity;
@@ -57,6 +58,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>统计数据</returns>
         [HttpGet]
         [ModuleInfo]
+        [Logined]
         [Description("统计数据")]
         public IActionResult SummaryData(DateTime start, DateTime end)
         {
@@ -102,6 +104,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [ModuleInfo]
+        [Logined]
         [Description("曲线数据")]
         public IActionResult LineData(DateTime start, DateTime end)
         {
