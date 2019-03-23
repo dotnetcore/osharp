@@ -26,7 +26,7 @@ export class IdentityService {
     let url = "api/identity/jwtoken";
     return this.http.post<AjaxResult>(url, dto).map(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.loginEnd(result.Data);
+        this.loginEnd(result.Data).subscribe();
       }
       return result;
     }).toPromise();
@@ -36,10 +36,7 @@ export class IdentityService {
     let url = "api/identity/logout";
     return this.http.post<AjaxResult>(url, {}).map(res => {
       if (res.Type === AjaxResultType.Success) {
-        // 清除Token
-        this.tokenSrv.clear();
-        // 刷新用户信息
-        this.refreshUser().subscribe();
+        this.loginEnd(null).subscribe();
       }
       return res;
     }).toPromise();
@@ -67,7 +64,7 @@ export class IdentityService {
     let url = 'api/identity/LoginBind';
     return this.http.post<AjaxResult>(url, info).map(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.loginEnd(result.Data);
+        this.loginEnd(result.Data).subscribe();
       }
       return result;
     }).toPromise();
@@ -77,7 +74,7 @@ export class IdentityService {
     let url = 'api/identity/LoginOneKey';
     return this.http.post<AjaxResult>(url, info).map(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.loginEnd(result.Data);
+        this.loginEnd(result.Data).subscribe();
       }
       return result;
     }).toPromise();
@@ -87,9 +84,13 @@ export class IdentityService {
     // 清空路由复用信息
     this.reuseTabSrv.clear();
     // 设置Token
-    this.tokenSrv.set({ token });
+    if (token) {
+      this.tokenSrv.set({ token });
+    } else {
+      this.tokenSrv.clear();
+    }
     // 刷新用户信息
-    this.refreshUser().subscribe();
+    return this.refreshUser();
   }
 
   /** 刷新用户信息 */
@@ -99,8 +100,6 @@ export class IdentityService {
       if (!res || res === {}) {
         this.settingSrv.setUser({});
         this.aclSrv.setRole([]);
-        // 更新权限
-        this.osharp.getAuthInfo(true).subscribe();
 
         return {};
       }
@@ -110,8 +109,6 @@ export class IdentityService {
       this.settingSrv.setUser(user);
       // 更新角色
       this.aclSrv.setRole(user.roles);
-      // 更新权限
-      this.osharp.getAuthInfo(true).subscribe();
       return user;
     });
   }

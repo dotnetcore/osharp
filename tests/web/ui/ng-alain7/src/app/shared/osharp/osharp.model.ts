@@ -220,10 +220,10 @@ export class ResetPasswordDto {
   ConfirmPassword: string;
 }
 export class UserLoginInfoEx {
-  LoginProvider: string;
+  constructor(key: string) {
+    this.ProviderKey = key;
+  }
   ProviderKey: string;
-  ProviderDisplayName: string;
-  AvatarUrl: string;
   Email?: string;
   Password?: string;
 }

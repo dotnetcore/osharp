@@ -99,7 +99,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="loginInfo">第三方用户信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult<User>> LoginOAuth2(UserLoginInfo loginInfo);
+        Task<OperationResult> LoginOAuth2(UserLoginInfoEx loginInfo);
 
         /// <summary>
         /// 登录并绑定现有账号
@@ -111,9 +111,9 @@ namespace Liuliu.Demo.Identity
         /// <summary>
         /// 一键创建新用户并登录
         /// </summary>
-        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <param name="cacheId">第三方登录信息缓存编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult<User>> LoginOneKey(UserLoginInfoEx loginInfoEx);
+        Task<OperationResult<User>> LoginOneKey(string cacheId);
 
         /// <summary>
         /// 账号退出

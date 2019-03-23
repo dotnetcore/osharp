@@ -123,7 +123,7 @@ export class OsharpACLService {
   }
 
   /**
-   * 当前用户是否有对应角色，其实 `number` 表示Ability
+   * 当前用户是否有对应的操作权限，osharp的功能点需以 `Root.` 开头
    *
    * - 当 `full: true` 或参数 `null` 时返回 `true`
    * - 若使用 `ACLType` 参数，可以指定 `mode` 校验模式
@@ -133,7 +133,6 @@ export class OsharpACLService {
       return true;
     }
 
-    console.log(this.abilities);
     let t: ACLType = this.parseACLType(roleOrAbility);
 
     if (t.role) {

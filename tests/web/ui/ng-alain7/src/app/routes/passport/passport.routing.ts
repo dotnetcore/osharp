@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent, data: { title: '激活注册邮箱', titleI18n: "app.passport.confirm-email" } },
   { path: 'forgot-password', component: ForgotPasswordComponent, data: { title: '忘记密码', titleI18n: "app.passport.forgot-password" } },
   { path: 'reset-password', component: ResetPasswordComponent, data: { title: '重置密码', titleI18n: "app.passport.reset-password" } },
-  { path: 'oauth-callback', component: OauthCallbackComponent, data: { title: '第三方登录', titleI18n: "app.passport.oauth-callback" } },
+  { path: 'oauth-callback', component: OauthCallbackComponent, data: { title: '第三方登录', titleI18n: "app.passport.oauth" } },
   { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: "app.passport.lock" } }
 ];
 

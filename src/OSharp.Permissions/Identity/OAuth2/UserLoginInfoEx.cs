@@ -44,5 +44,14 @@ namespace OSharp.Identity.OAuth2
         /// </summary>
         public string RegisterIp { get; set; }
 
+        /// <summary>
+        /// 获取或设置 登录账号
+        /// </summary>
+        public string Account { get; set; }
+
+        /// <summary>
+        /// 获取或设置 登录密码
+        /// </summary>
+        public string Password { get; set; }
     }
 }

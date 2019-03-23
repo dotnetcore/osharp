@@ -88,7 +88,7 @@ namespace OSharp.Identity.OAuth2.QQ
         }
 
         //Convert to JSON
-        private static string 企鹅的返回不拘一格传入这里统一转换为JSON(string text)
+        private string 企鹅的返回不拘一格传入这里统一转换为JSON(string text)
         {
             /*
              * 为什么有个 callback() 包裹; 
@@ -112,6 +112,7 @@ namespace OSharp.Identity.OAuth2.QQ
             {
                 return "{\"" + text.Replace("=", "\":\"").Replace("&", "\",\"") + "\"}";
             }
+            Logger.LogError($"未从JSON“{text}”中获取到有效的信息");
             return "{}";
         }
 

@@ -269,11 +269,13 @@ namespace Liuliu.Demo.Web.Controllers
             // 登录不成功，将用户信息返回前端，让用户选择绑定现有账号还是创建新账号
             if (!result.Succeeded)
             {
-                url = $"/#/passport/oauth-callback?data={loginInfo.ToJsonString().ToUrlEncode()}";
+                string cacheId = (string)result.Data;
+                loginInfo.ProviderKey = cacheId;
+                url = $"/#/passport/oauth-callback?type={loginInfo.LoginProvider}&id={cacheId}&name={loginInfo.ProviderDisplayName?.ToUrlEncode()}&avatar={loginInfo.AvatarUrl?.ToUrlEncode()}";
                 return Redirect(url);
             }
             Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
-            string token = await CreateJwtToken(result.Data);
+            string token = await CreateJwtToken((User)result.Data);
             url = $"/#/passport/oauth-callback?token={token}";
             return Redirect(url);
         }
@@ -289,8 +291,16 @@ namespace Liuliu.Demo.Web.Controllers
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
             OperationResult<User> result = await _identityContract.LoginBind(loginInfo);
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
+            unitOfWork.Commit();
+            if (!result.Succeeded)
+            {
+                return result.ToAjaxResult();
+            }
 
-            return null;
+            User user = result.Data;
+            string token = await CreateJwtToken(user);
+            return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
         /// <summary>
@@ -302,7 +312,7 @@ namespace Liuliu.Demo.Web.Controllers
         public async Task<AjaxResult> LoginOneKey(UserLoginInfoEx loginInfo)
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
-            OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo);
+            OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo.ProviderKey);
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
             unitOfWork.Commit();
 

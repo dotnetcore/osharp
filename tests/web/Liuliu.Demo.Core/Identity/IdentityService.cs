@@ -22,6 +22,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Caching.Distributed;
+
+using OSharp.Caching;
+using OSharp.Json;
+
 
 namespace Liuliu.Demo.Identity
 {
@@ -36,6 +41,7 @@ namespace Liuliu.Demo.Identity
         private readonly SignInManager<User> _signInManager;
         private readonly IRepository<UserDetail, int> _userDetailRepository;
         private readonly IRepository<UserLogin, Guid> _userLoginRepository;
+        private readonly IDistributedCache _cache;
         private readonly UserManager<User> _userManager;
         private readonly IRepository<User, int> _userRepository;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
@@ -53,7 +59,8 @@ namespace Liuliu.Demo.Identity
             IRepository<Role, int> roleRepository,
             IRepository<UserRole, Guid> userRoleRepository,
             IRepository<UserDetail, int> userDetailRepository,
-            IRepository<UserLogin, Guid> userLoginRepository)
+            IRepository<UserLogin, Guid> userLoginRepository,
+            IDistributedCache cache)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -65,6 +72,7 @@ namespace Liuliu.Demo.Identity
             _userRoleRepository = userRoleRepository;
             _userDetailRepository = userDetailRepository;
             _userLoginRepository = userLoginRepository;
+            _cache = cache;
         }
 
         /// <summary>
@@ -118,7 +126,7 @@ namespace Liuliu.Demo.Identity
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
         }
-
+        
         /// <summary>
         /// 使用账号登录
         /// </summary>
@@ -157,16 +165,17 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="loginInfo">第三方用户信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult<User>> LoginOAuth2(UserLoginInfo loginInfo)
+        public async Task<OperationResult> LoginOAuth2(UserLoginInfoEx loginInfo)
         {
             SignInResult result = await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, true);
             if (!result.Succeeded)
             {
-                return new OperationResult<User>(OperationResultType.Error, "登录失败");
+                string cacheId = await SetLoginInfoEx(loginInfo);
+                return new OperationResult(OperationResultType.Error, "登录失败", cacheId);
             }
 
             User user = await _userManager.FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
-            return new OperationResult<User>(OperationResultType.Success, "登录成功", user);
+            return new OperationResult(OperationResultType.Success, "登录成功", user);
         }
 
         /// <summary>
@@ -176,16 +185,40 @@ namespace Liuliu.Demo.Identity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult<User>> LoginBind(UserLoginInfoEx loginInfoEx)
         {
-            throw new NotImplementedException();
+            UserLoginInfoEx existLoginInfoEx = await GetLoginInfoEx(loginInfoEx.ProviderKey);
+            if (existLoginInfoEx == null)
+            {
+                return new OperationResult<User>(OperationResultType.Error, "无法找到相应的第三方登录信息");
+            }
+
+            LoginDto loginDto = new LoginDto() { Account = loginInfoEx.Account, Password = loginInfoEx.Password };
+            OperationResult<User> loginResult = await Login(loginDto);
+            if (!loginResult.Succeeded)
+            {
+                return loginResult;
+            }
+
+            User user = loginResult.Data;
+            IdentityResult result = await CreateOrUpdateUserLogin(user, existLoginInfoEx);
+            if (!result.Succeeded)
+            {
+                return result.ToOperationResult(user);
+            }
+            return new OperationResult<User>(OperationResultType.Success, "登录并绑定账号成功", user);
         }
 
         /// <summary>
         /// 一键创建新用户并登录
         /// </summary>
-        /// <param name="loginInfoEx">第三方登录信息</param>
+        /// <param name="cacheId">第三方登录信息缓存编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual async Task<OperationResult<User>> LoginOneKey(UserLoginInfoEx loginInfoEx)
+        public virtual async Task<OperationResult<User>> LoginOneKey(string cacheId)
         {
+            UserLoginInfoEx loginInfoEx = await GetLoginInfoEx(cacheId);
+            if (loginInfoEx == null)
+            {
+                return new OperationResult<User>(OperationResultType.Error, "无法找到相应的第三方登录信息");
+            }
             IdentityResult result;
             User user = await _userManager.FindByLoginAsync(loginInfoEx.LoginProvider, loginInfoEx.ProviderKey);
             if (user == null)
@@ -209,22 +242,31 @@ namespace Liuliu.Demo.Identity
                 }
             }
 
+            result = await CreateOrUpdateUserLogin(user, loginInfoEx);
+            if (!result.Succeeded)
+            {
+                return result.ToOperationResult(user);
+            }
+            return new OperationResult<User>(OperationResultType.Success, "第三方用户一键登录成功", user);
+        }
+
+        private async Task<IdentityResult> CreateOrUpdateUserLogin(User user, UserLoginInfoEx loginInfoEx)
+        {
+            if (string.IsNullOrEmpty(user.HeadImg) && !string.IsNullOrEmpty(loginInfoEx.AvatarUrl))
+            {
+                user.HeadImg = loginInfoEx.AvatarUrl;
+            }
             UserLogin userLogin = _userLoginRepository.GetFirst(m =>
                 m.LoginProvider == loginInfoEx.LoginProvider && m.ProviderKey == loginInfoEx.ProviderKey);
             if (userLogin == null)
             {
-                result = await _userManager.AddLoginAsync(user, loginInfoEx);
-                if (!result.Succeeded)
-                {
-                    return result.ToOperationResult(user);
-                }
+                return await _userManager.AddLoginAsync(user, loginInfoEx);
             }
-            else
-            {
-                userLogin.UserId = user.Id;
-                await _userLoginRepository.UpdateAsync(userLogin);
-            }
-            return new OperationResult<User>(OperationResultType.Success, "第三方用户一键登录成功", user);
+
+            userLogin.UserId = user.Id;
+            await _userLoginRepository.UpdateAsync(userLogin);
+
+            return IdentityResult.Success;
         }
 
         /// <summary>
@@ -303,6 +345,20 @@ namespace Liuliu.Demo.Identity
             }
             return new OperationResult<User>(OperationResultType.Error,
                 $"用户名或密码错误，剩余 {_userManager.Options.Lockout.MaxFailedAccessAttempts - user.AccessFailedCount} 次机会");
+        }
+
+        private async Task<UserLoginInfoEx> GetLoginInfoEx(string cacheId)
+        {
+            string key = $"Identity_UserLoginInfoEx_{cacheId}";
+            return await _cache.GetAsync<UserLoginInfoEx>(key);
+        }
+
+        private async Task<string> SetLoginInfoEx(UserLoginInfoEx loginInfo)
+        {
+            string cacheId = Guid.NewGuid().ToString("N");
+            string key = $"Identity_UserLoginInfoEx_{cacheId}";
+            await _cache.SetAsync(key, loginInfo, 60 * 5);
+            return cacheId;
         }
     }
 }
