@@ -240,8 +240,6 @@ namespace Liuliu.Demo.Web.Controllers
 
         /// <summary>
         /// OAuth2登录回调
-        /// todo: 登录成功直接返回Token
-        /// todo: 如果登录不成功，把第三方信息返回到前端，由用户选择绑定现有账号还是创建新账号
         /// </summary>
         /// <param name="returnUrl">登录成功返回URL</param>
         /// <param name="remoteError">远程错误信息</param>
@@ -325,7 +323,7 @@ namespace Liuliu.Demo.Web.Controllers
             string token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
-
+        
         private async Task<string> CreateJwtToken(User user)
         {
             //在线用户缓存

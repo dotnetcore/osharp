@@ -37,13 +37,11 @@ namespace Liuliu.Demo.Identity
     {
         private readonly IEventBus _eventBus;
         private readonly RoleManager<Role> _roleManager;
-        private readonly IRepository<Role, int> _roleRepository;
         private readonly SignInManager<User> _signInManager;
         private readonly IRepository<UserDetail, int> _userDetailRepository;
         private readonly IRepository<UserLogin, Guid> _userLoginRepository;
         private readonly IDistributedCache _cache;
         private readonly UserManager<User> _userManager;
-        private readonly IRepository<User, int> _userRepository;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly ILogger<IdentityService> _logger;
 
@@ -66,8 +64,6 @@ namespace Liuliu.Demo.Identity
             _roleManager = roleManager;
             _signInManager = signInManager;
             _eventBus = eventBus;
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _logger = loggerFactory.CreateLogger<IdentityService>();
             _userRoleRepository = userRoleRepository;
             _userDetailRepository = userDetailRepository;

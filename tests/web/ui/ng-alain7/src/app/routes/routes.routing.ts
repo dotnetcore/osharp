@@ -20,6 +20,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, canActivate: [ACLGuard], data: { title: '仪表盘', titleI18n: "menu.nav.home", guard: 'Root.Admin.Dashboard' } },
+      { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       // 业务子模块
       { path: 'identity', loadChildren: './identity/identity.module#IdentityModule', canActivateChild: [ACLGuard], data: { guard: 'Root.Admin.Identity' } },

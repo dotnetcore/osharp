@@ -6,5 +6,9 @@
   "/signin-": {
     "target": "http://localhost:7001",
     "secure": false
+  },
+  "/upload-files": {
+    "target": "http://localhost:7001",
+    "secure": false
   }
 }
