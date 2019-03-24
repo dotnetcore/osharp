@@ -430,6 +430,8 @@ namespace Liuliu.Demo.Web.Migrations
                     LoginProvider = table.Column<string>(nullable: true),
                     ProviderKey = table.Column<string>(nullable: true),
                     ProviderDisplayName = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(nullable: true),
+                    CreatedTime = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -531,7 +533,7 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(2019, 3, 22, 23, 24, 39, 946, DateTimeKind.Local).AddTicks(3333), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
+                values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(2019, 3, 24, 15, 31, 48, 570, DateTimeKind.Local).AddTicks(642), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditEntity_OperationId",

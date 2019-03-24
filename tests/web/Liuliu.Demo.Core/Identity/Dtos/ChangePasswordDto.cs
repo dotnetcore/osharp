@@ -15,11 +15,6 @@ namespace Liuliu.Demo.Identity.Dtos
     public class ChangePasswordDto
     {
         /// <summary>
-        /// 获取或设置 用户编号
-        /// </summary>
-        public int UserId { get; set; }
-
-        /// <summary>
         /// 获取或设置 旧密码
         /// </summary>
         public string OldPassword { get; set; }

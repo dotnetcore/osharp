@@ -102,7 +102,7 @@ namespace Liuliu.Demo.Web.Migrations
                         {
                             Id = 1,
                             ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
-                            CreatedTime = new DateTime(2019, 3, 22, 23, 24, 39, 946, DateTimeKind.Local).AddTicks(3333),
+                            CreatedTime = new DateTime(2019, 3, 24, 15, 31, 48, 570, DateTimeKind.Local).AddTicks(642),
                             IsAdmin = true,
                             IsDefault = false,
                             IsLocked = false,
@@ -235,6 +235,10 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Avatar");
+
+                    b.Property<DateTime>("CreatedTime");
 
                     b.Property<string>("LoginProvider");
 

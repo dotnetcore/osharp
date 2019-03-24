@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
 
-using Microsoft.AspNetCore.Identity;
-
 using OSharp.Data;
 using OSharp.Identity.OAuth2;
 
@@ -78,6 +76,22 @@ namespace Liuliu.Demo.Identity
 
         #endregion
 
+        #region 用户登录信息业务
+
+        /// <summary>
+        /// 获取 用户登录信息查询数据集
+        /// </summary>
+        IQueryable<UserLogin> UserLogins { get; }
+
+        /// <summary>
+        /// 删除实体信息信息
+        /// </summary>
+        /// <param name="ids">要删除的实体信息编号</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> DeleteUserLogins(params Guid[] ids);
+
+        #endregion
+
         #region 身份认证
 
         /// <summary>
@@ -123,5 +137,6 @@ namespace Liuliu.Demo.Identity
         Task<OperationResult> Logout(int userId);
 
         #endregion
+
     }
 }

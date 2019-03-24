@@ -22,7 +22,6 @@ export class ProfilePasswordComponent implements OnInit {
     let user = this.settings.user;
     this.schema = {
       properties: {
-        UserId: { type: 'number', default: user.id, ui: { hidden: true } },
         OldPassword: { title: '旧密码', type: 'string', description: '初次设置密码时，旧密码留空', ui: { widget: 'custom', spanLabel: 4, } },
         NewPassword: { title: '新密码', type: 'string', minLength: 6, description: '密码至少6位，且包含字母数字', ui: { widget: 'custom', spanLabel: 4, } },
         ConfirmNewPassword: {

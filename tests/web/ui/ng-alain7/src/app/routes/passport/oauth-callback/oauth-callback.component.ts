@@ -73,6 +73,7 @@ export class OauthCallbackComponent implements OnInit {
     let token = this.osharp.getHashURLSearchParams(url, 'token');
     if (token) {
       this.identity.loginEnd(token).subscribe(() => {
+        this.message.success("第三方登录成功");
         this.startupSrv.load().then(() => {
           url = this.tokenService.referrer && this.tokenService.referrer.url || '/';
           if (url.includes('/passport')) url = '/';
@@ -89,7 +90,7 @@ export class OauthCallbackComponent implements OnInit {
   loginBind(value: UserLoginInfoEx) {
     this.identity.loginBind(value).then(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.message.success("用户登录成功");
+        this.message.success("登录并绑定成功");
         this.startupSrv.load().then(() => {
           let url = this.tokenService.referrer && this.tokenService.referrer.url || '/';
           if (url.includes('/passport')) url = '/';
@@ -104,7 +105,7 @@ export class OauthCallbackComponent implements OnInit {
   loginOneKey(value: UserLoginInfoEx) {
     this.identity.loginOneKey(value).then(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.message.success("用户登录成功");
+        this.message.success("创建用户并登录成功");
         this.startupSrv.load().then(() => {
           let url = this.tokenService.referrer && this.tokenService.referrer.url || '/';
           if (url.includes('/passport')) url = '/';

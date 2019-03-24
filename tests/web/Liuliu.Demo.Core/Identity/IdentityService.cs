@@ -20,6 +20,7 @@ using OSharp.Identity;
 using OSharp.Identity.OAuth2;
 using System;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Distributed;
@@ -41,6 +42,7 @@ namespace Liuliu.Demo.Identity
         private readonly IRepository<UserDetail, int> _userDetailRepository;
         private readonly IRepository<UserLogin, Guid> _userLoginRepository;
         private readonly IDistributedCache _cache;
+        private readonly IPrincipal _currentUser;
         private readonly UserManager<User> _userManager;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly ILogger<IdentityService> _logger;
@@ -53,12 +55,11 @@ namespace Liuliu.Demo.Identity
             SignInManager<User> signInManager,
             IEventBus eventBus,
             ILoggerFactory loggerFactory,
-            IRepository<User, int> userRepository,
-            IRepository<Role, int> roleRepository,
             IRepository<UserRole, Guid> userRoleRepository,
             IRepository<UserDetail, int> userDetailRepository,
             IRepository<UserLogin, Guid> userLoginRepository,
-            IDistributedCache cache)
+            IDistributedCache cache,
+            IPrincipal currentUser)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -69,6 +70,7 @@ namespace Liuliu.Demo.Identity
             _userDetailRepository = userDetailRepository;
             _userLoginRepository = userLoginRepository;
             _cache = cache;
+            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -85,14 +87,6 @@ namespace Liuliu.Demo.Identity
         public IQueryable<User> Users
         {
             get { return _userManager.Users; }
-        }
-
-        /// <summary>
-        /// 获取 第三方登录用户信息查询数据集
-        /// </summary>
-        public IQueryable<UserLogin> UserLogins
-        {
-            get { return _userLoginRepository.Query(); }
         }
 
         /// <summary>
@@ -256,12 +250,18 @@ namespace Liuliu.Demo.Identity
                 m.LoginProvider == loginInfoEx.LoginProvider && m.ProviderKey == loginInfoEx.ProviderKey);
             if (userLogin == null)
             {
-                return await _userManager.AddLoginAsync(user, loginInfoEx);
+                userLogin = new UserLogin()
+                {
+                    LoginProvider = loginInfoEx.LoginProvider, ProviderKey = loginInfoEx.ProviderKey,
+                    ProviderDisplayName = loginInfoEx.ProviderDisplayName, Avatar = loginInfoEx.AvatarUrl, UserId = user.Id
+                };
+                await _userLoginRepository.InsertAsync(userLogin);
             }
-
-            userLogin.UserId = user.Id;
-            await _userLoginRepository.UpdateAsync(userLogin);
-
+            else
+            {
+                userLogin.UserId = user.Id;
+                await _userLoginRepository.UpdateAsync(userLogin);
+            }
             return IdentityResult.Success;
         }
 

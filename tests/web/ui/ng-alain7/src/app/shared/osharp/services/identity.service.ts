@@ -93,6 +93,14 @@ export class IdentityService {
     return this.refreshUser();
   }
 
+  removeOAuth2(id: string) {
+    let url = 'api/identity/RemoveOAuth2';
+    return this.http.post<AjaxResult>(url, [id]).map(res => {
+      this.osharp.ajaxResult(res);
+      return res;
+    }).toPromise();
+  }
+
   /** 刷新用户信息 */
   refreshUser(): Observable<User> {
     let url = "api/identity/profile";
@@ -100,7 +108,6 @@ export class IdentityService {
       if (!res || res === {}) {
         this.settingSrv.setUser({});
         this.aclSrv.setRole([]);
-
         return {};
       }
       let user: User = {

@@ -26,7 +26,6 @@ export class ProfileEditComponent implements OnInit {
     this.headImgUrl = user.avatar;
     this.schema = {
       properties: {
-        Id: { type: 'number', default: user.id, readOnly: true, ui: { hidden: true } },
         UserName: { title: '用户名', type: 'string', default: user.name, readOnly: !userNameEdit, ui: { spanLabel: 4, placeholder: '可由字母、数字、下划线、点组成，全局唯一' } },
         NickName: { title: '昵称', type: 'string', default: user.nickName, description: '昵称用于显示名称', ui: { spanLabel: 4, placeholder: '推荐使用中文' } },
         Email: { title: '电子邮箱', type: 'string', default: user.email, description: '邮箱是接收通知，重置密码的主要途径', ui: { spanLabel: 4, placeholder: '邮箱格式为：xxx@xxx.xxx' } },

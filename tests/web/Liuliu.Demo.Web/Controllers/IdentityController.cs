@@ -35,8 +35,11 @@ using OSharp.Secutiry.Claims;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
+using OSharp.Filter;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -279,6 +282,25 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         /// <summary>
+        /// 读取用户列表信息
+        /// </summary>
+        /// <returns>用户列表信息</returns>
+        [HttpPost]
+        [Logined]
+        [ModuleInfo]
+        [Description("读取OAuth2")]
+        public PageData<UserLoginOutputDto> ReadOAuth2([FromServices]IFilterService filterService, PageRequest request)
+        {
+            int userId = User.Identity.GetUserId<int>();
+            request.FilterGroup.AddRule("UserId", userId);
+            request.AddDefaultSortCondition(new SortCondition("LoginProvider"));
+
+            Expression<Func<UserLogin, bool>> exp = filterService.GetExpression<UserLogin>(request.FilterGroup);
+            var page = _identityContract.UserLogins.ToPage<UserLogin, UserLoginOutputDto>(exp, request.PageCondition);
+            return page.ToPageData();
+        }
+
+        /// <summary>
         /// 登录并绑定账号
         /// </summary>
         [HttpPost]
@@ -345,6 +367,20 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         /// <summary>
+        /// 解除第三方登录
+        /// </summary>
+        [HttpPost]
+        [Logined]
+        [ModuleInfo]
+        [Description("解除第三方登录")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        public async Task<AjaxResult> RemoveOAuth2(Guid[] ids)
+        {
+            OperationResult result = await _identityContract.DeleteUserLogins(ids);
+            return result.ToAjaxResult();
+        }
+
+        /// <summary>
         /// 用户登出
         /// </summary>
         /// <returns>JSON操作结果</returns>
@@ -391,7 +427,9 @@ namespace Liuliu.Demo.Web.Controllers
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         public async Task<AjaxResult> ProfileEdit(ProfileEditDto dto)
         {
-            User user = await _userManager.FindByIdAsync(dto.Id.ToString());
+            int userId = User.Identity.GetUserId<int>();
+            dto.Id = userId;
+            User user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return new AjaxResult("用户不存在", AjaxResultType.Error);
@@ -486,7 +524,8 @@ namespace Liuliu.Demo.Web.Controllers
         {
             Check.NotNull(dto, nameof(dto));
 
-            User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+            int userId = User.Identity.GetUserId<int>();
+            User user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return new AjaxResult($"用户不存在", AjaxResultType.Error);
