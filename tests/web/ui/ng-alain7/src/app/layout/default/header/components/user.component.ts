@@ -9,13 +9,13 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
   <nz-dropdown nzPlacement="bottomRight">
     <div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown>
       <nz-avatar [nzSrc]="settings.user.avatar" nzSize="small" class="mr-sm"></nz-avatar>
-      {{settings.user.nickName || settings.user.name}}
+      {{settings.user['nickName'] || settings.user.name}}
     </div>
     <div nz-menu class="width-sm">
       <div nz-menu-item routerLink="/profile/"><i nz-icon type="user" class="mr-sm"></i>
         {{ 'menu.account.center' | translate }}
       </div>
-      <div nz-menu-item routerLink="/profile/settings"><i nz-icon type="setting" class="mr-sm"></i>
+      <div nz-menu-item routerLink="/profile/edit"><i nz-icon type="setting" class="mr-sm"></i>
         {{ 'menu.account.settings' | translate }}
       </div>
       <div nz-menu-item routerLink="/exception/trigger"><i nz-icon type="close-circle" class="mr-sm"></i>

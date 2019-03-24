@@ -1,6 +1,7 @@
 import { PageRequest, PageCondition, SortCondition, ListSortDirection } from '../osharp.model';
-import { STColumn, STReq, STRes, STComponent, STChange, STPage } from '@delon/abc';
+import { STColumn, STReq, STRes, STComponent, STChange, STPage, STRequestOptions, STData } from '@delon/abc';
 import { ViewChild, Injector, OnChanges, SimpleChanges } from '@angular/core';
+import { OsharpService } from './osharp.service';
 
 export abstract class STComponentBase {
 
@@ -12,7 +13,10 @@ export abstract class STComponentBase {
   page: STPage;
   @ViewChild('st') st: STComponent;
 
-  constructor() { }
+  osharp: OsharpService;
+  constructor(injector: Injector) {
+    this.osharp = injector.get(OsharpService);
+  }
 
   protected InitBase() {
     this.request = new PageRequest();
@@ -29,38 +33,44 @@ export abstract class STComponentBase {
 
   protected GetSTReq(): STReq {
     let req: STReq = {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: this.request, allInBody: true, process: opt => {
-        if (opt.body.PageCondition) {
-          let page: PageCondition = opt.body.PageCondition;
-          page.PageIndex = opt.body.pi;
-          page.PageSize = opt.body.ps;
-          if (opt.body.sort) {
-            page.SortConditions = [];
-            let sorts = opt.body.sort.split('-');
-            sorts.forEach((item: string) => {
-              let sort = new SortCondition();
-              let num = item.lastIndexOf('.');
-              sort.SortField = item.substr(0, num);
-              sort.ListSortDirection = item.substr(num + 1) === 'ascend' ? ListSortDirection.Ascending : ListSortDirection.Descending;
-              page.SortConditions.push(sort);
-            });
-          } else {
-            page.SortConditions = [];
-          }
-        }
-        return opt;
-      }
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: this.request, allInBody: true, process: this.RequestProcess
     };
     return req;
   }
 
   protected GetSTRes(): STRes {
-    let res: STRes = { reName: { list: 'Rows', total: 'Total' } };
+    let res: STRes = { reName: { list: 'Rows', total: 'Total' }, process: this.ResponseDataProcess };
     return res;
   }
 
   protected GetSTPage(): STPage {
     let page: STPage = { showSize: true, showQuickJumper: true, toTop: true, toTopOffset: 0 };
     return page;
+  }
+
+  protected RequestProcess(opt: STRequestOptions): STRequestOptions {
+    if (opt.body.PageCondition) {
+      let page: PageCondition = opt.body.PageCondition;
+      page.PageIndex = opt.body.pi;
+      page.PageSize = opt.body.ps;
+      if (opt.body.sort) {
+        page.SortConditions = [];
+        let sorts = opt.body.sort.split('-');
+        sorts.forEach((item: string) => {
+          let sort = new SortCondition();
+          let num = item.lastIndexOf('.');
+          sort.SortField = item.substr(0, num);
+          sort.ListSortDirection = item.substr(num + 1) === 'ascend' ? ListSortDirection.Ascending : ListSortDirection.Descending;
+          page.SortConditions.push(sort);
+        });
+      } else {
+        page.SortConditions = [];
+      }
+    }
+    return opt;
+  }
+
+  protected ResponseDataProcess(data: STData[]): STData[] {
+    return data;
   }
 }

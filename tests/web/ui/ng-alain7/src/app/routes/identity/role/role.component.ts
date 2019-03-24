@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
 import { STColumn } from '@delon/abc';
 
@@ -9,8 +9,8 @@ import { STColumn } from '@delon/abc';
 })
 export class RoleComponent extends STComponentBase implements OnInit {
 
-  constructor() {
-    super();
+  constructor(injector: Injector) {
+    super(injector);
     this.url = 'api/admin/role/read';
   }
 

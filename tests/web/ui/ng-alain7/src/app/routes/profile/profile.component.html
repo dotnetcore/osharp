@@ -1,4 +1,4 @@
-<page-header [fixed]="false" [autoBreadcrumb]="false" [content]="content">
+<page-header [fixed]="false" [autoBreadcrumb]="false" [content]="content" [tab]="tab">
   <ng-template #content>
     <div class="content">
       <div class="avatar">
@@ -10,17 +10,10 @@
       </div>
     </div>
   </ng-template>
+  <ng-template #tab>
+    <nz-tabset [(nzSelectedIndex)]="pos">
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.text" (nzClick)="to(tab)"></nz-tab>
+    </nz-tabset>
+  </ng-template>
 </page-header>
-<nz-card>
-  <nz-tabset [(nzSelectedIndex)]="index">
-    <nz-tab nzTitle="基本信息">
-      <app-profile-edit></app-profile-edit>
-    </nz-tab>
-    <nz-tab nzTitle="修改密码">
-      <app-profile-password></app-profile-password>
-    </nz-tab>
-    <nz-tab nzTitle="第三方账号绑定">
-      <app-profile-oauth2></app-profile-oauth2>
-    </nz-tab>
-  </nz-tabset>
-</nz-card>
+<router-outlet></router-outlet>

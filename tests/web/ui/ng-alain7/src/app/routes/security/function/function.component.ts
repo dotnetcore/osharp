@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
 import { STColumn } from '@delon/abc';
 
@@ -9,8 +9,8 @@ import { STColumn } from '@delon/abc';
 })
 export class FunctionComponent extends STComponentBase implements OnInit {
 
-  constructor() {
-    super();
+  constructor(injector: Injector) {
+    super(injector);
     this.url = 'api/admin/function/read';
   }
 
@@ -20,6 +20,14 @@ export class FunctionComponent extends STComponentBase implements OnInit {
 
   protected GetSTColumns(): STColumn[] {
     return [
+      {
+        title: '操作', fixed: 'left', width: 60, buttons: [{
+          text: '操作', children: [{
+            text: '修改', icon: 'edit', click: (row) => this.osharp.info(row.Name)
+          }]
+        }]
+      },
+      { title: '选择', index: 'Id', type: 'checkbox' },
       { title: '名称', index: 'Name', fixed: 'left', width: 270, sort: true },
       { title: '功能类型', index: 'AccessType', sort: true },
       { title: '操作审计', index: 'AuditOperationEnabled', sort: true, type: "yn" },

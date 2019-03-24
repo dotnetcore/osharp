@@ -9,6 +9,7 @@ import { ProfileOauth2Component } from './oauth2/oauth2.component';
 const routes: Routes = [
   {
     path: '', component: ProfileComponent, data: { title: '个人中心', reuse: true }, children: [
+      { path: '', redirectTo: 'edit', pathMatch: 'full' },
       { path: 'edit', component: ProfileEditComponent, data: { title: '基本信息', reuse: true } },
       { path: 'password', component: ProfilePasswordComponent, data: { title: '修改密码', reuse: true } },
       { path: 'settings', component: ProfileSettingsComponent, data: { title: '个人设置', reuse: true } },

@@ -12,8 +12,8 @@ import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
 })
 export class ProfileOauth2Component extends STComponentBase implements OnInit {
 
-  constructor(private identity: IdentityService, private modal: NzModalService) {
-    super();
+  constructor(private identity: IdentityService, private modal: NzModalService, injector: Injector) {
+    super(injector);
     this.url = 'api/identity/ReadOAuth2';
   }
 
