@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { SettingsService, _HttpClient } from '@delon/theme';
 import { ACLService } from '@delon/acl';
-import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto, UserLoginInfoEx } from '@shared/osharp/osharp.model';
+import { LoginDto, AjaxResult, AjaxResultType, RegisterDto, ConfirmEmailDto, User, SendMailDto, AdResult, ResetPasswordDto, UserLoginInfoEx, ChangePasswordDto, ProfileEditDto } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { Observable, of } from 'rxjs';
 import { ReuseTabService } from '@delon/abc';
@@ -185,17 +185,17 @@ export class IdentityService {
     }).toPromise();
   }
 
-  profileEdit(value) {
+  profileEdit(dto: ProfileEditDto) {
     let url = 'api/identity/ProfileEdit';
-    return this.http.post<AjaxResult>(url, value).subscribe(res => {
+    return this.http.post<AjaxResult>(url, dto).subscribe(res => {
       this.osharp.ajaxResult(res);
       this.refreshUser().subscribe();
     });
   }
 
-  changePassword(value) {
+  changePassword(dto: ChangePasswordDto) {
     let url = 'api/identity/ChangePassword';
-    return this.http.post<AjaxResult>(url, value).subscribe(res => {
+    return this.http.post<AjaxResult>(url, dto).subscribe(res => {
       this.osharp.ajaxResult(res);
     });
   }

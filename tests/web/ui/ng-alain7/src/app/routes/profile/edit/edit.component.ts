@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SFSchema } from '@delon/form';
 import { SettingsService, _HttpClient } from '@delon/theme';
 import { UploadChangeParam } from 'ng-zorro-antd';
-import { AjaxResult } from '@shared/osharp/osharp.model';
+import { AjaxResult, ProfileEditDto } from '@shared/osharp/osharp.model';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
     let user = this.settings.user;
-    let userNameEdit = ['QQ-', 'Microsoft-'].some(m => user.name.startsWith(m));
+    let userNameEdit = ['QQ_', 'Microsoft_'].some(m => user.name.startsWith(m));
     this.headImgUrl = user.avatar;
     this.schema = {
       properties: {
@@ -30,6 +30,7 @@ export class ProfileEditComponent implements OnInit {
         UserName: { title: '用户名', type: 'string', default: user.name, readOnly: !userNameEdit, ui: { spanLabel: 4, placeholder: '可由字母、数字、下划线、点组成，全局唯一' } },
         NickName: { title: '昵称', type: 'string', default: user.nickName, description: '昵称用于显示名称', ui: { spanLabel: 4, placeholder: '推荐使用中文' } },
         Email: { title: '电子邮箱', type: 'string', default: user.email, description: '邮箱是接收通知，重置密码的主要途径', ui: { spanLabel: 4, placeholder: '邮箱格式为：xxx@xxx.xxx' } },
+        // TODO: 修改头像待优化，应能预览能裁剪
         HeadImg: {
           title: '头像', type: 'string', default: user.avatar, ui: {
             spanLabel: 4, widget: 'upload', action: 'api/common/UploadImage', resReName: 'Data', urlReName: 'Data', change: (args: UploadChangeParam) => {
@@ -44,7 +45,7 @@ export class ProfileEditComponent implements OnInit {
     };
   }
 
-  submit(value: any) {
+  submit(value: ProfileEditDto) {
     value.HeadImg = this.headImgUrl;
     this.identity.profileEdit(value);
   }

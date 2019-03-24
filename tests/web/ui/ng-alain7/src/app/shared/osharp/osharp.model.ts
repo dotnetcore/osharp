@@ -202,7 +202,7 @@ export class ChangePasswordDto {
   UserId: string;
   OldPassword: string;
   NewPassword: string;
-  ConfirmPassword: string;
+  ConfirmNewPassword: string;
 }
 export class ConfirmEmailDto {
   UserId: string;
@@ -218,6 +218,13 @@ export class ResetPasswordDto {
   Token: string;
   NewPassword: string;
   ConfirmPassword: string;
+}
+export class ProfileEditDto {
+  Id: number;
+  UserName: string;
+  NickName: string;
+  Email?: string;
+  HeadImg?: string;
 }
 export class UserLoginInfoEx {
   constructor(key: string) {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SFSchema, CustomWidget } from '@delon/form';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 import { SettingsService } from '@delon/theme';
+import { ChangePasswordDto } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-profile-password',
@@ -22,10 +23,10 @@ export class ProfilePasswordComponent implements OnInit {
     this.schema = {
       properties: {
         UserId: { type: 'number', default: user.id, ui: { hidden: true } },
-        OldPassword: { title: '旧密码', type: 'string', ui: { widget: 'custom', spanLabel: 4, } },
-        NewPassword: { title: '新密码', type: 'string', minLength: 6, ui: { widget: 'custom', spanLabel: 4, } },
+        OldPassword: { title: '旧密码', type: 'string', description: '初次设置密码时，旧密码留空', ui: { widget: 'custom', spanLabel: 4, } },
+        NewPassword: { title: '新密码', type: 'string', minLength: 6, description: '密码至少6位，且包含字母数字', ui: { widget: 'custom', spanLabel: 4, } },
         ConfirmNewPassword: {
-          title: '确认密码', type: 'string', minLength: 6, ui: {
+          title: '确认密码', type: 'string', minLength: 6, description: '确认密码需与新密码一致', ui: {
             widget: 'custom', spanLabel: 4,
             validator: (value, prop, form) => form.value && value !== form.value.NewPassword ? [{ keyword: 'equalto', message: '两次输入的密码不一致' }] : []
           }
@@ -46,7 +47,7 @@ export class ProfilePasswordComponent implements OnInit {
     me.setValue(value);
   }
 
-  submit(value) {
+  submit(value: ChangePasswordDto) {
     this.identity.changePassword(value);
   }
 }
