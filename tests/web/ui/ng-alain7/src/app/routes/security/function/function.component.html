@@ -1,3 +1,6 @@
-<p>
-  function works!
-</p>
+<nz-card>
+  <div style="margin-bottom: 10px;">
+    <button nz-button (click)="st.reload()">刷新</button></div>
+  <st #st [data]="url" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize"
+   [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort></st>
+</nz-card>
