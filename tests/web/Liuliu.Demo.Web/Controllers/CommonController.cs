@@ -99,7 +99,6 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("上传图片")]
         public async Task<AjaxResult> UploadImage(IFormFile file)
         {
-            string host = "http://localhost:7001";
             string fileName = file.FileName;
             fileName = $"{Path.GetFileNameWithoutExtension(fileName)}-{DateTime.Now:MMddHHmmssff}{Path.GetExtension(fileName)}";
             string dir = Path.Combine(_environment.WebRootPath, "upload-files");
@@ -110,7 +109,7 @@ namespace Liuliu.Demo.Web.Controllers
                 await file.CopyToAsync(fs);
             }
 
-            return new AjaxResult("上传成功", AjaxResultType.Success, $"{host}/upload-files/{fileName}");
+            return new AjaxResult("上传成功", AjaxResultType.Success, $"upload-files/{fileName}");
         }
 
         /// <summary>

@@ -155,7 +155,7 @@ export class IdentityService {
     let url = 'api/identity/SendResetPasswordMail';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
-      if (res.Type != AjaxResultType.Success) {
+      if (res.Type !== AjaxResultType.Success) {
         result.type = 'error';
         result.title = '重置密码邮件发送失败';
         result.description = res.Content;
@@ -172,7 +172,7 @@ export class IdentityService {
     let url = 'api/identity/ResetPassword';
     return this.http.post<AjaxResult>(url, dto).map(res => {
       let result = new AdResult();
-      if (res.Type != AjaxResultType.Success) {
+      if (res.Type !== AjaxResultType.Success) {
         result.type = 'error';
         result.title = '登录密码重置失败';
         result.description = res.Content;
@@ -183,5 +183,20 @@ export class IdentityService {
       result.description = "登录密码重置成功，请使用新密码登录系统。";
       return result;
     }).toPromise();
+  }
+
+  profileEdit(value) {
+    let url = 'api/identity/ProfileEdit';
+    return this.http.post<AjaxResult>(url, value).subscribe(res => {
+      this.osharp.ajaxResult(res);
+      this.refreshUser().subscribe();
+    });
+  }
+
+  changePassword(value) {
+    let url = 'api/identity/ChangePassword';
+    return this.http.post<AjaxResult>(url, value).subscribe(res => {
+      this.osharp.ajaxResult(res);
+    });
   }
 }

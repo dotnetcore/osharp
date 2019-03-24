@@ -29,7 +29,7 @@ using OSharp.Extensions;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
 using OSharp.Identity.OAuth2;
-using OSharp.Json;
+using OSharp.Mapping;
 using OSharp.Net;
 using OSharp.Secutiry.Claims;
 using System;
@@ -323,7 +323,7 @@ namespace Liuliu.Demo.Web.Controllers
             string token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
-        
+
         private async Task<string> CreateJwtToken(User user)
         {
             //在线用户缓存
@@ -378,6 +378,28 @@ namespace Liuliu.Demo.Web.Controllers
             }
             OnlineUser onlineUser = HttpContext.RequestServices.GetService<IOnlineUserCache>()?.GetOrRefresh(User.Identity.Name);
             return onlineUser;
+        }
+
+        /// <summary>
+        /// 编辑用户资料
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Logined]
+        [ModuleInfo]
+        [Description("编辑用户资料")]
+        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        public async Task<AjaxResult> ProfileEdit(ProfileEditDto dto)
+        {
+            User user = await _userManager.FindByIdAsync(dto.Id.ToString());
+            if (user == null)
+            {
+                return new AjaxResult("用户不存在", AjaxResultType.Error);
+            }
+
+            user = dto.MapTo(user);
+            var result = await _userManager.UpdateAsync(user);
+            return result.ToOperationResult().ToAjaxResult();
         }
 
         /// <summary>
@@ -470,7 +492,9 @@ namespace Liuliu.Demo.Web.Controllers
                 return new AjaxResult($"用户不存在", AjaxResultType.Error);
             }
 
-            IdentityResult result = await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+            IdentityResult result = string.IsNullOrEmpty(dto.OldPassword)
+                ? await _userManager.AddPasswordAsync(user, dto.NewPassword)
+                : await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
             return result.ToOperationResult().ToAjaxResult();
         }
 

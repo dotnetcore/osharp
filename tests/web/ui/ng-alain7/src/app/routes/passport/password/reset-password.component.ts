@@ -38,7 +38,7 @@ export class ResetPasswordComponent implements OnInit {
         ConfirmPassword: {
           title: '确认密码', type: 'string', ui: {
             widget: 'custom', spanLabel: 6, spanControl: 16, grid: { xs: 24 },
-            validator: (value: any, formProperty: FormProperty, form: PropertyGroup) => form.value && value !== form.value.NewPassword ? [{ keyword: 'equalto', message: '两次输入的密码一致' }] : []
+            validator: (value: any, formProperty: FormProperty, form: PropertyGroup) => form.value && value !== form.value.NewPassword ? [{ keyword: 'equalto', message: '两次输入的密码不一致' }] : []
           }
         },
       },
