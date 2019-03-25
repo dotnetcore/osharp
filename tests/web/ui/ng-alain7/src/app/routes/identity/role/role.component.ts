@@ -11,7 +11,7 @@ export class RoleComponent extends STComponentBase implements OnInit {
 
   constructor(injector: Injector) {
     super(injector);
-    this.url = 'api/admin/role/read';
+    this.moduleName = 'role';
   }
 
   ngOnInit() {

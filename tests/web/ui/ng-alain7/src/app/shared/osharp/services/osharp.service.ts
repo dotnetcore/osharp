@@ -106,10 +106,10 @@ export class OsharpService {
    * @param array 数据节点集合
    * @param defaultText 转换失败时的默认文字
    */
-  valueToText(id: number, array: Array<ListNode>, defaultText: string = null) {
-    let text = defaultText == null ? id : defaultText;
+  valueToText(id: number, array: { id: number, text: string }[] | ListNode[], defaultText: string = null) {
+    let text = defaultText == null ? id.toString() : defaultText;
     array.forEach(item => {
-      if (item.id == id) {
+      if (item.id === id) {
         text = item.text;
         return false;
       }

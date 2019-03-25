@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { STColumn, STReq, STRes, STComponent } from '@delon/abc';
-import { PageRequest } from '@shared/osharp/osharp.model';
+import { Component, OnInit, Injector } from '@angular/core';
 import { IdentityService } from '@shared/osharp/services/identity.service';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
+import { NzModalService } from 'ng-zorro-antd';
+import { STComponentBase, } from '@shared/osharp/services/ng-alain.service';
+import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 
 @Component({
   selector: 'app-profile-oauth2',
@@ -14,14 +13,14 @@ export class ProfileOauth2Component extends STComponentBase implements OnInit {
 
   constructor(private identity: IdentityService, private modal: NzModalService, injector: Injector) {
     super(injector);
-    this.url = 'api/identity/ReadOAuth2';
   }
 
   ngOnInit() {
     super.InitBase();
+    this.readUrl = 'api/identity/ReadOAuth2';
   }
 
-  protected GetSTColumns(): STColumn[] {
+  protected GetSTColumns(): OsharpSTColumn[] {
     return [
       { title: '服务提供商', index: 'LoginProvider' },
       { title: '头像', index: 'Avatar', type: 'img', width: 50 },

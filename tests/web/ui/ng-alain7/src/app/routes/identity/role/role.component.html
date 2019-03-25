@@ -1,5 +1,5 @@
 <nz-card>
   <div style="margin-bottom: 10px;">
     <button nz-button (click)="st.reload()">刷新</button></div>
-  <st #st [data]="url" [columns]="columns" [req]="req" [res]="res" (change)="change($event)"></st>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" (change)="change($event)"></st>
 </nz-card>
