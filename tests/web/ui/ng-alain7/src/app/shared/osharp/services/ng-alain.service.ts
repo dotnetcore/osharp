@@ -2,7 +2,7 @@ import { PageRequest, PageCondition, SortCondition, ListSortDirection, AjaxResul
 import { STColumn, STReq, STRes, STComponent, STChange, STPage, STRequestOptions, STData, STError } from '@delon/abc';
 import { ViewChild, Injector } from '@angular/core';
 import { OsharpService } from './osharp.service';
-import { SFSchema, SFUISchema, SFSchemaEnumType, SFSchemaDefinition, SFUISchemaItem } from '@delon/form';
+import { SFSchema, SFUISchema, SFSchemaEnumType } from '@delon/form';
 import { _HttpClient } from '@delon/theme';
 import { NzModalComponent } from 'ng-zorro-antd';
 import { OsharpSTColumn } from './ng-alain.types';
@@ -162,7 +162,7 @@ export abstract class STComponentBase {
             case 'type':
               {
                 let val = column[key];
-                if (['link', 'img'].indexOf(val) > -1) {
+                if (['link', 'img', 'date'].indexOf(val) > -1) {
                   schema[key] = 'string';
                 } else if (['number', 'currency'].indexOf(val) > -1) {
                   schema[key] = 'number';
@@ -192,6 +192,12 @@ export abstract class STComponentBase {
     });
   }
 
+  create() {
+    this.editRow = {};
+    this.editTitle = "新增";
+    this.editModal.open();
+  }
+
   edit(row: STData) {
     if (!row) {
       return;
@@ -205,11 +211,23 @@ export abstract class STComponentBase {
     this.editModal.close();
   }
 
-  save(value: any) {
-    this.http.post<AjaxResult>(this.updateUrl, [value]).subscribe(result => {
+  save(value: STData) {
+    let url = value.Id ? this.updateUrl : this.createUrl;
+    this.http.post<AjaxResult>(url, [value]).subscribe(result => {
       this.osharp.ajaxResult(result, () => {
         this.st.reload();
         this.editModal.close();
+      });
+    });
+  }
+
+  delete(value: STData) {
+    if (!value) {
+      return;
+    }
+    this.http.post<AjaxResult>(this.deleteUrl, [value.Id]).subscribe(result => {
+      this.osharp.ajaxResult(result, () => {
+        this.st.reload();
       });
     });
   }
