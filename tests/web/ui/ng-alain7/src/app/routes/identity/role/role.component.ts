@@ -1,16 +1,14 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
-import { STColumn, STData } from '@delon/abc';
+import { STData } from '@delon/abc';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
-import { SFUISchema, SFSchema, CustomWidget } from '@delon/form';
-import { NzModalComponent, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
-import { List } from "linqts";
+import { SFUISchema } from '@delon/form';
+import { NzTreeNode } from 'ng-zorro-antd';
 import { ModalTreeComponent } from '../components/modal-tree/modal-tree.component';
 
 @Component({
   selector: 'app-identity-role',
-  templateUrl: './role.component.html',
-  styles: []
+  templateUrl: './role.component.html'
 })
 export class RoleComponent extends STComponentBase implements OnInit {
 
@@ -29,7 +27,7 @@ export class RoleComponent extends STComponentBase implements OnInit {
         title: '操作', fixed: 'left', width: 65, buttons: [{
           text: '操作', children: [
             { text: '编辑', icon: 'edit', acl: 'Root.Admin.Identity.Role.Update', iif: row => row.Updatable, click: row => this.edit(row) },
-            { text: '权限', icon: 'safety', acl: 'Root.Admin.Identity.Role.SetModules', click: row => this.permiss(row) },
+            { text: '权限', icon: 'safety', acl: 'Root.Admin.Identity.Role.SetModules', click: row => this.module(row) },
             { text: '删除', icon: 'delete', type: 'del', acl: 'Root.Admin.Identity.Role.Delete', iif: row => row.Deletable, click: row => this.delete(row) },
           ]
         }]
@@ -55,15 +53,15 @@ export class RoleComponent extends STComponentBase implements OnInit {
 
   // #region 权限设置
 
-  permissTitle: string;
+  moduleTitle: string;
   moduleTreeDataUrl: string;
-  @ViewChild("permissModal") permissModal: ModalTreeComponent;
+  @ViewChild("moduleModal") moduleModal: ModalTreeComponent;
 
-  private permiss(row: STData) {
+  private module(row: STData) {
     this.editRow = row;
-    this.permissTitle = `修改角色权限 - ${row.Name}`;
+    this.moduleTitle = `修改角色权限 - ${row.Name}`;
     this.moduleTreeDataUrl = `api/admin/module/ReadRoleModules?roleId=${row.Id}`;
-    this.permissModal.open();
+    this.moduleModal.open();
   }
 
   setModules(value: NzTreeNode[]) {
@@ -72,7 +70,7 @@ export class RoleComponent extends STComponentBase implements OnInit {
     this.http.post('api/admin/role/setModules', body).subscribe(result => {
       this.osharp.ajaxResult(result, () => {
         this.st.reload();
-        this.permissModal.close();
+        this.moduleModal.close();
       });
     });
   }

@@ -208,7 +208,7 @@ export abstract class STComponentBase {
   }
 
   close() {
-    this.editModal.close();
+    this.editModal.destroy();
   }
 
   save(value: STData) {
@@ -216,7 +216,7 @@ export abstract class STComponentBase {
     this.http.post<AjaxResult>(url, [value]).subscribe(result => {
       this.osharp.ajaxResult(result, () => {
         this.st.reload();
-        this.editModal.close();
+        this.editModal.destroy();
       });
     });
   }

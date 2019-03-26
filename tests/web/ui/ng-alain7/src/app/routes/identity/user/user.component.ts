@@ -1,247 +1,111 @@
-import { Component, AfterViewInit, Injector, } from '@angular/core';
-import { List } from 'linqts';
-import { GridComponentBase } from '@shared/osharp/services/kendoui.service';
-import { AuthConfig } from '@shared/osharp/osharp.model';
-import { _HttpClient } from '@delon/theme';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { AlainService, STComponentBase } from '@shared/osharp/services/ng-alain.service';
+import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
+import { SFUISchema } from '@delon/form';
+import { STData } from '@delon/abc';
+import { ModalTreeComponent } from '../components/modal-tree/modal-tree.component';
+import { NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-identity-user',
   templateUrl: './user.component.html'
 })
-export class UserComponent extends GridComponentBase implements AfterViewInit {
+export class UserComponent extends STComponentBase implements OnInit {
 
-  roleWindow: kendo.ui.Window;
-  moduleWindow: kendo.ui.Window;
-  windowOptions: kendo.ui.WindowOptions;
-  tabstripOptions: kendo.ui.TabStripOptions;
-  roleTreeOptions: kendo.ui.TreeViewOptions;
-  roleTree: kendo.ui.TreeView;
-  moduleTreeOptions: kendo.ui.TreeViewOptions;
-  moduleTree: kendo.ui.TreeView;
-
-  http: _HttpClient;
-
-  constructor(injector: Injector) {
+  constructor(injector: Injector, private alain: AlainService) {
     super(injector);
-    this.http = injector.get(_HttpClient);
-    this.moduleName = "user";
-    this.windowOptions = {
-      visible: false, width: 500, height: 620, modal: true, title: "用户权限设置", actions: ["Pin", "Minimize", "Maximize", "Close"],
-      resize: e => this.onWinResize(e)
-    };
-    this.roleTreeOptions = { checkboxes: { checkChildren: true, }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
-    this.moduleTreeOptions = { checkboxes: { checkChildren: true }, dataTextField: "Name", select: e => this.kendoui.OnTreeNodeSelect(e) };
+    this.moduleName = 'user';
   }
 
-  async ngAfterViewInit() {
-    await this.checkAuth();
-    if (this.auth.Read) {
-      super.InitBase();
-      super.ViewInitBase();
-    } else {
-      this.osharp.error("无权查看该页面");
-    }
+  ngOnInit(): void {
+    super.InitBase();
   }
 
-  protected AuthConfig(): AuthConfig {
-    return new AuthConfig("Root.Admin.Identity.User", ["Read", "Create", "Update", "Delete", "SetRoles", "SetModules"]);
-  }
-
-  //#region GridBase
-
-  protected GetModel() {
-    return {
-      id: "Id",
-      fields: {
-        Id: { type: "number", editable: false },
-        UserName: { type: "string", validation: { required: true } },
-        NickName: { type: "string", validation: { required: true } },
-        Email: { type: "string", validation: { required: true } },
-        EmailConfirmed: { type: "boolean" },
-        PhoneNumber: { type: "string" },
-        PhoneNumberConfirmed: { type: "boolean" },
-        IsLocked: { type: "boolean" },
-        LockoutEnabled: { type: "boolean" },
-        LockoutEnd: { type: "date", editable: false },
-        AccessFailedCount: { type: "number", editable: false },
-        CreatedTime: { type: "date", editable: false },
-        Roles: { editable: false },
-        Updatable: { type: "boolean", editable: false },
-        Deletable: { type: "boolean", editable: false },
-      }
-    };
-  }
-  protected GetGridColumns(): kendo.ui.GridColumn[] {
+  protected GetSTColumns(): OsharpSTColumn[] {
     return [
       {
-        command: [
-          { name: "setRoles", text: "", iconClass: "k-icon k-i-link-horizontal", click: e => this.roleWindowOpen(e) },
-          { name: "setModules", text: "", iconClass: "k-icon k-i-unlink-horizontal", click: e => this.moduleWindowOpen(e) },
-          { name: "destroy", iconClass: "k-icon k-i-delete", text: "", visible: d => d.Deletable },
-        ],
-        width: 100
+        title: '操作', fixed: 'left', width: 65, buttons: [{
+          text: '操作', children: [
+            { text: '编辑', icon: 'edit', acl: 'Root.Admin.Identity.User.Update', iif: row => row.Updatable, click: row => this.edit(row) },
+            { text: '角色', icon: 'team', acl: 'Root.Admin.Identity.User.SetRoles', click: row => this.roles(row) },
+            { text: '权限', icon: 'safety', acl: 'Root.Admin.Identity.User.SetModules', click: row => this.module(row) },
+            { text: '删除', icon: 'delete', type: 'del', acl: 'Root.Admin.Identity.User.Delete', iif: row => row.Deletable, click: row => this.delete(row) },
+          ]
+        }]
       },
-      { field: "Id", title: "编号", width: 70, locked: true },
-      {
-        field: "UserName",
-        title: "用户名",
-        width: 150,
-        filterable: this.osharp.data.stringFilterable
-      }, {
-        field: "NickName",
-        title: "昵称",
-        width: 130,
-        filterable: this.osharp.data.stringFilterable
-      }, {
-        field: "Email",
-        title: "邮箱",
-        width: 180,
-        filterable: this.osharp.data.stringFilterable
-      }, {
-        field: "EmailConfirmed",
-        title: "邮箱确认",
-        width: 95,
-        template: d => this.kendoui.Boolean(d.EmailConfirmed),
-        editor: (container, options) => this.kendoui.BooleanEditor(container, options)
-      }, {
-        field: "PhoneNumber",
-        title: "手机号",
-        width: 105,
-        filterable: this.osharp.data.stringFilterable
-      }, {
-        field: "PhoneNumberConfirmed",
-        title: "手机确认",
-        width: 95,
-        template: d => this.kendoui.Boolean(d.PhoneNumberConfirmed),
-        editor: (container, options) => this.kendoui.BooleanEditor(container, options)
-      }, {
-        field: "Roles",
-        title: "角色",
-        width: 180,
-        template: d => this.osharp.expandAndToString(d.Roles)
-      }, {
-        field: "IsLocked",
-        title: "是否锁定",
-        width: 95,
-        template: d => this.kendoui.Boolean(d.IsLocked),
-        editor: (container, options) => this.kendoui.BooleanEditor(container, options)
-      }, {
-        field: "LockoutEnabled",
-        title: "登录锁",
-        width: 90,
-        template: d => this.kendoui.Boolean(d.LockoutEnabled),
-        editor: (container, options) => this.kendoui.BooleanEditor(container, options)
-      }, {
-        field: "LockoutEnd",
-        title: "锁时间",
-        width: 120,
-        format: "{0:yy-MM-dd HH:mm}"
-      }, {
-        field: "AccessFailedCount",
-        title: "登录错误",
-        width: 95
-      }, {
-        field: "CreatedTime",
-        title: "注册时间",
-        width: 120,
-        format: "{0:yy-MM-dd HH:mm}"
-      }
+      { title: '编号', index: 'Id', readOnly: true, editable: true, ftype: 'number' },
+      { title: '用户名', index: 'UserName', editable: true, ftype: 'string' },
+      { title: '昵称', index: 'NickName', editable: true, ftype: 'string' },
+      { title: '邮箱', index: 'Email', editable: true, ftype: 'string' },
+      { title: '邮箱确认', index: 'EmailConfirmed', type: 'yn', editable: true },
+      { title: '手机号', index: 'PhoneNumber', editable: true, ftype: 'string' },
+      { title: '手机确认', index: 'PhoneNumberConfirmed', type: 'yn', editable: true },
+      { title: '角色', index: 'Roles', format: d => this.osharp.expandAndToString(d.Roles) },
+      { title: '是否锁定', index: 'Locked', type: 'yn', editable: true },
+      { title: '登录锁', index: 'LockoutEnabled', type: 'yn', editable: true },
+      { title: '锁时间', index: 'LockoutEnd', editable: true, type: 'date' },
+      { title: '登录错误', index: 'AccessFailedCount', editable: true, ftype: 'number' },
+      { title: '注册时间', index: 'CreatedTime', type: 'date' },
     ];
   }
 
-  protected FilterGridAuth(options: kendo.ui.GridOptions) {
-    // 命令列
-    let cmdColumn = options.columns && options.columns.find(m => m.command != null);
-    let cmds = cmdColumn && cmdColumn.command as kendo.ui.GridColumnCommandItem[];
-    if (cmds) {
-      if (!this.auth.SetRoles) {
-        this.osharp.remove(cmds, m => m.name == "setRoles");
-      }
-      if (!this.auth.SetModules) {
-        this.osharp.remove(cmds, m => m.name == "setModules");
-      }
-    }
-    options = super.FilterGridAuth(options);
-    return options;
+  protected GetSFUISchema(): SFUISchema {
+    let ui: SFUISchema = {
+      '*': { spanLabelFixed: 100, grid: { span: 12 } },
+      $UserName: { grid: { span: 24 } },
+    };
+    return ui;
   }
-  //#endregion
 
-  //#region Window
+  // #region 角色设置
 
-  private winUser: any;
+  roleTitle: string;
+  roleTreeDataUrl: string;
+  @ViewChild("roleModal") roleModal: ModalTreeComponent;
 
-  //#region RoleWindow
-
-  onRoleWinInit(win) {
-    this.roleWindow = win;
+  private roles(row: STData) {
+    this.editRow = row;
+    this.roleTitle = `设置用户角色 - ${row.UserName}`;
+    this.roleTreeDataUrl = `api/admin/role/ReadUserRoles?userId=${row.Id}`;
+    this.roleModal.open();
   }
-  private roleWindowOpen(e) {
-    e.preventDefault();
-    let tr = $(e.target).closest("tr");
-    this.winUser = this.grid.dataItem(tr);
-    this.roleWindow.title("用户角色设置-" + this.winUser.UserName).open().center().resize();
-    this.roleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/role/ReadUserRoles?userId=" + this.winUser.Id));
-  }
-  onRoleWinSubmit() {
-    let roles = this.roleTree.dataSource.data();
-    let checkRoleIds = new List(roles.slice(0)).Where(m => m.checked).Select(m => m.Id).ToArray();
 
-    let params = { userId: this.winUser.Id, roleIds: checkRoleIds };
-
-    this.http.post("api/admin/user/setroles", params).subscribe(res => {
-      this.osharp.ajaxResult(res, () => {
-        this.grid.dataSource.read();
-        this.roleWindow.close();
+  setRoles(value: NzTreeNode[]) {
+    let ids = this.alain.GetNzTreeCheckedIds(value);
+    let body = { userId: this.editRow.Id, roleIds: ids };
+    this.http.post('api/admin/user/setRoles', body).subscribe(result => {
+      this.osharp.ajaxResult(result, () => {
+        this.st.reload();
+        this.roleModal.close();
       });
     });
   }
 
-  //#endregion
+  // #endregion
 
-  //#region ModuleWindow
+  // #region 权限设置
 
-  onModuleWinInit(win) {
-    this.moduleWindow = win;
+  moduleTitle: string;
+  moduleTreeDataUrl: string;
+  @ViewChild("moduleModal") moduleModal: ModalTreeComponent;
+
+  private module(row: STData) {
+    this.editRow = row;
+    this.moduleTitle = `设置用户权限 - ${row.UserName}`;
+    this.moduleTreeDataUrl = `api/admin/module/ReadUserModules?userId=${row.Id}`;
+    this.moduleModal.open();
   }
-  private moduleWindowOpen(e) {
-    e.preventDefault();
-    let tr = $(e.target).closest("tr");
-    this.winUser = this.grid.dataItem(tr);
-    this.moduleWindow.title("用户模块设置-" + this.winUser.UserName).open().center().resize();
-    this.moduleTree.setDataSource(this.kendoui.CreateHierarchicalDataSource("api/admin/module/ReadUserModules?userId=" + this.winUser.Id));
-  }
-  onModuleWinSubmit() {
-    let moduleRoot = this.moduleTree.dataSource.data()[0];
-    let modules = [];
-    this.osharp.getTreeNodes(moduleRoot, modules);
-    let checkModuleIds = new List(modules).Where(m => m.checked).Select(m => m.Id).ToArray();
-    let params = { userId: this.winUser.Id, moduleIds: checkModuleIds };
 
-    this.http.post("api/admin/user/setmodules", params).subscribe(res => {
-      this.osharp.ajaxResult(res, () => {
-        this.grid.dataSource.read();
-        this.moduleWindow.close();
+  setModules(value: NzTreeNode[]) {
+    let ids = this.alain.GetNzTreeCheckedIds(value);
+    let body = { userId: this.editRow.Id, moduleIds: ids };
+    this.http.post('api/admin/user/setModules', body).subscribe(result => {
+      this.osharp.ajaxResult(result, () => {
+        this.st.reload();
+        this.moduleModal.close();
       });
     });
   }
 
-  //#endregion
-
-  private onWinResize(e) {
-    $(".win-content .k-tabstrip .k-content").height(e.height - 140);
-  }
-
-  //#endregion
-
-  //#region Tree
-
-  onRoleTreeInit(tree) {
-    this.roleTree = tree;
-  }
-  onModuleTreeInit(tree) {
-    this.moduleTree = tree;
-  }
-
-  //#endregion
-
+  // #endregion
 }
