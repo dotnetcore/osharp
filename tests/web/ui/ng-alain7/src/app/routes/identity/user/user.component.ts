@@ -33,19 +33,19 @@ export class UserComponent extends STComponentBase implements OnInit {
           ]
         }]
       },
-      { title: '编号', index: 'Id', readOnly: true, editable: true, ftype: 'number' },
-      { title: '用户名', index: 'UserName', editable: true, ftype: 'string' },
-      { title: '昵称', index: 'NickName', editable: true, ftype: 'string' },
-      { title: '邮箱', index: 'Email', editable: true, ftype: 'string' },
-      { title: '邮箱确认', index: 'EmailConfirmed', type: 'yn', editable: true },
-      { title: '手机号', index: 'PhoneNumber', editable: true, ftype: 'string' },
-      { title: '手机确认', index: 'PhoneNumberConfirmed', type: 'yn', editable: true },
+      { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, ftype: 'number' },
+      { title: '用户名', index: 'UserName', sort: true, editable: true, ftype: 'string' },
+      { title: '昵称', index: 'NickName', sort: true, editable: true, ftype: 'string' },
+      { title: '邮箱', index: 'Email', sort: true, editable: true, ftype: 'string' },
+      { title: '邮箱确认', index: 'EmailConfirmed', sort: true, type: 'yn', editable: true },
+      { title: '手机号', index: 'PhoneNumber', sort: true, editable: true, ftype: 'string' },
+      { title: '手机确认', index: 'PhoneNumberConfirmed', sort: true, type: 'yn', editable: true },
       { title: '角色', index: 'Roles', format: d => this.osharp.expandAndToString(d.Roles) },
-      { title: '是否锁定', index: 'Locked', type: 'yn', editable: true },
-      { title: '登录锁', index: 'LockoutEnabled', type: 'yn', editable: true },
-      { title: '登录错误', index: 'AccessFailedCount', editable: true, ftype: 'number' },
-      { title: '锁时间', index: 'LockoutEnd', editable: true, type: 'date' },
-      { title: '注册时间', index: 'CreatedTime', type: 'date' },
+      { title: '是否锁定', index: 'Locked', sort: true, type: 'yn', editable: true },
+      { title: '登录锁', index: 'LockoutEnabled', sort: true, type: 'yn', editable: true },
+      { title: '登录错误', index: 'AccessFailedCount', sort: true, editable: true, ftype: 'number' },
+      { title: '锁时间', index: 'LockoutEnd', sort: true, editable: true, type: 'date' },
+      { title: '注册时间', index: 'CreatedTime', sort: true, type: 'date' },
     ];
   }
 

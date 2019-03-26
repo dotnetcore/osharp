@@ -69,13 +69,13 @@ export abstract class STComponentBase {
 
   protected GetSTReq(): STReq {
     let req: STReq = {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: this.request, allInBody: true, process: this.RequestProcess
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: this.request, allInBody: true, process: opt => this.RequestProcess(opt)
     };
     return req;
   }
 
   protected GetSTRes(): STRes {
-    let res: STRes = { reName: { list: 'Rows', total: 'Total' }, process: this.ResponseDataProcess };
+    let res: STRes = { reName: { list: 'Rows', total: 'Total' }, process: data => this.ResponseDataProcess(data) };
     return res;
   }
 
@@ -92,13 +92,15 @@ export abstract class STComponentBase {
       if (opt.body.sort) {
         page.SortConditions = [];
         let sorts = opt.body.sort.split('-');
-        sorts.forEach((item: string) => {
+        for (const item of sorts) {
           let sort = new SortCondition();
           let num = item.lastIndexOf('.');
-          sort.SortField = item.substr(0, num);
+          let field = item.substr(0, num);
+          field = this.ReplaceFieldName(field);
+          sort.SortField = field;
           sort.ListSortDirection = item.substr(num + 1) === 'ascend' ? ListSortDirection.Ascending : ListSortDirection.Descending;
           page.SortConditions.push(sort);
-        });
+        }
       } else {
         page.SortConditions = [];
       }
@@ -108,6 +110,10 @@ export abstract class STComponentBase {
 
   protected ResponseDataProcess(data: STData[]): STData[] {
     return data;
+  }
+
+  protected ReplaceFieldName(field: string): string {
+    return field;
   }
 
   change(value: STChange) {
