@@ -21,7 +21,7 @@
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.6.22" />
+    <PackageReference Include="Hangfire" Version="1.6.23" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>

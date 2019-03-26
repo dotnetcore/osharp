@@ -43,7 +43,6 @@ namespace OSharp.Entity.SqlServer
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = base.AddServices(services);
-
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
 
             return services;

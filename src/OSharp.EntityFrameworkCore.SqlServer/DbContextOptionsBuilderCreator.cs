@@ -40,6 +40,7 @@ namespace OSharp.Entity.SqlServer
             if (existingConnection == null)
             {
                 DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
+                optionsBuilder.UseLazyLoadingProxies();
                 return optionsBuilder.UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
             }
             return new DbContextOptionsBuilder().UseSqlServer(existingConnection, builder => builder.UseRowNumberForPaging());

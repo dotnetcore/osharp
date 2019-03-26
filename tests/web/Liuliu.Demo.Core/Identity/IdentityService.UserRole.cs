@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Identity
             OperationResult result = await _userRoleRepository.UpdateAsync(dtos,
                 (dto, entity) =>
                 {
-                    string userName = _userManager.Users.FirstOrDefault(m => m.Id.Equals(dto.UserId))?.UserName;
+                    string userName = _userRoleRepository.Query(m => m.UserId == entity.UserId).Select(m => m.User.UserName).FirstOrDefault();
                     userNames.AddIfNotNull(userName);
                     return Task.FromResult(0);
                 });
@@ -81,7 +81,7 @@ namespace Liuliu.Demo.Identity
             OperationResult result = await _userRoleRepository.DeleteAsync(ids,
                 (entity) =>
                 {
-                    string userName = _userManager.Users.FirstOrDefault(m => m.Id.Equals(entity.UserId))?.UserName;
+                    string userName = _userRoleRepository.Query(m => m.UserId == entity.UserId).Select(m => m.User.UserName).FirstOrDefault();
                     userNames.AddIfNotNull(userName);
                     return Task.FromResult(0);
                 });
