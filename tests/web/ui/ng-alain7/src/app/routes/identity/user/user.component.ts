@@ -43,8 +43,8 @@ export class UserComponent extends STComponentBase implements OnInit {
       { title: '角色', index: 'Roles', format: d => this.osharp.expandAndToString(d.Roles) },
       { title: '是否锁定', index: 'Locked', type: 'yn', editable: true },
       { title: '登录锁', index: 'LockoutEnabled', type: 'yn', editable: true },
-      { title: '锁时间', index: 'LockoutEnd', editable: true, type: 'date' },
       { title: '登录错误', index: 'AccessFailedCount', editable: true, ftype: 'number' },
+      { title: '锁时间', index: 'LockoutEnd', editable: true, type: 'date' },
       { title: '注册时间', index: 'CreatedTime', type: 'date' },
     ];
   }
@@ -53,6 +53,7 @@ export class UserComponent extends STComponentBase implements OnInit {
     let ui: SFUISchema = {
       '*': { spanLabelFixed: 100, grid: { span: 12 } },
       $UserName: { grid: { span: 24 } },
+      $LockoutEnd: { grid: { span: 24 } },
     };
     return ui;
   }

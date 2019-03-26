@@ -162,12 +162,15 @@ export abstract class STComponentBase {
             case 'type':
               {
                 let val = column[key];
-                if (['link', 'img', 'date'].indexOf(val) > -1) {
+                if (['link', 'img'].indexOf(val) > -1) {
                   schema[key] = 'string';
                 } else if (['number', 'currency'].indexOf(val) > -1) {
                   schema[key] = 'number';
                 } else if (val === 'yn') {
                   schema[key] = 'boolean';
+                } else if (val === 'date') {
+                  schema[key] = 'string';
+                  schema['format'] = 'date-time';
                 }
               }
               break;
@@ -236,8 +239,6 @@ export abstract class STComponentBase {
 }
 
 import { Injectable } from '@angular/core';
-import { ArrayService } from '@delon/util';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { List } from 'linqts';
 
 

@@ -67,6 +67,13 @@ namespace Liuliu.Demo.Identity
         Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos);
 
         /// <summary>
+        /// 删除用户角色信息
+        /// </summary>
+        /// <param name="ids">用户角色信息编号</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> DeleteUserRoles(Guid[] ids);
+
+        /// <summary>
         /// 设置用户的角色
         /// </summary>
         /// <param name="userId">用户编号</param>

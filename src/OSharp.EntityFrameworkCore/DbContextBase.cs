@@ -14,13 +14,11 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.EventBuses;
 
 

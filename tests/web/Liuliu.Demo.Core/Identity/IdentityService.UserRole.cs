@@ -71,6 +71,30 @@ namespace Liuliu.Demo.Identity
         }
 
         /// <summary>
+        /// 删除用户角色信息
+        /// </summary>
+        /// <param name="ids">用户角色信息编号</param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> DeleteUserRoles(Guid[] ids)
+        {
+            List<string>userNames = new List<string>();
+            OperationResult result = await _userRoleRepository.DeleteAsync(ids,
+                (entity) =>
+                {
+                    string userName = _userManager.Users.FirstOrDefault(m => m.Id.Equals(entity.UserId))?.UserName;
+                    userNames.AddIfNotNull(userName);
+                    return Task.FromResult(0);
+                });
+            if (result.Succeeded && userNames.Count > 0)
+            {
+                OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = userNames.ToArray()};
+                _eventBus.Publish(eventData);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// 设置用户的角色
         /// </summary>
         /// <param name="userId">用户编号</param>
