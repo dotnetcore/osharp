@@ -4,7 +4,7 @@ import { ViewChild, Injector } from '@angular/core';
 import { OsharpService } from './osharp.service';
 import { SFSchema, SFUISchema, SFSchemaEnumType } from '@delon/form';
 import { _HttpClient } from '@delon/theme';
-import { NzModalComponent } from 'ng-zorro-antd';
+import { NzModalComponent, NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd';
 import { OsharpSTColumn } from './ng-alain.types';
 
 export abstract class STComponentBase {
@@ -233,4 +233,49 @@ export abstract class STComponentBase {
   }
 
   // #endregion
+}
+
+import { Injectable } from '@angular/core';
+import { ArrayService } from '@delon/util';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { List } from 'linqts';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlainService {
+
+  /**
+   * 将原始树数据节点转换为 `NzTreeNodeOptions`节点
+   * @param nodes 原始树数据节点
+   */
+  ToNzTreeData(nodes: any[]): NzTreeNodeOptions[] {
+    if (!nodes.length) {
+      return [];
+    }
+    let result: NzTreeNodeOptions[] = [];
+    for (const node of nodes) {
+      let item: NzTreeNodeOptions = { title: node.Name, key: node.Id, checked: node.IsChecked, isLeaf: !node.HasChildren };
+      if (node.Children && node.Children.length > 0) {
+        item.children = this.ToNzTreeData(node.Children);
+      }
+      result.push(item);
+    }
+    return result;
+  }
+
+  GetNzTreeCheckedIds(nodes: NzTreeNode[]) {
+    let ids = [];
+    for (const node of nodes) {
+      if (node.isChecked) {
+        ids.push(node.key);
+      }
+      if (node.children && node.children.length > 0) {
+        ids = ids.concat(this.GetNzTreeCheckedIds(node.children));
+      }
+    }
+    ids = new List(ids).Distinct().ToArray();
+    return ids;
+  }
 }

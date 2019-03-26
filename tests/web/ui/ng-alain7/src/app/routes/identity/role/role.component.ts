@@ -1,8 +1,11 @@
-import { Component, OnInit, Injector } from '@angular/core';
-import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
 import { STColumn, STData } from '@delon/abc';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
-import { SFUISchema } from '@delon/form';
+import { SFUISchema, SFSchema, CustomWidget } from '@delon/form';
+import { NzModalComponent, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { List } from "linqts";
+import { ModalTreeComponent } from '../components/modal-tree/modal-tree.component';
 
 @Component({
   selector: 'app-identity-role',
@@ -11,7 +14,7 @@ import { SFUISchema } from '@delon/form';
 })
 export class RoleComponent extends STComponentBase implements OnInit {
 
-  constructor(injector: Injector) {
+  constructor(injector: Injector, private alain: AlainService) {
     super(injector);
     this.moduleName = 'role';
   }
@@ -50,7 +53,29 @@ export class RoleComponent extends STComponentBase implements OnInit {
     return ui;
   }
 
+  // #region 权限设置
+
+  permissTitle: string;
+  moduleTreeDataUrl: string;
+  @ViewChild("permissModal") permissModal: ModalTreeComponent;
+
   private permiss(row: STData) {
-    this.osharp.info(`设置角色 ${row.Name} 的权限`);
+    this.editRow = row;
+    this.permissTitle = `修改角色权限 - ${row.Name}`;
+    this.moduleTreeDataUrl = `api/admin/module/ReadRoleModules?roleId=${row.Id}`;
+    this.permissModal.open();
   }
+
+  setModules(value: NzTreeNode[]) {
+    let ids = this.alain.GetNzTreeCheckedIds(value);
+    let body = { roleId: this.editRow.Id, moduleIds: ids };
+    this.http.post('api/admin/role/setModules', body).subscribe(result => {
+      this.osharp.ajaxResult(result, () => {
+        this.st.reload();
+        this.permissModal.close();
+      });
+    });
+  }
+
+  // #endregion
 }

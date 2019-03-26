@@ -9,6 +9,7 @@ import { IdentityRoutingModule } from './identity.routing';
 import '@progress/kendo-ui/js/kendo.web.js';
 import '@progress/kendo-ui/js/cultures/kendo.culture.zh-CN';
 import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
+import { ModalTreeComponent } from './components/modal-tree/modal-tree.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import '@progress/kendo-ui/js/messages/kendo.messages.zh-CN';
   declarations: [
     UserComponent,
     RoleComponent,
-    UserRoleComponent
+    UserRoleComponent,
+    ModalTreeComponent
   ]
 })
 export class IdentityModule { }

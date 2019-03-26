@@ -15,6 +15,7 @@ import { RemoteInverseValidator } from '@shared/osharp/directives/remote-inverse
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { OsharpACLService } from './services/osharp-acl.service.ts.service';
+import { AlainService } from './services/ng-alain.service';
 
 const DIRECTIVES = [
   RemoteValidator,
@@ -34,7 +35,8 @@ const SERVICES = [
   OsharpService,
   OsharpACLService,
   KendouiService,
-  IdentityService
+  IdentityService,
+  AlainService,
 ];
 
 @NgModule({
