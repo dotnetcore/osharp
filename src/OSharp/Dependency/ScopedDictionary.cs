@@ -7,20 +7,19 @@
 //  <last-date>2018-08-01 21:17</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+using OSharp.Audits;
+using OSharp.Core.Functions;
+using OSharp.Entity;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Audits;
-using OSharp.Core.Functions;
 
 
 namespace OSharp.Dependency
 {
     /// <summary>
-    /// 基于Scoped生命周期的数据字典
+    /// 基于Scoped生命周期的数据字典，可用于在Scoped环境中传递数据
     /// </summary>
     [Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class ScopedDictionary : ConcurrentDictionary<string, object>, IDisposable
@@ -51,6 +50,7 @@ namespace OSharp.Dependency
             Function = null;
             AuditOperation = null;
             Identity = null;
+            this.Clear();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取 事务是否已提交
         /// </summary>
-        bool HasCommited { get; }
+        bool HasCommitted { get; }
 
         /// <summary>
         /// 获取指定实体所在的工作单元对象

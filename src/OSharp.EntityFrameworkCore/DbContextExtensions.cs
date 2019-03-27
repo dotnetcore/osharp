@@ -49,7 +49,8 @@ namespace OSharp.Entity
         /// </summary>
         public static bool ExistsRelationalDatabase(this DbContext context)
         {
-            return context.Database.GetService<IDatabaseCreator>() is RelationalDatabaseCreator creator && creator.Exists();
+            RelationalDatabaseCreator creator = context.Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+            return creator != null && creator.Exists();
         }
 
         /// <summary>

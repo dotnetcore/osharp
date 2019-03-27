@@ -22,7 +22,7 @@ namespace OSharp.Entity
     /// <summary>
     /// 上下文数据模型缓存
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true, AddSelf = true)]
+    [Dependency(ServiceLifetime.Singleton, AddSelf = true)]
     public class DbContextModelCache
     {
         private readonly ConcurrentDictionary<Type, IModel> _dict = new ConcurrentDictionary<Type, IModel>();

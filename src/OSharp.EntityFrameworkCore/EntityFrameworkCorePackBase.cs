@@ -35,7 +35,8 @@ namespace OSharp.Entity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddEntityFrameworkProxies();
+            //services.AddEntityFrameworkProxies();
+            services.AddOsharpDbContext<DefaultDbContext>();
 
             return services;
         }

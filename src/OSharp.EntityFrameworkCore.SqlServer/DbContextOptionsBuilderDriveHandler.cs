@@ -19,10 +19,10 @@ using OSharp.Dependency;
 namespace OSharp.Entity.SqlServer
 {
     /// <summary>
-    /// SqlServer的<see cref="DbContextOptionsBuilder"/>创建器
+    /// SqlServer的<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
     [Dependency(ServiceLifetime.Singleton)]
-    public class DbContextOptionsBuilderCreator : IDbContextOptionsBuilderCreator
+    public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
@@ -30,20 +30,19 @@ namespace OSharp.Entity.SqlServer
         public DatabaseType Type { get; } = DatabaseType.SqlServer;
 
         /// <summary>
-        /// 创建<see cref="DbContextOptionsBuilder"/>对象
+        /// 处理<see cref="DbContextOptionsBuilder"/>驱动差异
         /// </summary>
+        /// <param name="builder">创建器</param>
         /// <param name="connectionString">连接字符串</param>
         /// <param name="existingConnection">已存在的连接对象</param>
         /// <returns></returns>
-        public DbContextOptionsBuilder Create(string connectionString, DbConnection existingConnection)
+        public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
             if (existingConnection == null)
             {
-                DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder();
-                optionsBuilder.UseLazyLoadingProxies();
-                return optionsBuilder.UseSqlServer(connectionString, builder => builder.UseRowNumberForPaging());
+                return builder.UseLazyLoadingProxies().UseSqlServer(connectionString, opts => opts.UseRowNumberForPaging());
             }
-            return new DbContextOptionsBuilder().UseSqlServer(existingConnection, builder => builder.UseRowNumberForPaging());
+            return builder.UseSqlServer(existingConnection, opts => opts.UseRowNumberForPaging());
         }
     }
 }

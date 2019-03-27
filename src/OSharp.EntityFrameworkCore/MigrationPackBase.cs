@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
+using OSharp.Dependency;
 
 
 namespace OSharp.Entity

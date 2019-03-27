@@ -21,7 +21,6 @@ using OSharp.Audits;
 using OSharp.Core.Options;
 using OSharp.EventBuses;
 
-
 namespace OSharp.Entity
 {
     /// <summary>
@@ -37,25 +36,17 @@ namespace OSharp.Entity
         /// <summary>
         /// 初始化一个<see cref="DbContextBase"/>类型的新实例
         /// </summary>
-        protected DbContextBase(DbContextOptions options, IServiceProvider serviceProvider)
-            : this(options, serviceProvider.GetService<IEntityManager>())
-        {
-            _serviceProvider = serviceProvider;
-            _osharpDbOptions = serviceProvider.GetOSharpOptions()?.DbContexts?.Values.FirstOrDefault(m => m.DbContextType == GetType());
-            _logger = serviceProvider.GetLogger(GetType());
-        }
-
-        /// <summary>
-        /// 初始化一个<see cref="DbContextBase"/>类型的新实例
-        /// </summary>
-        protected DbContextBase(DbContextOptions options, IEntityManager entityManager)
+        protected DbContextBase(DbContextOptions options, IEntityManager entityManager, IServiceProvider serviceProvider)
             : base(options)
         {
             _entityManager = entityManager;
+            _serviceProvider = serviceProvider;
+            _osharpDbOptions = serviceProvider?.GetOSharpOptions()?.DbContexts?.Values.FirstOrDefault(m => m.DbContextType == GetType());
+            _logger = serviceProvider?.GetLogger(GetType());
         }
 
         /// <summary>
-        /// 获取或设置 所在上下文组
+        /// 获取或设置 当前上下文所在工作单元，为null将使用EF自动事务而不启用手动事务
         /// </summary>
         public UnitOfWork UnitOfWork { get; set; }
 
@@ -81,9 +72,9 @@ namespace OSharp.Entity
         public override int SaveChanges()
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
+            if (_osharpDbOptions?.AuditEntityEnabled == true)
             {
-                IAuditEntityProvider auditEntityProvider = _serviceProvider?.GetService<IAuditEntityProvider>();
+                IAuditEntityProvider auditEntityProvider = _serviceProvider.GetService<IAuditEntityProvider>();
                 auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
             }
 
@@ -94,7 +85,7 @@ namespace OSharp.Entity
             if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = _serviceProvider?.GetService<IEventBus>();
+                IEventBus eventBus = _serviceProvider.GetService<IEventBus>();
                 eventBus?.Publish(this, eventData);
             }
 
@@ -129,9 +120,9 @@ namespace OSharp.Entity
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions != null && _osharpDbOptions.AuditEntityEnabled)
+            if (_osharpDbOptions?.AuditEntityEnabled == true)
             {
-                IAuditEntityProvider auditEntityProvider = _serviceProvider?.GetService<IAuditEntityProvider>();
+                IAuditEntityProvider auditEntityProvider = _serviceProvider.GetService<IAuditEntityProvider>();
                 auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
             }
 
@@ -142,7 +133,7 @@ namespace OSharp.Entity
             if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
-                IEventBus eventBus = _serviceProvider?.GetService<IEventBus>();
+                IEventBus eventBus = _serviceProvider.GetService<IEventBus>();
                 if (eventBus != null)
                 {
                     await eventBus.PublishAsync(this, eventData);
@@ -189,7 +180,7 @@ namespace OSharp.Entity
             IEntityRegister[] registers = _entityManager.GetEntityRegisters(contextType);
             foreach (IEntityRegister register in registers)
             {
-                register.RegistTo(modelBuilder);
+                register.RegisterTo(modelBuilder);
                 _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
             }
 

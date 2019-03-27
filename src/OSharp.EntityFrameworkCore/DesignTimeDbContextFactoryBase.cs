@@ -36,7 +36,7 @@ namespace OSharp.Entity
             IEntityManager entityManager = GetEntityManager();
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
             builder = UseSql(builder, connString);
-            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager);
+            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager, null);
         }
 
         /// <summary>

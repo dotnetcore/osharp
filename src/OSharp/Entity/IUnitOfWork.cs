@@ -23,7 +23,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取 工作单元的事务是否已提交
         /// </summary>
-        bool HasCommited { get; }
+        bool HasCommitted { get; }
 
         /// <summary>
         /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例

@@ -33,6 +33,6 @@ namespace OSharp.Entity
         /// 将当前实体类映射对象注册到数据上下文模型构建器中
         /// </summary>
         /// <param name="modelBuilder">上下文模型构建器</param>
-        void RegistTo(ModelBuilder modelBuilder);
+        void RegisterTo(ModelBuilder modelBuilder);
     }
 }

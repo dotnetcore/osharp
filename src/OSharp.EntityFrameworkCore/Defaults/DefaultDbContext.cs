@@ -10,7 +10,6 @@
 using System;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 
 namespace OSharp.Entity
@@ -23,16 +22,8 @@ namespace OSharp.Entity
         /// <summary>
         /// 初始化一个<see cref="DefaultDbContext"/>类型的新实例
         /// </summary>
-        [ActivatorUtilitiesConstructor]
-        public DefaultDbContext(DbContextOptions options, IServiceProvider serviceProvider)
-            : base(options, serviceProvider)
-        { }
-
-        /// <summary>
-        /// 初始化一个<see cref="DefaultDbContext"/>类型的新实例
-        /// </summary>
-        public DefaultDbContext(DbContextOptions options, IEntityManager entityManager)
-            : base(options, entityManager)
+        public DefaultDbContext(DbContextOptions options, IEntityManager entityManager, IServiceProvider serviceProvider)
+            : base(options, entityManager, serviceProvider)
         { }
     }
 }
