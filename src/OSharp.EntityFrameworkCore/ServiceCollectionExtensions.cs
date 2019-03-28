@@ -9,7 +9,6 @@
 
 using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Core.Options;
 using OSharp.Dependency;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -33,25 +33,25 @@ namespace OSharp.Entity
         /// </summary>
         /// <typeparam name="TDbContext">基于Osharp数据上下文基类<see cref="DbContextBase"/>上下文类型</typeparam>
         /// <param name="services">依赖注入服务集合</param>
-        /// <param name="options">数据库选项创建配置，将在内置配置后运行</param>
+        /// <param name="optionsAction">数据库选项创建配置，将在内置配置后运行</param>
         /// <returns>依赖注入服务集合</returns>
-        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> options = null) where TDbContext : DbContextBase
+        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContextBase
         {
-            return services.AddDbContext<TDbContext>((provider, builder) =>
+            services.AddDbContext<TDbContext>((provider, builder) =>
             {
                 Type dbContextType = typeof(TDbContext);
                 OsharpOptions osharpOptions = provider.GetOSharpOptions();
                 OsharpDbContextOptions osharpDbContextOptions = osharpOptions?.GetDbContextOptions(dbContextType);
                 if (osharpDbContextOptions == null)
                 {
-                    throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
+                    throw new OsharpException($"无法找到数据上下文“{dbContextType.DisplayName()}”的配置信息");
                 }
 
                 //启用延迟加载
-                //if (osharpDbContextOptions.LazyLoadingProxiesEnabled)
-                //{
-                //    builder = builder.UseLazyLoadingProxies();
-                //}
+                if (osharpDbContextOptions.LazyLoadingProxiesEnabled)
+                {
+                    builder = builder.UseLazyLoadingProxies();
+                }
                 DatabaseType databaseType = osharpDbContextOptions.DatabaseType;
 
                 //处理数据库驱动差异处理
@@ -59,14 +59,13 @@ namespace OSharp.Entity
                     .FirstOrDefault(m => m.Type == databaseType);
                 if (driveHandler == null)
                 {
-                    throw new OsharpException($"无法解析类型为“{databaseType}”的 {typeof(IDbContextOptionsBuilderDriveHandler).FullName} 实例");
+                    throw new OsharpException($"无法解析类型为“{databaseType}”的 {typeof(IDbContextOptionsBuilderDriveHandler).DisplayName()} 实例");
                 }
 
                 ScopedDictionary scopedDictionary = provider.GetService<ScopedDictionary>();
                 string key = $"DnConnection_{osharpDbContextOptions.ConnectionString}";
                 DbConnection existingDbConnection = scopedDictionary.GetValue<DbConnection>(key);
                 builder = driveHandler.Handle(builder, osharpDbContextOptions.ConnectionString, existingDbConnection);
-                //builder.UseInternalServiceProvider(provider);
 
                 //使用模型缓存
                 DbContextModelCache modelCache = provider.GetService<DbContextModelCache>();
@@ -77,8 +76,9 @@ namespace OSharp.Entity
                 }
 
                 //额外的选项
-                options?.Invoke(provider, builder);
+                optionsAction?.Invoke(provider, builder);
             });
+            return services;
         }
     }
 }

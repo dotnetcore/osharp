@@ -40,7 +40,7 @@ namespace OSharp.Entity.SqlServer
         {
             if (existingConnection == null)
             {
-                return builder.UseLazyLoadingProxies().UseSqlServer(connectionString, opts => opts.UseRowNumberForPaging());
+                return builder.UseSqlServer(connectionString, opts => opts.UseRowNumberForPaging());
             }
             return builder.UseSqlServer(existingConnection, opts => opts.UseRowNumberForPaging());
         }

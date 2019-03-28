@@ -63,6 +63,26 @@ namespace Liuliu.Demo.Web.Startups
             return entityManager;
         }
 
+        /// <summary>
+        /// 重写以获取是否开启延迟加载代理特性
+        /// </summary>
+        /// <returns></returns>
+        public override bool LazyLoadingProxiesEnabled()
+        {
+            if (_serviceProvider == null)
+            {
+                return AppSettingsManager.Get<bool>("OSharp:DbContexts:SqlServer:LazyLoadingProxiesEnabled");
+            }
+            OsharpOptions options = _serviceProvider.GetOSharpOptions();
+            OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
+            if (contextOptions == null)
+            {
+                throw new OsharpException($"上下文“{typeof(DefaultDbContext)}”的配置信息不存在");
+            }
+
+            return contextOptions.LazyLoadingProxiesEnabled;
+        }
+
         public override DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString)
         {
             string entryAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;

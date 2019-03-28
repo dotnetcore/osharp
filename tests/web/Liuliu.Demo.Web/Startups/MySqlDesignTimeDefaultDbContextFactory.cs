@@ -61,6 +61,22 @@ namespace Liuliu.Demo.Web.Startups
             return entityManager;
         }
 
+        public override bool LazyLoadingProxiesEnabled()
+        {
+            if (_serviceProvider == null)
+            {
+                return AppSettingsManager.Get<bool>("OSharp:DbContexts:MySql:LazyLoadingProxiesEnabled");
+            }
+            OsharpOptions options = _serviceProvider.GetOSharpOptions();
+            OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));
+            if (contextOptions == null)
+            {
+                throw new OsharpException($"上下文“{typeof(DefaultDbContext)}”的配置信息不存在");
+            }
+
+            return contextOptions.LazyLoadingProxiesEnabled;
+        }
+
         public override DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString)
         {
             string entryAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;

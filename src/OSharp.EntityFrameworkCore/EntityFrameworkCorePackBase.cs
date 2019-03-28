@@ -7,11 +7,13 @@
 //  <last-date>2018-12-14 15:57</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
-using System;
 
 
 namespace OSharp.Entity
@@ -35,7 +37,6 @@ namespace OSharp.Entity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            //services.AddEntityFrameworkProxies();
             services.AddOsharpDbContext<DefaultDbContext>();
 
             return services;

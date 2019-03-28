@@ -35,6 +35,10 @@ namespace OSharp.Entity
             }
             IEntityManager entityManager = GetEntityManager();
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
+            if (LazyLoadingProxiesEnabled())
+            {
+                builder.UseLazyLoadingProxies();
+            }
             builder = UseSql(builder, connString);
             return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager, null);
         }
@@ -49,6 +53,12 @@ namespace OSharp.Entity
         /// </summary>
         /// <returns></returns>
         public abstract IEntityManager GetEntityManager();
+
+        /// <summary>
+        /// 重写以获取是否开启延迟加载代理特性
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool LazyLoadingProxiesEnabled();
 
         /// <summary>
         /// 重写以实现数据上下文选项构建器加载数据库驱动程序

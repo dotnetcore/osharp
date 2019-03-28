@@ -50,6 +50,10 @@ namespace OSharp.Core.Options
         public static T Get<T>(string key)
         {
             string json = Get(key);
+            if (string.IsNullOrEmpty(json))
+            {
+                return default(T);
+            }
             return json.FromJsonString<T>();
         }
     }

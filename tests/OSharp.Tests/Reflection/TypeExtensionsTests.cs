@@ -59,10 +59,10 @@ namespace OSharp.Reflection.Tests
         [Fact()]
         public void GetNonNummableType()
         {
-            Assert.Equal(typeof(int), typeof(int?).GetNonNummableType());
-            Assert.Equal(typeof(int), typeof(Nullable<int>).GetNonNummableType());
+            Assert.Equal(typeof(int), typeof(int?).GetNonNullableType());
+            Assert.Equal(typeof(int), typeof(Nullable<int>).GetNonNullableType());
 
-            Assert.Equal(typeof(int), typeof(int).GetNonNummableType());
+            Assert.Equal(typeof(int), typeof(int).GetNonNullableType());
         }
 
         [Fact()]
@@ -131,6 +131,20 @@ namespace OSharp.Reflection.Tests
             Assert.True(typeof(List<string>).IsBaseOn(typeof(IList<string>)));
 
             Assert.True(typeof(string).IsBaseOn<IEnumerable>());
+        }
+
+        [Fact]
+        public void ShortDisplayNameTest()
+        {
+            Assert.Equal("int", typeof(Int32).ShortDisplayName());
+            Assert.Equal("bool", typeof(Boolean).ShortDisplayName());
+            Assert.Equal("List<>", typeof(List<>).ShortDisplayName());
+            Assert.Equal("TypeExtensionsTests", typeof(TypeExtensionsTests).ShortDisplayName());
+
+            Assert.Equal("int", typeof(Int32).DisplayName());
+            Assert.Equal("bool", typeof(Boolean).DisplayName());
+            Assert.Equal("System.Collections.Generic.List<>", typeof(List<>).DisplayName());
+            Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", typeof(TypeExtensionsTests).DisplayName());
         }
     }
 }

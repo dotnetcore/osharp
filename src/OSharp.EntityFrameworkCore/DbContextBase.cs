@@ -48,7 +48,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取或设置 当前上下文所在工作单元，为null将使用EF自动事务而不启用手动事务
         /// </summary>
-        public UnitOfWork UnitOfWork { get; set; }
+        public IUnitOfWork UnitOfWork { get; set; }
 
         /// <summary>
         ///     将在此上下文中所做的所有更改保存到数据库中，同时自动开启事务或使用现有同连接事务
