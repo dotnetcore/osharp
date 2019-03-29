@@ -177,6 +177,8 @@ export abstract class STComponentBase {
                 } else if (val === 'date') {
                   schema[key] = 'string';
                   schema['format'] = 'date-time';
+                } else {
+                  schema[key] = 'string';
                 }
               }
               break;
