@@ -13,22 +13,27 @@ import { TranslateModule } from '@ngx-translate/core';
 // #region third libs
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
+import { AngularSplitModule } from "angular-split";
 const THIRDMODULES = [
   NgZorroAntdModule,
-  CountdownModule
+  CountdownModule,
+  AngularSplitModule,
 ];
 
-import { OsharpModule } from "./osharp/osharp.module";
 // #endregion
 
+import { OsharpModule } from "./osharp/osharp.module";
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 
+import { ModalTreeComponent } from './components/modal-tree/modal-tree.component';
 
 // #region your componets & directives
-const COMPONENTS = [];
+const COMPONENTS = [
+  ModalTreeComponent,
+];
 const DIRECTIVES = [];
 // #endregion
 

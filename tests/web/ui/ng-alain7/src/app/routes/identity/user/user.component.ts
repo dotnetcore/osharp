@@ -3,7 +3,7 @@ import { AlainService, STComponentBase } from '@shared/osharp/services/ng-alain.
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { SFUISchema } from '@delon/form';
 import { STData } from '@delon/abc';
-import { ModalTreeComponent } from '../components/modal-tree/modal-tree.component';
+import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
 import { NzTreeNode } from 'ng-zorro-antd';
 
 @Component({

@@ -4,12 +4,14 @@ import { FilterGroup, FilterRule, FilterOperate, PageRequest, SortCondition, Lis
 import { isFunction } from 'util';
 import { List } from "linqts";
 import { JWTTokenModel, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { NzModalService } from 'ng-zorro-antd';
 
 
 @Injectable()
 export class KendouiService {
 
   constructor(
+    private modal: NzModalService,
     private osharp: OsharpService,
     @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService
   ) { }
@@ -184,9 +186,8 @@ export class KendouiService {
       pageable: { refresh: true, pageSizes: [10, 15, 20, 50, 'all'], buttonCount: 5 },
       editable: { mode: "incell", confirmation: true },
       saveChanges: e => {
-        if (!confirm('是否提交对表格的更改？')) {
-          e.preventDefault();
-        }
+        e.preventDefault();
+        this.modal.confirm({ nzTitle: '请选择', nzContent: '是否提交对表格的更改？', nzOnOk: () => e.sender.dataSource.sync() });
       }
     };
     return options;
@@ -289,13 +290,13 @@ export class KendouiService {
     }
     return nodes;
   }
-  /**树节点被造反时选中复选框 */
+  /** 树节点被造反时选中复选框 */
   OnTreeNodeSelect(e) {
     const item = e.sender.dataItem(e.node);
     item.set("checked", !item.checked);
     e.preventDefault();
   }
-  /**kendo请求开始时设置JWT-Token */
+  /** kendo请求开始时设置JWT-Token */
   OnRequestStart(e) {
     this.setAuthToken(e.sender);
   }
@@ -336,7 +337,8 @@ export class KendouiService {
     input.attr('name', options.field);
     input.appendTo(container);
     return new kendo.ui.NumericTextBox(input, {
-      format: '{0:' + decimals + '}',
+      format: "{0:n" + decimals + "}",
+      decimals: decimals,
       step: step || 0.01
     });
   }
@@ -482,7 +484,7 @@ export class KendouiService {
 /**
  * KendoGrid组件基类
  */
-export abstract class GridComponentBase extends ComponentBase {
+export abstract class KendoGridComponentBase extends ComponentBase {
 
   public moduleName: string = null;
   public gridOptions: kendo.ui.GridOptions = null;
@@ -580,12 +582,12 @@ export abstract class GridComponentBase extends ComponentBase {
     // 工具栏
     let toolbar = options.toolbar;
     if (!this.auth.Create) {
-      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "create");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name === "create");
     }
     // 新增、更新、删除都需要保存或取消
     if (!this.auth.Create && !this.auth.Update && !this.auth.Delete) {
-      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "save");
-      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name == "cancel");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name === "save");
+      this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name === "cancel");
     }
     // 新增和更新的编辑状态
     options.beforeEdit = e => {
@@ -594,7 +596,7 @@ export abstract class GridComponentBase extends ComponentBase {
           e.preventDefault();
         }
       } else {
-        if (!this.auth.Update || !(<any>(e.model)).Updatable) {
+        if (!this.auth.Update || !((e.model) as any).Updatable) {
           e.preventDefault();
         }
       }
@@ -610,7 +612,7 @@ export abstract class GridComponentBase extends ComponentBase {
       if (cmds.length == 0) {
         this.osharp.remove(options.columns, m => m == cmdColumn);
       }
-      cmdColumn.width = cmds.length * 50;
+      cmdColumn.width = cmds.length * 45;
     }
     return options;
   }
@@ -622,7 +624,7 @@ export abstract class GridComponentBase extends ComponentBase {
   protected ResizeGrid(init: boolean) {
     const $content = $("#grid-box-" + this.moduleName + " .k-grid-content");
     let winHeight = window.innerHeight;
-    let otherHeight = $(".alain-default__header").height() + $(".ant-tabs-nav-container").height() + 120 + 40;
+    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 20;
     $content.height(winHeight - otherHeight);
   }
 
@@ -645,7 +647,7 @@ export abstract class GridComponentBase extends ComponentBase {
 }
 
 
-export abstract class TreeListComponentBase extends ComponentBase {
+export abstract class KendoTreeListComponentBase extends ComponentBase {
 
   protected moduleName: string = null;
   protected treeListOptions: kendo.ui.TreeListOptions = null;
@@ -749,7 +751,7 @@ export abstract class TreeListComponentBase extends ComponentBase {
       if (cmds.length == 0) {
         this.osharp.remove(options.columns, m => m == cmdColumn);
       }
-      cmdColumn.width = cmds.length * 50;
+      cmdColumn.width = cmds.length * 45;
     }
     return options;
   }

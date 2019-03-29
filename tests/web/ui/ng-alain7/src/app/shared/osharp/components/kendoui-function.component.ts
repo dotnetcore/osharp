@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, NgZone, ElementRef, EventEmitter, Input, Output, Injector, OnInit } from '@angular/core';
-import { GridComponentBase } from "@shared/osharp/services/kendoui.service";
+import { KendoGridComponentBase } from "@shared/osharp/services/kendoui.service";
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
 @Component({
@@ -7,7 +7,7 @@ import { AuthConfig } from '@shared/osharp/osharp.model';
   selector: 'kendoui-function',
   template: `<div id="grid-box-{{moduleName}}"></div>`
 })
-export class KendouiFunctionComponent extends GridComponentBase implements OnInit, AfterViewInit {
+export class KendouiFunctionComponent extends KendoGridComponentBase implements OnInit, AfterViewInit {
 
   @Input() ModuleName: string;
   @Input() ReadUrl: string;
@@ -38,7 +38,7 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
   }
 
   protected AuthConfig(): AuthConfig {
-    return new AuthConfig(this.Position, ["ReadFunctions"]);
+    return { position: this.Position, funcs: ["ReadFunctions"] };
   }
 
   protected GetModel() {
@@ -71,9 +71,12 @@ export class KendouiFunctionComponent extends GridComponentBase implements OnIni
     return options;
   }
   protected ResizeGrid(init: boolean) {
-    let $content = $("kendoui-function #grid-box-" + this.moduleName + " .k-grid-content");
+    let $content = $(this.grid.element).find('.k-grid-content');
     let winHeight = window.innerHeight;
-    let otherHeight = $("layout-header.header").height() + $(".ant-tabs-nav-container").height() + 120 + 30;
+    console.log(winHeight);
+    let otherHeight = $($(this.grid.element).find('.k-grid-header')).height() + $(".reuse-tab").height() + $('.alain-default__header').height() + 140;
+    console.log(otherHeight);
     $content.height(winHeight - otherHeight);
+    console.log($content.height());
   }
 }

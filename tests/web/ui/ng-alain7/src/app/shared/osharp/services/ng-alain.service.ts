@@ -202,13 +202,14 @@ export abstract class STComponentBase {
   }
 
   create() {
+    if (!this.editModal) return;
     this.editRow = {};
     this.editTitle = "新增";
     this.editModal.open();
   }
 
   edit(row: STData) {
-    if (!row) {
+    if (!row || !this.editModal) {
       return;
     }
     this.editRow = row;
@@ -217,6 +218,7 @@ export abstract class STComponentBase {
   }
 
   close() {
+    if (!this.editModal) return;
     this.editModal.destroy();
   }
 
@@ -274,12 +276,14 @@ export class AlainService {
 
   GetNzTreeCheckedIds(nodes: NzTreeNode[]) {
     let ids = [];
-    for (const node of nodes) {
+    let stack: NzTreeNode[] = [...nodes];
+    while (stack.length > 0) {
+      let node = stack.pop();
       if (node.isChecked) {
         ids.push(node.key);
       }
       if (node.children && node.children.length > 0) {
-        ids = ids.concat(this.GetNzTreeCheckedIds(node.children));
+        stack.push(...node.children);
       }
     }
     ids = new List(ids).Distinct().ToArray();

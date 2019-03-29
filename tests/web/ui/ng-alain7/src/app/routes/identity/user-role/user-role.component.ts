@@ -1,7 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
-import { RoleComponent } from '../role/role.component';
 
 @Component({
   selector: 'app-identity-user-role',

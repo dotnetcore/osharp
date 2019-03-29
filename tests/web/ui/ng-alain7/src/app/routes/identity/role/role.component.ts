@@ -4,7 +4,7 @@ import { STData } from '@delon/abc';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { SFUISchema } from '@delon/form';
 import { NzTreeNode } from 'ng-zorro-antd';
-import { ModalTreeComponent } from '../components/modal-tree/modal-tree.component';
+import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
 
 @Component({
   selector: 'app-identity-role',
