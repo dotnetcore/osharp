@@ -151,7 +151,8 @@ export abstract class STComponentBase {
         'else', 'allOf', 'anyOf', 'oneOf', 'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui'];
       let specialProps = ['ftype', 'fformat', 'fdefault', 'ftitle'];
       let schema: SFSchema = {};
-      for (const key in column) {
+      let keys = Object.getOwnPropertyNames(column);
+      for (const key of keys) {
         if (schemaProps.indexOf(key) > -1) {
           schema[key] = column[key];
         } else if (specialProps.indexOf(key) > -1) {
@@ -176,7 +177,7 @@ export abstract class STComponentBase {
                   schema[key] = 'boolean';
                 } else if (val === 'date') {
                   schema[key] = 'string';
-                  schema['format'] = 'date-time';
+                  schema.format = 'date-time';
                 } else {
                   schema[key] = 'string';
                 }
@@ -184,6 +185,9 @@ export abstract class STComponentBase {
               break;
           }
         }
+      }
+      if (keys.indexOf('type') === -1) {
+        schema.type = 'string';
       }
 
       properties[column.index as string] = schema;
@@ -250,12 +254,20 @@ export abstract class STComponentBase {
 
 import { Injectable } from '@angular/core';
 import { List } from 'linqts';
+import { Observable } from 'rxjs';
+import { stringify } from '@angular/core/src/util';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlainService {
+
+  constructor(private osharp: OsharpService) { }
+
+  public get http(): _HttpClient {
+    return this.osharp.http;
+  }
 
   /**
    * 将原始树数据节点转换为 `NzTreeNodeOptions`节点
@@ -290,5 +302,16 @@ export class AlainService {
     }
     ids = new List(ids).Distinct().ToArray();
     return ids;
+  }
+
+  ReadNode(url: string, labelName: string, valueName: string): Observable<SFSchemaEnumType[]> {
+    return this.http.get(url).map((nodes: any[]) => {
+      let items: SFSchemaEnumType[] = [];
+      for (const node of nodes) {
+        let item: SFSchemaEnumType = { label: node[labelName], value: node[valueName] };
+        items.push(item);
+      }
+      return items;
+    });
   }
 }

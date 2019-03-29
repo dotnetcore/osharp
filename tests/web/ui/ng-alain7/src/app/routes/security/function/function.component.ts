@@ -26,7 +26,7 @@ export class FunctionComponent extends STComponentBase implements OnInit {
       { title: '名称', index: 'Name', fixed: 'left', width: 270, sort: true, editable: true, ftype: 'string', readOnly: true },
       {
         title: '功能类型', index: 'AccessType', type: 'number', width: 100, sort: true, format: d => this.osharp.valueToText(d.AccessType, this.osharp.data.accessType),
-        editable: true, ftitle: '新功能类型', enum: this.toEnum(this.osharp.data.accessType)
+        editable: true, enum: this.toEnum(this.osharp.data.accessType)
       },
       { title: '操作审计', index: 'AuditOperationEnabled', sort: true, type: "yn", editable: true },
       { title: '数据审计', index: 'AuditEntityEnabled', sort: true, type: "yn", editable: true },
