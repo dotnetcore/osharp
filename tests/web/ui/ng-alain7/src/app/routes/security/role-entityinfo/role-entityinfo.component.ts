@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { SFUISchema, SFSchemaEnumType } from '@delon/form';
+import { AjaxResult } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-role-entityinfo',
@@ -44,5 +45,15 @@ export class RoleEntityinfoComponent extends STComponentBase implements OnInit {
       },
     };
     return ui;
+  }
+
+  showGroupJson(item: any) {
+    item.groupJson = JSON.stringify(item.FilterGroup, null, 2);
+  }
+  saveFilterGroup(item: any) {
+    let dto = { Id: item.Id, RoleId: item.RoleId, EntityId: item.EntityId, Operation: item.Operation, FilterGroup: item.FilterGroup, IsLocked: item.IsLocked };
+    this.http.post<AjaxResult>('api/admin/roleEntity/update', [dto]).subscribe(result => {
+      this.osharp.ajaxResult(result);
+    });
   }
 }

@@ -29,10 +29,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { ModalTreeComponent } from './components/modal-tree/modal-tree.component';
+import { FilterGroupComponent } from './components/filter-group/filter-group.component';
+import { FilterRuleComponent } from './components/filter-group/filter-rule.component';
 
 // #region your componets & directives
 const COMPONENTS = [
   ModalTreeComponent,
+  FilterGroupComponent,
+  FilterRuleComponent
 ];
 const DIRECTIVES = [];
 // #endregion
