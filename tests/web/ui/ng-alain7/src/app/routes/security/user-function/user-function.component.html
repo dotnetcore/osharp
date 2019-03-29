@@ -1,3 +1,4 @@
-<p>
-  user-function works!
-</p>
+<kendoui-splitter [options]="splitterOptions" [height]="900">
+  <div id="grid-box-{{moduleName}}"></div>
+  <kendoui-function [ModuleName]="'user-function'" [ReadUrl]="functionReadUrl" [TypeId]="selectedUserId" [Position]="'Root.Admin.Security.Module'" (TypeIdChange)="onUserSelectedChange($event)"></kendoui-function>
+</kendoui-splitter>

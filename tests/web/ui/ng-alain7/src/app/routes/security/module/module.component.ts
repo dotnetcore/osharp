@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, Injector } from '@angular/core';
 
-import { List } from 'linqts';
 import { KendoTreeListComponentBase } from '@shared/osharp/services/kendoui.service';
 import { AuthConfig } from '@shared/osharp/osharp.model';
 
