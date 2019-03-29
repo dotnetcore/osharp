@@ -30,6 +30,7 @@ import { SettingDrawerComponent } from './setting-drawer/setting-drawer.componen
 @Component({
   selector: 'layout-default',
   templateUrl: './default.component.html',
+  styleUrls: ['./default.component.less']
 })
 export class LayoutDefaultComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
