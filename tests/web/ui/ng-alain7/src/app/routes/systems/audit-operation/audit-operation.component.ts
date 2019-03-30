@@ -43,10 +43,7 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
   protected ResponseDataProcess(data: STData[]): STData[] {
     this.keys = [];
     for (const item of data) {
-      if (!item.TypeName) {
-        // 获取操作审计Id数组来进行子项ST定位
-        this.keys.push(item.Id);
-      }
+      this.keys.push(item.Id);
     }
     return data;
   }
