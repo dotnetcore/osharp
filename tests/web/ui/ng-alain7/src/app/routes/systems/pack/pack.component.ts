@@ -20,6 +20,7 @@ export class PackComponent extends STComponentBase implements OnInit {
 
   protected GetSTColumns(): OsharpSTColumn[] {
     return [
+      { title: '', index: '', type: 'no' },
       { title: '名称', index: 'Display' },
       { title: '类型', index: 'Class' },
       { title: '级别', index: 'Level', type: 'tag', tag: this.alain.PackLevelTags },

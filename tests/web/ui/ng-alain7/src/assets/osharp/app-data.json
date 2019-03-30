@@ -20,21 +20,7 @@
     "i18n": "menu.nav.business",
     "group": true,
     "hideInBreadcrumb": true,
-    "children": [{
-      "text": "商城管理",
-      "icon": "anticon-shop",
-      "group": true,
-      "children": [{
-        "text": "产品管理",
-        "link": "/store/product"
-      }, {
-        "text": "商品管理",
-        "link": "/store/goods"
-      }, {
-        "text": "订单管理",
-        "link": "/store/order"
-      }]
-    }]
+    "children": []
   }, {
     "text": "权限模块",
     "i18n": "menu.nav.permission",
