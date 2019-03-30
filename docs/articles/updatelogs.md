@@ -1,5 +1,15 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta01
+1. 添加 Exceptionless 分布式异常日志记录模块
+2. 添加 Dockerfile 进行编译后的Docker镜像打包
+3. 添加第三方登录（QQ，Microsoft账号等）OAuth2登录支持，并创建新或绑定现有账号
+4. 将代码类名/接口名中的OSharp更名为Osharp，以符合大驼峰命名法
+5. 将ng-alain框架的版本更新至7.x，基于angular7+zorro7+ngalain7，使用原始项目结构，整个项目只做管理系统
+6. 重写ng-alain的ACLService，使用ACL实现前端权限的完全验证
+7. 修复 EFCore 组件的导航属性延迟加载代理不生效的问题，原因是初始化时使用了自动迁移时构建的那个Model，那里遗漏了延迟加载代码的配置
+8. 完成ng-alain7的迁移与去kendo grid的后台管理列表页的改造
+
 ### 0.4.0-beta07
 1. 取消Filter和Cache辅助文法的Obsolete特性，有时候静态方法和扩展方法还是挺有用的
 2. dev数据库连接改本地账号密码登录，以方便使用docker环境
