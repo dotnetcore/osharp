@@ -7,7 +7,7 @@
     (change)="change($event)" (error)="error($event)" [expand]="expand">
     <ng-template #expand let-item let-index="index" let-column="column">
       <div>
-        <admin-security-filter-group [group]="item.FilterGroup" [entity]="item.EntityType"></admin-security-filter-group>
+        <app-security-filter-group [group]="item.FilterGroup" [entity]="item.EntityType"></app-security-filter-group>
         <button (click)="showGroupJson(item)" nz-button *ngIf="item.FilterGroup" style="margin:5px" nzType="default">显示JSON</button>
         <button (click)="saveFilterGroup(item)" nz-button *ngIf="item.FilterGroup " style="margin:5px" nzType="primary">保存</button>
         <nz-alert *ngIf="item.groupJson" nzType="info" nzShowIcon nzMessage="筛选规则JSON" nzDescription="{{item.groupJson}}"></nz-alert>

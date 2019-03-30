@@ -26,8 +26,8 @@ export class RoleEntityinfoComponent extends STComponentBase implements OnInit {
       { title: '角色', index: 'RoleId', type: 'number', className: 'text-left', format: d => `${d.RoleId}. ${d.RoleName}`, editable: true },
       { title: '数据实体', index: 'EntityId', className: 'text-left', format: d => `${d.EntityName} [${d.EntityType}]`, editable: true },
       {
-        title: '操作', index: 'Operation', type: 'number', className: 'text-center', format: d => this.osharp.valueToText(d.Operation, this.osharp.data.dataAuthOperations),
-        editable: true, enum: this.toEnum(this.osharp.data.dataAuthOperations)
+        title: '操作', index: 'Operation', type: 'tag', tag: this.alain.DataAuthOperationTags, className: 'text-center',
+        editable: true, ftype: 'number', enum: this.toEnum(this.osharp.data.dataAuthOperations)
       },
       { title: '锁定', index: 'IsLocked', type: 'yn', editable: true },
       { title: '注册时间', index: 'CreatedTime', type: 'date' },

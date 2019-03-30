@@ -1,5 +1,5 @@
 import { PageRequest, PageCondition, SortCondition, ListSortDirection, AjaxResult } from '../osharp.model';
-import { STColumn, STReq, STRes, STComponent, STChange, STPage, STRequestOptions, STData, STError } from '@delon/abc';
+import { STColumn, STReq, STRes, STComponent, STChange, STPage, STRequestOptions, STData, STError, STColumnBadge, STColumnTag } from '@delon/abc';
 import { ViewChild, Injector } from '@angular/core';
 import { OsharpService } from './osharp.service';
 import { SFSchema, SFUISchema, SFSchemaEnumType } from '@delon/form';
@@ -52,7 +52,7 @@ export abstract class STComponentBase {
 
     this.request = new PageRequest();
     this.columns = this.GetSTColumns();
-    this.req = this.GetSTReq();
+    this.req = this.GetSTReq(this.request);
     this.res = this.GetSTRes();
     this.page = this.GetSTPage();
 
@@ -67,9 +67,9 @@ export abstract class STComponentBase {
    */
   protected abstract GetSTColumns(): OsharpSTColumn[];
 
-  protected GetSTReq(): STReq {
+  protected GetSTReq(request: PageRequest): STReq {
     let req: STReq = {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: this.request, allInBody: true, process: opt => this.RequestProcess(opt)
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: request, allInBody: true, process: opt => this.RequestProcess(opt)
     };
     return req;
   }
@@ -314,4 +314,30 @@ export class AlainService {
       return items;
     });
   }
+
+  AjaxResultTypeTags: STColumnTag = {
+    200: { text: '成功', color: 'green' },
+    203: { text: '消息', color: '' },
+    401: { text: '未登录', color: 'orange' },
+    403: { text: '无权操作', color: 'orange' },
+    404: { text: '不存在', color: 'orange' },
+    423: { text: '锁定', color: 'orange' },
+    500: { text: '错误', color: 'red' }
+  };
+  AccessTypeTags: STColumnTag = {
+    0: { text: '匿名访问', color: 'green' },
+    1: { text: '登录访问', color: 'blue' },
+    2: { text: '角色访问', color: 'orange' },
+  };
+  DataAuthOperationTags: STColumnTag = {
+    0: { text: '读取', color: 'green' },
+    1: { text: '更新', color: 'blue' },
+    2: { text: '删除', color: 'orange' },
+  };
+  OperateTypeTags: STColumnTag = {
+    0: { text: '读取', color: '' },
+    1: { text: '新增', color: 'green' },
+    2: { text: '更新', color: 'blue' },
+    3: { text: '删除', color: 'orange' },
+  };
 }

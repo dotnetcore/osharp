@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
 import { SFUISchema } from '@delon/form';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 
@@ -10,7 +10,7 @@ import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 })
 export class FunctionComponent extends STComponentBase implements OnInit {
 
-  constructor(injector: Injector) {
+  constructor(injector: Injector, private alain: AlainService) {
     super(injector);
     this.moduleName = 'function';
   }
@@ -25,8 +25,8 @@ export class FunctionComponent extends STComponentBase implements OnInit {
       { title: '选择', index: 'Id', type: 'checkbox' },
       { title: '名称', index: 'Name', fixed: 'left', width: 270, sort: true, editable: true, ftype: 'string', readOnly: true },
       {
-        title: '功能类型', index: 'AccessType', type: 'number', width: 100, sort: true, format: d => this.osharp.valueToText(d.AccessType, this.osharp.data.accessType),
-        editable: true, enum: this.toEnum(this.osharp.data.accessType)
+        title: '功能类型', index: 'AccessType', type: 'tag', tag: this.alain.AccessTypeTags, width: 100, sort: true,
+        editable: true, ftype: 'number', enum: this.toEnum(this.osharp.data.accessType)
       },
       { title: '操作审计', index: 'AuditOperationEnabled', sort: true, type: "yn", editable: true },
       { title: '数据审计', index: 'AuditEntityEnabled', sort: true, type: "yn", editable: true },

@@ -22,6 +22,11 @@ namespace Liuliu.Demo.Systems.Dtos
     public class AuditEntityOutputDto : IOutputDto
     {
         /// <summary>
+        /// 获取或设置 编号
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
         public string Name { get; set; }

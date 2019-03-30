@@ -58,6 +58,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
                 {
+                    Id = m.Id,
                     Name = m.Name,
                     TypeName = m.TypeName,
                     EntityKey = m.EntityKey,

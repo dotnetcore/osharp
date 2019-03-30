@@ -21194,6 +21194,8 @@ code {
 @sv-type-warning-color: @warning-color;
 @sv-bottom: @layout-gutter * 2;
 @sv-default-text: '-';
+@sv-unit-margin: 8px;
+@sv-unit-color: @grey-7;
 
 @{sv-prefix} {
   display: block;
@@ -21271,6 +21273,15 @@ code {
     &:before {
       content: @sv-default-text;
     }
+
+    ~ @{sv-prefix}__unit {
+      display: none !important;
+    }
+  }
+  &__unit {
+    display: inline;
+    margin-left: @sv-unit-margin;
+    color: @sv-unit-color;
   }
   &__small {
     // offset the padding-bottom of last row

@@ -1,15 +1,118 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
+import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
+import { STColumn, STData, STChange, STReq, STComponent, STRes, STColumnBadge } from '@delon/abc';
+import { PageRequest, FilterRule, PageData } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-audit-operation',
   templateUrl: './audit-operation.component.html',
   styles: []
 })
-export class AuditOperationComponent implements OnInit {
+export class AuditOperationComponent extends STComponentBase implements OnInit {
 
-  constructor() { }
+  keys: string[] = [];
+  @ViewChildren(STComponent) sts: QueryList<STComponent>;
 
-  ngOnInit() {
+  constructor(injector: Injector, private alain: AlainService) {
+    super(injector);
+    this.moduleName = 'auditOperation';
   }
 
+  ngOnInit() {
+    super.InitBase();
+    this.entityInit();
+    this.propertyInit();
+  }
+
+  protected GetSTColumns(): OsharpSTColumn[] {
+    return [
+      { title: '功能', index: 'FunctionName' },
+      { title: '用户名', index: 'UserName' },
+      { title: '昵称', index: 'NickName' },
+      { title: 'IP地址', index: 'Ip' },
+      { title: '操作系统', index: 'OperationSystem' },
+      { title: '浏览器', index: 'Browser' },
+      { title: '结果', index: 'ResultType', type: 'tag', tag: this.alain.AjaxResultTypeTags },
+      { title: '执行时间', index: 'CreatedTime', type: 'date' },
+      { title: '耗时(ms)', index: 'Elapsed' },
+      { title: '消息', index: 'Message' },
+    ];
+  }
+
+  protected ResponseDataProcess(data: STData[]): STData[] {
+    this.keys = [];
+    for (const item of data) {
+      if (!item.TypeName) {
+        // 获取操作审计Id数组来进行子项ST定位
+        this.keys.push(item.Id);
+      }
+    }
+    return data;
+  }
+
+  change(value: STChange) {
+    if (value.type === 'expand' && value.expand && value.expand.expand) {
+      // 操作审计行展开时，加载数据审计信息
+      let data = value.expand;
+      this.getEntityAudits(data.Id);
+    }
+  }
+
+  private getEntityAudits(id: string) {
+    let request = new PageRequest();
+    request.FilterGroup.Rules.push(new FilterRule('OperationId', id));
+    this.http.post('api/admin/auditEntity/read', request).subscribe((res: PageData<any>) => {
+      for (const item of res.Rows) {
+        item.OperationId = id;
+      }
+      let index = this.keys.indexOf(id);
+      let entityST: STComponent = this.sts.toArray()[index * 2 + 1];
+      entityST.data = res.Rows;
+      entityST.reload();
+      // 显示属性变更
+      if (res.Rows.length > 0) {
+        this.showProps(res.Rows[0]);
+      }
+    });
+  }
+
+  // #region 数据审计
+
+  entityColumns: STColumn[];
+
+  private entityInit() {
+    this.entityColumns = [
+      { title: '操作', fixed: 'left', width: 65, buttons: [{ text: '变更', icon: 'ordered-list', click: d => this.showProps(d) }] },
+      { title: '实体名称', index: 'Name' },
+      { title: '实体类型', index: 'TypeName' },
+      { title: '数据编号', index: 'EntityKey' },
+      { title: '操作', index: 'OperateType', type: 'tag', tag: this.alain.OperateTypeTags },
+    ];
+  }
+
+  private showProps(data: STData) {
+    let index = this.keys.indexOf(data.OperationId);
+    let propertyST: STComponent = this.sts.toArray()[index * 2 + 2];
+    propertyST.data = data.Properties;
+    propertyST.reload();
+  }
+
+  // #endregion
+
+  // #region  数据审计明细
+
+  propertyColumns: STColumn[];
+
+  private propertyInit() {
+    this.propertyColumns = [
+      { title: '属性名称', index: 'DisplayName' },
+      { title: '实体属性', index: 'FieldName' },
+      { title: '原始值', index: 'OriginalValue' },
+      { title: '变更值', index: 'NewValue' },
+      { title: '数据类型', index: 'DataType' },
+    ];
+  }
+
+  // #endregion
 }

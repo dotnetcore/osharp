@@ -18,8 +18,10 @@ export enum AjaxResultType {
 
 /** 分页数据 */
 export class PageData<T> {
-  rows: T[];
-  total: number;
+  /** 数据行 */
+  Rows: T[];
+  /** 总数据量 */
+  Total: number;
 }
 export class ListNode {
   id: number;
