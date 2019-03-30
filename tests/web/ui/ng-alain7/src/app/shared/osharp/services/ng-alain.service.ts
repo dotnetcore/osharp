@@ -340,4 +340,11 @@ export class AlainService {
     2: { text: '更新', color: 'blue' },
     3: { text: '删除', color: 'orange' },
   };
+  PackLevelTags: STColumnTag = {
+    1: { text: 'Core', color: 'red' },
+    10: { text: 'Framework', color: 'orange' },
+    20: { text: 'Application', color: 'blue' },
+    30: { text: 'Business', color: 'green' }
+
+  };
 }
