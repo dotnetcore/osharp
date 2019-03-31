@@ -40,8 +40,20 @@ namespace OSharp.Core.Options
         {
             SetDbContextOptionses(options);
 
+            IConfigurationSection section;
+            //OAuth2
+            section = _configuration.GetSection("OSharp:OAuth2");
+            IDictionary<string, OAuth2Options> dict = section.Get<Dictionary<string, OAuth2Options>>();
+            if (dict != null)
+            {
+                foreach (KeyValuePair<string, OAuth2Options> item in dict)
+                {
+                    options.OAuth2S.Add(item.Key, item.Value);
+                }
+            }
+
             //MailSender
-            IConfigurationSection section = _configuration.GetSection("OSharp:MailSender");
+            section = _configuration.GetSection("OSharp:MailSender");
             MailSenderOptions sender = section.Get<MailSenderOptions>();
             if (sender != null)
             {

@@ -30,7 +30,7 @@ export class ModalTreeComponent {
 
   constructor(public http: _HttpClient, private alain: AlainService) { }
 
-  private loadTreeData() {
+  loadTreeData() {
     let url = this.treeDataUrl;
     if (!url) {
       return;

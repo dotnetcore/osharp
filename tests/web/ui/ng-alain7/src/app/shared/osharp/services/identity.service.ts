@@ -88,6 +88,7 @@ export class IdentityService {
       this.tokenSrv.set({ token });
     } else {
       this.tokenSrv.clear();
+      this.settingSrv.setUser({});
     }
     // 刷新用户信息
     return this.refreshUser();

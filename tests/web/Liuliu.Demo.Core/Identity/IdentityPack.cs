@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
+using OSharp.Core.Options;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Identity;
@@ -104,16 +106,16 @@ namespace Liuliu.Demo.Identity
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(jwt =>
             {
-                string secret = configuration["Authentication:Jwt:Secret"];
+                string secret = configuration["OSharp:Jwt:Secret"];
                 if (secret.IsNullOrEmpty())
                 {
-                    throw new OsharpException("配置文件中Authentication配置的Jwt节点的Secret不能为空");
+                    throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
                 }
 
                 jwt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = configuration["Authentication:Jwt:Issuer"]?? "osharp identity",
-                    ValidAudience = configuration["Authentication:Jwt:Audience"]?? "osharp client",
+                    ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
+                    ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.Now,
                     ValidateLifetime = true
@@ -138,44 +140,53 @@ namespace Liuliu.Demo.Identity
                 };
             });
 
-            bool enabled = configuration["Authentication:QQ:Enabled"].CastTo(false);
-            if (enabled)
+            // OAuth2
+            IConfigurationSection section = configuration.GetSection("OSharp:OAuth2");
+            IDictionary<string, OAuth2Options> dict = section.Get<Dictionary<string, OAuth2Options>>();
+            if (dict == null)
             {
-                string appId = configuration["Authentication:QQ:AppId"];
-                if (string.IsNullOrEmpty(appId))
-                {
-                    throw new OsharpException("配置文件中Authentication配置的QQ节点的AppId不能为空");
-                }
-                string appKey = configuration["Authentication:QQ:AppKey"];
-                if (string.IsNullOrEmpty(appKey))
-                {
-                    throw new OsharpException("配置文件中Authentication配置的QQ节点的AppKey不能为空");
-                }
-                authenticationBuilder.AddQQ(qq =>
-                {
-                    qq.AppId = appId;
-                    qq.AppKey = appKey;
-                });
+                return;
             }
-
-            enabled = configuration["Authentication:Microsoft:Enabled"].CastTo(false);
-            if (enabled)
+            foreach (KeyValuePair<string, OAuth2Options> pair in dict)
             {
-                string clientId = configuration["Authentication:Microsoft:ClientId"];
-                if (string.IsNullOrEmpty(clientId))
+                OAuth2Options value = pair.Value;
+                if (!value.Enabled)
                 {
-                    throw new OsharpException("配置文件中Authentication配置的Microsoft节点的ClientId不能为空");
+                    continue;
                 }
-                string clientSecret = configuration["Authentication:Microsoft:ClientSecret"];
-                if (string.IsNullOrEmpty(clientSecret))
+                if (string.IsNullOrEmpty(value.ClientId))
                 {
-                    throw new OsharpException("配置文件中Authentication配置的Microsoft节点的ClientSecret不能为空");
+                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{pair.Key}节点的ClientId不能为空");
                 }
-                authenticationBuilder.AddMicrosoftAccount(ms =>
+                if (string.IsNullOrEmpty(value.ClientSecret))
                 {
-                    ms.ClientId = clientId;
-                    ms.ClientSecret = clientSecret;
-                });
+                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{pair.Key}节点的ClientSecret不能为空");
+                }
+
+                switch (pair.Key)
+                {
+                    case "QQ":
+                        authenticationBuilder.AddQQ(opts =>
+                        {
+                            opts.AppId = value.ClientId;
+                            opts.AppKey = value.ClientSecret;
+                        });
+                        break;
+                    case "Microsoft":
+                        authenticationBuilder.AddMicrosoftAccount(opts =>
+                        {
+                            opts.ClientId = value.ClientId;
+                            opts.ClientSecret = value.ClientSecret;
+                        });
+                        break;
+                    case "GitHub":
+                        authenticationBuilder.AddGitHub(opts =>
+                        {
+                            opts.ClientId = value.ClientId;
+                            opts.ClientSecret = value.ClientSecret;
+                        });
+                        break;
+                }
             }
         }
 

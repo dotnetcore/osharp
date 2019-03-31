@@ -7,9 +7,9 @@ import { Exception500Component } from './500.component';
 import { ExceptionTriggerComponent } from './trigger.component';
 
 const routes: Routes = [
-  { path: '403', component: Exception403Component },
-  { path: '404', component: Exception404Component },
-  { path: '500', component: Exception500Component },
+  { path: '403', component: Exception403Component, data: { title: '403' } },
+  { path: '404', component: Exception404Component, data: { title: '404' } },
+  { path: '500', component: Exception500Component, data: { title: '500' } },
   { path: 'trigger', component: ExceptionTriggerComponent },
 ];
 
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ExceptionRoutingModule {}
+export class ExceptionRoutingModule { }

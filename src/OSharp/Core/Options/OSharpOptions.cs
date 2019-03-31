@@ -26,12 +26,18 @@ namespace OSharp.Core.Options
         public OsharpOptions()
         {
             DbContexts = new ConcurrentDictionary<string, OsharpDbContextOptions>(StringComparer.OrdinalIgnoreCase);
+            OAuth2S = new ConcurrentDictionary<string, OAuth2Options>();
         }
 
         /// <summary>
         /// 获取 数据上下文配置信息
         /// </summary>
         public IDictionary<string, OsharpDbContextOptions> DbContexts { get; }
+
+        /// <summary>
+        /// 获取 第三方OAuth2登录配置信息
+        /// </summary>
+        public IDictionary<string, OAuth2Options> OAuth2S { get; }
 
         /// <summary>
         /// 获取或设置 邮件发送选项

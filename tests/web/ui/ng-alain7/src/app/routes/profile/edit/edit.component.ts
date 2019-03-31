@@ -22,7 +22,7 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
     let user = this.settings.user;
-    let userNameEdit = ['QQ_', 'Microsoft_'].some(m => user.name.startsWith(m));
+    let userNameEdit = ['QQ_', 'Microsoft_', 'GitHub_'].some(m => user.name.startsWith(m));
     this.headImgUrl = user.avatar;
     this.schema = {
       properties: {

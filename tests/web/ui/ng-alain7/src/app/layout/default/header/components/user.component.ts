@@ -2,6 +2,7 @@ import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingsService } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
   selector: 'header-user',
@@ -34,11 +35,14 @@ export class HeaderUserComponent {
   constructor(
     public settings: SettingsService,
     private router: Router,
+    private identity: IdentityService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
   ) { }
 
   logout() {
-    this.tokenService.clear();
-    this.router.navigateByUrl(this.tokenService.login_url);
+    this.identity.logout().then(res => {
+      this.tokenService.clear();
+      this.router.navigateByUrl(this.tokenService.login_url);
+    });
   }
 }
