@@ -14,7 +14,7 @@
     <sf #sf1 [schema]="bindSchema" [button]="null">
       <ng-template sf-template="Password" let-me>
         <nz-input-group nzSize="large" nzPrefixIcon="lock">
-          <input nz-input type="password" [(ngModel)]="me.formProperty.value" (ngModelChange)="passwordChange(me, $event)" placeholder="登录密码" />
+          <input nz-input type="password" [ngModel]="me.formProperty.value" (ngModelChange)="passwordChange(me, $event)" placeholder="登录密码" />
         </nz-input-group>
       </ng-template>
       <button nz-button nzType="primary" (click)="loginBind(sf1.value)" [disabled]="!sf1.valid">登录并绑定账号</button>
