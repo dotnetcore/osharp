@@ -1,5 +1,11 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta02-03
+1. 将OAuth2的选项配置到OSharpOptions中，添加GitHub账号登录的支持
+2. 修复 0.5.0-beta01 版本在Release版本时执行 provider.ExecuteScopedWork 方法相当慢速的问题，原因未知（难道不允许在Scoped作用域下再CreateScope？）
+3. 修复数据迁移时无法读取配置文件信息的问题
+4. 修复密码输入框在发布版无法触发值变化事件的问题
+
 ### 0.5.0-beta01
 1. 添加 Exceptionless 分布式异常日志记录模块
 2. 添加 Dockerfile 进行编译后的Docker镜像打包

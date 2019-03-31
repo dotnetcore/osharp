@@ -155,10 +155,10 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 * 配置好后，即可正常启动端口号为`7001`的项目，启动后开发模式将进入`Swagger`的后端Api接口的文档页。
 
 ### 6. Angular6的前端项目启动
-前端项目使用了`ng-alain`和`kendoui`作为UI进行开发的，需要熟悉`nodejs`,`angular6`等技术。
+前端项目使用了`ng-alain`和`kendoui`作为UI进行开发的，需要熟悉`nodejs`,`angular7`等技术。
 
 #### 安装`NodeJS`，搭建前端技术环境
-* 安装最新版本 NodeJS：angular6需要最新版本(node 8.x 和 npm 5.x 以上的版本)的 NodeJS，请到 [NodeJS官方网站](https://nodejs.org/en/) 下载最新版本的NodeJS进行安装。
+* 安装最新版本 NodeJS：angular7需要最新版本(node 10.x 和 npm 6.x 以上的版本)的 NodeJS，请到 [NodeJS官方网站](https://nodejs.org/en/) 下载最新版本的NodeJS进行安装。
 * 设置npm的淘宝镜像仓库：由于npm的国外仓储会很慢，所以最好把npm仓库地址指定国内镜像，推荐淘宝镜像：
 
   > `npm config set registry https://registry.npm.taobao.org`
