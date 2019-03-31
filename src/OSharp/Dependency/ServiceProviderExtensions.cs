@@ -29,7 +29,8 @@ namespace OSharp.Dependency
         /// </summary>
         public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
+            using (IServiceScope scope = factory.CreateScope())
             {
                 action(scope.ServiceProvider);
             }
@@ -43,7 +44,8 @@ namespace OSharp.Dependency
         /// </summary>
         public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
+            using (IServiceScope scope = factory.CreateScope())
             {
                 await action(scope.ServiceProvider);
             }
@@ -57,7 +59,8 @@ namespace OSharp.Dependency
         /// </summary>
         public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
+            using (IServiceScope scope = factory.CreateScope())
             {
                 return func(scope.ServiceProvider);
             }
@@ -71,7 +74,8 @@ namespace OSharp.Dependency
         /// </summary>
         public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
+            using (IServiceScope scope = factory.CreateScope())
             {
                 return await func(scope.ServiceProvider);
             }

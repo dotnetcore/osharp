@@ -11,12 +11,15 @@ using System;
 using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core;
 using OSharp.Core.Options;
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 using OSharp.Reflection;
 
 
@@ -38,8 +41,9 @@ namespace Liuliu.Demo.Web.Startups
         {
             if (_serviceProvider == null)
             {
-                string str = AppSettingsManager.Get("OSharp:DbContexts:SqlServer:ConnectionString")
-                    ?? AppSettingsManager.Get("ConnectionStrings:DefaultDbContext");
+                IConfiguration configuration = Singleton<IConfiguration>.Instance;
+                string str = configuration["OSharp:DbContexts:SqlServer:ConnectionString"]
+                    ?? configuration["ConnectionStrings:DefaultDbContext"];
                 return str;
             }
             OsharpOptions options = _serviceProvider.GetOSharpOptions();
@@ -71,7 +75,8 @@ namespace Liuliu.Demo.Web.Startups
         {
             if (_serviceProvider == null)
             {
-                return AppSettingsManager.Get<bool>("OSharp:DbContexts:SqlServer:LazyLoadingProxiesEnabled");
+                IConfiguration configuration = Singleton<IConfiguration>.Instance;
+                return configuration["OSharp:DbContexts:SqlServer:LazyLoadingProxiesEnabled"].CastTo(false);
             }
             OsharpOptions options = _serviceProvider.GetOSharpOptions();
             OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(DefaultDbContext));

@@ -39,6 +39,9 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             Check.NotNull(services, nameof(services));
 
+            IConfiguration configuration = services.GetConfiguration();
+            Singleton<IConfiguration>.Instance = configuration;
+
             //初始化所有程序集查找器
             services.TryAddSingleton<IAllAssemblyFinder>(new AppDomainAllAssemblyFinder());
 

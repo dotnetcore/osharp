@@ -36,7 +36,7 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
       { title: '结果', index: 'ResultType', type: 'tag', tag: this.alain.AjaxResultTypeTags },
       { title: '执行时间', index: 'CreatedTime', type: 'date' },
       { title: '耗时(ms)', index: 'Elapsed' },
-      { title: '消息', index: 'Message' },
+      { title: '消息', index: 'Message', width: 300 },
     ];
   }
 
