@@ -6,8 +6,7 @@ import { PageRequest, FilterRule, PageData } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-audit-operation',
-  templateUrl: './audit-operation.component.html',
-  styles: []
+  templateUrl: './audit-operation.component.html'
 })
 export class AuditOperationComponent extends STComponentBase implements OnInit {
 
@@ -28,7 +27,7 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
   protected GetSTColumns(): OsharpSTColumn[] {
     return [
       { title: '功能', index: 'FunctionName' },
-      { title: '用户名', index: 'UserName', },
+      { title: '用户名', index: 'UserName', className: 'max-200' },
       { title: '昵称', index: 'NickName' },
       { title: 'IP地址', index: 'Ip' },
       { title: '操作系统', index: 'OperationSystem' },
@@ -36,7 +35,7 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
       { title: '结果', index: 'ResultType', type: 'tag', tag: this.alain.AjaxResultTypeTags },
       { title: '执行时间', index: 'CreatedTime', type: 'date' },
       { title: '耗时(ms)', index: 'Elapsed' },
-      { title: '消息', index: 'Message', width: 200 },
+      { title: '消息', index: 'Message', className: 'max-300' },
     ];
   }
 

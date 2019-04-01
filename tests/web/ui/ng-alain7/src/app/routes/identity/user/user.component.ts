@@ -34,7 +34,7 @@ export class UserComponent extends STComponentBase implements OnInit {
         }]
       },
       { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, ftype: 'number' },
-      { title: '用户名', index: 'UserName', sort: true, editable: true, ftype: 'string' },
+      { title: '用户名', index: 'UserName', sort: true, editable: true, ftype: 'string', className: 'max-200' },
       { title: '昵称', index: 'NickName', sort: true, editable: true, ftype: 'string' },
       { title: '邮箱', index: 'Email', sort: true, editable: true, ftype: 'string' },
       { title: '邮箱确认', index: 'EmailConfirmed', sort: true, type: 'yn', editable: true },
