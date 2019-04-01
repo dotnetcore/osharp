@@ -8,8 +8,9 @@
       </div>
     </div>
     <ul nz-menu>
-      <li nz-menu-item routerLink="/profile">{{ 'menu.account.center' | translate }}</li>
-      <li nz-menu-item routerLink="/profile/edit">{{ 'menu.account.settings' | translate }}</li>
+      <li nz-menu-item routerLink="/profile"><i nz-icon type="user" class="mr-sm"></i>{{ 'menu.account.center' | translate }}</li>
+      <li nz-menu-item routerLink="/profile/edit"><i nz-icon type="setting" class="mr-sm"></i>{{ 'menu.account.settings' | translate }}</li>
+      <li nz-menu-item (click)="logout()"><i nz-icon type="logout" class="mr-sm"></i>{{ 'menu.account.logout' | translate }}</li>
     </ul>
   </nz-dropdown>
   <sidebar-nav class="d-block py-lg"></sidebar-nav>
