@@ -13,7 +13,7 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
   keys: string[] = [];
   @ViewChildren(STComponent) sts: QueryList<STComponent>;
 
-  constructor(injector: Injector, private alain: AlainService) {
+  constructor(injector: Injector) {
     super(injector);
     this.moduleName = 'auditOperation';
   }
@@ -26,16 +26,16 @@ export class AuditOperationComponent extends STComponentBase implements OnInit {
 
   protected GetSTColumns(): OsharpSTColumn[] {
     return [
-      { title: '功能', index: 'FunctionName' },
-      { title: '用户名', index: 'UserName', className: 'max-200' },
-      { title: '昵称', index: 'NickName' },
-      { title: 'IP地址', index: 'Ip' },
-      { title: '操作系统', index: 'OperationSystem' },
-      { title: '浏览器', index: 'Browser' },
-      { title: '结果', index: 'ResultType', type: 'tag', tag: this.alain.AjaxResultTypeTags },
-      { title: '执行时间', index: 'CreatedTime', type: 'date' },
-      { title: '耗时(ms)', index: 'Elapsed' },
-      { title: '消息', index: 'Message', className: 'max-300' },
+      { title: '功能', index: 'FunctionName', filterable: true },
+      { title: '用户名', index: 'UserName', className: 'max-200', filterable: true },
+      { title: '昵称', index: 'NickName', filterable: true },
+      { title: 'IP地址', index: 'Ip', filterable: true },
+      { title: '操作系统', index: 'OperationSystem', filterable: true },
+      { title: '浏览器', index: 'Browser', filterable: true },
+      { title: '结果', index: 'ResultType', type: 'tag', tag: this.alain.AjaxResultTypeTags, filterable: true },
+      { title: '执行时间', index: 'CreatedTime', type: 'date', filterable: true },
+      { title: '耗时(ms)', index: 'Elapsed', type: 'number', filterable: true },
+      { title: '消息', index: 'Message', className: 'max-300', filterable: true },
     ];
   }
 

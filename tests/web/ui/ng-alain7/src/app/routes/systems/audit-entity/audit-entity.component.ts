@@ -13,7 +13,7 @@ export class AuditEntityComponent extends STComponentBase implements OnInit {
   keys: string[] = [];
   @ViewChildren(STComponent) sts: QueryList<STComponent>;
 
-  constructor(injector: Injector, private alain: AlainService) {
+  constructor(injector: Injector) {
     super(injector);
     this.moduleName = 'auditEntity';
   }
@@ -25,10 +25,10 @@ export class AuditEntityComponent extends STComponentBase implements OnInit {
 
   protected GetSTColumns(): OsharpSTColumn[] {
     return [
-      { title: '实体名称', index: 'Name' },
-      { title: '实体类型', index: 'TypeName' },
-      { title: '数据编号', index: 'EntityKey' },
-      { title: '操作', index: 'OperateType', type: 'tag', tag: this.alain.OperateTypeTags },
+      { title: '实体名称', index: 'Name', filterable: true },
+      { title: '实体类型', index: 'TypeName', filterable: true },
+      { title: '数据编号', index: 'EntityKey', filterable: true },
+      { title: '操作', index: 'OperateType', type: 'tag', tag: this.alain.OperateTypeTags, filterable: true },
     ];
   }
 

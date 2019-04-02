@@ -6,14 +6,14 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
   selector: 'app-security-filter-rule',
   templateUrl: './filter-rule.component.html',
   styles: [`
-    .rule-box{margin:3px 3px;}
-    .rule-box nz-select,
-      .rule-box nz-input-number,
-      .rule-box input[nz-input],
-      .rule-box nz-date-picker {width:150px;float:left; margin-right:8px;}
-    .f-left{float:left;}
-    .k-input{padding:0;line-height:normal;}
-    `]
+  .rule-box{margin:3px 3px;}
+  .rule-box nz-select,
+    .rule-box nz-input-number,
+    .rule-box input[nz-input],
+    .rule-box nz-date-picker {width:150px;float:left; margin-right:8px;}
+  .f-left{float:left;}
+  .k-input{padding:0;line-height:normal;}
+  `]
 })
 export class FilterRuleComponent implements OnChanges {
 
@@ -40,11 +40,11 @@ export class FilterRuleComponent implements OnChanges {
   }
 
   fieldChange(field: string, first: boolean = false) {
-    if (this.properties.length == 0 || !field) {
+    if (this.properties.length === 0 || !field) {
       return;
     }
-    this.property = this.properties.find(m => m.Name == field);
-    if (this.property == null) {
+    this.property = this.properties.find(m => m.Name === field);
+    if (this.property === null) {
       return;
     }
     if (!first) {
@@ -64,7 +64,7 @@ export class FilterRuleComponent implements OnChanges {
         }
         break;
       case 'System.Int32':
-        if (this.property.ValueRange.length == 0) {
+        if (this.property.ValueRange.length === 0) {
           //数值类型
           this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual]);
           if (!this.rule.Value) {
@@ -91,28 +91,28 @@ export class FilterRuleComponent implements OnChanges {
         }
         break;
       default:
-        this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual, FilterOperate.StartsWith, FilterOperate.EndsWith, FilterOperate.Contains, FilterOperate.NotContains]);
+        this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual,
+        FilterOperate.StartsWith, FilterOperate.EndsWith, FilterOperate.Contains, FilterOperate.NotContains]);
         if (!this.rule.Value) {
           this.rule.Value = '';
         }
         break;
     }
-    if (!this.rule.Operate || this.operateEntries.filter(m => m.Operate == this.rule.Operate).length == 0) {
+    if (!this.rule.Operate || this.operateEntries.filter(m => m.Operate === this.rule.Operate).length === 0) {
       this.rule.Operate = this.operateEntries[0].Operate;
     }
   }
 
   private getOperateEntries(operates: FilterOperate[]): FilterOperateEntry[] {
     let entries: FilterOperateEntry[] = [];
-    for (let index = 0; index < operates.length; index++) {
-      const operate = operates[index];
+    for (let operate of operates) {
       entries.push(new FilterOperateEntry(operate));
     }
     return entries;
   }
 
   onTagsChangeEvent(e) {
-    if (!e || e.length == 0) {
+    if (!e || e.length === 0) {
       this.osharp.error(`${this.property.Display}不能为空`);
       this.rule.Value = null;
       return;

@@ -34,6 +34,7 @@ export abstract class STComponentBase {
   @ViewChild('modal') editModal: NzModalComponent;
 
   osharp: OsharpService;
+  alain: AlainService;
   selecteds: STData[] = [];
 
   public get http(): _HttpClient {
@@ -42,6 +43,7 @@ export abstract class STComponentBase {
 
   constructor(injector: Injector) {
     this.osharp = injector.get(OsharpService);
+    this.alain = injector.get(AlainService);
   }
 
   protected InitBase() {
@@ -143,53 +145,10 @@ export abstract class STComponentBase {
   protected ColumnsToSchemas(columns: OsharpSTColumn[]): { [key: string]: SFSchema } {
     let properties: { [key: string]: SFSchema } = {};
     for (const column of columns) {
-      if (!column.index || !column.editable) {
+      if (!column.index || !column.editable || column.buttons) {
         continue;
       }
-      let schemaProps = ['enum', 'minimum', 'exclusiveMinimum', 'maximum', 'exclusiveMaximum', 'multipleOf', 'maxLength', 'minLength', 'pattern',
-        'items', 'minItems', 'maxItems', 'uniqueItems', 'additionalItems', 'maxProperties', 'minProperties', 'required', 'properties', 'if', 'then',
-        'else', 'allOf', 'anyOf', 'oneOf', 'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui'];
-      let specialProps = ['ftype', 'fformat', 'fdefault', 'ftitle'];
-      let schema: SFSchema = {};
-      let keys = Object.getOwnPropertyNames(column);
-      for (const key of keys) {
-        if (schemaProps.indexOf(key) > -1) {
-          schema[key] = column[key];
-        } else if (specialProps.indexOf(key) > -1) {
-          // fkey的情况，直接使用fkey的值
-          let ekey = key.substr(1);
-          schema[ekey] = column[key];
-        } else if (specialProps.indexOf(`f${key}`) > -1) {
-          // key的情况，要取key值来转换才能用
-          switch (key) {
-            case 'default':
-            case 'title':
-              schema[key] = column[key];
-              break;
-            case 'type':
-              {
-                let val = column[key];
-                if (['link', 'img'].indexOf(val) > -1) {
-                  schema[key] = 'string';
-                } else if (['number', 'currency'].indexOf(val) > -1) {
-                  schema[key] = 'number';
-                } else if (val === 'yn') {
-                  schema[key] = 'boolean';
-                } else if (val === 'date') {
-                  schema[key] = 'string';
-                  schema.format = 'date-time';
-                } else {
-                  schema[key] = 'string';
-                }
-              }
-              break;
-          }
-        }
-      }
-      if (keys.indexOf('type') === -1) {
-        schema.type = 'string';
-      }
-
+      let schema: SFSchema = this.alain.ToSFSchema(column);
       properties[column.index as string] = schema;
     }
     return properties;
@@ -255,7 +214,6 @@ export abstract class STComponentBase {
 import { Injectable } from '@angular/core';
 import { List } from 'linqts';
 import { Observable } from 'rxjs';
-import { stringify } from '@angular/core/src/util';
 
 
 @Injectable({
@@ -313,6 +271,64 @@ export class AlainService {
       }
       return items;
     });
+  }
+
+  ToSFSchema(column: OsharpSTColumn): SFSchema {
+    let schemaProps = ['enum', 'minimum', 'exclusiveMinimum', 'maximum', 'exclusiveMaximum', 'multipleOf', 'maxLength', 'minLength', 'pattern',
+      'items', 'minItems', 'maxItems', 'uniqueItems', 'additionalItems', 'maxProperties', 'minProperties', 'required', 'properties', 'if', 'then',
+      'else', 'allOf', 'anyOf', 'oneOf', 'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui'];
+    let specialProps = ['ftype', 'fformat', 'fdefault', 'ftitle'];
+    let schema: SFSchema = {};
+    let keys = Object.getOwnPropertyNames(column);
+    for (const key of keys) {
+      if (schemaProps.includes(key)) {
+        schema[key] = column[key];
+      } else if (specialProps.includes(key)) {
+        // fkey的情况，直接使用fkey的值
+        let ekey = key.substr(1);
+        schema[ekey] = column[key];
+      } else if (specialProps.includes(`f${key}`)) {
+        // key的情况，要取key值来转换才能用
+        switch (key) {
+          case 'default':
+          case 'title':
+            schema[key] = column[key];
+            break;
+          case 'type':
+            {
+              let val = column[key];
+              if (['link', 'img'].includes(val)) {
+                schema[key] = 'string';
+              } else if (['number', 'currency'].includes(val)) {
+                schema[key] = 'number';
+              } else if (val === 'yn') {
+                schema[key] = 'boolean';
+              } else if (val === 'date') {
+                schema[key] = 'string';
+                schema.format = 'date-time';
+              } else {
+                schema[key] = 'string';
+              }
+            }
+            break;
+        }
+      }
+    }
+    if (!keys.indexOf('type') && !keys.includes('ftype')) {
+      schema.type = 'string';
+    }
+    return schema;
+  }
+
+  TagsToEnums(tag: STColumnTag): SFSchemaEnumType[] {
+    let enums: SFSchemaEnumType[] = [];
+    for (const key in tag) {
+      if (tag.hasOwnProperty(key)) {
+        const value = tag[key];
+        enums.push({ value: key, label: value.text });
+      }
+    }
+    return enums;
   }
 
   AjaxResultTypeTags: STColumnTag = {

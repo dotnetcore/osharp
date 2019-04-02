@@ -2,6 +2,7 @@
   <div>
     <button nz-button (click)="st.reload()"><i nz-icon type="reload" theme="outline"></i>刷新</button>
     <button nz-button (click)="create()" acl="Root.Admin.Identity.User.Create"><i nz-icon type="plus-circle" theme="outline"></i>新增</button>
+    <button nz-button (click)="searchModal.open()" acl="Root.Admin.Identity.User.Read"><i nz-icon type="search" theme="outline"></i>搜索</button>
   </div>
   <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort
     (change)="change($event)" (error)="error($event)"></st>
@@ -19,3 +20,5 @@
 <app-identity-modal-tree #roleModal [title]="roleTitle" [treeDataUrl]="roleTreeDataUrl" [submitACL]="'Root.Admin.Identity.User.SetRoles'" (submited)="setRoles($event)"></app-identity-modal-tree>
 <!--修改角色-->
 <app-identity-modal-tree #moduleModal [title]="moduleTitle" [treeDataUrl]="moduleTreeDataUrl" [submitACL]="'Root.Admin.Identity.User.SetModules'" (submited)="setModules($event)"></app-identity-modal-tree>
+<!--高级搜索-->
+<app-ad-search #searchModal [columns]="columns" [st]="st"></app-ad-search>

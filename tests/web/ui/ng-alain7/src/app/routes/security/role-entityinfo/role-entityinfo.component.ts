@@ -11,7 +11,7 @@ import { AjaxResult } from '@shared/osharp/osharp.model';
 })
 export class RoleEntityinfoComponent extends STComponentBase implements OnInit {
 
-  constructor(injector: Injector, private alain: AlainService) {
+  constructor(injector: Injector) {
     super(injector);
     this.moduleName = 'roleEntity';
   }

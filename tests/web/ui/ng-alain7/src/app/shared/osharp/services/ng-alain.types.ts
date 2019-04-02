@@ -11,6 +11,11 @@ export interface OsharpSTColumn extends STColumn {
   editable?: boolean;
 
   /**
+   * 是否允许搜索，根据这个值决定是否列在搜索列选择下拉列表中
+   */
+  filterable?: boolean;
+
+  /**
    * 数据类型，支持 JavaScript 基础类型；注意项：
    *
    * - `integer` 表示整型，`number` 表示浮点型

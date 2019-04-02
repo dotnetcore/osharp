@@ -1,10 +1,11 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { AlainService, STComponentBase } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase } from '@shared/osharp/services/ng-alain.service';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { SFUISchema } from '@delon/form';
 import { STData } from '@delon/abc';
 import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
 import { NzTreeNode } from 'ng-zorro-antd';
+import { FilterGroup } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-identity-user',
@@ -12,7 +13,7 @@ import { NzTreeNode } from 'ng-zorro-antd';
 })
 export class UserComponent extends STComponentBase implements OnInit {
 
-  constructor(injector: Injector, private alain: AlainService) {
+  constructor(injector: Injector) {
     super(injector);
     this.moduleName = 'user';
   }
@@ -33,19 +34,19 @@ export class UserComponent extends STComponentBase implements OnInit {
           ]
         }]
       },
-      { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, ftype: 'number' },
-      { title: '用户名', index: 'UserName', sort: true, editable: true, ftype: 'string', className: 'max-200' },
-      { title: '昵称', index: 'NickName', sort: true, editable: true, ftype: 'string' },
-      { title: '邮箱', index: 'Email', sort: true, editable: true, ftype: 'string' },
-      { title: '邮箱确认', index: 'EmailConfirmed', sort: true, type: 'yn', editable: true },
-      { title: '手机号', index: 'PhoneNumber', sort: true, editable: true, ftype: 'string' },
-      { title: '手机确认', index: 'PhoneNumberConfirmed', sort: true, type: 'yn', editable: true },
+      { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, ftype: 'number', filterable: true },
+      { title: '用户名', index: 'UserName', sort: true, editable: true, ftype: 'string', filterable: true, className: 'max-200' },
+      { title: '昵称', index: 'NickName', sort: true, editable: true, ftype: 'string', filterable: true },
+      { title: '邮箱', index: 'Email', sort: true, editable: true, ftype: 'string', filterable: true },
+      { title: '邮箱确认', index: 'EmailConfirmed', sort: true, type: 'yn', editable: true, filterable: true },
+      { title: '手机号', index: 'PhoneNumber', sort: true, editable: true, ftype: 'string', filterable: true },
+      { title: '手机确认', index: 'PhoneNumberConfirmed', sort: true, type: 'yn', editable: true, filterable: true },
       { title: '角色', index: 'Roles', format: d => this.osharp.expandAndToString(d.Roles) },
-      { title: '是否锁定', index: 'Locked', sort: true, type: 'yn', editable: true },
-      { title: '登录锁', index: 'LockoutEnabled', sort: true, type: 'yn', editable: true },
-      { title: '登录错误', index: 'AccessFailedCount', sort: true, editable: true, ftype: 'number' },
-      { title: '锁时间', index: 'LockoutEnd', sort: true, editable: true, type: 'date' },
-      { title: '注册时间', index: 'CreatedTime', sort: true, type: 'date' },
+      { title: '是否锁定', index: 'Locked', sort: true, type: 'yn', editable: true, filterable: true },
+      { title: '登录锁', index: 'LockoutEnabled', sort: true, type: 'yn', editable: true, filterable: true },
+      { title: '登录错误', index: 'AccessFailedCount', sort: true, editable: true, ftype: 'number', filterable: true },
+      { title: '锁时间', index: 'LockoutEnd', sort: true, editable: true, type: 'date', filterable: true },
+      { title: '注册时间', index: 'CreatedTime', sort: true, type: 'date', filterable: true },
     ];
   }
 
@@ -56,6 +57,12 @@ export class UserComponent extends STComponentBase implements OnInit {
       $LockoutEnd: { grid: { span: 24 } },
     };
     return ui;
+  }
+
+  adSearch(group: FilterGroup) {
+    console.log(group);
+    this.request.FilterGroup = group;
+    this.st.reload();
   }
 
   // #region 角色设置

@@ -40,7 +40,7 @@ export class FilterGroupComponent implements OnChanges {
         return;
       }
       this.http.get<AjaxResult>("api/admin/entityinfo/ReadProperties?typeName=" + this.entity).subscribe(res => {
-        if (res.Type != AjaxResultType.Success) {
+        if (res.Type !== AjaxResultType.Success) {
           this.osharp.error(res.Content);
           return;
         }
@@ -80,7 +80,7 @@ export class FilterGroupComponent implements OnChanges {
   removeGroup() {
     this.remove.emit(this.group);
   }
-  /**删除子分组的事件响应 */
+  /** 删除子分组的事件响应 */
   removeSubGroup(subGroup: FilterGroup) {
     if (subGroup) {
       let index = this.group.Groups.indexOf(subGroup);

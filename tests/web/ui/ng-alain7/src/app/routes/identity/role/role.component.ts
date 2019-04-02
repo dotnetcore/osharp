@@ -12,7 +12,7 @@ import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.com
 })
 export class RoleComponent extends STComponentBase implements OnInit {
 
-  constructor(injector: Injector, private alain: AlainService) {
+  constructor(injector: Injector) {
     super(injector);
     this.moduleName = 'role';
   }
@@ -32,13 +32,13 @@ export class RoleComponent extends STComponentBase implements OnInit {
           ]
         }]
       },
-      { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, ftype: 'number' },
-      { title: '名称', index: 'Name', sort: true, editable: true, ftype: 'string' },
-      { title: '备注', index: 'Remark', sort: true, editable: true, ftype: 'string' },
-      { title: '管理角色', index: 'IsAdmin', sort: true, type: "yn", editable: true },
-      { title: '默认', index: 'IsDefault', sort: true, type: "yn", editable: true },
-      { title: '锁定', index: 'IsLocked', sort: true, type: "yn", editable: true },
-      { title: '创建时间', index: 'CreatedTime', sort: true, type: 'date' }
+      { title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, filterable: true, ftype: 'number' },
+      { title: '名称', index: 'Name', sort: true, editable: true, filterable: true, ftype: 'string' },
+      { title: '备注', index: 'Remark', sort: true, editable: true, filterable: true, ftype: 'string' },
+      { title: '管理角色', index: 'IsAdmin', sort: true, type: "yn", editable: true, filterable: true },
+      { title: '默认', index: 'IsDefault', sort: true, type: "yn", editable: true, filterable: true },
+      { title: '锁定', index: 'IsLocked', sort: true, type: "yn", editable: true, filterable: true },
+      { title: '创建时间', index: 'CreatedTime', sort: true, type: 'date', filterable: true }
     ];
   }
 
