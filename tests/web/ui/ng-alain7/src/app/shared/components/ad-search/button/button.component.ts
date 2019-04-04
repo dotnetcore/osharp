@@ -1,6 +1,6 @@
 import { PageRequest, FilterGroup } from './../../../osharp/osharp.model';
 import { AlainService } from '@shared/osharp/services/ng-alain.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { STComponent, STColumn } from '@delon/abc';
 import { NzModalComponent } from 'ng-zorro-antd';
@@ -14,9 +14,12 @@ import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
   styles: [],
 })
 export class AdSearchButtonComponent implements OnInit {
-  @Input() st: STComponent;
+  @Input() request: PageRequest;
   @Input() searchModal: NzModalComponent;
   @Input() columns: OsharpSTColumn[];
+  @Output() submited: EventEmitter<PageRequest> = new EventEmitter<
+    PageRequest
+  >();
 
   rule: FilterRule;
 
@@ -50,14 +53,11 @@ export class AdSearchButtonComponent implements OnInit {
       this.rule.control === 'string'
         ? FilterOperate.Contains
         : FilterOperate.Equal;
-    if (this.st && this.st.req.body) {
-      let request: PageRequest = this.st.req.body as PageRequest;
-      if (request) {
-        let group = new FilterGroup();
-        group.Rules.push(rule);
-        request.FilterGroup = group;
-        this.st.reload();
-      }
+    let group = new FilterGroup();
+    group.Rules.push(rule);
+    this.request.FilterGroup = group;
+    if (this.submited) {
+      this.submited.emit(this.request);
     }
   }
 
@@ -66,5 +66,11 @@ export class AdSearchButtonComponent implements OnInit {
       this.searchModal.open();
     }
   }
+
+  reset() {
+    this.rule = new FilterRule(null, null);
+    if (this.searchModal) {
+      this.searchModal.reset();
+    }
+  }
 }
-[];

@@ -151,6 +151,14 @@ export abstract class STComponentBase {
     return field;
   }
 
+  search(request: PageRequest) {
+    if (!request) {
+      return;
+    }
+    this.req.body = request;
+    this.st.reload();
+  }
+
   change(value: STChange) {
     if (value.type === 'checkbox') {
       this.selecteds = value.checkbox;

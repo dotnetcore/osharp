@@ -23,8 +23,9 @@
     <input nz-input [(ngModel)]="rule.Value" style="width:150px;margin-left: 8px;" placeholder="搜索字符串">
   </ng-container>
 </ng-container>
-<nz-dropdown-button (nzClick)="search()" style="margin-left: 8px;"> <i nz-icon type="search" theme="outline"></i>搜索
+<nz-dropdown-button (nzClick)="search()" style="margin-left: 8px;"> <i nz-icon type="search" theme="outline"></i> 搜索
   <ul nz-menu>
     <li nz-menu-item (click)="adSearch()"><i nz-icon type="search" theme="outline"></i>高级搜索</li>
+    <li nz-menu-item (click)="reset()"><i nz-icon type="reload" theme="outline"></i>重置</li>
   </ul>
 </nz-dropdown-button>

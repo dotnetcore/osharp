@@ -1,10 +1,10 @@
 <nz-card>
   <div>
     <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
-    <button nz-button (click)="searchModal.open()" acl="Root.Admin.Systems.AuditEntity.Read"><i nz-icon type="search" theme="outline"></i>搜索</button>
+    <app-ad-search-button [request]="request" [columns]="columns" [searchModal]="searchModal" (submited)="search($event)"></app-ad-search-button>
   </div>
-  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort
-    (change)="change($event)" (error)="error($event)" [expand]="expandTpl" expandRowByClick>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
+    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)" [expand]="expandTpl" expandRowByClick>
     <ng-template #expandTpl>
       <nz-card>
         <st #propertyST header="数据属性变更明细" [columns]="propertyColumns" [page]="{show:false}" noResult="当前数据审计没有属性变更明细" size="small" [scroll]="{x:'800px'}"></st>
@@ -14,4 +14,4 @@
 </nz-card>
 
 <!--高级搜索-->
-<app-ad-search #searchModal [columns]="columns" [st]="st"></app-ad-search>
+<app-ad-search #searchModal [request]="request" [columns]="columns" (submited)=search($event)></app-ad-search>

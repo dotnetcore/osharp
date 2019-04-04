@@ -59,16 +59,16 @@ import { STComponent } from '@delon/abc';
   ],
 })
 export class AdSearchComponent implements OnInit {
+  @Input() request: PageRequest;
   @Input() columns: OsharpSTColumn[];
   @Input() title = '高级搜索';
-  @Input() group: FilterGroup;
-  @Input() st: STComponent;
-  @Output() submited: EventEmitter<FilterGroup> = new EventEmitter<
-    FilterGroup
+  @Output() submited: EventEmitter<PageRequest> = new EventEmitter<
+    PageRequest
   >();
   @ViewChild('modal') modal: NzModalComponent;
 
   visible: boolean;
+  group: FilterGroup;
   groupOperateEntries: FilterOperateEntry[] = [
     new FilterOperateEntry(FilterOperate.And),
     new FilterOperateEntry(FilterOperate.Or),
@@ -79,9 +79,7 @@ export class AdSearchComponent implements OnInit {
   constructor(private osharp: OsharpService, private alain: AlainService) {}
 
   ngOnInit() {
-    if (this.group == null) {
-      this.group = new FilterGroup();
-    }
+    this.group = this.request.FilterGroup;
   }
 
   open() {
@@ -102,13 +100,8 @@ export class AdSearchComponent implements OnInit {
   reset() {
     this.group.Groups = [];
     this.group.Rules = [];
-    if (this.st && this.st.req.body) {
-      let request: PageRequest = this.st.req.body as PageRequest;
-      if (request) {
-        request.FilterGroup = new FilterGroup();
-        this.st.reload();
-      }
-    }
+    this.request.FilterGroup = new FilterGroup();
+    this.submited.emit(this.request);
   }
 
   private copyGroup(g: FilterGroup) {
@@ -125,16 +118,8 @@ export class AdSearchComponent implements OnInit {
 
   submit() {
     let group = this.copyGroup(this.group);
-    if (this.submited) {
-      this.submited.emit(group);
-    }
-    if (this.st && this.st.req.body) {
-      let request: PageRequest = this.st.req.body as PageRequest;
-      if (request) {
-        request.FilterGroup = group;
-        this.st.reload();
-      }
-    }
+    this.request.FilterGroup = group;
+    this.submited.emit(this.request);
     this.close();
   }
 

@@ -1,11 +1,11 @@
 <nz-card>
   <div>
     <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
-    <button nz-button (click)="searchModal.open()" acl="Root.Admin.Systems.Pack.Read"><i nz-icon type="search" theme="outline"></i>搜索</button>
+    <app-ad-search-button [request]="request" [columns]="columns" [searchModal]="searchModal" (submited)="search($event)"></app-ad-search-button>
   </div>
-  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort
-    (change)="change($event)" (error)="error($event)"></st>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
+    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)"></st>
 </nz-card>
 
 <!--高级搜索-->
-<app-ad-search #searchModal [columns]="columns" [st]="st"></app-ad-search>
+<app-ad-search #searchModal [request]="request" [columns]="columns" (submited)=search($event)></app-ad-search>
