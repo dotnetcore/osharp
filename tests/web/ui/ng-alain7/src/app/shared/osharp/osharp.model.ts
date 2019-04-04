@@ -13,7 +13,7 @@ export enum AjaxResultType {
   UnAuth = 401,
   Forbidden = 403,
   NoFound = 404,
-  Locked = 423
+  Locked = 423,
 }
 
 /**  分页数据 */
@@ -43,12 +43,16 @@ export class FilterRule {
    * @param value 属性值
    * @param operate 对比操作
    */
-  constructor(field: string, value: string, operate: FilterOperate = FilterOperate.Equal) {
+  constructor(
+    field: string,
+    value: string,
+    operate: FilterOperate = FilterOperate.Equal,
+  ) {
     this.Field = field;
     this.Value = value;
     this.Operate = operate;
   }
-  [key: string]: any
+  [key: string]: any;
 }
 /**  查询条件组 */
 export class FilterGroup {
@@ -93,43 +97,43 @@ export class FilterOperateEntry {
     this.Operate = operate;
     switch (operate) {
       case FilterOperate.And:
-        this.Display = "并且";
+        this.Display = '并且';
         break;
       case FilterOperate.Or:
-        this.Display = "或者";
+        this.Display = '或者';
         break;
       case FilterOperate.Equal:
-        this.Display = "等于";
+        this.Display = '等于';
         break;
       case FilterOperate.NotEqual:
-        this.Display = "不等于";
+        this.Display = '不等于';
         break;
       case FilterOperate.Less:
-        this.Display = "小于";
+        this.Display = '小于';
         break;
       case FilterOperate.LessOrEqual:
-        this.Display = "小于等于";
+        this.Display = '小于等于';
         break;
       case FilterOperate.Greater:
-        this.Display = "大于";
+        this.Display = '大于';
         break;
       case FilterOperate.GreaterOrEqual:
-        this.Display = "大于等于";
+        this.Display = '大于等于';
         break;
       case FilterOperate.StartsWith:
-        this.Display = "开始于";
+        this.Display = '开始于';
         break;
       case FilterOperate.EndsWith:
-        this.Display = "结束于";
+        this.Display = '结束于';
         break;
       case FilterOperate.Contains:
-        this.Display = "包含";
+        this.Display = '包含';
         break;
       case FilterOperate.NotContains:
-        this.Display = "不包含";
+        this.Display = '不包含';
         break;
       default:
-        this.Display = "未知操作";
+        this.Display = '未知操作';
         break;
     }
     this.Display = `${<number>operate}.${this.Display}`;
@@ -157,9 +161,8 @@ export class SortCondition {
 }
 export enum ListSortDirection {
   Ascending,
-  Descending
+  Descending,
 }
-
 
 /**  实体属性信息 */
 export class EntityProperty {
@@ -177,7 +180,7 @@ export class VerifyCode {
   /**  验证码后台编号 */
   id: string;
   /**  验证码图片的Base64格式 */
-  image: string = "data:image/png;base64,null";
+  image: string = 'data:image/png;base64,null';
   /**  输入的验证码 */
   code: string;
 }
@@ -243,8 +246,8 @@ export class AuthConfig {
     /**  当前模块的位置，即上级模块的路径，如Root,Root.Admin,Root.Admin.Identity */
     public position: string,
     /**  要权限控制的功能名称，可以是节点名称或全路径 */
-    public funcs: string[]
-  ) { }
+    public funcs: string[],
+  ) {}
 }
 
 /**  用户信息 */

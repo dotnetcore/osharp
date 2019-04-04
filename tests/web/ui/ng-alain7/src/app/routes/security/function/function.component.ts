@@ -21,7 +21,7 @@ export class FunctionComponent extends STComponentBase implements OnInit {
 
   protected GetSTColumns(): OsharpSTColumn[] {
     let columns: OsharpSTColumn[] = [
-      { title: '操作', fixed: 'left', width: 65, buttons: [{ text: '修改', icon: 'edit', iif: row => row.Updatable, click: row => this.edit(row) }] },
+      { title: '操作', fixed: 'left', width: 100, buttons: [{ text: '修改', icon: 'edit', iif: row => row.Updatable, click: row => this.edit(row) }] },
       { title: '选择', index: 'Id', type: 'checkbox' },
       { title: '名称', index: 'Name', fixed: 'left', width: 270, sort: true, editable: true, filterable: true, ftype: 'string', readOnly: true },
       {

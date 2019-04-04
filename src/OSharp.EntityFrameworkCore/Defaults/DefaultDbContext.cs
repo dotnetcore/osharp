@@ -22,7 +22,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 初始化一个<see cref="DefaultDbContext"/>类型的新实例
         /// </summary>
-        public DefaultDbContext(DbContextOptions options, IEntityManager entityManager, IServiceProvider serviceProvider)
+        public DefaultDbContext(DbContextOptions<DefaultDbContext> options, IEntityManager entityManager, IServiceProvider serviceProvider)
             : base(options, entityManager, serviceProvider)
         { }
     }

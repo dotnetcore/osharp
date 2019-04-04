@@ -1,5 +1,24 @@
-import { PageRequest, PageCondition, SortCondition, ListSortDirection, AjaxResult } from '../osharp.model';
-import { STColumn, STReq, STRes, STComponent, STChange, STPage, STRequestOptions, STData, STError, STColumnBadge, STColumnTag } from '@delon/abc';
+import { FilterRule, FilterOperate } from './../osharp.model';
+import {
+  PageRequest,
+  PageCondition,
+  SortCondition,
+  ListSortDirection,
+  AjaxResult,
+} from '../osharp.model';
+import {
+  STColumn,
+  STReq,
+  STRes,
+  STComponent,
+  STChange,
+  STPage,
+  STRequestOptions,
+  STData,
+  STError,
+  STColumnBadge,
+  STColumnTag,
+} from '@delon/abc';
 import { ViewChild, Injector } from '@angular/core';
 import { OsharpService } from './osharp.service';
 import { SFSchema, SFUISchema, SFSchemaEnumType } from '@delon/form';
@@ -8,7 +27,6 @@ import { NzModalComponent, NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd';
 import { OsharpSTColumn } from './ng-alain.types';
 
 export abstract class STComponentBase {
-
   moduleName: string;
 
   // URL
@@ -71,18 +89,30 @@ export abstract class STComponentBase {
 
   protected GetSTReq(request: PageRequest): STReq {
     let req: STReq = {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: request, allInBody: true, process: opt => this.RequestProcess(opt)
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: request,
+      allInBody: true,
+      process: opt => this.RequestProcess(opt),
     };
     return req;
   }
 
   protected GetSTRes(): STRes {
-    let res: STRes = { reName: { list: 'Rows', total: 'Total' }, process: data => this.ResponseDataProcess(data) };
+    let res: STRes = {
+      reName: { list: 'Rows', total: 'Total' },
+      process: data => this.ResponseDataProcess(data),
+    };
     return res;
   }
 
   protected GetSTPage(): STPage {
-    let page: STPage = { showSize: true, showQuickJumper: true, toTop: true, toTopOffset: 0 };
+    let page: STPage = {
+      showSize: true,
+      showQuickJumper: true,
+      toTop: true,
+      toTopOffset: 0,
+    };
     return page;
   }
 
@@ -100,7 +130,10 @@ export abstract class STComponentBase {
           let field = item.substr(0, num);
           field = this.ReplaceFieldName(field);
           sort.SortField = field;
-          sort.ListSortDirection = item.substr(num + 1) === 'ascend' ? ListSortDirection.Ascending : ListSortDirection.Descending;
+          sort.ListSortDirection =
+            item.substr(num + 1) === 'ascend'
+              ? ListSortDirection.Ascending
+              : ListSortDirection.Descending;
           page.SortConditions.push(sort);
         }
       } else {
@@ -142,7 +175,9 @@ export abstract class STComponentBase {
     return schema;
   }
 
-  protected ColumnsToSchemas(columns: OsharpSTColumn[]): { [key: string]: SFSchema } {
+  protected ColumnsToSchemas(
+    columns: OsharpSTColumn[],
+  ): { [key: string]: SFSchema } {
     let properties: { [key: string]: SFSchema } = {};
     for (const column of columns) {
       if (!column.index || !column.editable || column.buttons) {
@@ -159,7 +194,7 @@ export abstract class STComponentBase {
     return ui;
   }
 
-  protected toEnum(items: { id: number, text: string }[]): SFSchemaEnumType[] {
+  protected toEnum(items: { id: number; text: string }[]): SFSchemaEnumType[] {
     return items.map(item => {
       let e: SFSchemaEnumType = { value: item.id, label: item.text };
       return e;
@@ -169,7 +204,7 @@ export abstract class STComponentBase {
   create() {
     if (!this.editModal) return;
     this.editRow = {};
-    this.editTitle = "新增";
+    this.editTitle = '新增';
     this.editModal.open();
   }
 
@@ -215,13 +250,11 @@ import { Injectable } from '@angular/core';
 import { List } from 'linqts';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlainService {
-
-  constructor(private osharp: OsharpService) { }
+  constructor(private osharp: OsharpService) {}
 
   public get http(): _HttpClient {
     return this.osharp.http;
@@ -237,7 +270,12 @@ export class AlainService {
     }
     let result: NzTreeNodeOptions[] = [];
     for (const node of nodes) {
-      let item: NzTreeNodeOptions = { title: node.Name, key: node.Id, checked: node.IsChecked, isLeaf: !node.HasChildren };
+      let item: NzTreeNodeOptions = {
+        title: node.Name,
+        key: node.Id,
+        checked: node.IsChecked,
+        isLeaf: !node.HasChildren,
+      };
       if (node.Children && node.Children.length > 0) {
         item.children = this.ToNzTreeData(node.Children);
       }
@@ -262,11 +300,18 @@ export class AlainService {
     return ids;
   }
 
-  ReadNode(url: string, labelName: string, valueName: string): Observable<SFSchemaEnumType[]> {
+  ReadNode(
+    url: string,
+    labelName: string,
+    valueName: string,
+  ): Observable<SFSchemaEnumType[]> {
     return this.http.get(url).map((nodes: any[]) => {
       let items: SFSchemaEnumType[] = [];
       for (const node of nodes) {
-        let item: SFSchemaEnumType = { label: node[labelName], value: node[valueName] };
+        let item: SFSchemaEnumType = {
+          label: node[labelName],
+          value: node[valueName],
+        };
         items.push(item);
       }
       return items;
@@ -274,9 +319,38 @@ export class AlainService {
   }
 
   ToSFSchema(column: OsharpSTColumn): SFSchema {
-    let schemaProps = ['enum', 'minimum', 'exclusiveMinimum', 'maximum', 'exclusiveMaximum', 'multipleOf', 'maxLength', 'minLength', 'pattern',
-      'items', 'minItems', 'maxItems', 'uniqueItems', 'additionalItems', 'maxProperties', 'minProperties', 'required', 'properties', 'if', 'then',
-      'else', 'allOf', 'anyOf', 'oneOf', 'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui'];
+    let schemaProps = [
+      'enum',
+      'minimum',
+      'exclusiveMinimum',
+      'maximum',
+      'exclusiveMaximum',
+      'multipleOf',
+      'maxLength',
+      'minLength',
+      'pattern',
+      'items',
+      'minItems',
+      'maxItems',
+      'uniqueItems',
+      'additionalItems',
+      'maxProperties',
+      'minProperties',
+      'required',
+      'properties',
+      'if',
+      'then',
+      'else',
+      'allOf',
+      'anyOf',
+      'oneOf',
+      'description',
+      'readOnly',
+      'definitions',
+      '$ref',
+      '$comment',
+      'ui',
+    ];
     let specialProps = ['ftype', 'fformat', 'fdefault', 'ftitle'];
     let schema: SFSchema = {};
     let keys = Object.getOwnPropertyNames(column);
@@ -320,6 +394,74 @@ export class AlainService {
     return schema;
   }
 
+  changeFilterRuleType(rule: FilterRule, column: STColumn) {
+    let type = column.type || column.ftype || 'string';
+    rule.control = 'string';
+    switch (type) {
+      case 'tag':
+      case 'number':
+        if (column.enum || column.tag) {
+          rule.entries = this.osharp.getOperateEntries([
+            FilterOperate.Equal,
+            FilterOperate.NotEqual,
+          ]);
+          rule.Operate = rule.entries[0].Operate;
+          rule.control = 'enum';
+          rule.enums = column.enum || this.TagsToEnums(column.tag);
+          rule.Value = rule.enums[0].value;
+        } else {
+          rule.entries = this.osharp.getOperateEntries([
+            FilterOperate.Equal,
+            FilterOperate.NotEqual,
+            FilterOperate.Less,
+            FilterOperate.LessOrEqual,
+            FilterOperate.Greater,
+            FilterOperate.GreaterOrEqual,
+          ]);
+          rule.Operate = rule.entries[0].Operate;
+          rule.Value = 0;
+          rule.control = 'number';
+        }
+        break;
+      case 'date':
+        rule.entries = this.osharp.getOperateEntries([
+          FilterOperate.Equal,
+          FilterOperate.NotEqual,
+          FilterOperate.Less,
+          FilterOperate.LessOrEqual,
+          FilterOperate.Greater,
+          FilterOperate.GreaterOrEqual,
+        ]);
+        rule.Operate = rule.entries[0].Operate;
+        rule.control = 'date';
+        rule.Value = null;
+        break;
+      case 'yn':
+      case 'boolean':
+        rule.entries = this.osharp.getOperateEntries([
+          FilterOperate.Equal,
+          FilterOperate.NotEqual,
+        ]);
+        rule.Operate = rule.entries[0].Operate;
+        rule.control = 'boolean';
+        rule.Value = false;
+        break;
+      default:
+        rule.entries = this.osharp.getOperateEntries([
+          FilterOperate.Equal,
+          FilterOperate.NotEqual,
+          FilterOperate.StartsWith,
+          FilterOperate.EndsWith,
+          FilterOperate.Contains,
+          FilterOperate.NotContains,
+        ]);
+        rule.Operate = FilterOperate.Contains;
+        rule.control = 'string';
+        rule.Value = '';
+        break;
+    }
+  }
+
   TagsToEnums(tag: STColumnTag): SFSchemaEnumType[] {
     let enums: SFSchemaEnumType[] = [];
     for (const key in tag) {
@@ -338,7 +480,7 @@ export class AlainService {
     403: { text: '无权操作', color: 'orange' },
     404: { text: '不存在', color: 'orange' },
     423: { text: '锁定', color: 'orange' },
-    500: { text: '错误', color: 'red' }
+    500: { text: '错误', color: 'red' },
   };
   AccessTypeTags: STColumnTag = {
     0: { text: '匿名访问', color: 'green' },
@@ -360,7 +502,6 @@ export class AlainService {
     1: { text: 'Core', color: 'red' },
     10: { text: 'Framework', color: 'orange' },
     20: { text: 'Application', color: 'blue' },
-    30: { text: 'Business', color: 'green' }
-
+    30: { text: 'Business', color: 'green' },
   };
 }
