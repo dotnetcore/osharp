@@ -1,8 +1,8 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 import { NzModalService } from 'ng-zorro-antd';
-import { STComponentBase, } from '@shared/osharp/services/ng-alain.service';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
+import { STComponentBase } from '@shared/osharp/components/st-component-base';
 
 @Component({
   selector: 'app-profile-oauth2',

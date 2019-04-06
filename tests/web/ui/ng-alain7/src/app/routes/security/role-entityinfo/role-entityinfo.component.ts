@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase } from '@shared/osharp/components/st-component-base';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
-import { SFUISchema, SFSchemaEnumType } from '@delon/form';
+import { SFUISchema } from '@delon/form';
 import { AjaxResult } from '@shared/osharp/osharp.model';
 
 @Component({
@@ -21,17 +21,19 @@ export class RoleEntityinfoComponent extends STComponentBase implements OnInit {
   }
 
   protected GetSTColumns(): OsharpSTColumn[] {
-    return [
-      { title: '操作', fixed: 'left', width: 65, buttons: [{ text: '修改', icon: 'edit', iif: row => row.Updatable, click: row => this.edit(row) }] },
-      { title: '角色', index: 'RoleId', type: 'number', className: 'text-left', format: d => `${d.RoleId}. ${d.RoleName}`, editable: true },
-      { title: '数据实体', index: 'EntityId', className: 'text-left', format: d => `${d.EntityName} [${d.EntityType}]`, editable: true },
-      {
-        title: '操作', index: 'Operation', type: 'tag', tag: this.alain.DataAuthOperationTags, className: 'text-center',
-        editable: true, ftype: 'number', enum: this.toEnum(this.osharp.data.dataAuthOperations)
-      },
-      { title: '锁定', index: 'IsLocked', type: 'yn', editable: true },
-      { title: '注册时间', index: 'CreatedTime', type: 'date' },
-    ];
+    let columns: OsharpSTColumn[] =
+      [
+        { title: '操作', fixed: 'left', width: 65, buttons: [{ text: '修改', icon: 'edit', iif: row => row.Updatable, click: row => this.edit(row) }] },
+        { title: '角色', index: 'RoleId', type: 'number', className: 'text-left', format: d => `${d.RoleId}. ${d.RoleName}`, editable: true },
+        { title: '数据实体', index: 'EntityId', className: 'text-left', format: d => `${d.EntityName} [${d.EntityType}]`, editable: true },
+        {
+          title: '操作', index: 'Operation', type: 'tag', tag: this.alain.DataAuthOperationTags, className: 'text-center',
+          editable: true, ftype: 'number', enum: this.toEnum(this.osharp.data.dataAuthOperations)
+        },
+        { title: '锁定', index: 'IsLocked', type: 'yn', editable: true },
+        { title: '注册时间', index: 'CreatedTime', type: 'date' },
+      ];
+    return columns;
   }
 
   protected GetSFUISchema(): SFUISchema {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase } from '@shared/osharp/components/st-component-base';
 import { STData } from '@delon/abc';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { SFUISchema } from '@delon/form';

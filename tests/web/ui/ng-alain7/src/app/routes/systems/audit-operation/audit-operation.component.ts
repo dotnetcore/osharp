@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChildren, QueryList } from '@angular/core';
-import { STComponentBase, AlainService } from '@shared/osharp/services/ng-alain.service';
+import { STComponentBase, } from '@shared/osharp/components/st-component-base';
 import { OsharpSTColumn } from '@shared/osharp/services/ng-alain.types';
 import { STColumn, STData, STChange, STComponent } from '@delon/abc';
 import { PageRequest, FilterRule, PageData } from '@shared/osharp/osharp.model';
