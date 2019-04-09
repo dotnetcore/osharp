@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.EventBuses.Internal;
+using OSharp.Threading;
 
 
 namespace OSharp.EventBuses
@@ -26,11 +27,14 @@ namespace OSharp.EventBuses
     /// </summary>
     public abstract class EventBusBase : IEventBus
     {
+        private readonly IServiceProvider _serviceProvider;
+
         /// <summary>
         /// 初始化一个<see cref="EventBusBase"/>类型的新实例
         /// </summary>
         protected EventBusBase(IHybridServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             ServiceScopeFactory = serviceScopeFactory;
             EventStore = serviceProvider.GetService<IEventStore>();
             Logger = serviceProvider.GetLogger(GetType());
@@ -386,7 +390,8 @@ namespace OSharp.EventBuses
         {
             try
             {
-                return handler.HandleAsync(eventData);
+                ICancellationTokenProvider cancellationTokenProvider = _serviceProvider.GetService<ICancellationTokenProvider>();
+                return handler.HandleAsync(eventData, cancellationTokenProvider.Token);
             }
             catch (Exception ex)
             {

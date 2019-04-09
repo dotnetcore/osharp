@@ -25,6 +25,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Secutiry;
+using OSharp.Threading;
 
 using Z.EntityFramework.Plus;
 
@@ -43,6 +44,7 @@ namespace OSharp.Entity
         private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
+        private readonly ICancellationTokenProvider _cancellationTokenProvider;
 
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
@@ -53,6 +55,7 @@ namespace OSharp.Entity
             _dbContext = (DbContext)UnitOfWork.GetDbContext<TEntity, TKey>();
             _dbSet = _dbContext.Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
+            _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
         }
 
         /// <summary>
@@ -500,8 +503,8 @@ namespace OSharp.Entity
                 entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
             }
 
-            await _dbSet.AddRangeAsync(entities);
-            return await _dbContext.SaveChangesAsync();
+            await _dbSet.AddRangeAsync(entities, _cancellationTokenProvider.Token);
+            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
 
         /// <summary>
@@ -532,7 +535,7 @@ namespace OSharp.Entity
                         entity = await updateFunc(dto, entity);
                     }
                     entity = entity.CheckICreatedTime<TEntity, TKey>();
-                    await _dbSet.AddAsync(entity);
+                    await _dbSet.AddAsync(entity, _cancellationTokenProvider.Token);
                 }
                 catch (OsharpException e)
                 {
@@ -545,7 +548,7 @@ namespace OSharp.Entity
                 }
                 names.AddIfNotNull(GetNameValue(dto));
             }
-            int count = await _dbContext.SaveChangesAsync();
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -565,7 +568,7 @@ namespace OSharp.Entity
 
             CheckDataAuth(DataAuthOperation.Delete, entities);
             _dbSet.RemoveRange(entities);
-            return await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
 
         /// <summary>
@@ -577,7 +580,7 @@ namespace OSharp.Entity
         {
             CheckEntityKey(key, nameof(key));
 
-            TEntity entity = await _dbSet.FindAsync(key);
+            TEntity entity = await _dbSet.FindAsync(key, _cancellationTokenProvider.Token);
             return await DeleteAsync(entity);
         }
 
@@ -625,7 +628,7 @@ namespace OSharp.Entity
                 }
                 names.AddIfNotNull(GetNameValue(entity));
             }
-            int count = await _dbContext.SaveChangesAsync();
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -643,8 +646,8 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
 
-            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(CancellationToken.None);
-            return await _dbSet.Where(predicate).DeleteAsync();
+            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+            return await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
         }
 
         /// <summary>
@@ -658,7 +661,7 @@ namespace OSharp.Entity
 
             CheckDataAuth(DataAuthOperation.Update, entities);
             _dbContext.Update<TEntity, TKey>(entities);
-            return await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
 
         /// <summary>
@@ -678,7 +681,7 @@ namespace OSharp.Entity
             {
                 try
                 {
-                    TEntity entity = await _dbSet.FindAsync(dto.Id);
+                    TEntity entity = await _dbSet.FindAsync(dto.Id, _cancellationTokenProvider.Token);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
@@ -707,7 +710,7 @@ namespace OSharp.Entity
                 }
                 names.AddIfNotNull(GetNameValue(dto));
             }
-            int count = await _dbContext.SaveChangesAsync();
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -727,8 +730,8 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
-            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(CancellationToken.None);
-            return await _dbSet.Where(predicate).UpdateAsync(updateExpression);
+            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+            return await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
         }
 
         /// <summary>
@@ -742,7 +745,7 @@ namespace OSharp.Entity
             predicate.CheckNotNull(nameof(predicate));
 
             TKey defaultId = default(TKey);
-            var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync();
+            var entity = await _dbSet.Where(predicate).Select(m => new { m.Id }).FirstOrDefaultAsync(_cancellationTokenProvider.Token);
             bool exists = !typeof(TKey).IsValueType && ReferenceEquals(id, null) || id.Equals(defaultId)
                 ? entity != null
                 : entity != null && !EntityBase<TKey>.IsKeyEqual(entity.Id, id);
@@ -758,7 +761,7 @@ namespace OSharp.Entity
         {
             CheckEntityKey(key, nameof(key));
 
-            return await _dbSet.FindAsync(key);
+            return await _dbSet.FindAsync(key, _cancellationTokenProvider.Token);
         }
 
         #endregion

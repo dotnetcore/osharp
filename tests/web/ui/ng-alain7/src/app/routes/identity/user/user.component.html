@@ -5,7 +5,7 @@
     <app-ad-search-button [request]="request" [columns]="columns" [searchModal]="searchModal" (submited)="search($event)"></app-ad-search-button>
   </div>
   <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
-    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)"></st>
+    [scroll]="{x:'1500px'}" multiSort (change)="change($event)" (error)="error($event)"></st>
 </nz-card>
 <!--新增、编辑-->
 <nz-modal #modal [nzVisible]="false" [nzTitle]="editTitle" [nzClosable]="false" [nzFooter]="null">
