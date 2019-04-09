@@ -71,7 +71,10 @@ namespace OSharp.AspNetCore.Mvc.Filters
                         _unitOfWorkManager?.Commit();
                     }
                 }
-                _unitOfWorkManager?.Commit();
+                else
+                {
+                    _unitOfWorkManager?.Commit();
+                }
             }
             //普通请求
             else if (context.HttpContext.Response.StatusCode >= 400)
