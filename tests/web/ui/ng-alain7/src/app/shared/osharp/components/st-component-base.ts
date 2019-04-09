@@ -58,8 +58,8 @@ export abstract class STComponentBase {
     this.res = this.GetSTRes();
     this.page = this.GetSTPage();
 
-    // this.schema = this.GetSFSchema();
-    // this.ui = this.GetSFUISchema();
+    this.schema = this.GetSFSchema();
+    this.ui = this.GetSFUISchema();
   }
 
   // #region 表格
