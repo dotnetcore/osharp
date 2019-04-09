@@ -57,13 +57,37 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
   };
 }
 
-import { DelonACLConfig, ACLService } from "@delon/acl";
-export function fnDelonACLConfig() {
-  return { guard_url: '/exception/403' } as DelonACLConfig;
+import { DelonACLConfig, ACLCanType, ACLType } from "@delon/acl";
+export function fnDelonACLConfig(): DelonACLConfig {
+  return {
+    guard_url: '/exception/403',
+    preCan: (roleOrAbility: ACLCanType) => {
+      function isAbility(val: string) {
+        return val && val.startsWith('Root.');
+      }
+
+      // 单个字符串，可能是角色也可能是功能点
+      if (typeof roleOrAbility === 'string') {
+        return isAbility(roleOrAbility) ? { ability: [roleOrAbility] } : { role: [roleOrAbility] };
+      }
+      // 字符串集合，每项可能是角色或是功能点，逐个处理每项
+      if (Array.isArray(roleOrAbility) && roleOrAbility.length > 0 && typeof roleOrAbility[0] === 'string') {
+        let abilities: string[] = [], roles: string[] = [];
+        let type: ACLType = {};
+        (roleOrAbility as string[]).forEach((val: string) => {
+          if (isAbility(val)) abilities.push(val);
+          else roles.push(val);
+        });
+        type.role = roles.length > 0 ? roles : null;
+        type.ability = abilities.length > 0 ? abilities : null;
+        return type;
+      }
+      return roleOrAbility;
+    }
+  } as DelonACLConfig;
 }
 
 import { STConfig } from '@delon/abc';
-import { OsharpACLService } from '@shared/osharp/services/osharp-acl.service.ts.service';
 export function fnSTConfig(): STConfig {
   return {
     ...new STConfig(),
@@ -79,7 +103,7 @@ const GLOBAL_CONFIG_PROVIDES = [
   { provide: PageHeaderConfig, useFactory: fnPageHeaderConfig },
   { provide: DelonAuthConfig, useFactory: fnDelonAuthConfig },
   { provide: DelonACLConfig, useFactory: fnDelonACLConfig },
-  { provide: ACLService, useClass: OsharpACLService }
+  // { provide: ACLService, useClass: OsharpACLService }
 ];
 
 // #endregion
