@@ -41,7 +41,8 @@ namespace OSharp.Identity.JwtBearer
             SecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             DateTime now = DateTime.Now;
-            DateTime expires = now.AddDays(7); //todo: 启用系统设置功能，在后台设置这些参数
+            double days = Math.Abs(jwtOptions.ExpireDays) > 0 ? Math.Abs(jwtOptions.ExpireDays) : 7;
+            DateTime expires = now.AddDays(days);
 
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {

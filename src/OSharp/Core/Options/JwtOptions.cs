@@ -28,5 +28,10 @@ namespace OSharp.Core.Options
         /// 获取或设置 订阅方
         /// </summary>
         public string Audience{ get; set; }
+
+        /// <summary>
+        /// 获取或设置 Token有效期天数
+        /// </summary>
+        public double ExpireDays { get; set; }
     }
 }
