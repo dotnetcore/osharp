@@ -7,6 +7,9 @@
 //  <last-date>2019-02-14 22:44</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+
 namespace OSharp.Entity
 {
     /// <summary>
@@ -15,8 +18,8 @@ namespace OSharp.Entity
     public interface ISoftDeletable
     {
         /// <summary>
-        /// 获取或设置 是否逻辑删除
+        /// 获取或设置 数据逻辑删除时间，为null表示正常数据，有值表示已逻辑删除，同时删除时间每次不同也能保证索引唯一性
         /// </summary>
-        bool IsDeleted { get; set; }
+        DateTime? DeletedTime { get; set; }
     }
 }

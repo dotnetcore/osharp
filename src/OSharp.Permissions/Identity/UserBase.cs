@@ -20,7 +20,7 @@ namespace OSharp.Identity
     /// 用户信息基类
     /// </summary>
     /// <typeparam name="TUserKey"></typeparam>
-    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime, ILockable
+    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime, ILockable, ISoftDeletable
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>
@@ -145,11 +145,15 @@ namespace OSharp.Identity
         [DisplayName("创建时间")]
         public DateTime CreatedTime { get; set; }
 
+        /// <summary>
+        /// 获取或设置 数据逻辑删除时间，为null表示正常数据，有值表示已逻辑删除，同时删除时间每次不同也能保证索引唯一性
+        /// </summary>
+        public DateTime? DeletedTime { get; set; }
+
         /// <inheritdoc />
         public override string ToString()
         {
             return UserName;
         }
-
     }
 }

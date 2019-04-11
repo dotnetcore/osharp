@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IConfiguration GetConfiguration(this IServiceCollection services)
         {
-            return services.GetSingletonInstance<IConfiguration>();
+            return services.GetSingletonInstanceOrNull<IConfiguration>();
         }
 
         /// <summary>

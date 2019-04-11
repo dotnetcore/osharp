@@ -10,14 +10,14 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20190324073148_Init")]
+    [Migration("20190411061526_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -74,6 +74,8 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<DateTime>("CreatedTime");
 
+                    b.Property<DateTime?>("DeletedTime");
+
                     b.Property<bool>("IsAdmin");
 
                     b.Property<bool>("IsDefault");
@@ -93,9 +95,10 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
+                    b.HasIndex("NormalizedName", "DeletedTime")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("Role");
 
@@ -104,7 +107,7 @@ namespace Liuliu.Demo.Web.Migrations
                         {
                             Id = 1,
                             ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
-                            CreatedTime = new DateTime(2019, 3, 24, 15, 31, 48, 570, DateTimeKind.Local).AddTicks(642),
+                            CreatedTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAdmin = true,
                             IsDefault = false,
                             IsLocked = false,
@@ -147,6 +150,8 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<DateTime>("CreatedTime");
 
+                    b.Property<DateTime?>("DeletedTime");
+
                     b.Property<string>("Email");
 
                     b.Property<bool>("EmailConfirmed");
@@ -185,12 +190,13 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizeEmail")
+                    b.HasIndex("NormalizeEmail", "DeletedTime")
                         .HasName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
+                    b.HasIndex("NormalizedUserName", "DeletedTime")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -269,6 +275,8 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<DateTime>("CreatedTime");
 
+                    b.Property<DateTime?>("DeletedTime");
+
                     b.Property<bool>("IsLocked");
 
                     b.Property<int>("RoleId");
@@ -279,9 +287,10 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId", "RoleId")
+                    b.HasIndex("UserId", "RoleId", "DeletedTime")
                         .IsUnique()
-                        .HasName("UserRoleIndex");
+                        .HasName("UserRoleIndex")
+                        .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("UserRole");
                 });

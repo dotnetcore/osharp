@@ -165,8 +165,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
-            CheckDataAuth(DataAuthOperation.Delete, entities);
-            _dbSet.RemoveRange(entities);
+            DeleteInternal(entities);
             return _dbContext.SaveChanges();
         }
 
@@ -211,8 +210,7 @@ namespace OSharp.Entity
                     {
                         entity = deleteFunc(entity);
                     }
-                    CheckDataAuth(DataAuthOperation.Delete, entity);
-                    _dbSet.Remove(entity);
+                    DeleteInternal(entity);
                 }
                 catch (OsharpException e)
                 {
@@ -566,8 +564,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
-            CheckDataAuth(DataAuthOperation.Delete, entities);
-            _dbSet.RemoveRange(entities);
+            DeleteInternal(entities);
             return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
 
@@ -580,7 +577,7 @@ namespace OSharp.Entity
         {
             CheckEntityKey(key, nameof(key));
 
-            TEntity entity = await _dbSet.FindAsync(key, _cancellationTokenProvider.Token);
+            TEntity entity = await _dbSet.FindAsync(key);
             return await DeleteAsync(entity);
         }
 
@@ -614,8 +611,7 @@ namespace OSharp.Entity
                     {
                         entity = await deleteFunc(entity);
                     }
-                    CheckDataAuth(DataAuthOperation.Delete, entity);
-                    _dbSet.Remove(entity);
+                    DeleteInternal(entity);
                 }
                 catch (OsharpException e)
                 {
@@ -681,7 +677,7 @@ namespace OSharp.Entity
             {
                 try
                 {
-                    TEntity entity = await _dbSet.FindAsync(dto.Id, _cancellationTokenProvider.Token);
+                    TEntity entity = await _dbSet.FindAsync(dto.Id);
                     if (entity == null)
                     {
                         return new OperationResult(OperationResultType.QueryNull);
@@ -761,7 +757,7 @@ namespace OSharp.Entity
         {
             CheckEntityKey(key, nameof(key));
 
-            return await _dbSet.FindAsync(key, _cancellationTokenProvider.Token);
+            return await _dbSet.FindAsync(key);
         }
 
         #endregion
@@ -824,6 +820,25 @@ namespace OSharp.Entity
         private static Expression<Func<TEntity, bool>> GetDataFilter(DataAuthOperation operation)
         {
             return FilterHelper.GetDataFilterExpression<TEntity>(operation: operation);
+        }
+
+        private void DeleteInternal(params TEntity[] entities)
+        {
+            CheckDataAuth(DataAuthOperation.Delete, entities);
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            {
+                // 逻辑删除
+                foreach (TEntity entity in entities)
+                {
+                    ISoftDeletable softDeletableEntity = (ISoftDeletable)entity;
+                    softDeletableEntity.DeletedTime = DateTime.Now;
+                }
+            }
+            else
+            {
+                // 物理删除
+                _dbSet.RemoveRange(entities);
+            }
         }
 
         #endregion

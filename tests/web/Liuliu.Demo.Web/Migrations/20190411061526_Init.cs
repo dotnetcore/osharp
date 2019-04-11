@@ -144,7 +144,8 @@ namespace Liuliu.Demo.Web.Migrations
                     IsDefault = table.Column<bool>(nullable: false),
                     IsSystem = table.Column<bool>(nullable: false),
                     IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
+                    CreatedTime = table.Column<DateTime>(nullable: false),
+                    DeletedTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,6 +177,7 @@ namespace Liuliu.Demo.Web.Migrations
                     IsSystem = table.Column<bool>(nullable: false),
                     IsLocked = table.Column<bool>(nullable: false),
                     CreatedTime = table.Column<DateTime>(nullable: false),
+                    DeletedTime = table.Column<DateTime>(nullable: true),
                     Remark = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -453,7 +455,8 @@ namespace Liuliu.Demo.Web.Migrations
                     UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
                     CreatedTime = table.Column<DateTime>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false)
+                    IsLocked = table.Column<bool>(nullable: false),
+                    DeletedTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -532,8 +535,8 @@ namespace Liuliu.Demo.Web.Migrations
 
             migrationBuilder.InsertData(
                 table: "Role",
-                columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(2019, 3, 24, 15, 31, 48, 570, DateTimeKind.Local).AddTicks(642), true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "DeletedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "Name", "NormalizedName", "Remark" },
+                values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, false, false, true, "系统管理员", "系统管理员", "系统最高权限管理角色" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditEntity_OperationId",
@@ -630,8 +633,9 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "Role",
-                column: "NormalizedName",
-                unique: true);
+                columns: new[] { "NormalizedName", "DeletedTime" },
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_RoleId",
@@ -641,13 +645,14 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "User",
-                column: "NormalizeEmail");
+                columns: new[] { "NormalizeEmail", "DeletedTime" });
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "User",
-                column: "NormalizedUserName",
-                unique: true);
+                columns: new[] { "NormalizedUserName", "DeletedTime" },
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
@@ -680,8 +685,9 @@ namespace Liuliu.Demo.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "UserRoleIndex",
                 table: "UserRole",
-                columns: new[] { "UserId", "RoleId" },
-                unique: true);
+                columns: new[] { "UserId", "RoleId", "DeletedTime" },
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserTokenIndex",

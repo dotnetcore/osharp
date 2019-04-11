@@ -7,6 +7,8 @@
 //  <last-date>2018-06-27 4:48</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +27,11 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasIndex(m => m.NormalizedName).HasName("RoleNameIndex").IsUnique();
+            builder.HasIndex(m => new { m.NormalizedName, m.DeletedTime }).HasName("RoleNameIndex").IsUnique();
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 
-            builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc", IsAdmin = true, IsSystem = true });
+            builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc", IsAdmin = true, IsSystem = true, CreatedTime = new DateTime(1970, 1, 1) });
         }
     }
 }

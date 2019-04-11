@@ -25,8 +25,8 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasIndex(m => m.NormalizedUserName).HasName("UserNameIndex").IsUnique();
-            builder.HasIndex(m => m.NormalizeEmail).HasName("EmailIndex");
+            builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasName("UserNameIndex").IsUnique();
+            builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasName("EmailIndex");
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
         }

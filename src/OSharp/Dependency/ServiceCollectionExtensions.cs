@@ -79,7 +79,7 @@ namespace OSharp.Dependency
             var instance = services.GetSingletonInstanceOrNull<T>();
             if (instance == null)
             {
-                throw new InvalidOperationException($"无法找到单例服务：{typeof(T).AssemblyQualifiedName}");
+                throw new InvalidOperationException($"无法找到已注册的单例服务：{typeof(T).AssemblyQualifiedName}");
             }
 
             return instance;

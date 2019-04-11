@@ -41,6 +41,11 @@ namespace OSharp.Entity
         public void RegisterTo(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(this);
+            // 给软删除的实体添加全局过滤器
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            {
+                modelBuilder.Entity<TEntity>().HasQueryFilter(m => ((ISoftDeletable)m).DeletedTime == null);
+            }
         }
 
         /// <summary>

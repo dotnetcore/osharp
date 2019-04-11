@@ -78,6 +78,7 @@ namespace OSharp.Identity
         /// <param name="userTokenRepository">用户令牌仓储</param>
         /// <param name="roleRepository">角色仓储</param>
         /// <param name="userRoleRepository">用户角色仓储</param>
+        /// <param name="eventBus">事件总线</param>
         protected UserStoreBase(
             IRepository<TUser, TUserKey> userRepository,
             IRepository<TUserLogin, Guid> userLoginRepository,

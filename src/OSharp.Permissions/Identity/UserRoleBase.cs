@@ -20,7 +20,7 @@ namespace OSharp.Identity
     /// </summary>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class UserRoleBase<TUserKey, TRoleKey> : EntityBase<Guid>,ICreatedTime,ILockable
+    public abstract class UserRoleBase<TUserKey, TRoleKey> : EntityBase<Guid>, ICreatedTime, ILockable, ISoftDeletable
         where TUserKey : IEquatable<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
@@ -55,5 +55,11 @@ namespace OSharp.Identity
         /// </summary>
         [DisplayName("是否锁定")]
         public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// 获取或设置 数据逻辑删除时间，为null表示正常数据，有值表示已逻辑删除，同时删除时间每次不同也能保证索引唯一性
+        /// </summary>
+        public DateTime? DeletedTime { get; set; }
+
     }
 }

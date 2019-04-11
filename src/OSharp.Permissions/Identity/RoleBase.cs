@@ -20,7 +20,7 @@ namespace OSharp.Identity
     /// 角色信息基类
     /// </summary>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class RoleBase<TRoleKey> : EntityBase<TRoleKey>, ICreatedTime, ILockable
+    public abstract class RoleBase<TRoleKey> : EntityBase<TRoleKey>, ICreatedTime, ILockable, ISoftDeletable
         where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
@@ -86,11 +86,17 @@ namespace OSharp.Identity
         [DisplayName("创建时间")]
         public DateTime CreatedTime { get; set; }
 
+        /// <summary>
+        /// 获取或设置 数据逻辑删除时间，为null表示正常数据，有值表示已逻辑删除，同时删除时间每次不同也能保证索引唯一性
+        /// </summary>
+        public DateTime? DeletedTime { get; set; }
+
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
             return Name;
         }
+
     }
 }
