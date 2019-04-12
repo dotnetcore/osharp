@@ -23,7 +23,7 @@
   <Import Project="../../build/version.props" />
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.AspNetCore" Version="4.3.2022" />
+    <PackageReference Include="Exceptionless.AspNetCore" Version="4.3.2027" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
