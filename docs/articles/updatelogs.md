@@ -1,5 +1,19 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta04
+1. (ng-alain)：给主菜单增加退出菜单，优化操作审计列表
+2. (ng-alain)：实现管理列表的数据普通搜索功能和高级搜索功能
+3. (ng-alain)：优化搜索的触发方式，搜索控件只返回PageRequest，搜索动作由STComponentBase的search方法触发
+4. (ng-alain)：修复角色数据管理页面的路由错误问题
+5. (ng-alain)：更新alain到7.2.0版本，使用 preCan 的配置实现 ACLCanType 到 ACLType 的转换
+6. (Reflection)：添加异步任务取消标识提供器，方便异步任务取消标识的统一管理
+7. (efcore)：修复`DefaultDbContext`不支持多上下文的问题
+8. (efcore)：添加逻辑删除实现，通过给实体实现 ISoftDeletable 接口进行实现
+9. (efcore)：添加创建审计和更新审计的接口ICreationAudited,IUpdateAudited，当实体类实现了接口，自动执行相关逻辑
+10. (identity)：appsetting.json中的Jwt选项增加Token过期时间的天数配置，节点 为OSharp.Jwt.ExpireDays，数据类型为double
+11. (mvc)：修复UnitOfWorkAttribute操作结果不为AjaxResultType.Successed时仍会提交事务的问题
+12. (.netcore)：更新 core 版本到 v2.2.203
+
 ### 0.5.0-beta02-03
 1. 将OAuth2的选项配置到OSharpOptions中，添加GitHub账号登录的支持
 2. 修复 0.5.0-beta01 版本在Release版本时执行 provider.ExecuteScopedWork 方法相当慢速的问题，原因未知（难道不允许在Scoped作用域下再CreateScope？）
