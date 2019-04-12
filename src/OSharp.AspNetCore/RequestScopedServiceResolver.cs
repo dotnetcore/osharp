@@ -42,10 +42,7 @@ namespace OSharp.AspNetCore
         /// <summary>
         /// 获取 <see cref="ServiceLifetime.Scoped"/>生命周期的服务提供者
         /// </summary>
-        public IServiceProvider ScopedProvider
-        {
-            get { return _httpContextAccessor.HttpContext.RequestServices; }
-        }
+        public IServiceProvider ScopedProvider => _httpContextAccessor.HttpContext.RequestServices;
 
         /// <summary>
         /// 获取指定服务类型的实例

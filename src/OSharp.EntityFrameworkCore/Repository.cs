@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +26,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Secutiry;
+using OSharp.Secutiry.Claims;
 using OSharp.Threading;
 
 using Z.EntityFramework.Plus;
@@ -45,6 +47,7 @@ namespace OSharp.Entity
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
         private readonly ICancellationTokenProvider _cancellationTokenProvider;
+        private readonly IPrincipal _principal;
 
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
@@ -56,6 +59,7 @@ namespace OSharp.Entity
             _dbSet = _dbContext.Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
+            _principal = serviceProvider.GetService<IPrincipal>();
         }
 
         /// <summary>
@@ -97,11 +101,7 @@ namespace OSharp.Entity
         public virtual int Insert(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
-            for (int i = 0; i < entities.Length; i++)
-            {
-                TEntity entity = entities[i];
-                entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
-            }
+            entities = CheckInsert(entities);
             _dbSet.AddRange(entities);
             return _dbContext.SaveChanges();
         }
@@ -133,7 +133,7 @@ namespace OSharp.Entity
                     {
                         entity = updateFunc(dto, entity);
                     }
-                    entity = entity.CheckICreatedTime<TEntity, TKey>();
+                    entity = CheckInsert(entity)[0];
                     _dbSet.Add(entity);
                 }
                 catch (OsharpException e)
@@ -253,8 +253,7 @@ namespace OSharp.Entity
         public virtual int Update(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
-
-            CheckDataAuth(DataAuthOperation.Update, entities);
+            entities = CheckUpdate(entities);
             _dbContext.Update<TEntity, TKey>(entities);
             return _dbContext.SaveChanges();
         }
@@ -291,7 +290,7 @@ namespace OSharp.Entity
                     {
                         entity = updateFunc(dto, entity);
                     }
-                    CheckDataAuth(DataAuthOperation.Update, entity);
+                    entity = CheckUpdate(entity)[0];
                     _dbContext.Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
@@ -495,12 +494,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
-            for (int i = 0; i < entities.Length; i++)
-            {
-                TEntity entity = entities[i];
-                entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
-            }
-
+            entities = CheckInsert(entities);
             await _dbSet.AddRangeAsync(entities, _cancellationTokenProvider.Token);
             return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
@@ -532,7 +526,7 @@ namespace OSharp.Entity
                     {
                         entity = await updateFunc(dto, entity);
                     }
-                    entity = entity.CheckICreatedTime<TEntity, TKey>();
+                    entity = CheckInsert(entity)[0];
                     await _dbSet.AddAsync(entity, _cancellationTokenProvider.Token);
                 }
                 catch (OsharpException e)
@@ -655,7 +649,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
-            CheckDataAuth(DataAuthOperation.Update, entities);
+            entities = CheckUpdate(entities);
             _dbContext.Update<TEntity, TKey>(entities);
             return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
@@ -691,8 +685,7 @@ namespace OSharp.Entity
                     {
                         entity = await updateFunc(dto, entity);
                     }
-
-                    CheckDataAuth(DataAuthOperation.Update, entity);
+                    entity = CheckUpdate(entity)[0];
                     _dbContext.Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
@@ -820,6 +813,65 @@ namespace OSharp.Entity
         private static Expression<Func<TEntity, bool>> GetDataFilter(DataAuthOperation operation)
         {
             return FilterHelper.GetDataFilterExpression<TEntity>(operation: operation);
+        }
+
+        private TEntity[] CheckInsert(params TEntity[] entities)
+        {
+            for (int i = 0; i < entities.Length; i++)
+            {
+                TEntity entity = entities[i];
+                entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
+
+                string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault("userIdTypeName");
+                if (userIdTypeName == null)
+                {
+                    continue;
+                }
+                entity = entities[i];
+                if (userIdTypeName == typeof(int).FullName)
+                {
+                    entities[i] = entity.CheckICreationAudited<TEntity, TKey, int>(_principal);
+                }
+                else if (userIdTypeName == typeof(Guid).FullName)
+                {
+                    entities[i] = entity.CheckICreationAudited<TEntity, TKey, Guid>(_principal);
+                }
+                else
+                {
+                    entities[i] = entity.CheckICreationAudited<TEntity, TKey, long>(_principal);
+                }
+            }
+
+            return entities;
+        }
+
+        private TEntity[] CheckUpdate(params TEntity[] entities)
+        {
+            CheckDataAuth(DataAuthOperation.Update, entities);
+
+            string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault("userIdTypeName");
+            if (userIdTypeName == null)
+            {
+                return entities;
+            }
+            for (var i = 0; i < entities.Length; i++)
+            {
+                TEntity entity = entities[i];
+                if (userIdTypeName == typeof(int).FullName)
+                {
+                    entities[i] = entity.CheckIUpdateAudited<TEntity, TKey, int>(_principal);
+                }
+                else if (userIdTypeName == typeof(Guid).FullName)
+                {
+                    entities[i] = entity.CheckIUpdateAudited<TEntity, TKey, Guid>(_principal);
+                }
+                else
+                {
+                    entities[i] = entity.CheckIUpdateAudited<TEntity, TKey, long>(_principal);
+                }
+            }
+
+            return entities;
         }
 
         private void DeleteInternal(params TEntity[] entities)

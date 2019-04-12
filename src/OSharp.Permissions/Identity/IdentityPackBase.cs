@@ -8,9 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Reflection;
+using System.Security.Claims;
+using System.Security.Principal;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -52,6 +56,25 @@ namespace OSharp.Identity
             //在线用户缓存
             services.TryAddSingleton<IOnlineUserCache, OnlineUserCache<TUser, TUserKey, TRole, TRoleKey>>();
             services.TryAddSingleton<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TRole, TRoleKey>>();
+
+            // 替换 IPrincipal ，设置用户主键类型，用以在Repository进行审计时注入正确用户主键类型
+            services.Replace(new ServiceDescriptor(typeof(IPrincipal),
+                provider =>
+                {
+                    IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
+                    ClaimsPrincipal principal = accessor?.HttpContext?.User;
+                    if (principal != null && principal.Identity is ClaimsIdentity identity)
+                    {
+                        PropertyInfo property = typeof(TUser).GetProperty("Id");
+                        if (property != null)
+                        {
+                            identity.AddClaim(new Claim("userIdTypeName", property.PropertyType.FullName));
+                        }
+                    }
+
+                    return principal;
+                },
+                ServiceLifetime.Transient));
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
             IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);

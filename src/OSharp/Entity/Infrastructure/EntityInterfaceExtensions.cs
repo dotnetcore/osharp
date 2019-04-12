@@ -8,9 +8,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Net.Mime;
+using System.Security.Principal;
 
 using OSharp.Data;
+using OSharp.Entity.Infrastructure;
 using OSharp.Reflection;
+using OSharp.Secutiry.Claims;
 
 
 namespace OSharp.Entity
@@ -41,6 +45,60 @@ namespace OSharp.Entity
             Check.NotNull(entity, nameof(entity));
             DateTime now = DateTime.Now;
             return entity.BeginTime != null && entity.BeginTime.Value > now || entity.EndTime != null && entity.EndTime.Value < now;
+        }
+
+        /// <summary>
+        /// 检测并执行<see cref="ICreatedTime"/>接口的逻辑
+        /// </summary>
+        public static TEntity CheckICreatedTime<TEntity, TKey>(this TEntity entity)
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            if (!(entity is ICreatedTime))
+            {
+                return entity;
+            }
+            ICreatedTime entity1 = (ICreatedTime)entity;
+            entity1.CreatedTime = DateTime.Now;
+            return (TEntity)entity1;
+        }
+
+        /// <summary>
+        /// 检测并执行<see cref="ICreationAudited{TUserKey}"/>接口的处理
+        /// </summary>
+        public static TEntity CheckICreationAudited<TEntity, TKey, TUserKey>(this TEntity entity, IPrincipal user)
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
+            where TUserKey : struct, IEquatable<TUserKey>
+        {
+            if (!(entity is ICreationAudited<TUserKey>))
+            {
+                return entity;
+            }
+
+            ICreationAudited<TUserKey> entity1 = (ICreationAudited<TUserKey>)entity;
+            entity1.CreatorId = user.Identity.GetUserId<TUserKey>();
+            entity1.CreatedTime = DateTime.Now;
+            return (TEntity)entity1;
+        }
+
+        /// <summary>
+        /// 检测并执行<see cref="IUpdateAudited{TUserKey}"/>接口的处理
+        /// </summary>
+        public static TEntity CheckIUpdateAudited<TEntity, TKey, TUserKey>(this TEntity entity, IPrincipal user)
+            where TEntity : IEntity<TKey>
+            where TKey : IEquatable<TKey>
+            where TUserKey : struct, IEquatable<TUserKey>
+        {
+            if (!(entity is IUpdateAudited<TUserKey>))
+            {
+                return entity;
+            }
+
+            IUpdateAudited<TUserKey> entity1 = (IUpdateAudited<TUserKey>)entity;
+            entity1.LastUpdaterId = user.Identity.GetUserId<TUserKey>();
+            entity1.LastUpdatedTime = DateTime.Now;
+            return (TEntity)entity1;
         }
     }
 }
