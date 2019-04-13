@@ -28,6 +28,7 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Caching;
 using OSharp.Collections;
+using OSharp.Core;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Data;
@@ -85,6 +86,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// </summary>
         /// <returns>角色节点列表</returns>
         [HttpGet]
+        [ModuleInfo]
         [Description("读取节点")]
         public RoleNode[] ReadNode()
         {

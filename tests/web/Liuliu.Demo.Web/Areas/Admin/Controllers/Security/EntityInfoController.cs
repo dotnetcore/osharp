@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Core;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Modules;
 using OSharp.Data;
@@ -69,6 +70,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// </summary>
         /// <returns>实体节点集合</returns>
         [HttpGet]
+        [ModuleInfo]
         [Description("读取节点")]
         public List<EntityInfoNode> ReadNode()
         {
