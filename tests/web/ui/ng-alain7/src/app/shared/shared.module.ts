@@ -32,7 +32,7 @@ import { ModalTreeComponent } from './components/modal-tree/modal-tree.component
 import { FilterGroupComponent } from './components/filter-group/filter-group.component';
 import { FilterRuleComponent } from './components/filter-group/filter-rule.component';
 import { AdSearchComponent } from './components/ad-search/ad-search.component';
-import { AdSearchButtonComponent } from './components/ad-search/button/button.component';
+import { AdSearchModalComponent } from './components/ad-search/modal/modal.component';
 
 // #region your componets & directives
 const COMPONENTS = [
@@ -40,7 +40,7 @@ const COMPONENTS = [
   FilterGroupComponent,
   FilterRuleComponent,
   AdSearchComponent,
-  AdSearchButtonComponent
+  AdSearchModalComponent
 ];
 const DIRECTIVES = [];
 // #endregion
