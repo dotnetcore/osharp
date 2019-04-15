@@ -12,7 +12,7 @@
   <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="editRow" button="none">
     <div class="modal-footer">
       <button nz-button type="button" (click)="close()">关闭</button>
-      <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading" [acl]="'Root.Admin.Identity.Role.Update'">保存</button>
     </div>
   </sf>
 </nz-modal>

@@ -186,6 +186,7 @@ namespace OSharp.Filter
                 {
                     continue;
                 }
+                // 各个角色的数据过滤条件使用Or连接
                 subExp = subExp == null ? GetExpression<T>(subGroup) : subExp.Or(GetExpression<T>(subGroup));
             }
             if (subExp != null)
@@ -194,6 +195,7 @@ namespace OSharp.Filter
                 {
                     return subExp;
                 }
+                // 数据权限条件与主条件使用And连接
                 exp = subExp.And(exp);
             }
 
