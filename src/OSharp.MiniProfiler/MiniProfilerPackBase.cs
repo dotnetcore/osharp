@@ -61,6 +61,11 @@ namespace OSharp.MiniProfiler
             IsEnabled = true;
         }
 
+        /// <summary>
+        /// 重写以获取MiniProfiler的选项
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
         protected virtual Action<MiniProfilerOptions> GetMiniProfilerAction(IServiceCollection services)
         {
             return options =>

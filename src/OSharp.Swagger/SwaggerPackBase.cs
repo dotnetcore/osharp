@@ -52,39 +52,41 @@ namespace OSharp.Swagger
         {
             IConfiguration configuration = services.GetConfiguration();
             bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
-            if (enabled)
+            if (!enabled)
             {
-                string url = configuration["OSharp:Swagger:Url"];
-                if (string.IsNullOrEmpty(url))
-                {
-                    throw new OsharpException("配置文件中Swagger节点的Url不能为空");
-                }
-
-                string title = configuration["OSharp:Swagger:Title"];
-                int version = configuration["OSharp:Swagger:Version"].CastTo(1);
-
-                services.AddMvcCore().AddApiExplorer();
-                services.AddSwaggerGen(options =>
-                {
-                    options.SwaggerDoc($"v{version}", new Info() { Title = title, Version = $"v{version}" });
-                    Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
-                    {
-                        options.IncludeXmlComments(file);
-                    });
-                    //权限Token
-                    options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
-                    {
-                        Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
-                        Name = "Authorization",
-                        In = "header",
-                        Type = "apiKey"
-                    });
-                    options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
-                    {
-                        { "Bearer", Enumerable.Empty<string>() }
-                    });
-                });
+                return services;
             }
+
+            string url = configuration["OSharp:Swagger:Url"];
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new OsharpException("配置文件中Swagger节点的Url不能为空");
+            }
+
+            string title = configuration["OSharp:Swagger:Title"];
+            int version = configuration["OSharp:Swagger:Version"].CastTo(1);
+
+            services.AddMvcCore().AddApiExplorer();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc($"v{version}", new Info() { Title = title, Version = $"v{version}" });
+                Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
+                {
+                    options.IncludeXmlComments(file);
+                });
+                //权限Token
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
+                {
+                    { "Bearer", Enumerable.Empty<string>() }
+                });
+            });
 
             return services;
         }
@@ -97,22 +99,24 @@ namespace OSharp.Swagger
         {
             IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
             bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
-            if (enabled)
+            if (!enabled)
             {
-                app.UseSwagger().UseSwaggerUI(options =>
-                {
-                    string url = configuration["OSharp:Swagger:Url"];
-                    string title = configuration["OSharp:Swagger:Title"];
-                    int version = configuration["OSharp:Swagger:Version"].CastTo(1);
-                    options.SwaggerEndpoint(url, $"{title} V{version}");
-                    bool miniProfilerEnabled = configuration["OSharp:Swagger:MiniProfiler"].CastTo(false);
-                    if (miniProfilerEnabled)
-                    {
-                        options.IndexStream = () => GetType().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
-                    }
-                });
-                IsEnabled = true;
+                return;
             }
+
+            app.UseSwagger().UseSwaggerUI(options =>
+            {
+                string url = configuration["OSharp:Swagger:Url"];
+                string title = configuration["OSharp:Swagger:Title"];
+                int version = configuration["OSharp:Swagger:Version"].CastTo(1);
+                options.SwaggerEndpoint(url, $"{title} V{version}");
+                bool miniProfilerEnabled = configuration["OSharp:Swagger:MiniProfiler"].CastTo(false);
+                if (miniProfilerEnabled)
+                {
+                    options.IndexStream = () => GetType().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
+                }
+            });
+            IsEnabled = true;
         }
     }
 }
