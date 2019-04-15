@@ -29,12 +29,35 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 * OSharp.EntityFrameworkCore.MySql【EFCore MySql 数据组件】：EFCore MySql数据访问组件，封装MySql的EntityFrameworkCore数据访问功能的实现
 * OSharp.EntityFrameworkCore.SqlServer【EFCore SqlServer 数据组件】：EFCore SqlServer数据访问组件，封装SqlServer的EntityFrameworkCore数据访问功能的实现
 * OSharp.EntityFrameworkCore.Sqlite【EFCore Sqlite 数据组件】：EFCore Sqlite数据访问组件，封装Sqlite的EntityFrameworkCore数据访问功能的实现
+* OSharp.EntityFrameworkCore.PostgreSql【EFCore PostgreSql 数据组件】：EFCore PostgreSql数据访问组件，封装PostgreSql的EntityFrameworkCore数据访问功能的实现
 * OSharp.Permissions【权限组件】：使用AspNetCore的Identity为基础实现身份认证的封装，以Security为基础实现以角色-功能、用户-功能的功能权限实现，以角色-数据，用户-数据的数据权限的封装
 * OSharp.Log4Net【日志组件】：基于Log4Net的日志记录组件
 * OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
 * OSharp.Hangfire【后台任务组件】：封装基于Hangfire后台任务的服务端实现
-* OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
 * OSharp.MiniProfiler【MiniProfiler组件】：基于MiniProfiler实现的性能监测组件
+* OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
+
+### Nuget Packages
+
+| 包名称 | Nuget版本 | 下载数 |
+| ----- | --------- | ----- |
+|[OSharpNS.Core](https://www.nuget.org/packages/OSharpNS.Core/)|[![OSharpNS.Core](https://img.shields.io/nuget/v/OSharpNS.Core.svg)](https://www.nuget.org/packages/OSharpNS.Core/)|[![OSharpNS.Core](https://img.shields.io/nuget/dt/OSharpNS.Core.svg)](https://www.nuget.org/packages/OSharpNS.Core/)|
+|[OSharpNS.AspNetCore](https://www.nuget.org/packages/OSharpNS.AspNetCore/)|[![OSharpNS.AspNetCore](https://img.shields.io/nuget/v/OSharpNS.AspNetCore.svg)](https://www.nuget.org/packages/OSharpNS.AspNetCore/)|[![OSharpNS.AspNetCore](https://img.shields.io/nuget/dt/OSharpNS.AspNetCore.svg)](https://www.nuget.org/packages/OSharpNS.AspNetCore/)|
+|[OSharpNS.AutoMapper](https://www.nuget.org/packages/OSharpNS.AutoMapper/)|[![OSharpNS.AutoMapper](https://img.shields.io/nuget/v/OSharpNS.AutoMapper.svg)](https://www.nuget.org/packages/OSharpNS.AutoMapper/)|[![OSharpNS.AutoMapper](https://img.shields.io/nuget/dt/OSharpNS.AutoMapper.svg)](https://www.nuget.org/packages/OSharpNS.AutoMapper/)|
+|[OSharpNS.EntityFrameworkCore](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore/)|[![OSharpNS.EntityFrameworkCore](https://img.shields.io/nuget/v/OSharpNS.EntityFrameworkCore.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore/)|[![OSharpNS.EntityFrameworkCore](https://img.shields.io/nuget/dt/OSharpNS.EntityFrameworkCore.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore/)|
+|[OSharpNS.EntityFrameworkCore.SqlServer](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.SqlServer/)|[![OSharpNS.EntityFrameworkCore.SqlServer](https://img.shields.io/nuget/v/OSharpNS.EntityFrameworkCore.SqlServer.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.SqlServer/)|[![OSharpNS.EntityFrameworkCore.SqlServer](https://img.shields.io/nuget/dt/OSharpNS.EntityFrameworkCore.SqlServer.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.SqlServer/)|
+|[OSharpNS.EntityFrameworkCore.MySql](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.MySql/)|[![OSharpNS.EntityFrameworkCore.MySql](https://img.shields.io/nuget/v/OSharpNS.EntityFrameworkCore.MySql.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.MySql/)|[![OSharpNS.EntityFrameworkCore.MySql](https://img.shields.io/nuget/dt/OSharpNS.EntityFrameworkCore.MySql.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.MySql/)|
+|[OSharpNS.EntityFrameworkCore.Sqlite](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.Sqlite/)|[![OSharpNS.EntityFrameworkCore.Sqlite](https://img.shields.io/nuget/v/OSharpNS.EntityFrameworkCore.Sqlite.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.Sqlite/)|[![OSharpNS.EntityFrameworkCore.Sqlite](https://img.shields.io/nuget/dt/OSharpNS.EntityFrameworkCore.Sqlite.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.Sqlite/)|
+|[OSharpNS.EntityFrameworkCore.PostgreSql](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.PostgreSql/)|[![OSharpNS.EntityFrameworkCore.PostgreSql](https://img.shields.io/nuget/v/OSharpNS.EntityFrameworkCore.PostgreSql.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.PostgreSql/)|[![OSharpNS.EntityFrameworkCore.PostgreSql](https://img.shields.io/nuget/dt/OSharpNS.EntityFrameworkCore.PostgreSql.svg)](https://www.nuget.org/packages/OSharpNS.EntityFrameworkCore.PostgreSql/)|
+|[OSharpNS.Permissions](https://www.nuget.org/packages/OSharpNS.Permissions/)|[![OSharpNS.Permissions](https://img.shields.io/nuget/v/OSharpNS.Permissions.svg)](https://www.nuget.org/packages/OSharpNS.Permissions/)|[![OSharpNS.Permissions](https://img.shields.io/nuget/dt/OSharpNS.Permissions.svg)](https://www.nuget.org/packages/OSharpNS.Permissions/)|
+|[OSharpNS.Log4Net](https://www.nuget.org/packages/OSharpNS.Log4Net/)|[![OSharpNS.Log4Net](https://img.shields.io/nuget/v/OSharpNS.Log4Net.svg)](https://www.nuget.org/packages/OSharpNS.Log4Net/)|[![OSharpNS.Log4Net](https://img.shields.io/nuget/dt/OSharpNS.Log4Net.svg)](https://www.nuget.org/packages/OSharpNS.Log4Net/)|
+|[OSharpNS.Redis](https://www.nuget.org/packages/OSharpNS.Redis/)|[![OSharpNS.Redis](https://img.shields.io/nuget/v/OSharpNS.Redis.svg)](https://www.nuget.org/packages/OSharpNS.Redis/)|[![OSharpNS.Redis](https://img.shields.io/nuget/dt/OSharpNS.Redis.svg)](https://www.nuget.org/packages/OSharpNS.Redis/)|
+|[OSharpNS.Hangfire](https://www.nuget.org/packages/OSharpNS.Hangfire/)|[![OSharpNS.Hangfire](https://img.shields.io/nuget/v/OSharpNS.Hangfire.svg)](https://www.nuget.org/packages/OSharpNS.Hangfire/)|[![OSharpNS.Hangfire](https://img.shields.io/nuget/dt/OSharpNS.Hangfire.svg)](https://www.nuget.org/packages/OSharpNS.Hangfire/)|
+|[OSharpNS.Exceptionless](https://www.nuget.org/packages/OSharpNS.Exceptionless/)|[![OSharpNS.Exceptionless](https://img.shields.io/nuget/v/OSharpNS.Exceptionless.svg)](https://www.nuget.org/packages/OSharpNS.Exceptionless/)|[![OSharpNS.Exceptionless](https://img.shields.io/nuget/dt/OSharpNS.Exceptionless.svg)](https://www.nuget.org/packages/OSharpNS.Exceptionless/)|
+|[OSharpNS.MiniProfiler](https://www.nuget.org/packages/OSharpNS.MiniProfiler/)|[![OSharpNS.MiniProfiler](https://img.shields.io/nuget/v/OSharpNS.MiniProfiler.svg)](https://www.nuget.org/packages/OSharpNS.MiniProfiler/)|[![OSharpNS.MiniProfiler](https://img.shields.io/nuget/dt/OSharpNS.MiniProfiler.svg)](https://www.nuget.org/packages/OSharpNS.MiniProfiler/)|
+|[OSharpNS.Swagger](https://www.nuget.org/packages/OSharpNS.Swagger/)|[![OSharpNS.Swagger](https://img.shields.io/nuget/v/OSharpNS.Swagger.svg)](https://www.nuget.org/packages/OSharpNS.Swagger/)|[![OSharpNS.Swagger](https://img.shields.io/nuget/dt/OSharpNS.Swagger.svg)](https://www.nuget.org/packages/OSharpNS.Swagger/)|
+|[OSharpNS](https://www.nuget.org/packages/OSharpNS/)|[![OSharpNS](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)|[![OSharpNS](https://img.shields.io/nuget/dt/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)|
+|[OSharpNS.Template.Mvc_Angular](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)|[![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/v/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)|[![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/dt/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)|
 
 ## <a id="02"/>OSharpNS特性
 
@@ -113,7 +136,7 @@ OSharpNS 快速启动模板的开发模式，集成了`Swagger` API 文档生成
 
 OSharpNS框架制作了一个基于`dotnet cli`命令行工具的快速启动模板，下面演示如何来使用这个模板快速创建一个基于OSharpNS框架的初始化项目。
 ### 1. 安装最新版本 `dotnetcore sdk`
-OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 `2.1.1`，所以对应的 `dotnetcore sdk` 需要安装到对应版本 [>=v2.1.301](https://www.microsoft.com/net/download/windows)。
+OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 `2.2.4`，所以对应的 `dotnetcore sdk` 需要安装到对应版本 [>=v2.2.203](https://www.microsoft.com/net/download/windows)。
 ### 2. 安装OSharpNS的`dotnet new`项目模板
 在任意空白目录，打开`cmd`命令行窗口，执行命令
 
@@ -154,7 +177,7 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 
 * 配置好后，即可正常启动端口号为`7001`的项目，启动后开发模式将进入`Swagger`的后端Api接口的文档页。
 
-### 6. Angular6的前端项目启动
+### 6. Angular7的前端项目启动
 前端项目使用了`ng-alain`和`kendoui`作为UI进行开发的，需要熟悉`nodejs`,`angular7`等技术。
 
 #### 安装`NodeJS`，搭建前端技术环境
