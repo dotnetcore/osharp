@@ -22,6 +22,30 @@ namespace OSharp.Collections
     public static class CollectionExtensions
     {
         /// <summary>
+        /// 如果条件成立，添加项
+        /// </summary>
+        public static void AddIf<T>(this ICollection<T> collection, T value, bool flag)
+        {
+            Check.NotNull(collection, nameof(collection));
+            if (flag)
+            {
+                collection.Add(value);
+            }
+        }
+
+        /// <summary>
+        /// 如果条件成立，添加项
+        /// </summary>
+        public static void AddIf<T>(this ICollection<T> collection, T value, Func<bool> func)
+        {
+            Check.NotNull(collection, nameof(collection));
+            if (func())
+            {
+                collection.Add(value);
+            }
+        }
+
+        /// <summary>
         /// 如果不存在，添加项
         /// </summary>
         public static void AddIfNotExist<T>(this ICollection<T> collection, T value, Func<T, bool> existFunc = null)
