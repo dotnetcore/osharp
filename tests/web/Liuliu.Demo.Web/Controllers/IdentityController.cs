@@ -153,9 +153,11 @@ namespace Liuliu.Demo.Web.Controllers
                     + $"{url}<br>"
                     + $"祝您使用愉快！";
                 await SendMailAsync(user.Email, "柳柳软件 注册邮箱激活邮件", body);
+
+                return result.ToAjaxResult(m => new { m.UserName, m.NickName, m.Email });
             }
 
-            return result.ToAjaxResult(m => new { m.UserName, m.NickName, m.Email });
+            return result.ToAjaxResult();
         }
 
         /// <summary>
