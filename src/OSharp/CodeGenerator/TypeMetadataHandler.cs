@@ -44,7 +44,7 @@ namespace OSharp.CodeGenerator
         public TypeMetadata[] GetEntityTypeMetadatas()
         {
             Type[] entityTypes = _entityTypeFinder.Find(m => !m.HasAttribute<IgnoreGenTypeAttribute>());
-            return entityTypes.Select(m => new TypeMetadata(m)).ToArray();
+            return entityTypes.OrderBy(m => m.FullName).Select(m => new TypeMetadata(m)).ToArray();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace OSharp.CodeGenerator
         public TypeMetadata[] GetInputDtoMetadatas()
         {
             Type[] inputDtoTypes = _inputDtoTypeFinder.Find(m => !m.HasAttribute<IgnoreGenTypeAttribute>());
-            return inputDtoTypes.Select(m => new TypeMetadata(m)).ToArray();
+            return inputDtoTypes.OrderBy(m => m.FullName).Select(m => new TypeMetadata(m)).ToArray();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace OSharp.CodeGenerator
         public TypeMetadata[] GetOutputDtoMetadata()
         {
             Type[] outDtoTypes = _outputDtoTypeFinder.Find(m => !m.HasAttribute<IgnoreGenTypeAttribute>());
-            return outDtoTypes.Select(m => new TypeMetadata(m)).ToArray();
+            return outDtoTypes.OrderBy(m => m.FullName).Select(m => new TypeMetadata(m)).ToArray();
         }
 
         /// <summary>

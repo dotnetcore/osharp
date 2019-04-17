@@ -193,6 +193,9 @@
   <data name="ParameterCheck_FileNotExists" xml:space="preserve">
     <value>指定的文件路径“{0}”不存在。</value>
   </data>
+  <data name="ParameterCheck_NotContainsNull_Collection" xml:space="preserve">
+    <value>集合“{0}”中不能包含null的项</value>
+  </data>
   <data name="ParameterCheck_NotEmpty_Guid" xml:space="preserve">
     <value>参数“{0}”的值不能为Guid.Empty</value>
   </data>
