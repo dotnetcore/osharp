@@ -1,6 +1,6 @@
 # OSharp .NetStandard 更新记录
 
-### 0.5.0-beta05
+### 0.5.0-beta05 (2019/04/19)
 1. (permiss)：将角色和实体信息ReadNode提升为模块，提供给权限分配
 2. (redis)：修复Redis的Enabled配置不起作用的问题
 3. (swagger)：优化Swagger模块的处理流程，提取基类SwaggerPackCore
@@ -11,7 +11,7 @@
 8. (efcore)：添加EFCore的Oracle数据库支持，感谢 [@staneee](https://github.com/staneee) 的 PR。#70
 9. (ng-alain)：优化高级搜索，将高级搜索的弹窗与button合并到一个html 
 
-### 0.5.0-beta04
+### 0.5.0-beta04 (2019/04/13)
 1. (ng-alain)：给主菜单增加退出菜单，优化操作审计列表
 2. (ng-alain)：实现管理列表的数据普通搜索功能和高级搜索功能
 3. (ng-alain)：优化搜索的触发方式，搜索控件只返回PageRequest，搜索动作由STComponentBase的search方法触发
@@ -25,13 +25,13 @@
 11. (mvc)：修复UnitOfWorkAttribute操作结果不为AjaxResultType.Successed时仍会提交事务的问题
 12. (.netcore)：更新 core 版本到 v2.2.203
 
-### 0.5.0-beta02-03
+### 0.5.0-beta02-03 (2019/04/1)
 1. 将OAuth2的选项配置到OSharpOptions中，添加GitHub账号登录的支持
 2. 修复 0.5.0-beta01 版本在Release版本时执行 provider.ExecuteScopedWork 方法相当慢速的问题，原因未知（难道不允许在Scoped作用域下再CreateScope？）
 3. 修复数据迁移时无法读取配置文件信息的问题
 4. 修复密码输入框在发布版无法触发值变化事件的问题
 
-### 0.5.0-beta01
+### 0.5.0-beta01 (2019/03/31)
 1. 添加 Exceptionless 分布式异常日志记录模块
 2. 添加 Dockerfile 进行编译后的Docker镜像打包
 3. 添加第三方登录（QQ，Microsoft账号等）OAuth2登录支持，并创建新或绑定现有账号
@@ -41,7 +41,7 @@
 7. 修复 EFCore 组件的导航属性延迟加载代理不生效的问题，原因是初始化时使用了自动迁移时构建的那个Model，那里遗漏了延迟加载代码的配置
 8. 完成ng-alain7的迁移与去kendo grid的后台管理列表页的改造
 
-### 0.4.0-beta07
+### 0.4.0-beta07 (2019/02/23)
 1. 取消Filter和Cache辅助文法的Obsolete特性，有时候静态方法和扩展方法还是挺有用的
 2. dev数据库连接改本地账号密码登录，以方便使用docker环境
 3. 配合代码生成器生成的代码结构，类型操作的扩展方法默认开启继承查找
@@ -49,7 +49,7 @@
 5. 此版本发布升级主要为了兼容代码生成器生成的继承结构的代码
 6. 发布了一个`代码生成器`VSIX插件，在VS2017可以搜索`osharp`关键词找到，也可以到[下载地址](https://marketplace.visualstudio.com/items?itemName=LiuliuSoft.osharp)进行下载安装
 
-### 0.4.0-beta05-06
+### 0.4.0-beta05-06 (2019/02/18)
 1. 给框架级的数据实体添加导航属性，简化相关数据查询操作
 2. 添加 OSharp.CodeGeneration 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等
 3. 修复单元测试时IAllAssemblyFinder未注入的问题
@@ -57,20 +57,20 @@
 5. 明确各个Pack的依赖关系及加载顺序
 6. 更新代码生成的扩展名为generated.cs，更新代码模板的手动更新警告
 
-### 0.4.0-beta04
+### 0.4.0-beta04 (2019/01/05)
 1. Swagger模块的UI添加权限Token填写按钮，以方便测试需要权限验证的API
 2. 添加SignalR实时通信框架支持。添加系统设置API入口System/SettingsController
 3. 添加Bitmap图像处理扩展操作类 OSharp.Drawing.BitmapExtensions
 4. 将IHttpContextAccessor，IPrincipal 的注入调整到AspNetCorePack模块中
 5. 添加性能监测工具MiniProfiler项目 OSharp.MiniProfiler，并集成到Swagger中
 
-### 0.4.0-beta02-03
+### 0.4.0-beta02-03 (2019/01/03)
 1. 合并EFCore的Migration迁移基类，各个数据库驱动技术的迁移基类合并为 `MigrationPackBase<TDbContext>`
 2. 各个数据库EFCore模块根据配置决定是否初始化模块
 3. 添加 OSharp.EntityFrameworkCore.PostgreSql 项目，实现 `PostgreSql` 数据库的数据存储
 4. 排除其他驱动的数据库迁移模块文件，确保迁移命令正常执行
 
-### 0.4.0-beta01
+### 0.4.0-beta01 (2019/01/02)
 1. 通过ISqlExecutor<TEntity, TKey>接口，添加基于Dapper的Sql查询支持。给IUnitOfWorkManager添加一些实用的扩展方法
 2. 将验证码处理类、IQueryable相关的缓存扩展方法改为服务类，相应类型或方法标记为过时
 3. 添加IFilterService服务，代替FilterHelper获取表达式的功能
@@ -81,7 +81,7 @@
 8. 调整EventBus模块的EventHandler处理器自动注册机制，在模块的AddService时自动查找所有处理器并注册为Transient生命周期服务，处理器不需要再实现ITransientDependency接口
 9. 使用[Dependency]标签优化Audit，Caching，EntityInfo，EventBus，Mvc，EFCore，Log4Net，权限等各个Pack模块的服务注册行为。
 
-### 0.3.0-beta12-13
+### 0.3.0-beta12-13 (2018/10/15)
 1. 将Repository中的GetFirst功能的数据源改为TrackQuery
 2. 键值存储中,将GetSetting，SaveSetting提升到接口IKeyValueStore中。 去除Identity.GetUserId的泛型约束。修复EntityRoleBase的FilterGroup命名错误
 3. 更新当OsharpResult的Message为null时，获取ResultType的描述作为消息内容
@@ -93,7 +93,7 @@
 9. 添加Redis客户端项目 OSharp.Redis
 10. 添加Swagger项目OSharp.Swagger
 
-### 0.3.0-beta11
+### 0.3.0-beta11 (2018/09/01)
 1. 后台管理的系统模块增加OsharpPack模块列表
 2. 添加MySql的迁移类MySqlDefaultDbContextMigrationPack和MySqlDesignTimeDefaultDbContextFactory
 3. 将MySql迁移模块基类由MySqlMigrationModuleBase重命名为MySqlMigrationPackBase
@@ -111,7 +111,7 @@
 15. 修复异步开启事务时报事务连接与上下文连接不匹配的问题
 16. 重构数据组件工作单元UnitOfWork，详见 [#35](https://github.com/i66soft/osharp-ns20/issues/35)
 
-### 0.3.0-beta10
+### 0.3.0-beta10 (2018/08/12)
 1. 新增AspOsharpPack基类，用于基于AspNetCore环境的Pack模块，将AspNetCore与非AspNetCore环境的OsharpPack分开，添加IOsharpPackManager 接口用于管理模块管理器
 2. 修复DistributedCacheExtensions缓存扩展方法中当功能缓存秒数设置为0时无法创建缓存的问题 更新T4模板
 3. 修复ng项目前端页面的众多小问题
@@ -123,7 +123,7 @@
 9. 将系统的键值字典KeyValueCouple更名为KeyValue
 10. 给用户设置角色时，或者锁定用户角色分配时，移除相应的在线用户信息缓存，使用户角色即时生效
 
-### 0.3.0-beta09
+### 0.3.0-beta09 (2018/08/09)
 1. 修复 UserStore 中的 FindByLoginAsync当userId为null时会引发异常的问题
 2. 支持Lazy<>的注入。将Repository的Query拆分为多个方法，解决查询不支持可选参数的问题。DbContextBase添加延迟加载代理LazyLoadingProxiesEnabled的开关
 3. OSharp.dll增加中增加Entity，InputDto，OutputDto 类型元数据生成功能，可用于自动生成代码。增加T4生成TS列表组件的代码生成功能
@@ -132,7 +132,7 @@
 6. 代码生成类型元数据支持可空属性支持，修复 T4 模板可空类型不使用可空属性类型的问题
 7. IQueryable相关扩展方法去除TEntity必须是实体类的限制，现可用于任意IQueryable<T>数据源
 
-### 0.3.0-beta08
+### 0.3.0-beta08 (2018/08/03)
 1. 修复ModuleInfo提取时排序码不起作用的问题
 2. 修复登录时用户信息重复Track的问题
 3. 优化Repository的Update相关实现，使之按需更新
@@ -149,7 +149,7 @@
     8. 完善审计功能，收集操作结果，耗时，返回消息等数据
 7. UnitOfWork添加Rollback可用于两个事务间清理上一个事务的变更数据跟踪 
 
-### 0.3.0-beta07
+### 0.3.0-beta07 (2018/07/31)
 1. 优化模块数据初始化流程，自动生成分类性质的模块信息，分类性质的模块信息是指在Area模块与Controller模块之间的模块信息，如下的`Identity`模块就是个分类模块信息：
     ```
     namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -166,7 +166,7 @@
     > > > **身份认证模块 - Identity**
     > > > > 用户信息 - User
 
-### 0.3.0-beta05-06
+### 0.3.0-beta05-06 (2018/07/31)
 1. 客户端代码移除部分多余布局文件
 2. 整合模块，简化`Startup`的代码。调整Pack的`UsePack`参数类型，由原来的`IServiceProvider`变更为`IApplicationBuilder`。将Startup中的初始化代码规划到各个Pack中，简化Startup中的代码
 3. 优化前台header样式，固定header不随滚动条滚动
@@ -181,14 +181,14 @@
 12. 修复部分模块状态启动不正确的问题
 13. 修复因IEntityConfigurationTypeFinder未初始化导致迁移时获取不到实体类的问题
 
-### 0.3.0-beta04
+### 0.3.0-beta04 (2018/07/23)
 1. `OSharp.Permissions`增加QQ登录的支持
 2. 将后台列表页数据读取改为强类型`PageRequest`
 3. 解决JWToken信息不同步的问题，简化JWToken只包含`UserId，UserName`的基本信息，用户其他信息使用`Identity/Profile`从在线用户缓存中进行获取
 4. 更新ng-alain, @delon/xxx, ng-zorro-antd组件到当前最新版本
 5. 修复 `DesignTimeDbContextFactoryBase` 泛型使用不正确的问题
 
-### 0.3.0-beta02-03
+### 0.3.0-beta02-03 (2018/07/21)
 1. 添加在线用户信息缓存功能，使用户权限变更即时生效
 2. 引入 material 前端UI，作为前台UI库，完成header布局
 3. 将GetExpression替换成GetDataFilterExpression，以启用数据权限过滤
@@ -199,7 +199,7 @@
 8. 实现用户个人数据的数据权限控制，通过在实体中的用户编号属性上标注[UserFlag]特性，配置数据权限时设置@CurrentUserId的特定值，在翻译成查询表达式时，把@CurrentUserId值替换成当前用户编号，生成只属于当前用户的数据查询表达式，来判断数据权限
 9. 更新 .net core 到 2.1.2，SDK需要更新到`2.1.302`版本方可运行
 
-### 0.3.0-beta01
+### 0.3.0-beta01 (2018/07/09)
 1. 完善框架初始化过程的日志输出
 2. 优化appsettings.json的日志配置
 3. 添加 `app_offline.htm` 文件，用于 WebDeploy 部属时解锁网站并接手请求
@@ -218,7 +218,7 @@
 16. 优化管理列表的命令列显示控制
 17. 优化管理页面 新增 和 更新 的编辑状态检查机制，修复无更新权限无法新增的问题，优化管理列表的操作列显示
 
-### 0.2.1-beta06
+### 0.2.1-beta06 (2018/06/30)
 1. 示例Hosting项目改名为 `Liuliu.Demo.Web`
 2. 调整AspNetCore类库的部分类位置
 3. 添加docs全自动生成工具
@@ -229,21 +229,21 @@
 8. 使用缓存代替Session存储验证码
 9. 添加新工程`OSharp.Log4Net`，实现日志的`log4net`按日志级别输出不同文件
 
-### 0.2.1-beta05
+### 0.2.1-beta05 (2018/06/27)
 1. 开发模式中引入`Swagger`组件，用于生成WebApi的接口文档
 2. 添加api文档生成命令行工具
 3. 补充缺失的注释信息，添加docs Api文档生成工具，用于生成类似MSDN的API文档页面
 
-### 0.2.1-beta04
+### 0.2.1-beta04 (2018/06/26)
 1. 增加字典实体（`KeyValueCouple`），用于存储系统配置等键值对类型的数据
 2. 取消用户表的种子数据，第一个注册的用户即为超级管理员用户
 3. 修复登录按钮不可用的问题
 
-### 0.2.1-beta02-03
+### 0.2.1-beta02-03 (2018/06/24)
 1. 修正一些使用OSharp作为命名空间的类型，使之符合模板要求
 2. 发布dotnetcli的模板nuget包：`OSharpNS.Template.Mvc_Angular`
 
-### 0.2.0-beta01
+### 0.2.0-beta01 (2018/06/24)
 1. 将IRepository中的`Query`，`TrackQuery`方法标记为过时，使用属性`Entities`，`TrackEntities`代替
 2. 将代码中`Query()`的引用更新为`Entities`，`TrackQuery()`的引用更新为`TrackEntities`
 3. ng-alain: 修复管理页面window按键事件触发多个标签页的事件的问题
@@ -260,7 +260,7 @@
 14. 添加Module数据的初始化功能
 15. 完成初始化种子数据、自动生成模块树、并自动给模块分配功能依赖，现在可以顺利初始化系统并能流畅使用了
 
-### 0.1.0-alpha10
+### 0.1.0-alpha10 (2018/06/03)
 1. `User`实体增加`IsLocked`属性
 2. 完善角色、用户权限设置功能
 3. 将`UnitOfAttribute`由全局Filter更改为Action的Filter。
@@ -281,7 +281,7 @@
 18. 移除admin子模块名中的 admin-前缀，路由中使用 ../admin来区别前台路由
 19. 升级 .net core 版本：2.0 -> 2.1
 
-### 0.1.0-alpha09
+### 0.1.0-alpha09 (2018/03/21)
 1. 添加 `DistributedCache` 缓存操作扩展方法
 2. 添加日志模块的文本文件日志输出实现
 3. 更新`Function`的Name的取值方式
@@ -313,7 +313,7 @@
 29. `SqlServerEntityFrameworkCoreModule`重命名为`SqlServerDefaultDbContextMigrationModule`
 30. 添加种子数据初始化模块 `SeedDataInitModule`，用于初始化系统运行的一些必需数据。对系统数据的更新与删除进行限制。修复一些CreateScope之后对scope.ServiceProvider使用不正确的问题。
 
-### 0.1.0-alpha08
+### 0.1.0-alpha08 (2017/09/15)
 1. 将测试项目更改为 netcoreapp2.0 类型
 2. 添加OSharpOptions选项类型，用于配置OSharp框架的选项
 3. 添加用户身份认证 `AspNetCore Identity` 的Store实现
