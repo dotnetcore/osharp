@@ -29,6 +29,10 @@ namespace OSharp.Entity
         /// <summary>
         /// PostgreSql数据库类型
         /// </summary>
-        PostgreSql
+        PostgreSql,
+        /// <summary>
+        /// Oracle数据库类型
+        /// </summary>
+        Oracle
     }
 }
