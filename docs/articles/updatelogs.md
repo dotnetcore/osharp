@@ -1,5 +1,16 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta05
+1. (permiss)：将角色和实体信息ReadNode提升为模块，提供给权限分配
+2. (redis)：修复Redis的Enabled配置不起作用的问题
+3. (swagger)：优化Swagger模块的处理流程，提取基类SwaggerPackCore
+4. (pack)：调整部分Pack的Enabled配置作用域
+5. (identity)：修复注册用户时注册失败报空异常 #69
+6. (util)：集合添加AddIf扩展方法，用于符合条件才添加项
+7. (util)：参数Check方法增加HasNoNulls操作，用于检查集合中不含null
+8. (efcore)：添加EFCore的Oracle数据库支持，感谢 [@staneee](https://github.com/staneee) 的 PR。#70
+9. (ng-alain)：优化高级搜索，将高级搜索的弹窗与button合并到一个html 
+
 ### 0.5.0-beta04
 1. (ng-alain)：给主菜单增加退出菜单，优化操作审计列表
 2. (ng-alain)：实现管理列表的数据普通搜索功能和高级搜索功能
