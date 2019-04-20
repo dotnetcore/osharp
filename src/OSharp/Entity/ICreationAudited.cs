@@ -7,7 +7,7 @@
 //  <last-date>2019-04-12 10:25</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity.Infrastructure
+namespace OSharp.Entity
 {
     /// <summary>
     /// 定义创建审计信息

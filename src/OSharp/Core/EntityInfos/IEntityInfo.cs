@@ -10,7 +10,6 @@
 using System;
 
 using OSharp.Entity;
-using OSharp.Entity.Infrastructure;
 
 
 namespace OSharp.Core.EntityInfos

@@ -14,7 +14,7 @@ using OSharp.Finders;
 using OSharp.Reflection;
 
 
-namespace OSharp.Entity.Infrastructure
+namespace OSharp.Entity
 {
     /// <summary>
     /// <see cref="IInputDto{T}"/>类型查找器

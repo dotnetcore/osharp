@@ -8,11 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Net.Mime;
 using System.Security.Principal;
 
 using OSharp.Data;
-using OSharp.Entity.Infrastructure;
 using OSharp.Reflection;
 using OSharp.Secutiry.Claims;
 

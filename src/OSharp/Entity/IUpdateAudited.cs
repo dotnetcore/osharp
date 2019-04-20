@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.Entity.Infrastructure
+namespace OSharp.Entity
 {
     /// <summary>
     /// 定义更新审计的信息
