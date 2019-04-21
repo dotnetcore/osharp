@@ -11,6 +11,7 @@
   "menu.account.logout": "Logout",
   "menu.nav": "Navigation",
   "menu.nav.home": "Home",
+  "menu.nav.docs": "Documents",
   "menu.nav.permission": "Permission",
   "menu.nav.permission.identity": "Authentication",
   "menu.nav.permission.identity.user": "Users",

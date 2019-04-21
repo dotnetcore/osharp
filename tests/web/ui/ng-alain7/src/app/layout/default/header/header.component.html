@@ -20,9 +20,15 @@
     </li>
     <!-- Lock Page -->
     <li class="hidden-mobile">
-      <div class="alain-default__nav-item" [routerLink]="['/lock']">
+      <div class="alain-default__nav-item" [routerLink]="['/passport/lock']">
         <i nz-icon type="lock"></i>
       </div>
+    </li>
+    <!-- Documents -->
+    <li>
+      <a class="alain-default__nav-item" href="https://docs.osharp.org" target="_blank" [title]="'menu.nav.docs'|translate">
+        <i nz-icon type="file-word"></i>
+      </a>
     </li>
     <!-- Search Button -->
     <li class="hidden-pc" (click)="searchToggleChange()">

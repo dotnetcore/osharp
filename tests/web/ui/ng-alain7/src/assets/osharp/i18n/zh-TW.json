@@ -11,6 +11,7 @@
   "menu.account.logout": "退出登錄",
   "menu.nav": "導航菜單",
   "menu.nav.home": "主頁",
+  "menu.nav.docs": "文檔中心",
   "menu.nav.permission": "權限模塊",
   "menu.nav.permission.identity": "身份認證",
   "menu.nav.permission.identity.user": "用戶管理",
