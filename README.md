@@ -12,6 +12,9 @@
  - [项目进度](#04)
  - [更新记录](https://github.com/i66soft/osharp-ns20/blob/master/docs/articles/updatelogs.md)
  - [代码生成器VSIX插件](https://marketplace.visualstudio.com/items?itemName=LiuliuSoft.osharp)
+ - [OSharp文档中心](https://docs.osharp.org)
+
+---
 
 ## <a id="01"/>OSharpNS简介
 

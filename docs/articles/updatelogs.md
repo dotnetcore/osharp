@@ -1,5 +1,12 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta06 (2019/04/25)
+1. (efcore)：清除命名空间 OSharp.Entity.Infrastructure
+2. (ng-alain)：添加文档中心导航图标，修复锁屏功能链接错误的问题
+3. (pack)：修复派生Pack类型时无法自动排除原Pack，会导致同一模块出现两个Pack的问题，自动排除基类中Pack类 [#72](https://github.com/i66soft/osharp/issues/72)
+4. (doc)：给更新日志文档添加各版本的日期，记录历史性的时刻
+5. (doc)：[《OSharp文档中心》](https://docs.osharp.org)上线，文档逐步完善当中，欢迎参与
+
 ### 0.5.0-beta05 (2019/04/19)
 1. (permiss)：将角色和实体信息ReadNode提升为模块，提供给权限分配
 2. (redis)：修复Redis的Enabled配置不起作用的问题
@@ -8,7 +15,7 @@
 5. (identity)：修复注册用户时注册失败报空异常 #69
 6. (util)：集合添加AddIf扩展方法，用于符合条件才添加项
 7. (util)：参数Check方法增加HasNoNulls操作，用于检查集合中不含null
-8. (efcore)：添加EFCore的Oracle数据库支持，感谢 [@staneee](https://github.com/staneee) 的 PR。#70
+8. (efcore)：添加EFCore的Oracle数据库支持，感谢 [@staneee](https://github.com/staneee) 的 PR。[#70](https://github.com/i66soft/osharp/pull/70)
 9. (ng-alain)：优化高级搜索，将高级搜索的弹窗与button合并到一个html 
 
 ### 0.5.0-beta04 (2019/04/13)
