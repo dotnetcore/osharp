@@ -47,7 +47,7 @@
     "core-js": "^2.5.4",
     "editorconfig-tools": "^0.1.1",
     "husky": "^1.3.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "linqts": "^1.12.2",
     "lint-staged": "^8.1.0",
     "moment": "^2.24.0",
