@@ -21,8 +21,6 @@ namespace Liuliu.Demo.Web.Startups
     [Description("SignalR模块")]
     public class SignalRPack : SignalRPackBase
     {
-        #region Overrides of SignalRPackBase
-
         /// <summary>
         /// 重写以获取Hub路由创建委托
         /// </summary>
@@ -36,7 +34,5 @@ namespace Liuliu.Demo.Web.Startups
                 // 例如：builder.MapHub<MyHub>();
             });
         }
-
-        #endregion
     }
 }

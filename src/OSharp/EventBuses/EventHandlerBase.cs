@@ -47,7 +47,7 @@ namespace OSharp.EventBuses
         /// <param name="eventData">事件源数据</param>
         /// <param name="cancelToken">异步取消标识</param>
         /// <returns></returns>
-        public virtual Task HandleAsync(IEventData eventData, CancellationToken cancelToken = default)
+        public virtual Task HandleAsync(IEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
             if (!CanHandle(eventData))
             {
@@ -68,7 +68,7 @@ namespace OSharp.EventBuses
         /// <param name="eventData">事件源数据</param>
         /// <param name="cancelToken">异步取消标识</param>
         /// <returns>是否成功</returns>
-        public virtual Task HandleAsync(TEventData eventData, CancellationToken cancelToken = default)
+        public virtual Task HandleAsync(TEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
             return Task.Run(() => Handle(eventData), cancelToken);
         }
