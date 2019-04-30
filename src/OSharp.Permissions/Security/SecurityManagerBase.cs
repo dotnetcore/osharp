@@ -156,7 +156,8 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateFunctions(params TFunctionInputDto[] dtos)
         {
-            Check.NotNull(dtos, nameof(dtos));
+            Check.Validate<TFunctionInputDto, Guid>(dtos, nameof(dtos));
+            
             OperationResult result = await _functionRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
@@ -221,7 +222,7 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateEntityInfos(params TEntityInfoInputDto[] dtos)
         {
-            Check.NotNull(dtos, nameof(dtos));
+            Check.Validate<TEntityInfoInputDto, Guid>(dtos, nameof(dtos));
             return _entityInfoRepository.UpdateAsync(dtos);
         }
 
@@ -753,6 +754,8 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
+            Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
+
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await _entityRoleRepository.InsertAsync(dtos,
                 async dto =>
@@ -801,6 +804,8 @@ namespace OSharp.Security
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
+            Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
+
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await _entityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
