@@ -332,9 +332,7 @@ export class OsharpService {
     }
     url = this.urlEncode(url);
     console.log(url);
-    return this.http
-      .get<boolean>('api/security/CheckUrlAuth?url=' + url)
-      .toPromise();
+    return this.http.get('api/security/CheckUrlAuth?url=' + url).map(res => res as boolean).toPromise();
   }
 
   /**
@@ -351,7 +349,8 @@ export class OsharpService {
     }
 
     let url = 'api/security/getauthinfo';
-    return this.http.get<string[]>(url).map(auth => {
+    return this.http.get(url).map(res => {
+      let auth = res as string[];
       this.aclSrv.setAbility(auth);
       return auth;
     });
