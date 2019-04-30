@@ -5,7 +5,7 @@ using Shouldly;
 using Xunit;
 
 
-namespace OSharp.Entity.Infrastructure.Tests
+namespace OSharp.Entity.Tests
 {
     public class ExpirableBaseTests
     {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp.csproj", "{D1B8F25F-68ED-470B-B996-436FE321F74A}"
 EndProject
@@ -74,6 +74,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src\OSharp.Exceptionless\OSharp.Exceptionless.csproj", "{F9787CE2-7180-4179-950C-750CC905ACF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{A6092039-C53E-4732-838E-9FD312711211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{6D4DCF79-E243-4BCE-A5B7-D145128039F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -177,6 +179,10 @@ Global
 		{A6092039-C53E-4732-838E-9FD312711211}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6092039-C53E-4732-838E-9FD312711211}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6092039-C53E-4732-838E-9FD312711211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4DCF79-E243-4BCE-A5B7-D145128039F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4DCF79-E243-4BCE-A5B7-D145128039F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4DCF79-E243-4BCE-A5B7-D145128039F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4DCF79-E243-4BCE-A5B7-D145128039F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +213,7 @@ Global
 		{3681B94F-96EE-4AEE-9E9C-357C551C1B3C} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 		{F9787CE2-7180-4179-950C-750CC905ACF0} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
 		{A6092039-C53E-4732-838E-9FD312711211} = {B8A3E282-3D4E-44DB-A7AC-3B7A076367FE}
+		{6D4DCF79-E243-4BCE-A5B7-D145128039F9} = {EEF78D51-F42A-4C99-B6F1-5AB3CFDB6F26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00817A77-E446-44AB-B6ED-7DC2217BF385}

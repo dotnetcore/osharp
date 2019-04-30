@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity;
 using OSharp.Identity;
 using OSharp.Identity.Events;
 
@@ -54,6 +55,8 @@ namespace Liuliu.Demo.Identity
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
         {
+            Check.Validate<UserRoleInputDto,Guid>(dtos, nameof(dtos));
+
             List<string> userNames = new List<string>();
             OperationResult result = await _userRoleRepository.UpdateAsync(dtos,
                 (dto, entity) =>

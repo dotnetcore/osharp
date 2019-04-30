@@ -7,6 +7,9 @@
 //  <last-date>2018-08-24 17:21</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
+
 namespace OSharp.Core.Systems
 {
     /// <summary>
@@ -17,6 +20,7 @@ namespace OSharp.Core.Systems
         /// <summary>
         /// 获取或设置 设置类型全名
         /// </summary>
+        [Required]
         public string SettingTypeName { get; set; }
 
         /// <summary>
