@@ -1,5 +1,10 @@
 # OSharp .NetStandard 更新记录
 
+### 0.5.0-beta07 (2019/04/30)
+1. (core)：给Service层的InputDto增加参数验证功能，验证Dto各属性的合法性 [#75](https://github.com/i66soft/osharp/issues/75)
+2. (identity)：修复未设置登录密码也能解除唯一第三方登录方式的问题 fixed [#74](https://github.com/i66soft/osharp/issues/74)
+3. (mvc)：MVC增加AddHttpsRedirection指定Https的端口号为443，解决 app.UseHttpsRedirection在IIS反射代理时跳转Https不生效的问题
+
 ### 0.5.0-beta06 (2019/04/25)
 1. (efcore)：清除命名空间 OSharp.Entity.Infrastructure
 2. (ng-alain)：添加文档中心导航图标，修复锁屏功能链接错误的问题
@@ -12,7 +17,7 @@
 2. (redis)：修复Redis的Enabled配置不起作用的问题
 3. (swagger)：优化Swagger模块的处理流程，提取基类SwaggerPackCore
 4. (pack)：调整部分Pack的Enabled配置作用域
-5. (identity)：修复注册用户时注册失败报空异常 #69
+5. (identity)：修复注册用户时注册失败报空异常 [#69](https://github.com/i66soft/osharp/issues/69)
 6. (util)：集合添加AddIf扩展方法，用于符合条件才添加项
 7. (util)：参数Check方法增加HasNoNulls操作，用于检查集合中不含null
 8. (efcore)：添加EFCore的Oracle数据库支持，感谢 [@staneee](https://github.com/staneee) 的 PR。[#70](https://github.com/i66soft/osharp/pull/70)
