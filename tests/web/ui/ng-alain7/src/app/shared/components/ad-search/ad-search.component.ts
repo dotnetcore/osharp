@@ -26,7 +26,7 @@ export class AdSearchComponent implements OnInit {
 
   ngOnInit() {
     this.columns = new List(this.columns)
-      .Where(m => m.index && m.filterable && m.type !== 'date')
+      .Where(m => m.index && m.filterable && m.type !== 'date') // TODO: date 的UI未调好，暂不过滤
       .ToArray();
   }
 
