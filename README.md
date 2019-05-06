@@ -83,7 +83,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 
 ### 4. 基于AspNetCore的Identity的身份认证设计系统
 
-* 使用AspNetCore原生的用户身份认证框架，身份认证相关操作统一使用`UserManager<TUser>`，`RoleMamanger<TRole>`两个入口，保持了原生Identity的体系强大性与功能完整性。
+* 使用AspNetCore原生的用户身份认证框架，身份认证相关操作统一使用`UserManager<TUser>`，`RoleManager<TRole>`两个入口，保持了原生Identity的体系强大性与功能完整性。
 
 * 重新设计了用户存储`UserStore`和角色存储`RoleStore`，使用框架内设计的`IRepository<TEntity,TKey>`数据仓储接口来实现对数据的仓储操作，使Identity**身份认证系统与框架完美结合**，避免了使用官方的`Microsoft.AspNetCore.Identity.EntityFrameworkCore`造成多个上下文或者被强制使用Identity上下文作为系统数据上下文来实现业务造成的尴尬。
 
