@@ -187,12 +187,12 @@ namespace OSharp.Core.EntityInfos
                 if (addCount > 0)
                 {
                     msg += $"，添加实体信息 {addCount} 个";
-                    _logger.LogInformation($"删除{removeItems.Length}个数据实体：{removeItems.Select(m => m.TypeName).ExpandAndToString()}");
+                    _logger.LogInformation($"新增{addItems.Length}个数据实体：{addItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
                 if (removeCount > 0)
                 {
                     msg += $"，删除实体信息 {removeCount} 个";
-                    _logger.LogInformation($"新增{addItems.Length}个数据实体：{addItems.Select(m => m.TypeName).ExpandAndToString()}");
+                    _logger.LogInformation($"删除{removeItems.Length}个数据实体：{removeItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
                 if (updateCount > 0)
                 {
