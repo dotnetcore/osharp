@@ -259,8 +259,12 @@ namespace OSharp.Identity
             {
                 user.PhoneNumberConfirmed = false;
             }
-
             await _userRepository.UpdateAsync(user);
+
+            //移除用户在线缓存
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = new []{user.UserName}};
+            _eventBus.Publish(eventData);
+
             return IdentityResult.Success;
         }
 
@@ -581,10 +585,6 @@ namespace OSharp.Identity
             Check.NotNull(user, nameof(user));
 
             user.SecurityStamp = stamp;
-
-            //移除用户在线缓存
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
-            _eventBus.Publish(eventData);
 
             return Task.CompletedTask;
         }

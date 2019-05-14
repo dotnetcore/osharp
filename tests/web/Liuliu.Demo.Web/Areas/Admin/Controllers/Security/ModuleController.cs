@@ -176,7 +176,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("新增子节点")]
         public async Task<AjaxResult> Create(ModuleInputDto dto)
         {
@@ -194,7 +194,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(ModuleInputDto dto)
         {
@@ -216,7 +216,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete([FromForm] int id)
         {
@@ -240,7 +240,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [DependOnFunction("ReadTreeNode", Controller = "Function")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("设置功能")]
         public async Task<AjaxResult> SetFunctions([FromBody] ModuleSetFunctionDto dto)
         {

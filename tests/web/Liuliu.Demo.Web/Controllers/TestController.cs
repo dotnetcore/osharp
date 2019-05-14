@@ -51,7 +51,7 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [MethodFilter]
         [Description("测试01")]
         public async Task<string> Test01()

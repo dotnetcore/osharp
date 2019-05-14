@@ -80,7 +80,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(UserRoleInputDto[] dtos)
         {
@@ -96,7 +96,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(Guid[] ids)
         {

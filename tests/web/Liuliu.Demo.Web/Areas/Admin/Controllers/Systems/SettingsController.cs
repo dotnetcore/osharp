@@ -72,7 +72,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("保存设置")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> Update(SettingInputDto dto)
         {
             Check.NotNull(dto, nameof(dto));
