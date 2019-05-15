@@ -119,12 +119,12 @@ namespace OSharp.AspNetCore.Mvc
             DependOnFunctionAttribute[] dependOnAttrs = method.GetAttributes<DependOnFunctionAttribute>();
             foreach (DependOnFunctionAttribute dependOnAttr in dependOnAttrs)
             {
-                string darea = dependOnAttr.Area == null ? area : dependOnAttr.Area == string.Empty ? null : dependOnAttr.Area;
-                string dcontroller = dependOnAttr.Controller ?? controller;
-                IFunction function = FunctionHandler.GetFunction(darea, dcontroller, dependOnAttr.Action);
+                string dependArea = dependOnAttr.Area == null ? area : dependOnAttr.Area == string.Empty ? null : dependOnAttr.Area;
+                string dependController = dependOnAttr.Controller ?? controller;
+                IFunction function = FunctionHandler.GetFunction(dependArea, dependController, dependOnAttr.Action);
                 if (function == null)
                 {
-                    throw new OsharpException($"功能“{area}/{controller}/{method.Name}”的依赖功能“{darea}/{dcontroller}/{dependOnAttr.Action}”无法找到");
+                    throw new OsharpException($"功能“{area}/{controller}/{method.Name}”的依赖功能“{dependArea}/{dependController}/{dependOnAttr.Action}”无法找到");
                 }
                 dependOnFunctions.Add(function);
             }

@@ -22,6 +22,10 @@ namespace OSharp.Threading.Asyncs
         private readonly Queue<TaskCompletionSource<bool>> _waits = new Queue<TaskCompletionSource<bool>>();
         private bool _signaled;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Task WaitAsync()
         {
             lock (_waits)
@@ -31,15 +35,16 @@ namespace OSharp.Threading.Asyncs
                     _signaled = false;
                     return Completed;
                 }
-                else
-                {
-                    var tcs = new TaskCompletionSource<bool>();
-                    _waits.Enqueue(tcs);
-                    return tcs.Task;
-                }
+
+                TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+                _waits.Enqueue(tcs);
+                return tcs.Task;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Set()
         {
             TaskCompletionSource<bool> toRelease = null;

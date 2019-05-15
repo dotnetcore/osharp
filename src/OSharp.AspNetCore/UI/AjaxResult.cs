@@ -59,7 +59,7 @@ namespace OSharp.AspNetCore.UI
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool Successed()
+        public bool Succeeded()
         {
             return Type == AjaxResultType.Success;
         }

@@ -15,7 +15,7 @@ using Shouldly;
 using Xunit;
 
 
-namespace OSharp.Tests.Secutiry
+namespace OSharp.Tests.Security
 {
     public class RsaHelperTests
     {

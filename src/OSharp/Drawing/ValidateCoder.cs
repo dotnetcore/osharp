@@ -135,13 +135,13 @@ namespace OSharp.Drawing
             const int flag = 255 / 2;
             bool isBgLight = (BgColor.R + BgColor.G + BgColor.B) / 3 > flag;
             Bitmap image = new Bitmap(width, height);
-            Graphics grap = Graphics.FromImage(image);
-            grap.Clear(BgColor);
+            Graphics graph = Graphics.FromImage(image);
+            graph.Clear(BgColor);
             Brush brush = new SolidBrush(Color.FromArgb(255 - BgColor.R, 255 - BgColor.G, 255 - BgColor.B));
             int x, y = 3;
             if (HasBorder)
             {
-                grap.DrawRectangle(new Pen(Color.Silver), 0, 0, image.Width - 1, image.Height - 1);
+                graph.DrawRectangle(new Pen(Color.Silver), 0, 0, image.Width - 1, image.Height - 1);
             }
 
             Random rnd = Random;
@@ -159,7 +159,7 @@ namespace OSharp.Drawing
                         ? Color.FromArgb(rnd.Next(130, 200), rnd.Next(130, 200), rnd.Next(130, 200))
                         : Color.FromArgb(rnd.Next(70, 150), rnd.Next(70, 150), rnd.Next(70, 150));
                 Pen pen = new Pen(lineColor, 2);
-                grap.DrawLine(pen, x, y, m, n);
+                graph.DrawLine(pen, x, y, m, n);
             }
 
             //绘制干扰点
@@ -219,13 +219,13 @@ namespace OSharp.Drawing
                 Font font = new Font(fontName, FontSize, FontStyle.Bold);
                 if (RandomItalic)
                 {
-                    grap.TranslateTransform(0, 0);
-                    Matrix transform = grap.Transform;
+                    graph.TranslateTransform(0, 0);
+                    Matrix transform = graph.Transform;
                     transform.Shear(Convert.ToSingle(rnd.Next(2, 9) / 10d - 0.5), 0.001f);
-                    grap.Transform = transform;
+                    graph.Transform = transform;
                 }
-                grap.DrawString(code.Substring(i, 1), font, brush, point);
-                grap.ResetTransform();
+                graph.DrawString(code.Substring(i, 1), font, brush, point);
+                graph.ResetTransform();
             }
 
             return image;

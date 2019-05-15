@@ -16,7 +16,7 @@ namespace OSharp.Threading.Asyncs
 {
     public class AsyncCountdownEvent
     {
-        private readonly AsyncManualResetEvent _amre = new AsyncManualResetEvent();
+        private readonly AsyncManualResetEvent _resetEvent = new AsyncManualResetEvent();
         private int _count;
 
         public AsyncCountdownEvent(int initialCount)
@@ -30,7 +30,7 @@ namespace OSharp.Threading.Asyncs
 
         public Task WaitAsync()
         {
-            return _amre.WaitAsync();
+            return _resetEvent.WaitAsync();
         }
 
         public void Signal()
@@ -43,7 +43,7 @@ namespace OSharp.Threading.Asyncs
             int newCount = Interlocked.Decrement(ref _count);
             if (newCount == 0)
             {
-                _amre.Set();
+                _resetEvent.Set();
             }
             else if (newCount < 0)
             {

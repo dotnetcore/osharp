@@ -19,7 +19,7 @@ namespace OSharp.Extensions
     /// <summary>
     /// 用于参数检查的扩展方法
     /// </summary>
-    public static class ParamterCheckExtensions
+    public static class ParameterCheckExtensions
     {
         /// <summary>
         /// 验证指定值的断言<paramref name="assertion"/>是否为真，如果不为真，抛出指定消息<paramref name="message"/>的指定类型<typeparamref name="TException"/>异常

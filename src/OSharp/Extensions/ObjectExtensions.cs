@@ -152,7 +152,7 @@ namespace OSharp.Extensions
                     expando.Add(property.Name, val);
                 }
             }
-            return expando as ExpandoObject;
+            return (ExpandoObject)expando;
         }
 
         /// <summary>

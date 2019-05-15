@@ -28,7 +28,7 @@ namespace OSharp.AspNetCore.Mvc.Conventions
         /// <param name="controller">The <see cref="T:Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel" />.</param>
         public void Apply(ControllerModel controller)
         {
-            var hasRouteAttribute = controller.Selectors.Any(seletor => seletor.AttributeRouteModel != null);
+            var hasRouteAttribute = controller.Selectors.Any(selector => selector.AttributeRouteModel != null);
             if (hasRouteAttribute)
             {
                 return;

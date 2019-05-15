@@ -30,7 +30,7 @@ namespace OSharp.Tests.Extensions
         }
 
         [Fact()]
-        public void TriemEndTest()
+        public void TrimEndTest()
         {
             StringBuilder sb;
             sb = new StringBuilder("asdfgef");

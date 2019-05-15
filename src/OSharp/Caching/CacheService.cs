@@ -49,21 +49,21 @@ namespace OSharp.Caching
         /// <typeparam name="TSource">数据源的项数据类型</typeparam>
         /// <typeparam name="TResult">结果集的项数据类型</typeparam>
         /// <param name="source">数据源</param>
-        /// <param name="pridicate">数据筛选表达式</param>
+        /// <param name="predicate">数据筛选表达式</param>
         /// <param name="pageCondition">分页条件</param>
         /// <param name="selector">数据投影表达式</param>
         /// <param name="cacheSeconds">缓存时间</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
         public virtual PageResult<TResult> ToPageCache<TSource, TResult>(IQueryable<TSource> source,
-            Expression<Func<TSource, bool>> pridicate,
+            Expression<Func<TSource, bool>> predicate,
             PageCondition pageCondition,
             Expression<Func<TSource, TResult>> selector,
             int cacheSeconds = 60,
             params object[] keyParams)
         {
-            string key = GetKey(source, pridicate, pageCondition, selector, keyParams);
-            return _cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), cacheSeconds);
+            string key = GetKey(source, predicate, pageCondition, selector, keyParams);
+            return _cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), cacheSeconds);
         }
 
         /// <summary>
@@ -72,21 +72,21 @@ namespace OSharp.Caching
         /// <typeparam name="TSource">数据源的项数据类型</typeparam>
         /// <typeparam name="TResult">结果集的项数据类型</typeparam>
         /// <param name="source">数据源</param>
-        /// <param name="pridicate">数据筛选表达式</param>
+        /// <param name="predicate">数据筛选表达式</param>
         /// <param name="pageCondition">分页条件</param>
         /// <param name="selector">数据投影表达式</param>
         /// <param name="function">当前功能信息</param>
         /// <param name="keyParams">缓存键参数</param>
         /// <returns></returns>
         public virtual PageResult<TResult> ToPageCache<TSource, TResult>(IQueryable<TSource> source,
-            Expression<Func<TSource, bool>> pridicate,
+            Expression<Func<TSource, bool>> predicate,
             PageCondition pageCondition,
             Expression<Func<TSource, TResult>> selector,
             IFunction function,
             params object[] keyParams)
         {
-            string key = GetKey(source, pridicate, pageCondition, selector, keyParams);
-            return _cache.Get(key, () => source.ToPage(pridicate, pageCondition, selector), function);
+            string key = GetKey(source, predicate, pageCondition, selector, keyParams);
+            return _cache.Get(key, () => source.ToPage(predicate, pageCondition, selector), function);
         }
 
         /// <summary>

@@ -288,7 +288,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// </summary>
         /// <returns>用户列表信息</returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("读取OAuth2")]
         public PageData<UserLoginOutputDto> ReadOAuth2([FromServices]IFilterService filterService, PageRequest request)
@@ -372,7 +372,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// 解除第三方登录
         /// </summary>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("解除第三方登录")]
         [UnitOfWork]
@@ -423,7 +423,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("编辑用户资料")]
         [UnitOfWork]
@@ -518,7 +518,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <param name="dto">修改密码信息</param>
         /// <returns>JSON操作结果</returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [UnitOfWork]
         [Description("修改密码")]

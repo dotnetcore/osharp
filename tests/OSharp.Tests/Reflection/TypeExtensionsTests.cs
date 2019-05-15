@@ -57,7 +57,7 @@ namespace OSharp.Reflection.Tests
         }
 
         [Fact()]
-        public void GetNonNummableType()
+        public void GetNonNullableType()
         {
             Assert.Equal(typeof(int), typeof(int?).GetNonNullableType());
             Assert.Equal(typeof(int), typeof(Nullable<int>).GetNonNullableType());

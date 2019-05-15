@@ -99,8 +99,8 @@ namespace OSharp.Reflection
             }
 
             il.Emit(OpCodes.Ret);
-            InvokeHandler invoder = (InvokeHandler)dynamicMethod.CreateDelegate(typeof(InvokeHandler));
-            return invoder;
+            InvokeHandler invoker = (InvokeHandler)dynamicMethod.CreateDelegate(typeof(InvokeHandler));
+            return invoker;
         }
 
         private static void EmitCastToReference(ILGenerator il, Type type)

@@ -55,7 +55,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                 {
                     type = ajax.Type;
                     message = ajax.Content;
-                    if (ajax.Successed())
+                    if (ajax.Succeeded())
                     {
                         _unitOfWorkManager?.Commit();
                     }
@@ -67,7 +67,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                 {
                     type = ajax.Type;
                     message = ajax.Content;
-                    if (ajax.Successed())
+                    if (ajax.Succeeded())
                     {
                         _unitOfWorkManager?.Commit();
                     }

@@ -19,13 +19,13 @@ namespace OSharp.Dependency.Tests
             services = pack.AddServices(services);
 
             services.ShouldContain(m => m.ServiceType == typeof(ITestContract));
-            services.ShouldNotContain(m => m.ServiceType == typeof(IIgoreContract));
+            services.ShouldNotContain(m => m.ServiceType == typeof(IIgnoreContract));
         }
 
         [IgnoreDependency]
-        private interface IIgoreContract { }
+        private interface IIgnoreContract { }
 
-        private interface ITestContract : IIgoreContract { }
+        private interface ITestContract : IIgnoreContract { }
 
         private class TestService : ITestContract, ITransientDependency { }
     }

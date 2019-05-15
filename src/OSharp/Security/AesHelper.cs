@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
+using OSharp.Exceptions;
 using OSharp.Extensions;
 
 
@@ -109,6 +110,10 @@ namespace OSharp.Security
             decodeBytes.CheckNotNull("decodeBytes");
             using (Aes aes = Aes.Create())
             {
+                if (aes == null)
+                {
+                    throw new OsharpException("AES加密时获取加密实例失败");
+                }
                 aes.Key = CheckKey(key);
                 aes.Padding = PaddingMode.PKCS7;
                 aes.Mode = CipherMode.ECB;
@@ -136,6 +141,10 @@ namespace OSharp.Security
             encodeBytes.CheckNotNull("source");
             using (Aes aes = Aes.Create())
             {
+                if (aes == null)
+                {
+                    throw new OsharpException("AES加密时获取加密实例失败");
+                }
                 aes.Key = CheckKey(key);
                 aes.Padding = PaddingMode.PKCS7;
                 aes.Mode = CipherMode.ECB;
