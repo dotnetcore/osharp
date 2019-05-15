@@ -12,7 +12,7 @@ using System.Security.Principal;
 using OSharp.Core.Functions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 定义功能权限验证

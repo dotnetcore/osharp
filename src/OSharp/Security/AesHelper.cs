@@ -15,7 +15,7 @@ using System.Security.Cryptography;
 using OSharp.Extensions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// AEA加密解密辅助类

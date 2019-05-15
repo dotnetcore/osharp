@@ -17,7 +17,7 @@ using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Security

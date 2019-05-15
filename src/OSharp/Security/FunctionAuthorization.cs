@@ -10,7 +10,7 @@
 using OSharp.Core.Functions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 功能权限验证类

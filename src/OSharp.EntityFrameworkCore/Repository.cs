@@ -25,8 +25,8 @@ using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
-using OSharp.Secutiry;
-using OSharp.Secutiry.Claims;
+using OSharp.Security;
+using OSharp.Security.Claims;
 using OSharp.Threading;
 
 using Z.EntityFramework.Plus;

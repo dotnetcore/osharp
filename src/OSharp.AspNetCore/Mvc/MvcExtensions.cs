@@ -20,7 +20,7 @@ using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.AspNetCore.Mvc

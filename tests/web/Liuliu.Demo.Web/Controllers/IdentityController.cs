@@ -31,7 +31,7 @@ using OSharp.Identity.JwtBearer;
 using OSharp.Identity.OAuth2;
 using OSharp.Mapping;
 using OSharp.Net;
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 using System;
 using System.ComponentModel;
 using System.Linq;

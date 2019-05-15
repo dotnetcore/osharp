@@ -12,7 +12,7 @@ using System.Security.Principal;
 
 using OSharp.Data;
 using OSharp.Reflection;
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 
 
 namespace OSharp.Entity

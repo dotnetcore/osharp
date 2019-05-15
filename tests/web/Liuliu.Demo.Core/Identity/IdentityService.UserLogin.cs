@@ -16,7 +16,7 @@ using Liuliu.Demo.Identity.Entities;
 using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Identity;
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 
 
 namespace Liuliu.Demo.Identity

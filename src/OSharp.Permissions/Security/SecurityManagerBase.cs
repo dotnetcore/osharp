@@ -26,7 +26,7 @@ using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security.Events;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Security

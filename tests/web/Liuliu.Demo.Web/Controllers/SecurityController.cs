@@ -23,7 +23,7 @@ using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace Liuliu.Demo.Web.Controllers

@@ -28,7 +28,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
-using OSharp.Secutiry;
+using OSharp.Security;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

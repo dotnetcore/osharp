@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Extensions;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 using Shouldly;
 

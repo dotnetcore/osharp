@@ -1,5 +1,5 @@
 ﻿using Xunit;
-namespace OSharp.Secutiry.Tests
+namespace OSharp.Security.Tests
 {
     
     public class HashHelperTests

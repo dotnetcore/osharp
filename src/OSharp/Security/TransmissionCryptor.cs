@@ -13,7 +13,7 @@ using OSharp.Collections;
 using OSharp.Extensions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 结合RSA，AES的通信传输加密解密操作类，使用AES对数据进行对称加密，使用RSA加密AES的密钥，并对数据进行签名校验，保证数据传输安全与完整性

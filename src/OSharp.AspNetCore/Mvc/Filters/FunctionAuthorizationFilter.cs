@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AspNetCore.UI;
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.AspNetCore.Mvc.Filters

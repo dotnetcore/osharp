@@ -15,7 +15,7 @@ using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace Liuliu.Demo.Security.Dtos

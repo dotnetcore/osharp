@@ -19,7 +19,7 @@ using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Identity;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Security

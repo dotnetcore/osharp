@@ -23,8 +23,8 @@ using OSharp.Extensions;
 using OSharp.Linq;
 using OSharp.Properties;
 using OSharp.Reflection;
-using OSharp.Secutiry;
-using OSharp.Secutiry.Claims;
+using OSharp.Security;
+using OSharp.Security.Claims;
 
 
 namespace OSharp.Filter
