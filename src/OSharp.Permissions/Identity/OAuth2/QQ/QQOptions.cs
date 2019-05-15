@@ -41,6 +41,9 @@ namespace OSharp.Identity.OAuth2.QQ
             ClaimActions.MapJsonKey("urn:qq:figure", "figureurl_qq_1");
         }
 
+        /// <summary>
+        /// OpenId请求的终结点
+        /// </summary>
         public string OpenIdEndpoint { get; }
 
         /// <summary>

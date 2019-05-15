@@ -63,8 +63,8 @@ namespace OSharp.Security
                 {
                     m.FilterGroupJson,
                     m.Operation,
-                    RoleName = roleRepository.Query(null, false).First(n => n.Id.Equals(m.RoleId)).Name,
-                    EntityTypeFullName = entityInfoRepository.Query(null, false).First(n => n.Id == m.EntityId).TypeName
+                    RoleName = roleRepository.Query(null, false).Where(n => n.Id.Equals(m.RoleId)).Select(n => n.Name).FirstOrDefault(),
+                    EntityTypeFullName = entityInfoRepository.Query(null, false).Where(n => n.Id == m.EntityId).Select(n => n.TypeName).FirstOrDefault()
                 }).ToArray();
             });
 

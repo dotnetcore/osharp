@@ -159,7 +159,7 @@ namespace OSharp.Security
             Check.Validate<TFunctionInputDto, Guid>(dtos, nameof(dtos));
             
             OperationResult result = await _functionRepository.UpdateAsync(dtos,
-                async (dto, entity) =>
+                (dto, entity) =>
                 {
                     if (dto.IsLocked && entity.Area == "Admin" && entity.Controller == "Function"
                         && (entity.Action == "Update" || entity.Action == "Read"))
@@ -178,6 +178,7 @@ namespace OSharp.Security
                     {
                         entity.IsAccessTypeChanged = true;
                     }
+                    return Task.FromResult(0);
                 });
             if (result.Succeeded)
             {
