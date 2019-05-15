@@ -42,7 +42,7 @@ export class UserComponent extends STComponentBase implements OnInit {
       { title: '手机号', index: 'PhoneNumber', sort: true, editable: true, ftype: 'string', filterable: true },
       { title: '手机确认', index: 'PhoneNumberConfirmed', sort: true, type: 'yn', editable: true, filterable: true },
       { title: '角色', index: 'Roles', format: d => this.osharp.expandAndToString(d.Roles) },
-      { title: '是否锁定', index: 'Locked', sort: true, type: 'yn', editable: true, filterable: true },
+      { title: '是否锁定', index: 'IsLocked', sort: true, type: 'yn', editable: true, filterable: true },
       { title: '登录锁', index: 'LockoutEnabled', sort: true, type: 'yn', editable: true, filterable: true },
       { title: '登录错误', index: 'AccessFailedCount', sort: true, editable: true, ftype: 'number', filterable: true },
       { title: '锁时间', index: 'LockoutEnd', sort: true, editable: true, type: 'date', filterable: true },
