@@ -21,7 +21,7 @@ namespace OSharp.AspNetCore.UI
     public static class AjaxResultExtensions
     {
         /// <summary>
-        /// 将业务操作结果转ajax操作结果
+        /// 将业务操作结果转ajax操作结果，并处理强类型的 <see cref="OperationResult.Data"/>
         /// </summary>
         public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result, Func<T, object> dataFunc = null)
         {
@@ -32,13 +32,31 @@ namespace OSharp.AspNetCore.UI
         }
 
         /// <summary>
-        /// 将业务操作结果转ajax操作结果
+        /// 将业务操作结果转ajax操作结果，将 <see cref="OperationResult.Data"/> 原样返回，注意，如果Data是实体实例，不应直接返回给前端
         /// </summary>
         public static AjaxResult ToAjaxResult(this OperationResult result)
         {
             string content = result.Message ?? result.ResultType.ToDescription();
             AjaxResultType type = result.ResultType.ToAjaxResultType();
-            return new AjaxResult(content, type);
+            return new AjaxResult(content, type, result.Data);
+        }
+
+        /// <summary>
+        /// 将业务操作结果转ajax操作结果，会将 object 类型的 <see cref="OperationResult.Data"/> 转换为强类型 T，再通过 dataFunc 进行进一步处理
+        /// </summary>
+        public static AjaxResult ToAjaxResult<T>(this OperationResult result, Func<T, object> dataFunc)
+        {
+            string content = result.Message ?? result.ResultType.ToDescription();
+            AjaxResultType type = result.ResultType.ToAjaxResultType();
+            object data = null;
+            if (result.Data != null)
+            {
+                if (dataFunc != null && result.Data is T resultData)
+                {
+                    data = dataFunc(resultData);
+                }
+            }
+            return new AjaxResult(content, type, data);
         }
 
         /// <summary>
