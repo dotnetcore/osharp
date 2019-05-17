@@ -32,13 +32,16 @@ namespace OSharp.AspNetCore.UI
         }
 
         /// <summary>
-        /// 将业务操作结果转ajax操作结果，将 <see cref="OperationResult.Data"/> 原样返回，注意，如果Data是实体实例，不应直接返回给前端
+        /// 将业务操作结果转ajax操作结果，可确定是否包含Data
         /// </summary>
-        public static AjaxResult ToAjaxResult(this OperationResult result)
+        /// <param name="result">业务操作结果</param>
+        /// <param name="containsData">是否包含Data，默认不包含</param>
+        /// <returns></returns>
+        public static AjaxResult ToAjaxResult(this OperationResult result, bool containsData = false)
         {
             string content = result.Message ?? result.ResultType.ToDescription();
             AjaxResultType type = result.ResultType.ToAjaxResultType();
-            return new AjaxResult(content, type, result.Data);
+            return containsData ? new AjaxResult(content, type, result.Data) : new AjaxResult(content, type);
         }
 
         /// <summary>
