@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using OSharp.Data;
 using OSharp.Extensions;
 
 
@@ -46,28 +47,26 @@ namespace OSharp.Linq
         /// <typeparam name="T">表达式的主实体类型</typeparam>
         /// <param name="first">第一个Expression表达式</param>
         /// <param name="second">要组合的Expression表达式</param>
+        /// <param name="ifExp">判断条件表达式，当此条件为true时，才执行组合</param>
         /// <returns>组合后的表达式</returns>
-        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second, bool ifExp = true)
         {
-            first.CheckNotNull("first");
-            second.CheckNotNull("second");
-            return first.Compose(second, Expression.AndAlso);
+            return ifExp ? first.Compose(second, Expression.AndAlso) : first;
         }
-
+        
         /// <summary>
         /// 以 Expression.OrElse 组合两个Expression表达式
         /// </summary>
         /// <typeparam name="T">表达式的主实体类型</typeparam>
         /// <param name="first">第一个Expression表达式</param>
         /// <param name="second">要组合的Expression表达式</param>
+        /// <param name="ifExp">判断条件表达式，当此条件为true时，才执行组合</param>
         /// <returns>组合后的表达式</returns>
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second, bool ifExp = true)
         {
-            first.CheckNotNull("first");
-            second.CheckNotNull("second");
-            return first.Compose(second, Expression.OrElse);
+            return ifExp ? first.Compose(second, Expression.OrElse) : first;
         }
-
+        
 
         private class ParameterRebinder : ExpressionVisitor
         {
