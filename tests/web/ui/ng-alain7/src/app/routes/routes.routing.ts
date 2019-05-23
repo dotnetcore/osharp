@@ -10,13 +10,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { ACLGuard } from '@delon/acl';
-import { SimpleGuard } from '@delon/auth';
+import { JWTGuard } from '@delon/auth';
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    canActivate: [SimpleGuard],
+    canActivate: [JWTGuard],
     data: { title: '主页' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
