@@ -71,14 +71,25 @@ namespace OSharp.AspNetCore.Mvc
                 }
             }
             //获取区域模块
-            string area = type.GetAttribute<AreaAttribute>()?.RouteValue ?? "Site";
-            string name = area == "Site" ? "站点" : area == "Admin" ? "管理" : null;
+            string area, name;
+            AreaInfoAttribute areaInfo = type.GetAttribute<AreaInfoAttribute>();
+            if (areaInfo != null)
+            {
+                area = areaInfo.RouteValue;
+                name = areaInfo.Display ?? area;
+            }
+            else
+            {
+                AreaAttribute areaAttr = type.GetAttribute<AreaAttribute>();
+                area = areaAttr?.RouteValue ?? "Site";
+                name = area == "Site" ? "站点" : area;
+            }
             info = new ModuleInfo()
             {
-                Name = name ?? area,
+                Name = name,
                 Code = area,
                 Position = "Root",
-                PositionName = area == "Site" ? "站点" : area == "Admin" ? "管理" : null
+                PositionName = name
             };
             if (!existPaths.Contains($"{info.Position}.{info.Code}"))
             {

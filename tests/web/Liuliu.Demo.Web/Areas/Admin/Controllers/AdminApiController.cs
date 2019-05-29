@@ -15,7 +15,7 @@ using OSharp.Core;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
     public abstract class AdminApiController : AreaApiController
     { }
