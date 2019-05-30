@@ -13,23 +13,23 @@ using OSharp.Collections;
 using OSharp.Extensions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 结合RSA，AES的通信传输加密解密操作类，使用AES对数据进行对称加密，使用RSA加密AES的密钥，并对数据进行签名校验，保证数据传输安全与完整性
     /// </summary>
-    public class TransmissionCryptor
+    public class TransmissionEncryptor
     {
         private readonly string _ownPrivateKey;
         private readonly string _facePublicKey;
         private static readonly string Separator = Convert.ToBase64String(Encoding.UTF8.GetBytes("#@|osharp|@#"));
 
         /// <summary>
-        /// 初始化一个<see cref="TransmissionCryptor"/>类型的新实例
+        /// 初始化一个<see cref="TransmissionEncryptor"/>类型的新实例
         /// </summary>
         /// <param name="ownPrivateKey">己方私钥</param>
         /// <param name="facePublicKey">对方公钥</param>
-        public TransmissionCryptor(string ownPrivateKey, string facePublicKey)
+        public TransmissionEncryptor(string ownPrivateKey, string facePublicKey)
         {
             ownPrivateKey.CheckNotNull("ownPrivateKey");
             facePublicKey.CheckNotNull("facePublicKey");

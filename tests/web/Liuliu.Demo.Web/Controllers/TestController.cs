@@ -51,7 +51,7 @@ namespace Liuliu.Demo.Web.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [MethodFilter]
         [Description("测试01")]
         public async Task<string> Test01()
@@ -63,8 +63,8 @@ namespace Liuliu.Demo.Web.Controllers
                 RegisterDto dto = new RegisterDto
                 {
                     UserName = "admin",
-                    Password = "gmf31529019",
-                    ConfirmPassword = "gmf31529019",
+                    Password = "osharp123456",
+                    ConfirmPassword = "osharp123456",
                     Email = "i66soft@qq.com",
                     NickName = "大站长",
                     RegisterIp = HttpContext.GetClientIp()
@@ -81,10 +81,10 @@ namespace Liuliu.Demo.Web.Controllers
 
                 dto = new RegisterDto()
                 {
-                    UserName ="mf.guo",
-                    Password = "gmf31529019",
+                    UserName ="osharp",
+                    Password = "osharp123456",
                     Email = "mf.guo@qq.com",
-                    NickName = "柳柳英侠",
+                    NickName = "测试号",
                     RegisterIp = HttpContext.GetClientIp()
                 };
                 result = await _identityContract.Register(dto);

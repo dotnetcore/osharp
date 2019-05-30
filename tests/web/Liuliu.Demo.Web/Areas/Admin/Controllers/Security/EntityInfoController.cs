@@ -107,7 +107,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(EntityInfoInputDto[] dtos)
         {

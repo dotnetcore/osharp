@@ -44,7 +44,7 @@ namespace Liuliu.Demo.Systems
         /// <summary>
         /// 获取 数据审计信息查询数据集
         /// </summary>
-        IQueryable<AuditEntity> AuditEntitys { get; }
+        IQueryable<AuditEntity> AuditEntities { get; }
         
         /// <summary>
         /// 获取 数据属性审计信息查询数据集
@@ -56,7 +56,7 @@ namespace Liuliu.Demo.Systems
         /// </summary>
         /// <param name="ids">要删除的数据审计信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteAuditEntitys(params Guid[] ids);
+        Task<OperationResult> DeleteAuditEntities(params Guid[] ids);
 
         #endregion
     }

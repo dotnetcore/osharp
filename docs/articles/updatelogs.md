@@ -1,5 +1,16 @@
 # OSharp .NetStandard 更新记录
 
+### 1.0.1 (2019/05/15)
+1. (core)：修复系统初始化刷新实体信息时输出日志信息错误的问题 [#79](https://github.com/i66soft/osharp/issues/79)
+2. (core)：修复数据权限缓存中一个.First使用不当的问题
+3. (core)：将自动提交事务的 [ServiceFilter(typeof(UnitOfWork))] 写法简化为 [UnitOfWork] [31e627](https://github.com/i66soft/osharp/commit/31e62713475125ef45928fae033a8f79acd8fea8)
+4. (identity)：修复后台更新自己的资料时，显示的用户名不跟随更新的问题 [#80](https://github.com/i66soft/osharp/issues/80)
+5. (mvc)：给AreaApiController添加Logger对象，方便日志记录
+6. (mapper)：调整AutoMapper的映射注册顺序，使通过 IAutoMapperConfiguration 接口自定义配置的优先级大于[MapFrom]，[MapTo] 的Attribute注册
+7. (ng-alain)：更新NG-ALAIN版本到 7.3.2
+8. (all)：全面修复代码中变量命名拼写错误的问题
+9. 发布正式版本 1.0.1
+
 ### 0.5.0-beta07 (2019/04/30)
 1. (core)：给Service层的InputDto增加参数验证功能，验证Dto各属性的合法性 [#75](https://github.com/i66soft/osharp/issues/75)
 2. (identity)：修复未设置登录密码也能解除唯一第三方登录方式的问题 fixed [#74](https://github.com/i66soft/osharp/issues/74)

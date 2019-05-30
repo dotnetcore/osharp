@@ -19,7 +19,7 @@ using System.Web;
 using Newtonsoft.Json;
 
 using OSharp.Collections;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Extensions
@@ -445,12 +445,12 @@ namespace OSharp.Extensions
             {
                 return false;
             }
-            byte[] filedata = File.ReadAllBytes(filename);
-            if (filedata.Length == 0)
+            byte[] fileData = File.ReadAllBytes(filename);
+            if (fileData.Length == 0)
             {
                 return false;
             }
-            ushort code = BitConverter.ToUInt16(filedata, 0);
+            ushort code = BitConverter.ToUInt16(fileData, 0);
             switch (code)
             {
                 case 0x4D42: //bmp
@@ -738,11 +738,8 @@ namespace OSharp.Extensions
         /// <returns>byte[]数组</returns>
         public static byte[] ToHexBytes(this string hexString)
         {
+            hexString = hexString ?? "";
             hexString = hexString.Replace(" ", "");
-            if (hexString.Length % 2 != 0)
-            {
-                hexString = hexString ?? "";
-            }
             byte[] bytes = new byte[hexString.Length / 2];
             for (int i = 0; i < bytes.Length; i++)
             {

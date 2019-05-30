@@ -60,11 +60,11 @@ namespace OSharp.AspNetCore.Mvc
             {
                 throw new OsharpException($"类型“{controllerType.FullName}”不是MVC控制器类型");
             }
-            FunctionAccessType accessType = controllerType.HasAttribute<LoginedAttribute>() || controllerType.HasAttribute<AuthorizeAttribute>()
-                ? FunctionAccessType.Logined
+            FunctionAccessType accessType = controllerType.HasAttribute<LoggedInAttribute>() || controllerType.HasAttribute<AuthorizeAttribute>()
+                ? FunctionAccessType.LoggedIn
                 : controllerType.HasAttribute<RoleLimitAttribute>()
                     ? FunctionAccessType.RoleLimit
-                    : FunctionAccessType.Anonymouse;
+                    : FunctionAccessType.Anonymous;
             Function function = new Function()
             {
                 Name = controllerType.GetDescription(),
@@ -84,10 +84,10 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override Function GetFunction(Function typeFunction, MethodInfo method)
         {
-            FunctionAccessType accessType = method.HasAttribute<LoginedAttribute>() || method.HasAttribute<AuthorizeAttribute>()
-                ? FunctionAccessType.Logined
+            FunctionAccessType accessType = method.HasAttribute<LoggedInAttribute>() || method.HasAttribute<AuthorizeAttribute>()
+                ? FunctionAccessType.LoggedIn
                 : method.HasAttribute<AllowAnonymousAttribute>()
-                    ? FunctionAccessType.Anonymouse
+                    ? FunctionAccessType.Anonymous
                     : method.HasAttribute<RoleLimitAttribute>()
                         ? FunctionAccessType.RoleLimit
                         : typeFunction.AccessType;

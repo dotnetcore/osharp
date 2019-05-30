@@ -14,7 +14,7 @@ namespace OSharp.UnitTest.Infrastructure
     {
         protected AspNetCoreUnitTestBase()
         {
-            var builder = CreateWebHostHuilder();
+            var builder = CreateWebHostBuilder();
             Server = CreateTestServer(builder);
 
             Client = Server.CreateClient();
@@ -28,7 +28,7 @@ namespace OSharp.UnitTest.Infrastructure
 
         public IServiceProvider ServerProvider { get; set; }
 
-        protected virtual IWebHostBuilder CreateWebHostHuilder()
+        protected virtual IWebHostBuilder CreateWebHostBuilder()
         {
             return new WebHostBuilder().UseStartup<TStartup>();
         }

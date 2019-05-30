@@ -5,25 +5,28 @@ import * as screenfull from 'screenfull';
   selector: 'header-fullscreen',
   template: `
     <i nz-icon [type]="status ? 'fullscreen-exit' : 'fullscreen'"></i>
-    {{(status ? 'menu.fullscreen.exit' : 'menu.fullscreen') | translate }}
+    {{ (status ? 'menu.fullscreen.exit' : 'menu.fullscreen') | translate }}
   `,
   host: {
     '[class.d-block]': 'true',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderFullScreenComponent {
   status = false;
+  private get sf(): screenfull.Screenfull {
+    return screenfull as screenfull.Screenfull;
+  }
 
   @HostListener('window:resize')
   _resize() {
-    this.status = screenfull.isFullscreen;
+    this.status = this.sf.isFullscreen;
   }
 
   @HostListener('click')
   _click() {
-    if (screenfull.enabled) {
-      screenfull.toggle();
+    if (this.sf.enabled) {
+      this.sf.toggle();
     }
   }
 }

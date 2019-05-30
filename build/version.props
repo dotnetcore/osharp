@@ -1,9 +1,9 @@
 <Project>
 	<PropertyGroup>
-		<VersionPrefix>0.5.0</VersionPrefix>
-    <VersionSuffix>beta</VersionSuffix>
-    <VersionSuffixVersion>07</VersionSuffixVersion>
-		<Version>$(VersionPrefix)-$(VersionSuffix)$(VersionSuffixVersion)</Version>
+		<VersionPrefix>1.0.1</VersionPrefix>
+    <VersionSuffix>.</VersionSuffix>
+    <VersionSuffixVersion>0</VersionSuffixVersion>
+		<Version>$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
 		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
 		<FileVersion>$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
 	</PropertyGroup>

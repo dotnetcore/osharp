@@ -28,7 +28,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
-using OSharp.Secutiry;
+using OSharp.Security;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -120,7 +120,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(UserInputDto[] dtos)
         {
@@ -149,7 +149,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(UserInputDto[] dtos)
         {
@@ -177,7 +177,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(int[] ids)
         {
@@ -205,7 +205,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [DependOnFunction("ReadUserRoles", Controller = "Role")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("设置角色")]
         public async Task<AjaxResult> SetRoles(UserSetRoleDto dto)
         {
@@ -222,7 +222,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [DependOnFunction("ReadUserModules", Controller = "Module")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(UserSetModuleDto dto)
         {

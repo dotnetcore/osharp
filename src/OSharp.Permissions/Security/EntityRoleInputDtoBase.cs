@@ -13,7 +13,7 @@ using System.ComponentModel;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Security

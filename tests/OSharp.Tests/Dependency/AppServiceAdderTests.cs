@@ -17,9 +17,9 @@ namespace OSharp.Dependency.Tests
         }
 
         [IgnoreDependency]
-        private interface IIgoreContract { }
+        private interface IIgnoreContract { }
 
-        private interface ITestContract : IIgoreContract { }
+        private interface ITestContract : IIgnoreContract { }
 
         private class TransientTestService : ITestContract, ITransientDependency { }
 

@@ -1,13 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import {
-  ListNode,
-  AjaxResult,
-  AjaxResultType,
-  AuthConfig,
-  VerifyCode,
-  FilterOperate,
-  FilterOperateEntry,
-} from '@shared/osharp/osharp.model';
+import { ListNode, AjaxResult, AjaxResultType, AuthConfig, VerifyCode, FilterOperate, FilterOperateEntry, } from '@shared/osharp/osharp.model';
 import { NzMessageService, NzMessageDataOptions } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Buffer } from 'buffer';
@@ -157,23 +149,7 @@ export class OsharpService {
     saveLink.href = urlObject.createObjectURL(blob);
     saveLink.download = filename;
     const ev = document.createEvent('MouseEvents');
-    ev.initMouseEvent(
-      'click',
-      true,
-      false,
-      window,
-      0,
-      0,
-      0,
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      0,
-      null,
-    );
+    ev.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
     saveLink.dispatchEvent(ev);
   }
   /**
@@ -332,9 +308,7 @@ export class OsharpService {
     }
     url = this.urlEncode(url);
     console.log(url);
-    return this.http
-      .get<boolean>('api/security/CheckUrlAuth?url=' + url)
-      .toPromise();
+    return this.http.get<boolean>('api/security/CheckUrlAuth?url=' + url).toPromise();
   }
 
   /**

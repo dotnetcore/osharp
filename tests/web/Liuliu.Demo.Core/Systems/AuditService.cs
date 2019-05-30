@@ -60,7 +60,7 @@ namespace Liuliu.Demo.Systems
         /// <summary>
         /// 获取 数据审计信息查询数据集
         /// </summary>
-        public IQueryable<AuditEntity> AuditEntitys => _entityRepository.Query();
+        public IQueryable<AuditEntity> AuditEntities => _entityRepository.Query();
 
         /// <summary>
         /// 获取 数据审计信息查询数据集
@@ -72,7 +72,7 @@ namespace Liuliu.Demo.Systems
         /// </summary>
         /// <param name="ids">要删除的数据审计信息编号</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> DeleteAuditEntitys(params Guid[] ids)
+        public Task<OperationResult> DeleteAuditEntities(params Guid[] ids)
         {
             return _entityRepository.DeleteAsync(ids);
         }

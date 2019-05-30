@@ -14,10 +14,10 @@ using System.Security.Principal;
 
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 功能权限检查基类
@@ -94,7 +94,7 @@ namespace OSharp.Secutiry
             {
                 return new AuthorizationResult(AuthorizationStatus.Locked, $"功能“{function.Name}”已被禁用，无法执行");
             }
-            if (function.AccessType == FunctionAccessType.Anonymouse)
+            if (function.AccessType == FunctionAccessType.Anonymous)
             {
                 return AuthorizationResult.OK;
             }
@@ -104,7 +104,7 @@ namespace OSharp.Secutiry
                 return new AuthorizationResult(AuthorizationStatus.Unauthorized);
             }
             //已登录，无角色限制
-            if (function.AccessType == FunctionAccessType.Logined)
+            if (function.AccessType == FunctionAccessType.LoggedIn)
             {
                 return AuthorizationResult.OK;
             }

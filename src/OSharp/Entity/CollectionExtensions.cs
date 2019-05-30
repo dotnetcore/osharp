@@ -17,7 +17,7 @@ using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Reflection;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace OSharp.Entity

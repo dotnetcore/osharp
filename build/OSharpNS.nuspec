@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>0.5.0-beta07</version>
+    <version>1.0.1</version>
     <title>OSharpFramework(.NetStandard2.0)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
@@ -15,16 +15,16 @@
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="OSharpNS.Core" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.EntityFrameworkCore.MySql" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.AutoMapper" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.AspNetCore" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.Log4Net" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.Redis" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.Hangfire" version="0.5.0-beta07" />
-        <dependency id="OSharpNS.Swagger" version="0.5.0-beta07" />
+        <dependency id="OSharpNS.Core" version="1.0.1" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="1.0.1" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="1.0.1" />
+        <dependency id="OSharpNS.EntityFrameworkCore.MySql" version="1.0.1" />
+        <dependency id="OSharpNS.AutoMapper" version="1.0.1" />
+        <dependency id="OSharpNS.AspNetCore" version="1.0.1" />
+        <dependency id="OSharpNS.Log4Net" version="1.0.1" />
+        <dependency id="OSharpNS.Redis" version="1.0.1" />
+        <dependency id="OSharpNS.Hangfire" version="1.0.1" />
+        <dependency id="OSharpNS.Swagger" version="1.0.1" />
       </group>
     </dependencies>
   </metadata>

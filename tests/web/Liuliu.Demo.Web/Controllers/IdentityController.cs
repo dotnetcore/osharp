@@ -31,7 +31,7 @@ using OSharp.Identity.JwtBearer;
 using OSharp.Identity.OAuth2;
 using OSharp.Mapping;
 using OSharp.Net;
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -115,7 +115,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <param name="dto">注册信息</param>
         /// <returns>JSON操作结果</returns>
         [HttpPost]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [ModuleInfo]
         [DependOnFunction("CheckUserNameExists")]
         [DependOnFunction("CheckEmailExists")]
@@ -288,7 +288,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// </summary>
         /// <returns>用户列表信息</returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("读取OAuth2")]
         public PageData<UserLoginOutputDto> ReadOAuth2([FromServices]IFilterService filterService, PageRequest request)
@@ -308,7 +308,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("登录并绑定账号")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> LoginBind(UserLoginInfoEx loginInfo)
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
@@ -372,10 +372,10 @@ namespace Liuliu.Demo.Web.Controllers
         /// 解除第三方登录
         /// </summary>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("解除第三方登录")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> RemoveOAuth2(Guid[] ids)
         {
             OperationResult result = await _identityContract.DeleteUserLogins(ids);
@@ -389,7 +389,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("用户登出")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
@@ -423,10 +423,10 @@ namespace Liuliu.Demo.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
         [Description("编辑用户资料")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> ProfileEdit(ProfileEditDto dto)
         {
             int userId = User.Identity.GetUserId<int>();
@@ -450,7 +450,7 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("激活邮箱")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         public async Task<AjaxResult> ConfirmEmail(ConfirmEmailDto dto)
         {
             if (!ModelState.IsValid)
@@ -518,9 +518,9 @@ namespace Liuliu.Demo.Web.Controllers
         /// <param name="dto">修改密码信息</param>
         /// <returns>JSON操作结果</returns>
         [HttpPost]
-        [Logined]
+        [LoggedIn]
         [ModuleInfo]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("修改密码")]
         public async Task<AjaxResult> ChangePassword(ChangePasswordDto dto)
         {
@@ -584,7 +584,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("重置登录密码")]
         public async Task<AjaxResult> ResetPassword(ResetPasswordDto dto)
         {

@@ -13,7 +13,7 @@ using OSharp.Data;
 using OSharp.Extensions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 权限检查结果

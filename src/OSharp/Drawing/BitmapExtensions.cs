@@ -240,8 +240,7 @@ namespace OSharp.Drawing
                 {
                     if (IsBlack(newBinBytes[x, y]))
                     {
-                        Point[] setPoints;
-                        newBinBytes.FloodFill(new Point(x, y), setGray, out setPoints);
+                        newBinBytes.FloodFill(new Point(x, y), setGray, out Point[] setPoints);
                         areaPointDict.Add(setGray, setPoints);
 
                         setGray++;
@@ -424,12 +423,12 @@ namespace OSharp.Drawing
         /// </summary>
         public static byte[,] Clone(this byte[,] sourceBytes, int x1, int y1, int width, int height)
         {
-            int swidth = sourceBytes.GetLength(0), sheight = sourceBytes.GetLength(1);
-            if (swidth - x1 < width)
+            int newWidth = sourceBytes.GetLength(0), newHeight = sourceBytes.GetLength(1);
+            if (newWidth - x1 < width)
             {
                 throw new ArgumentException("要截取的宽度超出界限");
             }
-            if (sheight - y1 < height)
+            if (newHeight - y1 < height)
             {
                 throw new ArgumentException("要截取的高度超出界限");
             }
@@ -785,9 +784,9 @@ namespace OSharp.Drawing
             {
                 for (int y = 0; y < bmp.Height; y++)
                 {
-                    Color piexl = bmp.GetPixel(x, y);
+                    Color pixel = bmp.GetPixel(x, y);
                     //背景，边框
-                    if (piexl.R >= gray || (x == 0 || x == bmp.Width - 1 || y == 0 || y == bmp.Height - 1))
+                    if (pixel.R >= gray || (x == 0 || x == bmp.Width - 1 || y == 0 || y == bmp.Height - 1))
                     {
                         bmp.SetPixel(x, y, Color.White);
                         continue;
@@ -912,9 +911,9 @@ namespace OSharp.Drawing
             Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
             using (Graphics graphics = Graphics.FromImage(newBmp))
             {
-                ImageAttributes attribtues = new ImageAttributes();
-                attribtues.SetGamma(value, ColorAdjustType.Bitmap);
-                graphics.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attribtues);
+                ImageAttributes attributes = new ImageAttributes();
+                attributes.SetGamma(value, ColorAdjustType.Bitmap);
+                graphics.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                 return newBmp;
             }
         }
@@ -1073,7 +1072,7 @@ namespace OSharp.Drawing
             int width = bmp.Width, height = bmp.Height;
             Bitmap newBmp = new Bitmap(width, height);
             //拉普拉斯模板
-            int[] laplacian = { -1, -1, -1, -1, 9, -1, -1, -1, -1 };
+            int[] laplace = { -1, -1, -1, -1, 9, -1, -1, -1, -1 };
             for (int j = 0; j < height; j++)
             {
                 for (int i = 0; i < width; i++)
@@ -1085,9 +1084,9 @@ namespace OSharp.Drawing
                         for (int row = -1; row <= 1; row++)
                         {
                             Color pixel = bmp.GetPixel(i + row, j + col);
-                            r += pixel.R * laplacian[index];
-                            g += pixel.G * laplacian[index];
-                            b += pixel.B * laplacian[index];
+                            r += pixel.R * laplace[index];
+                            g += pixel.G * laplace[index];
+                            b += pixel.B * laplace[index];
                             index++;
                         }
                     }
@@ -1450,8 +1449,8 @@ namespace OSharp.Drawing
             {
                 for (int x = 0; x < bmp.Width; x++)
                 {
-                    Color piexl = bmp.GetPixel(x, y);
-                    if (piexl.R < gray)
+                    Color pixel = bmp.GetPixel(x, y);
+                    if (pixel.R < gray)
                     {
                         code += "1";
                     }

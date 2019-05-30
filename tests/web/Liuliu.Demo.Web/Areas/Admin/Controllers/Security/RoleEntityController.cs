@@ -29,7 +29,7 @@ using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Secutiry;
+using OSharp.Security;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -101,7 +101,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [DependOnFunction("ReadNode", Controller = "Role")]
         [DependOnFunction("ReadNode", Controller = "EntityInfo")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(params EntityRoleInputDto[] dtos)
         {
@@ -121,7 +121,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [DependOnFunction("ReadNode", Controller = "Role")]
         [DependOnFunction("ReadNode", Controller = "EntityInfo")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
         {
@@ -138,7 +138,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
-        [ServiceFilter(typeof(UnitOfWorkAttribute))]
+        [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(params Guid[] ids)
         {

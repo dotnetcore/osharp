@@ -211,8 +211,8 @@ namespace OSharp.Extensions
                 section = random.NextItem(sections);
             }
 
-            string thrid = (random.Next(1, 9100) + 10000).ToString().Substring(1);
-            return section + thrid;
+            string third = (random.Next(1, 9100) + 10000).ToString().Substring(1);
+            return section + third;
         }
 
         /// <summary>

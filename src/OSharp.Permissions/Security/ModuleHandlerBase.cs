@@ -115,7 +115,7 @@ namespace OSharp.Security
             foreach (TModuleKey id in deleteModuleIds)
             {
                 result = moduleStore.DeleteModule(id).Result;
-                if (result.Errored)
+                if (result.Error)
                 {
                     throw new OsharpException(result.Message);
                 }
@@ -139,7 +139,7 @@ namespace OSharp.Security
                     ModuleInfo parentInfo = new ModuleInfo() { Code = parentCode, Name = info.PositionName ?? parentCode, Position = parent1Position };
                     TModuleInputDto dto = GetDto(parentInfo, parent1, null);
                     result = moduleStore.CreateModule(dto).Result;
-                    if (result.Errored)
+                    if (result.Error)
                     {
                         throw new OsharpException(result.Message);
                     }
@@ -151,7 +151,7 @@ namespace OSharp.Security
                 {
                     TModuleInputDto dto = GetDto(info, parent, null);
                     result = moduleStore.CreateModule(dto).Result;
-                    if (result.Errored)
+                    if (result.Error)
                     {
                         throw new OsharpException(result.Message);
                     }
@@ -161,7 +161,7 @@ namespace OSharp.Security
                 {
                     TModuleInputDto dto = GetDto(info, parent, module);
                     result = moduleStore.UpdateModule(dto).Result;
-                    if (result.Errored)
+                    if (result.Error)
                     {
                         throw new OsharpException(result.Message);
                     }
@@ -170,7 +170,7 @@ namespace OSharp.Security
                 {
                     Guid[] functionIds = info.DependOnFunctions.Select(m => m.Id).ToArray();
                     result = moduleFunctionStore.SetModuleFunctions(module.Id, functionIds).Result;
-                    if (result.Errored)
+                    if (result.Error)
                     {
                         throw new OsharpException(result.Message);
                     }

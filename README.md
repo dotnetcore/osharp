@@ -83,7 +83,7 @@ OSharp Framework with .NetStandard2.0（OSharpNS）是[OSharp](https://github.co
 
 ### 4. 基于AspNetCore的Identity的身份认证设计系统
 
-* 使用AspNetCore原生的用户身份认证框架，身份认证相关操作统一使用`UserManager<TUser>`，`RoleMamanger<TRole>`两个入口，保持了原生Identity的体系强大性与功能完整性。
+* 使用AspNetCore原生的用户身份认证框架，身份认证相关操作统一使用`UserManager<TUser>`，`RoleManager<TRole>`两个入口，保持了原生Identity的体系强大性与功能完整性。
 
 * 重新设计了用户存储`UserStore`和角色存储`RoleStore`，使用框架内设计的`IRepository<TEntity,TKey>`数据仓储接口来实现对数据的仓储操作，使Identity**身份认证系统与框架完美结合**，避免了使用官方的`Microsoft.AspNetCore.Identity.EntityFrameworkCore`造成多个上下文或者被强制使用Identity上下文作为系统数据上下文来实现业务造成的尴尬。
 
@@ -143,7 +143,7 @@ OSharpNS框架制作了一个基于`dotnet cli`命令行工具的快速启动模
 ### 1. 安装最新版本 `dotnetcore sdk`
 OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 `2.2.4`，所以对应的 `dotnetcore sdk` 需要安装到对应版本 [>=v2.2.203](https://www.microsoft.com/net/download/windows)。
 ### 2. 安装OSharpNS的`dotnet new`项目模板
-在任意空白目录，打开`cmd`命令行窗口，执行命令
+在任意空白目录，打开 `cmd`或`powershell` 命令行窗口，执行命令
 
 > dotnet new -i OSharpNS.Template.Mvc_Angular
 
@@ -151,16 +151,16 @@ OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 
 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0001.png)
 
-### 3. 执行`osharp_cmd`命令，获取项目一键项目安装脚本
+### 3. 执行`osharp`命令，获取项目一键项目安装脚本
 
->dotnet new osharp_cmd
+>dotnet new osharp
 
-执行后，将得到一个名为`cmd_build.bat`的批处理脚本文件
+执行后，将得到一个名为`osharp.bat`的批处理脚本文件
 
-![image](https://raw.githubusercontent.com/i66soft/docs_images/f2916f0d42e3edd1d87c0c242641ed7bd6ba15ef/osharpns/Readme/0002.png)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0002.png)
 
 ### 4. 运行脚本文件，生成项目初始化代码
-直接执行`cmd_build.bat`脚本代码，将会提示 `请输入项目名称，推荐形如 “公司.项目”的模式：`，此名称将用作解决方案名称、工程名称起始部分、代码中的`namespace`起始部分。例如输入`Liuliu.Demo`，将生成如下代码结构：
+直接执行`osharp.bat`脚本代码，将会提示 `请输入项目名称，推荐形如 “公司.项目”的模式：`，此名称将用作解决方案名称、工程名称起始部分、代码中的`namespace`起始部分。例如输入`Liuliu.Demo`，将生成如下代码结构：
 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0003.png)
 

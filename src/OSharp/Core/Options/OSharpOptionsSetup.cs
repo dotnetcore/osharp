@@ -38,7 +38,7 @@ namespace OSharp.Core.Options
         /// <param name="options">The options instance to configure.</param>
         public void Configure(OsharpOptions options)
         {
-            SetDbContextOptionses(options);
+            SetDbContextOptions(options);
 
             IConfigurationSection section;
             //OAuth2
@@ -107,7 +107,7 @@ namespace OSharp.Core.Options
         /// 保证同一上下文类型只有一个配置节点
         /// </summary>
         /// <param name="options"></param>
-        private void SetDbContextOptionses(OsharpOptions options)
+        private void SetDbContextOptions(OsharpOptions options)
         {
             IConfigurationSection section = _configuration.GetSection("OSharp:DbContexts");
             IDictionary<string, OsharpDbContextOptions> dict = section.Get<Dictionary<string, OsharpDbContextOptions>>();

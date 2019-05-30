@@ -10,7 +10,7 @@
 using System.ComponentModel;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// 权限检查结果状态

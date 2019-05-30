@@ -56,7 +56,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             //有操作参数，是从操作列表来的
             if (request.FilterGroup.Rules.Any(m => m.Field == "OperationId"))
             {
-                page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+                page = _auditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
                 {
                     Id = m.Id,
                     Name = m.Name,
@@ -75,7 +75,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return page.ToPageData();
             }
             request.AddDefaultSortCondition(new SortCondition("Operation.CreatedTime", ListSortDirection.Descending));
-            page = _auditContract.AuditEntitys.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+            page = _auditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
             {
                 Id = m.Id,
                 Name = m.Name,

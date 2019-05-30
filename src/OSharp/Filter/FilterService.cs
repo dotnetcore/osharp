@@ -23,8 +23,8 @@ using OSharp.Extensions;
 using OSharp.Linq;
 using OSharp.Properties;
 using OSharp.Reflection;
-using OSharp.Secutiry;
-using OSharp.Secutiry.Claims;
+using OSharp.Security;
+using OSharp.Security.Claims;
 
 
 namespace OSharp.Filter
@@ -263,17 +263,17 @@ namespace OSharp.Filter
             {
                 return Expression.Constant(true);
             }
-            List<Expression> bodys = new List<Expression>();
-            bodys.AddRange(group.Rules.Select(rule => GetExpressionBody(param, rule)));
-            bodys.AddRange(group.Groups.Select(subGroup => GetExpressionBody(param, subGroup)));
+            List<Expression> bodies = new List<Expression>();
+            bodies.AddRange(group.Rules.Select(rule => GetExpressionBody(param, rule)));
+            bodies.AddRange(group.Groups.Select(subGroup => GetExpressionBody(param, subGroup)));
 
             if (group.Operate == FilterOperate.And)
             {
-                return bodys.Aggregate(Expression.AndAlso);
+                return bodies.Aggregate(Expression.AndAlso);
             }
             if (group.Operate == FilterOperate.Or)
             {
-                return bodys.Aggregate(Expression.OrElse);
+                return bodies.Aggregate(Expression.OrElse);
             }
             throw new OsharpException(Resources.Filter_GroupOperateError);
         }

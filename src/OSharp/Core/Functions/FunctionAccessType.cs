@@ -21,13 +21,13 @@ namespace OSharp.Core.Functions
         /// 匿名用户可访问
         /// </summary>
         [Description("匿名访问")]
-        Anonymouse = 0,
+        Anonymous = 0,
 
         /// <summary>
         /// 登录用户可访问
         /// </summary>
         [Description("登录访问")]
-        Logined = 1,
+        LoggedIn = 1,
 
         /// <summary>
         /// 指定角色可访问

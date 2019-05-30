@@ -48,6 +48,7 @@ namespace OSharp.AspNetCore.Mvc
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
             services.AddDistributedMemoryCache();
 

@@ -42,10 +42,10 @@ namespace OSharp.Collections
         /// </summary>
         /// <param name="collection">待处理的集合</param>
         /// <param name="itemFormatFunc">单个集合项的转换委托</param>
-        /// <param name="separetor">分隔符，默认为逗号</param>
+        /// <param name="separator">分隔符，默认为逗号</param>
         /// <typeparam name="T">泛型类型</typeparam>
         /// <returns></returns>
-        public static string ExpandAndToString<T>(this IEnumerable<T> collection, Func<T, string> itemFormatFunc, string separetor = ",")
+        public static string ExpandAndToString<T>(this IEnumerable<T> collection, Func<T, string> itemFormatFunc, string separator = ",")
         {
             collection = collection as IList<T> ?? collection.ToList();
             itemFormatFunc.CheckNotNull("itemFormatFunc");
@@ -64,7 +64,7 @@ namespace OSharp.Collections
                 }
                 else
                 {
-                    sb.Append(itemFormatFunc(t) + separetor);
+                    sb.Append(itemFormatFunc(t) + separator);
                 }
                 i++;
             }

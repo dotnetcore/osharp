@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Entity;
+
 
 namespace OSharp.Identity
 {
@@ -43,7 +45,7 @@ namespace OSharp.Identity
             }
             IList<string> roles = await userManager.GetRolesAsync(user);
             RoleManager<TRole> roleManager = provider.GetService<RoleManager<TRole>>();
-            bool isAdmin = roleManager.Roles.Any(m => roles.Contains(m.Name) && m.IsAdmin);
+            bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
             return new OnlineUser()
             {
                 Id = user.Id.ToString(),

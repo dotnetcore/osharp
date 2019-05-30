@@ -7,6 +7,7 @@
 //  <last-date>2018-07-09 11:38</last-date>
 // -----------------------------------------------------------------------
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 
@@ -17,15 +18,6 @@ namespace OSharp.Identity
     /// </summary>
     public class OnlineUser
     {
-        /// <summary>
-        /// 初始化一个<see cref="OnlineUser"/>类型的新实例
-        /// </summary>
-        public OnlineUser()
-        {
-            Roles = new string[0];
-            ExtendData = new Dictionary<string, object>();
-        }
-
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
@@ -59,11 +51,11 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户角色
         /// </summary>
-        public string[] Roles { get; set; }
+        public string[] Roles { get; set; } = new string[0];
 
         /// <summary>
         /// 获取 扩展数据字典
         /// </summary>
-        public IDictionary<string, object> ExtendData { get; }
+        public IDictionary<string, string> ExtendData { get; } = new Dictionary<string, string>();
     }
 }

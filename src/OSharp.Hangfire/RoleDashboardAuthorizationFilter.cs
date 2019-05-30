@@ -14,7 +14,7 @@ using Hangfire.Dashboard;
 
 using Microsoft.AspNetCore.Http;
 
-using OSharp.Secutiry.Claims;
+using OSharp.Security.Claims;
 
 
 namespace OSharp.Hangfire

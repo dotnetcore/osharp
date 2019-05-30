@@ -48,8 +48,8 @@ namespace OSharp.Timing
         /// <returns></returns>
         public static string ToUniqueString(this DateTime dateTime, bool milsec = false)
         {
-            int sedonds = dateTime.Hour * 3600 + dateTime.Minute * 60 + dateTime.Second;
-            string value = string.Format("{0}{1}{2}", dateTime.ToString("yy"), dateTime.DayOfYear, sedonds);
+            int seconds = dateTime.Hour * 3600 + dateTime.Minute * 60 + dateTime.Second;
+            string value = $"{dateTime:yy}{dateTime.DayOfYear}{seconds}";
             return milsec ? value + dateTime.ToString("fff") : value;
         }
 

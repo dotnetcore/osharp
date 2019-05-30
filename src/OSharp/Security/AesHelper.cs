@@ -12,10 +12,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
+using OSharp.Exceptions;
 using OSharp.Extensions;
 
 
-namespace OSharp.Secutiry
+namespace OSharp.Security
 {
     /// <summary>
     /// AEA加密解密辅助类
@@ -109,6 +110,10 @@ namespace OSharp.Secutiry
             decodeBytes.CheckNotNull("decodeBytes");
             using (Aes aes = Aes.Create())
             {
+                if (aes == null)
+                {
+                    throw new OsharpException("AES加密时获取加密实例失败");
+                }
                 aes.Key = CheckKey(key);
                 aes.Padding = PaddingMode.PKCS7;
                 aes.Mode = CipherMode.ECB;
@@ -136,6 +141,10 @@ namespace OSharp.Secutiry
             encodeBytes.CheckNotNull("source");
             using (Aes aes = Aes.Create())
             {
+                if (aes == null)
+                {
+                    throw new OsharpException("AES加密时获取加密实例失败");
+                }
                 aes.Key = CheckKey(key);
                 aes.Padding = PaddingMode.PKCS7;
                 aes.Mode = CipherMode.ECB;

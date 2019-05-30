@@ -56,19 +56,19 @@ namespace OSharp.AutoMapper
         {
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>();
 
-            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
-            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
-            foreach (IAutoMapperConfiguration config in configs)
-            {
-                config.CreateMaps(cfg);
-            }
-
             //获取已注册到IoC的所有Profile
             IMapTuple[] tuples = provider.GetServices<IMapTuple>().ToArray();
             foreach (IMapTuple mapTuple in tuples)
             {
                 mapTuple.CreateMap();
                 cfg.AddProfile(mapTuple as Profile);
+            }
+
+            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
+            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
+            foreach (IAutoMapperConfiguration config in configs)
+            {
+                config.CreateMaps(cfg);
             }
 
             Mapper.Initialize(cfg);
