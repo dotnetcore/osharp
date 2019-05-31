@@ -80,7 +80,7 @@ export class AlainService {
   ToSFSchema(column: OsharpSTColumn): SFSchema {
     let schemaProps = ['enum', 'minimum', 'exclusiveMinimum', 'maximum', 'exclusiveMaximum', 'multipleOf', 'maxLength', 'minLength', 'pattern', 'items', 'minItems',
       'maxItems', 'uniqueItems', 'additionalItems', 'maxProperties', 'minProperties', 'required', 'properties', 'if', 'then', 'else', 'allOf', 'anyOf', 'oneOf',
-      'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui',];
+      'description', 'readOnly', 'definitions', '$ref', '$comment', 'ui'];
     let specialProps = ['ftype', 'fformat', 'fdefault', 'ftitle'];
     let schema: SFSchema = {};
     let keys = Object.getOwnPropertyNames(column);
@@ -187,7 +187,7 @@ export class AlainService {
         ]);
         rule.Operate = FilterOperate.Contains;
         rule.control = 'string';
-        rule.Value = '';
+        rule.Value = null;
         break;
     }
   }

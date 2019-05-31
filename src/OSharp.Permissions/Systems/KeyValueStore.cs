@@ -90,7 +90,7 @@ namespace OSharp.Systems
         public IKeyValue GetKeyValue(string key)
         {
             const int seconds = 60 * 1000;
-            KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.Query().ToArray(), seconds);
+            KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.Query(null, false).ToArray(), seconds);
             return pairs.FirstOrDefault(m => m.Key == key);
         }
 

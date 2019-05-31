@@ -17,5 +17,10 @@ namespace OSharp.Entity
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class UserFlagAttribute : Attribute
-    { }
+    {
+        /// <summary>
+        /// 当前用户标识
+        /// </summary>
+        public const string Token = "@CurrentUserId";
+    }
 }

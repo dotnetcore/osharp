@@ -46,7 +46,7 @@ namespace OSharp.Reflection
             Check.NotNull(type, nameof(type));
             Check.NotNull(baseType, nameof(baseType));
 
-            return type.IsClass && (!canAbstract && !type.IsAbstract) && type.IsBaseOn(baseType);
+            return type.IsClass && !canAbstract && !type.IsAbstract && type.IsBaseOn(baseType);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace OSharp.Reflection
         /// <returns> 是返回True，不是返回False </returns>
         public static bool IsNullableType(this Type type)
         {
-            return ((type != null) && type.IsGenericType) && (type.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         /// <summary>
@@ -66,11 +66,7 @@ namespace OSharp.Reflection
         /// <returns> </returns>
         public static Type GetNonNullableType(this Type type)
         {
-            if (IsNullableType(type))
-            {
-                return type.GetGenericArguments()[0];
-            }
-            return type;
+            return IsNullableType(type) ? type.GetGenericArguments()[0] : type;
         }
 
         /// <summary>

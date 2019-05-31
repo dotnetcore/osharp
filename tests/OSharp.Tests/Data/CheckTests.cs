@@ -153,5 +153,12 @@ namespace OSharp.Data.Tests
             });
             Check.FileExists("OSharp.Tests.dll");
         }
+
+        [Fact]
+        public void MethodNameTest()
+        {
+            Assert.True(typeof(int?).IsValueType);
+            Assert.True(typeof(Nullable<>).IsValueType);
+        }
     }
 }

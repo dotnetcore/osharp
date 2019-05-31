@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Security.Claims;
 using OSharp.Data;
 using OSharp.Dependency;
+using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Linq;
@@ -143,6 +144,20 @@ namespace OSharp.Filter
         }
 
         /// <summary>
+        /// 获取指定查询条件的查询表达式
+        /// </summary>
+        /// <typeparam name="T">表达式实体类型</typeparam>
+        /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
+        /// <returns>查询表达式</returns>
+        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
+        {
+            ParameterExpression param = Expression.Parameter(typeof(T), "m");
+            Expression body = GetExpressionBody(param, rule);
+            Expression<Func<T, bool>> expression = Expression.Lambda<Func<T, bool>>(body, param);
+            return expression;
+        }
+
+        /// <summary>
         /// 获取指定查询条件组的查询表达式，并综合数据权限
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
@@ -200,20 +215,6 @@ namespace OSharp.Filter
             }
 
             return exp;
-        }
-
-        /// <summary>
-        /// 获取指定查询条件的查询表达式
-        /// </summary>
-        /// <typeparam name="T">表达式实体类型</typeparam>
-        /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
-        /// <returns>查询表达式</returns>
-        public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
-        {
-            ParameterExpression param = Expression.Parameter(typeof(T), "m");
-            Expression body = GetExpressionBody(param, rule);
-            Expression<Func<T, bool>> expression = Expression.Lambda<Func<T, bool>>(body, param);
-            return expression;
         }
 
         /// <summary>
@@ -302,11 +303,16 @@ namespace OSharp.Filter
 
         private static Expression GetExpressionBody(ParameterExpression param, FilterRule rule)
         {
-            if (rule == null || rule.Value == null || string.IsNullOrEmpty(rule.Value.ToString()))
+            // if (rule == null || rule.Value == null || string.IsNullOrEmpty(rule.Value.ToString()))
+            if (rule == null)
             {
                 return Expression.Constant(true);
             }
             LambdaExpression expression = GetPropertyLambdaExpression(param, rule);
+            if (expression == null)
+            {
+                return Expression.Constant(true);
+            }
             Expression constant = ChangeTypeToExpression(rule, expression.Body.Type);
             return ExpressionDict[rule.Operate](expression.Body, constant);
         }
@@ -316,17 +322,54 @@ namespace OSharp.Filter
             string[] propertyNames = rule.Field.Split('.');
             Expression propertyAccess = param;
             Type type = param.Type;
-            foreach (string propertyName in propertyNames)
+            for (var index = 0; index < propertyNames.Length; index++)
             {
+                string propertyName = propertyNames[index];
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
                 {
                     throw new InvalidOperationException(string.Format(Resources.Filter_RuleFieldInTypeNotFound, rule.Field, type.FullName));
                 }
+
                 type = property.PropertyType;
+                //验证最后一个属性与属性值是否匹配
+                if (index == propertyNames.Length - 1)
+                {
+                    bool flag = CheckFilterRule(type, rule);
+                    if (!flag)
+                    {
+                        return null;
+                    }
+                }
+
                 propertyAccess = Expression.MakeMemberAccess(propertyAccess, property);
             }
             return Expression.Lambda(propertyAccess, param);
+        }
+
+        /// <summary>
+        /// 验证最后一个属性与属性值是否匹配 
+        /// </summary>
+        /// <param name="type">最后一个属性</param>
+        /// <param name="rule">条件信息</param>
+        /// <returns></returns>
+        private static bool CheckFilterRule(Type type, FilterRule rule)
+        {
+            if (rule.Value == null || rule.Value.ToString() == string.Empty)
+            {
+                rule.Value = null;
+            }
+
+            if (rule.Value == null && (type == typeof(string) || type.IsNullableType()))
+            {
+                return rule.Operate == FilterOperate.Equal || rule.Operate == FilterOperate.NotEqual;
+            }
+
+            if (rule.Value == null)
+            {
+                return !type.IsValueType;
+            }
+            return true;
         }
 
         private static Expression ChangeTypeToExpression(FilterRule rule, Type conversionType)
@@ -342,7 +385,7 @@ namespace OSharp.Filter
             //    }
             //    return Expression.NewArrayInit(conversionType, expressionList);
             //}
-            if (rule.Value?.ToString() == "@CurrentUserId")
+            if (rule.Value?.ToString() == UserFlagAttribute.Token)
             {
                 if (rule.Operate != FilterOperate.Equal)
                 {
