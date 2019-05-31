@@ -117,7 +117,7 @@ namespace Liuliu.Demo.Identity
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
                     ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
-                    LifetimeValidator = (before, expires, token, param) => expires > DateTime.Now,
+                    LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
                     ValidateLifetime = true
                 };
 
