@@ -351,10 +351,10 @@ namespace Liuliu.Demo.Web.Controllers
         private async Task<string> CreateJwtToken(User user)
         {
             //在线用户缓存
-            IOnlineUserCache onlineUserCache = HttpContext.RequestServices.GetService<IOnlineUserCache>();
-            if (onlineUserCache != null)
+            IOnlineUserProvider onlineUserProvider = HttpContext.RequestServices.GetService<IOnlineUserProvider>();
+            if (onlineUserProvider != null)
             {
-                await onlineUserCache.GetOrRefreshAsync(user.UserName);
+                await onlineUserProvider.GetOrCreate(user.UserName);
             }
 
             //生成Token，这里只包含最基本信息，其他信息从在线用户缓存中获取
@@ -408,13 +408,19 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("用户信息")]
-        public OnlineUser Profile()
+        public async Task<OnlineUser> Profile()
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return null;
             }
-            OnlineUser onlineUser = HttpContext.RequestServices.GetService<IOnlineUserCache>()?.GetOrRefresh(User.Identity.Name);
+
+            IOnlineUserProvider onlineUserProvider = HttpContext.RequestServices.GetService<IOnlineUserProvider>();
+            if (onlineUserProvider == null)
+            {
+                return null;
+            }
+            OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(User.Identity.Name);
             return onlineUser;
         }
 

@@ -64,7 +64,7 @@ namespace OSharp.Identity
                     return _serviceProvider.ExecuteScopedWork<OnlineUser>(provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-                        return onlineUserProvider.Create(provider, userName).Result;
+                        return onlineUserProvider.GetOrCreate(userName).Result;
                     });
                 },
                 options);
@@ -87,7 +87,7 @@ namespace OSharp.Identity
                     return _serviceProvider.ExecuteScopedWorkAsync<OnlineUser>(async provider =>
                     {
                         IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-                        return await onlineUserProvider.Create(provider, userName);
+                        return await onlineUserProvider.GetOrCreate(userName);
                     });
                 },
                 options);

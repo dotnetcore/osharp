@@ -42,11 +42,9 @@ namespace OSharp.Threading.Asyncs
                     ++_status;
                     return _readerReleaser;
                 }
-                else
-                {
-                    ++_readersWaiting;
-                    return _waitingReader.Task.ContinueWith(t => t.Result);
-                }
+
+                ++_readersWaiting;
+                return _waitingReader.Task.ContinueWith(t => t.Result);
             }
         }
 

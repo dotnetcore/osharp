@@ -47,7 +47,7 @@ namespace OSharp.Identity
           IUserLockoutStore<TUser>,
           IUserPhoneNumberStore<TUser>,
           IUserTwoFactorStore<TUser>,
-          IUserAuthenticationTokenStore<TUser>,
+          IOsharpUserAuthenticationTokenStore<TUser>,
           IUserAuthenticatorKeyStore<TUser>,
           IUserTwoFactorRecoveryCodeStore<TUser>,
           IUserRoleStore<TUser>
@@ -1021,6 +1021,23 @@ namespace OSharp.Identity
             string value = _userTokenRepository.Query(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name)
                 .Select(m => m.Value).FirstOrDefault();
             return Task.FromResult(value);
+        }
+
+        /// <summary>
+        /// 获取某个用户的所有指定登录提供者的权限标识
+        /// </summary>
+        /// <param name="user">用户信息</param>
+        /// <param name="loginProvider">登录提供者</param>
+        /// <param name="cancellationToken">任务取消标识</param>
+        /// <returns>权限标识集合</returns>
+        public Task<string[]> GetTokensAsync(TUser user, string loginProvider, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ThrowIfDisposed();
+            Check.NotNull(user, nameof(user));
+            string[] values = _userTokenRepository.Query(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider)
+                .Select(m => m.Value).ToArray();
+            return Task.FromResult(values);
         }
 
         #endregion

@@ -23,6 +23,9 @@
     <EmbeddedResource Remove="Authentication\**" />
     <None Remove="Authentication\**" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Identity\OnlineUserCache.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />

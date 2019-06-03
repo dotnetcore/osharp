@@ -1,14 +1,15 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="OnlineUser.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-09 11:38</last-date>
+//  <last-date>2019-06-02 0:01</last-date>
 // -----------------------------------------------------------------------
 
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+
+using OSharp.Identity.JwtBearer;
 
 
 namespace OSharp.Identity
@@ -53,6 +54,11 @@ namespace OSharp.Identity
         /// </summary>
         public string[] Roles { get; set; } = new string[0];
 
+        /// <summary>
+        /// 获取或设置 客户端刷新Token
+        /// </summary>
+        public IDictionary<string, RefreshToken> RefreshTokens { get; set; }
+        
         /// <summary>
         /// 获取 扩展数据字典
         /// </summary>

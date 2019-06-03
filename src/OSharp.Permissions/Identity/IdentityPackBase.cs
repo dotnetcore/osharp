@@ -54,8 +54,7 @@ namespace OSharp.Identity
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
 
             //在线用户缓存
-            services.TryAddSingleton<IOnlineUserCache, OnlineUserCache<TUser, TUserKey, TRole, TRoleKey>>();
-            services.TryAddSingleton<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TRole, TRoleKey>>();
+            services.TryAddScoped<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TRole, TRoleKey>>();
 
             // 替换 IPrincipal ，设置用户主键类型，用以在Repository进行审计时注入正确用户主键类型
             services.Replace(new ServiceDescriptor(typeof(IPrincipal),

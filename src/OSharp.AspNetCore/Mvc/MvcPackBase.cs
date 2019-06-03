@@ -41,8 +41,8 @@ namespace OSharp.AspNetCore.Mvc
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
-                // 全局功能权限过滤器
-                options.Filters.Add(new FunctionAuthorizationFilter());
+                options.Filters.Add(new OnlineUserAuthorizationFilter()); // 构建在线用户信息
+                options.Filters.Add(new FunctionAuthorizationFilter()); // 全局功能权限过滤器
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();

@@ -30,8 +30,13 @@ namespace OSharp.Core.Options
         public string Audience{ get; set; }
 
         /// <summary>
-        /// 获取或设置 Token有效期天数
+        /// 获取或设置 AccessToken有效期分钟数
         /// </summary>
-        public double ExpireDays { get; set; }
+        public double AccessExpireMins { get; set; }
+
+        /// <summary>
+        /// 获取或设置 RefreshToken有效期分钟数
+        /// </summary>
+        public double RefreshExpireMins { get; set; }
     }
 }

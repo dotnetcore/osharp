@@ -37,8 +37,8 @@ namespace OSharp.Identity.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(OnlineUserCacheRemoveEventData eventData)
         {
-            IOnlineUserCache onlineUserCache = _provider.GetService<IOnlineUserCache>();
-            onlineUserCache.Remove(eventData.UserNames);
+            IOnlineUserProvider onlineUserProvider = _provider.GetService<IOnlineUserProvider>();
+            onlineUserProvider.Remove(eventData.UserNames);
         }
     }
 }

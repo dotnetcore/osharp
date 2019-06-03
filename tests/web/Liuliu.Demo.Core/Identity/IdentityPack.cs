@@ -99,12 +99,17 @@ namespace Liuliu.Demo.Identity
         /// <param name="services">服务集合</param>
         protected override void AddAuthentication(IServiceCollection services)
         {
+
             IConfiguration configuration = services.GetConfiguration();
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(jwt =>
+            });
+
+            // JwtBearer
+            services.AddScoped<IJwtBearerService, JwtBearerService>();
+            authenticationBuilder.AddJwtBearer(jwt =>
             {
                 string secret = configuration["OSharp:Jwt:Secret"];
                 if (secret.IsNullOrEmpty())
@@ -120,9 +125,6 @@ namespace Liuliu.Demo.Identity
                     LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
                     ValidateLifetime = true
                 };
-
-                jwt.SecurityTokenValidators.Clear();
-                jwt.SecurityTokenValidators.Add(new OnlineUserJwtSecurityTokenHandler());
                 jwt.Events = new JwtBearerEvents()
                 {
                     // 生成SignalR的用户信息
@@ -134,7 +136,6 @@ namespace Liuliu.Demo.Identity
                         {
                             context.Token = token;
                         }
-
                         return Task.CompletedTask;
                     }
                 };

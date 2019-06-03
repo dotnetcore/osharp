@@ -23,6 +23,10 @@
     <DebugSymbols>true</DebugSymbols>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Identity\IOnlineUserCache.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
