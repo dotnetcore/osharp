@@ -31,7 +31,7 @@ export class IdentityService {
     private settingSrv: SettingsService,
     private aclSrv: ACLService,
     private reuseTabSrv: ReuseTabService,
-  ) {}
+  ) { }
 
   get user() {
     return this.settingSrv.user;
@@ -75,7 +75,7 @@ export class IdentityService {
           result.title = '新用户注册成功';
           result.description = `你的账户：${data.UserName}[${
             data.NickName
-          }] 注册成功，请及时登录邮箱 ${data.Email} 接收邮件激活账户。`;
+            }] 注册成功，请及时登录邮箱 ${data.Email} 接收邮件激活账户。`;
           return result;
         }
         result.type = 'error';
@@ -178,7 +178,7 @@ export class IdentityService {
         result.title = '重发激活邮件成功';
         result.description = `注册邮箱激活邮件发送成功，请登录邮箱“${
           dto.Email
-        }”收取邮件进行后续步骤`;
+          }”收取邮件进行后续步骤`;
         return result;
       })
       .toPromise();
@@ -190,10 +190,10 @@ export class IdentityService {
       .post<AjaxResult>(url, dto)
       .map(res => {
         let result = new AdResult();
-        if (res.Type != AjaxResultType.Success) {
+        if (res.Type !== AjaxResultType.Success) {
           result.type = 'error';
           result.title = '注册邮箱激活失败';
-          if (res.Type == AjaxResultType.Info) {
+          if (res.Type === AjaxResultType.Info) {
             result.type = 'minus-circle-o';
           }
           result.title = '注册邮箱激活取消';
@@ -224,7 +224,7 @@ export class IdentityService {
         result.title = '重置密码邮件发送成功';
         result.description = `重置密码邮件发送成功，请登录邮箱“${
           dto.Email
-        }”收取邮件进行后续步骤`;
+          }”收取邮件进行后续步骤`;
         return result;
       })
       .toPromise();

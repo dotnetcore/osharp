@@ -33,6 +33,7 @@ using OSharp.Mapping;
 using OSharp.Net;
 using OSharp.Security.Claims;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -350,22 +351,17 @@ namespace Liuliu.Demo.Web.Controllers
 
         private async Task<string> CreateJwtToken(User user)
         {
+            IServiceProvider provider = HttpContext.RequestServices;
             //在线用户缓存
-            IOnlineUserProvider onlineUserProvider = HttpContext.RequestServices.GetService<IOnlineUserProvider>();
+            IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
             if (onlineUserProvider != null)
             {
                 await onlineUserProvider.GetOrCreate(user.UserName);
             }
 
-            //生成Token，这里只包含最基本信息，其他信息从在线用户缓存中获取
-            Claim[] claims =
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-            OsharpOptions options = HttpContext.RequestServices.GetService<IOptions<OsharpOptions>>().Value;
-            string token = JwtHelper.CreateToken(claims, options);
-            return token;
+            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            string accessToken = await jwtBearerService.CreateAccessToken(user.Id.ToString());
+            return accessToken;
         }
 
         /// <summary>
@@ -421,6 +417,7 @@ namespace Liuliu.Demo.Web.Controllers
                 return null;
             }
             OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(User.Identity.Name);
+            onlineUser.RefreshTokens.Clear();
             return onlineUser;
         }
 

@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Caching;
-using OSharp.Json;
 
 
 namespace Liuliu.Demo.Identity
@@ -277,7 +276,7 @@ namespace Liuliu.Demo.Identity
 
             //触发登出成功事件
             LogoutEventData logoutEventData = new LogoutEventData() { UserId = userId };
-            _eventBus.Publish(logoutEventData);
+            await _eventBus.PublishAsync(logoutEventData);
 
             return OperationResult.Success;
         }

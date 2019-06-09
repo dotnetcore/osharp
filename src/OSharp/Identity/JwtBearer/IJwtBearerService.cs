@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 
 namespace OSharp.Identity.JwtBearer
@@ -19,25 +20,17 @@ namespace OSharp.Identity.JwtBearer
     public interface IJwtBearerService
     {
         /// <summary>
-        /// 创建RefreshToken
+        /// 创建指定用户的AccessToken
         /// </summary>
-        /// <param name="claims">要加入Token的声明信息</param>
+        /// <param name="userId">用户编号</param>
         /// <returns></returns>
-        string CreateRefreshToken(IList<Claim> claims);
+        Task<string> CreateAccessToken(string userId);
 
         /// <summary>
-        /// 使用RefreshToken创建AccessToken
+        /// 使用AccessToken刷新一个新的AccessToken，如果AccessToken有效，原样返回，否则返回一个新的
         /// </summary>
-        /// <param name="claims">要加入Token的声明信息</param>
-        /// <param name="refreshToken">刷新Token</param>
-        /// <returns></returns>
-        string CreateAccessToken(IList<Claim> claims, string refreshToken);
-
-        /// <summary>
-        /// 验证指定的Token有效性
-        /// </summary>
-        /// <param name="token">指定Token</param>
-        /// <returns></returns>
-        ClaimsPrincipal ValidateToken(string token);
+        /// <param name="accessToken">AccessToken</param>
+        /// <returns>AccessToken</returns>
+        Task<string> RefreshAccessToken(string accessToken);
     }
 }

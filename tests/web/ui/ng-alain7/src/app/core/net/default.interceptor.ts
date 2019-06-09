@@ -32,7 +32,12 @@ const CODEMESSAGE = {
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector) { }
+
+  tokenSrv: ITokenService;
+
+  constructor(private injector: Injector) {
+    this.tokenSrv = injector.get(DA_SERVICE_TOKEN) as ITokenService;
+  }
 
   get msg(): NzMessageService {
     return this.injector.get(NzMessageService);
@@ -89,6 +94,7 @@ export class DefaultInterceptor implements HttpInterceptor {
               case AjaxResultType.Info:
               case AjaxResultType.Error:
               case AjaxResultType.Locked:
+                this.setToken(ev);
                 return of(ev);
               case AjaxResultType.UnAuth:
                 this.msg.warning('用户未登录或者登录已过期');
@@ -99,12 +105,14 @@ export class DefaultInterceptor implements HttpInterceptor {
                 this.goTo(`/exception/${type}`);
                 break;
             }
+          } else {
+            this.setToken(ev);
           }
         }
         break;
       case 401: // 未登录状态码
         // 请求错误 401: https://preview.pro.ant.design/api/401 用户没有权限（令牌、用户名、密码错误）。
-        (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
+        this.tokenSrv.clear();
         this.goTo('/passport/login');
         break;
       case 403:
@@ -122,6 +130,14 @@ export class DefaultInterceptor implements HttpInterceptor {
     return of(ev);
   }
 
+  private setToken(event: HttpResponse<any>) {
+    let token = event.headers.get('set-authorization');
+    if (token) {
+      this.tokenSrv.clear();
+      this.tokenSrv.set({ token });
+    }
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // 统一加上服务端前缀
     let url = req.url;
@@ -132,8 +148,8 @@ export class DefaultInterceptor implements HttpInterceptor {
     let newReq = req.clone({ url });
 
     // 设置 JWT-Token
-    let tokenModel = this.injector.get(DA_SERVICE_TOKEN).get<JWTTokenModel>(JWTTokenModel);
-    if (tokenModel && tokenModel.token && !tokenModel.isExpired()) {
+    let tokenModel = this.tokenSrv.get<JWTTokenModel>(JWTTokenModel);
+    if (tokenModel && tokenModel.token) {
       newReq = newReq.clone({
         setHeaders: {
           Authorization: `Bearer ${tokenModel.token}`

@@ -32,6 +32,10 @@ namespace OSharp.Identity
             const string loginProvider = "JwtBearer";
             string tokenName = $"RefreshToken_{clientId}";
             string json =await userManager.GetAuthenticationTokenAsync(user, loginProvider, tokenName);
+            if (string.IsNullOrEmpty(json))
+            {
+                return null;
+            }
             return json.FromJsonString<RefreshToken>();
         }
 
@@ -56,6 +60,21 @@ namespace OSharp.Identity
             const string loginProvider = "JwtBearer";
             string tokenName = $"RefreshToken_{clientId}";
             return userManager.RemoveAuthenticationTokenAsync(user, loginProvider, tokenName);
+        }
+
+        /// <summary>
+        /// 移除RefreshToken
+        /// </summary>
+        public static async Task<IdentityResult> RemoveRefreshToken<TUser>(this UserManager<TUser>userManager, string userId, string clientId)
+            where TUser : class
+        {
+            TUser user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new IdentityResult().Failed($"编号为“{userId}”的用户信息不存在");
+            }
+
+            return await RemoveRefreshToken(userManager, user, clientId);
         }
     }
 }
