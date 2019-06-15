@@ -7,6 +7,13 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
@@ -15,14 +22,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Core;
 using OSharp.Core.Modules;
-using OSharp.Core.Options;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
@@ -32,15 +38,8 @@ using OSharp.Identity.OAuth2;
 using OSharp.Mapping;
 using OSharp.Net;
 using OSharp.Security.Claims;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
 using OSharp.Filter;
+using OSharp.Json;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -223,9 +222,53 @@ namespace Liuliu.Demo.Web.Controllers
                 return result.ToAjaxResult();
             }
             User user = result.Data;
-            string token = await CreateJwtToken(user);
-
+            JsonWebToken token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
+        }
+
+        /// <summary>
+        /// 获取身份认证Token
+        /// </summary>
+        /// <param name="dto">TokenDto</param>
+        /// <returns>JSON操作结果</returns>
+        [HttpPost]
+        [ModuleInfo]
+        [Description("JwtToken")]
+        public async Task<AjaxResult> Token(TokenDto dto)
+        {
+            if (dto.GrantType == GrantType.Password)
+            {
+                Check.NotNull(dto.Account, nameof(dto.Account));
+                Check.NotNull(dto.Password, nameof(dto.Password));
+
+                LoginDto loginDto = new LoginDto()
+                {
+                    Account = dto.Account,
+                    Password = dto.Password,
+                    Ip = HttpContext.GetClientIp(),
+                    UserAgent = Request.Headers["User-Agent"].FirstOrDefault()
+                };
+
+                OperationResult<User> result = await _identityContract.Login(loginDto);
+                IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
+                unitOfWork.Commit();
+                if (!result.Succeeded)
+                {
+                    return result.ToAjaxResult();
+                }
+
+                User user = result.Data;
+                JsonWebToken token = await CreateJwtToken(user);
+                return new AjaxResult("登录成功", AjaxResultType.Success, token);
+            }
+
+            if (dto.GrantType == GrantType.RefreshToken)
+            {
+                Check.NotNull(dto.RefreshToken, nameof(dto.RefreshToken));
+                JsonWebToken token = await CreateJwtToken(dto.RefreshToken);
+                return new AjaxResult("刷新成功", AjaxResultType.Success, token);
+            }
+            return new AjaxResult("GrantType错误", AjaxResultType.Error);
         }
 
         /// <summary>
@@ -279,8 +322,8 @@ namespace Liuliu.Demo.Web.Controllers
                 return Redirect(url);
             }
             Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
-            string token = await CreateJwtToken((User)result.Data);
-            url = $"/#/passport/oauth-callback?token={token}";
+            JsonWebToken token = await CreateJwtToken((User)result.Data);
+            url = $"/#/passport/oauth-callback?token={token.ToJsonString()}";
             return Redirect(url);
         }
 
@@ -322,7 +365,7 @@ namespace Liuliu.Demo.Web.Controllers
             }
 
             User user = result.Data;
-            string token = await CreateJwtToken(user);
+            JsonWebToken token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
@@ -345,23 +388,25 @@ namespace Liuliu.Demo.Web.Controllers
             }
 
             User user = result.Data;
-            string token = await CreateJwtToken(user);
+            JsonWebToken token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
-        private async Task<string> CreateJwtToken(User user)
+        private async Task<JsonWebToken> CreateJwtToken(User user)
         {
             IServiceProvider provider = HttpContext.RequestServices;
-            //在线用户缓存
-            IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-            if (onlineUserProvider != null)
-            {
-                await onlineUserProvider.GetOrCreate(user.UserName);
-            }
-
             IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
-            string accessToken = await jwtBearerService.CreateAccessToken(user.Id.ToString());
-            return accessToken;
+            JsonWebToken token = await jwtBearerService.CreateToken(user.Id.ToString(), user.UserName);
+
+            return token;
+        }
+
+        private async Task<JsonWebToken> CreateJwtToken(string refreshToken)
+        {
+            IServiceProvider provider = HttpContext.RequestServices;
+            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            JsonWebToken token = await jwtBearerService.RefreshToken(refreshToken);
+            return token;
         }
 
         /// <summary>

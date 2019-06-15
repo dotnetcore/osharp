@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Data;
+using OSharp.Entity;
 
 
 namespace OSharp.Dependency
@@ -30,10 +31,11 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
+        public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action, bool useHttpScope = true)
         {
-            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
-            using (IServiceScope scope = factory.CreateScope())
+            using (IServiceScope scope = useHttpScope
+                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : provider.CreateScope())
             {
                 action(scope.ServiceProvider);
             }
@@ -45,10 +47,11 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
+        public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action, bool useHttpScope = true)
         {
-            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
-            using (IServiceScope scope = factory.CreateScope())
+            using (IServiceScope scope = useHttpScope
+                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : provider.CreateScope())
             {
                 await action(scope.ServiceProvider);
             }
@@ -60,10 +63,11 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
+        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func, bool useHttpScope = true)
         {
-            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
-            using (IServiceScope scope = factory.CreateScope())
+            using (IServiceScope scope = useHttpScope
+                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : provider.CreateScope())
             {
                 return func(scope.ServiceProvider);
             }
@@ -75,10 +79,11 @@ namespace OSharp.Dependency
         /// 生命周期的ServiceProvider来执行，并释放资源
         /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
+        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func, bool useHttpScope = true)
         {
-            IHybridServiceScopeFactory factory = provider.GetService<IHybridServiceScopeFactory>();
-            using (IServiceScope scope = factory.CreateScope())
+            using (IServiceScope scope = useHttpScope
+                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : provider.CreateScope())
             {
                 return await func(scope.ServiceProvider);
             }

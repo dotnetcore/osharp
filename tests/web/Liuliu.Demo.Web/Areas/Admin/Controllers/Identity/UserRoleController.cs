@@ -84,6 +84,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("更新")]
         public async Task<AjaxResult> Update(UserRoleInputDto[] dtos)
         {
+            Check.NotNull(dtos, nameof(dtos));
+            
             OperationResult result = await _identityContract.UpdateUserRoles(dtos);
             return result.ToAjaxResult();
         }
@@ -100,6 +102,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("删除")]
         public async Task<AjaxResult> Delete(Guid[] ids)
         {
+            Check.NotNull(ids, nameof(ids));
+            
             OperationResult result = await _identityContract.DeleteUserRoles(ids);
             return result.ToAjaxResult();
         }

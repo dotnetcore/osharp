@@ -977,8 +977,7 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(user, nameof(user));
 
-            TUserToken token = _userTokenRepository.TrackQuery()
-                .FirstOrDefault(m => m.Id.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name);
+            TUserToken token = _userTokenRepository.TrackQuery(m => m.UserId.Equals(user.Id) && m.LoginProvider == loginProvider && m.Name == name).FirstOrDefault();
             if (token == null)
             {
                 token = new TUserToken() { UserId = user.Id, LoginProvider = loginProvider, Name = name, Value = value };

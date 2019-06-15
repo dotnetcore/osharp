@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="RefreshToken.cs" company="OSharp开源团队">
+//  <copyright file="JsonWebToken.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-06-02 3:52</last-date>
+//  <last-date>2019-06-12 15:31</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -13,23 +13,23 @@ using System;
 namespace OSharp.Identity.JwtBearer
 {
     /// <summary>
-    /// 刷新Token信息
+    /// JwtToken模型
     /// </summary>
-    public class RefreshToken
+    public class JsonWebToken
     {
         /// <summary>
-        /// 获取或设置 客户端Id
+        /// 获取或设置 用于业务身份认证的AccessToken
         /// </summary>
-        public string ClientId { get; set; }
+        public string AccessToken { get; set; }
 
         /// <summary>
-        /// 获取或设置 标识值
+        /// 获取或设置 用于刷新AccessToken的RefreshToken
         /// </summary>
-        public string Value { get; set; }
+        public string RefreshToken { get; set; }
 
         /// <summary>
-        /// 获取或设置 过期时间
+        /// 获取或设置 RefreshToken有效期，UTC标准
         /// </summary>
-        public DateTime EndUtcTime { get; set; }
+        public DateTime UtcExpires { get; set; }
     }
 }

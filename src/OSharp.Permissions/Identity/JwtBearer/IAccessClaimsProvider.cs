@@ -1,13 +1,12 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="IJwtClaimsProvider.cs" company="OSharp开源团队">
+//  <copyright file="IAccessClaimsProvider.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-06-09 9:43</last-date>
+//  <last-date>2019-06-15 12:11</last-date>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,16 +14,15 @@ using System.Threading.Tasks;
 namespace OSharp.Identity.JwtBearer
 {
     /// <summary>
-    /// 定义Jwt标识提供器，获取指定用户的标识用于创建Jwt-Token
+    /// 定义AccessToken的用户Claims提供器
     /// </summary>
-    public interface IJwtClaimsProvider<in TUser>
-        where TUser : class
+    public interface IAccessClaimsProvider
     {
         /// <summary>
-        /// 创建指定用户的标识
+        /// 创建用户标识
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Claim[]> Create(TUser user);
+        Task<Claim[]> CreateClaims(string userId);
     }
 }

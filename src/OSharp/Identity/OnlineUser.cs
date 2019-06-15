@@ -50,6 +50,11 @@ namespace OSharp.Identity
         public bool IsAdmin { get; set; }
 
         /// <summary>
+        /// 获取或设置 下次请求是否刷新AccessToken
+        /// </summary>
+        public bool IsRefreshNext { get; set; }
+
+        /// <summary>
         /// 获取或设置 用户角色
         /// </summary>
         public string[] Roles { get; set; } = new string[0];

@@ -102,15 +102,15 @@ namespace Liuliu.Demo.Identity
         protected override void AddAuthentication(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
+            
+            // JwtBearer
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             });
-
-            // JwtBearer
             services.TryAddScoped<IJwtBearerService, JwtBearerService<User, int>>();
-            services.TryAddScoped<IJwtClaimsProvider<User>, JwtClaimsProvider<User, int>>();
+            services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<User, int>>();
             authenticationBuilder.AddJwtBearer(jwt =>
             {
                 string secret = configuration["OSharp:Jwt:Secret"];
@@ -123,28 +123,29 @@ namespace Liuliu.Demo.Identity
                 {
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
                     ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
                 };
 
                 jwt.Events = new JwtBearerEvents()
                 {
-                    OnMessageReceived = async context =>
+                    OnMessageReceived = context =>
                     {
-                        string token = await ValidateAndRefreshToken(context);
-                        if (!string.IsNullOrEmpty(token))
+                        // 生成SignalR的用户信息
+                        string token = context.Request.Query["access_token"];
+                        string path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(token) && path.Contains("hub"))
                         {
                             context.Token = token;
                         }
-                        else
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                         {
-                            // 生成SignalR的用户信息
-                            token = context.Request.Query["access_token"];
-                            string path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(token) && path.Contains("hub"))
-                            {
-                                context.Token = token;
-                            }
+                            context.Response.Headers.Add("Token-Expired", "true");
                         }
+                        return Task.CompletedTask;
                     }
                 };
             });
@@ -220,37 +221,6 @@ namespace Liuliu.Demo.Identity
             app.UseAuthentication();
 
             IsEnabled = true;
-        }
-        
-        private static async Task<string> ValidateAndRefreshToken(MessageReceivedContext context)
-        {
-            HttpContext httpContext = context.HttpContext;
-            string token = httpContext.Request.Headers["Authorization"];
-            if (string.IsNullOrEmpty(token))
-            {
-                return null;
-            }
-            if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-            {
-                token = token.Substring("Bearer ".Length).Trim();
-            }
-            if (string.IsNullOrEmpty(token))
-            {
-                return null;
-            }
-
-            IJwtBearerService jwtBearerService = httpContext.RequestServices.GetService<IJwtBearerService>();
-            if (jwtBearerService != null)
-            {
-                string newToken = await jwtBearerService.RefreshAccessToken(token);
-                if (!string.IsNullOrEmpty(newToken) && newToken != token)
-                {
-                    httpContext.Response.Headers.Add("Set-Authorization", newToken);
-                }
-                token = newToken;
-            }
-
-            return token;
         }
     }
 }

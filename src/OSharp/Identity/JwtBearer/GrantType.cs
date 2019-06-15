@@ -1,27 +1,27 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="JwtTokenType.cs" company="OSharp开源团队">
+//  <copyright file="GrantType.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-06-02 2:02</last-date>
+//  <last-date>2019-06-12 0:14</last-date>
 // -----------------------------------------------------------------------
 
 namespace OSharp.Identity.JwtBearer
 {
     /// <summary>
-    /// JwtToken类型
+    /// 授权类型
     /// </summary>
-    public enum JwtTokenType
+    public class GrantType
     {
         /// <summary>
-        /// 刷新Token
+        /// 用户密码类型
         /// </summary>
-        RefreshToken,
+        public const string Password = "password";
 
         /// <summary>
-        /// 访问Token
+        /// 刷新Token类型
         /// </summary>
-        AccessToken
+        public const string RefreshToken = "refresh_token";
     }
 }
