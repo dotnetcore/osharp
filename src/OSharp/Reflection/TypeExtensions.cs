@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TypeExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
@@ -46,7 +46,7 @@ namespace OSharp.Reflection
             Check.NotNull(type, nameof(type));
             Check.NotNull(baseType, nameof(baseType));
 
-            return type.IsClass && !canAbstract && !type.IsAbstract && type.IsBaseOn(baseType);
+            return type.IsClass && (canAbstract || !type.IsAbstract) && type.IsBaseOn(baseType);
         }
 
         /// <summary>
