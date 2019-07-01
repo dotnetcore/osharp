@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Repository.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-11-15 19:20</last-date>
+//  <last-editor>钱荣虎</last-editor>
+//  <last-date>2019-07-01 15:20</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -43,10 +42,10 @@ namespace OSharp.Entity
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
+        private readonly ICancellationTokenProvider _cancellationTokenProvider;
         private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
-        private readonly ICancellationTokenProvider _cancellationTokenProvider;
         private readonly IPrincipal _principal;
 
         /// <summary>
@@ -61,11 +60,6 @@ namespace OSharp.Entity
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
         }
-
-        /// <summary>
-        /// 获取 当前单元操作对象
-        /// </summary>
-        public IUnitOfWork UnitOfWork { get; }
 
         /// <summary>
         /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
@@ -90,6 +84,11 @@ namespace OSharp.Entity
                 return _dbSet.AsQueryable().Where(dataFilterExp);
             }
         }
+
+        /// <summary>
+        /// 获取 当前单元操作对象
+        /// </summary>
+        public IUnitOfWork UnitOfWork { get; }
 
         #region 同步方法
 
@@ -241,8 +240,8 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
 
-            ((DbContextBase)_dbContext).BeginOrUseTransaction();
-            return _dbSet.Where(predicate).Delete();
+            var entities = _dbSet.Where(predicate);
+            return Delete(entities.ToArray());
         }
 
         /// <summary>
@@ -636,8 +635,8 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
 
-            await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
-            return await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
+            var entities = _dbSet.Where(predicate);
+            return await DeleteAsync(entities.ToArray());
         }
 
         /// <summary>
@@ -714,7 +713,8 @@ namespace OSharp.Entity
         /// <param name="predicate">查询条件谓语表达式</param>
         /// <param name="updateExpression">实体更新表达式</param>
         /// <returns>操作影响的行数</returns>
-        public virtual async Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
+        public virtual async Task<int> UpdateBatchAsync(Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, TEntity>> updateExpression)
         {
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
@@ -806,7 +806,8 @@ namespace OSharp.Entity
             bool flag = entities.All(func);
             if (!flag)
             {
-                throw new OsharpException($"实体“{typeof(TEntity)}”的数据“{entities.ExpandAndToString(m => m.Id.ToString())}”进行“{operation.ToDescription()}”操作时权限不足");
+                throw new OsharpException(
+                    $"实体“{typeof(TEntity)}”的数据“{entities.ExpandAndToString(m => m.Id.ToString())}”进行“{operation.ToDescription()}”操作时权限不足");
             }
         }
 
