@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Identity.JwtBearer;
-using OSharp.Security.Claims;
+using OSharp.Threading.Asyncs;
 
 
 namespace OSharp.Identity
@@ -39,6 +38,7 @@ namespace OSharp.Identity
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
+        private static readonly AsyncLock _asyncLock = new AsyncLock();
 
         /// <summary>
         /// 初始化一个<see cref="OnlineUserProvider{TUser, TUserKey, TRole, TRoleKey}"/>类型的新实例
@@ -59,31 +59,36 @@ namespace OSharp.Identity
             string key = $"Identity_OnlineUser_{userName}";
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetSlidingExpiration(TimeSpan.FromMinutes(30));
-            return await _cache.GetAsync<OnlineUser>(key,
-                async () =>
-                {
-                    UserManager<TUser> userManager = _serviceProvider.GetService<UserManager<TUser>>();
-                    TUser user = await userManager.FindByNameAsync(userName);
-                    if (user == null)
+            using (await _asyncLock.LockAsync())
+            {
+                return await _cache.GetAsync<OnlineUser>(key,
+                    async () =>
                     {
-                        return null;
-                    }
-                    IList<string> roles = await userManager.GetRolesAsync(user);
-                    RoleManager<TRole> roleManager = _serviceProvider.GetService<RoleManager<TRole>>();
-                    bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
-                    RefreshToken[] refreshTokens = await GetRefreshTokens(user);
-                    return new OnlineUser()
-                    {
-                        Id = user.Id.ToString(),
-                        UserName = user.UserName,
-                        NickName = user.NickName,
-                        Email = user.Email,
-                        HeadImg = user.HeadImg,
-                        IsAdmin = isAdmin,
-                        Roles = roles.ToArray(),
-                        RefreshTokens = refreshTokens.ToDictionary(m => m.ClientId, m => m)
-                    };
-                }, options);
+                        UserManager<TUser> userManager = _serviceProvider.GetService<UserManager<TUser>>();
+                        TUser user = await userManager.FindByNameAsync(userName);
+                        if (user == null)
+                        {
+                            return null;
+                        }
+
+                        IList<string> roles = await userManager.GetRolesAsync(user);
+                        RoleManager<TRole> roleManager = _serviceProvider.GetService<RoleManager<TRole>>();
+                        bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
+                        RefreshToken[] refreshTokens = await GetRefreshTokens(user);
+                        return new OnlineUser()
+                        {
+                            Id = user.Id.ToString(),
+                            UserName = user.UserName,
+                            NickName = user.NickName,
+                            Email = user.Email,
+                            HeadImg = user.HeadImg,
+                            IsAdmin = isAdmin,
+                            Roles = roles.ToArray(),
+                            RefreshTokens = refreshTokens.ToDictionary(m => m.ClientId, m => m)
+                        };
+                    },
+                    options);
+            }
         }
 
         /// <summary>
@@ -137,7 +142,7 @@ namespace OSharp.Identity
                     await userManager.RemoveRefreshToken(user, expiredToken.ClientId);
                 }
 
-                IUnitOfWork unitOfWork = scopedProvider.GetService<IUnitOfWork>();
+                IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork<TUser, TUserKey>();
                 unitOfWork.Commit();
             }
 

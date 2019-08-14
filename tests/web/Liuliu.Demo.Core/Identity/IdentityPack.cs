@@ -102,7 +102,7 @@ namespace Liuliu.Demo.Identity
         protected override void AddAuthentication(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
-            
+
             // JwtBearer
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
@@ -124,6 +124,7 @@ namespace Liuliu.Demo.Identity
                     ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
                     ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                    LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
                 };
 
                 jwt.Events = new JwtBearerEvents()

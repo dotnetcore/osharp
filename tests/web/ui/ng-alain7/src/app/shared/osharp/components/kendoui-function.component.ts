@@ -58,7 +58,8 @@ export class KendouiFunctionComponent extends KendoGridComponentBase implements 
   }
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let options = super.GetGridOptions(dataSource);
-    options.toolbar.unshift({ template: '<span>功能列表</span>' });
+    let toolbar = options.toolbar as kendo.ui.GridToolbarItem[];
+    toolbar.unshift({ template: '<span>功能列表</span>' });
     return options;
   }
   protected GetDataSourceOptions(): kendo.data.DataSourceOptions {

@@ -7,7 +7,10 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using Liuliu.Demo.Identity.Entities;
+
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Identity.Dtos
@@ -15,6 +18,7 @@ namespace Liuliu.Demo.Identity.Dtos
     /// <summary>
     /// 简单角色输出DTO
     /// </summary>
+    [MapFrom(typeof(Role))]
     public class RoleOutputDto2 : IOutputDto
     {
         /// <summary>

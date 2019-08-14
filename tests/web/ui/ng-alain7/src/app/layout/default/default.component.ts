@@ -1,23 +1,6 @@
-import {
-  Component,
-  ViewChild,
-  ComponentFactoryResolver,
-  ViewContainerRef,
-  AfterViewInit,
-  OnInit,
-  OnDestroy,
-  ElementRef,
-  Renderer2,
-  Inject,
-} from '@angular/core';
+import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, AfterViewInit, OnInit, OnDestroy, ElementRef, Renderer2, Inject, } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import {
-  Router,
-  NavigationEnd,
-  RouteConfigLoadStart,
-  NavigationError,
-  NavigationCancel,
-} from '@angular/router';
+import { Router, NavigationEnd, RouteConfigLoadStart, NavigationError, NavigationCancel, } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

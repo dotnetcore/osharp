@@ -536,7 +536,8 @@ export abstract class KendoGridComponentBase extends ComponentBase {
   protected GetGridOptions(dataSource: kendo.data.DataSource): kendo.ui.GridOptions {
     let columns = this.GetGridColumns();
     let options = this.kendoui.CreateGridOptions(dataSource, columns);
-    options.toolbar.push({ name: "refresh", template: `<button class="btn-refresh-function k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
+    let toolbar = options.toolbar as kendo.ui.GridToolbarItem[];
+    toolbar.push({ name: "refresh", template: `<button class="btn-refresh-function k-button k-button-icontext"><i class="k-icon k-i-refresh"></i>刷新</button>` });
     return options;
   }
 
@@ -580,7 +581,7 @@ export abstract class KendoGridComponentBase extends ComponentBase {
    */
   protected FilterGridAuth(options: kendo.ui.GridOptions) {
     // 工具栏
-    let toolbar = options.toolbar;
+    let toolbar = options.toolbar as kendo.ui.GridToolbarItem[];
     if (!this.auth.Create) {
       this.osharp.remove(toolbar, (m: kendo.ui.GridToolbarItem) => m.name === "create");
     }

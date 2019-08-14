@@ -68,11 +68,12 @@
       <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
     </nz-col>
     <nz-col [nzSpan]="12" class="text-right">
-      <a class="forgot" *ngIf="auth.SendResetPasswordMail" [routerLink]="[ '/passport/forgot-password' ]" acl="Root.Site.Identity.SendResetPasswordMail">{{ 'app.login.forgot-password' | translate }}</a>
+      <a class="forgot" *ngIf="auth.SendResetPasswordMail" [routerLink]="[ '/passport/forgot-password' ]"
+        acl="Root.Site.Identity.SendResetPasswordMail">{{ 'app.login.forgot-password' | translate }}</a>
     </nz-col>
   </nz-form-item>
   <nz-form-item>
-    <button nz-button type="submit" nzType="primary" nzSize="large" acl="Root.Site.Identity.Jwtoken" [nzLoading]="http.loading" nzBlock [disabled]="!auth.Jwtoken || http.loading">
+    <button nz-button type="submit" nzType="primary" nzSize="large" acl="Root.Site.Identity.Jwtoken" [nzLoading]="http.loading" nzBlock [disabled]="http.loading">
       {{ 'app.login.login' | translate }}
     </button>
   </nz-form-item>

@@ -20,7 +20,7 @@
   <Import Project="../../build/version.props" />
 
   <ItemGroup>
-    <PackageReference Include="Citms.EntityFrameworkCore.Oracle" Version="1.0.7" />
+    <PackageReference Include="Citms.EntityFrameworkCore.Oracle" Version="1.0.9" />
   </ItemGroup>
 
   <ItemGroup>

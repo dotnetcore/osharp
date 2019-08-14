@@ -30,6 +30,6 @@ namespace OSharp.Identity.JwtBearer
         /// <summary>
         /// 获取或设置 RefreshToken有效期，UTC标准
         /// </summary>
-        public DateTime UtcExpires { get; set; }
+        public long RefreshUctExpires { get; set; }
     }
 }

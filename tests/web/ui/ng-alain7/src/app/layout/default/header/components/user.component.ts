@@ -41,7 +41,7 @@ export class HeaderUserComponent {
 
   logout() {
     this.identity.logout().then(res => {
-      this.tokenService.clear();
+      // this.tokenService.clear();
       this.router.navigateByUrl(this.tokenService.login_url);
     });
   }

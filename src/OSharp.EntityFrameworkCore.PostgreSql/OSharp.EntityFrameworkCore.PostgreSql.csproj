@@ -21,7 +21,7 @@
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />

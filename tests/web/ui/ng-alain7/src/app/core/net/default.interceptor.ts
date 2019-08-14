@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpUserEvent } from '@angular/common/http';
+import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
@@ -34,9 +34,37 @@ const CODEMESSAGE = {
 export class DefaultInterceptor implements HttpInterceptor {
 
   tokenSrv: ITokenService;
+  isRefreshingToken = false;
+  tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(private injector: Injector) {
     this.tokenSrv = injector.get(DA_SERVICE_TOKEN) as ITokenService;
+  }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
+    // 统一加上服务端前缀
+    let url = req.url;
+    if (!url.startsWith('https://') && !url.startsWith('http://')) {
+      url = environment.SERVER_URL + url;
+    }
+    req = req.clone({ url });
+
+    // 设置 JWT-Token
+    let tokenModel = this.tokenSrv.get<JWTTokenModel>(JWTTokenModel);
+    if (tokenModel && tokenModel.token) {
+      req = this.addToken(req, tokenModel.token);
+    }
+
+    return next.handle(req).pipe(
+      mergeMap((event: any) => {
+        // 允许统一对请求错误处理
+        if (event instanceof HttpResponseBase)
+          return this.handleData(event);
+        // 若一切都正常，则后续操作
+        return of(event);
+      }),
+      catchError((err: HttpErrorResponse) => this.handleData(err)),
+    );
   }
 
   get msg(): NzMessageService {
@@ -57,6 +85,10 @@ export class DefaultInterceptor implements HttpInterceptor {
     );
   }
 
+  private addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
+    return req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+  }
+
   private handleData(ev: HttpResponseBase): Observable<any> {
     const loginUrl = '/passport/login';
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
@@ -67,25 +99,6 @@ export class DefaultInterceptor implements HttpInterceptor {
     // 业务处理：一些通用操作
     switch (ev.status) {
       case 200:
-        // 业务层级错误处理，以下是假定restful有一套统一输出格式（指不管成功与否都有相应的数据格式）情况下进行处理
-        // 例如响应内容：
-        //  错误内容：{ status: 1, msg: '非法参数' }
-        //  正确内容：{ status: 0, response: {  } }
-        // 则以下代码片断可直接适用
-        // if (event instanceof HttpResponse) {
-        //     const body: any = event.body;
-        //     if (body && body.status !== 0) {
-        //         this.msg.error(body.msg);
-        //         // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
-        //         // this.http.get('/').subscribe() 并不会触发
-        //         return throwError({});
-        //     } else {
-        //         // 重新修改 `body` 内容为 `response` 内容，对于绝大多数场景已经无须再关心业务状态码
-        //         return of(new HttpResponse(Object.assign(event, { body: body.response })));
-        //         // 或者依然保持完整的格式
-        //         return of(event);
-        //     }
-        // }
         if (ev instanceof HttpResponse) {
           const result = ev.body as AjaxResult;
           if (result && result.Type) {
@@ -116,6 +129,14 @@ export class DefaultInterceptor implements HttpInterceptor {
         this.goTo('/passport/login');
         break;
       case 403:
+        let token = this.tokenSrv.get<JWTTokenModel>();
+        if (!token || !token.token || token.isExpired) {
+          this.tokenSrv.clear();
+          this.goTo('/passport/login');
+        } else {
+          this.goTo(`/exception/${ev.status}`);
+        }
+        break;
       case 404:
       case 500:
         this.goTo(`/exception/${ev.status}`);
@@ -138,34 +159,4 @@ export class DefaultInterceptor implements HttpInterceptor {
     }
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // 统一加上服务端前缀
-    let url = req.url;
-    if (!url.startsWith('https://') && !url.startsWith('http://')) {
-      url = environment.SERVER_URL + url;
-    }
-
-    let newReq = req.clone({ url });
-
-    // 设置 JWT-Token
-    let tokenModel = this.tokenSrv.get<JWTTokenModel>(JWTTokenModel);
-    if (tokenModel && tokenModel.token) {
-      newReq = newReq.clone({
-        setHeaders: {
-          Authorization: `Bearer ${tokenModel.token}`
-        }
-      });
-    }
-
-    return next.handle(newReq).pipe(
-      mergeMap((event: any) => {
-        // 允许统一对请求错误处理
-        if (event instanceof HttpResponseBase)
-          return this.handleData(event);
-        // 若一切都正常，则后续操作
-        return of(event);
-      }),
-      catchError((err: HttpErrorResponse) => this.handleData(err)),
-    );
-  }
 }

@@ -197,6 +197,18 @@ export class LoginDto {
   Remember = true;
   ReturnUrl: string;
 }
+export class TokenDto {
+  GrantType: 'password' | 'refresh_token';
+  Account?: string;
+  Password?: string;
+  VerifyCode?: string;
+  RefreshToken?: string;
+}
+export class JsonWebToken {
+  AccessToken: string;
+  RefreshToken: string;
+  RefreshUctExpires: number;
+}
 export class RegisterDto {
   Email: string;
   Password: string;
@@ -247,7 +259,7 @@ export class AuthConfig {
     public position: string,
     /**  要权限控制的功能名称，可以是节点名称或全路径 */
     public funcs: string[],
-  ) {}
+  ) { }
 }
 
 /**  用户信息 */

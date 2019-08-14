@@ -8,7 +8,7 @@ import { ReuseTabService } from '@delon/abc';
 import { environment } from '@env/environment';
 import { StartupService } from '@core';
 import { ComponentBase } from '@shared/osharp/services/osharp.service';
-import { AuthConfig, LoginDto, AjaxResultType } from '@shared/osharp/osharp.model';
+import { AuthConfig, LoginDto, AjaxResultType, TokenDto } from '@shared/osharp/osharp.model';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 
 @Component({
@@ -122,8 +122,9 @@ export class UserLoginComponent extends ComponentBase implements OnDestroy {
       dto.Password = this.captcha.value;
     }
 
-    this.identity.login(dto).then(result => {
-      if (result.Type == AjaxResultType.Success) {
+    let tokenDto: TokenDto = { GrantType: 'password', Account: dto.Account, Password: dto.Password };
+    this.identity.token(tokenDto).then(result => {
+      if (result.Type === AjaxResultType.Success) {
         this.msg.success("用户登录成功");
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().then(() => {

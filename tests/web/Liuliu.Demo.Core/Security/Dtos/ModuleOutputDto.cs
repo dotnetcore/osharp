@@ -7,7 +7,10 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using Liuliu.Demo.Security.Entities;
+
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Security.Dtos
@@ -15,6 +18,7 @@ namespace Liuliu.Demo.Security.Dtos
     /// <summary>
     /// 输入DTO:模块信息
     /// </summary>
+    [MapFrom(typeof(Module))]
     public class ModuleOutputDto : IOutputDto
     {
         /// <summary>

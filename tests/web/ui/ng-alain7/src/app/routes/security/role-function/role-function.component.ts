@@ -66,7 +66,8 @@ export class RoleFunctionComponent extends KendoGridComponentBase implements Aft
     let options = super.GetGridOptions(dataSource);
     options.editable = false;
     options.selectable = true;
-    options.toolbar.unshift({ name: 'list', template: '<span>角色列表</span>' });
+    let toolbar = options.toolbar as kendo.ui.GridToolbarItem[];
+    toolbar.unshift({ name: 'list', template: '<span>角色列表</span>' });
     options.change = () => {
       let row = this.grid.select();
       if (row) {

@@ -150,15 +150,15 @@ export class CacheService {
 }
 
 
-/**缓存项 */
+/** 缓存项 */
 export interface ICacheItem {
-  /**缓存值 */
+  /** 缓存值 */
   v: any;
-  /**过期时间，秒，0表示不过期 */
+  /** 过期时间，秒，0表示不过期 */
   e: number;
 }
 
-/**缓存存储 */
+/** 缓存存储 */
 export interface ICacheStore {
   get(key: string): ICacheItem;
   set(key: string, value: ICacheItem);

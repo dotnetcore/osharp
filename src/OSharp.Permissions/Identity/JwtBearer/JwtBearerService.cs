@@ -26,7 +26,9 @@ using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Exceptions;
+using OSharp.Extensions;
 using OSharp.Identity.Events;
+using OSharp.Timing;
 
 
 namespace OSharp.Identity.JwtBearer
@@ -79,7 +81,7 @@ namespace OSharp.Identity.JwtBearer
                 {
                     UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
                     RefreshToken refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
-                    var result =await userManager.SetRefreshToken(userId, refreshToken);
+                    var result = await userManager.SetRefreshToken(userId, refreshToken);
                     if (result.Succeeded)
                     {
                         IUnitOfWork unitOfWork = provider.GetUnitOfWork<TUser, TUserKey>();
@@ -89,18 +91,21 @@ namespace OSharp.Identity.JwtBearer
                         eventBus.Publish(eventData);
                     }
                     return result;
-                }, false);
+                },
+                false);
 
             // New AccessToken
             IAccessClaimsProvider claimsProvider = _provider.GetService<IAccessClaimsProvider>();
             claims = await claimsProvider.CreateClaims(userId);
-            (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.AccessToken);
+            List<Claim> claimList = claims.ToList();
+            claimList.Add(new Claim("clientId", clientId));
+            (token, expires) = CreateToken(claimList, _jwtOptions, JwtTokenType.AccessToken);
 
             return new JsonWebToken()
             {
                 AccessToken = token,
                 RefreshToken = refreshTokenStr,
-                UtcExpires = expires
+                RefreshUctExpires = expires.ToJsGetTime().CastTo<long>(0)
             };
         }
 

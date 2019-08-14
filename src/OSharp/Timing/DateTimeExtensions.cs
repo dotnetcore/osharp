@@ -56,10 +56,11 @@ namespace OSharp.Timing
         /// <summary>
         /// 将时间转换为JS时间格式(Date.getTime())
         /// </summary>
-        public static string ToJsGetTime(this DateTime dateTime)
+        public static string ToJsGetTime(this DateTime dateTime, bool milsec = true)
         {
             DateTime utc = dateTime.ToUniversalTime();
-            return ((long)utc.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds).ToString();
+            TimeSpan span = utc.Subtract(new DateTime(1970, 1, 1));
+            return Math.Round(milsec ? span.TotalMilliseconds : span.TotalSeconds).ToString();
         }
     }
 }

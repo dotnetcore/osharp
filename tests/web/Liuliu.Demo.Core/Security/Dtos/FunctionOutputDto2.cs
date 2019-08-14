@@ -9,8 +9,11 @@
 
 using System;
 
+using AutoMapper.Configuration.Conventions;
+
 using OSharp.Core.Functions;
 using OSharp.Entity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Security.Dtos
@@ -18,6 +21,7 @@ namespace Liuliu.Demo.Security.Dtos
     /// <summary>
     /// 简单功能输出DTO
     /// </summary>
+    [MapFrom(typeof(Function))]
     public class FunctionOutputDto2 : IOutputDto
     {
         /// <summary>

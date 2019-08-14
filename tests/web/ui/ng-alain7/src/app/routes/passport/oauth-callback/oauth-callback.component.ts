@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
-import { UserLoginInfoEx, AjaxResultType } from '@shared/osharp/osharp.model';
+import { UserLoginInfoEx, AjaxResultType, JsonWebToken } from '@shared/osharp/osharp.model';
 import { SFSchema, CustomWidget } from '@delon/form';
 import { IdentityService } from '@shared/osharp/services/identity.service';
 import { NzMessageService } from 'ng-zorro-antd';
@@ -72,7 +72,8 @@ export class OauthCallbackComponent implements OnInit {
 
     let token = this.osharp.getHashURLSearchParams(url, 'token');
     if (token) {
-      this.identity.loginEnd(token).subscribe(() => {
+      let jwt: JsonWebToken = JSON.parse(token) as JsonWebToken;
+      this.identity.loginEnd(jwt).subscribe(() => {
         this.message.success("第三方登录成功");
         this.startupSrv.load().then(() => {
           url = this.tokenService.referrer && this.tokenService.referrer.url || '/';

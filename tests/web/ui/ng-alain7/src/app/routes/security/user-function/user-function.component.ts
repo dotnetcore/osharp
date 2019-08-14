@@ -63,7 +63,8 @@ export class UserFunctionComponent extends KendoGridComponentBase implements Aft
     let options = super.GetGridOptions(dataSource);
     options.editable = false;
     options.selectable = true;
-    options.toolbar.unshift({ template: '<span>角色列表</span>' });
+    let toolbar = options.toolbar as kendo.ui.GridToolbarItem[];
+    toolbar.unshift({ template: '<span>角色列表</span>' });
     options.change = e => {
       let row = this.grid.select();
       if (row) {

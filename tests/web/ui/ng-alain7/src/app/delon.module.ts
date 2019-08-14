@@ -57,7 +57,7 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
   };
 }
 
-import { DelonACLConfig, ACLCanType, ACLType } from "@delon/acl";
+import { DelonACLConfig, ACLCanType, ACLType, DelonACLModule } from "@delon/acl";
 export function fnDelonACLConfig(): DelonACLConfig {
   return {
     guard_url: '/exception/403',
@@ -111,6 +111,7 @@ const GLOBAL_CONFIG_PROVIDES = [
 @NgModule({
   imports: [
     AlainThemeModule.forRoot(),
+    DelonACLModule,
     ...MOCK_MODULES,
   ],
 })
