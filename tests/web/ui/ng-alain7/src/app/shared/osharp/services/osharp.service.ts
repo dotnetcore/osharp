@@ -14,7 +14,7 @@ import { ErrorData } from '@delon/form';
 })
 export class OsharpService {
   public msgSrv: NzMessageService;
-  private router: Router;
+  public router: Router;
   public http: _HttpClient;
   private aclSrv: ACLService;
 

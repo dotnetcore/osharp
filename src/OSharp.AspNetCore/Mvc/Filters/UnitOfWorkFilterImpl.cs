@@ -12,6 +12,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.UI;
 using OSharp.Data;
@@ -24,6 +25,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
     internal class UnitOfWorkFilterImpl : IActionFilter
     {
         private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkFilterImpl"/>类型的新实例
@@ -31,6 +33,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
         public UnitOfWorkFilterImpl(IServiceProvider serviceProvider)
         {
             _unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
+            _logger = serviceProvider.GetLogger<UnitOfWorkFilterImpl>();
         }
 
         /// <summary>
@@ -49,6 +52,20 @@ namespace OSharp.AspNetCore.Mvc.Filters
             ScopedDictionary dict = context.HttpContext.RequestServices.GetService<ScopedDictionary>();
             AjaxResultType type = AjaxResultType.Success;
             string message = null;
+            if (context.Exception != null && !context.ExceptionHandled)
+            {
+                Exception ex = context.Exception;
+                _logger.LogError(new EventId(), ex, ex.Message);
+                message = ex.Message;
+                if (context.HttpContext.Request.IsAjaxRequest() || context.HttpContext.Request.IsJsonContextType())
+                {
+                    if (!context.HttpContext.Response.HasStarted)
+                    {
+                        context.Result = new JsonResult(new AjaxResult(ex.Message, AjaxResultType.Error));
+                    }
+                    context.ExceptionHandled = true;
+                }
+            }
             if (context.Result is JsonResult result1)
             {
                 if (result1.Value is AjaxResult ajax)

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Liuliu.Demo.Systems.Entities;
 
 using OSharp.Audits;
+using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Mapping;
 using OSharp.Net;
@@ -68,14 +69,17 @@ namespace Liuliu.Demo.Systems
                 operation.Browser = userAgent.GetBrowser();
             }
             operation.Elapsed = (int)operationEntry.EndedTime.Subtract(operationEntry.CreatedTime).TotalMilliseconds;
-            foreach (AuditEntityEntry entityEntry in operationEntry.EntityEntries)
+            if (operation.ResultType == AjaxResultType.Success)
             {
-                AuditEntity entity = entityEntry.MapTo<AuditEntity>();
-                operation.AuditEntities.Add(entity);
-                foreach (AuditPropertyEntry propertyEntry in entityEntry.PropertyEntries)
+                foreach (AuditEntityEntry entityEntry in operationEntry.EntityEntries)
                 {
-                    AuditProperty property = propertyEntry.MapTo<AuditProperty>();
-                    entity.Properties.Add(property);
+                    AuditEntity entity = entityEntry.MapTo<AuditEntity>();
+                    operation.AuditEntities.Add(entity);
+                    foreach (AuditPropertyEntry propertyEntry in entityEntry.PropertyEntries)
+                    {
+                        AuditProperty property = propertyEntry.MapTo<AuditProperty>();
+                        entity.Properties.Add(property);
+                    }
                 }
             }
             return operation;

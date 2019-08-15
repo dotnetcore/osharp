@@ -213,7 +213,6 @@ export abstract class STComponentBase {
 
   close() {
     if (!this.editModal) return;
-    console.log(this.editModal);
     this.editModal.destroy();
   }
 

@@ -18,7 +18,6 @@ using OSharp.Audits;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Exceptions;
 using OSharp.Security;
 using OSharp.Security.Claims;
 

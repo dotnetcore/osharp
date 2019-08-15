@@ -223,7 +223,7 @@ namespace OSharp.Entity
                     CleanChanges(context);
                     if (context.Database.CurrentTransaction != null)
                     {
-                        context.Database.CurrentTransaction.Rollback();
+                        //context.Database.CurrentTransaction.Rollback();
                         context.Database.CurrentTransaction.Dispose();
                     }
                     continue;

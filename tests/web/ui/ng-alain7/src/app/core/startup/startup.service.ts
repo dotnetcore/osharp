@@ -1,5 +1,4 @@
 import { Injectable, Injector, Inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -16,6 +15,7 @@ import { ANT_ICONS } from "../../../ant-svg-icons";
 import Heartbeats from 'heartbeats';
 import { CacheService } from '@delon/cache';
 import { TokenDto, AjaxResult, AjaxResultType, JsonWebToken } from '@shared/osharp/osharp.model';
+import { Router } from '@angular/router';
 
 /**
  * 用于应用启动时
@@ -23,8 +23,12 @@ import { TokenDto, AjaxResult, AjaxResultType, JsonWebToken } from '@shared/osha
  */
 @Injectable()
 export class StartupService {
+
+  private router: Router;
+
   constructor(
     iconSrv: NzIconService,
+    private injector: Injector,
     private menuService: MenuService,
     private translate: TranslateService,
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
@@ -53,7 +57,18 @@ export class StartupService {
       if (diff > 20) return;
     }
     let rt = this.cache.getNone<string>('refresh_token');
-    if (!rt) return;
+    if (!rt) {
+      // 跳转到登录
+      if (!this.router) {
+        this.router = this.injector.get(Router);
+      }
+      let url = this.router.url;
+      let loginUrl = '/passport/login';
+      if (url !== loginUrl) {
+        setTimeout(() => this.router.navigateByUrl(loginUrl));
+      }
+      return;
+    }
     // 使用rt刷新at
     let dto: TokenDto = { RefreshToken: rt, GrantType: 'refresh_token' };
     this.httpClient.post<AjaxResult>('api/identity/token', dto).subscribe(result => {
