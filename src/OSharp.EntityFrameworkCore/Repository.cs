@@ -40,10 +40,10 @@ namespace OSharp.Entity
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TKey">实体主键类型</typeparam>
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : class, IEntity<TKey>
+        where TEntity : class, IEntity<TKey>, new()
         where TKey : IEquatable<TKey>
     {
-        private readonly DbContext _dbContext;
+        private readonly IDbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
         private readonly ICancellationTokenProvider _cancellationTokenProvider;
@@ -55,8 +55,8 @@ namespace OSharp.Entity
         public Repository(IServiceProvider serviceProvider)
         {
             UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
-            _dbContext = (DbContext)UnitOfWork.GetDbContext<TEntity, TKey>();
-            _dbSet = _dbContext.Set<TEntity>();
+            _dbContext = UnitOfWork.GetDbContext<TEntity, TKey>();
+            _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
@@ -240,8 +240,18 @@ namespace OSharp.Entity
         public virtual int DeleteBatch(Expression<Func<TEntity, bool>> predicate)
         {
             Check.NotNull(predicate, nameof(predicate));
+            // todo: 检测删除的数据权限
 
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            {
+                // 逻辑删除
+                TEntity[] entities = _dbSet.Where(predicate).ToArray();
+                DeleteInternal(entities);
+                return _dbContext.SaveChanges();
+            }
+
+            //物理删除
             return _dbSet.Where(predicate).Delete();
         }
 
@@ -254,7 +264,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
             entities = CheckUpdate(entities);
-            _dbContext.Update<TEntity, TKey>(entities);
+            ((DbContext)_dbContext).Update<TEntity, TKey>(entities);
             return _dbContext.SaveChanges();
         }
 
@@ -291,7 +301,7 @@ namespace OSharp.Entity
                         entity = updateFunc(dto, entity);
                     }
                     entity = CheckUpdate(entity)[0];
-                    _dbContext.Update<TEntity, TKey>(entity);
+                    ((DbContext)_dbContext).Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
                 {
@@ -635,8 +645,18 @@ namespace OSharp.Entity
         public virtual async Task<int> DeleteBatchAsync(Expression<Func<TEntity, bool>> predicate)
         {
             Check.NotNull(predicate, nameof(predicate));
+            // todo: 检测删除的数据权限
 
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
+            {
+                // 逻辑删除
+                TEntity[] entities = _dbSet.Where(predicate).ToArray();
+                DeleteInternal(entities);
+                return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            }
+            
+            // 物理删除
             return await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
         }
 
@@ -650,7 +670,7 @@ namespace OSharp.Entity
             Check.NotNull(entities, nameof(entities));
 
             entities = CheckUpdate(entities);
-            _dbContext.Update<TEntity, TKey>(entities);
+            ((DbContext)_dbContext).Update<TEntity, TKey>(entities);
             return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         }
 
@@ -686,7 +706,7 @@ namespace OSharp.Entity
                         entity = await updateFunc(dto, entity);
                     }
                     entity = CheckUpdate(entity)[0];
-                    _dbContext.Update<TEntity, TKey>(entity);
+                    ((DbContext)_dbContext).Update<TEntity, TKey>(entity);
                 }
                 catch (OsharpException e)
                 {
