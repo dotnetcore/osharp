@@ -71,9 +71,9 @@ namespace OSharp.AutoMapper
                 config.CreateMaps(cfg);
             }
 
-            Mapper.Initialize(cfg);
+            MapperConfiguration configuration = new MapperConfiguration(cfg);
 
-            IMapper mapper = provider.GetService<IMapper>();
+            IMapper mapper = new AutoMapperMapper(configuration);
             MapperExtensions.SetMapper(mapper);
 
             IsEnabled = true;
