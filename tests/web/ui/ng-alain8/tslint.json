@@ -1,0 +1,111 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": [
+    "codelyzer",
+    "ng-alain-codelyzer"
+  ],
+  "rules": {
+    // Angular parts
+    "array-type": false,
+    "arrow-parens": false,
+    "deprecation": {
+      "severity": "warn"
+    },
+    "component-class-suffix": true,
+    "contextual-lifecycle": true,
+    "directive-class-suffix": true,
+    "directive-selector": [
+      true,
+      "attribute",
+      ["app", "passport", "exception", "layout", "header"],
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      ["app", "passport", "exception", "layout", "header"],
+      "kebab-case"
+    ],
+    "import-blacklist": [
+      true,
+      "rxjs/Rx"
+    ],
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "max-line-length": [
+      false,
+      140
+    ],
+    "member-access": false,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
+    ],
+    "no-consecutive-blank-lines": false,
+    "no-console": [
+      true,
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
+    "no-empty": false,
+    "no-inferrable-types": [
+      true,
+      "ignore-params"
+    ],
+    "no-non-null-assertion": false,
+    "no-redundant-jsdoc": true,
+    "no-switch-case-fall-through": true,
+    "no-use-before-declare": true,
+    "no-var-requires": false,
+    "object-literal-key-quotes": [
+      false,
+      "as-needed"
+    ],
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "quotemark": [
+      false,
+      "single"
+    ],
+    "trailing-comma": false,
+    "no-conflicting-lifecycle": true,
+    "no-host-metadata-property": true,
+    "no-input-rename": true,
+    "no-inputs-metadata-property": true,
+    "no-output-native": true,
+    "no-output-on-prefix": true,
+    "no-output-rename": true,
+    "no-outputs-metadata-property": true,
+    "template-banana-in-box": true,
+    "template-no-negated-async": true,
+    "use-lifecycle-interface": true,
+    "use-pipe-transform-interface": true,
+    // Custom parts
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "curly": false,
+    "variable-name": false,
+    "no-this-assignment": false,
+    "ban-types": [
+      true,
+      ["Object", "Use {} instead."],
+      ["String", "Use string instead."],
+      ["Number", "Use number instead."],
+      ["Boolean", "Use boolean instead."],
+      ["Function", "Use specific callable interface instead."]
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "/api": {
+    "target": "http://localhost:7001",
+    "secure": false
+  },
+  "/signin-": {
+    "target": "http://localhost:7001",
+    "secure": false
+  },
+  "/upload-files": {
+    "target": "http://localhost:7001",
+    "secure": false
+  }
+}

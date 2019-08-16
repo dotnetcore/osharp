@@ -1,0 +1,35 @@
+{
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "prettier.stylelintIntegration": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": false
+  },
+  "files.watcherExclude": {
+    "**/.git/*/**": true,
+    "**/node_modules/*/**": true,
+    "**/dist/*/**": true,
+    "**/coverage/*/**": true
+  },
+  "files.associations": {
+    "*.json": "jsonc",
+    ".prettierrc": "jsonc",
+    ".stylelintrc": "jsonc"
+  },
+  // Angular schematics 插件: https://marketplace.visualstudio.com/items?itemName=cyrilletuzi.angular-schematics
+  "ngschematics.schematics": [
+    "ng-alain"
+  ]
+}
