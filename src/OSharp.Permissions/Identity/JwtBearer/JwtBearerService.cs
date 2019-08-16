@@ -99,7 +99,7 @@ namespace OSharp.Identity.JwtBearer
             claims = await claimsProvider.CreateClaims(userId);
             List<Claim> claimList = claims.ToList();
             claimList.Add(new Claim("clientId", clientId));
-            (token, expires) = CreateToken(claimList, _jwtOptions, JwtTokenType.AccessToken);
+            (token, _) = CreateToken(claimList, _jwtOptions, JwtTokenType.AccessToken);
 
             return new JsonWebToken()
             {

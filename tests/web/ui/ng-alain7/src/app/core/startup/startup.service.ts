@@ -51,6 +51,10 @@ export class StartupService {
   }
 
   private tryRefreshAccessToken() {
+    if (!this.router) {
+      this.router = this.injector.get(Router);
+    }
+
     let at = this.tokenSrv.get<JWTTokenModel>(JWTTokenModel);
     if (at && at.token) {
       let diff = Math.round(at.payload.exp - new Date().getTime() / 1000);
@@ -59,11 +63,8 @@ export class StartupService {
     let rt = this.cache.getNone<string>('refresh_token');
     if (!rt) {
       // 跳转到登录
-      if (!this.router) {
-        this.router = this.injector.get(Router);
-      }
-      let url = this.router.url;
       let loginUrl = '/passport/login';
+      let url = this.router.url;
       if (url !== loginUrl) {
         setTimeout(() => this.router.navigateByUrl(loginUrl));
       }
@@ -80,9 +81,11 @@ export class StartupService {
           seconds = Math.round((token.RefreshUctExpires - seconds) / 1000);
           if (seconds > 0) {
             this.cache.set('refresh_token', token.RefreshToken, { expire: seconds });
+            return;
           }
         }
       }
+      this.cache.remove('refresh_token');
     });
   }
 
