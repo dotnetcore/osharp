@@ -64,7 +64,7 @@ export class StartupService {
     if (!rt) {
       // 因无RT而跳转到登录
       let url = this.router.url;
-      if (url === '/403') {
+      if (url === '/exception/403') {
         setTimeout(() => this.router.navigateByUrl('/passport/login'));
       }
       return;
