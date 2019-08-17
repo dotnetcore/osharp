@@ -63,10 +63,8 @@ export class StartupService {
     let rt = this.cache.getNone<string>('refresh_token');
     if (!rt) {
       // 跳转到登录
-      let loginUrl = '/passport/login';
-      let url = this.router.url;
-      if (url !== loginUrl) {
-        setTimeout(() => this.router.navigateByUrl(loginUrl));
+      if (this.router.url === '/exception/403') {
+        setTimeout(() => this.router.navigateByUrl('/passport/login'));
       }
       return;
     }
