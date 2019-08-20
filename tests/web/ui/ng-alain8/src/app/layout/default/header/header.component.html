@@ -1,7 +1,7 @@
 <div class="alain-default__header-logo">
   <a [routerLink]="['/']" class="alain-default__header-logo-link">
-    <img class="alain-default__header-logo-expanded" src="./assets/logo-full.svg" alt="{{settings.app.name}}" style="max-height:40px;" />
-    <img class="alain-default__header-logo-collapsed" src="./assets/logo.svg" alt="{{settings.app.name}}" style="max-height:30px;" />
+    <img class="alain-default__header-logo-expanded" src="./assets/osharp/logo-full.svg" alt="{{settings.app.name}}" style="max-height:40px;" />
+    <img class="alain-default__header-logo-collapsed" src="./assets/osharp/logo.svg" alt="{{settings.app.name}}" style="max-height:30px;" />
   </a>
 </div>
 <div class="alain-default__nav-wrap">
@@ -14,7 +14,7 @@
     </li>
     <!-- Github Page -->
     <li>
-      <a class="alain-default__nav-item" href="//github.com/ng-alain/ng-alain" target="_blank">
+      <a class="alain-default__nav-item" href="https://github.com/i66soft/osharp" target="_blank">
         <i nz-icon nzType="github"></i>
       </a>
     </li>
@@ -23,6 +23,12 @@
       <div class="alain-default__nav-item" [routerLink]="['/lock']">
         <i nz-icon nzType="lock"></i>
       </div>
+    </li>
+    <!-- Documents -->
+    <li>
+      <a class="alain-default__nav-item" href="https://docs.osharp.org" target="_blank" [title]="'menu.nav.docs'|translate">
+        <i nz-icon nzType="file-word"></i>
+      </a>
     </li>
     <!-- Search Button -->
     <li class="hidden-pc" (click)="searchToggleChange()">

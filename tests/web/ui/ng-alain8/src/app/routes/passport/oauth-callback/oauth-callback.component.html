@@ -1,0 +1,23 @@
+<div *ngIf="loginInfo">
+  <div class="text-center">
+    <nz-avatar [nzSize]="40" [nzSrc]="avatar"></nz-avatar>
+    <p style="font-size: 16px; line-height: 50px;">{{name}}</p>
+    <p style="font-size:12px;">使用 {{provider}} 账号登录</p>
+  </div>
+  <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+  <nz-card nzTitle="一键登录">
+    <sf #sf2 [schema]="oneKeySchema" [button]="null">
+      <button nz-button nzType="primary" (click)="loginOneKey(sf2.value)" [disabled]="!sf2.valid">创建新账号一键登录</button>
+    </sf>
+  </nz-card>
+  <nz-card nzTitle="绑定现有账号">
+    <sf #sf1 [schema]="bindSchema" [button]="null">
+      <ng-template sf-template="Password" let-me>
+        <nz-input-group nzSize="large" nzPrefixIcon="lock">
+          <input nz-input type="password" [ngModel]="me.formProperty.value" (ngModelChange)="passwordChange(me, $event)" placeholder="登录密码" />
+        </nz-input-group>
+      </ng-template>
+      <button nz-button nzType="primary" (click)="loginBind(sf1.value)" [disabled]="!sf1.valid">登录并绑定账号</button>
+    </sf>
+  </nz-card>
+</div>

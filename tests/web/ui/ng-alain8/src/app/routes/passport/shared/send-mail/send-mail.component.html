@@ -1,0 +1,15 @@
+<h3 class="text-center" style="font-size: 20px; margin-bottom: 20px;">{{title}}</h3>
+<sf #sf mode="edit" *ngIf="schema" [schema]="schema" [button]="null">
+  <ng-template sf-template="VerifyCode" let-me>
+    <nz-input-group nzSize="large" [nzSuffix]="suffixButton" style="width:200px;">
+      <input nz-input [ngModel]="me.formProperty.value" (ngModelChange)="verifyCodeChange(me, $event)" placeholder="验证码" minlength="4" />
+    </nz-input-group>
+    <ng-template #suffixButton>
+      <div style="text-align:right; cursor: pointer;">
+        <img (click)="refreshCode()" src="{{code.image}}" />
+      </div>
+    </ng-template>
+  </ng-template>
+  <button nz-button nzType="primary" type="submit" (click)="submit(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">下一步</button>
+  <button nz-button (click)="back()">取消</button>
+</sf>

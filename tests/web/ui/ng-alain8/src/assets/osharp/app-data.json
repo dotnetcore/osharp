@@ -1,0 +1,127 @@
+{
+  "app": {
+    "name": "OSharp Framework",
+    "description": "一个开源的基于 .NETCORE 的快速开发框架"
+  },
+  "menu": [{
+    "text": "导航菜单",
+    "i18n": "menu.nav",
+    "group": true,
+    "hideInBreadcrumb": true,
+    "children": [{
+      "text": "主页",
+      "i18n": "menu.nav.home",
+      "icon": "anticon-dashboard",
+      "link": "/dashboard",
+      "acl": "Root.Admin.Dashboard"
+    }]
+  }, {
+    "text": "业务模块",
+    "i18n": "menu.nav.business",
+    "group": true,
+    "hideInBreadcrumb": true,
+    "children": []
+  }, {
+    "text": "权限模块",
+    "i18n": "menu.nav.permission",
+    "group": true,
+    "hideInBreadcrumb": true,
+    "children": [{
+      "text": "身份认证",
+      "i18n": "menu.nav.permission.identity",
+      "group": true,
+      "icon": "anticon-user",
+      "acl": "Root.Admin.Identity",
+      "children": [{
+        "text": "用户信息管理",
+        "i18n": "menu.nav.permission.identity.user",
+        "link": "/identity/user",
+        "acl": "Root.Admin.Identity.User"
+      }, {
+        "text": "角色信息管理",
+        "i18n": "menu.nav.permission.identity.role",
+        "link": "/identity/role",
+        "acl": "Root.Admin.Identity.Role"
+      }, {
+        "text": "用户角色管理",
+        "i18n": "menu.nav.permission.identity.user-role",
+        "link": "/identity/user-role",
+        "acl": "Root.Admin.Identity.UserRole"
+      }]
+    }, {
+      "text": "权限安全",
+      "i18n": "menu.nav.permission.security",
+      "group": true,
+      "icon": "anticon-safety",
+      "acl": "Root.Admin.Security",
+      "children": [{
+        "text": "模块信息管理",
+        "i18n": "menu.nav.permission.security.module",
+        "link": "/security/module",
+        "acl": "Root.Admin.Security.Module"
+      }, {
+        "text": "功能信息管理",
+        "i18n": "menu.nav.permission.security.function",
+        "link": "/security/function",
+        "acl": "Root.Admin.Security.Function"
+      }, {
+        "text": "角色功能管理",
+        "i18n": "menu.nav.permission.security.role-function",
+        "link": "/security/role-function",
+        "acl": "Root.Admin.Security.RoleFunction"
+      }, {
+        "text": "用户功能管理",
+        "i18n": "menu.nav.permission.security.user-function",
+        "link": "/security/user-function",
+        "acl": "Root.Admin.Security.UserFunction"
+      }, {
+        "text": "实体信息管理",
+        "i18n": "menu.nav.permission.security.entityinfo",
+        "link": "/security/entityinfo",
+        "acl": "Root.Admin.Security.EntityInfo"
+      }, {
+        "text": "角色数据管理",
+        "i18n": "menu.nav.permission.security.role-entityinfo",
+        "link": "/security/role-entityinfo",
+        "acl": "Root.Admin.Security.RoleEntity"
+      }]
+    }]
+  }, {
+    "text": "系统管理",
+    "i18n": "menu.nav.system",
+    "group": true,
+    "children": [{
+      "text": "系统管理",
+      "i18n": "menu.nav.system.systems",
+      "icon": "anticon-desktop",
+      "acl": "Root.Admin.Systems",
+      "group": true,
+      "children": [{
+        "text": "操作审计",
+        "i18n": "menu.nav.system.systems.audit-operation",
+        "link": "/systems/audit-operation",
+        "acl": "Root.Admin.Systems.AuditOperation"
+      }, {
+        "text": "数据审计",
+        "i18n": "menu.nav.system.systems.audit-entity",
+        "link": "/systems/audit-entity",
+        "acl": "Root.Admin.Systems.AuditEntity"
+      }, {
+        "text": "系统设置",
+        "i18n": "menu.nav.system.systems.settings",
+        "link": "/systems/settings",
+        "acl": "Root.Admin.Systems.Settings"
+      }, {
+        "text": "数据字典",
+        "i18n": "menu.nav.system.systems.data-dictionary",
+        "link": "/systems/data-dictionary",
+        "acl": "Root.Admin.Systems.KeyValues"
+      }, {
+        "text": "模块包",
+        "i18n": "menu.nav.system.systems.pack",
+        "link": "/systems/pack",
+        "acl": "Root.Admin.Systems.Pack"
+      }]
+    }]
+  }]
+}

@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { SocialService, SocialOpenType, ITokenService, DA_SERVICE_TOKEN, } from '@delon/auth';
 import { ReuseTabService } from '@delon/abc';
-import { environment } from '@env/environment';
 import { StartupService } from '@core';
 import { ComponentBase } from '@shared/osharp/services/osharp.service';
 import { AuthConfig, LoginDto, AjaxResultType, TokenDto } from '@shared/osharp/osharp.model';

@@ -1,0 +1,21 @@
+<svg width="2000" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g class="layer" display="none">
+  <title>背景</title>
+  <ellipse fill="#7f007f" stroke="#3f007f" stroke-width="1.5" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="857" cy="402" id="svg_5"/>
+  <rect fill="#007fff" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="0" y="0" width="2000" height="600" id="svg_1"/>
+ </g>
+ <g display="inline" class="layer">
+  <title>logo</title>
+  <path fill="#00007f" stroke="#3f7f00" stroke-width="1.5" opacity="0.5" d="m231.5,238" id="svg_6"/>
+  <path stroke="#000000" fill="#ffffff" stroke-width="0" d="m288.59021,1.73521c-166.89226,0 -286.85232,118.28508 -286.85232,295.73449c0,157.87313 116.63961,301.26549 286.87461,301.26549c171.86179,0 289.12539,-143.34881 289.12539,-301.26549c0,-178.86482 -123.77081,-295.73449 -289.14768,-295.73449zm-0.04457,533.54586l0,0c-51.01033,0 -77.77461,-35.08049 -91.83643,-82.66019c-6.32893,-22.5813 -10.20652,-47.5797 -12.54644,-72.7523c-2.54049,-29.91967 -2.87477,-60.38374 -2.87477,-87.71213c0,-21.62317 0.40113,-43.09392 1.64909,-63.71542c2.76335,-37.62824 8.60201,-74.7121 19.83364,-105.2415c15.46577,-37.41048 41.6952,-61.45075 85.77491,-61.45075c55.71246,0 83.8584,38.80413 97.71965,94.11415c9.56026,41.243 12.47959,89.8026 12.47959,136.62016c0,50.06211 -2.29535,112.20969 -17.00344,162.05404c-14.73037,46.57803 -42.16319,80.74394 -93.19582,80.74394l0.00002,0z" id="svg_12" stroke-opacity="0"/>
+  <g stroke="null" id="svg_36">
+   <path stroke="#000000" id="svg_34" d="m283.64209,203.68199l43.43762,0l9.32368,-69.422l27.48389,27.10933l-5.68278,42.31267l16.82434,0l0,79.26242l-27.46965,0l-5.32266,39.6312l32.79231,0l0,79.2624l-43.43762,0l-9.32369,69.42198l-27.48388,-27.10936l5.68278,-42.31266l-16.82436,0l0,-79.2624l27.46965,0l5.32265,-39.63122l-32.7923,0l0,-79.26236l0.00002,0z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" fill="#ffffff"/>
+   <path stroke="#000000" id="svg_35" d="m202.61595,203.68199l43.43762,0l9.32368,-69.422l27.48389,27.10933l-5.68281,42.31267l16.82434,0l0,79.26242l-27.46965,0l-5.32266,39.63118l32.79231,0l0,79.26241l-43.43762,0l-9.32368,69.42197l-27.48389,-27.10937l5.68278,-42.31263l-16.82436,0l0,-79.2624l27.46965,0l5.32266,-39.63122l-32.79231,0l0,-79.26236l0.00005,0z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" fill="#ffffff"/>
+  </g>
+ </g>
+ <g>
+  <title>text</title>
+  <text fill="#ffffff" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="723.368341" y="220.776801" id="svg_2" font-size="24" font-family="Sans-serif" text-anchor="middle" xml:space="preserve" transform="matrix(21.306682125845747,0,0,22.501411387509947,-14090.810230333373,-4502.6192890668635) " stroke="#000000" font-style="normal">sharp</text>
+ </g>
+</svg>

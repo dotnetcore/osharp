@@ -6,7 +6,6 @@ import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core
 import { throwIfAlreadyLoaded } from '@core';
 
 import { AlainThemeModule } from '@delon/theme';
-import { DelonACLModule } from '@delon/acl';
 
 // #region mock
 import { DelonMockModule } from '@delon/mock';
@@ -53,11 +52,49 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
   return {
     ...new DelonAuthConfig(),
     login_url: '/passport/login',
+    ignores: [
+      /\/login/,
+      /assets\//,
+      /api\/(?!admin)[\w_-]+\/\S*/
+    ]
   };
+}
+
+import { DelonACLModule, DelonACLConfig, ACLType, ACLCanType } from '@delon/acl';
+export function fnDelonACLConfig(): DelonACLConfig {
+  const config: DelonACLConfig = {
+    guard_url: '/exception/403',
+    preCan: (roleOrAbility: ACLCanType) => {
+      function isAbility(val: string) {
+        return val && val.startsWith('Root.');
+      }
+
+      // 单个字符串，可能是角色也可能是功能点
+      if (typeof roleOrAbility === 'string') {
+        return isAbility(roleOrAbility) ? { ability: [roleOrAbility] } : { role: [roleOrAbility] };
+      }
+
+      // 字符串集合，每项可能是角色或是功能点，逐个处理每项
+      if (Array.isArray(roleOrAbility) && roleOrAbility.length > 0 && typeof roleOrAbility[0] === 'string') {
+        const abilities: string[] = []; const roles: string[] = [];
+        const type: ACLType = {};
+        (roleOrAbility as string[]).forEach((val: string) => {
+          if (isAbility(val)) abilities.push(val);
+          else roles.push(val);
+        });
+        type.role = roles.length > 0 ? roles : null;
+        type.ability = abilities.length > 0 ? abilities : null;
+        return type;
+      }
+      return roleOrAbility as ACLType;
+    }
+  };
+  return config;
 }
 
 // tslint:disable-next-line: no-duplicate-imports
 import { STConfig } from '@delon/abc';
+import { DelonCacheConfig } from '@delon/cache';
 export function fnSTConfig(): STConfig {
   return {
     ...new STConfig(),
@@ -70,6 +107,7 @@ const GLOBAL_CONFIG_PROVIDES = [
   { provide: STConfig, useFactory: fnSTConfig },
   { provide: PageHeaderConfig, useFactory: fnPageHeaderConfig },
   { provide: DelonAuthConfig, useFactory: fnDelonAuthConfig },
+  { provide: DelonACLConfig, useFactory: fnDelonACLConfig },
 ];
 
 // #endregion

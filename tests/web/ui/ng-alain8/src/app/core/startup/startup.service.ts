@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, _HttpClient } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,38 +12,63 @@ import { I18NService } from '../i18n/i18n.service';
 import { NzIconService } from 'ng-zorro-antd/icon';
 import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
+import { ANT_ICONS } from "../../../ant-svg-icons";
+import { IdentityService } from '@shared/osharp/services/identity.service';
+
+import Heartbeats from 'heartbeats';
 
 /**
  * Used for application startup
  * Generally used to get the basic data of the application, like: Menu Data, User Data, etc.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StartupService {
   constructor(
     iconSrv: NzIconService,
+    private injector: Injector,
     private menuService: MenuService,
     private translate: TranslateService,
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
+    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private settingService: SettingsService,
     private aclService: ACLService,
     private titleService: TitleService,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
-    private httpClient: HttpClient,
-    private injector: Injector
+    private httpClient: HttpClient
   ) {
-    iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
+    iconSrv.addIcon(...ICONS_AUTO, ...ICONS, ...ANT_ICONS);
+  }
+
+  private get identity(): IdentityService {
+    return this.injector.get(IdentityService);
+  }
+
+  // 心跳业务
+  private viaHeartbeats() {
+    const heart = Heartbeats.createHeart(1000);
+    // 每5秒检测AccessToken有效期，如过期则使用RefreshToken来刷新
+    heart.createEvent(5, () => {
+      if (!this.identity) {
+        return;
+      }
+      this.identity.tryRefreshToken();
+    });
   }
 
   private viaHttp(resolve: any, reject: any) {
     zip(
-      this.httpClient.get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`),
-      this.httpClient.get('assets/tmp/app-data.json')
+      this.httpClient.get(`assets/osharp/i18n/${this.i18n.defaultLang}.json`),
+      this.httpClient.get('assets/osharp/app-data.json'),
+      this.httpClient.get('api/security/getauthinfo'), // 获取当前用户的权限点string[]
+      this.httpClient.get('api/identity/profile') // 获取用户信息
     ).pipe(
-      catchError(([langData, appData]) => {
-          resolve(null);
-          return [langData, appData];
+      catchError(([langData, appData, authInfo, userInfo]) => {
+        resolve(null);
+        return [langData, appData, authInfo, userInfo];
       })
-    ).subscribe(([langData, appData]) => {
+    ).subscribe(([langData, appData, authInfo, userInfo]) => {
+      console.log(userInfo);
       // Setting language data
       this.translate.setTranslation(this.i18n.defaultLang, langData);
       this.translate.setDefaultLang(this.i18n.defaultLang);
@@ -53,78 +78,19 @@ export class StartupService {
       // Application information: including site name, description, year
       this.settingService.setApp(res.app);
       // User information: including name, avatar, email address
-      this.settingService.setUser(res.user);
+      this.settingService.setUser({});
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
-      this.aclService.setFull(true);
+      // this.aclService.setFull(true);
+      this.aclService.setAbility(authInfo);
       // Menu data, https://ng-alain.com/theme/menu
       this.menuService.add(res.menu);
       // Can be set page suffix title, https://ng-alain.com/theme/title
       this.titleService.suffix = res.app.name;
     },
-    () => { },
-    () => {
-      resolve(null);
-    });
-  }
-  
-  private viaMockI18n(resolve: any, reject: any) {
-    this.httpClient
-      .get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`)
-      .subscribe(langData => {
-        this.translate.setTranslation(this.i18n.defaultLang, langData);
-        this.translate.setDefaultLang(this.i18n.defaultLang);
-
-        this.viaMock(resolve, reject);
+      () => { },
+      () => {
+        resolve(null);
       });
-  }
-  
-  private viaMock(resolve: any, reject: any) {
-    // const tokenData = this.tokenService.get();
-    // if (!tokenData.token) {
-    //   this.injector.get(Router).navigateByUrl('/passport/login');
-    //   resolve({});
-    //   return;
-    // }
-    // mock
-    const app: any = {
-      name: `ng-alain`,
-      description: `Ng-zorro admin panel front-end framework`
-    };
-    const user: any = {
-      name: 'Admin',
-      avatar: './assets/tmp/img/avatar.jpg',
-      email: 'cipchk@qq.com',
-      token: '123456789'
-    };
-    // Application information: including site name, description, year
-    this.settingService.setApp(app);
-    // User information: including name, avatar, email address
-    this.settingService.setUser(user);
-    // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
-    this.aclService.setFull(true);
-    // Menu data, https://ng-alain.com/theme/menu
-    this.menuService.add([
-      {
-        text: 'Main',
-        group: true,
-        children: [
-          {
-            text: 'Dashboard',
-            link: '/dashboard',
-            icon: { type: 'icon', value: 'appstore' }
-          },
-          {
-            text: 'Quick Menu',
-            icon: { type: 'icon', value: 'rocket' },
-            shortcutRoot: true
-          }
-        ]
-      }
-    ]);
-    // Can be set page suffix title, https://ng-alain.com/theme/title
-    this.titleService.suffix = app.name;
-
-    resolve({});
   }
 
   load(): Promise<any> {
@@ -132,10 +98,10 @@ export class StartupService {
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
       // http
-      // this.viaHttp(resolve, reject);
-      // mock：请勿在生产环境中这么使用，viaMock 单纯只是为了模拟一些数据使脚手架一开始能正常运行
-      this.viaMockI18n(resolve, reject);
+      this.viaHttp(resolve, reject);
 
+      // heartbeats
+      // this.viaHeartbeats();
     });
   }
 }
