@@ -21,7 +21,9 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // 业务子模块
-      // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
+      { path: 'identity', loadChildren: () => import('./identity/identity.module').then(m => m.IdentityModule) },
+      { path: 'security', loadChildren: () => import('./security/security.module').then(m => m.SecurityModule) },
+      { path: 'systems', loadChildren: () => import('./systems/systems.module').then(m => m.SystemsModule) },
     ]
   },
   // 全屏布局

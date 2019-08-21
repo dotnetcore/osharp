@@ -80,7 +80,7 @@
         "link": "/security/entityinfo",
         "acl": "Root.Admin.Security.EntityInfo"
       }, {
-        "text": "角色数据管理",
+        "text": "数据权限管理",
         "i18n": "menu.nav.permission.security.role-entityinfo",
         "link": "/security/role-entityinfo",
         "acl": "Root.Admin.Security.RoleEntity"

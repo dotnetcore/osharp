@@ -98,6 +98,7 @@ import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 import { IconDefinition } from '@ant-design/icons-angular';
+import { IdentityModule } from './routes/identity/identity.module';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { IconDefinition } from '@ant-design/icons-angular';
     RoutesModule,
     ...I18NSERVICE_MODULES,
     ...FORM_MODULES,
-    ...GLOBAL_THIRD_MODULES
+    ...GLOBAL_THIRD_MODULES,
+    IdentityModule
   ],
   providers: [
     ...LANG_PROVIDES,

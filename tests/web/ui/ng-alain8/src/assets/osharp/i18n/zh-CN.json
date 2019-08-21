@@ -23,7 +23,7 @@
   "menu.nav.permission.security.role-function": "角色功能管理",
   "menu.nav.permission.security.user-function": "用户功能管理",
   "menu.nav.permission.security.entityinfo": "数据实体管理",
-  "menu.nav.permission.security.role-entityinfo": "角色数据管理",
+  "menu.nav.permission.security.role-entityinfo": "数据权限管理",
   "menu.nav.system": "系统模块",
   "menu.nav.system.systems": "系统管理",
   "menu.nav.system.systems.audit-operation": "操作审计",

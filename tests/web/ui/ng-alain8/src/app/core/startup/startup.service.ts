@@ -103,7 +103,7 @@ export class StartupService {
       this.viaHttp(resolve, reject);
 
       // heartbeats
-      // this.viaHeartbeats();
+      this.viaHeartbeats();
     });
   }
 }

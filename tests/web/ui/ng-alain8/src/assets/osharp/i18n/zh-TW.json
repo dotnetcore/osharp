@@ -23,7 +23,7 @@
   "menu.nav.permission.security.role-function": "角色功能管理",
   "menu.nav.permission.security.user-function": "用戶功能管理",
   "menu.nav.permission.security.entityinfo": "數據實體管理",
-  "menu.nav.permission.security.role-entityinfo": "角色數據管理",
+  "menu.nav.permission.security.role-entityinfo": "數據權限管理",
   "menu.nav.system": "系統模塊",
   "menu.nav.system.systems": "系統管理",
   "menu.nav.system.systems.audit-operation": "操作審計",
