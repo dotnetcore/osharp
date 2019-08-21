@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { OsharpService } from './services/osharp.service';
 import { RemoteValidator } from './directives/remote-validator.directive';
 import { RemoteInverseValidator } from './directives/remote-inverse-validator.directive';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 const DIRECTIVES = [
   RemoteValidator,
@@ -17,10 +18,11 @@ const SERVICES = [
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [...DIRECTIVES, ...COMPONENTS],
+  imports: [CommonModule, FormsModule, NgZorroAntdModule],
+  declarations: [...DIRECTIVES, ...COMPONENTS,],
   providers: [
     ...SERVICES
-  ]
+  ],
+  exports: [...COMPONENTS]
 })
 export class OsharpModule { }

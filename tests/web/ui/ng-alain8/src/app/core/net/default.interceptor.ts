@@ -69,7 +69,6 @@ export class DefaultInterceptor implements HttpInterceptor {
             switch (result.Type) {
               case AjaxResultType.Success:
               case AjaxResultType.Info:
-              case AjaxResultType.Error:
               case AjaxResultType.Locked:
                 return of(ev);
               case AjaxResultType.UnAuth:
@@ -78,6 +77,7 @@ export class DefaultInterceptor implements HttpInterceptor {
                 break;
               default:
                 const type = result.Type as number;
+                this.osharp.ajaxResult(result);
                 this.osharp.goto(`/exception/${type}`);
                 break;
             }

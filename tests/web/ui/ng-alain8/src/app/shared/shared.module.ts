@@ -10,10 +10,21 @@ import { DelonFormModule } from '@delon/form';
 // i18n
 import { TranslateModule } from '@ngx-translate/core';
 
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/catch';
+
 // #region third libs
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 import { OsharpModule } from './osharp/osharp.module';
+
+import { ModalTreeComponent } from './components/modal-tree/modal-tree.component';
+import { FilterGroupComponent } from './components/filter-group/filter-group.component';
+import { FilterRuleComponent } from './components/filter-group/filter-rule.component';
+import { AdSearchComponent } from './components/ad-search/ad-search.component';
+import { AdSearchModalComponent } from './components/ad-search/modal/modal.component';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
@@ -22,13 +33,14 @@ const THIRDMODULES = [
 ];
 // #endregion
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/catch';
-
 // #region your componets & directives
-const COMPONENTS = [];
+const COMPONENTS = [
+  ModalTreeComponent,
+  FilterGroupComponent,
+  FilterRuleComponent,
+  AdSearchComponent,
+  AdSearchModalComponent
+];
 const DIRECTIVES = [];
 // #endregion
 

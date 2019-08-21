@@ -18,6 +18,6 @@
 </nz-modal>
 <!--修改角色-->
 <app-identity-modal-tree #roleModal [title]="roleTitle" [treeDataUrl]="roleTreeDataUrl" [submitACL]="'Root.Admin.Identity.User.SetRoles'" (submited)="setRoles($event)"></app-identity-modal-tree>
-<!--修改角色-->
+<!--修改权限-->
 <app-identity-modal-tree #moduleModal [title]="moduleTitle" [treeDataUrl]="moduleTreeDataUrl" [submitACL]="'Root.Admin.Identity.User.SetModules'" (submited)="setModules($event)">
 </app-identity-modal-tree>

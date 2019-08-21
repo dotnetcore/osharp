@@ -1,0 +1,15 @@
+<div class="group-box" #groupBox *ngIf="group" [ngStyle]="{'background-color': group.Level%2==0?'#eee':'#fff'}">
+  <app-security-filter-group *ngFor="let subGroup of group.Groups" [group]="subGroup" [entity]="entity" (remove)="removeSubGroup($event)"></app-security-filter-group>
+  <div>
+    <app-security-filter-rule *ngFor="let subRule of group.Rules" [rule]="subRule" [properties]="entityProperties" (remove)="removeRule($event)"></app-security-filter-rule>
+    <nz-row class="group-operate">
+      <nz-select [(ngModel)]="group.Operate" nzSize="small">
+        <nz-option *ngFor="let entry of groupOperateEntries" [nzValue]="entry.Operate" [nzLabel]="entry.Display"></nz-option>
+      </nz-select>
+      <button nz-button nzSize="small" (click)="addGroup()">增加分组</button>
+      <button nz-button nzSize="small" (click)="addRule()">增加条件</button>
+      <button nz-button nzSize="small" (click)="removeGroup()" *ngIf="group.Level>1">删除分组</button>
+    </nz-row>
+  </div>
+</div>
+<nz-alert *ngIf="!group" nzType="info" nzMessage="请选择左边一行进行操作"></nz-alert>

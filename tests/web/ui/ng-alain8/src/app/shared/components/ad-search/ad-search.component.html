@@ -1,0 +1,32 @@
+<label style="margin-left: 8px;">搜索：</label>
+<nz-select [(ngModel)]="rule.Field" (ngModelChange)="fieldChange($event)" style="width:100px;" nzPlaceHolder="选择属性">
+  <nz-option *ngFor="let column of columns" [nzLabel]="column.title" [nzValue]="column.index"></nz-option>
+</nz-select>
+<ng-container [ngSwitch]="rule.control">
+  <ng-container *ngSwitchCase="'enum'">
+    <nz-select [(ngModel)]="rule.Value" nzSize="default" style="width: 120px; margin-left: 8px;">
+      <nz-option *ngFor="let enum of rule.enums" [nzValue]="enum.value" [nzLabel]="enum.label"></nz-option>
+    </nz-select>
+  </ng-container>
+  <ng-container *ngSwitchCase="'number'">
+    <nz-input-number [(ngModel)]="rule.Value" nzSize="default" style="margin-left: 8px;"></nz-input-number>
+  </ng-container>
+  <ng-container *ngSwitchCase="'date'">
+    <div style="width:200px;">
+      <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="yyyy-MM-dd HH:mm" nzPlaceHolder="选择时间" nzSize="default" style="margin-left:8px; width:190px;"></nz-date-picker>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'boolean'">
+    <nz-switch [(ngModel)]="rule.Value"></nz-switch>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <input nz-input [(ngModel)]="rule.Value" style="width:150px;margin-left: 8px;" placeholder="搜索字符串">
+  </ng-container>
+</ng-container>
+<nz-dropdown-button (nzClick)="search()" style="margin-left: 8px;"> <i nz-icon type="search" theme="outline"></i> 搜索
+  <ul nz-menu>
+    <li nz-menu-item (click)="adSearch()"><i nz-icon type="search" theme="outline"></i>高级搜索</li>
+    <li nz-menu-item (click)="reset()"><i nz-icon type="reload" theme="outline"></i>重置</li>
+  </ul>
+</nz-dropdown-button>
+<app-ad-search-modal #searchModal [request]="request" [columns]="columns" (submited)=adSearchSubmited($event)></app-ad-search-modal>

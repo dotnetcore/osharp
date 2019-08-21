@@ -7,8 +7,8 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:4200",
+      "name": "Launch Chrome",
+      "url": "http://localhost:4208",
       "webRoot": "${workspaceRoot}",
       "sourceMaps": true
     }

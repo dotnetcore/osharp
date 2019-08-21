@@ -9,12 +9,16 @@
 
 using System;
 
+using OSharp.Core.EntityInfos;
+using OSharp.Mapping;
+
 
 namespace Liuliu.Demo.Security.Dtos
 {
     /// <summary>
     /// 实体信息节点
     /// </summary>
+    [MapFrom(typeof(EntityInfo))]
     public class EntityInfoNode
     {
         /// <summary>
