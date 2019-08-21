@@ -449,7 +449,6 @@ namespace Liuliu.Demo.Web.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("用户信息")]
-        [LoggedIn]
         public async Task<OnlineUser> Profile()
         {
             if (!User.Identity.IsAuthenticated)

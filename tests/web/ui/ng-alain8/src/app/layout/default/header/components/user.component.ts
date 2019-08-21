@@ -41,9 +41,7 @@ export class HeaderUserComponent {
     public settings: SettingsService,
     private identity: IdentityService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
-  ) {
-    console.log(settings.user);
-  }
+  ) { }
 
   logout() {
     this.identity.logout().then(res => {

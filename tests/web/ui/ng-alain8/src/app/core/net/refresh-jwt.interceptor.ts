@@ -30,7 +30,6 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
           if (event.status === 200 && (event instanceof HttpResponse)) {
             const result: AjaxResult = event.body as AjaxResult;
             if (result && result.Type === AjaxResultType.UnAuth) {
-              console.log('result', result);
               return this.handle401Error(req, next, options, event);
             }
           }
@@ -38,7 +37,6 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
         return of(event);
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log('error', error);
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(req, next, options, error);
         } else {
@@ -48,6 +46,7 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
     );
   }
 
+  /** 给当前Request添加AccessToken */
   private addToken(req: HttpRequest<any>, options: DelonAuthConfig, token: string): HttpRequest<any> {
     if (!token) {
       const model = this.identity.getAccessToken();
@@ -77,7 +76,6 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
       }
       return this.identity.refreshToken(refreshToken).pipe(
         switchMap((token: any) => {
-          console.log('token', token);
           this.isRefreshing = false;
           let model = token as AjaxResult;
           if (model && model.Type === AjaxResultType.Success) {
@@ -96,7 +94,6 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(jwt => {
-          console.log(jwt);
           req = this.addToken(req, options, jwt.AccessToken);
           return next.handle(req);
         })

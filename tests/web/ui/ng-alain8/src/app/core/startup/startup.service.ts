@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, _HttpClient } from '@delon/theme';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, _HttpClient, User } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
@@ -68,7 +68,6 @@ export class StartupService {
         return [langData, appData, authInfo, userInfo];
       })
     ).subscribe(([langData, appData, authInfo, userInfo]) => {
-      console.log(userInfo);
       // Setting language data
       this.translate.setTranslation(this.i18n.defaultLang, langData);
       this.translate.setDefaultLang(this.i18n.defaultLang);
@@ -78,7 +77,10 @@ export class StartupService {
       // Application information: including site name, description, year
       this.settingService.setApp(res.app);
       // User information: including name, avatar, email address
-      this.settingService.setUser({});
+      if (userInfo && userInfo.UserName) {
+        let user: User = { name: userInfo.UserName, avatar: userInfo.HeadImg, email: userInfo.Email, nickName: userInfo.NickName };
+        this.settingService.setUser(user);
+      }
       // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
       // this.aclService.setFull(true);
       this.aclService.setAbility(authInfo);

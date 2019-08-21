@@ -163,7 +163,7 @@ export class IdentityService {
     const dto: TokenDto = { RefreshToken: refreshToken, GrantType: 'refresh_token' };
     return this.http.post<AjaxResult>('api/identity/token', dto).map(result => {
       if (result.Type === AjaxResultType.Success) {
-        this.loginEnd(result.Data as JsonWebToken).subscribe();
+        this.setToken(result.Data as JsonWebToken);
       } else {
         this.cache.remove('refresh_token');
       }

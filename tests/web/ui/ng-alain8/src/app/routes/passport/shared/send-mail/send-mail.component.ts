@@ -23,7 +23,7 @@ export class SendMailComponent implements OnInit, AfterViewInit {
 
   @Input() title: string;
   @Output() submited = new EventEmitter<SendMailDto>();
-  @ViewChild('sf', { static: true }) sf: SFComponent;
+  @ViewChild('sf', { static: false }) sf: SFComponent;
 
   constructor(
     public router: Router,

@@ -226,6 +226,10 @@ export class OsharpService {
     window.open(url);
   }
 
+  goto(url: string) {
+    setTimeout(() => this.router.navigateByUrl(url));
+  }
+
   /**
    * 处理Ajax结果
    * @param res HTTP响应
