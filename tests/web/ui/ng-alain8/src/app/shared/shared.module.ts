@@ -25,6 +25,7 @@ import { FilterGroupComponent } from './components/filter-group/filter-group.com
 import { FilterRuleComponent } from './components/filter-group/filter-rule.component';
 import { AdSearchComponent } from './components/ad-search/ad-search.component';
 import { AdSearchModalComponent } from './components/ad-search/modal/modal.component';
+import { FunctionViewComponent } from './components/function-view/function-view.component';
 
 const THIRDMODULES = [
   NgZorroAntdModule,
@@ -39,7 +40,8 @@ const COMPONENTS = [
   FilterGroupComponent,
   FilterRuleComponent,
   AdSearchComponent,
-  AdSearchModalComponent
+  AdSearchModalComponent,
+  FunctionViewComponent
 ];
 const DIRECTIVES = [];
 // #endregion
@@ -77,7 +79,7 @@ const DIRECTIVES = [];
     ...THIRDMODULES,
     // your components
     ...COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
   ]
 })
 export class SharedModule { }

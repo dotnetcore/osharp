@@ -3,14 +3,12 @@ import { NzModalComponent } from 'ng-zorro-antd';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { FilterGroup, FilterOperateEntry, FilterOperate, FilterRule, PageRequest, } from '@shared/osharp/osharp.model';
 import { List } from 'linqts';
-// import { OsharpSTColumn } from '@shared/osharp/services/alain.types';
+import { OsharpSTColumn } from '@shared/osharp/services/alain.types';
 import { AlainService } from '@shared/osharp/services/alain.service';
 import { SFSchema } from '@delon/form';
-import { stat } from 'fs';
-import { STColumn } from '@delon/abc';
 
 @Component({
-  selector: 'app-ad-search-modal',
+  selector: 'osharp-ad-search-modal',
   templateUrl: './modal.component.html',
   styles: [
     `
@@ -48,7 +46,7 @@ import { STColumn } from '@delon/abc';
 })
 export class AdSearchModalComponent implements OnInit {
   @Input() request: PageRequest;
-  @Input() columns: STColumn[];
+  @Input() columns: OsharpSTColumn[];
   @Input() title = '高级搜索';
   @Output() submited: EventEmitter<PageRequest> = new EventEmitter<
     PageRequest
@@ -140,7 +138,7 @@ export class AdSearchModalComponent implements OnInit {
   }
 
   fieldChange(field: string, rule: FilterRule) {
-    let column: STColumn = this.columns.find(m => m.index === field);
+    let column: OsharpSTColumn = this.columns.find(m => m.index === field);
     if (!column) return;
     this.alain.changeFilterRuleType(rule, column);
   }

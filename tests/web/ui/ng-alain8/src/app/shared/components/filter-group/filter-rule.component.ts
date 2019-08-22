@@ -3,7 +3,7 @@ import { FilterRule, EntityProperty, FilterOperate, FilterOperateEntry } from '@
 import { OsharpService } from '@shared/osharp/services/osharp.service';
 
 @Component({
-  selector: 'app-security-filter-rule',
+  selector: 'osharp-filter-rule',
   templateUrl: './filter-rule.component.html',
   styles: [`
   .rule-box{margin:3px 3px;}
@@ -65,13 +65,13 @@ export class FilterRuleComponent implements OnChanges {
         break;
       case 'System.Int32':
         if (this.property.ValueRange.length === 0) {
-          //数值类型
+          // 数值类型
           this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual, FilterOperate.Less, FilterOperate.LessOrEqual, FilterOperate.Greater, FilterOperate.GreaterOrEqual]);
           if (!this.rule.Value) {
             this.rule.Value = '0';
           }
         } else {
-          //枚举类型
+          // 枚举类型
           this.operateEntries = this.getOperateEntries([FilterOperate.Equal, FilterOperate.NotEqual]);
           if (!this.rule.Value) {
             this.rule.Value = this.property.ValueRange[0].id;

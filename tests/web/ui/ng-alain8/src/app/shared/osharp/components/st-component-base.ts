@@ -70,7 +70,7 @@ export abstract class STComponentBase {
   protected abstract GetSTColumns(): OsharpSTColumn[];
 
   protected GetSTReq(request: PageRequest): STReq {
-    return this.alain.GetSTReq(request, this.RequestProcess);
+    return this.alain.GetSTReq(request, opt => this.RequestProcess(opt));
   }
 
   protected GetSTRes(): STRes {
@@ -82,7 +82,7 @@ export abstract class STComponentBase {
   }
 
   protected RequestProcess(opt: STRequestOptions): STRequestOptions {
-    return this.alain.RequestProcess(opt, this.ReplaceFieldName);
+    return this.alain.RequestProcess(opt, field => this.ReplaceFieldName(field));
   }
 
   protected ResponseDataProcess(data: STData[]): STData[] {
@@ -110,7 +110,7 @@ export abstract class STComponentBase {
   }
 
   error(value: STError) {
-    console.log(value);
+    console.error(value);
   }
 
   // #endregion

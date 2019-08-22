@@ -26,7 +26,7 @@
     "component-selector": [
       true,
       "element",
-      ["app", "passport", "exception", "layout", "header"],
+      ["app", "passport", "exception", "layout", "header", "osharp"],
       "kebab-case"
     ],
     "import-blacklist": [

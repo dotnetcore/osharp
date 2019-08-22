@@ -7,7 +7,7 @@ import { List } from 'linqts';
 import { STColumn } from '@delon/abc';
 
 @Component({
-  selector: 'app-ad-search',
+  selector: 'osharp-ad-search',
   templateUrl: './ad-search.component.html',
   styles: [],
 })

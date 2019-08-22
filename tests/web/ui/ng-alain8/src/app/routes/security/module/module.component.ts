@@ -4,6 +4,7 @@ import { PageRequest, FilterRule, FilterOperate } from '@shared/osharp/osharp.mo
 import { List } from 'linqts';
 import { ArrayService } from '@delon/util';
 import { STColumn, STReq, STPage, STRes, STComponent } from '@delon/abc';
+import { FunctionViewComponent } from '@shared/components/function-view/function-view.component';
 
 export interface TreeNodeInterface {
   Id: number;
@@ -31,7 +32,6 @@ export class ModuleComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    this.functionInit();
   }
 
   private loadData() {
@@ -87,39 +87,16 @@ export class ModuleComponent implements OnInit {
 
   drawerTitle = '';
   drawerVisible = false;
-  functionUrl = 'api/admin/module/readfunctions';
-  functionColumns: STColumn[];
-  functionRequest: PageRequest;
-  functionReq: STReq;
-  functionRes: STRes;
-  functionPage: STPage;
-  @ViewChild('functionST', { static: true }) functionST: STComponent;
+  selectedModuleId = 0;
+  @ViewChild('function', { static: false }) function: FunctionViewComponent;
 
-  functionInit() {
-    this.functionColumns = [
-      { title: '功能名称', index: 'Name', filterable: true },
-      { title: '功能类型', index: 'AccessType', type: 'tag', tag: this.alain.AccessTypeTags, width: 100, filterable: true },
-    ];
-    this.functionRequest = new PageRequest();
-    this.functionReq = this.alain.GetSTReq(this.functionRequest, this.alain.RequestProcess);
-    this.functionPage = this.alain.GetSTPage();
-    this.functionRes = this.alain.GetSTRes();
-  }
-
-  showFunction(item) {
+  showDrawer(item) {
     this.drawerTitle = `查看功能 - ${item.Remark || item.Name}`;
     this.drawerVisible = true;
-
-    this.functionST.pi = 1;
-    let filterGroup = this.functionRequest.FilterGroup;
-    filterGroup.Rules = [];
-    filterGroup.Rules.push(new FilterRule('TreePathString', `$${item.Id}$`, FilterOperate.Contains));
-
-    this.functionReq.body = this.functionRequest;
-    this.functionST.reload();
+    this.function.reload(item.Id);
   }
 
-  closeFunction() {
+  closeDrawer() {
     this.drawerVisible = false;
   }
 
