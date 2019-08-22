@@ -5,8 +5,8 @@ import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd';
 import { List } from 'linqts';
 import { Observable } from 'rxjs';
 import { SFSchemaEnumType, SFSchema } from '@delon/form';
-import { STColumn, STColumnTag } from '@delon/abc';
-import { FilterRule, FilterOperate } from '../osharp.model';
+import { STColumn, STColumnTag, STReq, STRes, STPage, STRequestOptions, STData } from '@delon/abc';
+import { FilterRule, FilterOperate, PageRequest, PageCondition, SortCondition, ListSortDirection } from '../osharp.model';
 import { OsharpSTColumn } from './alain.types';
 
 @Injectable({
@@ -234,5 +234,63 @@ export class AlainService {
       }
     }
     return enums;
+  }
+
+  GetSTReq(request: PageRequest, process?: (requestOptions: STRequestOptions) => STRequestOptions): STReq {
+    let req: STReq = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: request,
+      allInBody: true,
+      process: process ? process : null,
+    };
+    return req;
+  }
+
+  GetSTRes(process?: (data: STData[], rawData?: any) => STData[]): STRes {
+    let res: STRes = {
+      reName: { list: 'Rows', total: 'Total' },
+      process: process ? process : null
+    };
+    return res;
+  }
+
+  GetSTPage(): STPage {
+    let page: STPage = {
+      showSize: true,
+      showQuickJumper: true,
+      toTop: true,
+      toTopOffset: 0,
+    };
+    return page;
+  }
+
+  RequestProcess(opt: STRequestOptions, fieldReplaceFunc?: (f: string) => string): STRequestOptions {
+    if (opt.body.PageCondition) {
+      let page: PageCondition = opt.body.PageCondition;
+      page.PageIndex = opt.body.pi;
+      page.PageSize = opt.body.ps;
+      if (opt.body.sort) {
+        page.SortConditions = [];
+        let sorts: string[] = opt.body.sort.split('-');
+        for (const item of sorts) {
+          let sort = new SortCondition();
+          let num = item.lastIndexOf('.');
+          let field = item.substr(0, num);
+          if (fieldReplaceFunc) {
+            field = fieldReplaceFunc(field);
+          }
+          sort.SortField = field;
+          sort.ListSortDirection =
+            item.substr(num + 1) === 'ascend'
+              ? ListSortDirection.Ascending
+              : ListSortDirection.Descending;
+          page.SortConditions.push(sort);
+        }
+      } else {
+        page.SortConditions = [];
+      }
+    }
+    return opt;
   }
 }

@@ -70,59 +70,19 @@ export abstract class STComponentBase {
   protected abstract GetSTColumns(): OsharpSTColumn[];
 
   protected GetSTReq(request: PageRequest): STReq {
-    let req: STReq = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: request,
-      allInBody: true,
-      process: opt => this.RequestProcess(opt),
-    };
-    return req;
+    return this.alain.GetSTReq(request, this.RequestProcess);
   }
 
   protected GetSTRes(): STRes {
-    let res: STRes = {
-      reName: { list: 'Rows', total: 'Total' },
-      process: data => this.ResponseDataProcess(data),
-    };
-    return res;
+    return this.alain.GetSTRes(this.ResponseDataProcess);
   }
 
   protected GetSTPage(): STPage {
-    let page: STPage = {
-      showSize: true,
-      showQuickJumper: true,
-      toTop: true,
-      toTopOffset: 0,
-    };
-    return page;
+    return this.alain.GetSTPage();
   }
 
   protected RequestProcess(opt: STRequestOptions): STRequestOptions {
-    if (opt.body.PageCondition) {
-      let page: PageCondition = opt.body.PageCondition;
-      page.PageIndex = opt.body.pi;
-      page.PageSize = opt.body.ps;
-      if (opt.body.sort) {
-        page.SortConditions = [];
-        let sorts = opt.body.sort.split('-');
-        for (const item of sorts) {
-          let sort = new SortCondition();
-          let num = item.lastIndexOf('.');
-          let field = item.substr(0, num);
-          field = this.ReplaceFieldName(field);
-          sort.SortField = field;
-          sort.ListSortDirection =
-            item.substr(num + 1) === 'ascend'
-              ? ListSortDirection.Ascending
-              : ListSortDirection.Descending;
-          page.SortConditions.push(sort);
-        }
-      } else {
-        page.SortConditions = [];
-      }
-    }
-    return opt;
+    return this.alain.RequestProcess(opt, this.ReplaceFieldName);
   }
 
   protected ResponseDataProcess(data: STData[]): STData[] {
