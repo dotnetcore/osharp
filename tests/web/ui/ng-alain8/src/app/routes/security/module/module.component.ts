@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlainService } from '@shared/osharp/services/alain.service';
-import { PageRequest, FilterRule, FilterOperate } from '@shared/osharp/osharp.model';
+import { PageRequest, FilterRule, FilterOperate, FilterGroup } from '@shared/osharp/osharp.model';
 import { List } from 'linqts';
 import { ArrayService } from '@delon/util';
 import { STColumn, STReq, STPage, STRes, STComponent } from '@delon/abc';
@@ -87,13 +87,15 @@ export class ModuleComponent implements OnInit {
 
   drawerTitle = '';
   drawerVisible = false;
-  selectedModuleId = 0;
   @ViewChild('function', { static: false }) function: FunctionViewComponent;
 
   showDrawer(item) {
     this.drawerTitle = `查看功能 - ${item.Remark || item.Name}`;
     this.drawerVisible = true;
-    this.function.reload(item.Id);
+
+    let filter: FilterGroup = new FilterGroup();
+    filter.Rules.push(new FilterRule('TreePathString', `$${item.Id}$`, FilterOperate.Contains));
+    this.function.reload(filter);
   }
 
   closeDrawer() {

@@ -31,7 +31,7 @@ export class FilterGroupComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    if (this.group && (!this.group.Level || this.group.Level == 1)) {
+    if (this.group && (!this.group.Level || this.group.Level === 1)) {
       FilterGroup.Init(this.group);
     }
     if (this.group) {

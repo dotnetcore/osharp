@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, ViewChild, Input, Output, EventEmitter, On
 import { STComponentBase } from '@shared/osharp/components/st-component-base';
 import { STComponent } from '@delon/abc';
 import { OsharpSTColumn } from '@shared/osharp/services/alain.types';
-import { FilterRule, FilterOperate } from '@shared/osharp/osharp.model';
+import { FilterRule, FilterOperate, FilterGroup } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'osharp-function-view',
@@ -37,11 +37,9 @@ export class FunctionViewComponent extends STComponentBase implements OnInit {
     ];
   }
 
-  reload(typeId: any) {
+  reload(filter: FilterGroup) {
     this.st.pi = 1;
-    let group = this.request.FilterGroup;
-    group.Rules = [];
-    group.Rules.push(new FilterRule('TreePathString', `$${typeId}$`, FilterOperate.Contains));
+    this.request.FilterGroup = filter;
     this.st.req.body = this.request;
     this.st.reload();
   }

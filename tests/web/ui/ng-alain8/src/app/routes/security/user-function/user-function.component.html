@@ -1,1 +1,12 @@
-<p>user-function works!</p>
+<nz-card>
+  <div>
+    <button nz-button (click)="st.reload()"><i nz-icon type="reload" theme="outline"></i>刷新</button>
+    <osharp-ad-search [request]="request" [columns]="columns" (submited)="search($event)"></osharp-ad-search>
+  </div>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort
+    (change)="change($event)" (error)="error($event)"></st>
+
+  <nz-drawer [nzTitle]="drawerTitle" [nzVisible]="drawerVisible" nzWidth="600px" (nzOnClose)="closeDrawer()">
+    <osharp-function-view #function [ReadUrl]="functionReadUrl"></osharp-function-view>
+  </nz-drawer>
+</nz-card>
