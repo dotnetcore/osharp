@@ -1,5 +1,30 @@
 # OSharp .NetStandard 更新记录
 
+### 1.1.0 (2019/08/23)
+1. (core)：修复OperationResult.ToAjaxResult() 丢失 Data 的问题
+2. (core)：添加OperationResult.ToAjaxResult()的object类型Data转强类型委托处理的支持
+3. (core)：OperationResult.ToAjaxResult() 添加是否包含服务层返回的Data的选项 [#85](https://github.com/i66soft/osharp/issues/85)
+4. (core)：Expression<Func<T, bool>> And/Or操作增加 if 表达式，以支持某些条件成立时才组合表达式
+5. (core)：FilterHelper数据查询功能新增对空数据值(null或空字符串)的部分支持 [#94](https://github.com/i66soft/osharp/issues/94)
+6. (core)：IsDeriveClassFrom方法canAbstract逻辑错误 [#101](https://github.com/i66soft/osharp/issues/101)
+7. (efcore)：bug修复：IEntityRegister.DbContextType如果既有Null又有DefaultDbContext，dict[typeof(DefaultDbContext)]会被覆盖掉。[#101](https://github.com/i66soft/osharp/issues/101)
+8. (efcore)：修复逻辑删除在批量删除时也会物理删除的问题，更改为调用更新逻辑来操作数据 [#103](https://github.com/i66soft/osharp/issues/103)
+9. (automapper)：AutoMapper升级到9.0 [#105](https://github.com/i66soft/osharp/issues/105)
+10. (identity)：移除OnlineUserCache相关代码，其功能在OnlineUserProvider中进行实现，移除OnlineUserJwtSecurityTokenHandler，基功能由新增的OnlineUserAuthorizationFilter实现，解决依赖注入的问题，部分Identity的基础类型由OSharp.Permissions工程转移到OSharp工程中
+11. (identity)：实现一个简单的JWT-Token刷新机制 [#87](https://github.com/i66soft/osharp/issues/87)
+12. (identity)：修复用户锁定字段名错误的问题
+13. (identity)：修复登录返回的Token有效时间不正确的问题
+14. (mvc)：添加新特性[AreaInfo]，用于代替 [Area] 添加区域信息，支持添加区域的Display中文显示 [#92](https://github.com/i66soft/osharp/issues/92)
+15. (mvc)：修复[UnitOfWork]特性中的一个执行逻辑错误：执行业务过程中抛出异常，数据库事务仍然会被提交 [#106](https://github.com/i66soft/osharp/issues/106)
+16. (alain)：修复 JWT的过期时间不准确，比现实差了8小时的问题 fixed [#95](https://github.com/i66soft/osharp/issues/95)
+17. (alain)：优化Token的刷新逻辑，刷新失败时移除本地RefreshToken
+18. (alain8)：添加ng-alain8脚手架代码
+19. (alain8)：添加基于HttpInterceptor的Token自动刷新功能 RefreshJWTInterceptor.ts
+20. (alain8)：去除角色功能/用户功能管理页面，将查看角色功能/用户功能的功能合并到角色/用户管理页面
+21. (alain8)：修复图标加载不正确的问题，菜单中缺失的图标，需要在style-icons.ts文件中进行手动添加，代码中的图标，可用npm run-script icon 命令自动生成到style-icons-auto.ts文件中
+22. (alain8)：ng-alain8基本迁移完成
+23. 删除ng-alain8之外其他没用的前端项目
+
 ### 1.0.1 (2019/05/15)
 1. (core)：修复系统初始化刷新实体信息时输出日志信息错误的问题 [#79](https://github.com/i66soft/osharp/issues/79)
 2. (core)：修复数据权限缓存中一个.First使用不当的问题

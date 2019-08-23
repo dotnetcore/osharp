@@ -75,6 +75,9 @@ export class DefaultInterceptor implements HttpInterceptor {
                 this.osharp.warning('用户未登录或登录已过期');
                 this.osharp.goto('/passport/login');
                 break;
+              case AjaxResultType.Error:
+                this.osharp.ajaxResult(result);
+                break;
               default:
                 const type = result.Type as number;
                 this.osharp.ajaxResult(result);
