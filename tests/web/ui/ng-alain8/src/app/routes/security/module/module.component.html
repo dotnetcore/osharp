@@ -1,0 +1,38 @@
+<nz-card>
+  <div>
+    <button nz-button (click)="loadData()"><i nz-icon nzType="reload" theme="outline"></i>刷新</button>
+  </div>
+  <nz-table #nzTable [nzData]="data" nzSize="small">
+    <thead>
+      <tr>
+        <th>操作</th>
+        <th>名称</th>
+        <th>备注</th>
+        <th>代码</th>
+        <th>排序</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of nzTable.data">
+        <ng-container *ngFor="let item of mapOfExpandedData[data.Id]">
+          <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+            <td>
+              <button nz-button nzType="link" (click)="showDrawer(item)" nzSize="small">
+                <i nz-icon nzType="security-scan" nzTheme="outline"></i> 模块功能
+              </button>
+            </td>
+            <td [nzIndentSize]="item.level * 20" [nzShowExpand]="!!item.children && item.children.length > 0" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)">
+              {{item.Id}}. {{item.Name}}
+            </td>
+            <td>{{item.Remark}}</td>
+            <td>{{item.Code}}</td>
+            <td>{{item.OrderCode}}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </nz-table>
+  <nz-drawer [nzTitle]="drawerTitle" [nzVisible]="drawerVisible" nzWidth="600px" (nzOnClose)="closeDrawer()">
+    <osharp-function-view #function [ReadUrl]="'api/admin/module/readfunctions'"></osharp-function-view>
+  </nz-drawer>
+</nz-card>

@@ -1,0 +1,25 @@
+<nz-card>
+  <div>
+    <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
+    <button nz-button (click)="create()" acl="Root.Admin.Security.RoleEntity.Create"><i nz-icon type="plus-circle" theme="outline"></i>新增</button>
+  </div>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
+    [scroll]="{x:'800px'}" multiSort (change)="change($event)" (error)="error($event)" [expand]="expand">
+    <ng-template #expand let-item let-index="index" let-column="column">
+      <div>
+        <osharp-filter-group [group]="item.FilterGroup" [entity]="item.EntityType"></osharp-filter-group>
+        <button (click)="showGroupJson(item)" nz-button *ngIf="item.FilterGroup" style="margin:5px" nzType="default">显示JSON</button>
+        <button (click)="saveFilterGroup(item)" nz-button *ngIf="item.FilterGroup " style="margin:5px" nzType="primary">保存</button>
+        <nz-alert *ngIf="item.groupJson" nzType="info" nzShowIcon nzMessage="筛选规则JSON" nzDescription="{{item.groupJson}}"></nz-alert>
+      </div>
+    </ng-template>
+  </st>
+</nz-card>
+<nz-modal #modal [nzVisible]="false" [nzTitle]="editTitle" [nzClosable]="false" [nzFooter]="null">
+  <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="editRow" button="none">
+    <div class="modal-footer">
+      <button nz-button type="button" (click)="close()">关闭</button>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
+    </div>
+  </sf>
+</nz-modal>

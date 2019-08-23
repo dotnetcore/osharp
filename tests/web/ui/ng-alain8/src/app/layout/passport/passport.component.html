@@ -1,0 +1,19 @@
+<div class="container">
+  <header-i18n showLangText="false" class="langs"></header-i18n>
+  <div class="wrap">
+    <div class="top">
+      <div class="head">
+        <a href="/#/">
+          <img class="logo" src="./assets/osharp/logo-color.svg">
+          <span class="title">osharp</span>
+        </a>
+      </div>
+      <div class="desc">一个基于ASP.NET CORE & Angular 的快速开发框架</div>
+    </div>
+    <router-outlet></router-outlet>
+    <global-footer [links]="links">
+      Copyright &copy; 2019
+      <a href="https://github.com/i66soft" target="_blank">柳柳软件</a>出品
+    </global-footer>
+  </div>
+</div>

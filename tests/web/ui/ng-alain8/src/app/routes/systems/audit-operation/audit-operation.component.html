@@ -1,0 +1,21 @@
+<nz-card>
+  <div>
+    <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
+    <osharp-ad-search [request]="request" [columns]="columns" (submited)="search($event)"></osharp-ad-search>
+  </div>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
+    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)" [expand]="expandTpl" expandRowByClick>
+    <ng-template #expandTpl let-item let-index="index" let-column="column">
+      <nz-card>
+        <div nz-row nzGutter="16">
+          <div nz-col nzXl="24" nzXXl="12">
+            <st #entityST header="数据审计信息" [columns]="entityColumns" [page]="{show:false}" noResult="此次操作没有数据审计信息" size="small" [scroll]="{x:'800px', y:'400px'}" (change)="entityChange($event)"></st>
+          </div>
+          <div nz-col nzXl="24" nzXXl="12">
+            <st #propertyST header="数据属性变更明细" [columns]="propertyColumns" [page]="{show:false}" noResult="请点击数据审计查看属性变更明细" size="small" [scroll]="{x:'800px', y:'400px'}"></st>
+          </div>
+        </div>
+      </nz-card>
+    </ng-template>
+  </st>
+</nz-card>

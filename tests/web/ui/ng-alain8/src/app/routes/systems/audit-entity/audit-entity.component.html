@@ -1,0 +1,14 @@
+<nz-card>
+  <div>
+    <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
+    <osharp-ad-search [request]="request" [columns]="columns" (submited)="search($event)"></osharp-ad-search>
+  </div>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
+    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)" [expand]="expandTpl" expandRowByClick>
+    <ng-template #expandTpl>
+      <nz-card>
+        <st #propertyST header="数据属性变更明细" [columns]="propertyColumns" [page]="{show:false}" noResult="当前数据审计没有属性变更明细" size="small" [scroll]="{x:'800px'}"></st>
+      </nz-card>
+    </ng-template>
+  </st>
+</nz-card>

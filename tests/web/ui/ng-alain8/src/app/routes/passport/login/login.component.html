@@ -1,0 +1,80 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
+  <!-- <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
+    <nz-tab [nzTitle]="'app.login.tab-login-credentials' | translate"> -->
+  <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+  <p class="text-center">
+    <a *ngIf="resendConfirmMail" href="/#/passport/send-confirm-mail">{{'app.passport.send-confirm-mail'|translate}}</a>
+  </p>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="'validation.login.account.required' | translate">
+      <nz-input-group nzPrefixIcon="user" nzSize="large">
+        <input nz-input formControlName="userName" [placeholder]="'app.login.username.placeholder'|translate">
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="'validation.password.required' | translate">
+      <nz-input-group nzPrefixIcon="lock" nzSize="large">
+        <input nz-input type="password" formControlName="password" [placeholder]="'app.login.password.placeholder'|translate">
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- </nz-tab>
+  <nz-tab [nzTitle]="'app.login.tab-login-mobile' | translate">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+            <input nz-input formControlName="mobile" placeholder="mobile number">
+          </nz-input-group>
+          <nz-form-explain *ngIf="mobile.dirty && mobile.errors">
+            <ng-container *ngIf="mobile.errors.required">
+              {{ 'validation.phone-number.required' | translate }}
+            </ng-container>
+            <ng-container *ngIf="mobile.errors.pattern">
+              {{ 'validation.phone-number.wrong-format' | translate }}
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-row [nzGutter]="8">
+            <nz-col [nzSpan]="16">
+              <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-mail">
+                <input nz-input formControlName="captcha" placeholder="captcha">
+              </nz-input-group>
+              <nz-form-explain *ngIf="captcha.dirty && captcha.errors">
+                {{ 'validation.verification-code.required' | translate }}
+              </nz-form-explain>
+            </nz-col>
+            <nz-col [nzSpan]="8">
+              <button type="button" nz-button nzSize="large" (click)="getCaptcha()" [disabled]="count" nzBlock [nzLoading]="http.loading">
+                {{ count ? count + 's' : 'app.register.get-verification-code' | translate }}
+              </button>
+            </nz-col>
+          </nz-row>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-tab>
+  </nz-tabset> -->
+  <nz-form-item>
+    <nz-col [nzSpan]="12">
+      <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
+    </nz-col>
+    <nz-col [nzSpan]="12" class="text-right">
+      <a class="forgot" [routerLink]="[ '/passport/forgot-password' ]" acl="Root.Site.Identity.SendResetPasswordMail">{{ 'app.login.forgot-password' | translate }}</a>
+    </nz-col>
+  </nz-form-item>
+  <nz-form-item>
+    <button nz-button type="submit" nzType="primary" nzSize="large" acl="Root.Site.Identity.Jwtoken" [nzLoading]="http.loading" nzBlock [disabled]="http.loading">
+      {{ 'app.login.login' | translate }}
+    </button>
+  </nz-form-item>
+</form>
+<div class="other">
+  {{ 'app.login.sign-in-with' | translate }}
+  <i nz-icon nzType="qq" nz-tooltip="使用QQ登录" nzTheme="outline" class="icon" (click)="open('QQ')"></i>
+  <i nz-icon nzType="windows" nz-tooltip="使用Microsoft Account登录" nzTheme="outline" class="icon" (click)="open('Microsoft')"></i>
+  <i nz-icon nzType="github" nz-tooltip="使用GitHub登录" nzTheme="outline" class="icon" (click)="open('GitHub')"></i>
+  <a class="register" routerLink="/passport/register" acl="Root.Site.Identity.Register">{{ 'app.login.signup' | translate }}</a>
+</div>

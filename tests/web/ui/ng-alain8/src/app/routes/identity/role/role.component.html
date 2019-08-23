@@ -1,0 +1,24 @@
+<nz-card>
+  <div>
+    <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" theme="outline"></i>刷新</button>
+    <button nz-button (click)="create()" acl="Root.Admin.Identity.Role.Create"><i nz-icon nzType="plus-circle" theme="outline"></i>新增</button>
+    <osharp-ad-search [request]="request" [columns]="columns" (submited)="search($event)"></osharp-ad-search>
+  </div>
+  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small" [scroll]="{x:'1200px'}" multiSort
+    (change)="change($event)" (error)="error($event)"></st>
+</nz-card>
+<!--新增、编辑-->
+<nz-modal #modal [nzVisible]="false" [nzTitle]="editTitle" [nzClosable]="false" [nzFooter]="null">
+  <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="editRow" button="none">
+    <div class="modal-footer">
+      <button nz-button type="button" (click)="close()">关闭</button>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading" [acl]="'Root.Admin.Identity.Role.Update'">保存</button>
+    </div>
+  </sf>
+</nz-modal>
+<!--修改权限-->
+<app-osharp-modal-tree #moduleModal [title]="moduleTitle" [treeDataUrl]="moduleTreeDataUrl" [submitACL]="'Root.Admin.Identity.Role.SetModules'" (submited)="setModules($event)"></app-osharp-modal-tree>
+<!--查看功能-->
+<nz-drawer [nzTitle]="functionTitle" [nzVisible]="functionVisible" nzWidth="600px" (nzOnClose)="closeFunction()">
+  <osharp-function-view #function [ReadUrl]="functionReadUrl"></osharp-function-view>
+</nz-drawer>
