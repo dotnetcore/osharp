@@ -1,2 +1,0 @@
-input.ng-valid[required]{border-left: 5px solid #42A948;}
-input.ng-invalid.ng-dirty,input.ng-invalid.ng-touched{border-left: 5px solid #a94442;}

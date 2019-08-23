@@ -1,8 +1,0 @@
-<nz-card>
-  <div>
-    <button nz-button (click)="st.reload()"><i nz-icon nzType="reload" nzTheme="outline"></i>刷新</button>
-    <app-ad-search [request]="request" [columns]="columns" (submited)="search($event)"></app-ad-search>
-  </div>
-  <st #st [data]="readUrl" [columns]="columns" [req]="req" [res]="res" [(pi)]="request.PageCondition.PageIndex" [(ps)]="request.PageCondition.PageSize" [page]="page" size="small"
-    [scroll]="{x:'1200px'}" multiSort (change)="change($event)" (error)="error($event)"></st>
-</nz-card>

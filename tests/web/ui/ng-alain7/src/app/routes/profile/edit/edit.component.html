@@ -1,8 +1,0 @@
-<div nz-col nzXs="24" nzSm="20" nzMd="16" nzLg="14" nzXl="12" nzXXl="10">
-  <sf #sf [schema]="schema" [button]="null">
-    <p>
-      <nz-avatar *ngIf="headImgUrl" [nzSrc]="headImgUrl" [nzSize]="100"></nz-avatar>
-    </p>
-    <button nz-button nzType="primary" (click)="submit(sf.value)" [disabled]="!sf.valid">保存</button>
-  </sf>
-</div>
