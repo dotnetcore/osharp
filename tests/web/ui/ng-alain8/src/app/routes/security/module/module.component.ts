@@ -34,7 +34,7 @@ export class ModuleComponent implements OnInit {
     this.loadData();
   }
 
-  private loadData() {
+  loadData() {
     let url = 'api/admin/module/read';
     this.alain.http.post(url, this.request).subscribe(res => {
       let tree = this.arraySrv.arrToTree(res, { idMapName: 'Id', parentIdMapName: 'ParentId' });

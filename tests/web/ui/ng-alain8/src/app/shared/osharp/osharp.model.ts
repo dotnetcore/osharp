@@ -215,32 +215,32 @@ export class LocalTokenModel {
   RefreshToken: string;
 }
 export class RegisterDto {
-  Email: string;
-  Password: string;
-  ConfirmPassword: string;
-  VerifyCode: string;
-  VerifyCodeId: string;
+  Email?: string;
+  Password?: string;
+  ConfirmPassword?: string;
+  VerifyCode?: string;
+  VerifyCodeId?: string;
 }
 export class ChangePasswordDto {
-  UserId: string;
-  OldPassword: string;
-  NewPassword: string;
-  ConfirmNewPassword: string;
+  UserId?: string;
+  OldPassword?: string;
+  NewPassword?: string;
+  ConfirmNewPassword?: string;
 }
 export class ConfirmEmailDto {
   UserId: string;
   Code: string;
 }
 export class SendMailDto {
-  Email: string;
-  VerifyCode: string;
-  VerifyCodeId: string;
+  Email?: string;
+  VerifyCode?: string;
+  VerifyCodeId?: string;
 }
 export class ResetPasswordDto {
-  UserId: string;
-  Token: string;
-  NewPassword: string;
-  ConfirmPassword: string;
+  UserId?: string;
+  Token?: string;
+  NewPassword?: string;
+  ConfirmPassword?: string;
 }
 export class ProfileEditDto {
   Id: number;
@@ -253,7 +253,7 @@ export class UserLoginInfoEx {
   constructor(key: string) {
     this.ProviderKey = key;
   }
-  ProviderKey: string;
+  ProviderKey?: string;
   Email?: string;
   Password?: string;
 }
