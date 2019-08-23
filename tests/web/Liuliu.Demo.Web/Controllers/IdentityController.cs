@@ -73,7 +73,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("用户名是否存在")]
         public bool CheckUserNameExists(string userName)
         {
-            bool exists = _userManager.Users.Any(m => m.NormalizedUserName == _userManager.NormalizeKey(userName));
+            bool exists = _userManager.Users.Any(m => m.NormalizedUserName == userName.ToUpper());
             return exists;
         }
 
@@ -86,7 +86,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("用户Email是否存在")]
         public bool CheckEmailExists(string email)
         {
-            bool exists = _userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeKey(email));
+            bool exists = _userManager.Users.Any(m => m.NormalizeEmail == email.ToUpper());
             return exists;
         }
 

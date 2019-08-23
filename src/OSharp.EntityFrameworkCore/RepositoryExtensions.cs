@@ -116,7 +116,8 @@ namespace OSharp.Entity
             {
                 throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
             }
-            return context.Set<TEntity>().FromSql(new RawSqlString(sql), parameters);
+
+            return context.Set<TEntity>().FromSqlRaw(sql, parameters);
         }
     }
 }
