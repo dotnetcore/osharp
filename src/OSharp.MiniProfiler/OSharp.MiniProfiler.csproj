@@ -17,7 +17,7 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netcoreapp.props" />
   <Import Project="../../build/version.props" />
 
   <ItemGroup>

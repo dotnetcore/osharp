@@ -6,8 +6,9 @@
     <Description>OSharp(.NetStandard2.0) Swagger 客户端组件，封装基于Redis客户端实现</Description>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netcoreapp.props" />
   <Import Project="../../build/version.props" />
+
   <ItemGroup>
     <None Remove="index.html" />
   </ItemGroup>

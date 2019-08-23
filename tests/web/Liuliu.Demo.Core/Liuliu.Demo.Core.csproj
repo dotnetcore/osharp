@@ -4,15 +4,16 @@
     <RootNamespace>Liuliu.Demo</RootNamespace>
   </PropertyGroup>
 
+  <Import Project="../../../build/public.netcoreapp.props" />
+  <Import Project="../../../build/version.props" />
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Liuliu.Demo.Core.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../../build/public.props" />
-  <Import Project="../../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.0.0-preview8.19405.7" />
   </ItemGroup>
 
   <ItemGroup>

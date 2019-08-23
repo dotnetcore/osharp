@@ -8,7 +8,7 @@
     <Summary>OSharp(.NetStandard2.0)数据访问组件Sqlite</Summary>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

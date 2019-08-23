@@ -14,7 +14,7 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AutoMapper.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
     <Compile Remove="ServiceCollectionExtensions1.cs" />

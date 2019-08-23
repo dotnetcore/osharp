@@ -5,7 +5,7 @@
     <Summary>OSharp(.NetStandard2.0)数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
   </PropertyGroup>
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.xml</DocumentationFile>

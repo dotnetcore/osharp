@@ -1,22 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Authors>柳柳软件(66soft.net)</Authors>
-    <Company>柳柳软件(66soft.net)</Company>
-    <Copyright>Copyright © 66SOFT 2014-2018</Copyright>
-    <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
-    <PackageIconUrl>https://en.gravatar.com/userimage/140788132/0ff3b1e68fa0154337b1528c4276e276.png?size=80</PackageIconUrl>
-    <RepositoryUrl>https://github.com/i66soft/osharp-ns20</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>osharp</PackageTags>
-    <NeutralLanguage>zh-CHS</NeutralLanguage>
     <UserSecretsId>166558f9-be39-46bb-8d0c-1bfc1bc5f26f</UserSecretsId>
     <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
   </PropertyGroup>
+
+  <Import Project="../../../build/public.netcoreapp.props" />
+  <Import Project="../../../build/version.props" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile></DocumentationFile>
@@ -26,8 +16,6 @@
     <DocumentationFile>bin\Debug\netcoreapp2.2\OSharp.Demo.Web.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
-
-  <Import Project="../../../build/version.props" />
 
   <ItemGroup>
     <Compile Remove="Migrations\20190411051826_Init.cs" />

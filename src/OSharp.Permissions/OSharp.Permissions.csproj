@@ -8,6 +8,9 @@
     <RootNamespace>OSharp</RootNamespace>
   </PropertyGroup>
 
+  <Import Project="../../build/public.netcoreapp.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
@@ -16,8 +19,6 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <Compile Remove="Authentication\**" />
     <EmbeddedResource Remove="Authentication\**" />
@@ -32,9 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
 

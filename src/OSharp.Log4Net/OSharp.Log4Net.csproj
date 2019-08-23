@@ -16,7 +16,7 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
