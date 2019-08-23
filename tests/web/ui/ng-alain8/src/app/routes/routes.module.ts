@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared';
 import { RouteRoutingModule } from './routes.routing';
+import { DelonChartModule } from '@delon/chart';
 // dashboard pages
 import { DashboardComponent } from './dashboard/dashboard.component';
 // single pages
@@ -15,7 +16,7 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
-  imports: [SharedModule, RouteRoutingModule],
+  imports: [SharedModule, RouteRoutingModule, DelonChartModule],
   declarations: [
     ...COMPONENTS,
     ...COMPONENTS_NOROUNT
