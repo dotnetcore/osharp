@@ -369,7 +369,6 @@ export class OsharpService {
       url = `/${url}`;
     }
     url = this.urlEncode(url);
-    console.log(url);
     return this.http.get<boolean>('api/security/CheckUrlAuth?url=' + url).toPromise();
   }
 

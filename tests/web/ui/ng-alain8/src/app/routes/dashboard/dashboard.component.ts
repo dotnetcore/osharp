@@ -29,7 +29,6 @@ export class DashboardComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.rangePickerChange(this.pickerRanges.最近30天);
-    console.log(this.pickerRanges);
   }
 
   rangePickerChange(e) {
@@ -38,7 +37,6 @@ export class DashboardComponent implements AfterViewInit {
     }
     const start = e[0].toLocaleDateString()
     const end = e[1].toLocaleDateString();
-    console.log(start, end)
     this.summaryData(start, end);
     this.userLine(start, end);
   }
@@ -66,8 +64,6 @@ export class DashboardComponent implements AfterViewInit {
           y2: item.DailySum
         });
       }
-      console.log(this.lineChartData);
-
     });
   }
 }
