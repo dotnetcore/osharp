@@ -65,16 +65,6 @@
         "link": "/security/function",
         "acl": "Root.Admin.Security.Function"
       }, {
-        "text": "角色功能管理",
-        "i18n": "menu.nav.permission.security.role-function",
-        "link": "/security/role-function",
-        "acl": "Root.Admin.Security.RoleFunction"
-      }, {
-        "text": "用户功能管理",
-        "i18n": "menu.nav.permission.security.user-function",
-        "link": "/security/user-function",
-        "acl": "Root.Admin.Security.UserFunction"
-      }, {
         "text": "实体信息管理",
         "i18n": "menu.nav.permission.security.entityinfo",
         "link": "/security/entityinfo",

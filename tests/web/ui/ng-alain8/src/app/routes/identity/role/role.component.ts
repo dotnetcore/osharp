@@ -5,6 +5,8 @@ import { OsharpSTColumn } from '@shared/osharp/services/alain.types';
 import { SFUISchema } from '@delon/form';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
+import { FunctionViewComponent } from '@shared/components/function-view/function-view.component';
+import { FilterGroup } from '@shared/osharp/osharp.model';
 
 @Component({
   selector: 'app-identity-role',
@@ -29,6 +31,7 @@ export class RoleComponent extends STComponentBase implements OnInit {
             { text: '编辑', icon: 'edit', acl: 'Root.Admin.Identity.Role.Update', iif: row => row.Updatable, click: row => this.edit(row) },
             { text: '权限', icon: 'safety', acl: 'Root.Admin.Identity.Role.SetModules', click: row => this.module(row) },
             { text: '删除', icon: 'delete', type: 'del', acl: 'Root.Admin.Identity.Role.Delete', iif: row => row.Deletable, click: row => this.delete(row) },
+            { text: '查看功能', icon: 'security-scan', acl: 'Root.Admin.Security.UserFunction', click: row => this.viewFunction(row) },
           ]
         }]
       },
@@ -75,5 +78,28 @@ export class RoleComponent extends STComponentBase implements OnInit {
     });
   }
 
+  // #endregion
+
+  // #region 查看功能
+
+  functionTitle: string;
+  functionVisible = false;
+  functionReadUrl: string;
+  @ViewChild('function', { static: false }) function: FunctionViewComponent;
+
+  private viewFunction(row: STData) {
+    this.functionTitle = `查看角色功能 - ${row.Id}. ${row.Name}`;
+    this.functionVisible = true;
+
+    this.functionReadUrl = `api/admin/rolefunction/readfunctions?roleId=${row.Id}`;
+    let filter: FilterGroup = new FilterGroup();
+    setTimeout(() => {
+      this.function.reload(filter);
+    }, 100);
+  }
+
+  closeFunction() {
+    this.functionVisible = false;
+  }
   // #endregion
 }

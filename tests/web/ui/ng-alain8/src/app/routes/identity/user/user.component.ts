@@ -3,8 +3,9 @@ import { STComponentBase } from '@shared/osharp/components/st-component-base';
 import { SFUISchema } from '@delon/form';
 import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
 import { FilterGroup } from '@shared/osharp/osharp.model';
-import { STData } from '@delon/abc';
+import { STData, STColumn } from '@delon/abc';
 import { NzTreeNode } from 'ng-zorro-antd';
+import { FunctionViewComponent } from '@shared/components/function-view/function-view.component';
 
 @Component({
   selector: 'app-user',
@@ -22,7 +23,7 @@ export class UserComponent extends STComponentBase implements OnInit {
     super.InitBase();
   }
 
-  protected GetSTColumns(): import("@delon/abc").STColumn[] {
+  protected GetSTColumns(): STColumn[] {
     return [
       {
         title: '操作', fixed: 'left', width: 65, buttons: [{
@@ -31,6 +32,7 @@ export class UserComponent extends STComponentBase implements OnInit {
             { text: '角色', icon: 'team', acl: 'Root.Admin.Identity.User.SetRoles', click: row => this.roles(row) },
             { text: '权限', icon: 'safety', acl: 'Root.Admin.Identity.User.SetModules', click: row => this.module(row) },
             { text: '删除', icon: 'delete', type: 'del', acl: 'Root.Admin.Identity.User.Delete', iif: row => row.Deletable, click: row => this.delete(row) },
+            { text: '查看功能', icon: 'security-scan', acl: 'Root.Admin.Security.UserFunction', click: row => this.viewFunction(row) },
           ]
         }]
       },
@@ -60,7 +62,6 @@ export class UserComponent extends STComponentBase implements OnInit {
   }
 
   adSearch(group: FilterGroup) {
-    console.log(group);
     this.request.FilterGroup = group;
     this.st.reload();
   }
@@ -115,5 +116,28 @@ export class UserComponent extends STComponentBase implements OnInit {
     });
   }
 
+  // #endregion
+
+  // #region 查看功能
+
+  functionTitle: string;
+  functionVisible = false;
+  functionReadUrl: string;
+  @ViewChild('function', { static: false }) function: FunctionViewComponent;
+
+  private viewFunction(row: STData) {
+    this.functionTitle = `查看用户功能 - ${row.Id}. ${row.UserName}`;
+    this.functionVisible = true;
+
+    this.functionReadUrl = `api/admin/userfunction/readfunctions?userId=${row.Id}`;
+    let filter: FilterGroup = new FilterGroup();
+    setTimeout(() => {
+      this.function.reload(filter);
+    }, 100);
+  }
+
+  closeFunction() {
+    this.functionVisible = false;
+  }
   // #endregion
 }

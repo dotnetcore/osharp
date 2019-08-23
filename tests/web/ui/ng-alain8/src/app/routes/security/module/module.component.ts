@@ -90,12 +90,14 @@ export class ModuleComponent implements OnInit {
   @ViewChild('function', { static: false }) function: FunctionViewComponent;
 
   showDrawer(item) {
-    this.drawerTitle = `查看功能 - ${item.Remark || item.Name}`;
+    this.drawerTitle = `查看模块功能 - ${item.Remark || item.Name}`;
     this.drawerVisible = true;
 
     let filter: FilterGroup = new FilterGroup();
     filter.Rules.push(new FilterRule('TreePathString', `$${item.Id}$`, FilterOperate.Contains));
-    this.function.reload(filter);
+    setTimeout(() => {
+      this.function.reload(filter);
+    }, 100);
   }
 
   closeDrawer() {

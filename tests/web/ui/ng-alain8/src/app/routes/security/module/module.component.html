@@ -17,7 +17,9 @@
         <ng-container *ngFor="let item of mapOfExpandedData[data.Id]">
           <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
             <td>
-              <button nz-button nzType="link" (click)="showDrawer(item)" nzSize="small">模块功能</button>
+              <button nz-button nzType="link" (click)="showDrawer(item)" nzSize="small">
+                <i nz-icon nzType="security-scan" nzTheme="outline"></i> 模块功能
+              </button>
             </td>
             <td [nzIndentSize]="item.level * 20" [nzShowExpand]="!!item.children && item.children.length > 0" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)">
               {{item.Id}}. {{item.Name}}

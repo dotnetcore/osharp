@@ -8,8 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Reference: https://ng-alain.com/docs/i18n
 import { default as ngLang } from '@angular/common/locales/zh';
 import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
-import { AccountBookFill, AlertOutline, AlertFill } from '@ant-design/icons-angular/icons';
 import { DELON_LOCALE, zh_CN as delonLang } from '@delon/theme';
 const LANG = {
   abbr: 'zh',
@@ -69,9 +67,7 @@ const INTERCEPTOR_PROVIDES = [
 
 // #region global third module
 const GLOBAL_THIRD_MODULES = [
-  NzIconModule
 ];
-const icons: IconDefinition[] = [AccountBookFill, AlertOutline, AlertFill];
 // #endregion
 
 // #region Startup Service
@@ -87,7 +83,6 @@ const APPINIT_PROVIDES = [
     deps: [StartupService],
     multi: true
   },
-  { provide: NZ_ICONS, useValue: icons }
 ];
 // #endregion
 

@@ -33,7 +33,7 @@ export class UserFunctionComponent extends STComponentBase implements OnInit {
     ];
   }
 
-  // #region 抽屉
+  // #region 查看功能
 
   drawerTitle = '';
   drawerVisible = false;
@@ -45,9 +45,10 @@ export class UserFunctionComponent extends STComponentBase implements OnInit {
     this.drawerVisible = true;
 
     this.functionReadUrl = `api/admin/userfunction/readfunctions?userId=${item.Id}`;
-    // this.function.ReadUrl = this.functionReadUrl;
     let filter: FilterGroup = new FilterGroup();
-    this.function.reload(filter);
+    setTimeout(() => {
+      this.function.reload(filter);
+    }, 100);
   }
 
   closeDrawer() {

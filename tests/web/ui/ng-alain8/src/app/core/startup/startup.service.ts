@@ -12,7 +12,6 @@ import { I18NService } from '../i18n/i18n.service';
 import { NzIconService } from 'ng-zorro-antd/icon';
 import { ICONS_AUTO } from '../../../style-icons-auto';
 import { ICONS } from '../../../style-icons';
-import { ANT_ICONS } from "../../../ant-svg-icons";
 import { IdentityService } from '@shared/osharp/services/identity.service';
 
 import Heartbeats from 'heartbeats';
@@ -31,13 +30,12 @@ export class StartupService {
     private menuService: MenuService,
     private translate: TranslateService,
     @Inject(ALAIN_I18N_TOKEN) private i18n: I18NService,
-    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private settingService: SettingsService,
     private aclService: ACLService,
     private titleService: TitleService,
     private httpClient: HttpClient
   ) {
-    iconSrv.addIcon(...ICONS_AUTO, ...ICONS, ...ANT_ICONS);
+    iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
   }
 
   private get identity(): IdentityService {
