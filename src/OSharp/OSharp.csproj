@@ -8,7 +8,7 @@
     <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

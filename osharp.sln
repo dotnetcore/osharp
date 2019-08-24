@@ -21,7 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1C28DC5F
 	ProjectSection(SolutionItems) = preProject
 		build\OSharp.Keys.snk = build\OSharp.Keys.snk
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
-		build\public.props = build\public.props
+		build\public.netcoreapp.props = build\public.netcoreapp.props
+		build\public.netstandard.props = build\public.netstandard.props
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
@@ -75,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{A6092039-C53E-4732-838E-9FD312711211}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{6D4DCF79-E243-4BCE-A5B7-D145128039F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{6D4DCF79-E243-4BCE-A5B7-D145128039F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

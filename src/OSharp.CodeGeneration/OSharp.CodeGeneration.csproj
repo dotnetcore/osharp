@@ -17,7 +17,7 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
     <None Remove="Templates\AdminController.cshtml" />

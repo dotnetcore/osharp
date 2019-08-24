@@ -18,7 +18,7 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.Hangfire.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.props" />
+  <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.7.6" />

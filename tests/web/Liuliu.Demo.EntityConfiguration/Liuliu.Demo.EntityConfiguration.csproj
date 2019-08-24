@@ -5,7 +5,7 @@
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
-  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/public.netstandard.props" />
   <Import Project="../../../build/version.props" />
 
   <ItemGroup>

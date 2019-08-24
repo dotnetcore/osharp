@@ -8,7 +8,7 @@
     <DocumentationFile>bin\Debug\netstandard2.0\Liuliu.Demo.Core.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/public.netstandard.props" />
   <Import Project="../../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
