@@ -45,6 +45,9 @@ export class DashboardComponent implements AfterViewInit {
   summaryData(start, end) {
     const url = `api/admin/dashboard/SummaryData?start=${start}&end=${end}`;
     this.http.get(url).subscribe((res: any) => {
+      if (!res) {
+        return;
+      }
       this.summaries = [];
       this.summaries.push({ data: `${res.users.ValidCount} / ${res.users.TotalCount}`, text: '用户：已激活 / 总计', bgColor: 'bg-primary' });
       this.summaries.push({ data: `${res.roles.AdminCount} / ${res.roles.TotalCount}`, text: '角色：管理 / 总计', bgColor: 'bg-success' });
@@ -57,6 +60,9 @@ export class DashboardComponent implements AfterViewInit {
   userLine(start, end) {
     let url = `api/admin/dashboard/LineData?start=${start}&end=${end}`;
     this.http.get(url).subscribe((res: any[]) => {
+      if (!res || !res.length) {
+        return;
+      }
       for (const item of res) {
         this.lineChartData.push({
           x: new Date(item.Date),

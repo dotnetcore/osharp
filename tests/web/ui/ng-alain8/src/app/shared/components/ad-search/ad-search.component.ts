@@ -4,7 +4,7 @@ import { OsharpService } from '@shared/osharp/services/osharp.service';
 import { NzModalComponent } from 'ng-zorro-antd';
 import { FilterRule, FilterOperate, PageRequest, FilterGroup } from '@shared/osharp/osharp.model';
 import { List } from 'linqts';
-import { STColumn } from '@delon/abc';
+import { OsharpSTColumn } from '@shared/osharp/services/alain.types';
 
 @Component({
   selector: 'osharp-ad-search',
@@ -13,7 +13,7 @@ import { STColumn } from '@delon/abc';
 })
 export class AdSearchComponent implements OnInit {
   @Input() request: PageRequest;
-  @Input() columns: STColumn[];
+  @Input() columns: OsharpSTColumn[];
   @Output() submited: EventEmitter<PageRequest> = new EventEmitter<PageRequest>();
   @ViewChild('searchModal', { static: false }) searchModal: NzModalComponent;
 
@@ -40,11 +40,19 @@ export class AdSearchComponent implements OnInit {
   }
 
   search() {
-    if (!this.rule.Field) {
+    let field = this.rule.Field;
+    if (!field) {
       this.osharp.warning('请选择要查询的列');
       return;
     }
-    let rule = new FilterRule(this.rule.Field, this.rule.Value);
+    let column = this.columns.find(m => m.index === field);
+    if (!column) {
+      this.osharp.warning(`指定属性${field}不存在`);
+      return;
+    }
+    field = column.filterIndex || field;
+
+    let rule = new FilterRule(field, this.rule.Value);
     rule.Operate =
       this.rule.control === 'string'
         ? FilterOperate.Contains

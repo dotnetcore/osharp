@@ -16,6 +16,11 @@ export interface OsharpSTColumn extends STColumn {
   filterable?: boolean;
 
   /**
+   * 此列的过滤字段名，在查询关联数据时会用到，比如对于 Blog 查询作者昵称，原 Index 为 'NickName'，此值需预设为 'Author.NickName'，才能在后端正常查询到数据
+   */
+  filterIndex?: string;
+
+  /**
    * 数据类型，支持 JavaScript 基础类型；注意项：
    *
    * - `integer` 表示整型，`number` 表示浮点型

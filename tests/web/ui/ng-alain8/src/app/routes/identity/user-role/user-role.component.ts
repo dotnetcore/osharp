@@ -27,22 +27,10 @@ export class UserRoleComponent extends STComponentBase implements OnInit {
           ]
         }]
       },
-      { title: '用户', index: 'UserName', sort: true, editable: true, ftype: 'string', readOnly: true, format: d => `${d.UserId}. ${d.UserName}`, ui: { widget: 'text' } },
-      { title: '角色', index: 'RoleName', sort: true, editable: true, ftype: 'string', readOnly: true, format: d => `${d.RoleId}. ${d.RoleName}`, ui: { widget: 'text' } },
+      { title: '用户', index: 'UserName', sort: true, filterIndex: 'User.UserName', editable: true, ftype: 'string', readOnly: true, format: d => `${d.UserId}. ${d.UserName}`, ui: { widget: 'text' } },
+      { title: '角色', index: 'RoleName', sort: true, filterIndex: 'Role.Name', editable: true, ftype: 'string', readOnly: true, format: d => `${d.RoleId}. ${d.RoleName}`, ui: { widget: 'text' } },
       { title: '锁定', index: 'IsLocked', sort: true, type: 'yn', editable: true },
       { title: '注册时间', index: 'CreatedTime', type: 'date' },
     ];
   }
-
-  protected ReplaceFieldName(field: string): string {
-    switch (field) {
-      case 'UserName':
-        return 'User.UserName';
-      case 'RoleName':
-        return "Role.Name";
-      default:
-        return field;
-    }
-  }
-
 }

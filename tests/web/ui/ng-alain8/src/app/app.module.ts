@@ -31,7 +31,7 @@ import { ALAIN_I18N_TOKEN } from '@delon/theme';
 import { I18NService } from '@core/i18n/i18n.service';
 
 export function I18nHttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, `assets/tmp/i18n/`, '.json');
+  return new TranslateHttpLoader(http, `assets/osharp/i18n/`, '.json');
 }
 
 const I18NSERVICE_MODULES = [
@@ -82,7 +82,7 @@ const APPINIT_PROVIDES = [
     useFactory: StartupServiceFactory,
     deps: [StartupService],
     multi: true
-  },
+  }
 ];
 // #endregion
 
@@ -92,8 +92,6 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
-import { IconDefinition } from '@ant-design/icons-angular';
-import { IdentityModule } from './routes/identity/identity.module';
 
 @NgModule({
   declarations: [
@@ -110,8 +108,7 @@ import { IdentityModule } from './routes/identity/identity.module';
     RoutesModule,
     ...I18NSERVICE_MODULES,
     ...FORM_MODULES,
-    ...GLOBAL_THIRD_MODULES,
-    IdentityModule
+    ...GLOBAL_THIRD_MODULES
   ],
   providers: [
     ...LANG_PROVIDES,

@@ -90,7 +90,11 @@ export abstract class STComponentBase {
   }
 
   protected ReplaceFieldName(field: string): string {
-    return field;
+    let column = this.columns.find(m => m.index === field);
+    if (!column || !column.filterIndex) {
+      return field;
+    }
+    return column.filterIndex;
   }
 
   search(request: PageRequest) {
