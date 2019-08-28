@@ -59,9 +59,10 @@ const FORM_MODULES = [JsonSchemaModule];
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RefreshJWTInterceptor } from '@core/net/refresh-jwt.interceptor';
 import { DefaultInterceptor } from '@core/net/default.interceptor';
+// Default 和 RefreshJWT 的顺序不能换
 const INTERCEPTOR_PROVIDES = [
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: RefreshJWTInterceptor, multi: true },
-  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true }
 ];
 // #endregion
 
