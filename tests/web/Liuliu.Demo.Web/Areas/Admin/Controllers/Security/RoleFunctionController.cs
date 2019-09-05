@@ -64,13 +64,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <summary>
         /// 读取角色功能信息
         /// </summary>
-        /// <param name="roleId">角色编号</param>
         /// <returns>角色功能信息</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(int roleId)
+        public PageData<FunctionOutputDto2> ReadFunctions(int roleId, [FromBody]PageRequest request)
         {
             if (roleId == 0)
             {
@@ -84,7 +83,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            PageRequest request = new PageRequest();
             Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)

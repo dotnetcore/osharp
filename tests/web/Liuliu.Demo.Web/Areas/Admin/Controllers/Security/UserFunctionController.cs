@@ -65,13 +65,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <summary>
         /// 读取用户功能信息
         /// </summary>
-        /// <param name="userId">用户编号</param>
         /// <returns>用户功能信息</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(int userId)
+        public PageData<FunctionOutputDto2> ReadFunctions(int userId, [FromBody]PageRequest request)
         {
             if (userId == 0)
             {
@@ -86,7 +85,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            PageRequest request = new PageRequest();
             Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
