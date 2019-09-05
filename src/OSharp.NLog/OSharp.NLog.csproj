@@ -6,9 +6,16 @@
     <Summary>OSharp NLog组件(.NetStandard2.0)</Summary>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.NLog.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.NLog.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="../../build/public.netstandard.props" />
   <Import Project="../../build/version.props" />
-
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.7" />
   </ItemGroup>
