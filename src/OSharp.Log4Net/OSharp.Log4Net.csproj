@@ -4,8 +4,6 @@
     <PackageId>OSharpNS.Log4Net</PackageId>
     <Description>OSharp(.NetStandard2.0)Log4Net组件，封装使用log4net组件来实现框架的日志输出功能</Description>
     <Summary>OSharp Log4Net组件(.NetStandard2.0)</Summary>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>OSharpNS.CodeGeneration</PackageId>
     <Summary>OSharp(.NetStandard2.0) 代码生成组件</Summary>
     <Description>OSharp(.NetStandard2.0) 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等</Description>

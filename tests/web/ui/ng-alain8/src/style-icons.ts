@@ -2,6 +2,7 @@
 
 import {
   BulbOutline,
+  CloseCircleOutline,
   DashboardOutline,
   DesktopOutline,
   ExceptionOutline,
@@ -14,6 +15,7 @@ import {
 
 export const ICONS = [
   BulbOutline,
+  CloseCircleOutline,
   DashboardOutline,
   DesktopOutline,
   ExceptionOutline,

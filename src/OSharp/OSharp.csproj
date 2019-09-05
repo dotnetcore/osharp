@@ -4,8 +4,6 @@
     <PackageId>OSharpNS.Core</PackageId>
     <Description>OSharp(.NetStandard2.0)核心组件，封装着框架核心及数据存储，缓存，辅助操作等功能</Description>
     <Summary>OSharp核心组件(.NetStandard2.0)</Summary>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>http://core.osharp.org/assets/osharp/logo-color.png</PackageIconUrl>
   </PropertyGroup>
 
   <Import Project="../../build/public.netstandard.props" />

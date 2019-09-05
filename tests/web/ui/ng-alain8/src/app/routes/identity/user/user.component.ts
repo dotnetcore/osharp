@@ -3,7 +3,7 @@ import { STComponentBase } from '@shared/osharp/components/st-component-base';
 import { SFUISchema } from '@delon/form';
 import { ModalTreeComponent } from '@shared/components/modal-tree/modal-tree.component';
 import { FilterGroup } from '@shared/osharp/osharp.model';
-import { STData, STColumn } from '@delon/abc';
+import { STData, STColumn, ReuseTabService } from '@delon/abc';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { FunctionViewComponent } from '@shared/components/function-view/function-view.component';
 

@@ -14,7 +14,7 @@
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
-  <Import Project="../../../build/public.netcoreapp.props"/>
+  <Import Project="../../../build/public.netcoreapp.props" />
   <Import Project="../../../build/version.props" />
 
   <ItemGroup>
@@ -68,6 +68,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.Hangfire\OSharp.Hangfire.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.NLog\OSharp.NLog.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />

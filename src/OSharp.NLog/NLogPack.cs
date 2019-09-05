@@ -5,14 +5,13 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Packs;
 
-
-namespace OSharp.Log4Net
+namespace OSharp.NLog
 {
     /// <summary>
-    /// Log4Net模块
+    /// NLog模块
     /// </summary>
-    [Description("Log4Net日志模块")]
-    public class Log4NetPack : OsharpPack
+    [Description("NLog日志模块")]
+    public class NLogPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -32,7 +31,7 @@ namespace OSharp.Log4Net
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<ILoggerProvider, Log4NetLoggerProvider>();
+            services.AddSingleton<ILoggerProvider, NLogLoggerProvider>();
             return services;
         }
     }
