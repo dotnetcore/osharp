@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DA_SERVICE_TOKEN, ITokenService, JWTTokenModel } from '@delon/auth';
-import { SettingsService, _HttpClient } from '@delon/theme';
+import { SettingsService, _HttpClient, MenuService } from '@delon/theme';
 import { ACLService } from '@delon/acl';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { ReuseTabService } from '@delon/abc';
 import { CacheService } from "@delon/cache";
 import {
@@ -11,6 +11,7 @@ import {
   ResetPasswordDto, UserLoginInfoEx, ChangePasswordDto, ProfileEditDto, TokenDto, JsonWebToken, LocalTokenModel,
 } from '@shared/osharp/osharp.model';
 import { OsharpService } from '@shared/osharp/services/osharp.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class IdentityService {
@@ -22,6 +23,7 @@ export class IdentityService {
     private settingSrv: SettingsService,
     private aclSrv: ACLService,
     private reuseTabSrv: ReuseTabService,
+    private menuSrv: MenuService,
   ) { }
 
   get user() {
@@ -168,6 +170,28 @@ export class IdentityService {
         this.cache.remove('refresh_token');
       }
       return result;
+    });
+  }
+
+  /**
+   * 刷新权限点、用户信息、菜单
+   */
+  refreshAuth() {
+    zip(
+      this.http.get('api/security/getauthinfo'),
+      this.http.get('api/identity/profile'),
+      this.http.get('assets/osharp/app-data.json')
+    ).pipe(
+      catchError(([authInfo, userInfo, appData]) => {
+        return [authInfo, userInfo, appData];
+      })
+    ).subscribe(([authInfo, userInfo, appData]) => {
+      this.aclSrv.setAbility(authInfo);
+      if (userInfo && userInfo.UserName) {
+        let user: User = { name: userInfo.UserName, avatar: userInfo.HeadImg, email: userInfo.Email, nickName: userInfo.NickName };
+        this.settingSrv.setUser(user);
+      }
+      this.menuSrv.add(appData.menu);
     });
   }
 

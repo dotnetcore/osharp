@@ -80,6 +80,8 @@ export class RefreshJWTInterceptor implements HttpInterceptor {
           let model = token as AjaxResult;
           if (model && model.Type === AjaxResultType.Success) {
             // 刷新成功
+            this.identity.refreshAuth();
+
             let jwt = model.Data as JsonWebToken;
             this.identity.setToken(jwt);
             this.refreshTokenSubject.next(jwt.AccessToken);
