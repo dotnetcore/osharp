@@ -1,10 +1,8 @@
 import { Injectable, Injector, Inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { zip } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, _HttpClient, User } from '@delon/theme';
-import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { TranslateService } from '@ngx-translate/core';
 import { I18NService } from '../i18n/i18n.service';
@@ -54,7 +52,7 @@ export class StartupService {
     });
   }
 
-  private viaHttp(resolve: any, reject: any) {
+  private viaHttp(resolve: any) {
     zip(
       this.httpClient.get(`assets/osharp/i18n/${this.i18n.defaultLang}.json`),
       this.httpClient.get('assets/osharp/app-data.json'),
@@ -71,7 +69,11 @@ export class StartupService {
       this.translate.setDefaultLang(this.i18n.defaultLang);
 
       // Application data
+      let pjson = require('../../../../package.json');
       const res: any = appData;
+      if (pjson && res && res.app) {
+        res.app.version = pjson.version;
+      }
       // Application information: including site name, description, year
       this.settingService.setApp(res.app);
       // User information: including name, avatar, email address
@@ -98,7 +100,7 @@ export class StartupService {
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
       // http
-      this.viaHttp(resolve, reject);
+      this.viaHttp(resolve);
 
       // heartbeats
       this.viaHeartbeats();

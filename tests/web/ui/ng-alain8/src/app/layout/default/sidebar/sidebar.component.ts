@@ -7,5 +7,9 @@ import { SettingsService } from '@delon/theme';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
-  constructor(public settings: SettingsService) {}
+  constructor(public settings: SettingsService) { }
+
+  get version() {
+    return this.settings.app.version;
+  }
 }
