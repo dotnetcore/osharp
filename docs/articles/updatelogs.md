@@ -1,5 +1,18 @@
 # OSharp .NetStandard 更新记录
 
+### 1.1.3 (2019/09/06)
+1. (repository) 修复用户未登录时CreatorId赋值为0的问题，应赋值为null
+2. (repository) 修复CreatedTime 有真实值时（不为默认值）时依然赋予当前时间的问题
+3. (log)新增新的NLog日志记录支持
+4. (log) 修复OSharp.NLog项目加载不正确的问题
+5. (identity) 在刷新token之后，添加刷新权限点、用户信息、菜单等
+6. (security) 修复角色、用户读取功能翻页不正确的问题
+7. (alain) OSharpTSColumn添加filterIndex配置项，用于配置关联数据的查询字段路径
+8. (alain) 修复上一发布版本中列表页搜索未关联动作的问题
+9.  (alain)：修复由于interceptor顺序不对导致AccessToken失效时尽管刷新Token成功依然会跳转到登录页的问题
+10. (alain) 在前端显示框架版本号
+11. 统一管理类库公共信息，并区分.netstandard和.netcoreapp
+
 ### 1.1.0 (2019/08/23)
 1. (core)：修复OperationResult.ToAjaxResult() 丢失 Data 的问题
 2. (core)：添加OperationResult.ToAjaxResult()的object类型Data转强类型委托处理的支持
