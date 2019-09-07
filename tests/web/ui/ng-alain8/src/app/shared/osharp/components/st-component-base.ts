@@ -35,6 +35,7 @@ export abstract class STComponentBase {
 
   osharp: OsharpService;
   alain: AlainService;
+  data: STData[] = [];
   selecteds: STData[] = [];
 
   constructor(injector: Injector) {
@@ -74,7 +75,7 @@ export abstract class STComponentBase {
   }
 
   protected GetSTRes(): STRes {
-    return this.alain.GetSTRes(this.ResponseDataProcess);
+    return this.alain.GetSTRes(data => this.ResponseDataProcess(data));
   }
 
   protected GetSTPage(): STPage {
@@ -86,6 +87,7 @@ export abstract class STComponentBase {
   }
 
   protected ResponseDataProcess(data: STData[]): STData[] {
+    this.data = data;
     return data;
   }
 
