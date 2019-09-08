@@ -9,8 +9,6 @@
 
 using System;
 
-using AutoMapper.Configuration.Conventions;
-
 using OSharp.Core.Functions;
 using OSharp.Entity;
 using OSharp.Mapping;

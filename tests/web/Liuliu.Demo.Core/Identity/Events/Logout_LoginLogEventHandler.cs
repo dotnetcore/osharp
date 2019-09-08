@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity.Entities;
 
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 
