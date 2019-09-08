@@ -13,7 +13,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using OSharp.Data;
 using OSharp.Entity;
@@ -82,34 +81,39 @@ namespace OSharp.Core.EntityInfos
             AuditEnabled = true;
 
             PropertyInfo[] propertyInfos = entityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            PropertyJson = propertyInfos.Select(property =>
-            {
-                EntityProperty ep = new EntityProperty()
+            string[] exceptNames = { "DeletedTime" };
+            PropertyJson = propertyInfos.Where(m => !exceptNames.Contains(m.Name)
+                    && (m.GetMethod != null && !m.GetMethod.IsVirtual || m.SetMethod != null && !m.SetMethod.IsVirtual))
+                .Select(property =>
                 {
-                    Name = property.Name,
-                    Display = property.GetDescription(),
-                    TypeName = property.PropertyType.FullName
-                };
-                //枚举类型，获取枚举项作为取值范围
-                if (property.PropertyType.IsEnum)
-                {
-                    ep.TypeName = typeof(int).FullName;
-                    Type enumType = property.PropertyType;
-                    Array values = enumType.GetEnumValues();
-                    int[] intValues = values.Cast<int>().ToArray();
-                    string[] names = values.Cast<Enum>().Select(m => m.ToDescription()).ToArray();
-                    for (int i = 0; i < intValues.Length; i++)
+                    EntityProperty ep = new EntityProperty()
                     {
-                        string value = intValues[i].ToString();
-                        ep.ValueRange.Add(new { id = value, text = names[i] });
+                        Name = property.Name,
+                        Display = property.GetDescription(),
+                        TypeName = property.PropertyType.FullName
+                    };
+                    //枚举类型，获取枚举项作为取值范围
+                    if (property.PropertyType.IsEnum)
+                    {
+                        ep.TypeName = typeof(int).FullName;
+                        Type enumType = property.PropertyType;
+                        Array values = enumType.GetEnumValues();
+                        int[] intValues = values.Cast<int>().ToArray();
+                        string[] names = values.Cast<Enum>().Select(m => m.ToDescription()).ToArray();
+                        for (int i = 0; i < intValues.Length; i++)
+                        {
+                            string value = intValues[i].ToString();
+                            ep.ValueRange.Add(new { id = value, text = names[i] });
+                        }
                     }
-                }
-                if (property.HasAttribute<UserFlagAttribute>())
-                {
-                    ep.IsUserFlag = true;
-                }
-                return ep;
-            }).ToArray().ToJsonString();
+
+                    if (property.HasAttribute<UserFlagAttribute>())
+                    {
+                        ep.IsUserFlag = true;
+                    }
+
+                    return ep;
+                }).ToArray().ToJsonString();
         }
     }
 }
