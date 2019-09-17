@@ -18,6 +18,18 @@
   <Import Project="../../../build/version.props" />
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190910113908_Message.cs" />
+    <Compile Remove="Migrations\20190910113908_Message.Designer.cs" />
+    <Compile Remove="Migrations\20190910115710_Message.cs" />
+    <Compile Remove="Migrations\20190910115710_Message.Designer.cs" />
+    <Compile Remove="Migrations\20190910131501_Message.cs" />
+    <Compile Remove="Migrations\20190910131501_Message.Designer.cs" />
+    <Compile Remove="Migrations\20190910132940_Message.cs" />
+    <Compile Remove="Migrations\20190910132940_Message.Designer.cs" />
+    <Compile Remove="Migrations\20190910133222_Message.cs" />
+    <Compile Remove="Migrations\20190910133222_Message.Designer.cs" />
+    <Compile Remove="Migrations\20190910141741_Message.cs" />
+    <Compile Remove="Migrations\20190910141741_Message.Designer.cs" />
     <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />

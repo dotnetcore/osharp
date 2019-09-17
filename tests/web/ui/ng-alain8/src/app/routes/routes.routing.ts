@@ -10,6 +10,7 @@ import { LayoutPassportComponent } from '../layout/passport/passport.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 // single pages
 import { CallbackComponent } from './callback/callback.component';
+import { ACLGuard } from '@delon/acl';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'identity', loadChildren: () => import('./identity/identity.module').then(m => m.IdentityModule) },
       { path: 'security', loadChildren: () => import('./security/security.module').then(m => m.SecurityModule) },
       { path: 'systems', loadChildren: () => import('./systems/systems.module').then(m => m.SystemsModule) },
+      { path: 'infos', loadChildren: () => import('./infos/infos.module').then(m => m.InfosModule), canActivateChild: [ACLGuard], data: { guard: 'Root.Admin.Infos' } },
     ]
   },
   // 全屏布局
@@ -48,11 +50,11 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(
       routes, {
-        useHash: environment.useHash,
-        // NOTICE: If you use `reuse-tab` component and turn on keepingScroll you can set to `disabled`
-        // Pls refer to https://ng-alain.com/components/reuse-tab
-        scrollPositionRestoration: 'top',
-      }
+      useHash: environment.useHash,
+      // NOTICE: If you use `reuse-tab` component and turn on keepingScroll you can set to `disabled`
+      // Pls refer to https://ng-alain.com/components/reuse-tab
+      scrollPositionRestoration: 'top',
+    }
     )],
   exports: [RouterModule],
 })

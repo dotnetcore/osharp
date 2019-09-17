@@ -1,6 +1,7 @@
 // Custom icon static resources
 
 import {
+  BorderOuterOutline,
   BulbOutline,
   CloseCircleOutline,
   DashboardOutline,
@@ -8,12 +9,14 @@ import {
   ExceptionOutline,
   InfoOutline,
   LinkOutline,
+  MailOutline,
   ProfileOutline,
   SafetyOutline,
   SecurityScanOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS = [
+  BorderOuterOutline,
   BulbOutline,
   CloseCircleOutline,
   DashboardOutline,
@@ -21,6 +24,7 @@ export const ICONS = [
   ExceptionOutline,
   InfoOutline,
   LinkOutline,
+  MailOutline,
   ProfileOutline,
   SafetyOutline,
   SecurityScanOutline,

@@ -7,7 +7,7 @@
 //  <last-date>2019-06-02 1:34</last-date>
 // -----------------------------------------------------------------------
 
-using System.Security.Claims;
+using System;
 using System.Threading.Tasks;
 
 
@@ -23,9 +23,9 @@ namespace OSharp.Identity.JwtBearer
         /// </summary>
         /// <param name="userId">用户编号的字符串</param>
         /// <param name="userName">用户名的字符串</param>
-        /// <param name="clientId">关联的客户端标识</param>
+        /// <param name="refreshToken">刷新Token模型</param>
         /// <returns>JwtToken信息</returns>
-        Task<JsonWebToken> CreateToken(string userId, string userName, string clientId = null);
+        Task<JsonWebToken> CreateToken(string userId, string userName, RefreshToken refreshToken = null);
 
         /// <summary>
         /// 使用RefreshToken获取新的JwtToken信息

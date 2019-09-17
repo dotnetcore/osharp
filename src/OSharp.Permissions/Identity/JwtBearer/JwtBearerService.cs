@@ -54,33 +54,32 @@ namespace OSharp.Identity.JwtBearer
             _logger = provider.GetLogger(GetType());
             _jwtOptions = _provider.GetOSharpOptions().Jwt;
         }
-
         /// <summary>
         /// 创建指定用户的JwtToken信息
         /// </summary>
         /// <param name="userId">用户编号的字符串</param>
         /// <param name="userName">用户名的字符串</param>
-        /// <param name="clientId">关联的客户端标识</param>
+        /// <param name="refreshToken">刷新Token模型</param>
         /// <returns>JwtToken信息</returns>
-        public virtual async Task<JsonWebToken> CreateToken(string userId, string userName, string clientId = null)
+        public async Task<JsonWebToken> CreateToken(string userId, string userName, RefreshToken refreshToken = null)
         {
             Check.NotNullOrEmpty(userId, nameof(userId));
             Check.NotNullOrEmpty(userName, nameof(userName));
 
             // New RefreshToken
-            clientId = clientId ?? Guid.NewGuid().ToString();
+            string clientId = refreshToken?.ClientId ?? Guid.NewGuid().ToString();
             Claim[] claims =
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim(ClaimTypes.Name, userName),
                 new Claim("clientId", clientId)
             };
-            var (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.RefreshToken);
+            var (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.RefreshToken, refreshToken);
             string refreshTokenStr = token;
             await _provider.ExecuteScopedWorkAsync(async provider =>
                 {
                     UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
-                    RefreshToken refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
+                    refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
                     var result = await userManager.SetRefreshToken(userId, refreshToken);
                     if (result.Succeeded)
                     {
@@ -167,11 +166,11 @@ namespace OSharp.Identity.JwtBearer
                 throw new OsharpException("RefreshToken 的数据中无法找到 UserName 声明");
             }
 
-            JsonWebToken token = await CreateToken(userId, userName, clientId);
+            JsonWebToken token = await CreateToken(userId, userName, tokenModel);
             return token;
         }
 
-        private (string, DateTime) CreateToken(IEnumerable<Claim> claims, JwtOptions options, JwtTokenType tokenType)
+        private (string, DateTime) CreateToken(IEnumerable<Claim> claims, JwtOptions options, JwtTokenType tokenType, RefreshToken refreshToken = null)
         {
             string secret = options.Secret;
             if (secret == null)
@@ -179,13 +178,33 @@ namespace OSharp.Identity.JwtBearer
                 throw new OsharpException("创建JwtToken时Secret为空，请在OSharp:Jwt:Secret节点中进行配置");
             }
 
+            DateTime expires;
+            DateTime now = DateTime.UtcNow;
+            if (tokenType == JwtTokenType.AccessToken)
+            {
+                if (refreshToken != null)
+                {
+                    throw new OsharpException("创建 AccessToken 时不需要 refreshToken");
+                }
+
+                double minutes = options.AccessExpireMins > 0 ? options.AccessExpireMins : 5; //默认5分钟
+                expires = now.AddMinutes(minutes);
+            }
+            else
+            {
+                if (refreshToken == null)
+                {
+                    double minutes = options.RefreshExpireMins > 0 ? options.RefreshExpireMins : 10080; // 默认7天
+                    expires = now.AddMinutes(minutes);
+                }
+                else
+                {
+                    expires = refreshToken.EndUtcTime;
+                }
+            }
             SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            DateTime now = DateTime.UtcNow;
-            double minutes = tokenType == JwtTokenType.AccessToken
-                ? options.AccessExpireMins > 0 ? options.AccessExpireMins : 5 //默认5分钟
-                : options.RefreshExpireMins > 0 ? options.RefreshExpireMins : 10080; // 默认7天
-            DateTime expires = now.AddMinutes(minutes);
+            
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),

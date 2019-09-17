@@ -20,7 +20,25 @@
     "i18n": "menu.nav.business",
     "group": true,
     "hideInBreadcrumb": true,
-    "children": []
+    "children": [{
+      "text": "信息模块",
+      "group": "true",
+      "icon": "anticon-mail",
+      "acl": "Root.Admin.Infos",
+      "children": [{
+        "text": "站内信管理",
+        "link": "/infos/message",
+        "acl": "Root.Admin.Infos.Message"
+      }, {
+        "text": "站内信接收记录管理",
+        "link": "/infos/message-receive",
+        "acl": "Root.Admin.Infos.MessageReceive"
+      }, {
+        "text": "站内信回复管理",
+        "link": "/infos/message-reply",
+        "acl": "Root.Admin.Infos.MessageReply"
+      }]
+    }]
   }, {
     "text": "权限模块",
     "i18n": "menu.nav.permission",

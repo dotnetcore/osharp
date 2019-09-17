@@ -1,0 +1,36 @@
+
+/*
+各模块路由：
+{ path: 'infos', loadChildren: () => import('./infos/infos.module').then(m => m.InfosModule), canActivateChild: [ACLGuard], data: { guard: 'Root.Admin.Infos' } },
+
+各模块组件路由：
+信息 模块组件路由数据
+{ path: 'message', component: MessageComponent, canActivate: [ACLGuard], data: { title: '站内信管理', reuse: true, guard: 'Root.Admin.Infos.Message.Read' } },
+{ path: 'message-receive', component: MessageReceiveComponent, canActivate: [ACLGuard], data: { title: '站内信接收记录管理', reuse: true, guard: 'Root.Admin.Infos.MessageReceive.Read' } },
+{ path: 'message-reply', component: MessageReplyComponent, canActivate: [ACLGuard], data: { title: '站内信回复管理', reuse: true, guard: 'Root.Admin.Infos.MessageReply.Read' } },
+
+
+
+各模块菜单数据：
+信息 模块菜单数据
+{
+  "text": "信息模块",
+  "group": "true",
+  "icon": "anticon-border",
+  "acl": "Root.Admin.Infos",
+  "children": [{
+    "text": "站内信管理",
+    "link": "/infos/message",
+    "acl": "Root.Admin.Infos.Message"
+  }, {
+    "text": "站内信接收记录管理",
+    "link": "/infos/message-receive",
+    "acl": "Root.Admin.Infos.MessageReceive"
+  }, {
+    "text": "站内信回复管理",
+    "link": "/infos/message-reply",
+    "acl": "Root.Admin.Infos.MessageReply"
+  }]
+}
+
+*/

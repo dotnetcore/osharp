@@ -20,6 +20,12 @@
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp\OSharp.csproj" />
+    <Compile Update="Identity/IdentityService.*.cs">
+      <DependentUpon>IdentityService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infos/InfosServiceBase.*.generated.cs">
+      <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
