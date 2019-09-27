@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+  
   <PropertyGroup>
     <PackageId>OSharpNS.AutoMapper</PackageId>
     <Summary>OSharp(.NetStandard2.0) AutoMapper 对象映射组件</Summary>
@@ -14,8 +17,6 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AutoMapper.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <Compile Remove="ServiceCollectionExtensions1.cs" />
   </ItemGroup>

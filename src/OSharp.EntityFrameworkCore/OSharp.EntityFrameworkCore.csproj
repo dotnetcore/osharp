@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
   <PropertyGroup>
     <PackageId>OSharpNS.EntityFrameworkCore</PackageId>
     <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp(.NetStandard2.0)数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
   </PropertyGroup>
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.xml</DocumentationFile>
   </PropertyGroup>

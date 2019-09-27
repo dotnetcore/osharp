@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.Redis</PackageId>
     <Summary>OSharp(.NetStandard2.0) Redis 缓存组件</Summary>
@@ -14,9 +17,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.Redis.xml</DocumentationFile>
   </PropertyGroup>
-
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />

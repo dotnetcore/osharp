@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.MiniProfiler</PackageId>
     <Summary>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件</Summary>
@@ -15,9 +18,6 @@
     <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
   </PropertyGroup>
-
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
 
   <ItemGroup>
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.180" />

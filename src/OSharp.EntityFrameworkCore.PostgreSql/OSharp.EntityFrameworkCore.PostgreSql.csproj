@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <RootNamespace>OSharp.Entity.PostgreSql</RootNamespace>
     <PackageId>OSharpNS.EntityFrameworkCore.PostgreSql</PackageId>
@@ -17,8 +20,6 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.PostgreSql.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[2.2.4, 3.0)" />
   </ItemGroup>

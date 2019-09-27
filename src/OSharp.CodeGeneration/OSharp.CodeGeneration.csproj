@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+  
   <PropertyGroup>
     <PackageId>OSharpNS.CodeGeneration</PackageId>
     <Summary>OSharp(.NetStandard2.0) 代码生成组件</Summary>
@@ -16,8 +19,6 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <None Remove="Templates\AdminController.cshtml" />
     <None Remove="Templates\Entity.cshtml" />

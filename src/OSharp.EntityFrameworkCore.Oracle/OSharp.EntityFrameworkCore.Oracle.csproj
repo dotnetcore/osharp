@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <RootNamespace>OSharp.Entity.Oracle</RootNamespace>
     <PackageId>OSharpNS.EntityFrameworkCore.Oracle</PackageId>
@@ -14,9 +17,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
   </PropertyGroup>
-
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
 
   <ItemGroup>
     <PackageReference Include="Citms.EntityFrameworkCore.Oracle" Version="1.0.9" />

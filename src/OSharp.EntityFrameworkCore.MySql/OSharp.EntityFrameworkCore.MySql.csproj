@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <RootNamespace>OSharp.Entity.MySql</RootNamespace>
     <PackageId>OSharpNS.EntityFrameworkCore.MySql</PackageId>
@@ -14,9 +17,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.MySql.xml</DocumentationFile>
   </PropertyGroup>
-
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
 
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[2.2.0, 3.0)" />

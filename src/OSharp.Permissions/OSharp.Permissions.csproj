@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.Permissions</PackageId>
     <Summary>OSharp(.NetStandard2.0)核心组件</Summary>
@@ -15,8 +18,6 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <Compile Remove="Authentication\**" />
     <EmbeddedResource Remove="Authentication\**" />

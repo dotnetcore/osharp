@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.AspNetCore</PackageId>
     <Summary>OSharp(.NetStandard2.0) AspNetCore组件</Summary>
@@ -14,9 +17,6 @@
     <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AspNetCore.xml</DocumentationFile>
     <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
-
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
 
   <ItemGroup>
     <Compile Remove="Mvc\Extensions\**" />

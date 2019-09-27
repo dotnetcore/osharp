@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netstandard.props" />
+  <Import Project="../../build/version.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.Hangfire</PackageId>
     <Summary>OSharp(.NetStandard2.0) Hangfire 后台任务组件</Summary>
@@ -16,8 +19,6 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.Hangfire.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.7.6" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />

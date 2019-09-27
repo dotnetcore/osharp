@@ -7,9 +7,9 @@
     <Company>柳柳软件(66soft.net)</Company>
     <Copyright>Copyright @ 66SOFT 2014-2019</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/i66soft/osharp-ns20</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/i66soft/osharp</PackageProjectUrl>
     <PackageIconUrl>https://en.gravatar.com/userimage/140788132/0ff3b1e68fa0154337b1528c4276e276.png?size=80</PackageIconUrl>
-    <RepositoryUrl>https://github.com/i66soft/osharp-ns20</RepositoryUrl>
+    <RepositoryUrl>https://github.com/i66soft/osharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>osharp osharpns</PackageTags>
     <NeutralLanguage>zh-CHS</NeutralLanguage>
