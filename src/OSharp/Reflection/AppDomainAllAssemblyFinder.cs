@@ -42,26 +42,28 @@ namespace OSharp.Reflection
         {
             string[] filters =
             {
-                "System",
-                "Microsoft",
+                "mscorlib",
                 "netstandard",
                 "dotnet",
+                "api-ms-win-core",
+                "runtime.",
+                "System",
+                "Microsoft",
                 "Window",
-                "mscorlib",
-                "api-ms-win-core"
             };
             DependencyContext context = DependencyContext.Default;
             if (context != null)
             {
                 List<string> names = new List<string>();
-                string[] dllNames = context.CompileLibraries.SelectMany(m => m.Assemblies).Distinct().Select(m => m.Replace(".dll", "")).ToArray();
+                string[] dllNames = context.CompileLibraries.SelectMany(m => m.Assemblies).Distinct().Select(m => m.Replace(".dll", ""))
+                    .OrderBy(m => m).ToArray();
                 if (dllNames.Length > 0)
                 {
                     names = (from name in dllNames
                              let i = name.LastIndexOf('/') + 1
                              select name.Substring(i, name.Length - i)).Distinct()
                         .WhereIf(name => !filters.Any(name.StartsWith), _filterNetAssembly)
-                        .ToList();
+                        .OrderBy(m => m).ToList();
                 }
                 else
                 {

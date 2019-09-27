@@ -54,7 +54,7 @@ namespace OSharp.Dependency
         /// </summary>
         public static TServiceType GetOrAddSingletonInstance<TServiceType>(this IServiceCollection services, Func<TServiceType> factory) where TServiceType : class
         {
-            TServiceType item = (TServiceType)services.FirstOrDefault(m => m.ServiceType == typeof(TServiceType) && m.Lifetime == ServiceLifetime.Singleton)?.ImplementationInstance;
+            TServiceType item = GetSingletonInstanceOrNull<TServiceType>(services);
             if (item == null)
             {
                 item = factory();
@@ -68,7 +68,19 @@ namespace OSharp.Dependency
         /// </summary>
         public static T GetSingletonInstanceOrNull<T>(this IServiceCollection services)
         {
-            return (T)services.FirstOrDefault(d => d.ServiceType == typeof(T))?.ImplementationInstance;
+            ServiceDescriptor descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(T) && d.Lifetime == ServiceLifetime.Singleton);
+
+            if (descriptor?.ImplementationInstance != null)
+            {
+                return (T)descriptor.ImplementationInstance;
+            }
+
+            if (descriptor?.ImplementationFactory != null)
+            {
+                return (T)descriptor.ImplementationFactory.Invoke(null);
+            }
+
+            return default;
         }
 
         /// <summary>

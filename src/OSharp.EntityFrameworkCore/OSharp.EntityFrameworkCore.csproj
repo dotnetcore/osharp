@@ -14,10 +14,10 @@
     <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="1.60.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="2.0.7" />
+    <PackageReference Include="Dapper" Version="2.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[2.2.6, 3.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.6, 3.0)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[2.0.7, 3)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
