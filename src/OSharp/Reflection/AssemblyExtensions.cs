@@ -13,6 +13,7 @@ using System.Reflection;
 
 using Microsoft.Extensions.DependencyModel;
 
+using OSharp.Collections;
 using OSharp.Extensions;
 
 
@@ -48,7 +49,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetCliVersion()
         {
-            string cliVersion = "NETStandard.Library";
+            string cliVersion = "Microsoft.NETCore.Platforms";
             CompilationLibrary lib = DependencyContext.Default.CompileLibraries.FirstOrDefault(m => m.Name == cliVersion);
             cliVersion = lib?.Version;
             return cliVersion;
