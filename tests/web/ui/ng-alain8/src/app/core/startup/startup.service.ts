@@ -56,23 +56,24 @@ export class StartupService {
     zip(
       this.httpClient.get(`assets/osharp/i18n/${this.i18n.defaultLang}.json`),
       this.httpClient.get('assets/osharp/app-data.json'),
+      this.httpClient.get('api/common/systeminfo'),
       this.httpClient.get('api/security/getauthinfo'), // 获取当前用户的权限点string[]
       this.httpClient.get('api/identity/profile') // 获取用户信息
     ).pipe(
-      catchError(([langData, appData, authInfo, userInfo]) => {
+      catchError(([langData, appData, sysInfo, authInfo, userInfo]) => {
         resolve(null);
-        return [langData, appData, authInfo, userInfo];
+        return [langData, appData, sysInfo, authInfo, userInfo];
       })
-    ).subscribe(([langData, appData, authInfo, userInfo]) => {
+    ).subscribe(([langData, appData, sysInfo, authInfo, userInfo]) => {
       // Setting language data
       this.translate.setTranslation(this.i18n.defaultLang, langData);
       this.translate.setDefaultLang(this.i18n.defaultLang);
 
       // Application data
-      let pjson = require('../../../../package.json');
       const res: any = appData;
-      if (pjson && res && res.app) {
-        res.app.version = pjson.version;
+      if (res && res.app) {
+        res.app.cliVersion = sysInfo.Object.CliVersion;
+        res.app.osharpVersion = sysInfo.Object.OSharpVersion;
       }
       // Application information: including site name, description, year
       this.settingService.setApp(res.app);

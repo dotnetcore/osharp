@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { SettingsService } from '@delon/theme';
+import { SettingsService, App } from '@delon/theme';
 
 @Component({
   selector: 'layout-sidebar',
@@ -8,8 +8,4 @@ import { SettingsService } from '@delon/theme';
 })
 export class SidebarComponent {
   constructor(public settings: SettingsService) { }
-
-  get version() {
-    return this.settings.app.version;
-  }
 }

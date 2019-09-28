@@ -25,17 +25,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.UI;
 using OSharp.CodeGenerator;
+using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Data;
 using OSharp.Drawing;
 using OSharp.IO;
 using OSharp.Reflection;
+
+using AssemblyExtensions = OSharp.Reflection.AssemblyExtensions;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -134,12 +138,14 @@ namespace Liuliu.Demo.Web.Controllers
                 m.IsEnabled
             }).ToList();
 
-            string version = Assembly.GetExecutingAssembly().GetProductVersion();
+            string cliVersion = AssemblyExtensions.GetCliVersion();
+            string osharpVersion = Assembly.GetExecutingAssembly().GetProductVersion();
 
-            info.Lines = new List<string>()
+            info.Object = new
             {
-                "WebApi 数据服务已启动",
-                $"当前版本：{version}"
+                Message = "WebApi 数据服务已启动",
+                CliVersion = cliVersion,
+                OSharpVersion = osharpVersion
             };
 
             return info;

@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router, NavigationEnd, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { updateHostClass } from '@delon/util';
-import { SettingsService } from '@delon/theme';
+import { SettingsService, App } from '@delon/theme';
 import { environment } from '@env/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -61,6 +61,10 @@ export class LayoutDefaultComponent implements OnInit, AfterViewInit, OnDestroy 
         }, 100);
       }
     });
+  }
+
+  get app(): App {
+    return this.settings.app;
   }
 
   private setClass() {

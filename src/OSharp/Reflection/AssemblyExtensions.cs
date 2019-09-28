@@ -8,7 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+
+using Microsoft.Extensions.DependencyModel;
 
 using OSharp.Extensions;
 
@@ -38,6 +41,17 @@ namespace OSharp.Reflection
             assembly.CheckNotNull("assembly");
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
             return info.ProductVersion;
+        }
+
+        /// <summary>
+        /// 获取CLI版本号
+        /// </summary>
+        public static string GetCliVersion()
+        {
+            string cliVersion = "NETStandard.Library";
+            CompilationLibrary lib = DependencyContext.Default.CompileLibraries.FirstOrDefault(m => m.Name == cliVersion);
+            cliVersion = lib?.Version;
+            return cliVersion;
         }
     }
 }
