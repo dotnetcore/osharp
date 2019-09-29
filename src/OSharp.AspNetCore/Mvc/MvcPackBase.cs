@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,6 +39,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services = AddCors(services);
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -61,8 +63,27 @@ namespace OSharp.AspNetCore.Mvc
         /// <param name="app">应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
+            UseCors(app);
             app.UseMvcWithAreaRoute();
             IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 重写以实现添加Cors服务
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        protected virtual IServiceCollection AddCors(IServiceCollection services)
+        {
+            return services;
+        }
+
+        /// <summary>
+        /// 重写以应用Cors
+        /// </summary>
+        protected virtual IApplicationBuilder UseCors(IApplicationBuilder app)
+        {
+            return app;
         }
     }
 }
