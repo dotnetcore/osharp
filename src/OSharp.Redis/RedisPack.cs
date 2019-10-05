@@ -16,6 +16,6 @@ namespace OSharp.Redis
     /// Redis模块
     /// </summary>
     [Description("Redis模块")]
-    public class RedisPack : RedisPackCore
+    public class RedisPack : RedisPackBase
     { }
 }

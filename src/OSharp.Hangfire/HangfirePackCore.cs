@@ -28,7 +28,7 @@ namespace OSharp.Hangfire
     /// Hangfire后台任务模块基类
     /// </summary>
     [DependsOnPacks(typeof(AspNetCorePack))]
-    public abstract class HangfirePackCore : AspOsharpPack
+    public abstract class HangfirePackBase : AspOsharpPack
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动

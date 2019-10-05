@@ -100,6 +100,23 @@ namespace OSharp.Collections
         }
 
         /// <summary>
+        /// 将字符串集合按指定前缀排序
+        /// </summary>
+        public static IEnumerable<T> OrderByPrefixes<T>(this IEnumerable<T> source, Func<T, string> keySelector, params string[] prefixes)
+        {
+            List<T> all = source.OrderBy(keySelector).ToList();
+            List<T> result = new List<T>();
+            foreach (string prefix in prefixes)
+            {
+                List<T> tmpList = all.Where(m => keySelector(m).StartsWith(prefix)).OrderBy(keySelector).ToList();
+                all = all.Except(tmpList).ToList();
+                result.AddRange(tmpList);
+            }
+            result.AddRange(all);
+            return result;
+        }
+
+        /// <summary>
         /// 根据指定条件返回集合中不重复的元素
         /// </summary>
         /// <typeparam name="T">动态类型</typeparam>

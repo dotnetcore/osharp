@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -16,7 +17,9 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using OSharp.Collections;
 using OSharp.Core.Packs;
+using OSharp.Extensions;
 using OSharp.Reflection;
 
 
@@ -51,7 +54,7 @@ namespace OSharp.Dependency
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
             //查找所有自动注册的服务实现类型
-            IDependencyTypeFinder dependencyTypeFinder = 
+            IDependencyTypeFinder dependencyTypeFinder =
                 services.GetOrAddTypeFinder<IDependencyTypeFinder>(assemblyFinder => new DependencyTypeFinder(assemblyFinder));
 
             Type[] dependencyTypes = dependencyTypeFinder.FindAll();
@@ -105,6 +108,13 @@ namespace OSharp.Dependency
                 services.TryAdd(new ServiceDescriptor(implementationType, implementationType, lifetime.Value));
             }
 
+            if (serviceTypes.Length > 1)
+            {
+                List<string> orderTokens = new List<string>() { implementationType.Namespace.Substring("", ".", "") };
+                orderTokens.AddIfNotExist("OSharp");
+                serviceTypes = serviceTypes.OrderByPrefixes(m => m.FullName, orderTokens.ToArray()).ToArray();
+            }
+
             //注册服务
             for (int i = 0; i < serviceTypes.Length; i++)
             {
@@ -130,15 +140,15 @@ namespace OSharp.Dependency
                 }
                 else
                 {
-                    //有多个接口，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一实例
-                    Type firstServiceType = serviceTypes[0];
-                    descriptor = new ServiceDescriptor(serviceType, provider => provider.GetService(firstServiceType), lifetime.Value);
                     if (multiple)
                     {
                         services.Add(descriptor);
                     }
                     else
                     {
+                        //有多个接口，后边的接口注册使用第一个接口的实例，保证同个实现类的多个接口获得同一实例
+                        Type firstServiceType = serviceTypes[0];
+                        descriptor = new ServiceDescriptor(serviceType, provider => provider.GetService(firstServiceType), lifetime.Value);
                         AddSingleService(services, descriptor, dependencyAttribute);
                     }
                 }

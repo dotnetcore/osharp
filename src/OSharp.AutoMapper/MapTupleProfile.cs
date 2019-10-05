@@ -26,7 +26,7 @@ namespace OSharp.AutoMapper
     /// <summary>
     /// 创建源类型与目标类型的配对
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
+    [Dependency(ServiceLifetime.Singleton)]
     public class MapTupleProfile : Profile, IMapTuple
     {
         private readonly IMapFromAttributeTypeFinder _mapFromAttributeTypeFinder;

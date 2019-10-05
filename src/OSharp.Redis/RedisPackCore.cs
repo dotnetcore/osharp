@@ -25,7 +25,7 @@ namespace OSharp.Redis
     /// <summary>
     /// Redis模块基类
     /// </summary>
-    public abstract class RedisPackCore : OsharpPack
+    public abstract class RedisPackBase : OsharpPack
     {
         private bool _enabled = false;
 
@@ -56,7 +56,7 @@ namespace OSharp.Redis
             string name = configuration["OSharp:Redis:InstanceName"].CastTo("RedisName");
 
             services.RemoveAll(typeof(IDistributedCache));
-            services.AddDistributedRedisCache(opts =>
+            services.AddStackExchangeRedisCache(opts =>
             {
                 opts.Configuration = config;
                 opts.InstanceName = name;
