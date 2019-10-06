@@ -51,7 +51,11 @@ namespace OSharp.Swagger
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
+#if NETCOREAPP3_0
+            bool enabled = false;
+#else
             bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+#endif
             if (!enabled)
             {
                 return services;
@@ -98,7 +102,11 @@ namespace OSharp.Swagger
         public override void UsePack(IApplicationBuilder app)
         {
             IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+#if NETCOREAPP3_0
+            bool enabled = false;
+#else
             bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+#endif
             if (!enabled)
             {
                 return;

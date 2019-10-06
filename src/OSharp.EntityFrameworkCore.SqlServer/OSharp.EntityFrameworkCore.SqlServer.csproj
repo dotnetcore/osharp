@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <Import Project="../../build/public.netstandard21.props" />
+  <Import Project="../../build/version30.props" />
 
   <PropertyGroup>
     <PackageId>OSharpNS.EntityFrameworkCore.SqlServer</PackageId>
-    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的SqlServer数据访问功能的实现</Description>
-    <Summary>OSharp(.NetStandard2.0)数据访问组件SqlServer</Summary>
+    <Description>OSharp(.NetStandard2.1)数据访问组件，封装EntityFrameworkCore的SqlServer数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.1)数据访问组件SqlServer</Summary>
     <RootNamespace>OSharp.Entity.SqlServer</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.SqlServer.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\OSharp.EntityFrameworkCore.SqlServer.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.SqlServer.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.EntityFrameworkCore.SqlServer.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[2.2.6, 3.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

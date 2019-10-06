@@ -31,11 +31,20 @@ namespace OSharp.AspNetCore
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override void UsePack(IServiceProvider provider)
         {
+#if NETCOREAPP3_0
+            IWebHostEnvironment environment = provider.GetService<IWebHostEnvironment>();
+            if (environment != null)
+            {
+                throw new OsharpException("当前处于AspNetCore环境，请使用UsePack(IApplicationBuilder)进行初始化");
+            }
+#else
             IHostingEnvironment environment = provider.GetService<IHostingEnvironment>();
             if (environment != null)
             {
                 throw new OsharpException("当前处于AspNetCore环境，请使用UsePack(IApplicationBuilder)进行初始化");
             }
+#endif
+
 
             base.UsePack(provider);
         }

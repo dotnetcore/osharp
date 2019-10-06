@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
-    <ProjectReference Include="..\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
+    <ProjectReference Include="..\web\Liuliu.Demo.Core\Liuliu.Demo.Core.22.csproj" />
   </ItemGroup>
 
 </Project>

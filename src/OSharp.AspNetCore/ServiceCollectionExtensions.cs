@@ -27,5 +27,16 @@ namespace OSharp.AspNetCore
         {
             return services.GetSingletonInstance<IHostingEnvironment>();
         }
+
+#if NETCOREAPP3_0
+        /// <summary>
+        /// 获取<see cref="IHostingEnvironment"/>环境信息
+        /// </summary>
+        public static IWebHostEnvironment GetWebHostEnvironment(this IServiceCollection services)
+        {
+            return services.GetSingletonInstance<IWebHostEnvironment>();
+        }
+#endif
+
     }
 }

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\..\src\OSharp\OSharp.22.csproj" />
     <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
   </ItemGroup>
 

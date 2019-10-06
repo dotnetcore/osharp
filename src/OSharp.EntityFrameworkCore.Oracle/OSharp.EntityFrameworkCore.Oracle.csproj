@@ -1,21 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <Import Project="../../build/public.netstandard21.props" />
+  <Import Project="../../build/version30.props" />
 
   <PropertyGroup>
-    <RootNamespace>OSharp.Entity.Oracle</RootNamespace>
     <PackageId>OSharpNS.EntityFrameworkCore.Oracle</PackageId>
-    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的Oracle数据访问功能的实现</Description>
-    <Summary>OSharp(.NetStandard2.0)数据访问组件Oracle</Summary>
+    <Description>OSharp(.NetStandard2.1)数据访问组件，封装EntityFrameworkCore的Oracle数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.1)数据访问组件Oracle</Summary>
+    <RootNamespace>OSharp.Entity.Oracle</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\src\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.22.csproj" />
+    <ProjectReference Include="..\..\src\OSharp\OSharp.22.csproj" />
   </ItemGroup>
 
 </Project>

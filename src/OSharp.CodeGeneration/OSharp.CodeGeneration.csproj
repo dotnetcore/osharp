@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
-  
+  <Import Project="../../build/public.netstandard21.props" />
+  <Import Project="../../build/version30.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.CodeGeneration</PackageId>
-    <Summary>OSharp(.NetStandard2.0) 代码生成组件</Summary>
-    <Description>OSharp(.NetStandard2.0) 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等</Description>
+    <Summary>OSharp(.NetStandard2.1) 代码生成组件</Summary>
+    <Description>OSharp(.NetStandard2.1) 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等</Description>
+    <RootNamespace>OSharp.CodeGeneration</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\OSharp.CodeGeneration.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.CodeGeneration.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,15 +43,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="RazorEngine.NetCore" Version="2.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    <PackageReference Include="RazorEngine.NetCore" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Dtos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
 
 </Project>

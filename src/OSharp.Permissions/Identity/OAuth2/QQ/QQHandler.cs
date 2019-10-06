@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+#if NETCOREAPP3_0
+using System.Text.Json;
+#endif
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -52,6 +55,7 @@ namespace OSharp.Identity.OAuth2.QQ
                 throw new HttpRequestException($"未能检索QQ Connect的用户信息(返回状态码:{userInformationResponse.StatusCode})，请检查参数是否正确。");
             }
 
+#if NETSTANDARD
             JObject payload = JObject.Parse(await userInformationResponse.Content.ReadAsStringAsync());
             //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId, ClaimValueTypes.String, Options.ClaimsIssuer));
             payload.Add("openid", openId);
@@ -59,14 +63,35 @@ namespace OSharp.Identity.OAuth2.QQ
             context.RunClaimActions();
             await Events.CreatingTicket(context);
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+#else
+            string json2 = await userInformationResponse.Content.ReadAsStringAsync();
+            JObject payload = JObject.Parse(json2);
+            JsonDocument document = JsonDocument.Parse(json2);
+            //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, openId, ClaimValueTypes.String, Options.ClaimsIssuer));
+            payload.Add("openid", openId);
+            OAuthCreatingTicketContext context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, document.RootElement);
+            context.RunClaimActions();
+            await Events.CreatingTicket(context);
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+#endif
         }
+
+        #region Overrides of OAuthHandler<QQOptions>
 
         /// <summary>
         /// 通过Authorization Code获取Access Token。
         /// 重写改方法，QQ这一步用的是Get请求，base中用的是Post
         /// </summary>
+#if NETSTANDARD
         protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(string code, string redirectUri)
+        { 
+#else
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
         {
+            string code = context.Code;
+            string redirectUri = context.RedirectUri;
+
+#endif
             Dictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {  "grant_type", "authorization_code" },
@@ -83,9 +108,18 @@ namespace OSharp.Identity.OAuth2.QQ
             {
                 return OAuthTokenResponse.Failed(new Exception("获取QQ Connect Access Token出错。"));
             }
+#if NETSTANDARD
             JObject payload = JObject.Parse(企鹅的返回不拘一格传入这里统一转换为JSON(await response.Content.ReadAsStringAsync()));
             return OAuthTokenResponse.Success(payload);
+#else
+            string json = 企鹅的返回不拘一格传入这里统一转换为JSON(await response.Content.ReadAsStringAsync());
+            JsonDocument document = JsonDocument.Parse(json);
+            return OAuthTokenResponse.Success(document);
+#endif
+
         }
+
+        #endregion
 
         //Convert to JSON
         private string 企鹅的返回不拘一格传入这里统一转换为JSON(string text)

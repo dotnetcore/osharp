@@ -1,20 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <Import Project="../../build/public.netstandard21.props" />
+  <Import Project="../../build/version30.props" />
 
   <PropertyGroup>
     <PackageId>OSharpNS.Log4Net</PackageId>
-    <Description>OSharp(.NetStandard2.0)Log4Net组件，封装使用log4net组件来实现框架的日志输出功能</Description>
-    <Summary>OSharp Log4Net组件(.NetStandard2.0)</Summary>
+    <Summary>OSharp Log4Net组件(.NetStandard2.1)</Summary>
+    <Description>OSharp(.NetStandard2.1)Log4Net组件，封装使用log4net组件来实现框架的日志输出功能</Description>
+    <RootNamespace>OSharp.Log4Net</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\OSharp.Log4Net.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Log4Net.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.Log4Net.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

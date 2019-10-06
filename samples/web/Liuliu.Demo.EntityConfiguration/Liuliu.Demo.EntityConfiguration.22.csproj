@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../../build/public.netstandard20.props" />
+  <Import Project="../../../build/version22.props" />
+
+  <PropertyGroup>
+    <RootNamespace>Liuliu.Demo.EntityConfiguration</RootNamespace>
+    <AssemblyName>Liuliu.Demo.EntityConfiguration</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Liuliu.Demo.EntityConfiguration.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.22.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.22.csproj" />
+    <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.22.csproj" />
+  </ItemGroup>
+
+</Project>

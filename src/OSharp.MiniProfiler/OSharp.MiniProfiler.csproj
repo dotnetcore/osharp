@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <Import Project="../../build/public.netcoreapp30.props" />
+  <Import Project="../../build/version30.props" />
 
   <PropertyGroup>
     <PackageId>OSharpNS.MiniProfiler</PackageId>
-    <Summary>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件</Summary>
-    <Description>OSharp(.NetStandard2.0) MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
+    <Summary>OSharp(.NETCoreApp3.0) MiniProfiler 性能监测组件</Summary>
+    <Description>OSharp(.NETCoreApp3.0) MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
+    <RootNamespace>OSharp.MiniProfiler</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.MiniProfiler.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.MiniProfiler.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\OSharp.MiniProfiler.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.180" />
-    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.180" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>

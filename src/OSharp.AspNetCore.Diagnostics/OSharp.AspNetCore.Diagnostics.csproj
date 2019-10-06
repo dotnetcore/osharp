@@ -1,42 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../../build/public.netcoreapp30.props" />
+  <Import Project="../../build/version30.props" />
+
   <PropertyGroup>
     <PackageId>OSharpNS.AspNetCore.Diagnostics</PackageId>
-    <Summary>OSharp(.NetStandard2.0) AspNetCore性能诊断组件</Summary>
-    <Description>OSharp(.NetStandard2.0) AspNetCore性能诊断组件，提供AspNetCore性能诊断功能的封装</Description>
+    <Summary>OSharp(.NETCoreApp3.0) AspNetCore性能诊断组件</Summary>
+    <Description>OSharp(.NETCoreApp3.0) AspNetCore性能诊断组件，提供AspNetCore性能诊断功能的封装</Description>
+    <RootNamespace>OSharp.AspNetCore.Diagnostics</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    <DocumentationFile>bin\Debug\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SignalR" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqLite" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.System" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="3.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0"/>
-    <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.SignalR" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqLite" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.System" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.1" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
 
 </Project>

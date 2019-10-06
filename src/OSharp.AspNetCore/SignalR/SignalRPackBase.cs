@@ -72,7 +72,13 @@ namespace OSharp.AspNetCore.SignalR
         /// <returns></returns>
         protected virtual Action<ISignalRServerBuilder> GetSignalRServerBuildAction(IServiceCollection services)
         {
-            return builder => builder.AddJsonProtocol(config => config.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+#if NETSTANDARD
+            return builder => builder.AddJsonProtocol(config =>
+                config.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+#else
+            return builder => builder.AddNewtonsoftJsonProtocol(options =>
+                options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+#endif
         }
 
         /// <summary>

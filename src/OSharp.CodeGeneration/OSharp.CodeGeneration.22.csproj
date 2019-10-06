@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.netstandard20.props" />
+  <Import Project="../../build/version22.props" />
+  
+  <PropertyGroup>
+    <PackageId>OSharpNS.CodeGeneration</PackageId>
+    <Summary>OSharp(.NetStandard2.0) 代码生成组件</Summary>
+    <Description>OSharp(.NetStandard2.0) 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等</Description>
+    <RootNamespace>OSharp.CodeGeneration</RootNamespace>
+    <AssemblyName>OSharp.CodeGeneration</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.CodeGeneration.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\AdminController.cshtml" />
+    <None Remove="Templates\Entity.cshtml" />
+    <None Remove="Templates\EntityConfiguration.cshtml" />
+    <None Remove="Templates\InputDto.cshtml" />
+    <None Remove="Templates\OutputDto.cshtml" />
+    <None Remove="Templates\ServiceContract.cshtml" />
+    <None Remove="Templates\ServiceEntityImpl.cshtml" />
+    <None Remove="Templates\ServiceMainImpl.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\AdminController.cshtml" />
+    <EmbeddedResource Include="Templates\Entity.cshtml" />
+    <EmbeddedResource Include="Templates\EntityConfiguration.cshtml" />
+    <EmbeddedResource Include="Templates\OutputDto.cshtml" />
+    <EmbeddedResource Include="Templates\InputDto.cshtml" />
+    <EmbeddedResource Include="Templates\ServiceEntityImpl.cshtml" />
+    <EmbeddedResource Include="Templates\ServiceContract.cshtml" />
+    <EmbeddedResource Include="Templates\ServiceMainImpl.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RazorEngine.NetCore" Version="2.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp\OSharp.22.csproj" />
+  </ItemGroup>
+
+</Project>

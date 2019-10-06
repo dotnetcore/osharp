@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.netstandard20.props" />
+  <Import Project="../../build/version22.props" />
+
+  <PropertyGroup>
+    <PackageId>OSharpNS.EntityFrameworkCore.MySql</PackageId>
+    <Description>OSharp(.NetStandard2.0)数据访问组件，封装EntityFrameworkCore的MySql数据访问功能的实现</Description>
+    <Summary>OSharp(.NetStandard2.0)数据访问组件MySql</Summary>
+    <RootNamespace>OSharp.Entity.MySql</RootNamespace>
+    <AssemblyName>OSharp.EntityFrameworkCore.MySql</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.EntityFrameworkCore.MySql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\OSharp.EntityFrameworkCore.MySql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[2.2.0, 3.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.22.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -40,6 +40,8 @@ namespace OSharp.AspNetCore.Mvc
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = AddCors(services);
+
+#if NETSTANDARD
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -49,6 +51,17 @@ namespace OSharp.AspNetCore.Mvc
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+#else
+            services.AddControllersWithViews(options =>
+            {
+                options.Conventions.Add(new DashedRoutingConvention());
+                options.Filters.Add(new OnlineUserAuthorizationFilter()); // 构建在线用户信息
+                options.Filters.Add(new FunctionAuthorizationFilter()); // 全局功能权限过滤器
+            }).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
+#endif
 
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
@@ -63,8 +76,14 @@ namespace OSharp.AspNetCore.Mvc
         /// <param name="app">应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
+#if NETSTANDARD
             UseCors(app);
             app.UseMvcWithAreaRoute();
+#else   
+            app.UseRouting();
+            UseCors(app);
+#endif
+
             IsEnabled = true;
         }
 

@@ -9,6 +9,7 @@
 
 using System;
 
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
@@ -52,5 +53,23 @@ namespace Microsoft.AspNetCore.Builder
                 builder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+#if NETCOREAPP3_0
+
+        /// <summary>
+        /// 添加Endpoint并Area路由支持
+        /// </summary>
+        public static IEndpointRouteBuilder MvcEndpointsWithAreaRoute(this IEndpointRouteBuilder endpoints, bool area = true)
+        {
+            if (area)
+            {
+                endpoints.MapControllerRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            }
+
+            endpoints.MapDefaultControllerRoute();
+            return endpoints;
+        }
+
+#endif
     }
 }

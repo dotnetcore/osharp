@@ -1,41 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard.props" />
-  <Import Project="../../build/version.props" />
+  <Import Project="../../build/public.netcoreapp30.props" />
+  <Import Project="../../build/version30.props" />
 
   <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>OSharpNS.Permissions</PackageId>
-    <Summary>OSharp(.NetStandard2.0)核心组件</Summary>
-    <Description>OSharp(.NetStandard2.0)权限组件，包含用户认证与权限验证的基础实现</Description>
+    <Summary>OSharp(.NETCoreApp3.0)核心组件</Summary>
+    <Description>OSharp(.NETCoreApp3.0)权限组件，包含用户认证与权限验证的基础实现</Description>
     <RootNamespace>OSharp</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\OSharp.Permissions.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\OSharp.Permissions.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Authentication\**" />
-    <EmbeddedResource Remove="Authentication\**" />
-    <None Remove="Authentication\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Identity\OnlineUserCache.cs" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="[2.2.0, 3.0)" />
   </ItemGroup>
 
 </Project>
