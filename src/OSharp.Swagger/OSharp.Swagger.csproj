@@ -8,7 +8,6 @@
     <Summary>OSharp(.NETCoreApp3.0) Swagger 客户端组件</Summary>
     <Description>OSharp(.NETCoreApp3.0) Swagger 客户端组件，封装基于Redis客户端实现</Description>
     <RootNamespace>OSharp.Swagger</RootNamespace>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
