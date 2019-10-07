@@ -41,17 +41,7 @@ namespace OSharp.AspNetCore.Mvc
         {
             services = AddCors(services);
 
-#if NETSTANDARD
-            services.AddMvc(options =>
-            {
-                options.Conventions.Add(new DashedRoutingConvention());
-                options.Filters.Add(new OnlineUserAuthorizationFilter()); // 构建在线用户信息
-                options.Filters.Add(new FunctionAuthorizationFilter()); // 全局功能权限过滤器
-            }).AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-#else
+#if NETCOREAPP3_0
             services.AddControllersWithViews(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -61,6 +51,16 @@ namespace OSharp.AspNetCore.Mvc
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
+#else
+            services.AddMvc(options =>
+            {
+                options.Conventions.Add(new DashedRoutingConvention());
+                options.Filters.Add(new OnlineUserAuthorizationFilter()); // 构建在线用户信息
+                options.Filters.Add(new FunctionAuthorizationFilter()); // 全局功能权限过滤器
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 #endif
 
             services.AddScoped<UnitOfWorkFilterImpl>();
@@ -76,12 +76,12 @@ namespace OSharp.AspNetCore.Mvc
         /// <param name="app">应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-#if NETSTANDARD
-            UseCors(app);
-            app.UseMvcWithAreaRoute();
-#else   
+#if NETCOREAPP3_0
             app.UseRouting();
             UseCors(app);
+#else   
+            UseCors(app);
+            app.UseMvcWithAreaRoute();
 #endif
 
             IsEnabled = true;

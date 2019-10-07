@@ -44,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.22.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.22.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.22.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.CodeGeneration\OSharp.CodeGeneration.22.csproj" />

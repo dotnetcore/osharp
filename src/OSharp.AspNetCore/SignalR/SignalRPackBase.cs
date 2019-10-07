@@ -56,6 +56,23 @@ namespace OSharp.AspNetCore.SignalR
         }
 
         /// <summary>
+        /// 重写以获取SignalR服务器创建委托
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        protected virtual Action<ISignalRServerBuilder> GetSignalRServerBuildAction(IServiceCollection services)
+        {
+#if NETCOREAPP3_0
+            return builder => builder.AddNewtonsoftJsonProtocol(options =>
+                options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+#else
+            return builder => builder.AddJsonProtocol(config =>
+                config.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+#endif
+        }
+
+#if NETSTANDARD
+        /// <summary>
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
@@ -66,26 +83,11 @@ namespace OSharp.AspNetCore.SignalR
         }
 
         /// <summary>
-        /// 重写以获取SignalR服务器创建委托
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        protected virtual Action<ISignalRServerBuilder> GetSignalRServerBuildAction(IServiceCollection services)
-        {
-#if NETSTANDARD
-            return builder => builder.AddJsonProtocol(config =>
-                config.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
-#else
-            return builder => builder.AddNewtonsoftJsonProtocol(options =>
-                options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
-#endif
-        }
-
-        /// <summary>
         /// 重写以获取Hub路由创建委托
         /// </summary>
         /// <param name="serviceProvider">服务提供者</param>
         /// <returns></returns>
         protected abstract Action<HubRouteBuilder> GetHubRouteBuildAction(IServiceProvider serviceProvider);
+#endif
     }
 }
