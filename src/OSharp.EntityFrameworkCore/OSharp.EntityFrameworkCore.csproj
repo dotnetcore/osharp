@@ -20,11 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.4" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.11" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.13" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
