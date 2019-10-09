@@ -64,7 +64,7 @@ namespace OSharp.Security
             TFunction[] functions = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TFunction, Guid> functionRepository = provider.GetService<IRepository<TFunction, Guid>>();
-                return functionRepository.Query(null, false).ToArray();
+                return functionRepository.QueryAsNoTracking(null, false).ToArray();
             });
 
             foreach (TFunction function in functions)
@@ -119,20 +119,20 @@ namespace OSharp.Security
             roleNames = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
-                TModuleKey[] moduleIds = moduleFunctionRepository.Query(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
+                TModuleKey[] moduleIds = moduleFunctionRepository.QueryAsNoTracking(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
                     .ToArray();
                 if (moduleIds.Length == 0)
                 {
                     return new string[0];
                 }
                 IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
-                TRoleKey[] roleIds = moduleRoleRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+                TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
                 if (roleIds.Length == 0)
                 {
                     return new string[0];
                 }
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
-                return roleRepository.Query(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
+                return roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             });
 
             if (roleNames != null)
@@ -160,18 +160,18 @@ namespace OSharp.Security
             functionIds = _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TUser, TUserKey> userRepository = provider.GetService<IRepository<TUser, TUserKey>>();
-                TUserKey userId = userRepository.Query(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
+                TUserKey userId = userRepository.QueryAsNoTracking(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
                 if (Equals(userId, default(TUserKey)))
                 {
                     return new Guid[0];
                 }
                 IRepository<TModuleUser, Guid> moduleUserRepository = provider.GetService<IRepository<TModuleUser, Guid>>();
-                TModuleKey[] moduleIds = moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+                TModuleKey[] moduleIds = moduleUserRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
                 IRepository<TModule, TModuleKey> moduleRepository = provider.GetService<IRepository<TModule, TModuleKey>>();
-                moduleIds = moduleIds.Select(m => moduleRepository.Query(n => n.TreePathString.Contains("$" + m + "$"))
+                moduleIds = moduleIds.Select(m => moduleRepository.QueryAsNoTracking(n => n.TreePathString.Contains("$" + m + "$"))
                     .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
                 IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
-                return moduleFunctionRepository.Query(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
+                return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             });
 
             if (functionIds.Length > 0)

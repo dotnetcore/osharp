@@ -141,7 +141,7 @@ namespace OSharp.Core.EntityInfos
                 return;
             }
 
-            TEntityInfo[] dbItems = repository.TrackQuery(null, false).ToArray();
+            TEntityInfo[] dbItems = repository.Query(null, false).ToArray();
 
             //删除的实体信息
             TEntityInfo[] removeItems = dbItems.Except(entityInfos, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
@@ -214,7 +214,7 @@ namespace OSharp.Core.EntityInfos
             {
                 return new TEntityInfo[0];
             }
-            return repository.Query(null, false).ToArray();
+            return repository.QueryAsNoTracking(null, false).ToArray();
         }
     }
 }

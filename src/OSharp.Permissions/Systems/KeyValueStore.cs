@@ -47,7 +47,7 @@ namespace OSharp.Systems
         /// <summary>
         /// 获取 键值对数据查询数据集
         /// </summary>
-        public IQueryable<KeyValue> KeyValues => _keyValueRepository.Query();
+        public IQueryable<KeyValue> KeyValues => _keyValueRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 获取或创建设置信息
@@ -90,7 +90,7 @@ namespace OSharp.Systems
         public IKeyValue GetKeyValue(string key)
         {
             const int seconds = 60 * 1000;
-            KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.Query(null, false).ToArray(), seconds);
+            KeyValue[] pairs = _cache.Get(AllKeyValuesKey, () => _keyValueRepository.QueryAsNoTracking(null, false).ToArray(), seconds);
             return pairs.FirstOrDefault(m => m.Key == key);
         }
 
@@ -128,7 +128,7 @@ namespace OSharp.Systems
             int count = 0;
             foreach (IKeyValue dto in dtos)
             {
-                KeyValue pair = _keyValueRepository.TrackQuery().FirstOrDefault(m => m.Key == dto.Key);
+                KeyValue pair = _keyValueRepository.Query().FirstOrDefault(m => m.Key == dto.Key);
                 if (pair == null)
                 {
                     pair = new KeyValue(dto.Key, dto.Value);
@@ -169,7 +169,7 @@ namespace OSharp.Systems
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> DeleteKeyValues(string rootKey)
         {
-            Guid[] ids = _keyValueRepository.Query(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
+            Guid[] ids = _keyValueRepository.QueryAsNoTracking(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
             return await DeleteKeyValues(ids);
         }
     }

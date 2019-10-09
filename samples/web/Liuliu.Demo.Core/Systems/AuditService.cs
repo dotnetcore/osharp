@@ -45,7 +45,7 @@ namespace Liuliu.Demo.Systems
         /// <summary>
         /// 获取 操作审计信息查询数据集
         /// </summary>
-        public IQueryable<AuditOperation> AuditOperations => _operationRepository.Query();
+        public IQueryable<AuditOperation> AuditOperations => _operationRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 删除操作审计信息信息
@@ -60,12 +60,12 @@ namespace Liuliu.Demo.Systems
         /// <summary>
         /// 获取 数据审计信息查询数据集
         /// </summary>
-        public IQueryable<AuditEntity> AuditEntities => _entityRepository.Query();
+        public IQueryable<AuditEntity> AuditEntities => _entityRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 获取 数据审计信息查询数据集
         /// </summary>
-        public IQueryable<AuditProperty> AuditProperties => _propertyRepository.Query();
+        public IQueryable<AuditProperty> AuditProperties => _propertyRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 删除数据审计信息信息

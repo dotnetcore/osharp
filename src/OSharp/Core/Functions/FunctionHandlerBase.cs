@@ -240,7 +240,7 @@ namespace OSharp.Core.Functions
                 return;
             }
 
-            TFunction[] dbItems = repository.TrackQuery(null, false).ToArray();
+            TFunction[] dbItems = repository.Query(null, false).ToArray();
 
             //删除的功能
             TFunction[] removeItems = dbItems.Except(functions,
@@ -337,7 +337,7 @@ namespace OSharp.Core.Functions
             {
                 return new TFunction[0];
             }
-            return repository.Query(null, false).ToArray();
+            return repository.QueryAsNoTracking(null, false).ToArray();
         }
 
     }

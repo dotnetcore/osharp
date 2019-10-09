@@ -27,7 +27,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         public IQueryable<UserLogin> UserLogins
         {
-            get { return _userLoginRepository.Query(); }
+            get { return _userLoginRepository.QueryAsNoTracking(); }
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Liuliu.Demo.Identity
 
                     var user = _userManager.Users.Where(m => m.Id == userId).Select(m => new { m.PasswordHash, m.NormalizeEmail }).First();
                     if ((string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.NormalizeEmail))
-                        && _userLoginRepository.Query(m => m.UserId == entity.UserId).Count() == 1)
+                        && _userLoginRepository.QueryAsNoTracking(m => m.UserId == entity.UserId).Count() == 1)
                     {
                         throw new OsharpException("当前用户未设置登录密码，并且要解除的第三方登录是唯一登录方式，无法解除");
                     }

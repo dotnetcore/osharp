@@ -38,7 +38,7 @@ namespace Liuliu.Demo.Infos
         /// </summary>
         public IQueryable<MessageReply> MessageReplies
         {
-            get { return MessageReplyRepository.Query(); }
+            get { return MessageReplyRepository.QueryAsNoTracking(); }
         }
 
         /// <summary>

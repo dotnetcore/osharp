@@ -136,7 +136,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 功能信息查询数据集
         /// </summary>
-        public IQueryable<TFunction> Functions => _functionRepository.Query();
+        public IQueryable<TFunction> Functions => _functionRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查功能信息是否存在
@@ -203,7 +203,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 实体信息查询数据集
         /// </summary>
-        public IQueryable<TEntityInfo> EntityInfos => _entityInfoRepository.Query();
+        public IQueryable<TEntityInfo> EntityInfos => _entityInfoRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查实体信息是否存在
@@ -234,7 +234,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 模块信息查询数据集
         /// </summary>
-        public IQueryable<TModule> Modules => _moduleRepository.Query();
+        public IQueryable<TModule> Modules => _moduleRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查模块信息是否存在
@@ -393,7 +393,7 @@ namespace OSharp.Security
             if (result.Succeeded)
             {
                 //功能权限缓存刷新事件
-                Guid[] functionIds = _moduleFunctionRepository.Query(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
+                Guid[] functionIds = _moduleFunctionRepository.QueryAsNoTracking(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
                 _eventBus.Publish(removeEventData);
             }
@@ -407,7 +407,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetModuleTreeIds(params TModuleKey[] rootIds)
         {
-            return rootIds.SelectMany(m => _moduleRepository.Query(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct()
+            return rootIds.SelectMany(m => _moduleRepository.QueryAsNoTracking(n => n.TreePathString.Contains($"${m}$")).Select(n => n.Id)).Distinct()
                 .ToArray();
         }
 
@@ -423,7 +423,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 模块功能信息查询数据集
         /// </summary>
-        public IQueryable<TModuleFunction> ModuleFunctions => _moduleFunctionRepository.Query();
+        public IQueryable<TModuleFunction> ModuleFunctions => _moduleFunctionRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查模块功能信息是否存在
@@ -450,7 +450,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
             }
 
-            Guid[] existFunctionIds = _moduleFunctionRepository.Query(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
+            Guid[] existFunctionIds = _moduleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
             Guid[] addFunctionIds = functionIds.Except(existFunctionIds).ToArray();
             Guid[] removeFunctionIds = existFunctionIds.Except(functionIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -474,7 +474,7 @@ namespace OSharp.Security
                 {
                     continue;
                 }
-                TModuleFunction moduleFunction = _moduleFunctionRepository.Query()
+                TModuleFunction moduleFunction = _moduleFunctionRepository.QueryAsNoTracking()
                     .FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.FunctionId == functionId);
                 if (moduleFunction == null)
                 {
@@ -506,7 +506,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 模块角色信息查询数据集
         /// </summary>
-        public IQueryable<TModuleRole> ModuleRoles => _moduleRoleRepository.Query();
+        public IQueryable<TModuleRole> ModuleRoles => _moduleRoleRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查模块角色信息是否存在
@@ -533,7 +533,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{roleId}”的角色信息不存在");
             }
 
-            TModuleKey[] existModuleIds = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).ToArray();
+            TModuleKey[] existModuleIds = _moduleRoleRepository.QueryAsNoTracking(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
             TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -557,7 +557,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleRole moduleRole = _moduleRoleRepository.Query().FirstOrDefault(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId));
+                TModuleRole moduleRole = _moduleRoleRepository.QueryAsNoTracking().FirstOrDefault(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId));
                 if (moduleRole == null)
                 {
                     continue;
@@ -570,7 +570,7 @@ namespace OSharp.Security
             {
                 //功能权限缓存刷新事件
                 moduleIds = addModuleIds.Union(removeModuleIds).Distinct().ToArray();
-                Guid[] functionIds = _moduleFunctionRepository.Query(m => moduleIds.Contains(m.ModuleId))
+                Guid[] functionIds = _moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId))
                     .Select(m => m.FunctionId).Distinct().ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
                 _eventBus.Publish(removeEventData);
@@ -596,7 +596,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetRoleModuleIds(TRoleKey roleId)
         {
-            TModuleKey[] moduleIds = _moduleRoleRepository.Query(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).Distinct().ToArray();
+            TModuleKey[] moduleIds = _moduleRoleRepository.QueryAsNoTracking(m => m.RoleId.Equals(roleId)).Select(m => m.ModuleId).Distinct().ToArray();
             return GetModuleTreeIds(moduleIds);
         }
 
@@ -607,7 +607,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 模块用户信息查询数据集
         /// </summary>
-        public IQueryable<TModuleUser> ModuleUsers => _moduleUserRepository.Query();
+        public IQueryable<TModuleUser> ModuleUsers => _moduleUserRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查模块用户信息是否存在
@@ -634,7 +634,7 @@ namespace OSharp.Security
                 return new OperationResult(OperationResultType.QueryNull, $"编号为“{userId}”的用户信息不存在");
             }
 
-            TModuleKey[] existModuleIds = _moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).ToArray();
+            TModuleKey[] existModuleIds = _moduleUserRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).ToArray();
             TModuleKey[] addModuleIds = moduleIds.Except(existModuleIds).ToArray();
             TModuleKey[] removeModuleIds = existModuleIds.Except(moduleIds).ToArray();
             List<string> addNames = new List<string>(), removeNames = new List<string>();
@@ -658,7 +658,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleUser moduleUser = _moduleUserRepository.Query().FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId));
+                TModuleUser moduleUser = _moduleUserRepository.QueryAsNoTracking().FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId));
                 if (moduleUser == null)
                 {
                     continue;
@@ -693,7 +693,7 @@ namespace OSharp.Security
         /// <returns>模块编号集合</returns>
         public virtual TModuleKey[] GetUserSelfModuleIds(TUserKey userId)
         {
-            TModuleKey[] moduleIds = _moduleUserRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
+            TModuleKey[] moduleIds = _moduleUserRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
             return GetModuleTreeIds(moduleIds);
         }
 
@@ -706,9 +706,9 @@ namespace OSharp.Security
         {
             TModuleKey[] selfModuleIds = GetUserSelfModuleIds(userId);
 
-            TRoleKey[] roleIds = _userRoleRepository.Query(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
+            TRoleKey[] roleIds = _userRoleRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.RoleId).ToArray();
             TModuleKey[] roleModuleIds = roleIds
-                .SelectMany(m => _moduleRoleRepository.Query(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
+                .SelectMany(m => _moduleRoleRepository.QueryAsNoTracking(n => n.RoleId.Equals(m)).Select(n => n.ModuleId))
                 .Distinct().ToArray();
             roleModuleIds = GetModuleTreeIds(roleModuleIds);
 
@@ -722,7 +722,7 @@ namespace OSharp.Security
         /// <summary>
         /// 获取 实体角色信息查询数据集
         /// </summary>
-        public virtual IQueryable<TEntityRole> EntityRoles => _entityRoleRepository.Query();
+        public virtual IQueryable<TEntityRole> EntityRoles => _entityRoleRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查实体角色信息是否存在
@@ -744,7 +744,7 @@ namespace OSharp.Security
         /// <returns>过滤条件组</returns>
         public virtual FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId, DataAuthOperation operation)
         {
-            return _entityRoleRepository.Query(m => m.RoleId.Equals(roleId) && m.EntityId == entityId && m.Operation == operation)
+            return _entityRoleRepository.QueryAsNoTracking(m => m.RoleId.Equals(roleId) && m.EntityId == entityId && m.Operation == operation)
                 .Select(m => m.FilterGroupJson).ToArray().Select(m => m.FromJsonString<FilterGroup>()).ToArray();
         }
 
