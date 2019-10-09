@@ -31,7 +31,6 @@
   <ItemGroup>
     <None Remove="index.html" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="index.html" />
   </ItemGroup>

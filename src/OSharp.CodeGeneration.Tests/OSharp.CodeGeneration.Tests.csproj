@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
-    <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
+    <ProjectReference Include="..\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj" />
   </ItemGroup>
 
 </Project>

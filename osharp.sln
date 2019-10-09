@@ -9,39 +9,39 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AspNetCore", "src\OSharp.AspNetCore\OSharp.AspNetCore.csproj", "{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AspNetCore.Diagnostics", "src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.csproj", "{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AspNetCore.Diagnostics", "src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.csproj", "{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{1C047E4B-774D-4BAF-955D-C36303F21DFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{1C047E4B-774D-4BAF-955D-C36303F21DFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{044195F4-59ED-4359-9A6D-28BC207F4D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{044195F4-59ED-4359-9A6D-28BC207F4D38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore", "src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj", "{483FDD55-0867-46C1-81D5-5E97BE9022EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore", "src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj", "{483FDD55-0867-46C1-81D5-5E97BE9022EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{46209223-0805-47A2-83B3-3C1B2D2A252F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{46209223-0805-47A2-83B3-3C1B2D2A252F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{386EAF51-6AA5-4176-86E8-10B1C092A739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{386EAF51-6AA5-4176-86E8-10B1C092A739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{7074A033-9087-4198-BC59-31B33C94EC8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{7074A033-9087-4198-BC59-31B33C94EC8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Exceptionless", "src\OSharp.Exceptionless\OSharp.Exceptionless.csproj", "{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src\OSharp.Exceptionless\OSharp.Exceptionless.csproj", "{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{1E560A54-864A-496B-A770-105CDBFE4C6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{1E560A54-864A-496B-A770-105CDBFE4C6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{22F6657E-626C-41DF-AB9F-02ACE3752038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{22F6657E-626C-41DF-AB9F-02ACE3752038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.NLog", "src\OSharp.NLog\OSharp.NLog.csproj", "{41A076D2-E9C1-4DE2-A116-D05544EB967D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.NLog", "src\OSharp.NLog\OSharp.NLog.csproj", "{41A076D2-E9C1-4DE2-A116-D05544EB967D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions", "src\OSharp.Permissions\OSharp.Permissions.csproj", "{5E1E63C1-F01A-491C-8864-37AEDBCC8AD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Permissions", "src\OSharp.Permissions\OSharp.Permissions.csproj", "{5E1E63C1-F01A-491C-8864-37AEDBCC8AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{2E068082-A6F8-4FD7-8002-1DD8C649C46F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{2E068082-A6F8-4FD7-8002-1DD8C649C46F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{A998F090-4147-4FFB-9E8F-77DDACD55641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{A998F090-4147-4FFB-9E8F-77DDACD55641}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
@@ -55,11 +55,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{D06C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core", "samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj", "{3E94506B-5A3E-4B8E-AD87-452BB174028E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core", "samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj", "{3E94506B-5A3E-4B8E-AD87-452BB174028E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.EntityConfiguration", "samples\web\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj", "{BB625BE8-CEDF-40E8-B596-3CB8CC3E281F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.EntityConfiguration", "samples\web\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj", "{BB625BE8-CEDF-40E8-B596-3CB8CC3E281F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Web", "samples\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "samples\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{1B047F1A-FECC-4887-962B-E6B165B23D8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Tests", "tests\OSharp.Tests\OSharp.Tests.csproj", "{BE36FDE0-84ED-47DD-AC78-9E86F1064015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.Tests", "tests\OSharp.Permissions.Tests\OSharp.Permissions.Tests.csproj", "{24814363-9FD0-4070-8165-F7809A05A798}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{4313E9E7-B5B1-4304-AE32-59067C82F380}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration.Tests", "src\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{CBF9DB29-C84A-4840-A985-3D06AEECFB36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +165,26 @@ Global
 		{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B047F1A-FECC-4887-962B-E6B165B23D8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B047F1A-FECC-4887-962B-E6B165B23D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B047F1A-FECC-4887-962B-E6B165B23D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B047F1A-FECC-4887-962B-E6B165B23D8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE36FDE0-84ED-47DD-AC78-9E86F1064015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE36FDE0-84ED-47DD-AC78-9E86F1064015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE36FDE0-84ED-47DD-AC78-9E86F1064015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE36FDE0-84ED-47DD-AC78-9E86F1064015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24814363-9FD0-4070-8165-F7809A05A798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24814363-9FD0-4070-8165-F7809A05A798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24814363-9FD0-4070-8165-F7809A05A798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24814363-9FD0-4070-8165-F7809A05A798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4313E9E7-B5B1-4304-AE32-59067C82F380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4313E9E7-B5B1-4304-AE32-59067C82F380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4313E9E7-B5B1-4304-AE32-59067C82F380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4313E9E7-B5B1-4304-AE32-59067C82F380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +213,11 @@ Global
 		{3E94506B-5A3E-4B8E-AD87-452BB174028E} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
 		{BB625BE8-CEDF-40E8-B596-3CB8CC3E281F} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
 		{7A5907F6-C38F-45A7-B2A2-C172A7723FB0} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
+		{1B047F1A-FECC-4887-962B-E6B165B23D8F} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{BE36FDE0-84ED-47DD-AC78-9E86F1064015} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{24814363-9FD0-4070-8165-F7809A05A798} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{4313E9E7-B5B1-4304-AE32-59067C82F380} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{CBF9DB29-C84A-4840-A985-3D06AEECFB36} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}
