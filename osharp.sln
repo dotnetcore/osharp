@@ -45,6 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OShar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
+		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
 		build\version.props = build\version.props
 	EndProjectSection
@@ -63,13 +64,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "samples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{1B047F1A-FECC-4887-962B-E6B165B23D8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Tests", "tests\OSharp.Tests\OSharp.Tests.csproj", "{BE36FDE0-84ED-47DD-AC78-9E86F1064015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Tests", "tests\OSharp.Tests\OSharp.Tests.csproj", "{BE36FDE0-84ED-47DD-AC78-9E86F1064015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Permissions.Tests", "tests\OSharp.Permissions.Tests\OSharp.Permissions.Tests.csproj", "{24814363-9FD0-4070-8165-F7809A05A798}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Permissions.Tests", "tests\OSharp.Permissions.Tests\OSharp.Permissions.Tests.csproj", "{24814363-9FD0-4070-8165-F7809A05A798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{4313E9E7-B5B1-4304-AE32-59067C82F380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{4313E9E7-B5B1-4304-AE32-59067C82F380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration.Tests", "src\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{CBF9DB29-C84A-4840-A985-3D06AEECFB36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration.Tests", "src\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{CBF9DB29-C84A-4840-A985-3D06AEECFB36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

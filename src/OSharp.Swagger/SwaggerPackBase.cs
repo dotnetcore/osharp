@@ -16,9 +16,8 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-#if NETCOREAPP3_0
+
 using Microsoft.OpenApi.Models;
-#endif
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
@@ -72,17 +71,13 @@ namespace OSharp.Swagger
             services.AddMvcCore().AddApiExplorer();
             services.AddSwaggerGen(options =>
             {
-#if NETCOREAPP3_0
                 options.SwaggerDoc($"v{version}", new OpenApiInfo() { Title = title, Version = $"{version}" });
-#else
-                options.SwaggerDoc($"v{version}", new Info() { Title = title, Version = $"v{version}" });
-#endif
+
                 Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                 {
                     options.IncludeXmlComments(file);
                 });
                 //权限Token
-#if NETCOREAPP3_0
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
                 {
                     Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
@@ -100,20 +95,6 @@ namespace OSharp.Swagger
                         new[] { "readAccess", "writeAccess" }
                     }
                 });
-#else
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
-                {
-                    Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
-                });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
-                {
-                    { "Bearer", Enumerable.Empty<string>() }
-                });
-#endif
-
             });
 
             return services;

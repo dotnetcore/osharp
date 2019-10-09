@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyModel;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.Collections;
 using OSharp.Core.Modules;
 using OSharp.Entity;
 
@@ -33,8 +35,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("测试一下")]
         public string Test02()
         {
-            User user = _dbContext.Set<User>().Find(2);
-            return user.PasswordHash;
+            return DependencyContext.Default.CompileLibraries.Select(m => $"{m.Name},{m.Version}").ExpandAndToString("\r\n");
         }
     }
 }

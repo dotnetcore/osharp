@@ -49,9 +49,24 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetCliVersion()
         {
-            string cliVersion = "Microsoft.NETCore.Platforms";
-            CompilationLibrary lib = DependencyContext.Default.CompileLibraries.FirstOrDefault(m => m.Name == cliVersion);
-            cliVersion = lib?.Version;
+            string[] dllNames =
+            {
+                "Microsoft.EntityFrameworkCore",
+                "Microsoft.Extensions.Configuration.Binder",
+                "Microsoft.Extensions.DependencyInjection",
+                "Microsoft.Extensions.DependencyInjection.Abstractions",
+                "Microsoft.Extensions.Configuration.Abstractions"
+            };
+            CompilationLibrary lib = null;
+            foreach (string dllName in dllNames)
+            {
+                lib = DependencyContext.Default.CompileLibraries.FirstOrDefault(m => m.Name == dllName);
+                if (lib != null)
+                {
+                    break;
+                }
+            }
+            string cliVersion = lib?.Version;
             return cliVersion;
         }
     }
