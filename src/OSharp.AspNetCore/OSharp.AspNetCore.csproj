@@ -1,32 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netcoreapp30.props" />
-  <Import Project="../../build/version30.props" />
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
     <PackageId>OSharpNS.AspNetCore</PackageId>
-    <Summary>OSharp(.NETCoreApp3.0) AspNetCore组件</Summary>
-    <Description>OSharp(.NETCoreApp3.0) AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
+    <Summary>OSharp AspNetCore组件</Summary>
+    <Description>OSharp AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
     <RootNamespace>OSharp.AspNetCore</RootNamespace>
+    <AssemblyName>OSharp.AspNetCore</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.AspNetCore.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.AspNetCore.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\OSharp.AspNetCore.xml</DocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.AspNetCore.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="[1.1.0, 3.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>

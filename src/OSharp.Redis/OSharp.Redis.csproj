@@ -1,26 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard21.props" />
-  <Import Project="../../build/version30.props" />
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>OSharpNS.Redis</PackageId>
-    <Summary>OSharp(.NetStandard2.1) Redis 缓存组件</Summary>
-    <Description>OSharp(.NetStandard2.1) Redis 缓存组件，封装基于Redis客户端的缓存实现</Description>
-    <RootNamespace>OSharp.Redis</RootNamespace>
+    <Summary>OSharp Redis 缓存组件</Summary>
+    <Description>OSharp Redis 缓存组件，封装基于Redis客户端的缓存实现</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\OSharp.Redis.xml</DocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DocumentationFile>bin\Release\OSharp.Redis.xml</DocumentationFile>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <DocumentationFile>bin\Release\OSharp.Redis.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.0.0" />
   </ItemGroup>
 

@@ -15,13 +15,13 @@ using System.ComponentModel;
 
 namespace Liuliu.Demo.Web.Startups
 {
+#if NETCOREAPP2_2
     /// <summary>
     /// SignalR模块
     /// </summary>
     [Description("SignalR模块")]
     public class SignalRPack : SignalRPackBase
     {
-#if NETSTANDARD
         /// <summary>
         /// 重写以获取Hub路由创建委托
         /// </summary>
@@ -35,6 +35,6 @@ namespace Liuliu.Demo.Web.Startups
                 // 例如：builder.MapHub<MyHub>();
             });
         } 
-#endif
     }
+#endif
 }

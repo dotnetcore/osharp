@@ -1,31 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard21.props" />
-  <Import Project="../../build/version30.props" />
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>OSharpNS.AutoMapper</PackageId>
-    <Summary>OSharp(.NetStandard2.1) AutoMapper 对象映射组件</Summary>
-    <Description>OSharp(.NetStandard2.1) AutoMapper 对象映射组件，封装基于AutoMapper的对象映射实现</Description>
+    <Summary>OSharp AutoMapper 对象映射组件</Summary>
+    <Description>OSharp AutoMapper 对象映射组件，封装基于AutoMapper的对象映射实现</Description>
     <RootNamespace>OSharp.AutoMapper</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DocumentationFile>bin\Release\OSharp.AutoMapper.xml</DocumentationFile>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\OSharp.AutoMapper.xml</DocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <DocumentationFile>bin\Release\OSharp.AutoMapper.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="ServiceCollectionExtensions1.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[2.2.0, 3.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
   </ItemGroup>
 

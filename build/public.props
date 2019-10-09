@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>LiuliuSoft</Authors>

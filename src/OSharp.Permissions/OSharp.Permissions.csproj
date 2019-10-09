@@ -1,27 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netcoreapp30.props" />
-  <Import Project="../../build/version30.props" />
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
     <PackageId>OSharpNS.Permissions</PackageId>
-    <Summary>OSharp(.NETCoreApp3.0)核心组件</Summary>
-    <Description>OSharp(.NETCoreApp3.0)权限组件，包含用户认证与权限验证的基础实现</Description>
+    <Summary>OSharp 核心组件</Summary>
+    <Description>OSharp 权限组件，包含用户认证与权限验证的基础实现</Description>
     <RootNamespace>OSharp</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\OSharp.Permissions.xml</DocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="[2.2.0, 3.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
   </ItemGroup>

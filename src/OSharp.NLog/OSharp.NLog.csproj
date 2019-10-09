@@ -1,24 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/public.netstandard21.props" />
-  <Import Project="../../build/version30.props" />
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>OSharpNS.NLog</PackageId>
-    <Description>OSharp(.NetStandard2.1)NLog组件，封装使用nlog组件来实现框架的日志输出功能</Description>
-    <Summary>OSharp NLog组件(.NetStandard2.1)</Summary>
-    <RootNamespace>OSharp.NLog</RootNamespace>
+    <Description>OSharp NLog组件，封装使用nlog组件来实现框架的日志输出功能</Description>
+    <Summary>OSharp NLog组件</Summary>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\OSharp.NLog.xml</DocumentationFile>
-    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\OSharp.NLog.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
