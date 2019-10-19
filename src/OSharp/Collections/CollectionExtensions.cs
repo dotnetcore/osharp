@@ -85,5 +85,13 @@ namespace OSharp.Collections
 
             return item;
         }
+
+        /// <summary>
+        /// 判断集合是否为null或空集合
+        /// </summary>
+        public static bool IsNullOrEmpty<T>(this ICollection<T> collection)
+        {
+            return collection == null || collection.Count == 0;
+        }
     }
 }

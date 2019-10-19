@@ -13,6 +13,12 @@
 
 using System;
 
+using Liuliu.Demo.Identity.Entities;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Entity;
+
 
 namespace Liuliu.Demo.Infos
 {
@@ -27,5 +33,15 @@ namespace Liuliu.Demo.Infos
         public InfosService(IServiceProvider provider)
             : base(provider)
         { }
+
+        /// <summary>
+        /// 获取 用户存储对象
+        /// </summary>
+        protected IRepository<User, int> UserRepository => ServiceProvider.GetService<IRepository<User, int>>();
+
+        /// <summary>
+        /// 获取 角色存储对象
+        /// </summary>
+        protected IRepository<Role, int> RoleRepository => ServiceProvider.GetService<IRepository<Role, int>>();
     }
 }

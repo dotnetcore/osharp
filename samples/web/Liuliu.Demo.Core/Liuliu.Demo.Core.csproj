@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <RootNamespace>Liuliu.Demo</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -83,6 +83,12 @@ namespace Liuliu.Demo.Infos.Dtos
         public DateTime? EndDate { get; set; }
 
         /// <summary>
+        /// 获取或设置 发送人编号
+        /// </summary>
+        [DisplayName("发送人编号")]
+        public int SenderId { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否锁定
         /// </summary>
         [DisplayName("是否锁定")]

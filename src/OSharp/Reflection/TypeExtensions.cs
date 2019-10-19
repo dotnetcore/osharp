@@ -250,6 +250,16 @@ namespace OSharp.Reflection
         }
 
         /// <summary>
+        /// 返回当前方法信息是否是重写方法
+        /// </summary>
+        /// <param name="method">要判断的方法信息</param>
+        /// <returns>是否是重写方法</returns>
+        public static bool IsOverridden(this MethodInfo method)
+        {
+            return method.GetBaseDefinition().DeclaringType != method.DeclaringType;
+        }
+
+        /// <summary>
         /// 获取类型的全名，附带所在类库
         /// </summary>
         public static string GetFullNameWithModule(this Type type)

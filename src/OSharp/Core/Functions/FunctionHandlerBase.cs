@@ -135,7 +135,14 @@ namespace OSharp.Core.Functions
                 {
                     functions.Add(controller);
                 }
-                MethodInfo[] methods = MethodInfoFinder.FindAll(type);
+
+                List<MethodInfo> methods = MethodInfoFinder.FindAll(type).ToList();
+                // 移除已被重写的方法
+                MethodInfo[] overriddenMethodInfos = methods.Where(m => m.IsOverridden()).ToArray();
+                foreach (MethodInfo overriddenMethodInfo in overriddenMethodInfos)
+                {
+                    methods.RemoveAll(m => m.Name == overriddenMethodInfo.Name && m != overriddenMethodInfo);
+                }
                 foreach (MethodInfo method in methods)
                 {
                     TFunction action = GetFunction(controller, method);
@@ -144,6 +151,10 @@ namespace OSharp.Core.Functions
                         continue;
                     }
                     if (IsIgnoreMethod(action, method, functions))
+                    {
+                        continue;
+                    }
+                    if (HasPickup(functions, action))
                     {
                         continue;
                     }

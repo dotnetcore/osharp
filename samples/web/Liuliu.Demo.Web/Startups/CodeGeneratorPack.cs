@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="CodeGeneratorPack.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-08-06 15:04</last-date>
+//  <last-date>2019-10-19 17:37</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 #if NETCOREAPP3_0
 using Microsoft.Extensions.Hosting;
 #endif
+
 using OSharp.AspNetCore;
 using OSharp.CodeGenerator;
 using OSharp.Core.Packs;
@@ -47,13 +48,14 @@ namespace Liuliu.Demo.Web.Startups
         public override IServiceCollection AddServices(IServiceCollection services)
         {
 #if NETCOREAPP3_0
-            if(services.GetWebHostEnvironment().IsDevelopment())
+            if (services.GetWebHostEnvironment().IsDevelopment())
 #else
             if (services.GetHostingEnvironment().IsDevelopment())
 #endif
             {
                 services.AddSingleton<ITypeMetadataHandler, TypeMetadataHandler>();
             }
+
             return services;
         }
 

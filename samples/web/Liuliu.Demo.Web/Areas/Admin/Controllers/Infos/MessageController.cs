@@ -16,6 +16,7 @@ using System;
 using OSharp.Filter;
 
 using Liuliu.Demo.Infos;
+using Liuliu.Demo.Infos.Dtos;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -32,5 +33,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFilterService filterService)
             : base(infosContract, filterService)
         { }
+
+        /// <summary>
+        /// 读取站内信列表信息
+        /// </summary>
+        /// <param name="request">页请求信息</param>
+        /// <returns>站内信列表分页信息</returns>
+        public override PageData<MessageOutputDto> Read(PageRequest request)
+        {
+            return base.Read(request);
+        }
     }
 }

@@ -1,22 +1,22 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:50</last-date>
+//  <last-date>2019-10-19 17:36</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,14 +32,14 @@ using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
+using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Identity.JwtBearer;
 using OSharp.Identity.OAuth2;
+using OSharp.Json;
 using OSharp.Mapping;
 using OSharp.Net;
 using OSharp.Security.Claims;
-using OSharp.Filter;
-using OSharp.Json;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -50,8 +50,8 @@ namespace Liuliu.Demo.Web.Controllers
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;
-        private readonly IVerifyCodeService _verifyCodeService;
         private readonly UserManager<User> _userManager;
+        private readonly IVerifyCodeService _verifyCodeService;
 
         public IdentityController(IIdentityContract identityContract,
             UserManager<User> userManager,
@@ -113,6 +113,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return false;
             }
+
             IdentityResult result = await nickNameValidator.ValidateAsync(_userManager, new User() { NickName = nickName });
             return !result.Succeeded;
         }
@@ -137,6 +138,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
+
             if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
@@ -197,6 +199,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return result.ToAjaxResult();
             }
+
             User user = result.Data;
             await _signInManager.SignInAsync(user, dto.Remember);
             return new AjaxResult("登录成功");
@@ -218,6 +221,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
+
             dto.Ip = HttpContext.GetClientIp();
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
@@ -229,6 +233,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return result.ToAjaxResult();
             }
+
             User user = result.Data;
             JsonWebToken token = await CreateJwtToken(user);
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
@@ -276,6 +281,7 @@ namespace Liuliu.Demo.Web.Controllers
                 JsonWebToken token = await CreateJwtToken(dto.RefreshToken);
                 return new AjaxResult("刷新成功", AjaxResultType.Success, token);
             }
+
             return new AjaxResult("GrantType错误", AjaxResultType.Error);
         }
 
@@ -319,6 +325,7 @@ namespace Liuliu.Demo.Web.Controllers
                 Logger.LogError("第三方登录返回的用户信息为空");
                 return Redirect(url);
             }
+
             UserLoginInfoEx loginInfo = info.ToUserLoginInfoEx();
             var result = await _identityContract.LoginOAuth2(loginInfo);
             // 登录不成功，将用户信息返回前端，让用户选择绑定现有账号还是创建新账号
@@ -326,9 +333,11 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 string cacheId = (string)result.Data;
                 loginInfo.ProviderKey = cacheId;
-                url = $"/#/passport/oauth-callback?type={loginInfo.LoginProvider}&id={cacheId}&name={loginInfo.ProviderDisplayName?.ToUrlEncode()}&avatar={loginInfo.AvatarUrl?.ToUrlEncode()}";
+                url =
+                    $"/#/passport/oauth-callback?type={loginInfo.LoginProvider}&id={cacheId}&name={loginInfo.ProviderDisplayName?.ToUrlEncode()}&avatar={loginInfo.AvatarUrl?.ToUrlEncode()}";
                 return Redirect(url);
             }
+
             Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
             JsonWebToken token = await CreateJwtToken((User)result.Data);
             url = $"/#/passport/oauth-callback?token={token.ToJsonString()}";
@@ -343,7 +352,7 @@ namespace Liuliu.Demo.Web.Controllers
         [LoggedIn]
         [ModuleInfo]
         [Description("读取OAuth2")]
-        public PageData<UserLoginOutputDto> ReadOAuth2([FromServices]IFilterService filterService, PageRequest request)
+        public PageData<UserLoginOutputDto> ReadOAuth2([FromServices] IFilterService filterService, PageRequest request)
         {
             int userId = User.Identity.GetUserId<int>();
             request.FilterGroup.AddRule("UserId", userId);
@@ -445,6 +454,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("用户登出成功");
             }
+
             int userId = User.Identity.GetUserId<int>();
             OperationResult result = await _identityContract.Logout(userId);
             return result.ToAjaxResult();
@@ -469,6 +479,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return null;
             }
+
             OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(User.Identity.Name);
             onlineUser.RefreshTokens.Clear();
             return onlineUser;
@@ -513,15 +524,18 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("邮箱激活失败：参数不正确", AjaxResultType.Error);
             }
+
             User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
             if (user == null)
             {
                 return new AjaxResult("注册邮箱激活失败：用户不存在", AjaxResultType.Error);
             }
+
             if (user.EmailConfirmed)
             {
                 return new AjaxResult("注册邮箱已激活，操作取消", AjaxResultType.Info);
             }
+
             string code = UrlBase64ReplaceChar(dto.Code);
             IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
             return result.ToOperationResult().ToAjaxResult();
@@ -542,19 +556,23 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
+
             if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
+
             User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
                 return new AjaxResult("发送激活邮件失败：用户不存在", AjaxResultType.Error);
             }
+
             if (user.EmailConfirmed)
             {
                 return new AjaxResult("Email已激活，无需再次激活", AjaxResultType.Info);
             }
+
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = UrlBase64ReplaceChar(code);
             string url = $"{Request.Scheme}://{Request.Host}/#/passport/confirm-email?userId={user.Id}&code={code}";
@@ -610,6 +628,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
+
             if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
@@ -620,6 +639,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("用户不存在", AjaxResultType.Error);
             }
+
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
             token = UrlBase64ReplaceChar(token);
             IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
@@ -651,6 +671,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult($"用户不存在", AjaxResultType.Error);
             }
+
             string token = UrlBase64ReplaceChar(dto.Token);
             IdentityResult result = await _userManager.ResetPasswordAsync(user, token, dto.NewPassword);
 
@@ -669,10 +690,12 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return source.Replace('+', '-').Replace('/', '_');
             }
+
             if (source.Contains('-') || source.Contains('_'))
             {
                 return source.Replace('-', '+').Replace('_', '/');
             }
+
             return source;
         }
     }
