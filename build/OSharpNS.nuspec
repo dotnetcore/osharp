@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>3.0.0-beta03</version>
+    <version>3.0.0-beta04</version>
     <title>OSharpFramework(.NETCoreApp3.0)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
@@ -15,20 +15,20 @@
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp2.2">
-        <dependency id="OSharpNS.Core" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.AutoMapper" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.AspNetCore" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.Log4Net" version="3.0.0-beta03" />
+        <dependency id="OSharpNS.Core" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.AutoMapper" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.AspNetCore" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.Log4Net" version="3.0.0-beta04" />
       </group>
       <group targetFramework=".NETCoreApp3.0">
-        <dependency id="OSharpNS.Core" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.AutoMapper" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.AspNetCore" version="3.0.0-beta03" />
-        <dependency id="OSharpNS.Log4Net" version="3.0.0-beta03" />
+        <dependency id="OSharpNS.Core" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.AutoMapper" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.AspNetCore" version="3.0.0-beta04" />
+        <dependency id="OSharpNS.Log4Net" version="3.0.0-beta04" />
       </group>
     </dependencies>
   </metadata>
