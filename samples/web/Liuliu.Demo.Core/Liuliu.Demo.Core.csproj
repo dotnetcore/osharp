@@ -30,6 +30,9 @@
     <Compile Update="Infos/InfosService.*.cs">
       <DependentUpon>InfosService.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infos/InfosService.*.generated.cs">
+      <DependentUpon>InfosService.generated.cs</DependentUpon>
+    </Compile>
     <Compile Update="Infos/InfosServiceBase.*.generated.cs">
       <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
     </Compile>
