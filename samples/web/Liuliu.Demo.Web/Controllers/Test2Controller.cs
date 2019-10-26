@@ -12,7 +12,10 @@ using Microsoft.Extensions.DependencyModel;
 using OSharp.AspNetCore.Mvc;
 using OSharp.Collections;
 using OSharp.Core.Modules;
+using OSharp.Core.Options;
 using OSharp.Entity;
+
+using StackExchange.Profiling.Internal;
 
 
 namespace Liuliu.Demo.Web.Controllers
@@ -35,6 +38,9 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("测试一下")]
         public string Test02()
         {
+            var val = AppSettingsReader.GetValue<string>("OSharp:DbContexts:SqlServer:DbContextTypeName");
+            return val.ToJson();
+
             return DependencyContext.Default.CompileLibraries.Select(m => $"{m.Name},{m.Version}").ExpandAndToString("\r\n");
         }
     }
