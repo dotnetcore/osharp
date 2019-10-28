@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+#if NETCOREAPP3_0
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+#endif
 
 using Newtonsoft.Json.Serialization;
 
@@ -48,11 +52,36 @@ namespace OSharp.AspNetCore.SignalR
             services.TryAddSingleton<IUserIdProvider, UserNameUserIdProvider>();
             services.TryAddSingleton<IConnectionUserCache, ConnectionUserCache>();
 
-            ISignalRServerBuilder builder = services.AddSignalR();
+            Action<HubOptions> hubOptions = GetHubOptionsAction(services);
+            ISignalRServerBuilder builder = hubOptions == null
+                ? services.AddSignalR()
+                : services.AddSignalR(hubOptions);
+
             Action<ISignalRServerBuilder> buildAction = GetSignalRServerBuildAction(services);
             buildAction?.Invoke(builder);
 
             return services;
+        }
+
+        /// <summary>
+        /// 重写以获取HubOptions创建委托
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        protected virtual Action<HubOptions> GetHubOptionsAction(IServiceCollection services)
+        {
+#if NETCOREAPP3_0
+            return config =>
+            {
+                IWebHostEnvironment environment = services.GetWebHostEnvironment();
+                if (environment.IsDevelopment())
+                {
+                    config.EnableDetailedErrors = true;
+                }
+            };
+#else
+            return null;
+#endif
         }
 
         /// <summary>
