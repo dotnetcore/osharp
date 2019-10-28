@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core.Tests", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration.Tests", "src\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{CBF9DB29-C84A-4840-A985-3D06AEECFB36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Wpf", "src\OSharp.Wpf\OSharp.Wpf.csproj", "{D926CFBD-1420-41DA-98F5-A873C955BB44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -186,6 +188,10 @@ Global
 		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF9DB29-C84A-4840-A985-3D06AEECFB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +225,7 @@ Global
 		{24814363-9FD0-4070-8165-F7809A05A798} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{4313E9E7-B5B1-4304-AE32-59067C82F380} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{CBF9DB29-C84A-4840-A985-3D06AEECFB36} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{D926CFBD-1420-41DA-98F5-A873C955BB44} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}
