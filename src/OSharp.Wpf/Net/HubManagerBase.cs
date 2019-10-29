@@ -24,22 +24,17 @@ namespace OSharp.Wpf.Net
     /// <summary>
     /// 通信连接管理器
     /// </summary>
-    public class HubManager
+    public abstract class HubManagerBase
     {
-        private static readonly Random Random = new Random();
-
         /// <summary>
-        /// 初始化一个<see cref="HubManager"/>类型的新实例
+        /// 随机对象
         /// </summary>
-        public HubManager(string hostUrl = null)
-        {
-            HostUrl = AppSettingsReader.GetString("HostUrl") ?? hostUrl;
-        }
+        protected static readonly Random Random = new Random();
 
         /// <summary>
         /// 获取 服务器地址
         /// </summary>
-        public string HostUrl { get; }
+        public virtual string HostUrl => AppSettingsReader.GetString("HostUrl");
 
         /// <summary>
         /// 获取 客户端版本
@@ -49,7 +44,7 @@ namespace OSharp.Wpf.Net
         /// <summary>
         /// 获取 网络通信连接
         /// </summary>
-        public HubConnection HubConnection { get; private set; }
+        public HubConnection HubConnection { get; protected set; }
 
         /// <summary>
         /// 获取或设置 当前网络是否通畅
@@ -62,9 +57,14 @@ namespace OSharp.Wpf.Net
         public bool IsHubConnected { get; private set; }
 
         /// <summary>
+        /// 是否正在重启
+        /// </summary>
+        protected bool IsRestarting { get; set; }
+
+        /// <summary>
         /// 网络通信初始化
         /// </summary>
-        public void Initialize()
+        public virtual void Initialize()
         {
             Check.NotNull(HostUrl, nameof(HostUrl));
             HubConnection = new HubConnectionBuilder().WithUrl($"{HostUrl}/assist-hub",
@@ -74,17 +74,31 @@ namespace OSharp.Wpf.Net
                     opts.Headers["HostName"] = Dns.GetHostName();
                     opts.AccessTokenProvider = () => Task.FromResult(string.Empty);
                 }).Build();
-            HubConnection.Closed += async error =>
-            {
-                await Task.Delay(Random.Next(0, 5) * 1000);
-                await HubConnection.StartAsync();
-            };
+            HubConnection.Closed += OnClose;
+            HubListenOn(HubConnection);
         }
+        
+        /// <summary>
+        /// 在连接关闭时触发
+        /// </summary>
+        /// <param name="error">错误信息</param>
+        /// <returns></returns>
+        protected virtual async Task OnClose(Exception error)
+        {
+            await Task.Delay(Random.Next(0, 5) * 1000);
+            await HubConnection.StartAsync();
+        }
+
+        /// <summary>
+        /// 重写以实现<see cref="HubConnection"/>通信监听
+        /// </summary>
+        /// <param name="connection">连接对象</param>
+        protected abstract void HubListenOn(HubConnection connection);
 
         /// <summary>
         /// 开始通信
         /// </summary>
-        public async Task<bool> Start()
+        public async Task<OperationResult> Start()
         {
             try
             {
@@ -93,20 +107,19 @@ namespace OSharp.Wpf.Net
                 watch.Stop();
                 IsHubConnected = true;
                 await Invoke("AddToGroup", new object[] { new[] { WpfConstants.GroupNameWpf } });
+                return OperationResult.Success;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 IsHubConnected = false;
-                throw;
+                return new OperationResult(OperationResultType.Error, ex.Message);
             }
-
-            return IsHubConnected;
         }
 
         /// <summary>
         /// 停止通信
         /// </summary>
-        public async Task Stop()
+        public virtual async Task Stop()
         {
             await Invoke("RemoveFromGroup", new object[] { new[] { WpfConstants.GroupNameWpf } });
             await HubConnection.StopAsync();
@@ -115,7 +128,7 @@ namespace OSharp.Wpf.Net
         /// <summary>
         /// 执行无返回数据的通信
         /// </summary>
-        public async Task Invoke(string method, params object[] args)
+        public virtual async Task Invoke(string method, params object[] args)
         {
             if (!IsHubConnected)
             {
@@ -128,7 +141,7 @@ namespace OSharp.Wpf.Net
         /// <summary>
         /// 执行有返回数据的通信功能
         /// </summary>
-        public async Task<TResult> Invoke<TResult>(string method, params object[] args)
+        public virtual async Task<TResult> Invoke<TResult>(string method, params object[] args)
         {
             if (!IsHubConnected)
             {
@@ -138,19 +151,22 @@ namespace OSharp.Wpf.Net
             return await HubConnection.InvokeCoreAsync<TResult>(method, args);
         }
 
-        private bool _isRestarting;
-        private async Task Restart()
+        /// <summary>
+        /// 重启通信
+        /// </summary>
+        /// <returns></returns>
+        protected virtual async Task Restart()
         {
-            while (_isRestarting)
+            while (IsRestarting)
             {
                 await Task.Delay(1000);
-                if (!_isRestarting)
+                if (!IsRestarting)
                 {
                     return;
                 }
             }
 
-            _isRestarting = true;
+            IsRestarting = true;
             while (!IsHubConnected)
             {
                 int delay;
@@ -164,7 +180,7 @@ namespace OSharp.Wpf.Net
                 await Task.Delay(delay * 1000);
                 await Start();
             }
-            _isRestarting = false;
+            IsRestarting = false;
         }
     }
 }
