@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using OSharp.Reflection;
 
 
-namespace OSharp.Wpf.Net
+namespace OSharp.Wpf.Hubs
 {
     /// <summary>
     /// <see cref="HubConnection"/>扩展方法
