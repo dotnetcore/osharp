@@ -99,6 +99,18 @@ namespace OSharp.Core.Options
                 }
                 options.Swagger = swagger;
             }
+
+            // IdentityServer
+            section = _configuration.GetSection("OSharp:IdentityServer");
+            LocalApiAuthenticationOptions localApiAuthentication = section.Get<LocalApiAuthenticationOptions>();
+            if (localApiAuthentication != null)
+            {
+                if (localApiAuthentication.Url.IsMissing())
+                {
+                    throw new OsharpException("配置文件中LocalApiAuthentication节点的Url不能为空");
+                }
+                options.LocalApiAuthentication = localApiAuthentication;
+            }
         }
 
         /// <summary>

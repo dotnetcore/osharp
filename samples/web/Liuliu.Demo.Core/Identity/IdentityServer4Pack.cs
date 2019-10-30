@@ -112,6 +112,8 @@ namespace Liuliu.Demo.Identity
         {
             IConfiguration configuration = services.GetConfiguration();
 
+            IConfigurationSection configurationSection = configuration.GetSection("OSharp:LocalApiAuthentication");
+            LocalApiAuthenticationOptions localApiAuthentication = configurationSection.Get<LocalApiAuthenticationOptions>();
             // JwtBearer
             //AuthenticationBuilder authenticationBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
@@ -124,9 +126,9 @@ namespace Liuliu.Demo.Identity
             .AddJwtBearer("Bearer", options =>
             {
                 //identityserver4 地址 也就是本项目地址
-                options.Authority = "http://localhost:5002";
-                options.RequireHttpsMetadata = false;
-                options.Audience = "api1";
+                options.Authority = localApiAuthentication.Url;
+                options.RequireHttpsMetadata = localApiAuthentication.UseHttps;
+                options.Audience = localApiAuthentication.Audience;
                 options.Events = new JwtBearerEvents()
                 {
                     OnMessageReceived = context =>
