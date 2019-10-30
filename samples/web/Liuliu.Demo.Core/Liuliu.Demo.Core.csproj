@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Identity\IdentityPack.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">

@@ -22,6 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="IdentityServer4" Version="[2.5.3, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[2.2.0, 3.0)" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <PackageReference Include="IdentityServer4" Version="3.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
   </ItemGroup>

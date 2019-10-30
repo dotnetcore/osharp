@@ -18,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.Collections;
 using OSharp.Dependency;
 using OSharp.Identity;
-
+using OSharp.Security.Claims;
 
 namespace OSharp.AspNetCore.Mvc.Filters
 {
@@ -43,7 +43,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
             {
                 // 由在线缓存获取用户信息赋给Identity
                 IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-                OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name);
+                OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name ?? identity.GetUserName());
                 if (onlineUser == null)
                 {
                     return;
