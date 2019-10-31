@@ -60,6 +60,11 @@ namespace OSharp.Core.Options
         public SwaggerOptions Swagger { get; set; }
 
         /// <summary>
+        /// 获取或设置 Http传输加密选项
+        /// </summary>
+        public HttpEncryptOptions HttpEncrypt { get; set; }
+
+        /// <summary>
         /// 获取指定上下文类和指定数据库类型的上下文配置信息
         /// </summary>
         public OsharpDbContextOptions GetDbContextOptions(Type dbContextType)

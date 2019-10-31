@@ -1,11 +1,13 @@
 ﻿using System;
 
+using OSharp.Security;
+
 using Shouldly;
 
 using Xunit;
 
 
-namespace OSharp.Security.Tests
+namespace OSharp.Http.Tests
 {
     public class TransmissionEncryptorTests
     {

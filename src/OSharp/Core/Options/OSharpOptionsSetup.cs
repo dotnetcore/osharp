@@ -99,6 +99,14 @@ namespace OSharp.Core.Options
                 }
                 options.Swagger = swagger;
             }
+
+            // HttpEncrypt
+            section = _configuration.GetSection("OSharp:HttpEncrypt");
+            HttpEncryptOptions httpEncrypt = section.Get<HttpEncryptOptions>();
+            if (httpEncrypt != null)
+            {
+                options.HttpEncrypt = httpEncrypt;
+            }
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace OSharp.Properties {
         }
         
         /// <summary>
-        ///   查找类似 0 的本地化字符串。
+        ///   查找类似 进制转换溢出。 的本地化字符串。
         /// </summary>
         internal static string AnyRadixConvert_Overflow {
             get {
@@ -138,6 +138,51 @@ namespace OSharp.Properties {
         internal static string Filter_RuleFieldInTypeNotFound {
             get {
                 return ResourceManager.GetString("Filter_RuleFieldInTypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 返回数据处理错误，请重试操作。 的本地化字符串。
+        /// </summary>
+        internal static string Http_Seciruty_Client_DecryptResponse_Failt {
+            get {
+                return ResourceManager.GetString("Http_Seciruty_Client_DecryptResponse_Failt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 客户端对发送数据进行加密处理时发生异常。 的本地化字符串。
+        /// </summary>
+        internal static string Http_Security_Client_EncryptRequest_Failt {
+            get {
+                return ResourceManager.GetString("Http_Security_Client_EncryptRequest_Failt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 客户端对返回数据签名验证未通过。 的本地化字符串。
+        /// </summary>
+        internal static string Http_Security_Client_VerifyResponse_Failt {
+            get {
+                return ResourceManager.GetString("Http_Security_Client_VerifyResponse_Failt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 服务器对请求数据进行解密处理时发生异常。 的本地化字符串。
+        /// </summary>
+        internal static string Http_Security_Host_DecryptRequest_Failt {
+            get {
+                return ResourceManager.GetString("Http_Security_Host_DecryptRequest_Failt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 服务器对返回数据进行加密处理时发生异常。 的本地化字符串。
+        /// </summary>
+        internal static string Http_Security_Host_EncryptResponse_Failt {
+            get {
+                return ResourceManager.GetString("Http_Security_Host_EncryptResponse_Failt", resourceCulture);
             }
         }
         

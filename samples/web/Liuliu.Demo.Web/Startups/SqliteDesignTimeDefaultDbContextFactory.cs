@@ -42,7 +42,7 @@ namespace Liuliu.Demo.Web.Startups
             if (_serviceProvider == null)
             {
                 IConfiguration configuration = Singleton<IConfiguration>.Instance;
-                string str = configuration["OSharp:DbContexts:PostgreSql:ConnectionString"];
+                string str = configuration["OSharp:DbContexts:Sqlite:ConnectionString"];
                 return str;
             }
             OsharpOptions options = _serviceProvider.GetOSharpOptions();

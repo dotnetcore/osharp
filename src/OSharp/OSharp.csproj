@@ -51,6 +51,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="[2.1.0, 3.0)" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[2.2.0, 3.0)" />
   </ItemGroup>
@@ -62,7 +63,23 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

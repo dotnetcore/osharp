@@ -25,30 +25,25 @@ namespace OSharp.AspNetCore
     /// </summary>
     public class NodeExceptionHandlerMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly ILogger<NodeExceptionHandlerMiddleware> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="NodeExceptionHandlerMiddleware"/>类型的新实例
         /// </summary>
-        public NodeExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public NodeExceptionHandlerMiddleware(ILoggerFactory loggerFactory)
         {
-            Check.NotNull(next, nameof(next));
-
-            _next = next;
             _logger = loggerFactory.CreateLogger<NodeExceptionHandlerMiddleware>();
         }
 
-        /// <summary>
-        /// 执行中间件拦截逻辑
-        /// </summary>
-        /// <param name="context">Http上下文</param>
-        /// <returns></returns>
-        public async Task Invoke(HttpContext context)
+        /// <summary>Request handling method.</summary>
+        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>
+        /// <param name="next">The delegate representing the remaining middleware in the request pipeline.</param>
+        /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the execution of this middleware.</returns>
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (Exception ex)
             {

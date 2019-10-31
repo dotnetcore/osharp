@@ -1,28 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="CommunicationCryptor.cs" company="OSharp开源团队">
-//      Copyright (c) 2014 OSharp. All rights reserved.
+//  <copyright file="TransmissionEncryptor.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
+//  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2014-11-13 22:19</last-date>
+//  <last-date>2019-10-30 23:29</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.Security.Cryptography;
 using System.Text;
+
 using OSharp.Collections;
 using OSharp.Extensions;
+using OSharp.Security;
 
 
-namespace OSharp.Security
+namespace OSharp.Http
 {
     /// <summary>
     /// 结合RSA，AES的通信传输加密解密操作类，使用AES对数据进行对称加密，使用RSA加密AES的密钥，并对数据进行签名校验，保证数据传输安全与完整性
     /// </summary>
     public class TransmissionEncryptor
     {
-        private readonly string _ownPrivateKey;
+        private readonly string _separator = "#@|osharp|@#";
         private readonly string _facePublicKey;
-        private static readonly string Separator = Convert.ToBase64String(Encoding.UTF8.GetBytes("#@|osharp|@#"));
+        private readonly string _ownPrivateKey;
 
         /// <summary>
         /// 初始化一个<see cref="TransmissionEncryptor"/>类型的新实例
@@ -47,7 +50,7 @@ namespace OSharp.Security
         {
             data.CheckNotNullOrEmpty("data");
 
-            string[] separators = { Separator };
+            string[] separators = { GetSeparator() };
             //0为AES密钥密文，1为 正文+摘要 的密文
             string[] datas = data.Split(separators, StringSplitOptions.None);
             //用接收端私钥RSA解密获取AES密钥
@@ -62,6 +65,7 @@ namespace OSharp.Security
             {
                 return data;
             }
+
             throw new CryptographicException("加密数据在进行解密时校验失败");
         }
 
@@ -74,16 +78,22 @@ namespace OSharp.Security
         {
             data.CheckNotNull("data");
 
+            string separator = GetSeparator();
             //获取正文摘要
             string signData = RsaHelper.SignData(data, _ownPrivateKey);
-            data = new[] { data, signData }.ExpandAndToString(Separator);
+            data = new[] { data, signData }.ExpandAndToString(separator);
             //使用AES加密 正文+摘要
             AesHelper aes = new AesHelper(true);
             data = aes.Encrypt(data);
             //RSA加密AES密钥
             byte[] keyBytes = aes.Key.ToBytes();
             string enDesKey = Convert.ToBase64String(RsaHelper.Encrypt(keyBytes, _facePublicKey));
-            return new[] { enDesKey, data }.ExpandAndToString(Separator);
+            return new[] { enDesKey, data }.ExpandAndToString(separator);
+        }
+
+        private string GetSeparator()
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(_separator));
         }
     }
 }

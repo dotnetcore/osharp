@@ -121,7 +121,7 @@
     <value>参数中的字符\"{0}\"不是 {1} 进制数的有效字符。</value>
   </data>
   <data name="AnyRadixConvert_Overflow" xml:space="preserve">
-    <value>0</value>
+    <value>进制转换溢出。</value>
   </data>
   <data name="Caching_CacheNotInitialized" xml:space="preserve">
     <value>缓存功能尚未初始化，未找到可用的 ICacheProvider 实现。</value>
@@ -143,6 +143,21 @@
   </data>
   <data name="Filter_RuleFieldInTypeNotFound" xml:space="preserve">
     <value>指定的属性“{0}”在类型“{1}”中不存在。</value>
+  </data>
+  <data name="Http_Seciruty_Client_DecryptResponse_Failt" xml:space="preserve">
+    <value>返回数据处理错误，请重试操作。</value>
+  </data>
+  <data name="Http_Security_Client_EncryptRequest_Failt" xml:space="preserve">
+    <value>客户端对发送数据进行加密处理时发生异常。</value>
+  </data>
+  <data name="Http_Security_Client_VerifyResponse_Failt" xml:space="preserve">
+    <value>客户端对返回数据签名验证未通过。</value>
+  </data>
+  <data name="Http_Security_Host_DecryptRequest_Failt" xml:space="preserve">
+    <value>服务器对请求数据进行解密处理时发生异常。</value>
+  </data>
+  <data name="Http_Security_Host_EncryptResponse_Failt" xml:space="preserve">
+    <value>服务器对返回数据进行加密处理时发生异常。</value>
   </data>
   <data name="IocInitializerBase_TypeNotIRepositoryType" xml:space="preserve">
     <value>类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。</value>
