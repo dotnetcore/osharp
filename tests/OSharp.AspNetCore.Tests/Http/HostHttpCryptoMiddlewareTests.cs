@@ -26,7 +26,6 @@ namespace OSharp.AspNetCore.Http.Tests
             services.AddLogging();
             services.AddSingleton<IHostHttpCrypto, HostHttpCrypto>();
             services.AddSingleton<IClientHttpCrypto, ClientHttpCrypto>();
-            services.AddSingleton<HostHttpCryptoMiddleware>();
             services.AddTransient<ClientHttpCryptoHandler>();
 
             IConfiguration configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
@@ -51,12 +50,14 @@ namespace OSharp.AspNetCore.Http.Tests
             RsaHelper rsa = new RsaHelper();
             context.Request.Headers.Add(HttpHeaderNames.ClientPublicKey, rsa.PublicKey);
             context.Response.Body = new MemoryStream();
-            var middleware = _provider.GetService<HostHttpCryptoMiddleware>();
-            await middleware.InvokeAsync(context, c =>
-            {
-                c.Response.Body = new MemoryStream("test-response".ToBytes());
-                return Task.CompletedTask;
-            });
+
+            var middleware = ActivatorUtilities.CreateInstance<HostHttpCryptoMiddleware>(_provider,
+                new RequestDelegate(c =>
+                {
+                    c.Response.Body = new MemoryStream("test-response".ToBytes());
+                    return Task.CompletedTask;
+                }));
+            await middleware.InvokeAsync(context);
         }
     }
 }

@@ -20,25 +20,28 @@ namespace OSharp.AspNetCore.Http
     /// </summary>
     public class HostHttpCryptoMiddleware : IMiddleware
     {
+        private readonly RequestDelegate _next;
         private readonly IHostHttpCrypto _hostHttpCrypto;
 
         /// <summary>
         /// 初始化一个<see cref="HostHttpCryptoMiddleware"/>类型的新实例
         /// </summary>
-        public HostHttpCryptoMiddleware(IHostHttpCrypto hostHttpCrypto)
+        public HostHttpCryptoMiddleware(RequestDelegate next, IHostHttpCrypto hostHttpCrypto)
         {
+            _next = next;
             _hostHttpCrypto = hostHttpCrypto;
         }
 
-        /// <summary>Request handling method.</summary>
-        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>
-        /// <param name="next">The delegate representing the remaining middleware in the request pipeline.</param>
-        /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the execution of this middleware.</returns>
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        /// <summary>
+        /// 执行中间件拦截逻辑
+        /// </summary>
+        /// <param name="context">Http上下文</param>
+        /// <returns></returns>
+        public async Task InvokeAsync(HttpContext context)
         {
             HttpRequest request = context.Request;
             await _hostHttpCrypto.DecryptRequest(request);
-            await next(context);
+            await _next(context);
             HttpResponse response = context.Response;
             await _hostHttpCrypto.EncryptResponse(response);
         }

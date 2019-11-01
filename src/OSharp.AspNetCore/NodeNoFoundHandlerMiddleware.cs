@@ -21,18 +21,29 @@ namespace OSharp.AspNetCore
     /// </summary>
     public class NodeNoFoundHandlerMiddleware : IMiddleware
     {
-        /// <summary>Request handling method.</summary>
-        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" /> for the current request.</param>
-        /// <param name="next">The delegate representing the remaining middleware in the request pipeline.</param>
-        /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the execution of this middleware.</returns>
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        private readonly RequestDelegate _next;
+
+        /// <summary>
+        /// 初始化一个<see cref="NodeNoFoundHandlerMiddleware"/>类型的新实例
+        /// </summary>
+        public NodeNoFoundHandlerMiddleware(RequestDelegate next)
         {
-            await next(context);
+            _next = next;
+        }
+
+        /// <summary>
+        /// 执行中间件拦截逻辑
+        /// </summary>
+        /// <param name="context">Http上下文</param>
+        /// <returns></returns>
+        public async Task InvokeAsync(HttpContext context)
+        {
+            await _next(context);
             if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value)
                 && !context.Request.Path.Value.StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
             {
                 context.Request.Path = "/index.html";
-                await next(context);
+                await _next(context);
             }
         }
     }
