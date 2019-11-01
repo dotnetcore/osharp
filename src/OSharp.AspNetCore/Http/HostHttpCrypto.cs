@@ -100,7 +100,7 @@ namespace OSharp.AspNetCore.Http
         /// <returns>加密后的响应</returns>
         public async Task<HttpResponse> EncryptResponse(HttpResponse response)
         {
-            if (response.IsSuccessStatusCode())
+            if (!response.IsSuccessStatusCode())
             {
                 return response;
             }
@@ -120,7 +120,7 @@ namespace OSharp.AspNetCore.Http
             catch (Exception ex)
             {
                 _logger.LogError("服务器对返回数据进行加密处理时发生异常", ex);
-                throw new OsharpException(ex.Message, ex);
+                throw;
             }
         }
     }

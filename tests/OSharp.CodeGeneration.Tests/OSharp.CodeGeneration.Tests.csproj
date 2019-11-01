@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
-    <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj" />
+    <ProjectReference Include="..\..\tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

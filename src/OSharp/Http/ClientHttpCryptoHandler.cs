@@ -11,12 +11,17 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Dependency;
+
 
 namespace OSharp.Http
 {
     /// <summary>
     /// HttpClient客户端加密通信处理器
     /// </summary>
+    [Dependency(ServiceLifetime.Transient, AddSelf = true)]
     public class ClientHttpCryptoHandler : DelegatingHandler
     {
         private readonly IClientHttpCrypto _clientHttpCrypto;

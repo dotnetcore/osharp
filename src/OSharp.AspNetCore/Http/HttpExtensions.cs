@@ -12,7 +12,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
-
+#if NETSTANDARD
+using Microsoft.AspNetCore.Http.Internal;
+#endif
 using OSharp.Extensions;
 
 
@@ -28,6 +30,10 @@ namespace OSharp.AspNetCore.Http
         /// </summary>
         public static Task<string> ReadAsStringAsync(this HttpRequest request)
         {
+#if NETSTANDARD
+            request.EnableRewind();
+#endif
+            Stream original = request.Body;
             using (StreamReader reader = new StreamReader(request.Body))
             {
                 reader.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -52,26 +58,14 @@ namespace OSharp.AspNetCore.Http
         /// </summary>
         public static Task<HttpRequest> WriteBodyAsync(this HttpRequest request, string data)
         {
-            byte[] bytes = data.ToBytes();
-            return WriteBodyAsync(request, bytes);
-        }
-
-        /// <summary>
-        /// 设置<see cref="HttpRequest"/>的Body为指定数据
-        /// </summary>
-        public static async Task<HttpRequest> WriteBodyAsync(this HttpRequest request, byte[] data)
-        {
             if (request.Method == HttpMethod.Get.Method)
             {
-                return request;
+                return Task.FromResult(request);
             }
-
-            using (Stream body = request.Body)
-            {
-                request.ContentLength = data.Length;
-                await body.WriteAsync(data, 0, data.Length);
-                return request;
-            }
+            byte[] bytes = data.ToBytes();
+            request.ContentLength = bytes.Length;
+            request.Body = new MemoryStream(bytes);
+            return Task.FromResult(request);
         }
 
         /// <summary>
@@ -83,26 +77,11 @@ namespace OSharp.AspNetCore.Http
             {
                 return Task.FromResult(response);
             }
+
             byte[] bytes = data.ToBytes();
-            return WriteBodyAsync(response, bytes);
-        }
-
-        /// <summary>
-        /// 设置<see cref="HttpRequest"/>的Body为指定数据
-        /// </summary>
-        public static async Task<HttpResponse> WriteBodyAsync(this HttpResponse response, byte[] data)
-        {
-            if (data == null || data.Length == 0)
-            {
-                return response;
-            }
-
-            using (Stream body = response.Body)
-            {
-                response.ContentLength = data.Length;
-                await body.WriteAsync(data, 0, data.Length);
-                return response;
-            }
+            response.ContentLength = bytes.Length;
+            response.Body = new MemoryStream(bytes);
+            return Task.FromResult(response);
         }
 
         /// <summary>

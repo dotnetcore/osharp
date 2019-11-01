@@ -50,7 +50,12 @@ namespace OSharp.Http
         {
             data.CheckNotNullOrEmpty("data");
 
-            string[] separators = { GetSeparator() };
+            string separator = GetSeparator();
+            if (!data.Contains(separator))
+            {
+                return data;
+            }
+            string[] separators = { separator };
             //0为AES密钥密文，1为 正文+摘要 的密文
             string[] datas = data.Split(separators, StringSplitOptions.None);
             //用接收端私钥RSA解密获取AES密钥

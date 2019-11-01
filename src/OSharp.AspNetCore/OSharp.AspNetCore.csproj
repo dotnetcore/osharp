@@ -24,6 +24,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="[2.2.0, 3.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="[2.2.2, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="[1.1.0, 3.0)" />
@@ -31,6 +32,7 @@
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.0.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
