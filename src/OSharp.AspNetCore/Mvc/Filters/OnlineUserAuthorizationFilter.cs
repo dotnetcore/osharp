@@ -61,6 +61,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
                     identity.AddClaim(new Claim(ClaimTypes.Role, onlineUser.Roles.ExpandAndToString()));
                 }
 
+                //扩展数据
                 foreach (KeyValuePair<string, string> pair in onlineUser.ExtendData)
                 {
                     identity.AddClaim(new Claim(pair.Key, pair.Value));

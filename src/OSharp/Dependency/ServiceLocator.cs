@@ -223,6 +223,70 @@ namespace OSharp.Dependency
             return config?[path];
         }
 
+        /// <summary>
+        /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
+        /// 生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public void ExecuteScopedWork(Action<IServiceProvider> action, bool useHttpScope = true)
+        {
+            using (IServiceScope scope = useHttpScope
+                ? _provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : _provider.CreateScope())
+            {
+                action(scope.ServiceProvider);
+            }
+        }
+
+        /// <summary>
+        /// 异步执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
+        /// 生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public async Task ExecuteScopedWorkAsync(Func<IServiceProvider, Task> action, bool useHttpScope = true)
+        {
+            using (IServiceScope scope = useHttpScope
+                ? _provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : _provider.CreateScope())
+            {
+                await action(scope.ServiceProvider);
+            }
+        }
+
+        /// <summary>
+        /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
+        /// 生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public TResult ExecuteScopedWork<TResult>(Func<IServiceProvider, TResult> func, bool useHttpScope = true)
+        {
+            using (IServiceScope scope = useHttpScope
+                ? _provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : _provider.CreateScope())
+            {
+                return func(scope.ServiceProvider);
+            }
+        }
+
+        /// <summary>
+        /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
+        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
+        /// 生命周期的ServiceProvider来执行，并释放资源
+        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
+        /// </summary>
+        public async Task<TResult> ExecuteScopedWorkAsync<TResult>(Func<IServiceProvider, Task<TResult>> func, bool useHttpScope = true)
+        {
+            using (IServiceScope scope = useHttpScope
+                ? _provider.GetService<IHybridServiceScopeFactory>().CreateScope()
+                : _provider.CreateScope())
+            {
+                return await func(scope.ServiceProvider);
+            }
+        }
+
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {

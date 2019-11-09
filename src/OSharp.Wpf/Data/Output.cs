@@ -8,6 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
+
+using OSharp.Data;
+using OSharp.Extensions;
 
 
 namespace OSharp.Wpf.Data
@@ -21,5 +25,27 @@ namespace OSharp.Wpf.Data
         /// 获取或设置 状态栏输出委托
         /// </summary>
         public static Action<string> StatusBar = msg => throw new InvalidOperationException("Output is not initialized");
+
+        /// <summary>
+        /// 带倒计时的状态栏信息输出
+        /// </summary>
+        /// <param name="format">字符串格式，必须包含秒的{0}格式</param>
+        /// <param name="countdownSeconds">总计时秒数</param>
+        /// <returns></returns>
+        public static async Task StatusBarCountdown(string format, int countdownSeconds)
+        {
+            Check.Required(format, msg=> msg != null && msg.Contains("{0}"), "format格式不正确，必须包含{0}");
+
+            if (countdownSeconds == 0)
+            {
+                return;
+            }
+            for (int i = countdownSeconds - 1; i >= 0; i--)
+            {
+                string msg = string.Format(format, i);
+                StatusBar(msg);
+                await Task.Delay(1000);
+            }
+        }
     }
 }

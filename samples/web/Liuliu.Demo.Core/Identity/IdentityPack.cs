@@ -219,6 +219,9 @@ namespace Liuliu.Demo.Identity
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseAuthentication();
+#if NETCOREAPP3_0
+            app.UseAuthorization();
+#endif
 
             IsEnabled = true;
         }

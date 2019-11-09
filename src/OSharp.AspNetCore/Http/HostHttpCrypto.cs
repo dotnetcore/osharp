@@ -28,7 +28,7 @@ namespace OSharp.AspNetCore.Http
     /// <summary>
     /// Http服务端加密解密功能
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, AddSelf = true)]
+    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class HostHttpCrypto : IHostHttpCrypto
     {
         private readonly ILogger _logger;
@@ -46,6 +46,10 @@ namespace OSharp.AspNetCore.Http
             {
                 HttpEncryptOptions httpEncrypt = options.HttpEncrypt;
                 _privateKey = httpEncrypt.HostPrivateKey;
+                if (string.IsNullOrEmpty(_privateKey))
+                {
+                    throw new OsharpException("配置文件中HttpEncrypt节点的HostPrivateKey不能为空");
+                }
             }
         }
 
@@ -56,17 +60,22 @@ namespace OSharp.AspNetCore.Http
         /// <returns>解密后的请求</returns>
         public async Task<HttpRequest> DecryptRequest(HttpRequest request)
         {
-            if (request.Method == HttpMethod.Get.Method || request.Body == null)
+            if (_privateKey == null || request.Method == HttpMethod.Get.Method || request.Body == null)
             {
                 return request;
             }
 
             string publicKey = request.Headers.GetOrDefault(HttpHeaderNames.ClientPublicKey);
-            if (publicKey == null)
+            if (publicKey != null)
             {
-                throw new OsharpException("在请求头中客户端公钥信息无法找到");
+                //throw new OsharpException("在请求头中客户端公钥信息无法找到");
+                _encryptor = new TransmissionEncryptor(_privateKey, publicKey);
             }
-            _encryptor = new TransmissionEncryptor(_privateKey, publicKey);
+
+            if (_encryptor == null)
+            {
+                return request;
+            }
 
             try
             {
@@ -100,7 +109,7 @@ namespace OSharp.AspNetCore.Http
         /// <returns>加密后的响应</returns>
         public async Task<HttpResponse> EncryptResponse(HttpResponse response)
         {
-            if (!response.IsSuccessStatusCode())
+            if (_encryptor == null || !response.IsSuccessStatusCode())
             {
                 return response;
             }

@@ -8,9 +8,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity;
@@ -249,7 +251,8 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("JwtToken")]
         public async Task<AjaxResult> Token(TokenDto dto)
         {
-            if (dto.GrantType == GrantType.Password)
+            string grantType = dto.GrantType?.UpperToLowerAndSplit("_");
+            if (grantType == GrantType.Password)
             {
                 Check.NotNull(dto.Account, nameof(dto.Account));
                 Check.NotNull(dto.Password, nameof(dto.Password));
@@ -271,11 +274,11 @@ namespace Liuliu.Demo.Web.Controllers
                 }
 
                 User user = result.Data;
-                JsonWebToken token = await CreateJwtToken(user);
+                JsonWebToken token = await CreateJwtToken(user, dto.ClientType);
                 return new AjaxResult("登录成功", AjaxResultType.Success, token);
             }
 
-            if (dto.GrantType == GrantType.RefreshToken)
+            if (grantType == GrantType.RefreshToken)
             {
                 Check.NotNull(dto.RefreshToken, nameof(dto.RefreshToken));
                 JsonWebToken token = await CreateJwtToken(dto.RefreshToken);
@@ -409,11 +412,11 @@ namespace Liuliu.Demo.Web.Controllers
             return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
-        private async Task<JsonWebToken> CreateJwtToken(User user)
+        private async Task<JsonWebToken> CreateJwtToken(User user, RequestClientType clientType = RequestClientType.Browser)
         {
             IServiceProvider provider = HttpContext.RequestServices;
             IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
-            JsonWebToken token = await jwtBearerService.CreateToken(user.Id.ToString(), user.UserName);
+            JsonWebToken token = await jwtBearerService.CreateToken(user.Id.ToString(), user.UserName, clientType);
 
             return token;
         }

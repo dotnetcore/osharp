@@ -18,7 +18,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
+using OSharp.AspNetCore.Http;
 using OSharp.Core.Builders;
+using OSharp.Core.Options;
 using OSharp.Entity;
 
 
@@ -53,6 +55,7 @@ namespace Liuliu.Demo.Web
             }
 
             app
+                //.UseMiddleware<HostHttpCryptoMiddleware>()
                 //.UseMiddleware<NodeNoFoundHandlerMiddleware>()
                 .UseMiddleware<NodeExceptionHandlerMiddleware>()
                 .UseDefaultFiles()

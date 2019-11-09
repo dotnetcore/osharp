@@ -777,11 +777,12 @@ namespace OSharp.Extensions
         }
 
         /// <summary>
-        /// 将驼峰字符串按单词拆分并转换成小写，再以-分隔
+        /// 将驼峰字符串按单词拆分并转换成小写，再以特定字符串分隔
         /// </summary>
         /// <param name="str">待转换的字符串</param>
+        /// <param name="splitStr">分隔符字符</param>
         /// <returns></returns>
-        public static string UpperToLowerAndSplit(this string str)
+        public static string UpperToLowerAndSplit(this string str, string splitStr = "-")
         {
             if (string.IsNullOrEmpty(str))
             {
@@ -790,7 +791,7 @@ namespace OSharp.Extensions
             List<string> words = new List<string>();
             while (str.Length > 0)
             {
-                char c = str.FirstOrDefault(m => char.IsUpper(m));
+                char c = str.FirstOrDefault(char.IsUpper);
                 if (c == default(char))
                 {
                     words.Add(str);
@@ -810,7 +811,7 @@ namespace OSharp.Extensions
                 }
                 str = char.ToLower(str[0]) + str.Substring(1, str.Length - 1);
             }
-            return words.ExpandAndToString("-");
+            return words.ExpandAndToString(splitStr);
         }
 
         /// <summary>

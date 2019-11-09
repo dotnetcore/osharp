@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 namespace OSharp.AspNetCore.Http
 {
     /// <summary>
-    /// 服务端通信加密解密中间件，对请求进行解密，对响应进行加密
+    /// 服务端通信加密解密中间件，对请求进行解密，对响应进行加密，如使用，请将此中间件放在第一个
     /// </summary>
     public class HostHttpCryptoMiddleware : IMiddleware
     {

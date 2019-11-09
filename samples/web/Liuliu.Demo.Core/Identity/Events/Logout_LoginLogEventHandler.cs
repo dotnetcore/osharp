@@ -41,7 +41,7 @@ namespace Liuliu.Demo.Identity.Events
         /// <param name="eventData">事件源数据</param>
         public override void Handle(LogoutEventData eventData)
         {
-            LoginLog log = _loginLogRepository.QueryAsNoTracking().LastOrDefault(m => m.UserId == eventData.UserId);
+            LoginLog log = _loginLogRepository.Query().OrderByDescending(m => m.CreatedTime).FirstOrDefault(m => m.UserId == eventData.UserId);
             if (log == null)
             {
                 return;
@@ -58,7 +58,7 @@ namespace Liuliu.Demo.Identity.Events
         /// <returns>是否成功</returns>
         public override async Task HandleAsync(LogoutEventData eventData, CancellationToken cancelToken = default(CancellationToken))
         {
-            LoginLog log = _loginLogRepository.QueryAsNoTracking().LastOrDefault(m => m.UserId == eventData.UserId);
+            LoginLog log = _loginLogRepository.Query().OrderByDescending(m => m.CreatedTime).FirstOrDefault(m => m.UserId == eventData.UserId);
             if (log == null)
             {
                 return;

@@ -13,9 +13,9 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http.Connections.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 
-using OSharp.Core.Options;
 using OSharp.Data;
 using OSharp.Wpf.Data;
 using OSharp.Wpf.Hubs.Reflection;
@@ -29,7 +29,6 @@ namespace OSharp.Wpf.Hubs
     /// </summary>
     public abstract class HubClientBase : IHubClient
     {
-
         /// <summary>
         /// 随机对象
         /// </summary>
@@ -41,17 +40,17 @@ namespace OSharp.Wpf.Hubs
         protected HubConnection HubConnection { get; set; }
 
         /// <summary>
-        /// 是否正在连接
+        /// 获取或设置 是否正在连接
         /// </summary>
         protected bool IsConnecting { get; set; }
 
         /// <summary>
-        /// 获取 服务器地址
+        /// 获取 通信Hub地址
         /// </summary>
-        public virtual string HostUrl => AppSettingsReader.GetString("HostUrl");
+        public abstract string HubUrl { get; }
 
         /// <summary>
-        /// 获取 客户端版本
+        /// 获取或设置 客户端版本
         /// </summary>
         public string Version { get; set; }
 
@@ -70,15 +69,11 @@ namespace OSharp.Wpf.Hubs
         /// </summary>
         public virtual void Initialize()
         {
-            Check.NotNull(HostUrl, nameof(HostUrl));
-            HubConnection = new HubConnectionBuilder().WithUrl($"{HostUrl}/assist-hub",
-                opts =>
-                {
-                    opts.Headers["Version"] = Version;
-                    opts.Headers["HostName"] = Dns.GetHostName();
-                    opts.AccessTokenProvider = () => Task.FromResult(string.Empty);
-                }).Build();
-            HubConnection.Closed += OnClose;
+            Check.NotNull(HubUrl, nameof(HubUrl));
+            HubConnection = new HubConnectionBuilder().WithUrl(HubUrl, HttpConnectionOptionsAction).Build();
+            HubConnection.Closed += OnClosed;
+            HubConnection.Reconnecting += OnReconnecting;
+            HubConnection.Reconnected += OnReconnected;
             HubListenOn(HubConnection);
         }
 
@@ -90,9 +85,11 @@ namespace OSharp.Wpf.Hubs
             try
             {
                 Stopwatch watch = Stopwatch.StartNew();
+                Output.StatusBar("开始连接通信服务器");
                 await HubConnection.StartAsync();
                 watch.Stop();
                 IsHubConnected = true;
+                Output.StatusBar("通信服务器连接成功");
                 object[] args = { new[] { WpfConstants.GroupNameWpf } };
                 await SendToHub("AddToGroup", args);
                 return OperationResult.Success;
@@ -111,6 +108,7 @@ namespace OSharp.Wpf.Hubs
         {
             object[] args = { new[] { WpfConstants.GroupNameWpf } };
             await SendToHub("RemoveFromGroup", args);
+            Output.StatusBar("断开通信服务器");
             await HubConnection.StopAsync();
         }
 
@@ -140,14 +138,49 @@ namespace OSharp.Wpf.Hubs
         }
 
         /// <summary>
+        /// 重写以实现<see cref="HttpConnectionOptions"/>的行为
+        /// </summary>
+        /// <param name="opts"></param>
+        protected virtual void HttpConnectionOptionsAction(HttpConnectionOptions opts)
+        {
+            if (!string.IsNullOrEmpty(Version))
+            {
+                opts.Headers["Version"] = Version;
+            }
+            opts.Headers["HostName"] = Dns.GetHostName();
+        }
+
+        /// <summary>
         /// 在连接关闭时触发
         /// </summary>
         /// <param name="error">错误信息</param>
         /// <returns></returns>
-        protected virtual async Task OnClose(Exception error)
+        protected virtual async Task OnClosed(Exception error)
         {
-            await Task.Delay(Random.Next(0, 5) * 1000);
+            int delay = Random.Next(0, 5);
+            await Output.StatusBarCountdown("{0}秒后重试连接通信服务器", delay);
             await HubConnection.StartAsync();
+            Output.StatusBar("通信服务器连接成功");
+        }
+
+        /// <summary>
+        /// 在重连之后触发
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        protected virtual Task OnReconnected(string arg)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 在正在重连时触发
+        /// </summary>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        protected virtual Task OnReconnecting(Exception error)
+        {
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -198,13 +231,11 @@ namespace OSharp.Wpf.Hubs
                 while (!IsNetConnected)
                 {
                     delay = Random.Next(6, 12);
-                    Output.StatusBar($"当前网络不通畅，延时{delay}秒后重试");
-                    await Task.Delay(delay * 1000);
+                    await Output.StatusBarCountdown("当前网络不通畅，延时{0}秒后重试", delay);
                 }
 
                 delay = Random.Next(3, 8);
-                Output.StatusBar($"服务器连接失败，延时{delay}秒后重试");
-                await Task.Delay(delay * 1000);
+                await Output.StatusBarCountdown("服务器连接失败，延时{0}秒后重试", delay);
                 await Start();
             }
 
@@ -253,5 +284,4 @@ namespace OSharp.Wpf.Hubs
             base.HubListenOn(connection);
         }
     }
-
 }

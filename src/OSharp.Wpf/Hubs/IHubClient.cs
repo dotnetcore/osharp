@@ -22,9 +22,9 @@ namespace OSharp.Wpf.Hubs
     public interface IHubClient
     {
         /// <summary>
-        /// 获取 服务器地址
+        /// 获取 通信Hub地址
         /// </summary>
-        string HostUrl { get; }
+        string HubUrl { get; }
 
         /// <summary>
         /// 获取或设置 客户端版本

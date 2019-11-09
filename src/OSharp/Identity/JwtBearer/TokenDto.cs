@@ -39,6 +39,11 @@ namespace OSharp.Identity.JwtBearer
         public string VerifyCode { get; set; }
 
         /// <summary>
+        /// 获取或设置 客户端类型
+        /// </summary>
+        public RequestClientType ClientType { get; set; }
+
+        /// <summary>
         /// 获取或设置 刷新Token
         /// </summary>
         public string RefreshToken { get; set; }

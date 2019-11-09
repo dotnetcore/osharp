@@ -50,7 +50,7 @@ namespace OSharp.AspNetCore.Mvc
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 #else
             services.AddMvc(options =>
             {

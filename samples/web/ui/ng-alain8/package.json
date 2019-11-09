@@ -14,7 +14,7 @@
     "lint:style": "stylelint \"src/**/*.less\" --syntax less --fix",
     "lint:ts": "tslint -c tslint.json \"src/**/*.ts\" --fix",
     "ng": "ng",
-    "start": "npm run color-less && ng s -o --port 4208",
+    "start": "npm run color-less && ng s -o --port 4201",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage --watch=false",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"

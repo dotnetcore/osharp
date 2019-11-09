@@ -557,7 +557,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleRole moduleRole = _moduleRoleRepository.QueryAsNoTracking().FirstOrDefault(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId));
+                TModuleRole moduleRole = _moduleRoleRepository.GetFirst(m => m.RoleId.Equals(roleId) && m.ModuleId.Equals(moduleId));
                 if (moduleRole == null)
                 {
                     continue;
@@ -658,7 +658,7 @@ namespace OSharp.Security
                 {
                     return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
                 }
-                TModuleUser moduleUser = _moduleUserRepository.QueryAsNoTracking().FirstOrDefault(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId));
+                TModuleUser moduleUser = _moduleUserRepository.GetFirst(m => m.ModuleId.Equals(moduleId) && m.UserId.Equals(userId));
                 if (moduleUser == null)
                 {
                     continue;

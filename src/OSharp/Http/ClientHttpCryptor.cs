@@ -44,6 +44,11 @@ namespace OSharp.Http
             if (options.HttpEncrypt?.Enabled == true)
             {
                 HttpEncryptOptions httpEncrypt = options.HttpEncrypt;
+                string clientPublicKey = httpEncrypt.ClientPublicKey;
+                if (string.IsNullOrEmpty(clientPublicKey))
+                {
+                    throw new OsharpException("配置文件中HttpEncrypt节点的ClientPublicKey不能为空");
+                }
                 RsaHelper rsa = new RsaHelper();
                 _encryptor = new TransmissionEncryptor(rsa.PrivateKey, httpEncrypt.ClientPublicKey);
                 _publicKey = rsa.PublicKey;
@@ -57,7 +62,7 @@ namespace OSharp.Http
         /// <returns>加密后的请求</returns>
         public virtual async Task<HttpRequestMessage> EncryptRequest(HttpRequestMessage request)
         {
-            if (request.Method == HttpMethod.Get || request.Content == null || _encryptor == null)
+            if (_encryptor == null || string.IsNullOrEmpty(_publicKey) || request.Method == HttpMethod.Get || request.Content == null)
             {
                 return request;
             }
@@ -76,7 +81,7 @@ namespace OSharp.Http
         /// <returns>解密后的响应</returns>
         public virtual async Task<HttpResponseMessage> DecryptResponse(HttpResponseMessage response)
         {
-            if (!response.IsSuccessStatusCode)
+            if (_encryptor == null || !response.IsSuccessStatusCode)
             {
                 return response;
             }

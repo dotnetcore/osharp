@@ -23,9 +23,9 @@ namespace OSharp.Identity.JwtBearer
         /// </summary>
         /// <param name="userId">用户编号的字符串</param>
         /// <param name="userName">用户名的字符串</param>
-        /// <param name="refreshToken">刷新Token模型</param>
+        /// <param name="clientType">客户端类型</param>
         /// <returns>JwtToken信息</returns>
-        Task<JsonWebToken> CreateToken(string userId, string userName, RefreshToken refreshToken = null);
+        Task<JsonWebToken> CreateToken(string userId, string userName, RequestClientType clientType = RequestClientType.Browser);
 
         /// <summary>
         /// 使用RefreshToken获取新的JwtToken信息

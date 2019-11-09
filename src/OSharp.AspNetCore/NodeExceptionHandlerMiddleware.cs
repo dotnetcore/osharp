@@ -58,7 +58,7 @@ namespace OSharp.AspNetCore
                         return;
                     }
                     context.Response.Clear();
-                    context.Response.StatusCode = 500;
+                    context.Response.StatusCode = 200;
                     context.Response.ContentType = "application/json; charset=utf-8";
                     await context.Response.WriteAsync(new AjaxResult(ex.Message, AjaxResultType.Error).ToJsonString());
                     return;
