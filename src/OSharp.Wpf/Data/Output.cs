@@ -40,7 +40,7 @@ namespace OSharp.Wpf.Data
             {
                 return;
             }
-            for (int i = countdownSeconds - 1; i >= 0; i--)
+            for (int i = countdownSeconds; i > 0; i--)
             {
                 string msg = string.Format(format, i);
                 StatusBar(msg);

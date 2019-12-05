@@ -59,6 +59,12 @@ namespace OSharp.Wpf.Hubs
         Task Stop();
 
         /// <summary>
+        /// 重启通信
+        /// </summary>
+        /// <returns></returns>
+        Task<OperationResult> Restart();
+
+        /// <summary>
         /// 向服务器发送数据
         /// </summary>
         /// <param name="methodName">Hub方法名</param>

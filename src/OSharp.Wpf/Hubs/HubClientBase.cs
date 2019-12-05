@@ -9,6 +9,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
@@ -40,11 +41,6 @@ namespace OSharp.Wpf.Hubs
         protected HubConnection HubConnection { get; set; }
 
         /// <summary>
-        /// 获取或设置 是否正在连接
-        /// </summary>
-        protected bool IsConnecting { get; set; }
-
-        /// <summary>
         /// 获取 通信Hub地址
         /// </summary>
         public abstract string HubUrl { get; }
@@ -60,9 +56,14 @@ namespace OSharp.Wpf.Hubs
         public bool IsNetConnected { get; set; } = true;
 
         /// <summary>
-        /// 获取 当前通信是否连接
+        /// 获取 当前通信是否已连接
         /// </summary>
-        public bool IsHubConnected { get; private set; }
+        public bool IsHubConnected => HubConnection?.State == HubConnectionState.Connected;
+
+        /// <summary>
+        /// 获取 通信是否正在连接
+        /// </summary>
+        protected bool IsHubConnecting => new[] { HubConnectionState.Reconnecting, HubConnectionState.Reconnecting }.Contains(HubConnection.State);
 
         /// <summary>
         /// 网络通信初始化
@@ -88,15 +89,13 @@ namespace OSharp.Wpf.Hubs
                 Output.StatusBar("开始连接通信服务器");
                 await HubConnection.StartAsync();
                 watch.Stop();
-                IsHubConnected = true;
-                Output.StatusBar("通信服务器连接成功");
+                Output.StatusBar($"通信服务器连接成功，耗时：{watch.Elapsed}");
                 object[] args = { new[] { WpfConstants.GroupNameWpf } };
                 await SendToHub("AddToGroup", args);
                 return OperationResult.Success;
             }
             catch (Exception ex)
             {
-                IsHubConnected = false;
                 return new OperationResult(OperationResultType.Error, ex.Message);
             }
         }
@@ -106,10 +105,28 @@ namespace OSharp.Wpf.Hubs
         /// </summary>
         public virtual async Task Stop()
         {
+            if (!IsHubConnected)
+            {
+                return;
+            }
             object[] args = { new[] { WpfConstants.GroupNameWpf } };
             await SendToHub("RemoveFromGroup", args);
             Output.StatusBar("断开通信服务器");
             await HubConnection.StopAsync();
+        }
+
+        /// <summary>
+        /// 重启通信
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<OperationResult> Restart()
+        {
+            await Stop();
+            while (HubConnection.State != HubConnectionState.Disconnected)
+            {
+                await Task.Delay(50);
+            }
+            return await Start();
         }
 
         /// <summary>
@@ -118,7 +135,7 @@ namespace OSharp.Wpf.Hubs
         /// <param name="methodName">Hub方法名</param>
         /// <param name="args">调用参数</param>
         /// <returns></returns>
-        public async Task SendToHub(string methodName, params object[] args)
+        public virtual async Task SendToHub(string methodName, params object[] args)
         {
             await WaitForConnected();
             await HubConnection.InvokeCoreAsync(methodName, args);
@@ -131,7 +148,7 @@ namespace OSharp.Wpf.Hubs
         /// <param name="methodName"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public async Task<TResult> RequestFromHub<TResult>(string methodName, params object[] args)
+        public virtual async Task<TResult> RequestFromHub<TResult>(string methodName, params object[] args)
         {
             await WaitForConnected();
             return await HubConnection.InvokeCoreAsync<TResult>(methodName, args);
@@ -160,7 +177,7 @@ namespace OSharp.Wpf.Hubs
             int delay = Random.Next(0, 5);
             await Output.StatusBarCountdown("{0}秒后重试连接通信服务器", delay);
             await HubConnection.StartAsync();
-            Output.StatusBar("通信服务器连接成功");
+            Output.StatusBar($"通信服务器连接{(HubConnection.State == HubConnectionState.Connected ? "成功" : "失败")}");
         }
 
         /// <summary>
@@ -196,35 +213,22 @@ namespace OSharp.Wpf.Hubs
         /// <returns></returns>
         protected virtual async Task WaitForConnected()
         {
+            // 已连接
             if (IsHubConnected)
             {
-                IsConnecting = false;
                 return;
             }
 
-            while (IsConnecting)
+            // 等待正在连接
+            while (IsHubConnecting)
             {
                 await Task.Delay(200);
                 if (IsHubConnected)
                 {
-                    IsConnecting = false;
                     return;
                 }
-
-                if (IsConnecting)
-                {
-                    continue;
-                }
-
-                if (IsHubConnected)
-                {
-                    return;
-                }
-
-                break;
             }
 
-            IsConnecting = true;
             while (!IsHubConnected)
             {
                 int delay;
@@ -238,8 +242,6 @@ namespace OSharp.Wpf.Hubs
                 await Output.StatusBarCountdown("服务器连接失败，延时{0}秒后重试", delay);
                 await Start();
             }
-
-            IsConnecting = false;
         }
     }
 
@@ -254,11 +256,11 @@ namespace OSharp.Wpf.Hubs
         /// </summary>
         /// <param name="call">调用委托</param>
         /// <returns></returns>
-        public async Task SendToHub(Expression<Action<TRequest>> call)
+        public virtual async Task SendToHub(Expression<Action<TRequest>> call)
         {
             Invocation invocation = call.GetInvocation();
             await WaitForConnected();
-            await HubConnection.InvokeCoreAsync(invocation.MethodName, invocation.Parameters);
+            await SendToHub(invocation.MethodName, invocation.Parameters);
         }
 
         /// <summary>
@@ -267,11 +269,11 @@ namespace OSharp.Wpf.Hubs
         /// <typeparam name="TResult">结果类型</typeparam>
         /// <param name="call">调用委托</param>
         /// <returns></returns>
-        public async Task<TResult> RequestFromHub<TResult>(Expression<Func<TRequest, Task<TResult>>> call)
+        public virtual async Task<TResult> RequestFromHub<TResult>(Expression<Func<TRequest, Task<TResult>>> call)
         {
             Invocation invocation = call.GetInvocation();
             await WaitForConnected();
-            return await HubConnection.InvokeCoreAsync<TResult>(invocation.MethodName, invocation.Parameters);
+            return await RequestFromHub<TResult>(invocation.MethodName, invocation.Parameters);
         }
 
         /// <summary>

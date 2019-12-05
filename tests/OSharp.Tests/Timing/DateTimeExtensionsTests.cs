@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+﻿using OSharp.Timing;
+// -----------------------------------------------------------------------
 //  <copyright file="DateTimeExtensionsTests.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
@@ -53,9 +54,32 @@ namespace OSharp.Timing.Tests
         }
 
         [Fact()]
+        public void ToUtcTimeTest()
+        {
+            Assert.Equal(new DateTime(2000, 1, 1), new DateTime(2000, 1, 1, 8, 0, 0).ToUtcTime());
+        }
+
+        [Fact()]
+        public void FromUtcTimeTest()
+        {
+            Assert.Equal(new DateTime(2000, 1, 1, 8, 0, 0), new DateTime(2000, 1, 1).FromUtcTime());
+        }
+
+        [Fact()]
         public void ToJsGetTimeTest()
         {
-            string ts = DateTime.Now.ToJsGetTime();
+            Assert.Equal("0", new DateTime(1970, 1, 1, 8, 0, 0).ToJsGetTime(false));
+            Assert.Equal("0", new DateTime(1970, 1, 1, 8, 0, 0).ToJsGetTime());
+            Assert.Equal("1500000000", new DateTime(2017, 7, 14, 10, 40, 0).ToJsGetTime(false));
+            Assert.Equal("1500000000000", new DateTime(2017, 7, 14, 10, 40, 0).ToJsGetTime());
         }
+
+        [Fact()]
+        public void FromJsGetTimeTest()
+        {
+            DateTime now = new DateTime(2017, 7, 14, 10, 40, 0);
+            Assert.Equal(((long)1500000000).FromJsGetTime(), now);
+        }
+
     }
 }

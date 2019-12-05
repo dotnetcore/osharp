@@ -130,10 +130,7 @@ namespace OSharp.Identity.JwtBearer
             return token;
         }
 
-        private async Task<JsonWebToken> CreateToken(string userId,
-            string userName,
-            RequestClientType clientType = RequestClientType.Browser,
-            RefreshToken refreshToken = null)
+        private async Task<JsonWebToken> CreateToken(string userId, string userName, RequestClientType clientType, RefreshToken refreshToken)
         {
             Check.NotNullOrEmpty(userId, nameof(userId));
             Check.NotNullOrEmpty(userName, nameof(userName));
@@ -216,7 +213,7 @@ namespace OSharp.Identity.JwtBearer
             }
             SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            
+
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
