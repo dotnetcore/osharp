@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 #endif
@@ -70,7 +70,7 @@ namespace OSharp.AspNetCore.SignalR
         /// <returns></returns>
         protected virtual Action<HubOptions> GetHubOptionsAction(IServiceCollection services)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             return config =>
             {
                 IWebHostEnvironment environment = services.GetWebHostEnvironment();
@@ -91,7 +91,7 @@ namespace OSharp.AspNetCore.SignalR
         /// <returns></returns>
         protected virtual Action<ISignalRServerBuilder> GetSignalRServerBuildAction(IServiceCollection services)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             return builder => builder.AddNewtonsoftJsonProtocol(options =>
                 options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
 #else

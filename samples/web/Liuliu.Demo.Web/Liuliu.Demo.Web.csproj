@@ -4,7 +4,7 @@
   <Import Project="../../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,13 +29,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[2.2.3, 3.0)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj" />
@@ -52,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">
+    <ProjectReference Include="..\..\..\src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Exceptionless\OSharp.Exceptionless.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Hangfire\OSharp.Hangfire.csproj" />

@@ -30,7 +30,7 @@ namespace OSharp.AspNetCore
         }
 #endif
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
         /// <summary>
         /// 获取<see cref="IHostingEnvironment"/>环境信息
         /// </summary>

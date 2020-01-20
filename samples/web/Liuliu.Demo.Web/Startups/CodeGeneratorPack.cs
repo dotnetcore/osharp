@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using Microsoft.Extensions.Hosting;
 #endif
 
@@ -47,7 +47,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             if (services.GetWebHostEnvironment().IsDevelopment())
 #else
             if (services.GetHostingEnvironment().IsDevelopment())
@@ -65,7 +65,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             IWebHostEnvironment environment = provider.GetService<IWebHostEnvironment>();
 #else
             IHostingEnvironment environment = provider.GetService<IHostingEnvironment>();

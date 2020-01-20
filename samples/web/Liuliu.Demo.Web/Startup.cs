@@ -12,7 +12,7 @@ using Liuliu.Demo.Web.Startups;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using Microsoft.Extensions.Hosting;
 #endif
 using Microsoft.Extensions.Logging;
@@ -35,7 +35,7 @@ namespace Liuliu.Demo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-#if NETCOREAPP3_0
+#if NETCOREAPP
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
 
 #else

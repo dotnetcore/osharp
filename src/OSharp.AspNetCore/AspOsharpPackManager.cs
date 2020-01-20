@@ -31,7 +31,7 @@ namespace OSharp.AspNetCore
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override void UsePack(IServiceProvider provider)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             IWebHostEnvironment environment = provider.GetService<IWebHostEnvironment>();
             if (environment != null)
             {

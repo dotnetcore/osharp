@@ -67,36 +67,44 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 
             var users = _cacheService.ToCacheList(_userManager.Users.Where(userExp).GroupBy(m => 1).Select(g => new
             {
-                TotalCount = g.Sum(m => 1),
-                ValidCount = g.Count(n => n.EmailConfirmed)
-            }), function, "Dashboard_Summary_User", start, end).FirstOrDefault()
-                ?? new { TotalCount = 0, ValidCount = 0 };
-
+                TotalCount = g.Sum(n => 1),
+                ValidCount = g.Sum(n => n.EmailConfirmed ? 1 : 0)
+            }),
+                function,
+                "Dashboard_Summary_User",
+                start,
+                end).FirstOrDefault() ?? new { TotalCount = 0, ValidCount = 0 };
             var roles = _cacheService.ToCacheList(_roleManager.Roles.GroupBy(m => 1).Select(g => new
             {
-                TotalCount = g.Sum(m => 1),
-                AdminCount = g.Count(m => m.IsAdmin)
-            }), function, "Dashboard_Summary_Role", start, end).FirstOrDefault()
-                ?? new { TotalCount = 0, AdminCount = 0 };
+                TotalCount = g.Sum(n => 1),
+                AdminCount = g.Sum(n => n.IsAdmin ? 1 : 0)
+            }),
+                function,
+                "Dashboard_Summary_Role",
+                start,
+                end).FirstOrDefault() ?? new { TotalCount = 0, AdminCount = 0 };
             var modules = _cacheService.ToCacheList(_securityManager.Modules.GroupBy(m => 1).Select(g => new
             {
-                TotalCount = g.Sum(m => 1),
-                SiteCount = g.Count(m => m.TreePathString.Contains("$2$")),
-                AdminCount = g.Count(m => m.TreePathString.Contains("$3$"))
-            }), function, "Dashboard_Summary_Module").FirstOrDefault()
-                ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
-            var functions = _cacheService.ToCacheList(_securityManager.Functions.GroupBy(m => 1).Select(g => new
+                TotalCount = g.Sum(n => 1),
+                SiteCount = g.Sum(n => n.TreePathString.Contains("$2$") ? 1 : 0),
+                AdminCount = g.Sum(m => m.TreePathString.Contains("$3$") ? 1 : 0)
+            }),
+                function,
+                "Dashboard_Summary_Module").FirstOrDefault() ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
+            var functions = _cacheService.ToCacheList(_securityManager.Functions.GroupBy(m => m.Id).Select(g => new
             {
-                TotalCount = g.Sum(m => 1),
-                ControllerCount = g.Count(m => m.IsController)
-            }), function, "Dashboard_Summary_Function").FirstOrDefault()
-                ?? new { TotalCount = 0, ControllerCount = 0 };
-            var entityInfos = _cacheService.ToCacheList(_securityManager.EntityInfos.GroupBy(m => 1).Select(g => new
+                TotalCount = g.Sum(n => 1),
+                ControllerCount = g.Sum(m => m.IsController ? 1 : 0)
+            }),
+                function,
+                "Dashboard_Summary_Function").FirstOrDefault() ?? new { TotalCount = 0, ControllerCount = 0 };
+            var entityInfos = _cacheService.ToCacheList(_securityManager.EntityInfos.GroupBy(m => m.Id).Select(g => new
             {
-                TotalCount = g.Sum(m => 1),
-                AuditCount = g.Count(m => m.AuditEnabled)
-            }), function, "Dashboard_Summary_EntityInfo").FirstOrDefault()
-                ?? new { TotalCount = 0, AuditCount = 0 };
+                TotalCount = g.Sum(n => 1),
+                AuditCount = g.Sum(m => m.AuditEnabled ? 1 : 0)
+            }),
+                function,
+                "Dashboard_Summary_EntityInfo").FirstOrDefault() ?? new { TotalCount = 0, AuditCount = 0 };
 
             var data = new { users, roles, modules, functions, entityInfos };
             return Json(data);
@@ -115,7 +123,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 Date = g.Key,
                 DailyCount = g.Count()
-            }), function, "Dashboard_Line_User", start, end);
+            }),
+                function,
+                "Dashboard_Line_User",
+                start,
+                end);
             var users = userData.Select(m => new
             {
                 Date = m.Date.ToString("d"),

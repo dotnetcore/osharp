@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <PackageId>OSharpNS.AspNetCore</PackageId>
     <Summary>OSharp AspNetCore组件</Summary>
     <Description>OSharp AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
@@ -29,9 +29,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="[2.2.0, 3.0)" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="[1.1.0, 3.0)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.0.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.1.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

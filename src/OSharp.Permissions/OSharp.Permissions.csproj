@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <PackageId>OSharpNS.Permissions</PackageId>
     <Summary>OSharp 核心组件</Summary>
     <Description>OSharp 权限组件，包含用户认证与权限验证的基础实现</Description>
@@ -28,9 +28,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="[2.2.0, 3.0)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>

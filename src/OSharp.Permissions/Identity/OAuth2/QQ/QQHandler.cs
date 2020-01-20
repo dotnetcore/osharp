@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-#if NETCOREAPP3_0
+#if NETCOREAPP
 using System.Text.Json;
 #endif
 using System.Text.RegularExpressions;

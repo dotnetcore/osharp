@@ -49,7 +49,7 @@ namespace OSharp.Hangfire
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
-#if NETCOREAPP3_0
+#if NETCOREAPP
             bool enabled = false;
 #else
             bool enabled = configuration["OSharp:Hangfire:Enabled"].CastTo(false);
@@ -72,7 +72,7 @@ namespace OSharp.Hangfire
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
             IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
-#if NETCOREAPP3_0
+#if NETCOREAPP
             bool enabled = false;
 #else
             bool enabled = configuration["OSharp:Hangfire:Enabled"].CastTo(false);

@@ -40,8 +40,7 @@ namespace OSharp.AspNetCore.Mvc
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = AddCors(services);
-
-#if NETCOREAPP3_0
+#if NETCOREAPP
             services.AddControllersWithViews(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
@@ -76,7 +75,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <param name="app">应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-#if NETCOREAPP3_0
+#if NETCOREAPP
             app.UseRouting();
             UseCors(app);
 #else   

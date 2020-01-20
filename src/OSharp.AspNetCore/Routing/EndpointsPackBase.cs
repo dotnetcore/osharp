@@ -7,7 +7,7 @@
 //  <last-date>2019-09-29 12:43</last-date>
 // -----------------------------------------------------------------------
 
-#if NETCOREAPP3_0
+#if NETCOREAPP
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
