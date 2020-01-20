@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageId>OSharpNS.AspNetCore.Diagnostics</PackageId>
     <Summary>OSharp AspNetCore性能诊断组件</Summary>
     <Description>OSharp AspNetCore性能诊断组件，提供AspNetCore性能诊断功能的封装</Description>

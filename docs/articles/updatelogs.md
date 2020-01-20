@@ -1,5 +1,34 @@
 # OSharp .NetStandard 更新记录
 
+### 3.1.0-beta01 (2020/01/20)
+1. (core) 过滤掉EntityInfo中属性信息的导航属性和逻辑删除属性
+2. (core) 添加NonFunctionAttribute特性，用于忽略指定Controller和Action是否收集成Function信息
+3. (core) 调整项目文件中.netstandard公共配置信息的位置
+4. (core) 修复启动时提取function信息时override方法会被重复提取的问题
+5. (core) 修复appsettings.json文件读取辅助类不能读取的问题
+6. (core) 综合.net core 2.2和.net core 3.0分支，只使用一份代码管理2.2与3.0项目的代码。使用多目标框架的项目组织方式，更新项目工程文件，统一管理 .netstandard2.0, .netcoreapp2.2, .netcoreapp3.0 的目标框架代码
+7. (dependency) 修复当有多个接口并且允许多注入时，仍以单注入方式来注入服务的问题
+8. (dependency) ServiceLocator 添加 ExecuteScopedWork，用于在根ServiceProvider新建Scope作用域执行业务
+9. (mapper) 将IMapTuple服务允许多注入
+10. (http) 添加HTTP通信加密的客户端拦截器与服务端中间件支持
+11. (http) Http通信内容解密时，无加密标记的内容不解密，添加HTTP通信加密解密测试
+12. (http) 添加HttpClient的Json相关扩展方法
+13. (web) MvcPackBase添加Cors重写点，方便实现Cors
+14. (web)SignalR增加Development环境下开启详细错误
+15. (pack) 将部分Pack由Web项目下调至框架类库级别，需要更改时可在Web工程继承重写
+16. (entity) 重命名Repository的重要API：Query -> QueryAsNoTracking，TrackQuery -> Query，重命名之后更符合EF语义，减少误用机率 [#113](https://github.com/i66soft/osharp/issues/113)
+17. (wpf) 添加OSharp.Wpf工程，用于封装.net core 3.0版本的WPF客户端辅助功能
+18. (wpf) 将HubManager更改为抽象类，以方便在应用时按需重写，SignalR的客户端与服务商通信均可支持强类型了，优化HubClient的实现
+19. (wpf) 使用SignalR内部对象整理HubClientBase
+20. (identity) JWT登录添加不同客户端来源(ClientType)的支持
+21. (identity) 修复几个应该用Query却用了QueryAsNoTracking的问题
+22. (infos) 添加信息模块的站内信的生成基础代码
+23. (msg) 重写添加站内信的处理逻辑
+24. (health) 添加新项目 OSharp.AspNetCore.Diagnostics，用于AspNetCore项目的性能诊断，完善HealthChecks检测对象，补充Database/Smtp/Redis/Hangfire的检测
+25. (alain) 修复st-component-base.ts中 ResponseDataProcess调用不正确的问题
+26. (alain) 添加 Powered by 的 .net core和osharp版本显示
+27. (alain) 移动angular前端项目到samples/web，移除多余的示例项目代码
+
 ### 1.1.3 (2019/09/06)
 1. (repository) 修复用户未登录时CreatorId赋值为0的问题，应赋值为null
 2. (repository) 修复CreatedTime 有真实值时（不为默认值）时依然赋予当前时间的问题
