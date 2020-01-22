@@ -27,13 +27,13 @@
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[2.2.6, 3.0)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.6, 3.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[2.0.24, 3)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[2.0.33, 3)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.24" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.33" />
   </ItemGroup>
 
   <ItemGroup>

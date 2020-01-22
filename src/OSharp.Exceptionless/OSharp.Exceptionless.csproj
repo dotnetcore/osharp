@@ -9,6 +9,9 @@
     <Summary>OSharp Exceptionless 分布式日志组件</Summary>
     <Description>OSharp Exceptionless 分布式日志组件，封装基于Exceptionless 分布式日志记录实现</Description>
     <RootNamespace>OSharp.Exceptionless</RootNamespace>
+    <Version>2.2.6</Version>
+    <AssemblyVersion>2.2.6.0</AssemblyVersion>
+    <FileVersion>2.2.6.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|AnyCPU'">

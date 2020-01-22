@@ -17,7 +17,7 @@ namespace Liuliu.Demo.Web
     public class Program
     {
 
-#if NETCOREAPP
+#if !NETCOREAPP2_2
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

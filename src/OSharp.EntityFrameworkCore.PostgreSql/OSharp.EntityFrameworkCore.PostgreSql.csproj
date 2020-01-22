@@ -9,6 +9,9 @@
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的PostgreSql数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件PostgreSql</Summary>
     <RootNamespace>OSharp.Entity.PostgreSql</RootNamespace>
+    <Version>3.1.0</Version>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <FileVersion>3.1.0.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">

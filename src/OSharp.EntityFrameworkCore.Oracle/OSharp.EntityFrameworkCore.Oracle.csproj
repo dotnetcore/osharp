@@ -9,6 +9,9 @@
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的Oracle数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件Oracle</Summary>
     <RootNamespace>OSharp.Entity.Oracle</RootNamespace>
+    <Version>2.2.6</Version>
+    <AssemblyVersion>2.2.6.0</AssemblyVersion>
+    <FileVersion>2.2.6.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">

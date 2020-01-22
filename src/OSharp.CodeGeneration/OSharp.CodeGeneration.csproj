@@ -10,6 +10,9 @@
     <Description>OSharp(.NetStandard2.0) 代码生成组件，基于Razor和cshtml模板生成各个模块的分层实体类、服务类、控制器、前端代码等</Description>
     <RootNamespace>OSharp.CodeGeneration</RootNamespace>
     <AssemblyName>OSharp.CodeGeneration</AssemblyName>
+    <Version>2.2.6</Version>
+    <AssemblyVersion>2.2.6.0</AssemblyVersion>
+    <FileVersion>2.2.6.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -40,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="RazorEngine.NetCore" Version="2.2.4" />
+    <PackageReference Include="RazorEngine.NetCore" Version="2.2.6" />
   </ItemGroup>
 
   <ItemGroup>
