@@ -1,5 +1,9 @@
 # OSharp .NetStandard 更新记录
 
+### 3.1.1 (2020/01/31)
+1. (core) 更新.net core 版本到 3.1.1
+2. (identity) 将Identity模块的 UserRole，UserClaim，UserLogin，UserToken 的主键类型开放为泛型
+
 ### 3.1.0-beta01 (2020/01/20)
 1. (core) 过滤掉EntityInfo中属性信息的导航属性和逻辑删除属性
 2. (core) 添加NonFunctionAttribute特性，用于忽略指定Controller和Action是否收集成Function信息
