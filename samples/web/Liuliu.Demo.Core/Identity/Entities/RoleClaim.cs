@@ -18,7 +18,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// 实体类：角色声明信息
     /// </summary>
     [Description("角色声明信息")]
-    public class RoleClaim : RoleClaimBase<int>
+    public class RoleClaim : RoleClaimBase<int, int>
     {
         /// <summary>
         /// 获取或设置 所属角色信息

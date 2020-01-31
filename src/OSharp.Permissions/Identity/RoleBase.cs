@@ -19,9 +19,9 @@ namespace OSharp.Identity
     /// <summary>
     /// 角色信息基类
     /// </summary>
-    /// <typeparam name="TRoleKey">角色编号类型</typeparam>
-    public abstract class RoleBase<TRoleKey> : EntityBase<TRoleKey>, ICreatedTime, ILockable, ISoftDeletable
-        where TRoleKey : IEquatable<TRoleKey>
+    /// <typeparam name="TKey">角色编号类型</typeparam>
+    public abstract class RoleBase<TKey> : EntityBase<TKey>, ICreatedTime, ILockable, ISoftDeletable
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 初始化一个<see cref="RoleBase{TRoleKey}"/>类型的新实例

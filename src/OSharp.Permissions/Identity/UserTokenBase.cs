@@ -18,8 +18,10 @@ namespace OSharp.Identity
     /// <summary>
     /// 表示用户的身份验证令牌的基类
     /// </summary>
-    /// <typeparam name="TUserKey">用户编号</typeparam>
-    public abstract class UserTokenBase<TUserKey> : EntityBase<Guid>
+    /// <typeparam name="TKey">用户令牌编号类型</typeparam>
+    /// <typeparam name="TUserKey">用户编号类型</typeparam>
+    public abstract class UserTokenBase<TKey, TUserKey> : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
         where TUserKey : IEquatable<TUserKey>
     {
         /// <summary>

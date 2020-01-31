@@ -18,10 +18,10 @@ namespace Liuliu.Demo.Identity
     /// <summary>
     /// 角色仓储
     /// </summary>
-    public class RoleStore : RoleStoreBase<Role, int, RoleClaim>
+    public class RoleStore : RoleStoreBase<Role, int, RoleClaim, int>
     {
         /// <summary>
-        /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim}"/>类型的新实例
+        /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim, TRoleClaimKey}"/>类型的新实例
         /// </summary>
         public RoleStore(IRepository<Role, int> roleRepository, IRepository<RoleClaim, int> roleClaimRepository)
             : base(roleRepository, roleClaimRepository)

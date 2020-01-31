@@ -32,12 +32,15 @@ namespace OSharp.Identity
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TUserClaim">用户声明类型</typeparam>
+    /// <typeparam name="TUserClaimKey">用户声明编号类型</typeparam>
     /// <typeparam name="TUserLogin">用户登录类型</typeparam>
+    /// <typeparam name="TUserLoginKey">用户登录编号类型</typeparam>
     /// <typeparam name="TUserToken">用户令牌类型</typeparam>
+    /// <typeparam name="TUserTokenKey">用户令牌编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUserRole">用户角色类型</typeparam>
-    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole>
+    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole>
         : IQueryableUserStore<TUser>,
           IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
@@ -52,25 +55,28 @@ namespace OSharp.Identity
           IUserTwoFactorRecoveryCodeStore<TUser>,
           IUserRoleStore<TUser>
         where TUser : UserBase<TUserKey>
-        where TUserClaim : UserClaimBase<TUserKey>, new()
-        where TUserLogin : UserLoginBase<TUserKey>, new()
-        where TUserToken : UserTokenBase<TUserKey>, new()
+        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>, new()
+        where TUserLogin : UserLoginBase<TUserLoginKey, TUserKey>, new()
+        where TUserToken : UserTokenBase<TUserTokenKey, TUserKey>, new()
         where TRole : RoleBase<TRoleKey>
         where TUserRole : UserRoleBase<TUserKey, TRoleKey>, new()
         where TUserKey : IEquatable<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
+        where TUserClaimKey : IEquatable<TUserClaimKey>
+        where TUserLoginKey : IEquatable<TUserLoginKey>
+        where TUserTokenKey : IEquatable<TUserTokenKey>
     {
         private readonly IRepository<TUser, TUserKey> _userRepository;
-        private readonly IRepository<TUserLogin, Guid> _userLoginRepository;
-        private readonly IRepository<TUserClaim, int> _userClaimRepository;
-        private readonly IRepository<TUserToken, Guid> _userTokenRepository;
+        private readonly IRepository<TUserLogin, TUserLoginKey> _userLoginRepository;
+        private readonly IRepository<TUserClaim, TUserClaimKey> _userClaimRepository;
+        private readonly IRepository<TUserToken, TUserTokenKey> _userTokenRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUserRole, Guid> _userRoleRepository;
         private readonly IEventBus _eventBus;
         private bool _disposed;
 
         /// <summary>
-        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole}"/>类型的新实例
+        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole}"/>类型的新实例
         /// </summary>
         /// <param name="userRepository">用户仓储</param>
         /// <param name="userLoginRepository">用户登录仓储</param>
@@ -81,9 +87,9 @@ namespace OSharp.Identity
         /// <param name="eventBus">事件总线</param>
         protected UserStoreBase(
             IRepository<TUser, TUserKey> userRepository,
-            IRepository<TUserLogin, Guid> userLoginRepository,
-            IRepository<TUserClaim, int> userClaimRepository,
-            IRepository<TUserToken, Guid> userTokenRepository,
+            IRepository<TUserLogin, TUserLoginKey> userLoginRepository,
+            IRepository<TUserClaim, TUserClaimKey> userClaimRepository,
+            IRepository<TUserToken, TUserTokenKey> userTokenRepository,
             IRepository<TRole, TRoleKey> roleRepository,
             IRepository<TUserRole, Guid> userRoleRepository,
             IEventBus eventBus

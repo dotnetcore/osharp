@@ -29,25 +29,27 @@ namespace OSharp.Identity
     /// <typeparam name="TRole">角色实体类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TRoleClaim">角色声明类型</typeparam>
-    public abstract class RoleStoreBase<TRole, TRoleKey, TRoleClaim>
+    /// <typeparam name="TRoleClaimKey">角色声明编号类型</typeparam>
+    public abstract class RoleStoreBase<TRole, TRoleKey, TRoleClaim, TRoleClaimKey>
         : IQueryableRoleStore<TRole>,
           IRoleClaimStore<TRole>
         where TRole : RoleBase<TRoleKey>
-        where TRoleClaim : RoleClaimBase<TRoleKey>, new()
+        where TRoleClaim : RoleClaimBase<TRoleClaimKey, TRoleKey>, new()
         where TRoleKey : IEquatable<TRoleKey>
+        where TRoleClaimKey : IEquatable<TRoleClaimKey>
     {
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
-        private readonly IRepository<TRoleClaim, int> _roleClaimRepository;
+        private readonly IRepository<TRoleClaim, TRoleClaimKey> _roleClaimRepository;
         private bool _disposed;
 
         /// <summary>
-        /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim}"/>类型的新实例
+        /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim, TRoleClaimKey}"/>类型的新实例
         /// </summary>
         /// <param name="roleRepository">角色仓储</param>
         /// <param name="roleClaimRepository">角色声明仓储</param>
         protected RoleStoreBase(
             IRepository<TRole, TRoleKey> roleRepository,
-            IRepository<TRoleClaim, int> roleClaimRepository)
+            IRepository<TRoleClaim, TRoleClaimKey> roleClaimRepository)
         {
             _roleRepository = roleRepository;
             _roleClaimRepository = roleClaimRepository;

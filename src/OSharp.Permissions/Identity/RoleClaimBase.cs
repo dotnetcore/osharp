@@ -19,9 +19,11 @@ namespace OSharp.Identity
     /// <summary>
     /// 角色声明信息基类
     /// </summary>
+    /// <typeparam name="TKey">角色声明主键类型</typeparam>
     /// <typeparam name="TRoleKey">角色主键类型</typeparam>
-    public abstract class RoleClaimBase<TRoleKey> : EntityBase<int>
+    public abstract class RoleClaimBase<TKey, TRoleKey> : EntityBase<TKey>
         where TRoleKey : IEquatable<TRoleKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 角色编号

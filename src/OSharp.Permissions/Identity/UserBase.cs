@@ -19,9 +19,9 @@ namespace OSharp.Identity
     /// <summary>
     /// 用户信息基类
     /// </summary>
-    /// <typeparam name="TUserKey"></typeparam>
-    public abstract class UserBase<TUserKey> : EntityBase<TUserKey>, ICreatedTime, ILockable, ISoftDeletable
-        where TUserKey : IEquatable<TUserKey>
+    /// <typeparam name="TKey">用户编号类型</typeparam>
+    public abstract class UserBase<TKey> : EntityBase<TKey>, ICreatedTime, ILockable, ISoftDeletable
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 初始化一个<see cref="UserBase{TUserKey}"/>类型的新实例

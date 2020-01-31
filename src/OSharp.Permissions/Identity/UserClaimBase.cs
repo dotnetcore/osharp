@@ -20,9 +20,11 @@ namespace OSharp.Identity
     /// <summary>
     /// 用户声明基类
     /// </summary>
+    /// <typeparam name="TKey">用户声明编号类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public abstract class UserClaimBase<TUserKey> : EntityBase<int>
+    public abstract class UserClaimBase<TKey, TUserKey> : EntityBase<TKey>
         where TUserKey : IEquatable<TUserKey>
+        where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// 获取或设置 用户编号

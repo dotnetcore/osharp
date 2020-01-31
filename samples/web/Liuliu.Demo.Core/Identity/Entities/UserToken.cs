@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
 
 using OSharp.Identity;
@@ -18,7 +19,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// 实体类：用户的身份认证令牌
     /// </summary>
     [Description("用户的身份认证令牌")]
-    public class UserToken : UserTokenBase<int>
+    public class UserToken : UserTokenBase<Guid, int>
     {
         /// <summary>
         /// 获取或设置 所属用户信息

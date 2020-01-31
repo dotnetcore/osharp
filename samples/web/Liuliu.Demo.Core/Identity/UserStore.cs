@@ -21,10 +21,10 @@ namespace Liuliu.Demo.Identity
     /// <summary>
     /// 用户仓储
     /// </summary>
-    public class UserStore : UserStoreBase<User, int, UserClaim, UserLogin, UserToken, Role, int, UserRole>
+    public class UserStore : UserStoreBase<User, int, UserClaim, int, UserLogin, Guid, UserToken, Guid, Role, int, UserRole>
     {
         /// <summary>
-        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserLogin, TUserToken, TRole, TRoleKey, TUserRole}"/>类型的新实例
+        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole}"/>类型的新实例
         /// </summary>
         /// <param name="userRepository">用户仓储</param>
         /// <param name="userLoginRepository">用户登录仓储</param>
