@@ -27,7 +27,7 @@ namespace Liuliu.Demo.Security
     /// </summary>
     public class SecurityManager
         : SecurityManagerBase<Function, FunctionInputDto, EntityInfo, EntityInfoInputDto,
-            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, EntityRole, EntityRoleInputDto, UserRole, Role, int, User, int>
+            Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, EntityRole, EntityRoleInputDto, UserRole, Guid, Role, int, User, int>
     {
         /// <summary>
         /// 初始化一个<see cref="SecurityManager"/>类型的新实例

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="SecurityManagerBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-14 0:53</last-date>
+//  <last-date>2020-01-31 19:12</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -17,7 +17,6 @@ using OSharp.Collections;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Exceptions;
@@ -26,7 +25,6 @@ using OSharp.Filter;
 using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security.Events;
-using OSharp.Security;
 
 
 namespace OSharp.Security
@@ -47,12 +45,13 @@ namespace OSharp.Security
     /// <typeparam name="TEntityRole">实体角色类型</typeparam>
     /// <typeparam name="TEntityRoleInputDto">实体角色输入DTO类型</typeparam>
     /// <typeparam name="TUserRole">用户角色类型</typeparam>
+    /// <typeparam name="TUserRoleKey">用户角色编号类型</typeparam>
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     public abstract class SecurityManagerBase<TFunction, TFunctionInputDto, TEntityInfo, TEntityInfoInputDto, TModule, TModuleInputDto, TModuleKey,
-            TModuleFunction, TModuleRole, TModuleUser, TEntityRole, TEntityRoleInputDto, TUserRole, TRole, TRoleKey, TUser, TUserKey>
+            TModuleFunction, TModuleRole, TModuleUser, TEntityRole, TEntityRoleInputDto, TUserRole, TUserRoleKey, TRole, TRoleKey, TUser, TUserKey>
         : IFunctionStore<TFunction, TFunctionInputDto>,
           IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>,
           IModuleStore<TModule, TModuleInputDto, TModuleKey>,
@@ -72,7 +71,8 @@ namespace OSharp.Security
         where TModuleKey : struct, IEquatable<TModuleKey>
         where TEntityRole : EntityRoleBase<TRoleKey>
         where TEntityRoleInputDto : EntityRoleInputDtoBase<TRoleKey>
-        where TUserRole : UserRoleBase<TUserKey, TRoleKey>
+        where TUserRole : UserRoleBase<TUserRoleKey, TUserKey, TRoleKey>
+        where TUserRoleKey : IEquatable<TUserRoleKey>
         where TRole : RoleBase<TRoleKey>
         where TUser : UserBase<TUserKey>
         where TRoleKey : IEquatable<TRoleKey>
@@ -88,7 +88,7 @@ namespace OSharp.Security
         private readonly IRepository<TEntityRole, Guid> _entityRoleRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUser, TUserKey> _userRepository;
-        private readonly IRepository<TUserRole, Guid> _userRoleRepository;
+        private readonly IRepository<TUserRole, TUserRoleKey> _userRoleRepository;
 
         /// <summary>
         /// 初始化一个 SecurityManager 类型的新实例
@@ -113,7 +113,7 @@ namespace OSharp.Security
             IRepository<TModuleRole, Guid> moduleRoleRepository,
             IRepository<TModuleUser, Guid> moduleUserRepository,
             IRepository<TEntityRole, Guid> entityRoleRepository,
-            IRepository<TUserRole, Guid> userRoleRepository,
+            IRepository<TUserRole, TUserRoleKey> userRoleRepository,
             IRepository<TRole, TRoleKey> roleRepository,
             IRepository<TUser, TUserKey> userRepository
         )

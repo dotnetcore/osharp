@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="RoleStoreBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-05 10:51</last-date>
+//  <last-date>2020-01-31 19:14</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -38,8 +38,8 @@ namespace OSharp.Identity
         where TRoleKey : IEquatable<TRoleKey>
         where TRoleClaimKey : IEquatable<TRoleClaimKey>
     {
-        private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TRoleClaim, TRoleClaimKey> _roleClaimRepository;
+        private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private bool _disposed;
 
         /// <summary>
@@ -75,6 +75,47 @@ namespace OSharp.Identity
 
         #endregion
 
+        /// <summary>
+        /// Converts the provided <paramref name="id"/> to a strongly typed key object.
+        /// </summary>
+        /// <param name="id">The id to convert.</param>
+        /// <returns>An instance of <typeparamref name="TRoleKey"/> representing the provided <paramref name="id"/>.</returns>
+        public virtual TRoleKey ConvertIdFromString(string id)
+        {
+            if (id == null)
+            {
+                return default(TRoleKey);
+            }
+
+            return (TRoleKey)TypeDescriptor.GetConverter(typeof(TRoleKey)).ConvertFromInvariantString(id);
+        }
+
+        /// <summary>
+        /// Converts the provided <paramref name="id"/> to its string representation.
+        /// </summary>
+        /// <param name="id">The id to convert.</param>
+        /// <returns>An <see cref="string"/> representation of the provided <paramref name="id"/>.</returns>
+        public virtual string ConvertIdToString(TRoleKey id)
+        {
+            if (id.Equals(default(TRoleKey)))
+            {
+                return null;
+            }
+
+            return id.ToString();
+        }
+
+        /// <summary>
+        /// 如果已释放，则抛出异常
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(GetType().Name);
+            }
+        }
+
         #region Implementation of IRoleStore<TRole>
 
         /// <summary>
@@ -97,6 +138,7 @@ namespace OSharp.Identity
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole}”，不能重复添加");
                 }
             }
+
             await _roleRepository.InsertAsync(role);
             return IdentityResult.Success;
         }
@@ -117,6 +159,7 @@ namespace OSharp.Identity
             {
                 return new IdentityResult().Failed($"角色“{role.Name}”是系统角色，不能更新");
             }
+
             if (role.IsDefault)
             {
                 var defaultRole = _roleRepository.Query(m => m.IsDefault, false).Select(m => new { m.Id, m.Name }).FirstOrDefault();
@@ -125,6 +168,7 @@ namespace OSharp.Identity
                     return new IdentityResult().Failed($"系统中已存在默认角色“{defaultRole.Name}”，不能重复添加");
                 }
             }
+
             await _roleRepository.UpdateAsync(role);
             return IdentityResult.Success;
         }
@@ -145,6 +189,7 @@ namespace OSharp.Identity
             {
                 return new IdentityResult().Failed($"角色“{role.Name}”是系统角色，不能删除");
             }
+
             await _roleRepository.DeleteAsync(role);
             return IdentityResult.Success;
         }
@@ -274,7 +319,8 @@ namespace OSharp.Identity
             ThrowIfDisposed();
             Check.NotNull(role, nameof(role));
 
-            IList<Claim> list = _roleClaimRepository.QueryAsNoTracking(m => m.RoleId.Equals(role.Id)).Select(n => new Claim(n.ClaimType, n.ClaimValue)).ToList();
+            IList<Claim> list = _roleClaimRepository.QueryAsNoTracking(m => m.RoleId.Equals(role.Id))
+                .Select(n => new Claim(n.ClaimType, n.ClaimValue)).ToList();
             return Task.FromResult(list);
         }
 
@@ -314,44 +360,5 @@ namespace OSharp.Identity
         }
 
         #endregion
-
-        /// <summary>
-        /// Converts the provided <paramref name="id"/> to a strongly typed key object.
-        /// </summary>
-        /// <param name="id">The id to convert.</param>
-        /// <returns>An instance of <typeparamref name="TRoleKey"/> representing the provided <paramref name="id"/>.</returns>
-        public virtual TRoleKey ConvertIdFromString(string id)
-        {
-            if (id == null)
-            {
-                return default(TRoleKey);
-            }
-            return (TRoleKey)TypeDescriptor.GetConverter(typeof(TRoleKey)).ConvertFromInvariantString(id);
-        }
-
-        /// <summary>
-        /// Converts the provided <paramref name="id"/> to its string representation.
-        /// </summary>
-        /// <param name="id">The id to convert.</param>
-        /// <returns>An <see cref="string"/> representation of the provided <paramref name="id"/>.</returns>
-        public virtual string ConvertIdToString(TRoleKey id)
-        {
-            if (id.Equals(default(TRoleKey)))
-            {
-                return null;
-            }
-            return id.ToString();
-        }
-
-        /// <summary>
-        /// 如果已释放，则抛出异常
-        /// </summary>
-        protected void ThrowIfDisposed()
-        {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException(GetType().Name);
-            }
-        }
     }
 }

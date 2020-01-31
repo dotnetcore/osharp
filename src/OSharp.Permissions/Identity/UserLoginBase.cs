@@ -1,15 +1,16 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="UserLoginBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-05 12:02</last-date>
+//  <last-date>2020-01-31 19:16</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Entity;
 using System;
 using System.ComponentModel;
+
+using OSharp.Entity;
 
 
 namespace OSharp.Identity
@@ -48,15 +49,15 @@ namespace OSharp.Identity
         public string Avatar { get; set; }
 
         /// <summary>
-        /// 获取或设置 创建时间
-        /// </summary>
-        [DisplayName("创建时间")]
-        public DateTime CreatedTime { get; set; }
-
-        /// <summary>
         /// 获取或设置 所属用户编号
         /// </summary>
         [DisplayName("用户编号")]
         public TUserKey UserId { get; set; }
+
+        /// <summary>
+        /// 获取或设置 创建时间
+        /// </summary>
+        [DisplayName("创建时间")]
+        public DateTime CreatedTime { get; set; }
     }
 }

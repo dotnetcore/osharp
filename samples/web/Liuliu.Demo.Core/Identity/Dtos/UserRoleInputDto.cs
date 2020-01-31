@@ -7,6 +7,8 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Liuliu.Demo.Identity.Entities;
 
 using OSharp.Identity;
@@ -19,6 +21,6 @@ namespace Liuliu.Demo.Identity.Dtos
     /// 输入DTO：用户角色信息
     /// </summary>
     [MapTo(typeof(UserRole))]
-    public class UserRoleInputDto : UserRoleInputDtoBase<int, int>
+    public class UserRoleInputDto : UserRoleInputDtoBase<Guid, int, int>
     { }
 }

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="UserStoreBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-05 10:40</last-date>
+//  <last-date>2020-01-31 19:21</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Identity;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.EventBuses;
-using OSharp.Extensions;
 using OSharp.Identity.Events;
 
 
@@ -40,7 +39,8 @@ namespace OSharp.Identity
     /// <typeparam name="TRole">角色类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
     /// <typeparam name="TUserRole">用户角色类型</typeparam>
-    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole>
+    /// <typeparam name="TUserRoleKey">用户角色编号类型</typeparam>
+    public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey>
         : IQueryableUserStore<TUser>,
           IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
@@ -55,28 +55,29 @@ namespace OSharp.Identity
           IUserTwoFactorRecoveryCodeStore<TUser>,
           IUserRoleStore<TUser>
         where TUser : UserBase<TUserKey>
-        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>, new()
-        where TUserLogin : UserLoginBase<TUserLoginKey, TUserKey>, new()
-        where TUserToken : UserTokenBase<TUserTokenKey, TUserKey>, new()
-        where TRole : RoleBase<TRoleKey>
-        where TUserRole : UserRoleBase<TUserKey, TRoleKey>, new()
         where TUserKey : IEquatable<TUserKey>
-        where TRoleKey : IEquatable<TRoleKey>
+        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>, new()
         where TUserClaimKey : IEquatable<TUserClaimKey>
+        where TUserLogin : UserLoginBase<TUserLoginKey, TUserKey>, new()
         where TUserLoginKey : IEquatable<TUserLoginKey>
+        where TUserToken : UserTokenBase<TUserTokenKey, TUserKey>, new()
         where TUserTokenKey : IEquatable<TUserTokenKey>
+        where TRole : RoleBase<TRoleKey>
+        where TRoleKey : IEquatable<TRoleKey>
+        where TUserRole : UserRoleBase<TUserRoleKey, TUserKey, TRoleKey>, new()
+        where TUserRoleKey : IEquatable<TUserRoleKey>
     {
         private readonly IRepository<TUser, TUserKey> _userRepository;
         private readonly IRepository<TUserLogin, TUserLoginKey> _userLoginRepository;
         private readonly IRepository<TUserClaim, TUserClaimKey> _userClaimRepository;
         private readonly IRepository<TUserToken, TUserTokenKey> _userTokenRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
-        private readonly IRepository<TUserRole, Guid> _userRoleRepository;
+        private readonly IRepository<TUserRole, TUserRoleKey> _userRoleRepository;
         private readonly IEventBus _eventBus;
         private bool _disposed;
 
         /// <summary>
-        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole}"/>类型的新实例
+        /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey}"/>类型的新实例
         /// </summary>
         /// <param name="userRepository">用户仓储</param>
         /// <param name="userLoginRepository">用户登录仓储</param>
@@ -91,7 +92,7 @@ namespace OSharp.Identity
             IRepository<TUserClaim, TUserClaimKey> userClaimRepository,
             IRepository<TUserToken, TUserTokenKey> userTokenRepository,
             IRepository<TRole, TRoleKey> roleRepository,
-            IRepository<TUserRole, Guid> userRoleRepository,
+            IRepository<TUserRole, TUserRoleKey> userRoleRepository,
             IEventBus eventBus
         )
         {
