@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+﻿using OSharp.Reflection;
+// -----------------------------------------------------------------------
 //  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
@@ -145,6 +146,18 @@ namespace OSharp.Reflection.Tests
             Assert.Equal("bool", typeof(Boolean).DisplayName());
             Assert.Equal("System.Collections.Generic.List<>", typeof(List<>).DisplayName());
             Assert.Equal("OSharp.Reflection.Tests.TypeExtensionsTests", typeof(TypeExtensionsTests).DisplayName());
+        }
+
+        [Fact()]
+        public void IsVirtualTest()
+        {
+            Type type = typeof(TestEntity);
+            PropertyInfo property = type.GetProperty("Id");
+            Assert.False(property.IsVirtual());
+            property = type.GetProperty("AddDate");
+            Assert.False(property.IsVirtual());
+            property = type.GetProperty("TestEntities");
+            Assert.True(property.IsVirtual());
         }
     }
 }

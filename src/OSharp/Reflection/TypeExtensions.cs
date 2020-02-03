@@ -260,6 +260,20 @@ namespace OSharp.Reflection
         }
 
         /// <summary>
+        /// 返回当前属性信息是否为virtual
+        /// </summary>
+        public static bool IsVirtual(this PropertyInfo property)
+        {
+            var accessor = property.GetAccessors().FirstOrDefault();
+            if (accessor == null)
+            {
+                return false;
+            }
+
+            return accessor.IsVirtual && !accessor.IsFinal;
+        }
+
+        /// <summary>
         /// 获取类型的全名，附带所在类库
         /// </summary>
         public static string GetFullNameWithModule(this Type type)

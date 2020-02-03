@@ -45,7 +45,6 @@ namespace OSharp.AspNetCore.Routing
                 endpoints = MvcEndpoints(endpoints);
                 SignalREndpoints(endpoints);
                 OtherEndpoints(endpoints);
-                System.Diagnostics.Debug.WriteLine("app.UseEndpoints(...)");
             });
             IsEnabled = true;
         }

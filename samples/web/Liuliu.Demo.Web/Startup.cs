@@ -51,16 +51,16 @@ namespace Liuliu.Demo.Web
             else
             {
                 app.UseExceptionHandler("/#/500");
-                app.UseHsts().UseHttpsRedirection();
+                app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app
-                //.UseMiddleware<HostHttpCryptoMiddleware>()
-                //.UseMiddleware<NodeNoFoundHandlerMiddleware>()
-                .UseMiddleware<NodeExceptionHandlerMiddleware>()
-                .UseDefaultFiles()
-                .UseStaticFiles()
-                .UseOSharp();
+            //app.UseMiddleware<HostHttpCryptoMiddleware>();
+            //app.UseMiddleware<JsonNoFoundHandlerMiddleware>();
+            app.UseMiddleware<JsonExceptionHandlerMiddleware>();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseOSharp();
         }
     }
 }

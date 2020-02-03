@@ -11,11 +11,11 @@ using Xunit;
 
 namespace OSharp.AspNetCore.Tests
 {
-    public class NodeExceptionHandlerMiddlewareTests
+    public class JsonExceptionHandlerMiddlewareTests
     {
         private readonly ServiceProvider _provider;
 
-        public NodeExceptionHandlerMiddlewareTests()
+        public JsonExceptionHandlerMiddlewareTests()
         {
             IServiceCollection services = new ServiceCollection();
             services.AddLogging();
@@ -25,7 +25,7 @@ namespace OSharp.AspNetCore.Tests
         [Fact()]
         public void NodeExceptionHandlerMiddlewareTest()
         {
-            var middleware = ActivatorUtilities.CreateInstance<NodeExceptionHandlerMiddleware>(_provider,
+            var middleware = ActivatorUtilities.CreateInstance<JsonExceptionHandlerMiddleware>(_provider,
                 new RequestDelegate(c => Task.CompletedTask));
             Assert.NotNull(middleware);
         }
@@ -36,7 +36,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Headers.Add("X-Requested-With", "XMLHttpRequest");
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeExceptionHandlerMiddleware>(_provider,
+            var middleware = ActivatorUtilities.CreateInstance<JsonExceptionHandlerMiddleware>(_provider,
                 new RequestDelegate(c => throw new Exception("a exception")));
             await middleware.InvokeAsync(context);
 
@@ -50,7 +50,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeExceptionHandlerMiddleware>(_provider,
+            var middleware = ActivatorUtilities.CreateInstance<JsonExceptionHandlerMiddleware>(_provider,
                 new RequestDelegate(c => throw new Exception("a exception")));
             await middleware.InvokeAsync(context);
 
@@ -63,7 +63,7 @@ namespace OSharp.AspNetCore.Tests
         {
             HttpContext context = new DefaultHttpContext();
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeExceptionHandlerMiddleware>(_provider,
+            var middleware = ActivatorUtilities.CreateInstance<JsonExceptionHandlerMiddleware>(_provider,
                 new RequestDelegate(c => throw new Exception("a exception")));
 
             Exception ex = await Assert.ThrowsAsync<Exception>(() => middleware.InvokeAsync(context));

@@ -1,6 +1,6 @@
 {
   "name": "osharpns",
-  "version": "3.1.1-beta01",
+  "version": "3.1.1",
   "private": true,
   "scripts": {
     "analyze": "npm run color-less && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",

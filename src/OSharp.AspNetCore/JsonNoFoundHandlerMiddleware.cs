@@ -17,16 +17,16 @@ using Microsoft.AspNetCore.Http;
 namespace OSharp.AspNetCore
 {
     /// <summary>
-    /// Node前端技术404返回index.html中间件
+    /// Json前端技术404返回index.html中间件
     /// </summary>
-    public class NodeNoFoundHandlerMiddleware : IMiddleware
+    public class JsonNoFoundHandlerMiddleware : IMiddleware
     {
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// 初始化一个<see cref="NodeNoFoundHandlerMiddleware"/>类型的新实例
+        /// 初始化一个<see cref="JsonNoFoundHandlerMiddleware"/>类型的新实例
         /// </summary>
-        public NodeNoFoundHandlerMiddleware(RequestDelegate next)
+        public JsonNoFoundHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }

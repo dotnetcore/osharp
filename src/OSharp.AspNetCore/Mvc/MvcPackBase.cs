@@ -77,7 +77,6 @@ namespace OSharp.AspNetCore.Mvc
         {
 #if NETCOREAPP
             app.UseRouting();
-            System.Diagnostics.Debug.WriteLine("app.UseRouting");
             UseCors(app);
 #else   
             UseCors(app);

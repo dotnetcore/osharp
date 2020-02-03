@@ -7,10 +7,10 @@ import { SettingsService } from '@delon/theme';
   styleUrls: ['./passport.component.less'],
 })
 export class LayoutPassportComponent {
-  constructor(private settings: SettingsService) { }
+  constructor(private settings: SettingsService) {}
 
-  get version() {
-    return this.settings.app.version;
+  get app() {
+    return this.settings.app;
   }
 
   links = [

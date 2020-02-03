@@ -8,7 +8,7 @@ using Xunit;
 
 namespace OSharp.AspNetCore.Tests
 {
-    public class NodeNoFoundHandlerMiddlewareTests
+    public class JsonNoFoundHandlerMiddlewareTests
     {
         [Fact()]
         public async Task InvokeAsyncTest1()
@@ -16,7 +16,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/foo");
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;
@@ -33,7 +33,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/foo.html");
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;
@@ -51,7 +51,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/api/foo");
 
-            var middleware = ActivatorUtilities.CreateInstance<NodeNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;

@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 using OSharp.Entity;
@@ -35,5 +36,7 @@ namespace OSharp.UnitTest.Infrastructure
 
         [Description("是否删除")]
         public bool IsDeleted { get; set; }
+
+        public virtual ICollection<TestEntity> TestEntities { get; set; }
     }
 }

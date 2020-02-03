@@ -21,20 +21,20 @@ using OSharp.Json;
 namespace OSharp.AspNetCore
 {
     /// <summary>
-    /// Node技术异常处理中间件
+    /// Json技术异常处理中间件
     /// </summary>
-    public class NodeExceptionHandlerMiddleware : IMiddleware
+    public class JsonExceptionHandlerMiddleware : IMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<NodeExceptionHandlerMiddleware> _logger;
+        private readonly ILogger<JsonExceptionHandlerMiddleware> _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="NodeExceptionHandlerMiddleware"/>类型的新实例
+        /// 初始化一个<see cref="JsonExceptionHandlerMiddleware"/>类型的新实例
         /// </summary>
-        public NodeExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public JsonExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = loggerFactory.CreateLogger<NodeExceptionHandlerMiddleware>();
+            _logger = loggerFactory.CreateLogger<JsonExceptionHandlerMiddleware>();
         }
 
         /// <summary>

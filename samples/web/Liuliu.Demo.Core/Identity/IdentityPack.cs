@@ -215,7 +215,6 @@ namespace Liuliu.Demo.Identity
             app.UseAuthentication();
 #if NETCOREAPP
             app.UseAuthorization();
-            System.Diagnostics.Debug.WriteLine("app.UseAuthorization()");
 #endif
 
             IsEnabled = true;
