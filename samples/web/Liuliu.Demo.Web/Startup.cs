@@ -18,10 +18,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Http;
-using OSharp.Core.Builders;
-using OSharp.Core.Options;
-using OSharp.Entity;
 
 
 namespace Liuliu.Demo.Web
@@ -37,10 +33,8 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 #if !NETCOREAPP2_2
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
-
 #else
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-
 #endif
         {
             if (env.IsDevelopment())

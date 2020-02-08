@@ -1,4 +1,5 @@
-<nz-modal #modal [(nzVisible)]="visible" [nzTitle]="title" [nzClosable]="false" [nzContent]="content" [nzFooter]="footer" [nzBodyStyle]="{'max-height':'600px', 'overflow-y': 'auto'}">
+<nz-modal #modal [(nzVisible)]="visible" [nzTitle]="title" [nzClosable]="false" [nzContent]="content" [nzFooter]="footer"
+  [nzBodyStyle]="{'max-height':'600px', 'overflow-y': 'auto'}">
   <ng-template #footer>
     <button nz-button type="button" (click)="close()">关闭</button>
     <button nz-button type="button" (click)="reset()">重置</button>
@@ -45,7 +46,7 @@
               </ng-container>
               <ng-container *ngSwitchCase="'date'">
                 <div style="width:200px;">
-                  <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="yyyy-MM-dd HH:mm" nzPlaceHolder="选择时间" nzSize="small"></nz-date-picker>
+                  <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="YYYY/MM/DD HH:mm" nzPlaceHolder="选择时间" nzSize="small"></nz-date-picker>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'boolean'">

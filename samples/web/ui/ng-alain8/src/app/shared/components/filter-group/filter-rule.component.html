@@ -40,7 +40,7 @@
         <ng-template #NotNumber>
           <!--时间类型-->
           <ng-container *ngIf="property.TypeName=='System.DateTime'; else NotDateTime">
-            <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="yyyy-MM-dd HH:mm" nzPlaceHolder="Select Time" nzSize="small"></nz-date-picker>
+            <nz-date-picker nzShowTime [(ngModel)]="rule.Value" nzFormat="YYYY/MM/DD HH:mm" nzPlaceHolder="选择时间" nzSize="small"></nz-date-picker>
           </ng-container>
           <ng-template #NotDateTime>
             <!--其他类型，使用字符串-->

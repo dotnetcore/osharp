@@ -387,6 +387,7 @@ namespace OSharp.Filter
             //}
             if (rule.Value?.ToString() == UserFlagAttribute.Token)
             {
+                // todo: 将UserFlag之类的功能提升为接口进行服务注册，好方便实现自定义XXXFlag
                 if (rule.Operate != FilterOperate.Equal)
                 {
                     throw new OsharpException($"当前用户“{rule.Value}”只能用在“{FilterOperate.Equal.ToDescription()}”操作中");
