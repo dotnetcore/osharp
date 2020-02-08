@@ -20,17 +20,6 @@ namespace OSharp.AspNetCore
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-#if NETSTANDARD
-        /// <summary>
-        /// 获取<see cref="IHostingEnvironment"/>环境信息
-        /// </summary>
-        public static IHostingEnvironment GetHostingEnvironment(this IServiceCollection services)
-        {
-            return services.GetSingletonInstance<IHostingEnvironment>();
-        }
-#endif
-
-#if NETCOREAPP
         /// <summary>
         /// 获取<see cref="IHostingEnvironment"/>环境信息
         /// </summary>
@@ -38,7 +27,5 @@ namespace OSharp.AspNetCore
         {
             return services.GetSingletonInstance<IWebHostEnvironment>();
         }
-#endif
-
     }
 }

@@ -54,8 +54,6 @@ namespace Microsoft.AspNetCore.Builder
             });
         }
 
-#if NETCOREAPP
-
         /// <summary>
         /// 添加Endpoint并Area路由支持
         /// </summary>
@@ -69,7 +67,5 @@ namespace Microsoft.AspNetCore.Builder
             endpoints.MapDefaultControllerRoute();
             return endpoints;
         }
-
-#endif
     }
 }

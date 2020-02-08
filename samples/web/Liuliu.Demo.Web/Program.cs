@@ -16,8 +16,6 @@ namespace Liuliu.Demo.Web
 {
     public class Program
     {
-
-#if !NETCOREAPP2_2
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -29,16 +27,5 @@ namespace Liuliu.Demo.Web
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-#else
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-#endif
-
     }
 }

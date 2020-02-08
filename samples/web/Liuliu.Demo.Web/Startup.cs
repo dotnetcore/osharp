@@ -12,9 +12,7 @@ using Liuliu.Demo.Web.Startups;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-#if !NETCOREAPP2_2
 using Microsoft.Extensions.Hosting;
-#endif
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
@@ -31,11 +29,7 @@ namespace Liuliu.Demo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-#if !NETCOREAPP2_2
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
-#else
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-#endif
         {
             if (env.IsDevelopment())
             {

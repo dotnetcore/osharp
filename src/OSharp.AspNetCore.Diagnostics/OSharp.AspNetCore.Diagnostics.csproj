@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>OSharpNS.AspNetCore.Diagnostics</PackageId>
     <Summary>OSharp AspNetCore性能诊断组件</Summary>
     <Description>OSharp AspNetCore性能诊断组件，提供AspNetCore性能诊断功能的封装</Description>
@@ -12,33 +12,12 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\OSharp.AspNetCore.Diagnostics.xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.SignalR" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqLite" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.System" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.0.0" />

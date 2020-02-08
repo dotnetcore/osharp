@@ -7,8 +7,6 @@
 //  <last-date>2018-12-31 17:36</last-date>
 // -----------------------------------------------------------------------
 
-#if NETCOREAPP2_2
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,5 +84,3 @@ namespace Liuliu.Demo.Web.Hangfire
         }
     }
 }
-
-#endif

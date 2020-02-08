@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>OSharpNS.MiniProfiler</PackageId>
     <Summary>OSharp MiniProfiler 性能监测组件</Summary>
     <Description>OSharp MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>

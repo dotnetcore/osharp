@@ -4,31 +4,19 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>OSharpNS.Permissions</PackageId>
     <Summary>OSharp 核心组件</Summary>
     <Description>OSharp 权限组件，包含用户认证与权限验证的基础实现</Description>
     <RootNamespace>OSharp</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\OSharp.Permissions.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[2.2.0, 3.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="[2.2.0, 3.0)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.1" />
   </ItemGroup>

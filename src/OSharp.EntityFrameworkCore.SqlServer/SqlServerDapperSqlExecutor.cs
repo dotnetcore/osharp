@@ -8,10 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System.Data;
-using System.Data.SqlClient;
-#if NETSTANDARD2_1
 using Microsoft.Data.SqlClient;
-#endif
 
 
 namespace OSharp.Entity.SqlServer

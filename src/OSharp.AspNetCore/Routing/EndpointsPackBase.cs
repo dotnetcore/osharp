@@ -7,7 +7,6 @@
 //  <last-date>2019-09-29 12:43</last-date>
 // -----------------------------------------------------------------------
 
-#if NETCOREAPP
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -81,4 +80,3 @@ namespace OSharp.AspNetCore.Routing
 
     }
 }
-#endif

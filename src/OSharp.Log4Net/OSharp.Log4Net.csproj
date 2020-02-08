@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>OSharpNS.Log4Net</PackageId>
     <Summary>OSharp Log4Net组件</Summary>
     <Description>OSharp Log4Net组件，封装使用log4net组件来实现框架的日志输出功能</Description>

@@ -12,9 +12,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
-#if NETSTANDARD
-using Microsoft.AspNetCore.Http.Internal;
-#endif
 using OSharp.Extensions;
 
 
@@ -30,9 +27,6 @@ namespace OSharp.AspNetCore.Http
         /// </summary>
         public static Task<string> ReadAsStringAsync(this HttpRequest request)
         {
-#if NETSTANDARD
-            request.EnableRewind();
-#endif
             Stream original = request.Body;
             using (StreamReader reader = new StreamReader(request.Body))
             {

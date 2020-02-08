@@ -42,7 +42,6 @@ namespace Liuliu.Demo.Web.Controllers
     public class CommonController : ApiController
     {
         private readonly IVerifyCodeService _verifyCodeService;
-#if !NETCOREAPP2_2
         private readonly IWebHostEnvironment _environment;
 
         public CommonController(
@@ -52,18 +51,6 @@ namespace Liuliu.Demo.Web.Controllers
             _verifyCodeService = verifyCodeService;
             _environment = environment;
         }
-#else
-        private readonly IHostingEnvironment _environment;
-
-        public CommonController(
-            IVerifyCodeService verifyCodeService,
-            IHostingEnvironment environment)
-        {
-            _verifyCodeService = verifyCodeService;
-            _environment = environment;
-        }
-#endif
-
 
         /// <summary>
         /// 获取验证码图片

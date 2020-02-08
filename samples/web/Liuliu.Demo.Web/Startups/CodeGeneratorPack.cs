@@ -12,9 +12,7 @@ using System.ComponentModel;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-#if !NETCOREAPP2_2
 using Microsoft.Extensions.Hosting;
-#endif
 
 using OSharp.AspNetCore;
 using OSharp.CodeGenerator;
@@ -47,11 +45,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-#if !NETCOREAPP2_2
             if (services.GetWebHostEnvironment().IsDevelopment())
-#else
-            if (services.GetHostingEnvironment().IsDevelopment())
-#endif
             {
                 services.AddSingleton<ITypeMetadataHandler, TypeMetadataHandler>();
             }
@@ -65,11 +59,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
-#if !NETCOREAPP2_2
             IWebHostEnvironment environment = provider.GetService<IWebHostEnvironment>();
-#else
-            IHostingEnvironment environment = provider.GetService<IHostingEnvironment>();
-#endif
             if (environment.IsDevelopment())
             {
                 IsEnabled = true;

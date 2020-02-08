@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>OSharpNS.Hangfire</PackageId>
     <Summary>OSharp Hangfire 后台任务组件</Summary>
     <Description>OSharp Hangfire 后台任务组件，封装基于Hangfire后台任务的服务端实现</Description>
@@ -12,13 +12,13 @@
     <AssemblyName>OSharp.Hangfire</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\OSharp.Hangfire.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.7.7" />
+    <PackageReference Include="Hangfire" Version="1.7.9" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
   </ItemGroup>
 
