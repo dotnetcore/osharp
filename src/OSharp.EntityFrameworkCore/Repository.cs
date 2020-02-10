@@ -18,14 +18,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
+using OSharp.Identity;
 using OSharp.Mapping;
 using OSharp.Security;
-using OSharp.Security.Claims;
 using OSharp.Threading;
 
 using Z.EntityFramework.Plus;

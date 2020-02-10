@@ -11,11 +11,11 @@ using System;
 
 using Liuliu.Demo.Security.Entities;
 
+using OSharp.Authorization;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
-using OSharp.Security;
 
 
 namespace Liuliu.Demo.Security.Dtos

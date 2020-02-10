@@ -14,12 +14,12 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Authorization;
 using OSharp.Caching;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Identity;
-using OSharp.Security;
 
 
 namespace OSharp.Security

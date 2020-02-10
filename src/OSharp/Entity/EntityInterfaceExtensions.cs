@@ -11,8 +11,8 @@ using System;
 using System.Security.Principal;
 
 using OSharp.Data;
+using OSharp.Identity;
 using OSharp.Reflection;
-using OSharp.Security.Claims;
 
 
 namespace OSharp.Entity

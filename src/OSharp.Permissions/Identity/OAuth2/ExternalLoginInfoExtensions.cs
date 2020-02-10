@@ -11,8 +11,6 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Identity;
 
-using OSharp.Security.Claims;
-
 
 namespace OSharp.Identity.OAuth2
 {

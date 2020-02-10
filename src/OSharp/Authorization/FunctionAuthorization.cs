@@ -7,10 +7,7 @@
 //  <last-date>2018-05-11 1:05</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core.Functions;
-
-
-namespace OSharp.Security
+namespace OSharp.Authorization
 {
     /// <summary>
     /// 功能权限验证类

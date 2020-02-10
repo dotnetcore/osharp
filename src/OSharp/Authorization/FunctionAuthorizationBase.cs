@@ -14,10 +14,10 @@ using System.Security.Principal;
 
 using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Security.Claims;
+using OSharp.Identity;
 
 
-namespace OSharp.Security
+namespace OSharp.Authorization
 {
     /// <summary>
     /// 功能权限检查基类

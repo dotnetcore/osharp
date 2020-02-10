@@ -12,12 +12,12 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.Authorization;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
-using OSharp.Security;
 
 
 namespace OSharp.Security

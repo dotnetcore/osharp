@@ -7,11 +7,8 @@
 //  <last-date>2018-07-05 4:28</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using OSharp.Dependency;
+using OSharp.Authorization;
 using OSharp.EventBuses;
-using OSharp.Security;
 
 
 namespace OSharp.Security.Events

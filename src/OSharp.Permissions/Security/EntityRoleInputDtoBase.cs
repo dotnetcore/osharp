@@ -10,10 +10,10 @@
 using System;
 using System.ComponentModel;
 
+using OSharp.Authorization;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace OSharp.Security

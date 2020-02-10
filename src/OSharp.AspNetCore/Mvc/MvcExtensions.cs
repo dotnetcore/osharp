@@ -16,11 +16,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Authorization;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
-using OSharp.Security;
 
 
 namespace OSharp.AspNetCore.Mvc

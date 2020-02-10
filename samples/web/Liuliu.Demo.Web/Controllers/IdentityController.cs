@@ -8,11 +8,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Liuliu.Demo.Identity;
@@ -41,7 +39,6 @@ using OSharp.Identity.OAuth2;
 using OSharp.Json;
 using OSharp.Mapping;
 using OSharp.Net;
-using OSharp.Security.Claims;
 
 
 namespace Liuliu.Demo.Web.Controllers

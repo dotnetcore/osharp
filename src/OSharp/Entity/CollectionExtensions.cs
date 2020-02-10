@@ -11,13 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Mapping;
 using OSharp.Reflection;
-using OSharp.Security;
 
 
 namespace OSharp.Entity

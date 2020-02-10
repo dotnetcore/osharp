@@ -11,10 +11,10 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using OSharp.Authorization;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace OSharp.Security

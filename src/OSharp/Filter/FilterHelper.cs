@@ -13,16 +13,18 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
+
+using OSharp.Authorization;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
+using OSharp.Identity;
 using OSharp.Linq;
 using OSharp.Properties;
 using OSharp.Reflection;
 using OSharp.Security;
-using OSharp.Security.Claims;
 
 
 namespace OSharp.Filter

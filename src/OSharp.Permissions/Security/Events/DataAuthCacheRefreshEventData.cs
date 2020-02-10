@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 
+using OSharp.Authorization;
 using OSharp.EventBuses;
 using OSharp.Security;
 

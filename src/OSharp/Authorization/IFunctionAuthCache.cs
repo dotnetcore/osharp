@@ -10,7 +10,7 @@
 using System;
 
 
-namespace OSharp.Security
+namespace OSharp.Authorization
 {
     /// <summary>
     /// 定义功能权限缓存的功能

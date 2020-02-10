@@ -10,7 +10,7 @@
 using OSharp.Filter;
 
 
-namespace OSharp.Security
+namespace OSharp.Authorization
 {
     /// <summary>
     /// 定义数据权限缓存的功能

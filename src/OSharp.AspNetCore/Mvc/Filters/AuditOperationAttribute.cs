@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Audits;
+using OSharp.Authorization;
 using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
-using OSharp.Security;
-using OSharp.Security.Claims;
+using OSharp.Identity;
 
 
 namespace OSharp.AspNetCore.Mvc.Filters

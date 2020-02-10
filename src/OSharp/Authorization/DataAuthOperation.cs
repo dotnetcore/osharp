@@ -10,7 +10,7 @@
 using System.ComponentModel;
 
 
-namespace OSharp.Security
+namespace OSharp.Authorization
 {
     /// <summary>
     /// 数据权限操作

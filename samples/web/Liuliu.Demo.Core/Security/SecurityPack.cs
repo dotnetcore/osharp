@@ -12,6 +12,7 @@ using System.ComponentModel;
 using Liuliu.Demo.Security.Dtos;
 using Liuliu.Demo.Security.Entities;
 
+using OSharp.Authorization;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;
 using OSharp.Security;

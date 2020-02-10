@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Core.EntityInfos;
 using OSharp.Core.Functions;

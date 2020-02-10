@@ -7,13 +7,10 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using Liuliu.Demo.Web.Startups;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 
@@ -29,7 +26,7 @@ namespace Liuliu.Demo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -40,7 +37,7 @@ namespace Liuliu.Demo.Web
             {
                 app.UseExceptionHandler("/#/500");
                 app.UseHsts();
-                app.UseHttpsRedirection();
+                //app.UseHttpsRedirection(); // 启用HTTPS
             }
 
             //app.UseMiddleware<HostHttpCryptoMiddleware>();

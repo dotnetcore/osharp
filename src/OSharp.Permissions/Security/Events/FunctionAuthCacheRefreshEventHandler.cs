@@ -12,9 +12,8 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
-using OSharp.Dependency;
+using OSharp.Authorization;
 using OSharp.EventBuses;
-using OSharp.Security;
 
 
 namespace OSharp.Security.Events

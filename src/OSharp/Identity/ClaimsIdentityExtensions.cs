@@ -16,7 +16,7 @@ using OSharp.Data;
 using OSharp.Extensions;
 
 
-namespace OSharp.Security.Claims
+namespace OSharp.Identity
 {
     /// <summary>
     /// <see cref="ClaimsIdentity"/>扩展操作类

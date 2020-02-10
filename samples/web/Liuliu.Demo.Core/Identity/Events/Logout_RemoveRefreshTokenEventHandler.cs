@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 
 using OSharp.EventBuses;
 using OSharp.Identity;
-using OSharp.Security.Claims;
 
 
 namespace Liuliu.Demo.Identity.Events

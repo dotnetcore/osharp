@@ -24,12 +24,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Authorization;
 using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
-using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
