@@ -7,7 +7,7 @@
 //  <last-date>2017-11-15 17:25</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Mapping;
 
 

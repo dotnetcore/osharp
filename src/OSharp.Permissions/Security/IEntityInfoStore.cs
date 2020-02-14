@@ -3,9 +3,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using OSharp.Authorization.EntityInfos;
 using OSharp.Data;
 using OSharp.Dependency;
-using OSharp.Core.EntityInfos;
 
 
 namespace OSharp.Security

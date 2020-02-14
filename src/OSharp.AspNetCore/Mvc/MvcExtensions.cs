@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization;
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -95,6 +95,7 @@ namespace OSharp.AspNetCore.Mvc
             string area = context.GetAreaName();
             string controller = context.GetControllerName();
             string action = context.GetActionName();
+            // todo: 当权限模块没启用时，应取消权限验证，如何判断权限模块已启用？
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {

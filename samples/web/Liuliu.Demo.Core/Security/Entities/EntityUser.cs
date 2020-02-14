@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 using Liuliu.Demo.Identity.Entities;
 
-using OSharp.Core.EntityInfos;
+using OSharp.Authorization.EntityInfos;
 using OSharp.Security;
 
 

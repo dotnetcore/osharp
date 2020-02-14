@@ -6,6 +6,9 @@
 //  <last-date>2015-07-26 15:26</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
+
 namespace OSharp.Filter
 {
     /// <summary>
@@ -87,6 +90,13 @@ namespace OSharp.Filter
                 return false;
             }
             return rule.Field == Field && rule.Value == Value && rule.Operate == Operate;
+        }
+
+        /// <summary>Serves as the default hash function.</summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Field, Value, Operate);
         }
 
         #endregion

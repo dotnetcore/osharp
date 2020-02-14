@@ -15,8 +15,8 @@ using System.Reflection;
 
 using Microsoft.Extensions.Caching.Distributed;
 
+using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Core.Functions;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;

@@ -15,8 +15,8 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Authorization.Modules;
 using OSharp.Collections;
-using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;

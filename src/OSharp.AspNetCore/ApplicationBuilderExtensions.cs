@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
+using OSharp.AspNetCore.Routing;
 using OSharp.Core.Packs;
 using OSharp.Exceptions;
 
@@ -57,7 +58,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <summary>
         /// 添加Endpoint并Area路由支持
         /// </summary>
-        public static IEndpointRouteBuilder MvcEndpointsWithAreaRoute(this IEndpointRouteBuilder endpoints, bool area = true)
+        public static IEndpointRouteBuilder MapControllersWithAreaRoute(this IEndpointRouteBuilder endpoints, bool area = true)
         {
             if (area)
             {

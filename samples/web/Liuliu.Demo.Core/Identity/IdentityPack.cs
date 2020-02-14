@@ -120,28 +120,7 @@ namespace Liuliu.Demo.Identity
                     LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
                 };
 
-                jwt.Events = new JwtBearerEvents()
-                {
-                    OnMessageReceived = context =>
-                    {
-                        // 生成SignalR的用户信息
-                        string token = context.Request.Query["access_token"];
-                        string path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(token) && path.Contains("hub"))
-                        {
-                            context.Token = token;
-                        }
-                        return Task.CompletedTask;
-                    },
-                    OnAuthenticationFailed = context =>
-                    {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            context.Response.Headers.Add("Token-Expired", "true");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
+                jwt.Events = new OsharpJwtBearerEvents();
             });
 
             // OAuth2
@@ -151,6 +130,7 @@ namespace Liuliu.Demo.Identity
             {
                 return;
             }
+            
             foreach (KeyValuePair<string, OAuth2Options> pair in dict)
             {
                 OAuth2Options value = pair.Value;

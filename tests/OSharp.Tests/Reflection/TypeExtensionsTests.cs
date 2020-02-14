@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
+using OSharp.Authorization.EntityInfos;
 using OSharp.Entity;
-using OSharp.Core.EntityInfos;
 
 using Xunit;
 

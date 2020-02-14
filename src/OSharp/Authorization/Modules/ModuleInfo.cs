@@ -1,20 +1,20 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="ModuleInfo.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 11:38</last-date>
+//  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
+using System;
 using System.Diagnostics;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Entity;
 
 
-namespace OSharp.Core.Modules
+namespace OSharp.Authorization.Modules
 {
     /// <summary>
     /// 从程序集中提取的模块信息载体，包含模块基本信息和模块依赖的功能信息集合
@@ -68,7 +68,15 @@ namespace OSharp.Core.Modules
             {
                 return false;
             }
+
             return $"{info.Position}.{info.Code}" == $"{Position}.{Code}";
+        }
+
+        /// <summary>Serves as the default hash function.</summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Position, Code);
         }
 
         #endregion

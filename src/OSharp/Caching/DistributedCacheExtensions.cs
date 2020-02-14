@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Distributed;
 
+using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;

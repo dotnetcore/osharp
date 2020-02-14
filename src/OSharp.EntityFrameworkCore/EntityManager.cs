@@ -16,9 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Authorization.EntityInfos;
+using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Reflection;

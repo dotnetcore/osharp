@@ -21,9 +21,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Authorization.EntityInfos;
+using OSharp.Authorization.Modules;
 using OSharp.Core;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;

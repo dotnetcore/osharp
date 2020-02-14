@@ -1,16 +1,16 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="ModuleInfoAttribute.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-22 23:16</last-date>
+//  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
 
-namespace OSharp.Core.Modules
+namespace OSharp.Authorization.Modules
 {
     /// <summary>
     /// 描述把当前功能(Controller或者Action)封装为一个模块(Module)节点，可以设置模块依赖的其他功能，模块的位置信息等

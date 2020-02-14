@@ -13,8 +13,8 @@ using Liuliu.Demo.Security.Dtos;
 using Liuliu.Demo.Security.Entities;
 
 using OSharp.Authorization;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Functions;
+using OSharp.Authorization.EntityInfos;
+using OSharp.Authorization.Functions;
 using OSharp.Security;
 
 

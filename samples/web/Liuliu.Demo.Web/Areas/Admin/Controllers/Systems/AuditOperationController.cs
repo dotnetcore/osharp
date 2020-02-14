@@ -17,7 +17,7 @@ using Liuliu.Demo.Systems.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
-using OSharp.Core.Modules;
+using OSharp.Authorization.Modules;
 using OSharp.Entity;
 using OSharp.Filter;
 

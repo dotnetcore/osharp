@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Authorization;
-using OSharp.Core.Modules;
+using OSharp.Authorization.Modules;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;

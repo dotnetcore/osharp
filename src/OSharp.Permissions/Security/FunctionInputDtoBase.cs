@@ -10,7 +10,7 @@
 using System;
 using System.ComponentModel;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Entity;
 
 

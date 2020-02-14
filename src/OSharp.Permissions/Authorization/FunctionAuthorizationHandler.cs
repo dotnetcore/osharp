@@ -1,45 +1,65 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="FunctionAuthorizationFilter.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="MvcFunctionAuthorizationHandler.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-05-23 10:33</last-date>
+//  <last-date>2020-02-11 14:12</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Security.Principal;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing;
 
+using OSharp.AspNetCore;
 using OSharp.AspNetCore.UI;
-using OSharp.Authorization;
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Data;
 
 
-namespace OSharp.AspNetCore.Mvc.Filters
+namespace OSharp.Authorization
 {
     /// <summary>
-    /// 功能权限授权验证
+    /// MVC功能授权处理器
     /// </summary>
-    public class FunctionAuthorizationFilter : Attribute, IAuthorizationFilter
+    public class FunctionAuthorizationHandler : AuthorizationHandler<FunctionRequirement>
     {
+        private readonly IFunctionAuthorization _functionAuthorization;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
-        /// Called early in the filter pipeline to confirm request is authorized.
+        /// 初始化一个<see cref="FunctionAuthorizationHandler"/>类型的新实例
         /// </summary>
-        /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext" />.</param>
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public FunctionAuthorizationHandler(IFunctionAuthorization functionAuthorization, IHttpContextAccessor httpContextAccessor)
         {
-            Check.NotNull(context, nameof(context));
-            IFunction function = context.GetExecuteFunction();
-            AuthorizationResult result = AuthorizeCore(context, function);
-            if (!result.IsOk)
+            _functionAuthorization = functionAuthorization;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        /// <summary>
+        /// 如果根据特定要求允许授权，则作出决定。
+        /// </summary>
+        /// <param name="context">The authorization context.</param>
+        /// <param name="requirement">The requirement to evaluate.</param>
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, FunctionRequirement requirement)
+        {
+            HttpContext httpContext = _httpContextAccessor.HttpContext;
+            if (context.Resource is RouteEndpoint endpoint)
             {
-                HandleUnauthorizedRequest(context, result);
+                IFunction function = endpoint.GetExecuteFunction(httpContext);
+                AuthorizationResult result = AuthorizeCore(context, function);
+                if (result.IsOk)
+                {
+                    context.Succeed(requirement);
+                }
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -48,12 +68,10 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// <param name="context">权限过滤器上下文</param>
         /// <param name="function">要验证的功能</param>
         /// <returns>权限验证结果</returns>
-        protected virtual AuthorizationResult AuthorizeCore(AuthorizationFilterContext context, IFunction function)
+        protected virtual AuthorizationResult AuthorizeCore(AuthorizationHandlerContext context, IFunction function)
         {
-            IPrincipal user = context.HttpContext.User;
-            IServiceProvider provider = context.HttpContext.RequestServices;
-            IFunctionAuthorization authorization = provider.GetService<IFunctionAuthorization>();
-            AuthorizationResult result = authorization.Authorize(function, user);
+            ClaimsPrincipal user = context.User;
+            AuthorizationResult result = _functionAuthorization.Authorize(function, user);
             return result;
         }
 
@@ -62,7 +80,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
         /// </summary>
         /// <param name="context">权限验证上下文</param>
         /// <param name="result">权限检查结果</param>
-        protected virtual void HandleUnauthorizedRequest(AuthorizationFilterContext context, AuthorizationResult result)
+        protected virtual void HandleMvcUnauthorizedRequest(AuthorizationFilterContext context, AuthorizationResult result)
         {
             //Json方式请求，返回AjaxResult
             bool isJsRequest = context.HttpContext.Request.IsAjaxRequest() || context.HttpContext.Request.IsJsonContextType();

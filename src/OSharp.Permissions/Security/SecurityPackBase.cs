@@ -13,9 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
+using OSharp.Authorization.EntityInfos;
+using OSharp.Authorization.Functions;
+using OSharp.Authorization.Modules;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
 

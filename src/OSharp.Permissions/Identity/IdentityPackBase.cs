@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,8 +21,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.AspNetCore;
+using OSharp.Authorization;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
+using OSharp.Systems;
 
 
 namespace OSharp.Identity
@@ -99,6 +102,7 @@ namespace OSharp.Identity
             }
 
             AddAuthentication(services);
+            AddAuthorization(services);
 
             return services;
         }
@@ -122,13 +126,6 @@ namespace OSharp.Identity
         }
 
         /// <summary>
-        /// 添加Authentication服务
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        protected virtual void AddAuthentication(IServiceCollection services)
-        { }
-
-        /// <summary>
         /// 重写以实现 AddIdentity 之后的构建逻辑
         /// </summary>
         /// <param name="builder"></param>
@@ -136,6 +133,26 @@ namespace OSharp.Identity
         protected virtual IdentityBuilder OnIdentityBuild(IdentityBuilder builder)
         {
             return builder;
+        }
+
+        /// <summary>
+        /// 添加Authentication认证服务
+        /// </summary>
+        /// <param name="services">服务集合</param>
+        protected virtual void AddAuthentication(IServiceCollection services)
+        { }
+
+        /// <summary>
+        /// 添加Authorization授权服务
+        /// </summary>
+        /// <param name="service"></param>
+        protected virtual void AddAuthorization(IServiceCollection service)
+        {
+            service.AddAuthorization(opts =>
+            {
+                opts.AddPolicy(FunctionRequirement.OsharpPolicy, policy => policy.Requirements.Add(new FunctionRequirement()));
+            });
+            service.AddSingleton<IAuthorizationHandler, FunctionAuthorizationHandler>();
         }
     }
 }

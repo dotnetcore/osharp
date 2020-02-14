@@ -9,7 +9,7 @@
 
 using System.Security.Principal;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 
 
 namespace OSharp.Authorization

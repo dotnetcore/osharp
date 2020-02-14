@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
-using OSharp.Core.Modules;
+using OSharp.Authorization.Modules;
 using OSharp.Core.Systems;
 using OSharp.Data;
 using OSharp.Exceptions;

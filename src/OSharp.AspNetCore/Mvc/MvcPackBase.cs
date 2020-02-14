@@ -43,12 +43,10 @@ namespace OSharp.AspNetCore.Mvc
             services.AddControllersWithViews(options =>
             {
                 options.Conventions.Add(new DashedRoutingConvention());
-                options.Filters.Add(new OnlineUserAuthorizationFilter()); // 构建在线用户信息
-                options.Filters.Add(new FunctionAuthorizationFilter()); // 全局功能权限过滤器
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            });
 
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);

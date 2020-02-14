@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ModuleHandlerBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="ModuleInfoPickerBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 16:25</last-date>
+//  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -15,15 +15,14 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Core.Functions;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core.Modules
+namespace OSharp.Authorization.Modules
 {
     /// <summary>
     /// 模块信息提取器基类
@@ -79,8 +78,10 @@ namespace OSharp.Core.Modules
                     {
                         info.Order = infos.Count(m => m.Position == info.Position) + 1;
                     }
+
                     infos.AddIfNotExist(info);
                 }
+
                 MethodInfo[] methods = FunctionHandler.MethodInfoFinder.Find(moduleType, type => type.HasAttribute<ModuleInfoAttribute>());
                 for (int index = 0; index < methods.Length; index++)
                 {
@@ -88,6 +89,7 @@ namespace OSharp.Core.Modules
                     infos.AddIfNotNull(methodInfo);
                 }
             }
+
             return infos.ToArray();
         }
 

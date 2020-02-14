@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Authorization;
+using OSharp.Authorization.Functions;
 using OSharp.Caching;
-using OSharp.Core.Functions;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Identity;

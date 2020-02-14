@@ -9,11 +9,12 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using OSharp.Audits;
-using OSharp.Core.Functions;
 using OSharp.Entity;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
+
+using OSharp.Authorization.Functions;
 
 
 namespace OSharp.Dependency

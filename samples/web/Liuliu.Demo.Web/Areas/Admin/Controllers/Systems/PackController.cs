@@ -18,9 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.Authorization.Functions;
+using OSharp.Authorization.Modules;
 using OSharp.Caching;
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
 using OSharp.Core.Packs;
 using OSharp.Filter;
 using OSharp.Reflection;

@@ -18,10 +18,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.Authorization;
+using OSharp.Authorization.Functions;
+using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Core;
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
 using OSharp.Entity;
 
 

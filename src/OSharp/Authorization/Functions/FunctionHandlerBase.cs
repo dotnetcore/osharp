@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="FunctionHandlerBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-14 20:11</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -23,7 +23,7 @@ using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core.Functions
+namespace OSharp.Authorization.Functions
 {
     /// <summary>
     /// 功能信息处理基类
@@ -31,8 +31,8 @@ namespace OSharp.Core.Functions
     public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
         where TFunction : class, IEntity<Guid>, IFunction, new()
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly List<TFunction> _functions = new List<TFunction>();
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionHandlerBase{TFunction}"/>类型的新实例
@@ -90,6 +90,7 @@ namespace OSharp.Core.Functions
             {
                 RefreshCache();
             }
+
             return _functions.FirstOrDefault(m =>
                 string.Equals(m.Area, area, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(m.Controller, controller, StringComparison.OrdinalIgnoreCase)
@@ -131,6 +132,7 @@ namespace OSharp.Core.Functions
                 {
                     continue;
                 }
+
                 if (!HasPickup(functions, controller))
                 {
                     functions.Add(controller);
@@ -143,6 +145,7 @@ namespace OSharp.Core.Functions
                 {
                     methods.RemoveAll(m => m.Name == overriddenMethodInfo.Name && m != overriddenMethodInfo);
                 }
+
                 foreach (MethodInfo method in methods)
                 {
                     TFunction action = GetFunction(controller, method);
@@ -150,17 +153,21 @@ namespace OSharp.Core.Functions
                     {
                         continue;
                     }
+
                     if (IsIgnoreMethod(action, method, functions))
                     {
                         continue;
                     }
+
                     if (HasPickup(functions, action))
                     {
                         continue;
                     }
+
                     functions.Add(action);
                 }
             }
+
             return functions.ToArray();
         }
 
@@ -283,25 +290,30 @@ namespace OSharp.Core.Functions
                 {
                     throw new OsharpException($"发现多个“{item.Area}-{item.Controller}-{item.Action}”的功能信息，不允许重名");
                 }
+
                 if (function == null)
                 {
                     continue;
                 }
+
                 if (!string.Equals(item.Name, function.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     item.Name = function.Name;
                     isUpdate = true;
                 }
+
                 if (item.IsAjax != function.IsAjax)
                 {
                     item.IsAjax = function.IsAjax;
                     isUpdate = true;
                 }
+
                 if (!item.IsAccessTypeChanged && item.AccessType != function.AccessType)
                 {
                     item.AccessType = function.AccessType;
                     isUpdate = true;
                 }
+
                 if (isUpdate)
                 {
                     repository.Update(item);
@@ -309,6 +321,7 @@ namespace OSharp.Core.Functions
                     Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
                 }
             }
+
             repository.UnitOfWork.Commit();
             if (removeCount + addCount + updateCount > 0)
             {
@@ -319,20 +332,25 @@ namespace OSharp.Core.Functions
                     {
                         Logger.LogDebug($"新增功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
                     }
+
                     msg += "，添加功能信息 " + addCount + " 个";
                 }
+
                 if (updateCount > 0)
                 {
                     msg += "，更新功能信息 " + updateCount + " 个";
                 }
+
                 if (removeCount > 0)
                 {
                     foreach (TFunction function in removeItems)
                     {
                         Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
                     }
+
                     msg += "，移除功能信息 " + removeCount + " 个";
                 }
+
                 Logger.LogInformation(msg);
             }
         }
@@ -348,8 +366,8 @@ namespace OSharp.Core.Functions
             {
                 return new TFunction[0];
             }
+
             return repository.QueryAsNoTracking(null, false).ToArray();
         }
-
     }
 }

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Entity;
 using OSharp.Filter;
 

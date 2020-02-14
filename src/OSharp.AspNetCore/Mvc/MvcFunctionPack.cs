@@ -14,8 +14,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
+using OSharp.Authorization.Functions;
+using OSharp.Authorization.Modules;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
 

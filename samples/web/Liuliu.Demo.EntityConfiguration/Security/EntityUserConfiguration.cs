@@ -15,7 +15,7 @@ using Liuliu.Demo.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Core.EntityInfos;
+using OSharp.Authorization.EntityInfos;
 using OSharp.Entity;
 
 

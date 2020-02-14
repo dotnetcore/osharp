@@ -12,7 +12,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 

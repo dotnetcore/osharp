@@ -1,22 +1,20 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="FunctionBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-14 20:06</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 
 using OSharp.Entity;
-using OSharp.Extensions;
 
 
-namespace OSharp.Core.Functions
+namespace OSharp.Authorization.Functions
 {
     /// <summary>
     /// 功能信息基类

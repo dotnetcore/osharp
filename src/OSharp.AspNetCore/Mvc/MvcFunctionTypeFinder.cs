@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Finders;
 using OSharp.Reflection;
 

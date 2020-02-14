@@ -1,16 +1,16 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="EntityProperty.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-04 4:34</last-date>
+//  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
 using System.Collections.Generic;
 
 
-namespace OSharp.Core.EntityInfos
+namespace OSharp.Authorization.EntityInfos
 {
     /// <summary>
     /// 实体属性信息

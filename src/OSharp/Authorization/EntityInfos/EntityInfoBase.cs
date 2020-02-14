@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="EntityInfoBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor></last-editor>
-//  <last-date>2017-09-14 15:28</last-date>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -21,7 +21,7 @@ using OSharp.Json;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core.EntityInfos
+namespace OSharp.Authorization.EntityInfos
 {
     /// <summary>
     /// 实体信息基类
@@ -64,6 +64,7 @@ namespace OSharp.Core.EntityInfos
                 {
                     return new EntityProperty[0];
                 }
+
                 return PropertyJson.FromJsonString<EntityProperty[]>();
             }
         }

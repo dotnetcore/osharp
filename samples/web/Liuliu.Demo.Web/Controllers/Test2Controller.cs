@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyModel;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.Authorization.Modules;
 using OSharp.Collections;
-using OSharp.Core.Modules;
 using OSharp.Core.Options;
 using OSharp.Entity;
 

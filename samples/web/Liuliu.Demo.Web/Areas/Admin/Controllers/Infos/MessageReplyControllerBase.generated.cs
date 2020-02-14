@@ -27,8 +27,6 @@ using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Caching;
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
@@ -37,6 +35,8 @@ using OSharp.Security;
 using Liuliu.Demo.Infos;
 using Liuliu.Demo.Infos.Dtos;
 using Liuliu.Demo.Infos.Entities;
+
+using OSharp.Authorization.Modules;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers

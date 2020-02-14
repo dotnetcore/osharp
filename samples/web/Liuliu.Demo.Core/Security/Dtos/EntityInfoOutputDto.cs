@@ -9,7 +9,7 @@
 
 using System;
 
-using OSharp.Core.EntityInfos;
+using OSharp.Authorization.EntityInfos;
 using OSharp.Entity;
 using OSharp.Mapping;
 

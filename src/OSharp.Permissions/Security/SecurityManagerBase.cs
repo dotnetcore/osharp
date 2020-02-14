@@ -14,9 +14,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using OSharp.Authorization;
+using OSharp.Authorization.EntityInfos;
+using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Core.EntityInfos;
-using OSharp.Core.Functions;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.EventBuses;

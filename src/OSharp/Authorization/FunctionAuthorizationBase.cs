@@ -12,7 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
-using OSharp.Core.Functions;
+using OSharp.Authorization.Functions;
 using OSharp.Data;
 using OSharp.Identity;
 

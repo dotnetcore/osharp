@@ -21,9 +21,9 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
+using OSharp.Authorization.Functions;
+using OSharp.Authorization.Modules;
 using OSharp.Collections;
-using OSharp.Core.Functions;
-using OSharp.Core.Modules;
 
 
 namespace Liuliu.Demo.Web.Controllers

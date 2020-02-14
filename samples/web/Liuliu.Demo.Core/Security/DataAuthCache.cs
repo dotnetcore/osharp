@@ -12,7 +12,7 @@ using System;
 using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.Security.Entities;
 
-using OSharp.Core.EntityInfos;
+using OSharp.Authorization.EntityInfos;
 using OSharp.Security;
 
 

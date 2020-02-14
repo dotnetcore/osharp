@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="EntityInfoHandlerBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-09-15 20:53</last-date>
+//  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -21,7 +21,7 @@ using OSharp.Entity;
 using OSharp.Reflection;
 
 
-namespace OSharp.Core.EntityInfos
+namespace OSharp.Authorization.EntityInfos
 {
     /// <summary>
     /// 实体信息处理基类
@@ -31,10 +31,10 @@ namespace OSharp.Core.EntityInfos
     public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : IEntityInfoHandler
         where TEntityInfo : class, IEntityInfo, new()
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
         private readonly IEntityTypeFinder _entityTypeFinder;
         private readonly ILogger _logger;
-        private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
@@ -59,6 +59,7 @@ namespace OSharp.Core.EntityInfos
                 {
                     continue;
                 }
+
                 TEntityInfo entityInfo = new TEntityInfo();
                 entityInfo.FromType(entityType);
                 _entityInfos.Add(entityInfo);
@@ -84,16 +85,19 @@ namespace OSharp.Core.EntityInfos
             {
                 RefreshCache();
             }
+
             string typeName = type.GetFullNameWithModule();
             IEntityInfo entityInfo = _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
             if (entityInfo != null)
             {
                 return entityInfo;
             }
+
             if (type.BaseType == null)
             {
                 return null;
             }
+
             typeName = type.BaseType.GetFullNameWithModule();
             return _entityInfos.FirstOrDefault(m => m.TypeName == typeName);
         }
@@ -164,22 +168,26 @@ namespace OSharp.Core.EntityInfos
                 {
                     continue;
                 }
+
                 if (item.Name != entityInfo.Name)
                 {
                     item.Name = entityInfo.Name;
                     isUpdate = true;
                 }
+
                 if (item.PropertyJson != entityInfo.PropertyJson)
                 {
                     item.PropertyJson = entityInfo.PropertyJson;
                     isUpdate = true;
                 }
+
                 if (isUpdate)
                 {
                     repository.Update(item);
                     updateCount++;
                 }
             }
+
             repository.UnitOfWork.Commit();
             if (removeCount + addCount + updateCount > 0)
             {
@@ -189,16 +197,19 @@ namespace OSharp.Core.EntityInfos
                     msg += $"，添加实体信息 {addCount} 个";
                     _logger.LogInformation($"新增{addItems.Length}个数据实体：{addItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
+
                 if (removeCount > 0)
                 {
                     msg += $"，删除实体信息 {removeCount} 个";
                     _logger.LogInformation($"删除{removeItems.Length}个数据实体：{removeItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
+
                 if (updateCount > 0)
                 {
                     msg += $"，更新实体信息 {updateCount} 个";
                     _logger.LogInformation($"更新{updateCount}个数据实体");
                 }
+
                 _logger.LogInformation(msg);
             }
         }
@@ -214,6 +225,7 @@ namespace OSharp.Core.EntityInfos
             {
                 return new TEntityInfo[0];
             }
+
             return repository.QueryAsNoTracking(null, false).ToArray();
         }
     }
