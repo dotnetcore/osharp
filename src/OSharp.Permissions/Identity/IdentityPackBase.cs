@@ -8,22 +8,32 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 using OSharp.AspNetCore;
 using OSharp.Authorization;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
+using OSharp.Exceptions;
+using OSharp.Extensions;
+using OSharp.Identity.JwtBearer;
 using OSharp.Systems;
 
 
@@ -108,12 +118,35 @@ namespace OSharp.Identity
         }
 
         /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="app">应用程序构建器</param>
+        public override void UsePack(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            IsEnabled = true;
+        }
+
+        /// <summary>
         /// 重写以实现<see cref="IdentityOptions"/>的配置
         /// </summary>
         /// <returns></returns>
         protected virtual Action<IdentityOptions> IdentityOptionsAction()
         {
-            return null;
+            return options =>
+            {
+                //登录
+                options.SignIn.RequireConfirmedEmail = false;
+                //密码
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                //用户
+                options.User.RequireUniqueEmail = false;
+                //锁定
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            };
         }
 
         /// <summary>
@@ -122,7 +155,14 @@ namespace OSharp.Identity
         /// <returns></returns>
         protected virtual Action<CookieAuthenticationOptions> CookieOptionsAction()
         {
-            return null;
+            return options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Name = "osharp.identity";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.LoginPath = "/#/identity/login";
+            };
         }
 
         /// <summary>
@@ -132,7 +172,7 @@ namespace OSharp.Identity
         /// <returns></returns>
         protected virtual IdentityBuilder OnIdentityBuild(IdentityBuilder builder)
         {
-            return builder;
+            return builder.AddDefaultTokenProviders();
         }
 
         /// <summary>
@@ -140,7 +180,103 @@ namespace OSharp.Identity
         /// </summary>
         /// <param name="services">服务集合</param>
         protected virtual void AddAuthentication(IServiceCollection services)
-        { }
+        {
+            AuthenticationBuilder builder = services.AddAuthentication(opts =>
+            {
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
+            AddJwtBearer(services, builder);
+            AddOAuth2(services, builder);
+        }
+
+        /// <summary>
+        /// 添加JwtBearer支持
+        /// </summary>
+        protected virtual AuthenticationBuilder AddJwtBearer(IServiceCollection services, AuthenticationBuilder builder)
+        {
+            services.TryAddScoped<IJwtBearerService, JwtBearerService<TUser, TUserKey>>();
+            services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<TUser, TUserKey>>();
+
+            IConfiguration configuration = services.GetConfiguration();
+            builder.AddJwtBearer(jwt =>
+            {
+                string secret = configuration["OSharp:Jwt:Secret"];
+                if (secret.IsNullOrEmpty())
+                {
+                    throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
+                }
+
+                jwt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
+                    ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                    LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
+                };
+
+                jwt.Events = new OsharpJwtBearerEvents();
+            });
+            
+            return builder;
+        }
+
+        /// <summary>
+        /// 添加OAuth2第三方登录配置
+        /// </summary>
+        protected virtual AuthenticationBuilder AddOAuth2(IServiceCollection services, AuthenticationBuilder builder)
+        {
+            IConfiguration configuration = services.GetConfiguration();
+            IConfigurationSection section = configuration.GetSection("OSharp:OAuth2");
+            IDictionary<string, OAuth2Options> dict = section.Get<Dictionary<string, OAuth2Options>>();
+            if (dict == null)
+            {
+                return builder;
+            }
+
+            foreach (var (name, options) in dict)
+            {
+                if (!options.Enabled)
+                {
+                    continue;
+                }
+                if (string.IsNullOrEmpty(options.ClientId))
+                {
+                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{name}节点的ClientId不能为空");
+                }
+                if (string.IsNullOrEmpty(options.ClientSecret))
+                {
+                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{name}节点的ClientSecret不能为空");
+                }
+
+                switch (name)
+                {
+                    case "QQ":
+                        builder.AddQQ(opts =>
+                        {
+                            opts.AppId = options.ClientId;
+                            opts.AppKey = options.ClientSecret;
+                        });
+                        break;
+                    case "Microsoft":
+                        builder.AddMicrosoftAccount(opts =>
+                        {
+                            opts.ClientId = options.ClientId;
+                            opts.ClientSecret = options.ClientSecret;
+                        });
+                        break;
+                    case "GitHub":
+                        builder.AddGitHub(opts =>
+                        {
+                            opts.ClientId = options.ClientId;
+                            opts.ClientSecret = options.ClientSecret;
+                        });
+                        break;
+                }
+            }
+
+            return builder;
+        }
 
         /// <summary>
         /// 添加Authorization授权服务
