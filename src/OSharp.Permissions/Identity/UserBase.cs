@@ -20,6 +20,7 @@ namespace OSharp.Identity
     /// 用户信息基类
     /// </summary>
     /// <typeparam name="TKey">用户编号类型</typeparam>
+    [TableNamePrefix("Identity")]
     public abstract class UserBase<TKey> : EntityBase<TKey>, ICreatedTime, ILockable, ISoftDeletable
         where TKey : IEquatable<TKey>
     {

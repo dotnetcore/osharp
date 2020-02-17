@@ -20,6 +20,7 @@ namespace OSharp.Identity
     /// </summary>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TKey">用户登录编号类型</typeparam>
+    [TableNamePrefix("Identity")]
     public abstract class UserLoginBase<TKey, TUserKey> : EntityBase<TKey>, ICreatedTime
         where TKey : IEquatable<TKey>
         where TUserKey : IEquatable<TUserKey>

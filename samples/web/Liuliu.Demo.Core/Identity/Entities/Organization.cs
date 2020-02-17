@@ -19,6 +19,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// 实体类：组织机构
     /// </summary>
     [Description("组织机构信息")]
+    [TableNamePrefix("Identity")]
     public class Organization : EntityBase<int>
     {
         /// <summary>

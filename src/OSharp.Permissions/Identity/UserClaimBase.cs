@@ -22,6 +22,7 @@ namespace OSharp.Identity
     /// </summary>
     /// <typeparam name="TKey">用户声明编号类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
+    [TableNamePrefix("Identity")]
     public abstract class UserClaimBase<TKey, TUserKey> : EntityBase<TKey>
         where TUserKey : IEquatable<TUserKey>
         where TKey : IEquatable<TKey>

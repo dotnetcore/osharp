@@ -8,13 +8,16 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Dependency;
 using OSharp.Exceptions;
 
 
@@ -61,6 +64,53 @@ namespace OSharp.Identity.JwtBearer
                 new Claim(ClaimTypes.Name, user.UserName)
             };
             return claims;
+        }
+
+        /// <summary>
+        /// 请求的Token验证成功后使用OnlineUser信息刷新Identity，将在线用户信息赋予Identity
+        /// </summary>
+        /// <param name="identity">待刷新的Identity</param>
+        /// <returns>刷新后的Identity</returns>
+        public async Task<ClaimsIdentity> RefreshIdentity(ClaimsIdentity identity)
+        {
+            if (identity != null && identity.IsAuthenticated)
+            {
+                IOnlineUserProvider onlineUserProvider = _provider.GetService<IOnlineUserProvider>();
+                OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name);
+                if (onlineUser == null)
+                {
+                    return identity;
+                }
+
+                if (!string.IsNullOrEmpty(onlineUser.NickName))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.GivenName, onlineUser.NickName));
+                }
+
+                if (!string.IsNullOrEmpty(onlineUser.Email))
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Email, onlineUser.Email));
+                }
+
+                if (onlineUser.Roles.Length > 0)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, onlineUser.Roles.ExpandAndToString()));
+                }
+
+                // 扩展数据
+                foreach (KeyValuePair<string, string> pair in onlineUser.ExtendData)
+                {
+                    identity.AddClaim(new Claim(pair.Key, pair.Value));
+                }
+            }
+
+            ScopedDictionary dict = _provider.GetService<ScopedDictionary>();
+            if (dict != null)
+            {
+                dict.Identity = identity;
+            }
+
+            return identity;
         }
     }
 }

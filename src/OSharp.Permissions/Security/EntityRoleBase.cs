@@ -22,6 +22,7 @@ namespace OSharp.Security
     /// <summary>
     /// 数据角色实体基类
     /// </summary>
+    [TableNamePrefix("Security")]
     public abstract class EntityRoleBase<TRoleKey> : EntityBase<Guid>, ILockable, ICreatedTime
     {
         /// <summary>

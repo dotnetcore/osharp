@@ -42,7 +42,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoginLog");
+                    b.ToTable("Identity_LoginLog");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.Organization", b =>
@@ -65,7 +65,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Organization");
+                    b.ToTable("Identity_Organization");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.Role", b =>
@@ -119,7 +119,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("RoleNameIndex");
 
-                    b.ToTable("Role");
+                    b.ToTable("Identity_Role");
 
                     b.HasData(
                         new
@@ -156,7 +156,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaim");
+                    b.ToTable("Identity_RoleClaim");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.User", b =>
@@ -245,7 +245,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("User");
+                    b.ToTable("Identity_User");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserClaim", b =>
@@ -268,7 +268,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaim");
+                    b.ToTable("Identity_UserClaim");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserDetail", b =>
@@ -288,7 +288,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserDetail");
+                    b.ToTable("Identity_UserDetail");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserLogin", b =>
@@ -323,7 +323,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("UserLoginIndex");
 
-                    b.ToTable("UserLogin");
+                    b.ToTable("Identity_UserLogin");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserRole", b =>
@@ -355,7 +355,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("UserRoleIndex");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("Identity_UserRole");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.UserToken", b =>
@@ -382,7 +382,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("UserTokenIndex");
 
-                    b.ToTable("UserToken");
+                    b.ToTable("Identity_UserToken");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Infos.Entities.Message", b =>
@@ -433,7 +433,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Infos_Message");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Infos.Entities.MessageReceive", b =>
@@ -463,7 +463,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MessageReceive");
+                    b.ToTable("Infos_MessageReceive");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Infos.Entities.MessageReply", b =>
@@ -510,7 +510,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MessageReply");
+                    b.ToTable("Infos_MessageReply");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityRole", b =>
@@ -545,7 +545,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("EntityRoleIndex");
 
-                    b.ToTable("EntityRole");
+                    b.ToTable("Security_EntityRole");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityUser", b =>
@@ -576,7 +576,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("EntityId", "UserId")
                         .HasName("EntityUserIndex");
 
-                    b.ToTable("EntityUser");
+                    b.ToTable("Security_EntityUser");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.Module", b =>
@@ -609,7 +609,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Module");
+                    b.ToTable("Security_Module");
 
                     b.HasData(
                         new
@@ -643,7 +643,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("ModuleFunctionIndex");
 
-                    b.ToTable("ModuleFunction");
+                    b.ToTable("Security_ModuleFunction");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleRole", b =>
@@ -666,7 +666,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("ModuleRoleIndex");
 
-                    b.ToTable("ModuleRole");
+                    b.ToTable("Security_ModuleRole");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleUser", b =>
@@ -692,7 +692,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("ModuleUserIndex");
 
-                    b.ToTable("ModuleUser");
+                    b.ToTable("Security_ModuleUser");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditEntity", b =>
@@ -720,7 +720,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("OperationId");
 
-                    b.ToTable("AuditEntity");
+                    b.ToTable("Systems_AuditEntity");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditOperation", b =>
@@ -767,7 +767,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditOperation");
+                    b.ToTable("Systems_AuditOperation");
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditProperty", b =>
@@ -798,10 +798,10 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("AuditEntityId");
 
-                    b.ToTable("AuditProperty");
+                    b.ToTable("Systems_AuditProperty");
                 });
 
-            modelBuilder.Entity("OSharp.Core.EntityInfos.EntityInfo", b =>
+            modelBuilder.Entity("OSharp.Authorization.EntityInfos.EntityInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -828,10 +828,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("ClassFullNameIndex");
 
-                    b.ToTable("EntityInfo");
+                    b.ToTable("Security_EntityInfo");
                 });
 
-            modelBuilder.Entity("OSharp.Core.Functions.Function", b =>
+            modelBuilder.Entity("OSharp.Authorization.Functions.Function", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -882,7 +882,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasName("AreaControllerActionIndex");
 
-                    b.ToTable("Function");
+                    b.ToTable("Security_Function");
                 });
 
             modelBuilder.Entity("OSharp.Core.Systems.KeyValue", b =>
@@ -906,7 +906,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KeyValue");
+                    b.ToTable("Systems_KeyValue");
 
                     b.HasData(
                         new
@@ -1070,7 +1070,7 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityRole", b =>
                 {
-                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo", "EntityInfo")
+                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1085,7 +1085,7 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityUser", b =>
                 {
-                    b.HasOne("OSharp.Core.EntityInfos.EntityInfo", "EntityInfo")
+                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
                         .WithMany()
                         .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1107,7 +1107,7 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
                 {
-                    b.HasOne("OSharp.Core.Functions.Function", "Function")
+                    b.HasOne("OSharp.Authorization.Functions.Function", "Function")
                         .WithMany()
                         .HasForeignKey("FunctionId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -23,6 +23,7 @@ namespace Liuliu.Demo.Systems.Entities
     /// 实体类：审计操作信息
     /// </summary>
     [MapFrom(typeof(AuditOperationEntry))]
+    [TableNamePrefix("Systems")]
     [Description("审计操作信息")]
     public class AuditOperation : EntityBase<Guid>
     {

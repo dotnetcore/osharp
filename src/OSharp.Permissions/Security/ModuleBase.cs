@@ -22,6 +22,7 @@ namespace OSharp.Security
     /// <summary>
     /// 模块信息基类
     /// </summary>
+    [TableNamePrefix("Security")]
     public abstract class ModuleBase<TModuleKey> : EntityBase<TModuleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
     {

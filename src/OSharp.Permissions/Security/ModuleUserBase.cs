@@ -20,6 +20,7 @@ namespace OSharp.Security
     /// </summary>
     /// <typeparam name="TModuleKey">模块编号</typeparam>
     /// <typeparam name="TUserKey">用户编号</typeparam>
+    [TableNamePrefix("Security")]
     public abstract class ModuleUserBase<TModuleKey, TUserKey> : EntityBase<Guid>
     {
         /// <summary>

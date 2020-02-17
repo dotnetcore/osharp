@@ -21,6 +21,7 @@ namespace OSharp.Security
     /// <summary>
     /// 数据用户实体基类
     /// </summary>
+    [TableNamePrefix("Security")]
     public abstract class EntityUserBase<TUserKey> : EntityBase<Guid>, ILockable, ICreatedTime
     {
         /// <summary>

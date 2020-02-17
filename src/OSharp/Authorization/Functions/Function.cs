@@ -9,6 +9,8 @@
 
 using System.ComponentModel;
 
+using OSharp.Entity;
+
 
 namespace OSharp.Authorization.Functions
 {
@@ -16,6 +18,7 @@ namespace OSharp.Authorization.Functions
     /// 实体类：功能信息
     /// </summary>
     [Description("功能信息")]
+    [TableNamePrefix("Security")]
     public class Function : FunctionBase
     { }
 }

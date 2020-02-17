@@ -18,6 +18,7 @@ namespace OSharp.Security
     /// <summary>
     /// 模块功能信息基类
     /// </summary>
+    [TableNamePrefix("Security")]
     public abstract class ModuleFunctionBase<TModuleKey> : EntityBase<Guid>
     {
         /// <summary>

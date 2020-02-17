@@ -9,6 +9,8 @@
 
 using System.ComponentModel;
 
+using OSharp.Entity;
+
 
 namespace OSharp.Authorization.EntityInfos
 {
@@ -16,6 +18,7 @@ namespace OSharp.Authorization.EntityInfos
     /// 实体类：实体信息类
     /// </summary>
     [Description("实体信息类")]
+    [TableNamePrefix("Security")]
     public class EntityInfo : EntityInfoBase
     { }
 }

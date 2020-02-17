@@ -20,6 +20,7 @@ namespace OSharp.Identity
     /// 角色信息基类
     /// </summary>
     /// <typeparam name="TKey">角色编号类型</typeparam>
+    [TableNamePrefix("Identity")]
     public abstract class RoleBase<TKey> : EntityBase<TKey>, ICreatedTime, ILockable, ISoftDeletable
         where TKey : IEquatable<TKey>
     {

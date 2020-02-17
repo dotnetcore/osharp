@@ -33,8 +33,8 @@ using OSharp.Core.Packs;
 using OSharp.EventBuses;
 using OSharp.Exceptions;
 using OSharp.Extensions;
+using OSharp.Identity.Cookies;
 using OSharp.Identity.JwtBearer;
-using OSharp.Systems;
 
 
 namespace OSharp.Identity
@@ -125,6 +125,7 @@ namespace OSharp.Identity
         {
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCookiePolicy();
 
             IsEnabled = true;
         }
@@ -187,6 +188,7 @@ namespace OSharp.Identity
                 opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             });
             AddJwtBearer(services, builder);
+            AddCookie(services, builder);
             AddOAuth2(services, builder);
         }
 
@@ -199,25 +201,36 @@ namespace OSharp.Identity
             services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<TUser, TUserKey>>();
 
             IConfiguration configuration = services.GetConfiguration();
-            builder.AddJwtBearer(jwt =>
-            {
-                string secret = configuration["OSharp:Jwt:Secret"];
-                if (secret.IsNullOrEmpty())
+            builder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                jwt =>
                 {
-                    throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
-                }
+                    string secret = configuration["OSharp:Jwt:Secret"];
+                    if (secret.IsNullOrEmpty())
+                    {
+                        throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
+                    }
 
-                jwt.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
-                    ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-                    LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
-                };
+                    jwt.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
+                        ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                        LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
+                    };
 
-                jwt.Events = new OsharpJwtBearerEvents();
-            });
+                    jwt.Events = new OsharpJwtBearerEvents();
+                });
             
+            return builder;
+        }
+
+        protected virtual AuthenticationBuilder AddCookie(IServiceCollection services, AuthenticationBuilder builder)
+        {
+            //builder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+            //    opts =>
+            //    {
+            //        opts.Events = new OsharpCookieAuthenticationEvents();
+            //    });
             return builder;
         }
 

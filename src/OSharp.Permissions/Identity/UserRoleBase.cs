@@ -21,6 +21,7 @@ namespace OSharp.Identity
     /// <typeparam name="TKey">用户角色映射编号类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
     /// <typeparam name="TRoleKey">角色编号类型</typeparam>
+    [TableNamePrefix("Identity")]
     public abstract class UserRoleBase<TKey, TUserKey, TRoleKey> : EntityBase<TKey>, ICreatedTime, ILockable, ISoftDeletable
         where TKey : IEquatable<TKey>
         where TUserKey : IEquatable<TUserKey>

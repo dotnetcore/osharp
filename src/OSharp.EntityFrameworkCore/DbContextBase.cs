@@ -14,12 +14,16 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Audits;
 using OSharp.Core.Options;
 using OSharp.EventBuses;
+using OSharp.Extensions;
+using OSharp.Reflection;
+
 
 namespace OSharp.Entity
 {
@@ -183,8 +187,31 @@ namespace OSharp.Entity
                 register.RegisterTo(modelBuilder);
                 _logger?.LogDebug($"将实体类“{register.EntityType}”注册到上下文“{contextType}”中");
             }
-
             _logger?.LogInformation($"上下文“{contextType}”注册了{registers.Length}个实体类");
+
+            //按预定前缀更改表名
+            var entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+            foreach (IMutableEntityType entityType in entityTypes)
+            {
+                string prefix = GetTableNamePrefix(entityType.ClrType);
+                if (prefix.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                modelBuilder.Entity(entityType.ClrType).ToTable($"{prefix}_{entityType.GetTableName()}");
+            }
+        }
+
+        /// <summary>
+        /// 从实体类型获取表名前缀
+        /// </summary>
+        /// <param name="entityType">实体类型</param>
+        /// <returns></returns>
+        protected virtual string GetTableNamePrefix(Type entityType)
+        {
+            TableNamePrefixAttribute attribute = entityType.GetAttribute<TableNamePrefixAttribute>();
+            return attribute?.Prefix;
         }
 
         ///// <summary>
@@ -199,8 +226,6 @@ namespace OSharp.Entity
         //    }
         //}
 
-        #region Overrides of DbContext
-
         /// <summary>
         ///     Releases the allocated resources for this context.
         /// </summary>
@@ -209,7 +234,5 @@ namespace OSharp.Entity
             base.Dispose();
             UnitOfWork = null;
         }
-
-        #endregion
     }
 }

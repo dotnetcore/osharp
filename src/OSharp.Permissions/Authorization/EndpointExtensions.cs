@@ -11,6 +11,7 @@ using System;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,8 +40,8 @@ namespace OSharp.Authorization
                 return dict.Function;
             }
 
-            string area = endpoint.GetAreaName(),
-                controller = endpoint.GetControllerName(),
+            string area = endpoint.GetAreaName(), 
+                controller = endpoint.GetControllerName(), 
                 action = endpoint.GetActionName();
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)

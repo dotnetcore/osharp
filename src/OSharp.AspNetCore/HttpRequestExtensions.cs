@@ -34,8 +34,9 @@ namespace OSharp.AspNetCore
         public static bool IsAjaxRequest(this HttpRequest request)
         {
             Check.NotNull(request, nameof(request));
-            bool? flag = request.Headers?["X-Requested-With"].ToString()?.Equals("XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
-            return flag.HasValue && flag.Value;
+
+            return string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal)
+                || string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
         }
 
         /// <summary>

@@ -24,5 +24,12 @@ namespace OSharp.Identity.JwtBearer
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<Claim[]> CreateClaims(string userId);
+
+        /// <summary>
+        /// 请求的Token验证成功后使用OnlineUser信息刷新Identity，将在线用户信息赋予Identity
+        /// </summary>
+        /// <param name="identity">待刷新的Identity</param>
+        /// <returns>刷新后的Identity</returns>
+        Task<ClaimsIdentity> RefreshIdentity(ClaimsIdentity identity);
     }
 }

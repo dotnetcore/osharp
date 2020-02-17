@@ -20,6 +20,7 @@ namespace OSharp.Security
     /// </summary>
     /// <typeparam name="TModuleKey">模块编号</typeparam>
     /// <typeparam name="TRoleKey">角色编号</typeparam>
+    [TableNamePrefix("Security")]
     public abstract class ModuleRoleBase<TModuleKey, TRoleKey> : EntityBase<Guid>
     {
         /// <summary>

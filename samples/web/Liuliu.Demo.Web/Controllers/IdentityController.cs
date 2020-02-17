@@ -29,7 +29,6 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Authorization;
 using OSharp.Authorization.Modules;
-using OSharp.Core;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
@@ -195,40 +194,6 @@ namespace Liuliu.Demo.Web.Controllers
             User user = result.Data;
             await _signInManager.SignInAsync(user, dto.Remember);
             return new AjaxResult("登录成功");
-        }
-
-        /// <summary>
-        /// Jwt登录
-        /// </summary>
-        /// <param name="dto">登录信息</param>
-        /// <returns>JSON操作结果</returns>
-        [HttpPost]
-        [ModuleInfo]
-        [Description("JWT登录")]
-        public async Task<AjaxResult> Jwtoken(LoginDto dto)
-        {
-            Check.NotNull(dto, nameof(dto));
-
-            if (!ModelState.IsValid)
-            {
-                return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
-            }
-
-            dto.Ip = HttpContext.GetClientIp();
-            dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
-
-            OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
-            unitOfWork.Commit();
-
-            if (!result.Succeeded)
-            {
-                return result.ToAjaxResult();
-            }
-
-            User user = result.Data;
-            JsonWebToken token = await CreateJwtToken(user);
-            return new AjaxResult("登录成功", AjaxResultType.Success, token);
         }
 
         /// <summary>

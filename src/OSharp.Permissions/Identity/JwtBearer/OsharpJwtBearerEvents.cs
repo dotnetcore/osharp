@@ -32,45 +32,13 @@ namespace OSharp.Identity.JwtBearer
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override async Task TokenValidated(TokenValidatedContext context)
+        public override Task TokenValidated(TokenValidatedContext context)
         {
             ClaimsPrincipal user = context.Principal;
             ClaimsIdentity identity = user.Identity as ClaimsIdentity;
-            IServiceProvider provider = context.HttpContext.RequestServices;
-            if (identity != null && identity.IsAuthenticated)
-            {
-                // 由在线缓存获取用户信息并赋到 Identity
-                IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-                OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name);
-                if (onlineUser == null)
-                {
-                    return;
-                }
-
-                if (!string.IsNullOrEmpty(onlineUser.NickName))
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.GivenName, onlineUser.NickName));
-                }
-
-                if (!string.IsNullOrEmpty(onlineUser.Email))
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Email, onlineUser.Email));
-                }
-
-                if (onlineUser.Roles.Length > 0)
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, onlineUser.Roles.ExpandAndToString()));
-                }
-                
-                // 扩展数据
-                foreach (KeyValuePair<string, string> pair in onlineUser.ExtendData)
-                {
-                    identity.AddClaim(new Claim(pair.Key, pair.Value));
-                }
-
-                ScopedDictionary dict = provider.GetService<ScopedDictionary>();
-                dict.Identity = identity;
-            }
+            
+            IAccessClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IAccessClaimsProvider>();
+            return accessClaimsProvider.RefreshIdentity(identity);
         }
 
         /// <summary>

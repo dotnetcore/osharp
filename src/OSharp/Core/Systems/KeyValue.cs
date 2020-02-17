@@ -26,6 +26,7 @@ namespace OSharp.Core.Systems
     /// 实体类：数据键值对
     /// </summary>
     [Description("键值对信息")]
+    [TableNamePrefix("Systems")]
     public class KeyValue : EntityBase<Guid>, ILockable, IKeyValue
     {
         /// <summary>
