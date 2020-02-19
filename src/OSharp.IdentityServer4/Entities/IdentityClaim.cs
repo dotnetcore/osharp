@@ -9,8 +9,6 @@
 
 using System.ComponentModel;
 
-using IdentityServer4.Models;
-
 using OSharp.Entity;
 
 
@@ -21,7 +19,7 @@ namespace OSharp.IdentityServer4.Entities
     /// </summary>
     [Description("身份声明")]
     [TableNamePrefix("Id4")]
-    public class IdentityClaim : EntityBase<int>
+    public class IdentityClaim : UserClaim
     {
         /// <summary>
         /// 获取或设置 身份资源编号
@@ -33,6 +31,6 @@ namespace OSharp.IdentityServer4.Entities
         /// 获取或设置 身份资源
         /// </summary>
         [DisplayName("身份资源")]
-        public IdentityResource IdentityResource { get; set; }
+        public virtual IdentityResource IdentityResource { get; set; }
     }
 }

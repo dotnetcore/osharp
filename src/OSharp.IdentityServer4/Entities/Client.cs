@@ -202,7 +202,7 @@ namespace OSharp.IdentityServer4.Entities
         /// 获取或设置 指定可以与此客户端一起使用的外部IdP（如果列表为空，则允许所有IdP）。默认为空。
         /// </summary>
         [DisplayName("客户端IdP限制")]
-        public List<ClientIdPRestriction> IdentityProviderRestrictions { get; set; }
+        public virtual ICollection<ClientIdPRestriction> IdentityProviderRestrictions { get; set; }
 
         /// <summary>
         /// 获取或设置 自上次用户进行身份验证以来的最长持续时间（以秒为单位）。默认为null。您可以调整会话令牌的生命周期，以控制在使用Web应用程序时，用户需要重新输入凭据的时间和频率，而不是进行静默身份验证。
@@ -287,13 +287,13 @@ namespace OSharp.IdentityServer4.Entities
         /// 获取或设置 如果指定，将由默认CORS策略服务实现（内存和EF）用于为JavaScript客户端构建CORS策略。
         /// </summary>
         [DisplayName("允许跨域来源")]
-        public List<ClientCorsOrigin> AllowedCorsOrigins { get; set; }
+        public virtual ICollection<ClientCorsOrigin> AllowedCorsOrigins { get; set; }
 
         /// <summary>
         /// 获取或设置 允许客户端的设置声明（将包含在访问令牌中）。
         /// </summary>
         [DisplayName("客户端声明")]
-        public List<ClientClaim> Claims { get; set; }
+        public virtual ICollection<ClientClaim> Claims { get; set; }
 
         /// <summary>
         /// 获取或设置 允许发送客户端声明。如果设置，将为每个流发送客户端声明。如果不是，仅用于客户端凭证流（默认为false）

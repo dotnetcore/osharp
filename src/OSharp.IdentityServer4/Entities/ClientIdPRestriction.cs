@@ -16,7 +16,7 @@ using OSharp.Entity;
 namespace OSharp.IdentityServer4.Entities
 {
     /// <summary>
-    /// 实体类：客户端IdP限制
+    /// 实体类：客户端Id提供程序限制
     /// </summary>
     [TableNamePrefix("Id4")]
     public class ClientIdPRestriction : EntityBase<int>

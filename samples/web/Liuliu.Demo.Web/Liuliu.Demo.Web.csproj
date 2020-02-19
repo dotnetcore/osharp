@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Hangfire\OSharp.Hangfire.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.IdentityServer4\OSharp.IdentityServer4.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />

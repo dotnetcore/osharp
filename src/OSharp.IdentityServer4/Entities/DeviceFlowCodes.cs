@@ -57,7 +57,7 @@ namespace OSharp.IdentityServer4.Entities
         /// 获取或设置 过期时间
         /// </summary>
         [DisplayName("过期时间")]
-        public DateTime? Expiration { get; set; }
+        public DateTime Expiration { get; set; }
 
         /// <summary>
         /// 获取或设置 数据

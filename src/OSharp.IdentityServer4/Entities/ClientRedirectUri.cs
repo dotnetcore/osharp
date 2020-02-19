@@ -16,9 +16,9 @@ using OSharp.Entity;
 namespace OSharp.IdentityServer4.Entities
 {
     /// <summary>
-    /// 实体类：客户端跳转URL
+    /// 实体类：客户端跳转URI
     /// </summary>
-    [Description("客户端跳转URL")]
+    [Description("客户端跳转URI")]
     [TableNamePrefix("Id4")]
     public class ClientRedirectUri : EntityBase<int>
     {
