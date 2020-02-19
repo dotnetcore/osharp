@@ -12,7 +12,7 @@ namespace Liuliu.Demo.Systems
     /// <summary>
     /// 业务契约：系统模块
     /// </summary>
-    public interface ISystemsContract
+    public partial interface ISystemsContract
     {
 
     }

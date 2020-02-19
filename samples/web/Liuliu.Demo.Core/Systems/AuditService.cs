@@ -22,7 +22,7 @@ namespace Liuliu.Demo.Systems
     /// <summary>
     /// 服务实现：审计模块
     /// </summary>
-    public class AuditService : IAuditContract
+    public partial class AuditService : IAuditContract
     {
         private readonly IRepository<AuditOperation, Guid> _operationRepository;
         private readonly IRepository<AuditEntity, Guid> _entityRepository;

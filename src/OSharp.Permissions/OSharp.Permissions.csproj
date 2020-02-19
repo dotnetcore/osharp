@@ -6,7 +6,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>OSharpNS.Permissions</PackageId>
-    <Summary>OSharp 核心组件</Summary>
+    <Summary>OSharp 权限组件</Summary>
     <Description>OSharp 权限组件，包含用户认证与权限验证的基础实现</Description>
     <RootNamespace>OSharp</RootNamespace>
   </PropertyGroup>

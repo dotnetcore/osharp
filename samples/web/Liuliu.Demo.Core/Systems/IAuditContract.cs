@@ -21,7 +21,7 @@ namespace Liuliu.Demo.Systems
     /// <summary>
     /// 业务契约：审计模块
     /// </summary>
-    public interface IAuditContract
+    public partial interface IAuditContract
     {
         #region 操作审计信息业务
 
