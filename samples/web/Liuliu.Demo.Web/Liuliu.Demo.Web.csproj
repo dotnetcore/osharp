@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Startups\CodeGeneratorPack.cs" />
     <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
@@ -37,7 +38,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
-    <ProjectReference Include="..\..\..\src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
