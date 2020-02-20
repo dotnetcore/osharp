@@ -14,12 +14,12 @@ using OSharp.Entity;
 using OSharp.IdentityServer4.Entities;
 
 
-namespace OSharp.IdentityServer4.EntityConfigurations
+namespace OSharp.IdentityServer4.EntityFrameworkCore
 {
     /// <summary>
     /// 身份资源信息映射配置类
     /// </summary>
-    public class IdentityResourceConfiguration : EntityTypeConfigurationBase<IdentityResource, int>
+    public class IdentityResourceConfiguration : Id4EntityTypeConfigurationBase<IdentityResource, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

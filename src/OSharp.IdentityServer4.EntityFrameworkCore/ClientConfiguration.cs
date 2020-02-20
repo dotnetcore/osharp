@@ -14,12 +14,12 @@ using OSharp.Entity;
 using OSharp.IdentityServer4.Entities;
 
 
-namespace OSharp.IdentityServer4.EntityConfigurations
+namespace OSharp.IdentityServer4.EntityFrameworkCore
 {
     /// <summary>
     /// 客户端信息映射配置类
     /// </summary>
-    public class ClientConfiguration : EntityTypeConfigurationBase<Client, int>
+    public class ClientConfiguration : Id4EntityTypeConfigurationBase<Client, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

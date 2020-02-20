@@ -17,11 +17,13 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.1" />
+    <PackageReference Include="IdentityServer4" Version="3.1.1" />
+    <PackageReference Include="IdentityServer4.Storage" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
-    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
   </ItemGroup>
 
 </Project>
