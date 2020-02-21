@@ -11,6 +11,11 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
+using IdentityModel;
+
+using IdentityServer4.Models;
+
+using OSharp.Data;
 using OSharp.Entity;
 
 

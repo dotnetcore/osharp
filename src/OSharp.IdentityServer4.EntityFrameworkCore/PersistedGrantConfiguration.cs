@@ -25,6 +25,8 @@ namespace OSharp.IdentityServer4.EntityFrameworkCore
         /// </summary>
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<PersistedGrant> builder)
-        { }
+        {
+            builder.HasIndex(m => m.Key).IsUnique();
+        }
     }
 }

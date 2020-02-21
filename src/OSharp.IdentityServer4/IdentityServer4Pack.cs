@@ -9,11 +9,21 @@
 
 using System.ComponentModel;
 
+using IdentityServer4.Stores;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using OSharp.AspNetCore;
+using OSharp.AutoMapper;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
+using OSharp.Data;
+using OSharp.IdentityServer4.Mappers;
+using OSharp.IdentityServer4.Options;
+using OSharp.IdentityServer4.Services;
+using OSharp.IdentityServer4.Stores;
 
 
 namespace OSharp.IdentityServer4
@@ -43,11 +53,23 @@ namespace OSharp.IdentityServer4
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
+            IdentityServerOptions options = configuration.GetInstance("OSharp:IdentityServer", new IdentityServerOptions());
+            Singleton<IdentityServerOptions>.Instance = options;
 
+            services.AddSingleton<IAutoMapperConfiguration, ApiResourceMapperConfiguration>();
+            services.AddSingleton<IAutoMapperConfiguration, ClientMapperConfiguration>();
+            services.AddSingleton<IAutoMapperConfiguration, IdentityResourceMapperConfiguration>();
+            services.AddSingleton<IAutoMapperConfiguration, PersistedGrantMapperConfiguration>();
 
+            services.AddScoped<IClientStore, ClientStore>();
+            services.AddScoped<IDeviceFlowStore, DeviceFlowStore>();
+            services.AddScoped<IPersistedGrantStore, PersistedGrantStore>();
+            services.AddScoped<IResourceStore, ResourceStore>();
 
+            services.AddScoped<ITokenCleanupService, ITokenCleanupService>();
+            services.AddSingleton<IHostedService, TokenCleanupHostedService>();
 
-            return base.AddServices(services);
+            return services;
         }
     }
 }

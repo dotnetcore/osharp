@@ -14,13 +14,11 @@ using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
 
-using Microsoft.Extensions.Logging;
-
 using OSharp.Entity;
 using OSharp.Mapping;
 
 
-namespace OSharp.IdentityServer4
+namespace OSharp.IdentityServer4.Stores
 {
     /// <summary>
     /// 客户端存储
@@ -28,21 +26,19 @@ namespace OSharp.IdentityServer4
     public class ClientStore : IClientStore
     {
         private readonly IRepository<Entities.Client, int> _clientRepository;
-        private readonly ILogger<ClientStore> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="ClientStore"/>类型的新实例
         /// </summary>
-        public ClientStore(IRepository<Entities.Client, int> clientRepository, ILogger<ClientStore>logger)
+        public ClientStore(IRepository<Entities.Client, int> clientRepository)
         {
             _clientRepository = clientRepository;
-            _logger = logger;
         }
 
         /// <summary>Finds a client by id</summary>
         /// <param name="clientId">The client id</param>
         /// <returns>The client</returns>
-        public Task<Client> FindClientByIdAsync(string clientId)
+        public virtual Task<Client> FindClientByIdAsync(string clientId)
         {
             Entities.Client client = _clientRepository.Query(m => m.AllowedCorsOrigins,
                 m => m.AllowedGrantTypes,
@@ -55,9 +51,6 @@ namespace OSharp.IdentityServer4
                 m => m.RedirectUris).FirstOrDefault(m => m.ClientId == clientId);
 
             Client model = client.MapTo<Client>();
-            
-            _logger.LogDebug($"{clientId} found in database: {model != null}");
-            
             return Task.FromResult(model);
         }
     }

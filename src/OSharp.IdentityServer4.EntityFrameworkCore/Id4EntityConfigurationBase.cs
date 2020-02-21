@@ -9,8 +9,10 @@
 
 using System;
 
+using OSharp.Core.Options;
 using OSharp.Data;
 using OSharp.Entity;
+using OSharp.IdentityServer4.Options;
 
 
 namespace OSharp.IdentityServer4.EntityFrameworkCore
@@ -26,9 +28,16 @@ namespace OSharp.IdentityServer4.EntityFrameworkCore
         {
             get
             {
-                //todo: 这个配置不能信赖于DI，如何在初始化时读取配置？
                 Type type = null;
-                string typeName = Singleton<DbContextTypeOptions>.Instance?.DbContextTypeName;
+                IdentityServerOptions options = Singleton<IdentityServerOptions>.Instance;
+                if (options == null)
+                {
+                    options = new IdentityServerOptions();
+                    AppSettingsReader.GetInstance("OSharp:IdentityServer", options);
+                    Singleton<IdentityServerOptions>.Instance = options;
+                }
+                
+                string typeName = options.DbContextTypeName;
                 if (!string.IsNullOrWhiteSpace(typeName))
                 {
                     type = Type.GetType(typeName.Trim());
