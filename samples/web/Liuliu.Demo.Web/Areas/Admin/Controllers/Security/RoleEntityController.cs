@@ -13,10 +13,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
+using Liuliu.Demo.Authorization.Entities;
 using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
-using Liuliu.Demo.Security.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,13 +37,13 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-角色数据权限")]
     public class RoleEntityController : AdminApiController
     {
-        private readonly SecurityManager _securityManager;
+        private readonly DataAuthManager _dataAuthManager;
         private readonly IFilterService _filterService;
 
-        public RoleEntityController(SecurityManager securityManager,
+        public RoleEntityController(DataAuthManager dataAuthManager,
             IFilterService filterService)
         {
-            _securityManager = securityManager;
+            _dataAuthManager = dataAuthManager;
             _filterService = filterService;
         }
 
@@ -71,7 +71,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
             Func<EntityRole, bool> updateFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
             Func<EntityRole, bool> deleteFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
-            var page = _securityManager.EntityRoles.ToPage(predicate,
+            var page = _dataAuthManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
                 m => new
                 {
@@ -106,7 +106,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(dtos, nameof(dtos));
             
-            OperationResult result = await _securityManager.CreateEntityRoles(dtos);
+            OperationResult result = await _dataAuthManager.CreateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
 
@@ -125,7 +125,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            OperationResult result = await _securityManager.UpdateEntityRoles(dtos);
+            OperationResult result = await _dataAuthManager.UpdateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
 
@@ -143,7 +143,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(ids, nameof(ids));
             
-            OperationResult result = await _securityManager.DeleteEntityRoles(ids);
+            OperationResult result = await _dataAuthManager.DeleteEntityRoles(ids);
             return result.ToAjaxResult();
         }
     }

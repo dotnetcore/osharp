@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.Authorization\OSharp.Authorization.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
-    <ProjectReference Include="..\..\..\src\OSharp.Permissions\OSharp.Permissions.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Identity\OSharp.Identity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

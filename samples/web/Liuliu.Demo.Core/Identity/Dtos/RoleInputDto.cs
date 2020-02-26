@@ -9,7 +9,7 @@
 
 using Liuliu.Demo.Identity.Entities;
 
-using OSharp.Identity;
+using OSharp.Identity.Dtos;
 using OSharp.Mapping;
 
 

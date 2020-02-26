@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="log\**" />
+    <Content Remove="log\**" />
+    <EmbeddedResource Remove="log\**" />
+    <None Remove="log\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Startups\CodeGeneratorPack.cs" />
     <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
@@ -44,10 +51,6 @@
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="log\" />
   </ItemGroup>
 
 </Project>

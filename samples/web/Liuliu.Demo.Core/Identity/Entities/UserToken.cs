@@ -10,7 +10,7 @@
 using System;
 using System.ComponentModel;
 
-using OSharp.Identity;
+using OSharp.Identity.Entities;
 
 
 namespace Liuliu.Demo.Identity.Entities

@@ -17,6 +17,188 @@ namespace Liuliu.Demo.Web.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("EntityId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("FilterGroupJson")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("EntityId", "RoleId", "Operation")
+                        .IsUnique()
+                        .HasName("EntityRoleIndex");
+
+                    b.ToTable("Security_EntityRole");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("EntityId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("FilterGroupJson")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EntityId", "UserId")
+                        .HasName("EntityUserIndex");
+
+                    b.ToTable("Security_EntityUser");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.Module", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<double>("OrderCode")
+                        .HasColumnType("double");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("TreePathString")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Security_Module");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "Root",
+                            Name = "根节点",
+                            OrderCode = 1.0,
+                            Remark = "系统根节点",
+                            TreePathString = "$1$"
+                        });
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleFunction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("FunctionId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FunctionId");
+
+                    b.HasIndex("ModuleId", "FunctionId")
+                        .IsUnique()
+                        .HasName("ModuleFunctionIndex");
+
+                    b.ToTable("Security_ModuleFunction");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("ModuleId", "RoleId")
+                        .IsUnique()
+                        .HasName("ModuleRoleIndex");
+
+                    b.ToTable("Security_ModuleRole");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("Disabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ModuleId", "UserId")
+                        .IsUnique()
+                        .HasName("ModuleUserIndex");
+
+                    b.ToTable("Security_ModuleUser");
+                });
+
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.LoginLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -513,188 +695,6 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Infos_MessageReply");
                 });
 
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("EntityId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("FilterGroupJson")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsLocked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("Operation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("EntityId", "RoleId", "Operation")
-                        .IsUnique()
-                        .HasName("EntityRoleIndex");
-
-                    b.ToTable("Security_EntityRole");
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("EntityId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("FilterGroupJson")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsLocked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("EntityId", "UserId")
-                        .HasName("EntityUserIndex");
-
-                    b.ToTable("Security_EntityUser");
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.Module", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<double>("OrderCode")
-                        .HasColumnType("double");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remark")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("TreePathString")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Security_Module");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "Root",
-                            Name = "根节点",
-                            OrderCode = 1.0,
-                            Remark = "系统根节点",
-                            TreePathString = "$1$"
-                        });
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("FunctionId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FunctionId");
-
-                    b.HasIndex("ModuleId", "FunctionId")
-                        .IsUnique()
-                        .HasName("ModuleFunctionIndex");
-
-                    b.ToTable("Security_ModuleFunction");
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("ModuleId", "RoleId")
-                        .IsUnique()
-                        .HasName("ModuleRoleIndex");
-
-                    b.ToTable("Security_ModuleRole");
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("Disabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ModuleId", "UserId")
-                        .IsUnique()
-                        .HasName("ModuleUserIndex");
-
-                    b.ToTable("Security_ModuleUser");
-                });
-
             modelBuilder.Entity("Liuliu.Demo.Systems.Entities.AuditEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -922,9 +922,91 @@ namespace Liuliu.Demo.Web.Migrations
                             Id = new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"),
                             IsLocked = false,
                             Key = "Site.Description",
-                            ValueJson = "\"Osharp with .NetStandard2.0 & Angular6\"",
+                            ValueJson = "\"Osharp with AspNetCore & Angular\"",
                             ValueType = "System.String,System.Private.CoreLib"
                         });
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityRole", b =>
+                {
+                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityUser", b =>
+                {
+                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.Module", b =>
+                {
+                    b.HasOne("Liuliu.Demo.Authorization.Entities.Module", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleFunction", b =>
+                {
+                    b.HasOne("OSharp.Authorization.Functions.Function", "Function")
+                        .WithMany()
+                        .HasForeignKey("FunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Liuliu.Demo.Authorization.Entities.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleRole", b =>
+                {
+                    b.HasOne("Liuliu.Demo.Authorization.Entities.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleUser", b =>
+                {
+                    b.HasOne("Liuliu.Demo.Authorization.Entities.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.LoginLog", b =>
@@ -1065,88 +1147,6 @@ namespace Liuliu.Demo.Web.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityRole", b =>
-                {
-                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
-                        .WithMany()
-                        .HasForeignKey("EntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.EntityUser", b =>
-                {
-                    b.HasOne("OSharp.Authorization.EntityInfos.EntityInfo", "EntityInfo")
-                        .WithMany()
-                        .HasForeignKey("EntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.Module", b =>
-                {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleFunction", b =>
-                {
-                    b.HasOne("OSharp.Authorization.Functions.Function", "Function")
-                        .WithMany()
-                        .HasForeignKey("FunctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
-                        .WithMany()
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleRole", b =>
-                {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
-                        .WithMany()
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Liuliu.Demo.Identity.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Liuliu.Demo.Security.Entities.ModuleUser", b =>
-                {
-                    b.HasOne("Liuliu.Demo.Security.Entities.Module", "Module")
-                        .WithMany()
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Liuliu.Demo.Identity.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

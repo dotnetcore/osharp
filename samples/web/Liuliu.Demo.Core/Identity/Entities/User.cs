@@ -7,9 +7,10 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Identity;
 using System.Collections.Generic;
 using System.ComponentModel;
+
+using OSharp.Identity.Entities;
 
 
 namespace Liuliu.Demo.Identity.Entities

@@ -12,10 +12,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,15 +34,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class UserFunctionController : AdminApiController
     {
         private readonly IFilterService _filterService;
-        private readonly SecurityManager _securityManager;
+        private readonly FunctionAuthManager _functionAuthManager;
         private readonly UserManager<User> _userManager;
 
-        public UserFunctionController(SecurityManager securityManager,
+        public UserFunctionController(FunctionAuthManager functionAuthManager,
             UserManager<User> userManager, 
             RoleManager<Role> roleManager,
             IFilterService filterService)
         {
-            _securityManager = securityManager;
+            _functionAuthManager = functionAuthManager;
             _userManager = userManager;
             _filterService = filterService;
         }
@@ -77,8 +77,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            int[] moduleIds = _securityManager.GetUserWithRoleModuleIds(userId);
-            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+            int[] moduleIds = _functionAuthManager.GetUserWithRoleModuleIds(userId);
+            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
             if (functionIds.Length == 0)
             {
@@ -92,7 +92,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
 
-            PageResult<FunctionOutputDto2> page = _securityManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+            PageResult<FunctionOutputDto2> page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
             return page.ToPageData();
         }
     }

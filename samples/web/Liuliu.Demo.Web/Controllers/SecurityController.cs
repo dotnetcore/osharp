@@ -12,12 +12,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Entities;
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
@@ -32,15 +31,11 @@ namespace Liuliu.Demo.Web.Controllers
     [ModuleInfo(Order = 2)]
     public class SecurityController : ApiController
     {
-        private readonly SecurityManager _securityManager;
-        private readonly ILogger<SecurityController> _logger;
+        private readonly FunctionAuthManager _functionAuthManager;
 
-        public SecurityController(
-            SecurityManager securityManager,
-            ILoggerFactory loggerFactory)
+        public SecurityController(FunctionAuthManager functionAuthManager)
         {
-            _securityManager = securityManager;
-            _logger = loggerFactory.CreateLogger<SecurityController>();
+            _functionAuthManager = functionAuthManager;
         }
 
         /// <summary>
@@ -66,7 +61,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("获取授权信息")]
         public List<string> GetAuthInfo()
         {
-            Module[] modules = _securityManager.Modules.ToArray();
+            Module[] modules = _functionAuthManager.Modules.ToArray();
             List<AuthItem> list = new List<AuthItem>();
             foreach (Module module in modules)
             {
@@ -101,7 +96,7 @@ namespace Liuliu.Demo.Web.Controllers
             IServiceProvider services = HttpContext.RequestServices;
             IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
           
-            Function[] functions = _securityManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.Function).ToArray();
+            Function[] functions = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.Function).ToArray();
             empty = functions.Length == 0;
             if (empty)
             {

@@ -13,9 +13,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
-using Liuliu.Demo.Security.Entities;
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
+using Liuliu.Demo.Authorization.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,12 +32,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-模块信息")]
     public class ModuleController : AdminApiController
     {
-        private readonly SecurityManager _securityManager;
+        private readonly FunctionAuthManager _functionAuthManager;
         private readonly IFilterService _filterService;
 
-        public ModuleController(SecurityManager securityManager, IFilterService filterService)
+        public ModuleController(FunctionAuthManager functionAuthManager, IFilterService filterService)
         {
-            _securityManager = securityManager;
+            _functionAuthManager = functionAuthManager;
             _filterService = filterService;
         }
 
@@ -51,7 +51,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public List<ModuleOutputDto> Read()
         {
             Expression<Func<Module, bool>> predicate = m => true;
-            List<ModuleOutputDto> modules = _securityManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
+            List<ModuleOutputDto> modules = _functionAuthManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
             return modules;
         }
 
@@ -65,9 +65,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public List<object> ReadUserModules(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
-            int[] checkedModuleIds = _securityManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
+            int[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
 
-            int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
@@ -82,22 +82,22 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public List<object> ReadRoleModules(int roleId)
         {
             Check.GreaterThan(roleId, nameof(roleId), 0);
-            int[] checkedModuleIds = _securityManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
+            int[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
 
-            int[] rootIds = _securityManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
         
         private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
         {
-            var modules = _securityManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
+            var modules = _functionAuthManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
             {
                 m.Id,
                 m.Name,
                 m.OrderCode,
                 m.Remark,
-                ChildIds = _securityManager.Modules.Where(n => n.ParentId == m.Id).OrderBy(n => n.OrderCode).Select(n => n.Id).ToList()
+                ChildIds = _functionAuthManager.Modules.Where(n => n.ParentId == m.Id).OrderBy(n => n.OrderCode).Select(n => n.Id).ToList()
             }).ToList();
             List<object> nodes = new List<object>();
             foreach (var item in modules)
@@ -129,8 +129,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 
         private bool IsRoleLimit(int moduleId)
         {
-            return _securityManager.Functions
-                .Where(m => _securityManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
+            return _functionAuthManager.Functions
+                .Where(m => _functionAuthManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
                 .Any(m => m.AccessType == FunctionAccessType.RoleLimit);
         }
 
@@ -149,8 +149,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
             Expression<Func<Module, bool>> moduleExp = _filterService.GetExpression<Module>(request.FilterGroup);
-            int[] moduleIds = _securityManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
-            Guid[] functionIds = _securityManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+            int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
+            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
@@ -160,7 +160,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
-            var page = _securityManager.Functions.ToPage(m => functionIds.Contains(m.Id),
+            var page = _functionAuthManager.Functions.ToPage(m => functionIds.Contains(m.Id),
                 request.PageCondition,
                 m => new FunctionOutputDto2() { Id = m.Id, Name = m.Name, AccessType = m.AccessType, Area = m.Area, Controller = m.Controller });
             return page.ToPageData();
@@ -182,7 +182,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(dto, nameof(dto));
 
-            OperationResult result = await _securityManager.CreateModule(dto);
+            OperationResult result = await _functionAuthManager.CreateModule(dto);
             return result.ToAjaxResult();
         }
 
@@ -204,7 +204,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new AjaxResult("根节点不能编辑", AjaxResultType.Error);
             }
 
-            OperationResult result = await _securityManager.UpdateModule(dto);
+            OperationResult result = await _functionAuthManager.UpdateModule(dto);
             return result.ToAjaxResult();
         }
 
@@ -227,7 +227,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new AjaxResult("根节点不能删除", AjaxResultType.Error);
             }
 
-            OperationResult result = await _securityManager.DeleteModule(id);
+            OperationResult result = await _functionAuthManager.DeleteModule(id);
             return result.ToAjaxResult();
         }
 
@@ -244,7 +244,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("设置功能")]
         public async Task<AjaxResult> SetFunctions([FromBody] ModuleSetFunctionDto dto)
         {
-            OperationResult result = await _securityManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
+            OperationResult result = await _functionAuthManager.SetModuleFunctions(dto.ModuleId, dto.FunctionIds);
             return result.ToAjaxResult();
         }
         */

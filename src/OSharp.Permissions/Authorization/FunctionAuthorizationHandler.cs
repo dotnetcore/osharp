@@ -12,14 +12,9 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 
-using OSharp.AspNetCore;
-using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Functions;
-using OSharp.Data;
 
 
 namespace OSharp.Authorization
@@ -73,51 +68,6 @@ namespace OSharp.Authorization
             ClaimsPrincipal user = context.User;
             AuthorizationResult result = _functionAuthorization.Authorize(function, user);
             return result;
-        }
-
-        /// <summary>
-        /// 重写以实现授权未通过的处理逻辑
-        /// </summary>
-        /// <param name="context">权限验证上下文</param>
-        /// <param name="result">权限检查结果</param>
-        protected virtual void HandleMvcUnauthorizedRequest(AuthorizationFilterContext context, AuthorizationResult result)
-        {
-            //Json方式请求，返回AjaxResult
-            bool isJsRequest = context.HttpContext.Request.IsAjaxRequest() || context.HttpContext.Request.IsJsonContextType();
-
-            AuthorizationStatus status = result.ResultType;
-            switch (status)
-            {
-                case AuthorizationStatus.Unauthorized:
-                    context.Result = isJsRequest
-                        ? (IActionResult)new JsonResult(new AjaxResult(result.Message, AjaxResultType.UnAuth))
-                        : new UnauthorizedResult();
-                    break;
-                case AuthorizationStatus.Forbidden:
-                    context.Result = isJsRequest
-                        ? (IActionResult)new JsonResult(new AjaxResult(result.Message, AjaxResultType.Forbidden))
-                        : new StatusCodeResult(403);
-                    break;
-                case AuthorizationStatus.NoFound:
-                    context.Result = isJsRequest
-                        ? (IActionResult)new JsonResult(new AjaxResult(result.Message, AjaxResultType.NoFound))
-                        : new StatusCodeResult(404);
-                    break;
-                case AuthorizationStatus.Locked:
-                    context.Result = isJsRequest
-                        ? (IActionResult)new JsonResult(new AjaxResult(result.Message, AjaxResultType.Locked))
-                        : new StatusCodeResult(423);
-                    break;
-                case AuthorizationStatus.Error:
-                    context.Result = isJsRequest
-                        ? (IActionResult)new JsonResult(new AjaxResult(result.Message, AjaxResultType.Error))
-                        : new StatusCodeResult(500);
-                    break;
-            }
-            if (isJsRequest)
-            {
-                context.HttpContext.Response.StatusCode = 200;
-            }
         }
     }
 }

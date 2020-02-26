@@ -14,11 +14,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,20 +45,20 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     public class RoleController : AdminApiController
     {
         private readonly IIdentityContract _identityContract;
+        private readonly FunctionAuthManager _functionAuthorizationManager;
         private readonly ICacheService _cacheService;
         private readonly IFilterService _filterService;
         private readonly RoleManager<Role> _roleManager;
-        private readonly SecurityManager _securityManager;
 
         public RoleController(RoleManager<Role> roleManager,
-            SecurityManager securityManager,
             IIdentityContract identityContract,
+            FunctionAuthManager functionAuthorizationManager,
             ICacheService cacheService,
             IFilterService filterService)
         {
             _roleManager = roleManager;
-            _securityManager = securityManager;
             _identityContract = identityContract;
+            _functionAuthorizationManager = functionAuthorizationManager;
             _cacheService = cacheService;
             _filterService = filterService;
         }
@@ -214,7 +214,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("设置模块")]
         public async Task<ActionResult> SetModules(RoleSetModuleDto dto)
         {
-            OperationResult result = await _securityManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
+            OperationResult result = await _functionAuthorizationManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return Json(result.ToAjaxResult());
         }
     }

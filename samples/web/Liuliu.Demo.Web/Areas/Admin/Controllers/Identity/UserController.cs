@@ -14,12 +14,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Common.Dtos;
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -47,19 +48,18 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         private readonly IIdentityContract _identityContract;
         private readonly ICacheService _cacheService;
         private readonly IFilterService _filterService;
-        private readonly SecurityManager _securityManager;
         private readonly UserManager<User> _userManager;
+        private readonly FunctionAuthManager _functionAuthManager;
 
         public UserController(
             UserManager<User> userManager,
-            SecurityManager securityManager,
+            FunctionAuthManager functionAuthManager,
             IIdentityContract identityContract,
-            ILoggerFactory loggerFactory,
             ICacheService cacheService,
             IFilterService filterService)
         {
             _userManager = userManager;
-            _securityManager = securityManager;
+            _functionAuthManager = functionAuthManager;
             _identityContract = identityContract;
             _cacheService = cacheService;
             _filterService = filterService;
@@ -227,7 +227,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(UserSetModuleDto dto)
         {
-            OperationResult result = await _securityManager.SetUserModules(dto.UserId, dto.ModuleIds);
+            OperationResult result = await _functionAuthManager.SetUserModules(dto.UserId, dto.ModuleIds);
             return result.ToAjaxResult();
         }
     }

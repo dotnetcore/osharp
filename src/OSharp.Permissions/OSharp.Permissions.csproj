@@ -27,4 +27,9 @@
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Identity\Events\" />
+    <Folder Include="Security\Events\" />
+  </ItemGroup>
+
 </Project>

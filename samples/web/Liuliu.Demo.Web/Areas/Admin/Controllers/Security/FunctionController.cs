@@ -13,22 +13,22 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Common.Dtos;
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Authorization.Dtos;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -37,15 +37,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-功能信息")]
     public class FunctionController : AdminApiController
     {
-        private readonly SecurityManager _securityManager;
+        private readonly FunctionAuthManager _functionAuthManager;
         private readonly ICacheService _cacheService;
         private readonly IFilterService _filterService;
 
-        public FunctionController(SecurityManager securityManager,
+        public FunctionController(FunctionAuthManager functionAuthManager,
             ICacheService cacheService,
             IFilterService filterService)
         {
-            _securityManager = securityManager;
+            _functionAuthManager = functionAuthManager;
             _cacheService = cacheService;
             _filterService = filterService;
         }
@@ -66,7 +66,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 new SortCondition("IsController", ListSortDirection.Descending));
 
             Expression<Func<Function, bool>> predicate = _filterService.GetExpression<Function>(request.FilterGroup);
-            PageResult<FunctionOutputDto> page = _cacheService.ToPageCache<Function, FunctionOutputDto>(_securityManager.Functions, predicate, request.PageCondition, function);
+            PageResult<FunctionOutputDto> page = _cacheService.ToPageCache<Function, FunctionOutputDto>(_functionAuthManager.Functions, predicate, request.PageCondition, function);
             return page.ToPageData();
         }
 
@@ -80,9 +80,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public TreeNode[] ReadTreeNode(int moduleId)
         {
             Check.GreaterThan(moduleId, nameof(moduleId), 0);
-            Guid[] checkFuncIds = _securityManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
+            Guid[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
 
-            var groups = _securityManager.Functions.Unlocked()
+            var groups = _functionAuthManager.Functions.Unlocked()
                 .Where(m => m.Area == null || m.Area == "Admin")
                 .Select(m => new
                 {
@@ -141,7 +141,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(dtos, nameof(dtos));
 
-            OperationResult result = await _securityManager.UpdateFunctions(dtos);
+            OperationResult result = await _functionAuthManager.UpdateFunctions(dtos);
             return result.ToAjaxResult();
         }
     }

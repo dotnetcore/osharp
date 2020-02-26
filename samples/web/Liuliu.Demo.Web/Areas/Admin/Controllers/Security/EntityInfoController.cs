@@ -14,21 +14,20 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Liuliu.Demo.Security;
-using Liuliu.Demo.Security.Dtos;
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Authorization.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
+using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
 using OSharp.Authorization.Modules;
-using OSharp.Core;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
-using OSharp.Security;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
@@ -37,13 +36,13 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-实体信息")]
     public class EntityInfoController : AdminApiController
     {
-        private readonly SecurityManager _securityManager;
+        private readonly DataAuthManager _dataAuthManager;
         private readonly IFilterService _filterService;
 
-        public EntityInfoController(SecurityManager securityManager,
+        public EntityInfoController(DataAuthManager dataAuthManager,
             IFilterService filterService)
         {
-            _securityManager = securityManager;
+            _dataAuthManager = dataAuthManager;
             _filterService = filterService;
         }
 
@@ -61,7 +60,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
             Expression<Func<EntityInfo, bool>> predicate = _filterService.GetExpression<EntityInfo>(request.FilterGroup);
-            var page = _securityManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
+            var page = _dataAuthManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }
 
@@ -74,7 +73,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取节点")]
         public List<EntityInfoNode> ReadNode()
         {
-            List<EntityInfoNode> nodes = _securityManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfo, EntityInfoNode>().ToList();
+            List<EntityInfoNode> nodes = _dataAuthManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfo, EntityInfoNode>().ToList();
             return nodes;
         }
 
@@ -88,7 +87,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public AjaxResult ReadProperties(string typeName)
         {
             Check.NotNull(typeName, nameof(typeName));
-            string json = _securityManager.EntityInfos.FirstOrDefault(m => m.TypeName == typeName)?.PropertyJson;
+            string json = _dataAuthManager.EntityInfos.FirstOrDefault(m => m.TypeName == typeName)?.PropertyJson;
             if (json == null)
             {
                 return new AjaxResult($"实体类“{typeName}”不存在", AjaxResultType.Error);
@@ -112,7 +111,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public async Task<AjaxResult> Update(EntityInfoInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            OperationResult result = await _securityManager.UpdateEntityInfos(dtos);
+            OperationResult result = await _dataAuthManager.UpdateEntityInfos(dtos);
             return result.ToAjaxResult();
         }
     }

@@ -12,8 +12,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Liuliu.Demo.Authorization;
 using Liuliu.Demo.Identity.Entities;
-using Liuliu.Demo.Security;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        private readonly SecurityManager _securityManager;
+        private readonly FunctionAuthManager _functionAuthorizationManager;
+        private readonly DataAuthManager _dataAuthorizationManager;
         private readonly ICacheService _cacheService;
 
         /// <summary>
@@ -42,12 +44,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// </summary>
         public DashboardController(UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            SecurityManager securityManager,
+            FunctionAuthManager functionAuthorizationManager,
+            DataAuthManager dataAuthorizationManager,
             ICacheService cacheService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _securityManager = securityManager;
+            _functionAuthorizationManager = functionAuthorizationManager;
+            _dataAuthorizationManager = dataAuthorizationManager;
             _cacheService = cacheService;
         }
 
@@ -84,7 +88,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 "Dashboard_Summary_Role",
                 start,
                 end).FirstOrDefault() ?? new { TotalCount = 0, AdminCount = 0 };
-            var modules = _cacheService.ToCacheList(_securityManager.Modules.GroupBy(m => 1).Select(g => new
+            var modules = _cacheService.ToCacheList(_functionAuthorizationManager.Modules.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 SiteCount = g.Sum(n => n.TreePathString.Contains("$2$") ? 1 : 0),
@@ -92,14 +96,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }),
                 function,
                 "Dashboard_Summary_Module").FirstOrDefault() ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
-            var functions = _cacheService.ToCacheList(_securityManager.Functions.GroupBy(m => m.Id).Select(g => new
+            var functions = _cacheService.ToCacheList(_functionAuthorizationManager.Functions.GroupBy(m => m.Id).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 ControllerCount = g.Sum(m => m.IsController ? 1 : 0)
             }),
                 function,
                 "Dashboard_Summary_Function").FirstOrDefault() ?? new { TotalCount = 0, ControllerCount = 0 };
-            var entityInfos = _cacheService.ToCacheList(_securityManager.EntityInfos.GroupBy(m => m.Id).Select(g => new
+            var entityInfos = _cacheService.ToCacheList(_dataAuthorizationManager.EntityInfos.GroupBy(m => m.Id).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 AuditCount = g.Sum(m => m.AuditEnabled ? 1 : 0)
