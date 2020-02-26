@@ -13,9 +13,12 @@ using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.Functions;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 
@@ -25,6 +28,7 @@ namespace Liuliu.Demo.Authorization
     /// <summary>
     /// 功能权限管理器
     /// </summary>
+    [Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class FunctionAuthManager
         : FunctionAuthorizationManagerBase<Function, FunctionInputDto, Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, UserRole,
             Guid, Role, int, User, int>

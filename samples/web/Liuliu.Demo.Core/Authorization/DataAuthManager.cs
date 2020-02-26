@@ -13,9 +13,12 @@ using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
 using Liuliu.Demo.Identity.Entities;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Authorization.DataAuthorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
+using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 
@@ -25,6 +28,7 @@ namespace Liuliu.Demo.Authorization
     /// <summary>
     /// 数据权限管理器
     /// </summary>
+    //[Dependency(ServiceLifetime.Scoped, AddSelf = true)]
     public class DataAuthManager : DataAuthorizationManagerBase<EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, Role, int>
     {
         /// <summary>
@@ -34,7 +38,7 @@ namespace Liuliu.Demo.Authorization
         /// <param name="entityInfoRepository">实体仓储</param>
         /// <param name="entityRoleRepository">实体角色仓储</param>
         /// <param name="roleRepository">角色仓储</param>
-        protected DataAuthManager(IEventBus eventBus,
+        public DataAuthManager(IEventBus eventBus,
             IRepository<EntityInfo, Guid> entityInfoRepository,
             IRepository<EntityRole, Guid> entityRoleRepository,
             IRepository<Role, int> roleRepository)

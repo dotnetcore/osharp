@@ -10,7 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.Authorization\OSharp.Authorization.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\..\src\OSharp.Identity\OSharp.Identity.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
   </ItemGroup>
 

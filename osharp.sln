@@ -73,9 +73,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AspNetCore.Tests", "tests\OSharp.AspNetCore.Tests\OSharp.AspNetCore.Tests.csproj", "{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Identity", "src\OSharp.Identity\OSharp.Identity.csproj", "{6EDD457E-7848-47B9-A449-323AAFE854D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Identity", "src\OSharp.Identity\OSharp.Identity.csproj", "{6EDD457E-7848-47B9-A449-323AAFE854D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Authorization", "src\OSharp.Authorization\OSharp.Authorization.csproj", "{43F382F3-FB07-4EFE-AA6C-007756EC850A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization", "src\OSharp.Authorization\OSharp.Authorization.csproj", "{43F382F3-FB07-4EFE-AA6C-007756EC850A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,8 +9,8 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20200226174335_Init")]
-    partial class Init
+    [Migration("20200226175729_Init2")]
+    partial class Init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
