@@ -21,7 +21,7 @@ namespace OSharp.Authorization.Entities
     /// <summary>
     /// 数据角色实体基类
     /// </summary>
-    [TableNamePrefix("Security")]
+    [TableNamePrefix("Auth")]
     public abstract class EntityRoleBase<TRoleKey> : EntityBase<Guid>, ILockable, ICreatedTime
     {
         /// <summary>

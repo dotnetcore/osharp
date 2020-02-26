@@ -18,7 +18,7 @@ namespace OSharp.Authorization.Entities
     /// <summary>
     /// 模块功能信息基类
     /// </summary>
-    [TableNamePrefix("Security")]
+    [TableNamePrefix("Auth")]
     public abstract class ModuleFunctionBase<TModuleKey> : EntityBase<Guid>
     {
         /// <summary>

@@ -33,7 +33,7 @@ using OSharp.Filter;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 2, Position = "Security", PositionName = "权限安全模块")]
+    [ModuleInfo(Order = 2, Position = "Auth", PositionName = "权限授权模块")]
     [Description("管理-功能信息")]
     public class FunctionController : AdminApiController
     {

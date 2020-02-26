@@ -18,7 +18,7 @@ namespace OSharp.Authorization.EntityInfos
     /// 实体类：实体信息类
     /// </summary>
     [Description("实体信息类")]
-    [TableNamePrefix("Security")]
+    [TableNamePrefix("Auth")]
     public class EntityInfo : EntityInfoBase
     { }
 }

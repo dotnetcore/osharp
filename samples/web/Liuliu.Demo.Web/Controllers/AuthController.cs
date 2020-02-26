@@ -29,11 +29,11 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-授权")]
     [ModuleInfo(Order = 2)]
-    public class SecurityController : ApiController
+    public class AuthController : ApiController
     {
         private readonly FunctionAuthManager _functionAuthManager;
 
-        public SecurityController(FunctionAuthManager functionAuthManager)
+        public AuthController(FunctionAuthManager functionAuthManager)
         {
             _functionAuthManager = functionAuthManager;
         }

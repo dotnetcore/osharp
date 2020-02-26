@@ -22,7 +22,7 @@ namespace OSharp.Authorization.Entities
     /// <summary>
     /// 模块信息基类
     /// </summary>
-    [TableNamePrefix("Security")]
+    [TableNamePrefix("Auth")]
     public abstract class ModuleBase<TModuleKey> : EntityBase<TModuleKey>
         where TModuleKey : struct, IEquatable<TModuleKey>
     {

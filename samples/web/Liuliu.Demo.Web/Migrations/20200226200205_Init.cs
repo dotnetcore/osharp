@@ -4,33 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Liuliu.Demo.Web.Migrations
 {
-    public partial class Init2 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Identity_Organization",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    Remark = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Identity_Organization", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Identity_Organization_Identity_Organization_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Identity_Organization",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Security_EntityInfo",
+                name: "Auth_EntityInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -41,11 +20,11 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Security_EntityInfo", x => x.Id);
+                    table.PrimaryKey("PK_Auth_EntityInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Security_Function",
+                name: "Auth_Function",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -65,11 +44,11 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Security_Function", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Function", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Security_Module",
+                name: "Auth_Module",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -83,11 +62,32 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Security_Module", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Module", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Security_Module_Security_Module_ParentId",
+                        name: "FK_Auth_Module_Auth_Module_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Security_Module",
+                        principalTable: "Auth_Module",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Identity_Organization",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    Remark = table.Column<string>(nullable: true),
+                    ParentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Identity_Organization", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Identity_Organization_Identity_Organization_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Identity_Organization",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -131,7 +131,7 @@ namespace Liuliu.Demo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Security_ModuleFunction",
+                name: "Auth_ModuleFunction",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -140,17 +140,17 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Security_ModuleFunction", x => x.Id);
+                    table.PrimaryKey("PK_Auth_ModuleFunction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Security_ModuleFunction_Security_Function_FunctionId",
+                        name: "FK_Auth_ModuleFunction_Auth_Function_FunctionId",
                         column: x => x.FunctionId,
-                        principalTable: "Security_Function",
+                        principalTable: "Auth_Function",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Security_ModuleFunction_Security_Module_ModuleId",
+                        name: "FK_Auth_ModuleFunction_Auth_Module_ModuleId",
                         column: x => x.ModuleId,
-                        principalTable: "Security_Module",
+                        principalTable: "Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -201,6 +201,90 @@ namespace Liuliu.Demo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Auth_EntityRole",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<Guid>(nullable: false),
+                    Operation = table.Column<int>(nullable: false),
+                    FilterGroupJson = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_EntityRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_EntityRole_Auth_EntityInfo_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "Auth_EntityInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_EntityUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<Guid>(nullable: false),
+                    FilterGroupJson = table.Column<string>(nullable: true),
+                    IsLocked = table.Column<bool>(nullable: false),
+                    CreatedTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_EntityUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_EntityUser_Auth_EntityInfo_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "Auth_EntityInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_ModuleRole",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ModuleId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_ModuleRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_ModuleRole_Auth_Module_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Auth_Module",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auth_ModuleUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ModuleId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Disabled = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auth_ModuleUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auth_ModuleUser_Auth_Module_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Auth_Module",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Identity_RoleClaim",
                 columns: table => new
                 {
@@ -229,48 +313,6 @@ namespace Liuliu.Demo.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Identity_UserRole", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Security_EntityRole",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    EntityId = table.Column<Guid>(nullable: false),
-                    Operation = table.Column<int>(nullable: false),
-                    FilterGroupJson = table.Column<string>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Security_EntityRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Security_EntityRole_Security_EntityInfo_EntityId",
-                        column: x => x.EntityId,
-                        principalTable: "Security_EntityInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Security_ModuleRole",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Security_ModuleRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Security_ModuleRole_Security_Module_ModuleId",
-                        column: x => x.ModuleId,
-                        principalTable: "Security_Module",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -514,69 +556,15 @@ namespace Liuliu.Demo.Web.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Security_EntityUser",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    EntityId = table.Column<Guid>(nullable: false),
-                    FilterGroupJson = table.Column<string>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Security_EntityUser", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Security_EntityUser_Security_EntityInfo_EntityId",
-                        column: x => x.EntityId,
-                        principalTable: "Security_EntityInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Security_EntityUser_Identity_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Identity_User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Security_ModuleUser",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    Disabled = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Security_ModuleUser", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Security_ModuleUser_Security_Module_ModuleId",
-                        column: x => x.ModuleId,
-                        principalTable: "Security_Module",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Security_ModuleUser_Identity_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Identity_User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.InsertData(
+                table: "Auth_Module",
+                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
+                values: new object[] { 1, "Root", "根节点", 1.0, null, "系统根节点", "$1$" });
 
             migrationBuilder.InsertData(
                 table: "Identity_Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "DeletedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "MessageId", "Name", "NormalizedName", "Remark" },
                 values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, false, false, true, null, "系统管理员", "系统管理员", "系统最高权限管理角色" });
-
-            migrationBuilder.InsertData(
-                table: "Security_Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 1, "Root", "根节点", 1.0, null, "系统根节点", "$1$" });
 
             migrationBuilder.InsertData(
                 table: "Systems_KeyValue",
@@ -586,6 +574,77 @@ namespace Liuliu.Demo.Web.Migrations
                     { new Guid("534d7813-0eea-44cc-b88e-a9cb010c6981"), false, "Site.Name", "\"OSHARP\"", "System.String,System.Private.CoreLib" },
                     { new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"), false, "Site.Description", "\"Osharp with AspNetCore & Angular\"", "System.String,System.Private.CoreLib" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ClassFullNameIndex",
+                table: "Auth_EntityInfo",
+                column: "TypeName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_EntityRole_RoleId",
+                table: "Auth_EntityRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EntityRoleIndex",
+                table: "Auth_EntityRole",
+                columns: new[] { "EntityId", "RoleId", "Operation" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_EntityUser_UserId",
+                table: "Auth_EntityUser",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "EntityUserIndex",
+                table: "Auth_EntityUser",
+                columns: new[] { "EntityId", "UserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "AreaControllerActionIndex",
+                table: "Auth_Function",
+                columns: new[] { "Area", "Controller", "Action" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_Module_ParentId",
+                table: "Auth_Module",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_ModuleFunction_FunctionId",
+                table: "Auth_ModuleFunction",
+                column: "FunctionId");
+
+            migrationBuilder.CreateIndex(
+                name: "ModuleFunctionIndex",
+                table: "Auth_ModuleFunction",
+                columns: new[] { "ModuleId", "FunctionId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_ModuleRole_RoleId",
+                table: "Auth_ModuleRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "ModuleRoleIndex",
+                table: "Auth_ModuleRole",
+                columns: new[] { "ModuleId", "RoleId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_ModuleUser_UserId",
+                table: "Auth_ModuleUser",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "ModuleUserIndex",
+                table: "Auth_ModuleUser",
+                columns: new[] { "ModuleId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_LoginLog_UserId",
@@ -704,77 +763,6 @@ namespace Liuliu.Demo.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "ClassFullNameIndex",
-                table: "Security_EntityInfo",
-                column: "TypeName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_EntityRole_RoleId",
-                table: "Security_EntityRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "EntityRoleIndex",
-                table: "Security_EntityRole",
-                columns: new[] { "EntityId", "RoleId", "Operation" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_EntityUser_UserId",
-                table: "Security_EntityUser",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "EntityUserIndex",
-                table: "Security_EntityUser",
-                columns: new[] { "EntityId", "UserId" });
-
-            migrationBuilder.CreateIndex(
-                name: "AreaControllerActionIndex",
-                table: "Security_Function",
-                columns: new[] { "Area", "Controller", "Action" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_Module_ParentId",
-                table: "Security_Module",
-                column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_ModuleFunction_FunctionId",
-                table: "Security_ModuleFunction",
-                column: "FunctionId");
-
-            migrationBuilder.CreateIndex(
-                name: "ModuleFunctionIndex",
-                table: "Security_ModuleFunction",
-                columns: new[] { "ModuleId", "FunctionId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_ModuleRole_RoleId",
-                table: "Security_ModuleRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "ModuleRoleIndex",
-                table: "Security_ModuleRole",
-                columns: new[] { "ModuleId", "RoleId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Security_ModuleUser_UserId",
-                table: "Security_ModuleUser",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "ModuleUserIndex",
-                table: "Security_ModuleUser",
-                columns: new[] { "ModuleId", "UserId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Systems_AuditEntity_OperationId",
                 table: "Systems_AuditEntity",
                 column: "OperationId");
@@ -785,18 +773,42 @@ namespace Liuliu.Demo.Web.Migrations
                 column: "AuditEntityId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Identity_RoleClaim_Identity_Role_RoleId",
-                table: "Identity_RoleClaim",
+                name: "FK_Auth_EntityRole_Identity_Role_RoleId",
+                table: "Auth_EntityRole",
                 column: "RoleId",
                 principalTable: "Identity_Role",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Identity_UserRole_Identity_User_UserId",
-                table: "Identity_UserRole",
+                name: "FK_Auth_EntityUser_Identity_User_UserId",
+                table: "Auth_EntityUser",
                 column: "UserId",
                 principalTable: "Identity_User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Auth_ModuleRole_Identity_Role_RoleId",
+                table: "Auth_ModuleRole",
+                column: "RoleId",
+                principalTable: "Identity_Role",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Auth_ModuleUser_Identity_User_UserId",
+                table: "Auth_ModuleUser",
+                column: "UserId",
+                principalTable: "Identity_User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Identity_RoleClaim_Identity_Role_RoleId",
+                table: "Identity_RoleClaim",
+                column: "RoleId",
+                principalTable: "Identity_Role",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -809,18 +821,10 @@ namespace Liuliu.Demo.Web.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Security_EntityRole_Identity_Role_RoleId",
-                table: "Security_EntityRole",
-                column: "RoleId",
-                principalTable: "Identity_Role",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Security_ModuleRole_Identity_Role_RoleId",
-                table: "Security_ModuleRole",
-                column: "RoleId",
-                principalTable: "Identity_Role",
+                name: "FK_Identity_UserRole_Identity_User_UserId",
+                table: "Identity_UserRole",
+                column: "UserId",
+                principalTable: "Identity_User",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -880,6 +884,21 @@ namespace Liuliu.Demo.Web.Migrations
                 table: "Infos_Message");
 
             migrationBuilder.DropTable(
+                name: "Auth_EntityRole");
+
+            migrationBuilder.DropTable(
+                name: "Auth_EntityUser");
+
+            migrationBuilder.DropTable(
+                name: "Auth_ModuleFunction");
+
+            migrationBuilder.DropTable(
+                name: "Auth_ModuleRole");
+
+            migrationBuilder.DropTable(
+                name: "Auth_ModuleUser");
+
+            migrationBuilder.DropTable(
                 name: "Identity_LoginLog");
 
             migrationBuilder.DropTable(
@@ -910,37 +929,22 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReply");
 
             migrationBuilder.DropTable(
-                name: "Security_EntityRole");
-
-            migrationBuilder.DropTable(
-                name: "Security_EntityUser");
-
-            migrationBuilder.DropTable(
-                name: "Security_ModuleFunction");
-
-            migrationBuilder.DropTable(
-                name: "Security_ModuleRole");
-
-            migrationBuilder.DropTable(
-                name: "Security_ModuleUser");
-
-            migrationBuilder.DropTable(
                 name: "Systems_AuditProperty");
 
             migrationBuilder.DropTable(
                 name: "Systems_KeyValue");
 
             migrationBuilder.DropTable(
-                name: "Security_EntityInfo");
+                name: "Auth_EntityInfo");
 
             migrationBuilder.DropTable(
-                name: "Security_Function");
+                name: "Auth_Function");
+
+            migrationBuilder.DropTable(
+                name: "Auth_Module");
 
             migrationBuilder.DropTable(
                 name: "Identity_Role");
-
-            migrationBuilder.DropTable(
-                name: "Security_Module");
 
             migrationBuilder.DropTable(
                 name: "Systems_AuditEntity");

@@ -20,7 +20,7 @@ namespace OSharp.Authorization.Entities
     /// </summary>
     /// <typeparam name="TModuleKey">模块编号</typeparam>
     /// <typeparam name="TRoleKey">角色编号</typeparam>
-    [TableNamePrefix("Security")]
+    [TableNamePrefix("Auth")]
     public abstract class ModuleRoleBase<TModuleKey, TRoleKey> : EntityBase<Guid>
     {
         /// <summary>

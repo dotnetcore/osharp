@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="UserFunctionController.cs" company="OSharp开源团队">
+//  <copyright file="RoleFunctionController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
@@ -29,55 +29,53 @@ using OSharp.Linq;
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
-    [ModuleInfo(Order = 4, Position = "Security", PositionName = "权限安全模块")]
-    [Description("管理-用户功能")]
-    public class UserFunctionController : AdminApiController
+    [ModuleInfo(Order = 3, Position = "Auth", PositionName = "权限授权模块")]
+    [Description("管理-角色功能")]
+    public class RoleFunctionController : AdminApiController
     {
-        private readonly IFilterService _filterService;
         private readonly FunctionAuthManager _functionAuthManager;
-        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly IFilterService _filterService;
 
-        public UserFunctionController(FunctionAuthManager functionAuthManager,
-            UserManager<User> userManager, 
+        public RoleFunctionController(FunctionAuthManager functionAuthManager, 
             RoleManager<Role> roleManager,
             IFilterService filterService)
         {
             _functionAuthManager = functionAuthManager;
-            _userManager = userManager;
+            _roleManager = roleManager;
             _filterService = filterService;
         }
 
         /// <summary>
-        /// 读取用户信息
+        /// 读取角色信息
         /// </summary>
-        /// <returns>用户信息</returns>
+        /// <returns>角色信息</returns>
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<UserOutputDto2> Read(PageRequest request)
+        public PageData<RoleOutputDto2> Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
+            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
+            PageResult<RoleOutputDto2> page = _roleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
 
         /// <summary>
-        /// 读取用户功能信息
+        /// 读取角色功能信息
         /// </summary>
-        /// <returns>用户功能信息</returns>
+        /// <returns>角色功能信息</returns>
         [HttpPost]
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(int userId, [FromBody]PageRequest request)
+        public PageData<FunctionOutputDto2> ReadFunctions(int roleId, [FromBody]PageRequest request)
         {
-            if (userId == 0)
+            if (roleId == 0)
             {
                 return new PageData<FunctionOutputDto2>();
             }
-
-            int[] moduleIds = _functionAuthManager.GetUserWithRoleModuleIds(userId);
+            int[] moduleIds = _functionAuthManager.GetRoleModuleIds(roleId);
             Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
             if (functionIds.Length == 0)
@@ -92,7 +90,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
 
-            PageResult<FunctionOutputDto2> page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+            var page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
             return page.ToPageData();
         }
     }
