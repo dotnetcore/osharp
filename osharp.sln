@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C
 		build\build-pack.bat = build\build-pack.bat
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
+		README.md = README.md
 		docs\articles\updatelogs.md = docs\articles\updatelogs.md
 		build\version.props = build\version.props
 	EndProjectSection
