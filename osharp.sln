@@ -5,44 +5,37 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{611006C4-BCE9-4EDC-8473-A85530C7FADE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp", "src\OSharp\OSharp.csproj", "{DEBA7226-EED4-4B8F-96C0-54EFF0A9317B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp", "src\OSharp\OSharp.csproj", "{DEBA7226-EED4-4B8F-96C0-54EFF0A9317B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AspNetCore", "src\OSharp.AspNetCore\OSharp.AspNetCore.csproj", "{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AspNetCore", "src\OSharp.AspNetCore\OSharp.AspNetCore.csproj", "{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AspNetCore.Diagnostics", "src\OSharp.AspNetCore.Diagnostics\OSharp.AspNetCore.Diagnostics.csproj", "{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{1C047E4B-774D-4BAF-955D-C36303F21DFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper", "src\OSharp.AutoMapper\OSharp.AutoMapper.csproj", "{1C047E4B-774D-4BAF-955D-C36303F21DFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore", "src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj", "{483FDD55-0867-46C1-81D5-5E97BE9022EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration", "src\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{044195F4-59ED-4359-9A6D-28BC207F4D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore", "src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj", "{483FDD55-0867-46C1-81D5-5E97BE9022EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.MySql", "src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj", "{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{386EAF51-6AA5-4176-86E8-10B1C092A739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{46209223-0805-47A2-83B3-3C1B2D2A252F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{7074A033-9087-4198-BC59-31B33C94EC8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.PostgreSql", "src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj", "{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.Sqlite", "src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj", "{386EAF51-6AA5-4176-86E8-10B1C092A739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{1E560A54-864A-496B-A770-105CDBFE4C6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.EntityFrameworkCore.SqlServer", "src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj", "{7074A033-9087-4198-BC59-31B33C94EC8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{22F6657E-626C-41DF-AB9F-02ACE3752038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Exceptionless", "src\OSharp.Exceptionless\OSharp.Exceptionless.csproj", "{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.NLog", "src\OSharp.NLog\OSharp.NLog.csproj", "{41A076D2-E9C1-4DE2-A116-D05544EB967D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Hangfire", "src\OSharp.Hangfire\OSharp.Hangfire.csproj", "{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{2E068082-A6F8-4FD7-8002-1DD8C649C46F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Log4Net", "src\OSharp.Log4Net\OSharp.Log4Net.csproj", "{1E560A54-864A-496B-A770-105CDBFE4C6E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.MiniProfiler", "src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj", "{22F6657E-626C-41DF-AB9F-02ACE3752038}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.NLog", "src\OSharp.NLog\OSharp.NLog.csproj", "{41A076D2-E9C1-4DE2-A116-D05544EB967D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Redis", "src\OSharp.Redis\OSharp.Redis.csproj", "{2E068082-A6F8-4FD7-8002-1DD8C649C46F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{A998F090-4147-4FFB-9E8F-77DDACD55641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OSharp.Swagger\OSharp.Swagger.csproj", "{A998F090-4147-4FFB-9E8F-77DDACD55641}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
+		build\build-pack.bat = build\build-pack.bat
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
 		docs\articles\updatelogs.md = docs\articles\updatelogs.md
@@ -55,29 +48,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{D06C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core", "samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj", "{3E94506B-5A3E-4B8E-AD87-452BB174028E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core", "samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj", "{3E94506B-5A3E-4B8E-AD87-452BB174028E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.EntityConfiguration", "samples\web\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj", "{BB625BE8-CEDF-40E8-B596-3CB8CC3E281F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.EntityConfiguration", "samples\web\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj", "{BB625BE8-CEDF-40E8-B596-3CB8CC3E281F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Web", "samples\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Web", "samples\web\Liuliu.Demo.Web\Liuliu.Demo.Web.csproj", "{7A5907F6-C38F-45A7-B2A2-C172A7723FB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{1B047F1A-FECC-4887-962B-E6B165B23D8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.UnitTest.Infrastructure", "tests\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj", "{1B047F1A-FECC-4887-962B-E6B165B23D8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Tests", "tests\OSharp.Tests\OSharp.Tests.csproj", "{BE36FDE0-84ED-47DD-AC78-9E86F1064015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Tests", "tests\OSharp.Tests\OSharp.Tests.csproj", "{BE36FDE0-84ED-47DD-AC78-9E86F1064015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{4313E9E7-B5B1-4304-AE32-59067C82F380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Core.Tests", "tests\Liuliu.Demo.Core.Tests\Liuliu.Demo.Core.Tests.csproj", "{4313E9E7-B5B1-4304-AE32-59067C82F380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Wpf", "src\OSharp.Wpf\OSharp.Wpf.csproj", "{D926CFBD-1420-41DA-98F5-A873C955BB44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Wpf", "src\OSharp.Wpf\OSharp.Wpf.csproj", "{D926CFBD-1420-41DA-98F5-A873C955BB44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.CodeGeneration.Tests", "tests\OSharp.CodeGeneration.Tests\OSharp.CodeGeneration.Tests.csproj", "{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AspNetCore.Tests", "tests\OSharp.AspNetCore.Tests\OSharp.AspNetCore.Tests.csproj", "{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AspNetCore.Tests", "tests\OSharp.AspNetCore.Tests\OSharp.AspNetCore.Tests.csproj", "{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Identity", "src\OSharp.Identity\OSharp.Identity.csproj", "{6EDD457E-7848-47B9-A449-323AAFE854D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Identity", "src\OSharp.Identity\OSharp.Identity.csproj", "{6EDD457E-7848-47B9-A449-323AAFE854D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization.Functions", "src\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj", "{2A9C56F8-E906-4DD6-87A9-C540C2DF50FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Authorization.Functions", "src\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj", "{2A9C56F8-E906-4DD6-87A9-C540C2DF50FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.Authorization.Datas", "src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj", "{EA6307A2-ECC2-4469-A937-CA59B0344ED5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization.Datas", "src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj", "{EA6307A2-ECC2-4469-A937-CA59B0344ED5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,18 +84,10 @@ Global
 		{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD72A2F8-8E56-471A-8B6C-EE409BA37C60}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C047E4B-774D-4BAF-955D-C36303F21DFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C047E4B-774D-4BAF-955D-C36303F21DFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C047E4B-774D-4BAF-955D-C36303F21DFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C047E4B-774D-4BAF-955D-C36303F21DFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{044195F4-59ED-4359-9A6D-28BC207F4D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{044195F4-59ED-4359-9A6D-28BC207F4D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{044195F4-59ED-4359-9A6D-28BC207F4D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{044195F4-59ED-4359-9A6D-28BC207F4D38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{483FDD55-0867-46C1-81D5-5E97BE9022EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{483FDD55-0867-46C1-81D5-5E97BE9022EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{483FDD55-0867-46C1-81D5-5E97BE9022EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -113,10 +96,6 @@ Global
 		{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46209223-0805-47A2-83B3-3C1B2D2A252F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46209223-0805-47A2-83B3-3C1B2D2A252F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46209223-0805-47A2-83B3-3C1B2D2A252F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46209223-0805-47A2-83B3-3C1B2D2A252F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -129,10 +108,6 @@ Global
 		{7074A033-9087-4198-BC59-31B33C94EC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7074A033-9087-4198-BC59-31B33C94EC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7074A033-9087-4198-BC59-31B33C94EC8D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF72C54F-95B7-4D61-8C7C-1D6C4A062206}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -185,10 +160,6 @@ Global
 		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D926CFBD-1420-41DA-98F5-A873C955BB44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -212,16 +183,12 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DEBA7226-EED4-4B8F-96C0-54EFF0A9317B} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{AD72A2F8-8E56-471A-8B6C-EE409BA37C60} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
-		{E0A61AA0-CA5F-49DC-8D5E-A300041DC9F6} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{1C047E4B-774D-4BAF-955D-C36303F21DFB} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
-		{044195F4-59ED-4359-9A6D-28BC207F4D38} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{483FDD55-0867-46C1-81D5-5E97BE9022EA} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{13E3D2B2-B99D-4BDB-A0C4-7B21BD017EA2} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
-		{46209223-0805-47A2-83B3-3C1B2D2A252F} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{2D4CE8C3-B336-4403-9DE2-1BD626BFE90B} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{386EAF51-6AA5-4176-86E8-10B1C092A739} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{7074A033-9087-4198-BC59-31B33C94EC8D} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
-		{EF72C54F-95B7-4D61-8C7C-1D6C4A062206} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{6372FCF6-7B53-4716-9CB9-AE0FA192EB6A} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{1E560A54-864A-496B-A770-105CDBFE4C6E} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{22F6657E-626C-41DF-AB9F-02ACE3752038} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
@@ -236,7 +203,6 @@ Global
 		{BE36FDE0-84ED-47DD-AC78-9E86F1064015} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{4313E9E7-B5B1-4304-AE32-59067C82F380} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{D926CFBD-1420-41DA-98F5-A873C955BB44} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
-		{E96A4982-F4DF-4C15-A8A3-7AA95D8363AA} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{88731BE4-D4BB-4EFB-8F15-6F78FA93EAFB} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 		{6EDD457E-7848-47B9-A449-323AAFE854D0} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{2A9C56F8-E906-4DD6-87A9-C540C2DF50FB} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
