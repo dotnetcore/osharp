@@ -42,12 +42,14 @@ namespace OSharp.Identity
     /// 身份论证模块基类
     /// </summary>
     [DependsOnPacks(typeof(EventBusPack), typeof(AspNetCorePack))]
-    public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TRole, TUserKey, TRoleKey> : AspOsharpPack
+    public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey> : AspOsharpPack
         where TUserStore : class, IUserStore<TUser>
         where TRoleStore : class, IRoleStore<TRole>
         where TUser : UserBase<TUserKey>
-        where TRole : RoleBase<TRoleKey>
         where TUserKey : IEquatable<TUserKey>
+        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>
+        where TUserClaimKey : IEquatable<TUserClaimKey>
+        where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
         /// <summary>
@@ -76,7 +78,7 @@ namespace OSharp.Identity
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
 
             //在线用户缓存
-            services.TryAddScoped<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TRole, TRoleKey>>();
+            services.TryAddScoped<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey>>();
 
             // 替换 IPrincipal ，设置用户主键类型，用以在Repository进行审计时注入正确用户主键类型
             services.Replace(new ServiceDescriptor(typeof(IPrincipal),
@@ -218,7 +220,7 @@ namespace OSharp.Identity
 
                     jwt.Events = new OsharpJwtBearerEvents();
                 });
-            
+
             return builder;
         }
 

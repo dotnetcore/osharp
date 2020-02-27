@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>OSharpNS.Authorization.Datas</PackageId>
+    <Summary>OSharp 数据权限组件</Summary>
+    <Description>OSharp 数据权限组件，对应用中数据权限进行授权的设计实现</Description>
+    <RootNamespace>OSharp.Authorization</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.Identity\OSharp.Identity.csproj" />
+  </ItemGroup>
+
+</Project>
