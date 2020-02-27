@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>3.1.1</version>
-    <title>OSharpFramework(.NETCoreApp3.0)</title>
+    <version>3.1.2-preview2.27</version>
+    <title>OSharpFramework(.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>柳柳软件(66soft.net)</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,24 +11,15 @@
     <projectUrl>https://github.com/i66soft/osharp</projectUrl>
     <iconUrl>https://en.gravatar.com/userimage/140788132/0ff3b1e68fa0154337b1528c4276e276.png?size=80</iconUrl>
     <description>OSharp Framework with .NETCoreApp3.0，此Package包含了OSharpNS的所有常用组件</description>
-    <copyright>Copyright @ 66SOFT 2014-2019</copyright>
+    <copyright>Copyright @ 66SOFT 2014-2020</copyright>
     <tags>osharp osharpns</tags>
     <dependencies>
-      <group targetFramework=".NETCoreApp2.2">
-        <dependency id="OSharpNS.Core" version="3.1.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="3.1.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.1.1" />
-        <dependency id="OSharpNS.AutoMapper" version="3.1.1" />
-        <dependency id="OSharpNS.AspNetCore" version="3.1.1" />
-        <dependency id="OSharpNS.Log4Net" version="3.1.1" />
-      </group>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharpNS.Core" version="3.1.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="3.1.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore.SqlServer" version="3.1.1" />
-        <dependency id="OSharpNS.AutoMapper" version="3.1.1" />
-        <dependency id="OSharpNS.AspNetCore" version="3.1.1" />
-        <dependency id="OSharpNS.Log4Net" version="3.1.1" />
+        <dependency id="OSharpNS.Core" version="3.1.2-preview2.27" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="3.1.2-preview2.27" />
+        <dependency id="OSharpNS.AutoMapper" version="3.1.2-preview2.27" />
+        <dependency id="OSharpNS.AspNetCore" version="3.1.2-preview2.27" />
+        <dependency id="OSharpNS.Log4Net" version="3.1.2-preview2.27" />
       </group>
     </dependencies>
   </metadata>
