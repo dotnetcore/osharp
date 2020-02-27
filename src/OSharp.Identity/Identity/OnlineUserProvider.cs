@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,9 +32,11 @@ namespace OSharp.Identity
     /// <summary>
     /// 在线用户信息提供者
     /// </summary>
-    public class OnlineUserProvider<TUser, TUserKey, TRole, TRoleKey> : IOnlineUserProvider
+    public class OnlineUserProvider<TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey> : IOnlineUserProvider
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
+        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>
+        where TUserClaimKey : IEquatable<TUserClaimKey>
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
@@ -76,7 +79,7 @@ namespace OSharp.Identity
                         RoleManager<TRole> roleManager = _serviceProvider.GetService<RoleManager<TRole>>();
                         bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
                         RefreshToken[] refreshTokens = await GetRefreshTokens(user);
-                        return new OnlineUser()
+                        OnlineUser onlineUser = new OnlineUser()
                         {
                             Id = user.Id.ToString(),
                             UserName = user.UserName,
@@ -87,6 +90,15 @@ namespace OSharp.Identity
                             Roles = roles.ToArray(),
                             RefreshTokens = refreshTokens.ToDictionary(m => m.ClientId, m => m)
                         };
+
+                        // UserClaim都添加到扩展数据
+                        IList<Claim> claims = await userManager.GetClaimsAsync(user);
+                        foreach (Claim claim in claims)
+                        {
+                            onlineUser.ExtendData.Add(claim.Type, claim.Value);
+                        }
+
+                        return onlineUser;
                     },
                     options);
             }
