@@ -68,30 +68,30 @@
       }]
     }, {
       "text": "权限安全",
-      "i18n": "menu.nav.permission.security",
+      "i18n": "menu.nav.permission.auth",
       "group": true,
       "icon": "anticon-safety",
-      "acl": "Root.Admin.Security",
+      "acl": "Root.Admin.Auth",
       "children": [{
         "text": "模块信息管理",
-        "i18n": "menu.nav.permission.security.module",
-        "link": "/security/module",
-        "acl": "Root.Admin.Security.Module"
+        "i18n": "menu.nav.permission.auth.module",
+        "link": "/auth/module",
+        "acl": "Root.Admin.Auth.Module"
       }, {
         "text": "功能信息管理",
-        "i18n": "menu.nav.permission.security.function",
-        "link": "/security/function",
-        "acl": "Root.Admin.Security.Function"
+        "i18n": "menu.nav.permission.auth.function",
+        "link": "/auth/function",
+        "acl": "Root.Admin.Auth.Function"
       }, {
         "text": "实体信息管理",
-        "i18n": "menu.nav.permission.security.entityinfo",
-        "link": "/security/entityinfo",
-        "acl": "Root.Admin.Security.EntityInfo"
+        "i18n": "menu.nav.permission.auth.entityinfo",
+        "link": "/auth/entityinfo",
+        "acl": "Root.Admin.Auth.EntityInfo"
       }, {
         "text": "数据权限管理",
-        "i18n": "menu.nav.permission.security.role-entityinfo",
-        "link": "/security/role-entityinfo",
-        "acl": "Root.Admin.Security.RoleEntity"
+        "i18n": "menu.nav.permission.auth.role-entityinfo",
+        "link": "/auth/role-entityinfo",
+        "acl": "Root.Admin.Auth.RoleEntity"
       }]
     }]
   }, {

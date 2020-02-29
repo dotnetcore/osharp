@@ -31,5 +31,5 @@
   "ngschematics.schematics": [
     "ng-alain"
   ],
-  "explorer.compactFolders": false
+  "explorer.compactFolders": false,
 }

@@ -34,6 +34,7 @@
       "rxjs/Rx"
     ],
     "interface-name": false,
+    "jsdoc-format": false,
     "max-classes-per-file": false,
     "max-line-length": [
       false,
