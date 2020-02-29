@@ -34,6 +34,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
@@ -52,5 +56,7 @@
     <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="http://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
 
 </Project>

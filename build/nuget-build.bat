@@ -20,7 +20,7 @@ dotnet pack ../src/OSharp.Redis/OSharp.Redis.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.Swagger/OSharp.Swagger.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.Wpf/OSharp.Wpf.csproj -c Release --output nupkgs
 
-nuget.exe pack ./osharpns.nuspec -OutputDirectory nupkgs
+nuget pack ./osharpns.nuspec -OutputDirectory nupkgs
 
 start "" nupkgs
 exit
