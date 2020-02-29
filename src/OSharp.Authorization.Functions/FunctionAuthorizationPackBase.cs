@@ -85,6 +85,8 @@ namespace OSharp.Authorization
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddFunctionAuthorizationHandler();
+
             services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
             services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
             services.AddSingleton(typeof(IModuleHandler), typeof(TModuleHandler));
@@ -105,17 +107,8 @@ namespace OSharp.Authorization
         /// <param name="app">Asp应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            app.UseAuthorization();
             app.UseCookiePolicy();
-
-            IServiceProvider provider = app.ApplicationServices;
-
-            IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
-            moduleHandler.Initialize();
-
-            IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
-            functionHandler.RefreshCache();
-
+            app.UseFunctionAuthorization();
             IsEnabled = true;
         }
     }
