@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>OSharpNS.IdentityServer.EntityConfiguration</PackageId>
+    <Summary>OSharp IdentityServer EFCore存储配置组件</Summary>
+    <Description>OSharp IdentityServer EFCore存储配置组件，对IdentityServer4的存储进行EFCore映射配置</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\OSharp.IdentityServer.EntityFrameworkCore.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\OSharp.IdentityServer\OSharp.IdentityServer.csproj" />
+  </ItemGroup>
+
+</Project>

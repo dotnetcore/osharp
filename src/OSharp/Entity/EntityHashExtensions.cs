@@ -41,7 +41,7 @@ namespace OSharp.Entity
             {
                 return false;
             }
-            string hash = hashes.Select(m => m.GetHash()).ExpandAndToString().ToMd5Hash();
+            string hash = hashes.Select(m => m.GetHash()).ExpandAndToString().Md5();
             IKeyValueStore store = provider.GetService<IKeyValueStore>();
             string entityType = hashes[0].GetType().FullName;
             string key = $"OSharp.Initialize.SyncToDatabaseHash-{entityType}";
@@ -69,7 +69,7 @@ namespace OSharp.Entity
             {
                 sb.Append(property.GetValue(entity));
             }
-            return sb.ToString().ToMd5Hash();
+            return sb.ToString().Md5();
         }
     }
 }

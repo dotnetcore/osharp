@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -19,6 +20,7 @@ using System.Web;
 using Newtonsoft.Json;
 
 using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Security;
 
 
@@ -478,9 +480,57 @@ namespace OSharp.Extensions
         /// <summary>
         /// 获取字符串的MD5 Hash值
         /// </summary>
-        public static string ToMd5Hash(this string value)
+        public static string Md5(this string value)
         {
             return HashHelper.GetMd5(value);
+        }
+
+        /// <summary>
+        /// 获取字符串的Sha1 Hash值
+        /// </summary>
+        public static string Sha1(this string value)
+        {
+            return HashHelper.GetSha1(value);
+        }
+
+        /// <summary>
+        /// 获取字符串的Sha256 Hash字符串
+        /// </summary>
+        public static string Sha256(this string value)
+        {
+            return HashHelper.GetSha256(value);
+        }
+
+        /// <summary>
+        /// 获取字符串的Sha512 Hash字符串
+        /// </summary>
+        public static string Sha512(this string value)
+        {
+            return HashHelper.GetSha512(value);
+        }
+
+        /// <summary>
+        /// 获取字符串的Sha256 Hash的Base64字符串
+        /// </summary>
+        public static string Sha256Base64(this string value)
+        {
+            Check.NotNull(value, nameof(value));
+            using SHA256 sha = SHA256.Create();
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            bytes = sha.ComputeHash(bytes);
+            return bytes.ToBase64String();
+        }
+
+        /// <summary>
+        /// 获取字符串的Sha512 Hash的Base64字符串
+        /// </summary>
+        public static string Sha512Base64(this string value)
+        {
+            Check.NotNull(value, nameof(value));
+            using SHA512 sha = SHA512.Create();
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            bytes = sha.ComputeHash(bytes);
+            return bytes.ToBase64String();
         }
 
         /// <summary>

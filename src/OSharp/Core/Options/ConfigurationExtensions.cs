@@ -26,5 +26,19 @@ namespace OSharp.Core.Options
             new OsharpOptionsSetup(configuration).Configure(options);
             return options;
         }
+
+        /// <summary>
+        /// 从<see cref="IConfiguration"/>的指定节点创建指定类型的对象
+        /// </summary>
+        public static T GetInstance<T>(this IConfiguration configuration, string key, T instance)
+        {
+            var section = configuration.GetSection(key);
+            if (section.Exists())
+            {
+                section.Bind(instance);
+            }
+
+            return instance;
+        }
     }
 }

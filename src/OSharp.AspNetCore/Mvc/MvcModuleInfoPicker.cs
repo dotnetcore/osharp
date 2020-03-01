@@ -25,10 +25,10 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC模块信息提取器
     /// </summary>
-    public class MvcModuleInfoPicker : ModuleInfoPickerBase<Function>
+    public class MvcModuleInfoPicker : ModuleInfoPickerBase
     {
         /// <summary>
-        /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例
+        /// 初始化一个<see cref="MvcModuleInfoPicker"/>类型的新实例
         /// </summary>
         public MvcModuleInfoPicker(IServiceProvider serviceProvider)
             : base(serviceProvider)

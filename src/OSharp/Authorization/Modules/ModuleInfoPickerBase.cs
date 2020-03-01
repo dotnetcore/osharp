@@ -27,11 +27,10 @@ namespace OSharp.Authorization.Modules
     /// <summary>
     /// 模块信息提取器基类
     /// </summary>
-    public abstract class ModuleInfoPickerBase<TFunction> : IModuleInfoPicker
-        where TFunction : class, IEntity<Guid>, IFunction, new()
+    public abstract class ModuleInfoPickerBase : IModuleInfoPicker
     {
         /// <summary>
-        /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例
+        /// 初始化一个<see cref="ModuleInfoPickerBase"/>类型的新实例
         /// </summary>
         protected ModuleInfoPickerBase(IServiceProvider serviceProvider)
         {
@@ -74,7 +73,7 @@ namespace OSharp.Authorization.Modules
                 ModuleInfo[] typeInfos = GetModules(moduleType, existPaths);
                 foreach (ModuleInfo info in typeInfos)
                 {
-                    if (info.Order == 0)
+                    if (info.Order.Equals(0))
                     {
                         info.Order = infos.Count(m => m.Position == info.Position) + 1;
                     }

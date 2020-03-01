@@ -834,7 +834,7 @@ namespace OSharp.Caching
             {
                 key = new StringCacheKeyGenerator().GetKey(keyParams);
             }
-            return key.ToMd5Hash();
+            return key.Md5();
         }
     }
 }
