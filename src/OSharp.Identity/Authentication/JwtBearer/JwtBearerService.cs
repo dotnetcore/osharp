@@ -203,7 +203,7 @@ namespace OSharp.Authentication.JwtBearer
             }
             else
             {
-                if (refreshToken == null)
+                if (refreshToken == null || !options.IsRefreshAbsoluteExpired)
                 {
                     double minutes = options.RefreshExpireMins > 0 ? options.RefreshExpireMins : 10080; // 默认7天
                     expires = now.AddMinutes(minutes);

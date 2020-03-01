@@ -38,5 +38,10 @@ namespace OSharp.Core.Options
         /// 获取或设置 RefreshToken有效期分钟数
         /// </summary>
         public double RefreshExpireMins { get; set; }
+
+        /// <summary>
+        /// 获取或设置 RefreshToken是否绝对过期
+        /// </summary>
+        public bool IsRefreshAbsoluteExpired { get; set; } = true;
     }
 }
