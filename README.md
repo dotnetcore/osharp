@@ -22,7 +22,7 @@ OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStand
 
 ### 框架组件组织
 
-![image](https://wx4.sinaimg.cn/large/005LWXBzgy1g154t3srivj30950dmjrz.jpg)
+![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0007.png)
 
 * OSharp【框架核心组件】：框架的核心组件，包含一系列快速开发中经常用到的Utility辅助工具功能，框架各个组件的核心接口定义，部分核心功能的实现
 * OSharp.AspNetCore【AspNetCore组件】：AspNetCore组件，提供AspNetCore的服务端功能的封装
