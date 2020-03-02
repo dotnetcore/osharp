@@ -44,7 +44,7 @@ namespace OSharp.IdentityServer
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
-        public override int Order => 3;
+        public override int Order => 1;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -70,6 +70,8 @@ namespace OSharp.IdentityServer
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddSingleton<IHostedService, TokenCleanupHostedService>();
 
+            AddIdentityServer(services);
+
             return services;
         }
 
@@ -79,8 +81,18 @@ namespace OSharp.IdentityServer
         /// <param name="app">Asp应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            //app.UseIdentityServer();
+            app.UseIdentityServer();
             IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 重写以实现添加IdentityServer
+        /// </summary>
+        protected virtual IServiceCollection AddIdentityServer(IServiceCollection services)
+        {
+            services.AddIdentityServer().AddAspNetIdentity<TUser>();
+
+            return services;
         }
     }
 }

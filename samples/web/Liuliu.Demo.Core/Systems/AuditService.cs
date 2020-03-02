@@ -40,8 +40,6 @@ namespace Liuliu.Demo.Systems
             _propertyRepository = propertyRepository;
         }
 
-        #region Implementation of IAuditContract
-
         /// <summary>
         /// 获取 操作审计信息查询数据集
         /// </summary>
@@ -76,7 +74,5 @@ namespace Liuliu.Demo.Systems
         {
             return _entityRepository.DeleteAsync(ids);
         }
-
-        #endregion
     }
 }

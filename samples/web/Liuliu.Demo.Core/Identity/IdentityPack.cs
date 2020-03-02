@@ -22,7 +22,6 @@ namespace Liuliu.Demo.Identity
     /// <summary>
     /// 身份认证模块，此模块必须在MVC模块之前启动
     /// </summary>
-    [Description("身份认证模块")]
     public class IdentityPack : IdentityPackBase<UserStore, RoleStore, User, int, UserClaim, int, Role, int>
     {
         /// <summary>

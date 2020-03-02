@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.IdentityServer\OSharp.IdentityServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

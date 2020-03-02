@@ -8,41 +8,32 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
 
 using OSharp.AspNetCore;
-using OSharp.Authentication.JwtBearer;
-using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
-using OSharp.Exceptions;
-using OSharp.Extensions;
 using OSharp.Identity.Entities;
-using OSharp.Identity.JwtBearer;
 
 
 namespace OSharp.Identity
 {
     /// <summary>
-    /// 身份论证模块基类
+    /// 身份标识模块基类
     /// </summary>
-    [DependsOnPacks(typeof(EventBusPack), typeof(AspNetCorePack))]
-    public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey> : AspOsharpPack
+    [Description("身份标识模块")]
+    [DependsOnPacks(typeof(EventBusPack))]
+    public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey> : OsharpPack
         where TUserStore : class, IUserStore<TUser>
         where TRoleStore : class, IRoleStore<TRole>
         where TUser : UserBase<TUserKey>
@@ -61,7 +52,7 @@ namespace OSharp.Identity
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
         /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
         /// </summary>
-        public override int Order => 2;
+        public override int Order => 0;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -108,22 +99,7 @@ namespace OSharp.Identity
                 services.ConfigureApplicationCookie(cookieOptionsAction);
             }
 
-            AddAuthentication(services);
-
             return services;
-        }
-
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
-        {
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseCookiePolicy();
-
-            IsEnabled = true;
         }
 
         /// <summary>
@@ -170,121 +146,6 @@ namespace OSharp.Identity
         protected virtual IdentityBuilder OnIdentityBuild(IdentityBuilder builder)
         {
             return builder.AddDefaultTokenProviders();
-        }
-
-        /// <summary>
-        /// 添加Authentication认证服务
-        /// </summary>
-        /// <param name="services">服务集合</param>
-        protected virtual void AddAuthentication(IServiceCollection services)
-        {
-            AuthenticationBuilder builder = services.AddAuthentication(opts =>
-            {
-                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            });
-            AddJwtBearer(services, builder);
-            AddCookie(services, builder);
-            AddOAuth2(services, builder);
-        }
-
-        /// <summary>
-        /// 添加JwtBearer支持
-        /// </summary>
-        protected virtual AuthenticationBuilder AddJwtBearer(IServiceCollection services, AuthenticationBuilder builder)
-        {
-            services.TryAddScoped<IJwtBearerService, JwtBearerService<TUser, TUserKey>>();
-            services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<TUser, TUserKey>>();
-
-            IConfiguration configuration = services.GetConfiguration();
-            builder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-                jwt =>
-                {
-                    string secret = configuration["OSharp:Jwt:Secret"];
-                    if (secret.IsNullOrEmpty())
-                    {
-                        throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
-                    }
-
-                    jwt.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
-                        ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-                        LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
-                    };
-
-                    jwt.Events = new OsharpJwtBearerEvents();
-                });
-
-            return builder;
-        }
-
-        protected virtual AuthenticationBuilder AddCookie(IServiceCollection services, AuthenticationBuilder builder)
-        {
-            //builder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-            //    opts =>
-            //    {
-            //        opts.Events = new OsharpCookieAuthenticationEvents();
-            //    });
-            return builder;
-        }
-
-        /// <summary>
-        /// 添加OAuth2第三方登录配置
-        /// </summary>
-        protected virtual AuthenticationBuilder AddOAuth2(IServiceCollection services, AuthenticationBuilder builder)
-        {
-            IConfiguration configuration = services.GetConfiguration();
-            IConfigurationSection section = configuration.GetSection("OSharp:OAuth2");
-            IDictionary<string, OAuth2Options> dict = section.Get<Dictionary<string, OAuth2Options>>();
-            if (dict == null)
-            {
-                return builder;
-            }
-
-            foreach (var (name, options) in dict)
-            {
-                if (!options.Enabled)
-                {
-                    continue;
-                }
-                if (string.IsNullOrEmpty(options.ClientId))
-                {
-                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{name}节点的ClientId不能为空");
-                }
-                if (string.IsNullOrEmpty(options.ClientSecret))
-                {
-                    throw new OsharpException($"配置文件中OSharp:OAuth2配置的{name}节点的ClientSecret不能为空");
-                }
-
-                switch (name)
-                {
-                    case "QQ":
-                        builder.AddQQ(opts =>
-                        {
-                            opts.AppId = options.ClientId;
-                            opts.AppKey = options.ClientSecret;
-                        });
-                        break;
-                    case "Microsoft":
-                        builder.AddMicrosoftAccount(opts =>
-                        {
-                            opts.ClientId = options.ClientId;
-                            opts.ClientSecret = options.ClientSecret;
-                        });
-                        break;
-                    case "GitHub":
-                        builder.AddGitHub(opts =>
-                        {
-                            opts.ClientId = options.ClientId;
-                            opts.ClientSecret = options.ClientSecret;
-                        });
-                        break;
-                }
-            }
-
-            return builder;
         }
     }
 }

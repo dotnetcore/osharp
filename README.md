@@ -1,7 +1,7 @@
 # OSharp Framework with .NETStandard2.0
 
 [![osharp@66soft](https://img.shields.io/badge/66soft-osharp.org-bc17da.svg)](http://www.osharp.org)
-[![NuGet Pre Release](https://img.shields.io/nuget/vpre/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)
+[![NuGet Pre Release](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
 ---
@@ -72,6 +72,7 @@ OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStand
 | [OSharpNS.Wpf](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/v/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/vpre/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/dt/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) |
 | [OSharpNS](https://www.nuget.org/packages/OSharpNS/)                                                               | [![OSharpNS](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                   | [![OSharpNS](https://img.shields.io/nuget/vpre/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              | [![OSharpNS](https://img.shields.io/nuget/dt/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              |
 | [OSharpNS.Template.Mvc_Angular](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)                     | [![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/v/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)      |                            | [![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/dt/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)  
+
 ## <a id="02"/>OSharpNS特性
 
 ### 1. 模块化的组件设计

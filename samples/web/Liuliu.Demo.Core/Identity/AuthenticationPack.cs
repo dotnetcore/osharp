@@ -1,17 +1,22 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SignalRPack.cs" company="OSharp开源团队">
+//  <copyright file="AuthenticationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2020-02-08 20:12</last-date>
+//  <last-date>2020-03-02 21:21</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.AspNetCore.SignalR
+using Liuliu.Demo.Identity.Entities;
+
+using OSharp.Authentication;
+
+
+namespace Liuliu.Demo.Identity
 {
     /// <summary>
-    /// SignalR模块
+    /// 身份认证模块
     /// </summary>
-    public class SignalRPack : SignalRPackBase
+    public class AuthenticationPack : AuthenticationPackBase<User, int>
     { }
 }

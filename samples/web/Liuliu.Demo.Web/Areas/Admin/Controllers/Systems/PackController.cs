@@ -68,7 +68,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 m => new PackOutputDto()
                 {
                     Name = m.GetType().Name,
-                    Display = m.GetType().GetDescription(false),
+                    Display = m.GetType().GetDescription(true),
                     Class = m.GetType().FullName,
                     Level = m.Level,
                     Order = m.Order,

@@ -24,8 +24,6 @@ using OSharp.Core.Packs;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
-using Swashbuckle.AspNetCore.Swagger;
-
 
 namespace OSharp.Swagger
 {

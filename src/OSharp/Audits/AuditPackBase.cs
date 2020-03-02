@@ -7,7 +7,7 @@
 //  <last-date>2018-08-02 15:16</last-date>
 // -----------------------------------------------------------------------
 
-
+using System.ComponentModel;
 
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
@@ -18,6 +18,7 @@ namespace OSharp.Audits
     /// <summary>
     /// 审计模块基类
     /// </summary>
+    [Description("审计模块")]
     [DependsOnPacks(typeof(EventBusPack))]
     public abstract class AuditPackBase : OsharpPack
     {
@@ -25,5 +26,12 @@ namespace OSharp.Audits
         /// 获取 模块级别
         /// </summary>
         public override PackLevel Level => PackLevel.Application;
+
+        /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
+        /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
+        /// </summary>
+        public override int Order => 0;
+
     }
 }
