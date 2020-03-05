@@ -42,7 +42,7 @@ namespace OSharp.Identity
     /// <typeparam name="TUserRole">用户角色类型</typeparam>
     /// <typeparam name="TUserRoleKey">用户角色编号类型</typeparam>
     public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey>
-        : IQueryableUserStore<TUser>,
+        : Disposable, IQueryableUserStore<TUser>,
           IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
           IUserPasswordStore<TUser>,
@@ -113,16 +113,6 @@ namespace OSharp.Identity
         /// </summary>
         /// <value>An <see cref="T:System.Linq.IQueryable`1" /> collection of users.</value>
         public IQueryable<TUser> Users => _userRepository.Query();
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            _disposed = true;
-        }
 
         #endregion
 

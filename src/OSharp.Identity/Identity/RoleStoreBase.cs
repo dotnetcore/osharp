@@ -32,7 +32,7 @@ namespace OSharp.Identity
     /// <typeparam name="TRoleClaim">角色声明类型</typeparam>
     /// <typeparam name="TRoleClaimKey">角色声明编号类型</typeparam>
     public abstract class RoleStoreBase<TRole, TRoleKey, TRoleClaim, TRoleClaimKey>
-        : IQueryableRoleStore<TRole>,
+        : Disposable, IQueryableRoleStore<TRole>,
           IRoleClaimStore<TRole>
         where TRole : RoleBase<TRoleKey>
         where TRoleClaim : RoleClaimBase<TRoleClaimKey, TRoleKey>, new()
@@ -41,7 +41,6 @@ namespace OSharp.Identity
     {
         private readonly IRepository<TRoleClaim, TRoleClaimKey> _roleClaimRepository;
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
-        private bool _disposed;
 
         /// <summary>
         /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim, TRoleClaimKey}"/>类型的新实例
@@ -55,16 +54,6 @@ namespace OSharp.Identity
             _roleRepository = roleRepository;
             _roleClaimRepository = roleClaimRepository;
         }
-
-        #region Implementation of IDisposable
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            _disposed = true;
-        }
-
-        #endregion
 
         #region Implementation of IQueryableRoleStore<TRole>
 

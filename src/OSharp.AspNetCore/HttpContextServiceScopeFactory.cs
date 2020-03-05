@@ -65,7 +65,7 @@ namespace OSharp.AspNetCore
         /// <summary>
         /// 当前HttpRequest的<see cref="IServiceScope"/>的包装，保持HttpContext.RequestServices的可传递性，并且不释放
         /// </summary>
-        protected class NonDisposedHttpContextServiceScope : IServiceScope
+        protected sealed class NonDisposedHttpContextServiceScope : IServiceScope
         {
             /// <summary>
             /// 初始化一个<see cref="NonDisposedHttpContextServiceScope"/>类型的新实例

@@ -28,7 +28,7 @@ namespace OSharp.Log4Net
     /// <summary>
     /// log4net 日志对象提供者
     /// </summary>
-    public class Log4NetLoggerProvider : ILoggerProvider
+    public class Log4NetLoggerProvider : Disposable, ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, Log4NetLogger> _loggers = new ConcurrentDictionary<string, Log4NetLogger>();
         private const string DefaultLog4NetFileName = "log4net.config";
@@ -98,20 +98,14 @@ namespace OSharp.Log4Net
             return null;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if (!disposing)
+            if (!Disposed)
             {
-                return;
+                _loggers.Clear();
             }
-            _loggers.Clear();
-        }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
     }
 }

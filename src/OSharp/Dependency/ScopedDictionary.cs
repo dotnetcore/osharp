@@ -51,7 +51,7 @@ namespace OSharp.Dependency
             Function = null;
             AuditOperation = null;
             Identity = null;
-            this.Clear();
+            Clear();
         }
     }
 }
