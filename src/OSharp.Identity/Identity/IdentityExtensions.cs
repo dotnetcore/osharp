@@ -54,5 +54,18 @@ namespace OSharp.Identity
             identityErrors = identityErrors.Union(errors.Select(m => new IdentityError() { Description = m }));
             return IdentityResult.Failed(identityErrors.ToArray());
         }
+
+        /// <summary>
+        /// 获取IdentityResult的错误信息
+        /// </summary>
+        public static string ErrorMessage(this IdentityResult identityResult)
+        {
+            if (identityResult.Succeeded)
+            {
+                return null;
+            }
+
+            return identityResult.Errors.Select(m => m.Description).ExpandAndToString("; ");
+        }
     }
 }

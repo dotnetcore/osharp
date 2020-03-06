@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,6 +59,13 @@ namespace OSharp.Entity
                     DbContextModelCache modelCache = scope.ServiceProvider.GetService<DbContextModelCache>();
                     modelCache?.Set(context.GetType(), context.Model);
                 }
+            }
+
+            //种子数据
+            var initializers = provider.GetServices<ISeedDataInitializer>().OrderBy(m => m.Order);
+            foreach (ISeedDataInitializer initializer in initializers)
+            {
+                initializer.Initialize();
             }
 
             IsEnabled = true;

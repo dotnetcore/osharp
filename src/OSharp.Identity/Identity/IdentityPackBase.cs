@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
+using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Identity.Entities;
 

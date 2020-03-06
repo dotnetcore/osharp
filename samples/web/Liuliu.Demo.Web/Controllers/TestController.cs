@@ -39,7 +39,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-测试")]
     [ClassFilter]
-    public class TestController : ApiController
+    public class TestController : SiteApiController
     {
         private readonly UserManager<User> _userManager;
         private readonly IIdentityContract _identityContract;

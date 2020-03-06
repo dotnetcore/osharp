@@ -82,7 +82,7 @@ namespace OSharp.AspNetCore.Mvc
             {
                 AreaAttribute areaAttr = type.GetAttribute<AreaAttribute>();
                 area = areaAttr?.RouteValue ?? "Site";
-                name = area == "Site" ? "站点" : area;
+                name = area == "Site" ? "网站" : area;
             }
             info = new ModuleInfo()
             {

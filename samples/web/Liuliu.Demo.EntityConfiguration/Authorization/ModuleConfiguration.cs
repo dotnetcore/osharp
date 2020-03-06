@@ -28,10 +28,6 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         public override void Configure(EntityTypeBuilder<Module> builder)
         {
             builder.HasOne(m => m.Parent).WithMany(m => m.Children).HasForeignKey(m => m.ParentId).IsRequired(false);
-
-            builder.HasData(
-                new Module() { Id = 1, Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = "$1$" }
-            );
         }
     }
 }

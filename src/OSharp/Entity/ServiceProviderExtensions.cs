@@ -22,16 +22,22 @@ namespace OSharp.Entity
         {
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(action, nameof(action));
-            IServiceProvider scopeProvider = provider;
-            if (createScope)
+            if (!createScope)
+            {
+                IServiceProvider scopeProvider = provider;
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                action(scopeProvider);
+                unitOfWorkManager.Commit();
+            }
+            else
             {
                 using IServiceScope scope = provider.CreateScope();
-                scopeProvider = scope.ServiceProvider;
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                action(scopeProvider);
+                unitOfWorkManager.Commit();
             }
 
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            action(scopeProvider);
-            unitOfWorkManager.Commit();
         }
 
         /// <summary>

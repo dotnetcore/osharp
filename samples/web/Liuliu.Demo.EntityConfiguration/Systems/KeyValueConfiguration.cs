@@ -23,10 +23,7 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<KeyValue> builder)
         {
-            builder.HasData(
-                new KeyValue() { Id = Guid.Parse("534d7813-0eea-44cc-b88e-a9cb010c6981"), Key = SystemSettingKeys.SiteName, Value = "OSHARP" },
-                new KeyValue() { Id = Guid.Parse("977e4bba-97b2-4759-a768-a9cb010c698c"), Key = SystemSettingKeys.SiteDescription, Value = "Osharp with AspNetCore & Angular" }
-            );
+            builder.HasIndex(m => m.Key).IsUnique();
         }
     }
 }

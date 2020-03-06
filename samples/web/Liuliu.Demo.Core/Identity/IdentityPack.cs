@@ -14,6 +14,7 @@ using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Entity;
 using OSharp.Identity;
 
 
@@ -32,6 +33,7 @@ namespace Liuliu.Demo.Identity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityContract, IdentityService>();
+            services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
 
             return base.AddServices(services);
         }
