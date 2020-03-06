@@ -100,7 +100,7 @@ namespace OSharp.Identity
         /// </summary>
         protected void ThrowIfDisposed()
         {
-            if (_disposed)
+            if (Disposed)
             {
                 throw new ObjectDisposedException(GetType().Name);
             }

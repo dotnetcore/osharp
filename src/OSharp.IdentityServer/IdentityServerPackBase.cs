@@ -12,6 +12,7 @@ using System.ComponentModel;
 using IdentityServer4.Stores;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -90,8 +91,13 @@ namespace OSharp.IdentityServer
         /// </summary>
         protected virtual IServiceCollection AddIdentityServer(IServiceCollection services)
         {
-            services.AddIdentityServer().AddAspNetIdentity<TUser>();
-
+            IIdentityServerBuilder builder = services.AddIdentityServer();
+            builder.AddAspNetIdentity<TUser>();
+            IWebHostEnvironment environment = services.GetWebHostEnvironment();
+            if (environment.IsDevelopment())
+            {
+                builder.AddDeveloperSigningCredential();
+            }
             return services;
         }
     }
