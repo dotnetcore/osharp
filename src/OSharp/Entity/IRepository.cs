@@ -41,6 +41,13 @@ namespace OSharp.Entity
         int Insert(params TEntity[] entities);
 
         /// <summary>
+        /// 插入或更新实体
+        /// </summary>
+        /// <param name="entities">要处理的实体</param>
+        /// <returns>操作影响的行数</returns>
+        int InsertOrUpdate(params TEntity[] entities);
+
+        /// <summary>
         /// 以DTO为载体批量插入实体
         /// </summary>
         /// <typeparam name="TInputDto">添加DTO类型</typeparam>
@@ -207,6 +214,13 @@ namespace OSharp.Entity
         /// <param name="entities">实体对象集合</param>
         /// <returns>操作影响的行数</returns>
         Task<int> InsertAsync(params TEntity[] entities);
+
+        /// <summary>
+        /// 插入或更新实体
+        /// </summary>
+        /// <param name="entities">要处理的实体</param>
+        /// <returns>操作影响的行数</returns>
+        Task<int> InsertOrUpdateAsync(params TEntity[] entities);
 
         /// <summary>
         /// 异步以DTO为载体批量插入实体
