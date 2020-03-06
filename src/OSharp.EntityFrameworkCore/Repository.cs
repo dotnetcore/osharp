@@ -107,6 +107,32 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 插入或更新实体
+        /// </summary>
+        /// <param name="entities">要处理的实体</param>
+        /// <returns>操作影响的行数</returns>
+        public int InsertOrUpdate(params TEntity[] entities)
+        {
+            Check.NotNull(entities, nameof(entities));
+
+            foreach (TEntity entity in entities)
+            {
+                if (!_dbSet.Any(m => m.Id.Equals(entity.Id)))
+                {
+                    CheckInsert(entity);
+                    _dbSet.Add(entity);
+                }
+                else
+                {
+                    CheckUpdate(entity);
+                    ((DbContext)_dbContext).Update<TEntity, TKey>(entity);
+                }
+            }
+
+            return _dbContext.SaveChanges();
+        }
+
+        /// <summary>
         /// 以DTO为载体批量插入实体
         /// </summary>
         /// <typeparam name="TInputDto">添加DTO类型</typeparam>
@@ -510,6 +536,32 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 插入或更新实体
+        /// </summary>
+        /// <param name="entities">要处理的实体</param>
+        /// <returns>操作影响的行数</returns>
+        public async Task<int> InsertOrUpdateAsync(params TEntity[] entities)
+        {
+            Check.NotNull(entities, nameof(entities));
+
+            foreach (TEntity entity in entities)
+            {
+                if (await _dbSet.AnyAsync(m => m.Id.Equals(entity.Id)))
+                {
+                    CheckInsert(entity);
+                    await _dbSet.AddAsync(entity);
+                }
+                else
+                {
+                    CheckUpdate(entity);
+                    ((DbContext)_dbContext).Update<TEntity, TKey>(entity);
+                }
+            }
+
+            return await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// 异步以DTO为载体批量插入实体
         /// </summary>
         /// <typeparam name="TInputDto">添加DTO类型</typeparam>
@@ -655,7 +707,7 @@ namespace OSharp.Entity
                 DeleteInternal(entities);
                 return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
             }
-            
+
             // 物理删除
             return await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
         }
