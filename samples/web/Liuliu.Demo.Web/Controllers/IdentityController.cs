@@ -129,7 +129,7 @@ namespace Liuliu.Demo.Web.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-
+            
             if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
