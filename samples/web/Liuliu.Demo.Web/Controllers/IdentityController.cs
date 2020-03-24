@@ -45,7 +45,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-认证")]
     [ModuleInfo(Order = 1)]
-    public class IdentityController : ApiController
+    public class IdentityController : SiteApiController
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;

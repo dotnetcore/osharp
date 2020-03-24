@@ -36,6 +36,7 @@ using OSharp.Data;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
+using OSharp.Linq;
 using OSharp.Mapping;
 
 
@@ -80,6 +81,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Func<User, bool> updateFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Update).Compile();
             Func<User, bool> deleteFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Delete).Compile();
             Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
+
+            //查询某一角色的所有用户
+            //var roleId = request.FilterGroup.Rules.FirstOrDefault(m => m.Field == "RoleId")?.CastTo(0);
+            //if (roleId != 0)
+            //{
+            //    predicate = predicate.And(m => m.UserRoles.Any(n => n.RoleId == roleId));
+            //}
+
             var page = _cacheService.ToPageCache(_userManager.Users, predicate, request.PageCondition, m => new
             {
                 D = m,

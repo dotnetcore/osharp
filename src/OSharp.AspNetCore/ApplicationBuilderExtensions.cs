@@ -62,10 +62,15 @@ namespace Microsoft.AspNetCore.Builder
         {
             if (area)
             {
-                endpoints.MapControllerRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areas-router",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             }
 
-            endpoints.MapDefaultControllerRoute();
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
             return endpoints;
         }
     }

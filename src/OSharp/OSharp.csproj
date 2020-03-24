@@ -23,6 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <None Remove="Authentication\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -57,9 +63,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Authentication\" />
   </ItemGroup>
 </Project>

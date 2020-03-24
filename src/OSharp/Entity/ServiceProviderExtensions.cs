@@ -1,6 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="ServiceProviderExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2020-03-23 13:09</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -22,16 +29,21 @@ namespace OSharp.Entity
         {
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(action, nameof(action));
-            IServiceProvider scopeProvider = provider;
-            if (createScope)
+            if (!createScope)
+            {
+                IServiceProvider scopeProvider = provider;
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                action(scopeProvider);
+                unitOfWorkManager.Commit();
+            }
+            else
             {
                 using IServiceScope scope = provider.CreateScope();
-                scopeProvider = scope.ServiceProvider;
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                action(scopeProvider);
+                unitOfWorkManager.Commit();
             }
-
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            action(scopeProvider);
-            unitOfWorkManager.Commit();
         }
 
         /// <summary>
@@ -40,7 +52,9 @@ namespace OSharp.Entity
         /// <param name="provider">信赖注入服务提供程序</param>
         /// <param name="actionAsync">要执行的业务委托</param>
         /// <param name="createScope">是否创建一个新的<see cref="IServiceScope"/>，如false，则使用传入的 provider</param>
-        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider provider, Func<IServiceProvider, Task> actionAsync, bool createScope = false)
+        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider provider,
+            Func<IServiceProvider, Task> actionAsync,
+            bool createScope = false)
         {
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(actionAsync, nameof(actionAsync));

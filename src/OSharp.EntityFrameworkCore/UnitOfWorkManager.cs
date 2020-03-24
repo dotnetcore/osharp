@@ -22,7 +22,7 @@ namespace OSharp.Entity
     /// 工作单元管理器
     /// </summary>
     [Dependency(ServiceLifetime.Scoped, TryAdd = true)]
-    public class UnitOfWorkManager : IUnitOfWorkManager
+    public class UnitOfWorkManager : Disposable, IUnitOfWorkManager
     {
         private readonly ScopedDictionary _scopedDictionary;
 
@@ -137,13 +137,16 @@ namespace OSharp.Entity
             }
         }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
+            if (!Disposed)
             {
-                unitOfWork.Dispose();
+                foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
+                {
+                    unitOfWork.Dispose();
+                }
             }
+            base.Dispose(disposing);
         }
     }
 }

@@ -151,7 +151,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <summary>
         /// 检测当前用户是否拥有指定URL的功能权限
         /// </summary>
-        public static bool CheckFunctionAuth(this Controller controller, string url)
+        public static bool CheckFunctionAuth(this ControllerBase controller, string url)
         {
             IFunction function = controller.GetFunction(url);
             if (function == null)
@@ -165,7 +165,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <summary>
         /// 检测当前用户是否有指定功能的功能权限
         /// </summary>
-        public static bool CheckFunctionAuth(this Controller controller, string actionName, string controllerName, string areaName = null)
+        public static bool CheckFunctionAuth(this ControllerBase controller, string actionName, string controllerName, string areaName = null)
         {
             IServiceProvider provider = controller.HttpContext.RequestServices;
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();

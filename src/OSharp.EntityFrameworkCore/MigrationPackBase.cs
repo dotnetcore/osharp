@@ -8,10 +8,12 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
@@ -59,6 +61,14 @@ namespace OSharp.Entity
                     modelCache?.Set(context.GetType(), context.Model);
                 }
             }
+
+            //种子数据
+            var seedDataInitializers = provider.GetServices<ISeedDataInitializer>().OrderBy(m => m.Order);
+            foreach (ISeedDataInitializer initializer in seedDataInitializers)
+            {
+                initializer.Initialize();
+            }
+
 
             IsEnabled = true;
         }

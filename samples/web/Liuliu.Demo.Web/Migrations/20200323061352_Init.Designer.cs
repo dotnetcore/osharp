@@ -9,14 +9,14 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20200226200205_Init")]
+    [Migration("20200323061352_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityRole", b =>
@@ -116,17 +116,6 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Auth_Module");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "Root",
-                            Name = "根节点",
-                            OrderCode = 1.0,
-                            Remark = "系统根节点",
-                            TreePathString = "$1$"
-                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.ModuleFunction", b =>
@@ -304,21 +293,6 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("Identity_Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc",
-                            CreatedTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsAdmin = true,
-                            IsDefault = false,
-                            IsLocked = false,
-                            IsSystem = true,
-                            Name = "系统管理员",
-                            NormalizedName = "系统管理员",
-                            Remark = "系统最高权限管理角色"
-                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Identity.Entities.RoleClaim", b =>
@@ -909,24 +883,6 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Systems_KeyValue");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("534d7813-0eea-44cc-b88e-a9cb010c6981"),
-                            IsLocked = false,
-                            Key = "Site.Name",
-                            ValueJson = "\"OSHARP\"",
-                            ValueType = "System.String,System.Private.CoreLib"
-                        },
-                        new
-                        {
-                            Id = new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"),
-                            IsLocked = false,
-                            Key = "Site.Description",
-                            ValueJson = "\"Osharp with AspNetCore & Angular\"",
-                            ValueType = "System.String,System.Private.CoreLib"
-                        });
                 });
 
             modelBuilder.Entity("Liuliu.Demo.Authorization.Entities.EntityRole", b =>

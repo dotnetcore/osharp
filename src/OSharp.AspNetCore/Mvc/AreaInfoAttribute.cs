@@ -7,15 +7,16 @@
 //  <last-date>2019-05-29 17:30</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace OSharp.AspNetCore.Mvc
 {
     /// <summary>
-    /// 区域信息特性，可配置区域显示名称
+    /// 区域信息特性，可配置区域显示名称，此属性与“<see cref="AreaAttribute"/>与<see cref="DisplayNameAttribute"/>”组合等效，在无Area的类型，推荐只使用<see cref="DisplayNameAttribute"/>
     /// </summary>
-    public class AreaInfoAttribute : AreaAttribute
+    public sealed class AreaInfoAttribute : AreaAttribute
     {
         /// <summary>
         /// Initializes a new <see cref="T:Microsoft.AspNetCore.Mvc.AreaAttribute" /> instance.

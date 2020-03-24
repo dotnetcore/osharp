@@ -28,7 +28,7 @@ namespace OSharp.Dependency
     /// 如果当前处于HttpContext有效的范围内，可正常解析<see cref="ServiceLifetime.Scoped"/>的服务
     /// 注：服务定位器尚不能正常解析 RootServiceProvider.CreateScope() 生命周期内的 Scoped 的服务
     /// </summary>
-    public sealed class ServiceLocator : IDisposable
+    public class ServiceLocator : Disposable
     {
         private static readonly Lazy<ServiceLocator> InstanceLazy = new Lazy<ServiceLocator>(() => new ServiceLocator());
         private IServiceProvider _provider;
@@ -287,11 +287,11 @@ namespace OSharp.Dependency
             }
         }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             _services = null;
             _provider = null;
+            base.Dispose(disposing);
         }
     }
 }

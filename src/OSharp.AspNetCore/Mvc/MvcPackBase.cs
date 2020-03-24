@@ -8,13 +8,10 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Internal;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Serialization;
 
-using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
 
@@ -40,13 +37,11 @@ namespace OSharp.AspNetCore.Mvc
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = AddCors(services);
-            services.AddControllersWithViews(options =>
-            {
-                options.Conventions.Add(new DashedRoutingConvention());
-            }).AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
 
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);

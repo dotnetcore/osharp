@@ -39,7 +39,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
-    public class CommonController : ApiController
+    public class CommonController : SiteApiController
     {
         private readonly IVerifyCodeService _verifyCodeService;
         private readonly IWebHostEnvironment _environment;

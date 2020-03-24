@@ -20,7 +20,7 @@ using StackExchange.Profiling.Internal;
 
 namespace Liuliu.Demo.Web.Controllers
 {
-    public class Test2Controller : ApiController
+    public class Test2Controller : SiteApiController
     {
         private readonly DefaultDbContext _dbContext;
 

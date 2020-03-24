@@ -44,8 +44,9 @@ namespace OSharp.Entity
         /// 插入或更新实体
         /// </summary>
         /// <param name="entities">要处理的实体</param>
+        /// <param name="existingFunc">实体是否存在的判断委托</param>
         /// <returns>操作影响的行数</returns>
-        int InsertOrUpdate(params TEntity[] entities);
+        int InsertOrUpdate(TEntity[] entities, Func<TEntity, Expression<Func<TEntity, bool>>> existingFunc = null);
 
         /// <summary>
         /// 以DTO为载体批量插入实体
@@ -139,7 +140,7 @@ namespace OSharp.Entity
         /// <param name="predicate">数据查询谓语表达式</param>
         /// <returns>符合条件的实体，不存在时返回null</returns>
         TEntity GetFirst(Expression<Func<TEntity, bool>> predicate);
-        
+
         /// <summary>
         /// 查找第一个符合条件的数据
         /// </summary>
@@ -219,8 +220,9 @@ namespace OSharp.Entity
         /// 插入或更新实体
         /// </summary>
         /// <param name="entities">要处理的实体</param>
+        /// <param name="existingFunc">实体是否存在的判断委托</param>
         /// <returns>操作影响的行数</returns>
-        Task<int> InsertOrUpdateAsync(params TEntity[] entities);
+        Task<int> InsertOrUpdateAsync(TEntity[] entities, Func<TEntity, Expression<Func<TEntity, bool>>> existingFunc = null);
 
         /// <summary>
         /// 异步以DTO为载体批量插入实体
