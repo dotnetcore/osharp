@@ -11,8 +11,10 @@ using System;
 using System.ComponentModel;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
+using OSharp.Systems;
 
 
 namespace OSharp.Authorization.EntityInfos
@@ -21,12 +23,25 @@ namespace OSharp.Authorization.EntityInfos
     /// 实体信息模块
     /// </summary>
     [Description("数据实体模块")]
+    [DependsOnPacks(typeof(SystemPack))]
     public class EntityInfoPack : OsharpPack
     {
         /// <summary>
         /// 获取 模块级别
         /// </summary>
         public override PackLevel Level => PackLevel.Application;
+
+        /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.TryAddSingleton<IEntityInfoHandler, EntityInfoHandler>();
+
+            return base.AddServices(services);
+        }
 
         /// <summary>
         /// 应用模块服务

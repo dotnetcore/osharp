@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 

@@ -30,7 +30,6 @@ using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Collections;
-using OSharp.Core;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;

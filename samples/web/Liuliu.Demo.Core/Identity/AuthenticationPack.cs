@@ -10,6 +10,7 @@
 using Liuliu.Demo.Identity.Entities;
 
 using OSharp.Authentication;
+using OSharp.Core.Packs;
 
 
 namespace Liuliu.Demo.Identity
@@ -17,6 +18,7 @@ namespace Liuliu.Demo.Identity
     /// <summary>
     /// 身份认证模块
     /// </summary>
+    [DependsOnPacks(typeof(IdentityPack))]
     public class AuthenticationPack : AuthenticationPackBase<User, int>
     { }
 }

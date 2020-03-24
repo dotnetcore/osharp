@@ -21,7 +21,6 @@ namespace OSharp.AspNetCore
     /// <summary>
     /// Request的<see cref="ServiceLifetime.Scoped"/>服务解析器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class RequestScopedServiceResolver : IScopedServiceResolver
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

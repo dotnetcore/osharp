@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Core.Packs;
-using OSharp.Dependency;
+using OSharp.Systems;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -25,7 +25,7 @@ namespace OSharp.AspNetCore.Mvc
     /// <summary>
     /// MVC功能点模块
     /// </summary>
-    [DependsOnPacks(typeof(AspNetCorePack))]
+    [DependsOnPacks(typeof(MvcPack), typeof(SystemPack))]
     [Description("MVC功能点模块")]
     public class MvcFunctionPack : AspOsharpPack
     {

@@ -7,12 +7,12 @@
 //  <last-date>2018-08-01 21:39</last-date>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.DependencyInjection;
-
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.EventBuses;
 using OSharp.Extensions;
@@ -21,9 +21,30 @@ using OSharp.Extensions;
 namespace OSharp.Audits
 {
     /// <summary>
+    /// <see cref="AuditEntityEntry"/>事件源
+    /// </summary>
+    public class AuditEntityEventData : EventDataBase
+    {
+        /// <summary>
+        /// 初始化一个<see cref="AuditEntityEventData"/>类型的新实例
+        /// </summary>
+        public AuditEntityEventData(IList<AuditEntityEntry> auditEntities)
+        {
+            Check.NotNull(auditEntities, nameof(auditEntities));
+
+            AuditEntities = auditEntities;
+        }
+
+        /// <summary>
+        /// 获取或设置 AuditData数据集合
+        /// </summary>
+        public IEnumerable<AuditEntityEntry> AuditEntities { get; }
+    }
+
+
+    /// <summary>
     /// 数据审计信息处理器
     /// </summary>
-    [Dependency(ServiceLifetime.Transient, AddSelf = true)]
     public class AuditEntityEventHandler : EventHandlerBase<AuditEntityEventData>
     {
         private readonly ScopedDictionary _scopedDictionary;

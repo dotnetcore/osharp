@@ -8,14 +8,14 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Routing;
 using OSharp.Core.Packs;
-using OSharp.Exceptions;
 
 
 namespace Microsoft.AspNetCore.Builder
@@ -31,11 +31,24 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
             IServiceProvider provider = app.ApplicationServices;
-            if (!(provider.GetService<IOsharpPackManager>() is IAspUsePack aspPackManager))
+            ILogger logger = provider.GetLogger(typeof(ApplicationBuilderExtensions));
+            logger.LogInformation("OSharp框架初始化开始");
+            Stopwatch watch = Stopwatch.StartNew();
+            OsharpPack[] packs = provider.GetAllPacks();
+            foreach (OsharpPack pack in packs)
             {
-                throw new OsharpException("接口 IOsharpPackManager 的注入类型不正确，该类型应同时实现接口 IAspUsePack");
+                if (pack is AspOsharpPack aspPack)
+                {
+                    aspPack.UsePack(app);
+                }
+                else
+                {
+                    pack.UsePack(provider);
+                }
             }
-            aspPackManager.UsePack(app);
+
+            watch.Stop();
+            logger.LogInformation($"OSharp框架初始化完成，耗时：{watch.Elapsed}");
 
             return app;
         }

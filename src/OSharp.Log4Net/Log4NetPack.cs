@@ -17,7 +17,7 @@ namespace OSharp.Log4Net
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
-        public override PackLevel Level => PackLevel.Core;
+        public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动，

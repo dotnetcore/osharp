@@ -10,9 +10,6 @@
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
 
 
 namespace OSharp.Entity.PostgreSql
@@ -20,7 +17,6 @@ namespace OSharp.Entity.PostgreSql
     /// <summary>
     /// PostgreSql<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         /// <summary>

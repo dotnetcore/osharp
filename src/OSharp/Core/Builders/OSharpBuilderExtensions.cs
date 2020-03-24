@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Core.Packs;
+using OSharp.Dependency;
+using OSharp.EventBuses;
 
 
 namespace OSharp.Core.Builders
@@ -18,11 +20,15 @@ namespace OSharp.Core.Builders
     public static class OsharpBuilderExtensions
     {
         /// <summary>
-        /// 添加CorePack
+        /// 添加核心模块
         /// </summary>
-        public static IOsharpBuilder AddCorePack(this IOsharpBuilder builder)
+        internal static IOsharpBuilder AddCorePack(this IOsharpBuilder builder)
         {
-            return builder.AddPack<OsharpCorePack>();
+            builder.AddPack<OsharpCorePack>()
+                .AddPack<DependencyPack>()
+                .AddPack<EventBusPack>();
+
+            return builder;
         }
     }
 }

@@ -7,13 +7,16 @@
 //  <last-date>2020-02-15 17:31</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.ComponentModel;
 
+using Liuliu.Demo.Identity.Dtos;
 using Liuliu.Demo.Identity.Entities;
+using Liuliu.Demo.Identity.Events;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AutoMapper;
+using OSharp.Entity;
 using OSharp.Identity;
 
 
@@ -33,6 +36,12 @@ namespace Liuliu.Demo.Identity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityContract, IdentityService>();
+            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
+
+            services.AddEventHandler<LoginLoginLogEventHandler>();
+            services.AddEventHandler<LogoutLoginLogEventHandler>();
+            services.AddEventHandler<Logout_RemoveRefreshTokenEventHandler>();
 
             return base.AddServices(services);
         }

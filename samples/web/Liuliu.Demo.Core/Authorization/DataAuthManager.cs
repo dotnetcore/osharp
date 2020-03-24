@@ -13,12 +13,9 @@ using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
 using Liuliu.Demo.Identity.Entities;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using OSharp.Authorization.DataAuthorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 

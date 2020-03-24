@@ -11,8 +11,9 @@
 //  <last-editor>郭明锋</last-editor>
 // -----------------------------------------------------------------------
 
-using System;
 using System.ComponentModel;
+
+using Liuliu.Demo.Infos.Events;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -34,17 +35,9 @@ namespace Liuliu.Demo.Infos
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddScoped<IInfosContract, InfosService>();
+            services.AddEventHandler<MessageCreatedEventHandler>();
 
             return services;
-        }
-
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public override void UsePack(IServiceProvider provider)
-        {
-            base.UsePack(provider);
         }
     }
 }

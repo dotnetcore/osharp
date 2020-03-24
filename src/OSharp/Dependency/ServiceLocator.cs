@@ -18,7 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Data;
-using OSharp.Exceptions;
 
 
 namespace OSharp.Dependency

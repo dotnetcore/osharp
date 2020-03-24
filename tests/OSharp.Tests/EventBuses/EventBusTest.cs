@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.AspNetCore;
-using OSharp.Core.Builders;
-using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.EventBuses;
-using OSharp.UnitTest;
 using OSharp.UnitTest.Infrastructure;
 
 using Shouldly;
@@ -115,10 +111,7 @@ namespace OSharp.Tests.IEventBuses
             {
                 services.AddHttpContextAccessor().AddLogging();
 
-                services.AddOSharp<AspOsharpPackManager>(builder =>
-                {
-                    builder.AddCorePack().AddPack<EventBusPack>();
-                });
+                services.AddOSharp();
             }
         }
 

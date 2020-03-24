@@ -44,6 +44,7 @@ namespace OSharp.Entity.PostgreSql
         {
             services = base.AddServices(services);
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(PostgreSqlDapperSqlExecutor<,>));
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

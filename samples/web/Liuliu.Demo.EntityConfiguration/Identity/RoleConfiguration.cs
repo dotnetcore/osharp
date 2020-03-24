@@ -7,8 +7,6 @@
 //  <last-date>2018-06-27 4:48</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.EntityFrameworkCore;

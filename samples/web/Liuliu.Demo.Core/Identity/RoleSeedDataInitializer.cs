@@ -16,17 +16,13 @@ using Liuliu.Demo.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Collections;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Identity;
-using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Identity
 {
-    [Dependency(ServiceLifetime.Singleton)]
     public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, int>
     {
         private readonly IServiceProvider _rootProvider;

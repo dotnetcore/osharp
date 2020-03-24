@@ -12,8 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using OSharp.Data;
-using OSharp.Extensions;
-using OSharp.Filter;
 
 
 namespace OSharp.Linq

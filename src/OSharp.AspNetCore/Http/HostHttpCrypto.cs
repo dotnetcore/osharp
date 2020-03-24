@@ -17,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Http;
@@ -28,7 +27,6 @@ namespace OSharp.AspNetCore.Http
     /// <summary>
     /// Http服务端加密解密功能
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class HostHttpCrypto : IHostHttpCrypto
     {
         private readonly ILogger _logger;

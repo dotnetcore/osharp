@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Core.Packs;
 
 
 namespace OSharp.UnitTest.Infrastructure
@@ -15,7 +11,7 @@ namespace OSharp.UnitTest.Infrastructure
         {
             IServiceCollection services = new ServiceCollection();
             services.AddHttpContextAccessor().AddLogging();
-            services.AddOSharp<OsharpPackManager>();
+            services.AddOSharp();
             IServiceProvider provider = services.BuildServiceProvider();
             provider.UseOsharp();
             ServiceProvider = provider;

@@ -10,14 +10,11 @@
 using System;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
@@ -27,7 +24,6 @@ namespace OSharp.Net
     /// <summary>
     /// 默认邮件发送者
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DefaultEmailSender : IEmailSender
     {
         private readonly IServiceProvider _provider;

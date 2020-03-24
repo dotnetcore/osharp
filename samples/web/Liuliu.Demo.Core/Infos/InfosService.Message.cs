@@ -20,7 +20,6 @@ using Liuliu.Demo.Infos.Events;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Exceptions;
-using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Infos

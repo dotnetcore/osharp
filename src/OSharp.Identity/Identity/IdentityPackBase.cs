@@ -14,17 +14,15 @@ using System.Security.Claims;
 using System.Security.Principal;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using OSharp.AspNetCore;
 using OSharp.Core.Packs;
-using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Identity.Entities;
+using OSharp.Identity.Events;
 
 
 namespace OSharp.Identity
@@ -64,6 +62,7 @@ namespace OSharp.Identity
         {
             services.AddScoped<IUserStore<TUser>, TUserStore>();
             services.AddScoped<IRoleStore<TRole>, TRoleStore>();
+            services.AddEventHandler<OnlineUserCacheRemoveEventHandler>();
 
             //在线用户缓存
             services.TryAddScoped<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey>>();

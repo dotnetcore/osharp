@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Dependency;
+using OSharp.EventBuses.Internal;
 
 
 namespace OSharp.EventBuses
@@ -42,14 +42,19 @@ namespace OSharp.EventBuses
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.TryAddSingleton<IEventBusBuilder, EventBusBuilder>();
+            services.TryAddSingleton<IEventStore, InMemoryEventStore>();
+            services.TryAddSingleton<IEventBus, PassThroughEventBus>();
+
             IEventHandlerTypeFinder handlerTypeFinder =
                 services.GetOrAddTypeFinder<IEventHandlerTypeFinder>(assemblyFinder => new EventHandlerTypeFinder(assemblyFinder));
-            //向服务窗口注册所有事件处理器类型
-            Type[] eventHandlerTypes = handlerTypeFinder.FindAll();
-            foreach (Type handlerType in eventHandlerTypes)
-            {
-                services.TryAddTransient(handlerType);
-            }
+            
+            //向服务容器注册所有事件处理器类型
+            //Type[] eventHandlerTypes = handlerTypeFinder.FindAll();
+            //foreach (Type handlerType in eventHandlerTypes)
+            //{
+            //    services.TryAddTransient(handlerType);
+            //}
 
             return services;
         }

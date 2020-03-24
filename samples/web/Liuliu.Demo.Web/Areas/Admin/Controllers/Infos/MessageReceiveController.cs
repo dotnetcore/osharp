@@ -11,8 +11,6 @@
 //  <last-editor>郭明锋</last-editor>
 // -----------------------------------------------------------------------
 
-using System;
-
 using OSharp.Filter;
 
 using Liuliu.Demo.Infos;

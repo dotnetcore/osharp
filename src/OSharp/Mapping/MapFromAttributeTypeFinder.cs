@@ -7,9 +7,6 @@
 //  <last-date>2018-07-03 23:58</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
 using OSharp.Reflection;
 
 
@@ -18,7 +15,6 @@ namespace OSharp.Mapping
     /// <summary>
     /// 标注了<see cref="MapFromAttribute"/>标签的类型查找器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class MapFromAttributeTypeFinder : AttributeTypeFinderBase<MapFromAttribute>, IMapFromAttributeTypeFinder
     {
         /// <summary>

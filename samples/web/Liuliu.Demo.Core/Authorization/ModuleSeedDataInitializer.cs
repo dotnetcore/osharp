@@ -12,15 +12,11 @@ using System.Linq.Expressions;
 
 using Liuliu.Demo.Authorization.Entities;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
 using OSharp.Entity;
 
 
 namespace Liuliu.Demo.Authorization
 {
-    [Dependency(ServiceLifetime.Singleton)]
     public class ModuleSeedDataInitializer : SeedDataInitializerBase<Module, int>
     {
         /// <summary>

@@ -7,19 +7,32 @@
 //  <last-date>2020-02-27 0:35</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
+using OSharp.AutoMapper;
 
 
 namespace Liuliu.Demo.Authorization
 {
     public class DataAuthorizationPack
         : DataAuthorizationPackBase<DataAuthManager, DataAuthCache, EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, int>
-    { }
+    {
+        /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+
+            return base.AddServices(services);
+        }
+    }
 }

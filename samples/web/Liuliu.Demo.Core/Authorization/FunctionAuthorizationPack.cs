@@ -9,16 +9,35 @@
 
 using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
+using Liuliu.Demo.Identity;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.Functions;
+using OSharp.Core.Packs;
+using OSharp.Entity;
 
 
 namespace Liuliu.Demo.Authorization
 {
+    [DependsOnPacks(typeof(IdentityPack), typeof(MvcFunctionPack))]
     public class FunctionAuthorizationPack
         : FunctionAuthorizationPackBase<FunctionAuthManager, FunctionAuthorization, FunctionAuthCache, ModuleHandler, Function,
             FunctionInputDto, Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
-    { }
+    {
+        /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddSingleton<ISeedDataInitializer, ModuleSeedDataInitializer>();
+
+            return base.AddServices(services);
+        }
+    }
 }

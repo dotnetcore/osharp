@@ -23,7 +23,7 @@ using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -36,7 +36,6 @@ using OSharp.Data;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
-using OSharp.Linq;
 using OSharp.Mapping;
 
 

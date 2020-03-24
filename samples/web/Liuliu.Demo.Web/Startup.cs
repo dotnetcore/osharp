@@ -7,7 +7,9 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Identity;
+using Liuliu.Demo.Web.Startups;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using OSharp.AspNetCore;
+using OSharp.AspNetCore.Routing;
+using OSharp.AutoMapper;
+using OSharp.Log4Net;
+using OSharp.Swagger;
 
 
 namespace Liuliu.Demo.Web
@@ -24,7 +30,15 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOSharp<AspOsharpPackManager>();
+            services.AddOSharp()
+                .AddPack<Log4NetPack>()
+                .AddPack<AutoMapperPack>()
+                .AddPack<EndpointsPack>()
+                .AddPack<SwaggerPack>()
+                .AddPack<AuthenticationPack>()
+                .AddPack<FunctionAuthorizationPack>()
+                .AddPack<DataAuthorizationPack>()
+                .AddPack<MySqlDefaultDbContextMigrationPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -22,11 +22,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Modules;
-using OSharp.CodeGenerator;
-using OSharp.Core.Packs;
 using OSharp.Data;
 using OSharp.Drawing;
 using OSharp.IO;
@@ -121,8 +118,7 @@ namespace Liuliu.Demo.Web.Controllers
             IServiceProvider provider = HttpContext.RequestServices;
 
             dynamic info = new ExpandoObject();
-            IOsharpPackManager packManager = provider.GetService<IOsharpPackManager>();
-            info.Packs = packManager.SourcePacks.OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).Select(m => new
+            info.Packs = provider.GetAllPacks().Select(m => new
             {
                 m.GetType().Name,
                 Class = m.GetType().FullName,

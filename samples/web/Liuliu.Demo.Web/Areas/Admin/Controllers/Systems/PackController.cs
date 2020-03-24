@@ -62,8 +62,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<OsharpPack, bool>> exp = _filterService.GetExpression<OsharpPack>(request.FilterGroup);
             IServiceProvider provider = HttpContext.RequestServices;
-            IOsharpPackManager manager = provider.GetService<IOsharpPackManager>();
-            return _cacheService.ToPageCache(manager.SourcePacks.AsQueryable(), exp,
+
+            return _cacheService.ToPageCache(provider.GetAllPacks().AsQueryable(), exp,
                 request.PageCondition,
                 m => new PackOutputDto()
                 {

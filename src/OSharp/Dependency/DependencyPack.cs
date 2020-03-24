@@ -52,6 +52,8 @@ namespace OSharp.Dependency
             ServiceLocator.Instance.SetServiceCollection(services);
 
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
+            services.TryAddSingleton<IHybridServiceScopeFactory, DefaultServiceScopeFactory>();
+            services.AddScoped<ScopedDictionary>();
 
             //查找所有自动注册的服务实现类型
             IDependencyTypeFinder dependencyTypeFinder =

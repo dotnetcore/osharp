@@ -24,7 +24,6 @@ using OSharp.AspNetCore;
 using OSharp.Authentication.JwtBearer;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
-using OSharp.EventBuses;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Identity.Entities;
@@ -37,7 +36,7 @@ namespace OSharp.Authentication
     /// 身份认证模块基类
     /// </summary>
     [Description("身份认证模块")]
-    [DependsOnPacks(typeof(EventBusPack), typeof(AspNetCorePack))]
+    [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class AuthenticationPackBase<TUser, TUserKey> : AspOsharpPack
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>

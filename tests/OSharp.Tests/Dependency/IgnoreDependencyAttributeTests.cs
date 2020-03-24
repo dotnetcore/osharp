@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core.Options;
-
 using Shouldly;
 
 using Xunit;

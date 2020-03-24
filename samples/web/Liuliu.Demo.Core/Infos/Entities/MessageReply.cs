@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using OSharp.Entity;
+﻿using OSharp.Entity;
 
 
 namespace Liuliu.Demo.Infos.Entities

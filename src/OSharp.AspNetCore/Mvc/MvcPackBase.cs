@@ -9,11 +9,14 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
+using OSharp.Dependency;
+using OSharp.Threading;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -45,7 +48,12 @@ namespace OSharp.AspNetCore.Mvc
 
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
-            services.AddDistributedMemoryCache();
+
+            services.AddScoped<UnitOfWorkAttribute>();
+            services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();
+            services.TryAddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
+            services.Replace<ICancellationTokenProvider, HttpContextCancellationTokenProvider>(ServiceLifetime.Singleton);
+            services.Replace<IHybridServiceScopeFactory, HttpContextServiceScopeFactory>(ServiceLifetime.Singleton);
 
             return services;
         }

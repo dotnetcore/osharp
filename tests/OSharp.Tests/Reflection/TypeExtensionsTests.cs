@@ -1,5 +1,4 @@
-﻿using OSharp.Reflection;
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>

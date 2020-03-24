@@ -9,17 +9,12 @@
 
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
-
 
 namespace OSharp.Authorization.EntityInfos
 {
     /// <summary>
     /// 实体信息处理器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class EntityInfoHandler : EntityInfoHandlerBase<EntityInfo, EntityInfoHandler>
     {
         /// <summary>

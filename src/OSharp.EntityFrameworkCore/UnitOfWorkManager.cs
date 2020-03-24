@@ -21,7 +21,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 工作单元管理器
     /// </summary>
-    [Dependency(ServiceLifetime.Scoped, TryAdd = true)]
     public class UnitOfWorkManager : Disposable, IUnitOfWorkManager
     {
         private readonly ScopedDictionary _scopedDictionary;

@@ -2,8 +2,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Core;
-using OSharp.Core.Packs;
 using OSharp.Dependency;
 
 using Shouldly;

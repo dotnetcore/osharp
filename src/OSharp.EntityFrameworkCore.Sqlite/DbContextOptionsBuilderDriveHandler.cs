@@ -10,9 +10,6 @@
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
 
 
 namespace OSharp.Entity.Sqlite
@@ -20,7 +17,6 @@ namespace OSharp.Entity.Sqlite
     /// <summary>
     /// Sqlite的<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         /// <summary>

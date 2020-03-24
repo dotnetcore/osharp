@@ -9,17 +9,12 @@
 
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
-
 
 namespace OSharp.EventBuses.Internal
 {
     /// <summary>
     /// EventBus初始化
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     internal class EventBusBuilder : IEventBusBuilder
     {
         private readonly IEventHandlerTypeFinder _typeFinder;

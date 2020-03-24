@@ -8,10 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -24,14 +22,13 @@ using OSharp.Core.Packs;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
-using Swashbuckle.AspNetCore.Swagger;
-
 
 namespace OSharp.Swagger
 {
     /// <summary>
     /// Swagger模块基类
     /// </summary>
+    [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class SwaggerPackBase : AspOsharpPack
     {
         /// <summary>

@@ -18,7 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
-using OSharp.Core;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 

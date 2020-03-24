@@ -12,8 +12,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-using OSharp.Data;
-
 
 namespace OSharp.IO
 {
