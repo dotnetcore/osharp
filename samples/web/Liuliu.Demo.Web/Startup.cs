@@ -9,6 +9,7 @@
 
 using Liuliu.Demo.Authorization;
 using Liuliu.Demo.Identity;
+using Liuliu.Demo.Systems;
 using Liuliu.Demo.Web.Startups;
 
 using Microsoft.AspNetCore.Builder;
@@ -36,11 +37,12 @@ namespace Liuliu.Demo.Web
                 .AddPack<AutoMapperPack>()
                 .AddPack<EndpointsPack>()
                 .AddPack<SwaggerPack>()
-                .AddPack<RedisPack>()
+                //.AddPack<RedisPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
-                .AddPack<MySqlDefaultDbContextMigrationPack>();
+                .AddPack<MySqlDefaultDbContextMigrationPack>()
+                .AddPack<AuditPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
