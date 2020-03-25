@@ -33,6 +33,7 @@ using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -88,17 +89,31 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             //    predicate = predicate.And(m => m.UserRoles.Any(n => n.RoleId == roleId));
             //}
 
-            var page = _cacheService.ToPageCache(_userManager.Users, predicate, request.PageCondition, m => new
+            var page = _userManager.Users.ToPage(predicate, request.PageCondition, m => new
             {
                 D = m,
                 Roles = m.UserRoles.Select(n => n.Role.Name)
-            }, function).ToPageResult(data => data.Select(m => new UserOutputDto(m.D)
+            }).ToPageResult(data => data.Select(m => new UserOutputDto(m.D)
             {
                 Roles = m.Roles.ToArray(),
                 Updatable = updateFunc(m.D),
                 Deletable = deleteFunc(m.D)
             }).ToArray());
+
+
             return page.ToPageData();
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         /// <summary>

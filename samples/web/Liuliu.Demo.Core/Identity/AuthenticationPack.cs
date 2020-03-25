@@ -8,6 +8,9 @@
 // -----------------------------------------------------------------------
 
 using Liuliu.Demo.Identity.Entities;
+using Liuliu.Demo.Identity.Events;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authentication;
 using OSharp.Core.Packs;
@@ -20,5 +23,17 @@ namespace Liuliu.Demo.Identity
     /// </summary>
     [DependsOnPacks(typeof(IdentityPack))]
     public class AuthenticationPack : AuthenticationPackBase<User, int>
-    { }
+    {
+        /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddEventHandler<Logout_RemoveRefreshTokenEventHandler>();
+            
+            return base.AddServices(services);
+        }
+    }
 }

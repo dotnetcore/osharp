@@ -52,7 +52,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [ModuleInfo]
-        [Description("读取模块包")]
+        [Description("读取")]
         public PageData<PackOutputDto> Read(PageRequest request)
         {
             request.AddDefaultSortCondition(

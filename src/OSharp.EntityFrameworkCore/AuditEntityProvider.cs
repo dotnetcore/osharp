@@ -110,7 +110,7 @@ namespace OSharp.Entity
                 AuditPropertyEntry auditProperty = new AuditPropertyEntry()
                 {
                     FieldName = name,
-                    DisplayName = entityProperties.First(m => m.Name == name).Display,
+                    DisplayName = entityProperties.First(m => m.Name == name)?.Display ?? name,
                     DataType = property.ClrType.ToString()
                 };
                 if (entry.State == EntityState.Added)

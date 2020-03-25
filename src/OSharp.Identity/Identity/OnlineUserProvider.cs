@@ -42,10 +42,10 @@ namespace OSharp.Identity
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
-        private static readonly AsyncLock _asyncLock = new AsyncLock();
+        private readonly AsyncLock _asyncLock = new AsyncLock();
 
         /// <summary>
-        /// 初始化一个<see cref="OnlineUserProvider{TUser, TUserKey, TRole, TRoleKey}"/>类型的新实例
+        /// 初始化一个<see cref="OnlineUserProvider{TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey}"/>类型的新实例
         /// </summary>
         public OnlineUserProvider(IServiceProvider serviceProvider)
         {
@@ -60,7 +60,7 @@ namespace OSharp.Identity
         /// <returns>在线用户信息</returns>
         public virtual async Task<OnlineUser> GetOrCreate(string userName)
         {
-            string key = $"Identity_OnlineUser_{userName}";
+            string key = GetKey(userName);
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetSlidingExpiration(TimeSpan.FromMinutes(30));
             using (await _asyncLock.LockAsync())
@@ -113,7 +113,7 @@ namespace OSharp.Identity
             Check.NotNull(userNames, nameof(userNames));
             foreach (string userName in userNames)
             {
-                string key = $"Identity_OnlineUser_{userName}";
+                string key = GetKey(userName);
                 _cache.Remove(key);
             }
         }
@@ -160,6 +160,11 @@ namespace OSharp.Identity
             }
 
             return tokens.Except(expiredTokens).ToArray();
+        }
+        
+        private static string GetKey(string userName)
+        {
+            return $"Identity:OnlineUser:{userName}";
         }
     }
 }

@@ -115,7 +115,7 @@ namespace OSharp.AspNetCore.SignalR
 
         private static string GetKey(string userName)
         {
-            return $"SignalR_Connection_User_{userName}";
+            return $"SignalR:Connection_User:{userName}";
         }
     }
 }

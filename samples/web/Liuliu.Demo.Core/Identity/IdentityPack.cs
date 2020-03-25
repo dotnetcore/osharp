@@ -41,7 +41,6 @@ namespace Liuliu.Demo.Identity
 
             services.AddEventHandler<LoginLoginLogEventHandler>();
             services.AddEventHandler<LogoutLoginLogEventHandler>();
-            services.AddEventHandler<Logout_RemoveRefreshTokenEventHandler>();
 
             return base.AddServices(services);
         }
