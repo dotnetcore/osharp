@@ -19,7 +19,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, Guid>
+    public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, Guid>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -29,6 +29,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         {
             builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasName("UserLoginIndex").IsUnique();
             builder.HasOne(ul => ul.User).WithMany(u => u.UserLogins).HasForeignKey(ul => ul.UserId).IsRequired();
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<UserLogin> builder);
     }
 }

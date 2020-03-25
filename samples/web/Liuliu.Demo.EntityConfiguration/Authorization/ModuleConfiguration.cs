@@ -19,7 +19,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
     /// <summary>
     /// 模块信息映射配置类
     /// </summary>
-    public class ModuleConfiguration : EntityTypeConfigurationBase<Module, int>
+    public partial class ModuleConfiguration : EntityTypeConfigurationBase<Module, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -28,6 +28,13 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         public override void Configure(EntityTypeBuilder<Module> builder)
         {
             builder.HasOne(m => m.Parent).WithMany(m => m.Children).HasForeignKey(m => m.ParentId).IsRequired(false);
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<Module> builder);
     }
 }

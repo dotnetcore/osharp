@@ -17,7 +17,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class RoleConfiguration : EntityTypeConfigurationBase<Role, int>
+    public partial class RoleConfiguration : EntityTypeConfigurationBase<Role, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -28,6 +28,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
             builder.HasIndex(m => new { m.NormalizedName, m.DeletedTime }).HasName("RoleNameIndex").IsUnique();
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<Role> builder);
     }
 }

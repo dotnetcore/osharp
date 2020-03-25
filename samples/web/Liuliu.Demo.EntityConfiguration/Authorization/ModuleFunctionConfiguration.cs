@@ -23,7 +23,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
     /// <summary>
     /// 模块功能信息映射配置类
     /// </summary>
-    public class ModuleFunctionConfiguration : EntityTypeConfigurationBase<ModuleFunction, Guid>
+    public partial class ModuleFunctionConfiguration : EntityTypeConfigurationBase<ModuleFunction, Guid>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -35,6 +35,13 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
 
             builder.HasOne<Module>(mf => mf.Module).WithMany().HasForeignKey(m => m.ModuleId);
             builder.HasOne<Function>(mf => mf.Function).WithMany().HasForeignKey(m => m.FunctionId);
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<ModuleFunction> builder);
     }
 }

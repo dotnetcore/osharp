@@ -17,7 +17,7 @@ namespace OSharp.Tests.Startups
         public void ServiceLifetimeTest()
         {
             ServiceCollection services = new ServiceCollection();
-            services.AddOSharp<OsharpPackManager>();
+            services.AddOSharp();
 
             IServiceProvider provider = services.BuildServiceProvider();
 

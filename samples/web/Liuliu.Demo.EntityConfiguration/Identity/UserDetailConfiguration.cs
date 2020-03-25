@@ -16,7 +16,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class UserDetailConfiguration : EntityTypeConfigurationBase<UserDetail, int>
+    public partial class UserDetailConfiguration : EntityTypeConfigurationBase<UserDetail, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -25,6 +25,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<UserDetail> builder)
         {
             builder.HasOne(ud => ud.User).WithOne(u => u.UserDetail).HasForeignKey<UserDetail>(ud => ud.UserId).IsRequired();
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<UserDetail> builder);
     }
 }

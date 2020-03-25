@@ -17,7 +17,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class UserConfiguration : EntityTypeConfigurationBase<User, int>
+    public partial class UserConfiguration : EntityTypeConfigurationBase<User, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -29,6 +29,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
             builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasName("EmailIndex");
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<User> builder);
     }
 }

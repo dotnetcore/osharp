@@ -19,7 +19,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Systems
 {
-    public class AuditEntityConfiguration : EntityTypeConfigurationBase<AuditEntity, Guid>
+    public partial class AuditEntityConfiguration : EntityTypeConfigurationBase<AuditEntity, Guid>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -29,6 +29,13 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         {
             builder.HasIndex(m => m.OperationId);
             builder.HasOne(m => m.Operation).WithMany(n => n.AuditEntities).HasForeignKey(m => m.OperationId);
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<AuditEntity> builder);
     }
 }

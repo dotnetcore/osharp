@@ -19,7 +19,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class UserRoleConfiguration : EntityTypeConfigurationBase<UserRole, Guid>
+    public partial class UserRoleConfiguration : EntityTypeConfigurationBase<UserRole, Guid>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -30,6 +30,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
             builder.HasIndex(m => new { m.UserId, m.RoleId, m.DeletedTime }).HasName("UserRoleIndex").IsUnique();
             builder.HasOne(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(m => m.RoleId);
             builder.HasOne(ur => ur.User).WithMany(u => u.UserRoles).HasForeignKey(m => m.UserId);
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<UserRole> builder);
     }
 }
