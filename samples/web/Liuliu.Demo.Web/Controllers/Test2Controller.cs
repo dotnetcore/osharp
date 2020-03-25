@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,10 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization.Modules;
 using OSharp.Collections;
 using OSharp.Core.Options;
+using OSharp.Core.Systems;
 using OSharp.Entity;
+using OSharp.Extensions;
+using OSharp.Redis;
 
 using StackExchange.Profiling.Internal;
 
@@ -22,6 +26,15 @@ namespace Liuliu.Demo.Web.Controllers
         public Test2Controller(DefaultDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        [Description("测试一下")]
+        public IActionResult Test01()
+        {
+            RedisClient redis = new RedisClient();
+            redis.StringSet("Test:Key001", "value001", TimeSpan.FromSeconds(20));
+            return Content(redis.StringGet("Test:Key001"));
         }
 
         /// <summary>
