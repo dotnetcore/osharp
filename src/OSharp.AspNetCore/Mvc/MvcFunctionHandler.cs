@@ -113,14 +113,19 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
-            bool flag = base.IsIgnoreMethod(action, method, functions);
-            return flag && method.HasAttribute<HttpPostAttribute>() || method.HasAttribute<NonActionAttribute>();
+            if (method.HasAttribute<NonActionAttribute>() || method.HasAttribute<NonFunctionAttribute>())
+            {
+                return true;
+            }
+
+            Function existing = GetFunction(functions, action.Area, action.Controller, action.Action, action.Name);
+            return existing != null && method.HasAttribute<HttpPostAttribute>();
         }
 
         /// <summary>
         /// 从类型中获取功能的区域信息
         /// </summary>
-        private static string GetArea(Type type)
+        private static string GetArea(MemberInfo type)
         {
             AreaAttribute attribute = type.GetAttribute<AreaAttribute>();
             return attribute?.RouteValue;

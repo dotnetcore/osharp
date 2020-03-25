@@ -625,8 +625,8 @@ public static $propertyType$ Get$propertyName$(DependencyObject $element$)&#xD;
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/Shortcut/@EntryValue">actp</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1B77F2C8904D5643B6E8DDEC184FD895/Text/@EntryValue">[HttpPost]&#xD;
+[UnitOfWork]&#xD;
 [Description("$功能描述$")]&#xD;
-[ServiceFilter(typeof(UnitOfWorkAttribute))]&#xD;
 public Task&lt;ActionResult&gt; $ActionName$($param$)&#xD;
 {&#xD;
 	return new EmptyResult();$END$&#xD;
