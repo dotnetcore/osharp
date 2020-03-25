@@ -9,8 +9,6 @@
 
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using OSharp.Dependency;
 
 
@@ -19,7 +17,6 @@ namespace OSharp.EventBuses.Internal
     /// <summary>
     /// 一个事件总线，当有消息被派发到消息总线时，消息总线将不做任何处理与路由，而是直接将消息推送到订阅方
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     internal class PassThroughEventBus : EventBusBase
     {
         /// <summary>

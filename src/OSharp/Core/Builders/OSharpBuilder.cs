@@ -11,10 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
+using OSharp.Exceptions;
 
 
 namespace OSharp.Core.Builders
@@ -24,24 +27,28 @@ namespace OSharp.Core.Builders
     /// </summary>
     public class OsharpBuilder : IOsharpBuilder
     {
+        private readonly List<OsharpPack> _source;
+        private List<OsharpPack> _packs;
+
         /// <summary>
         /// 初始化一个<see cref="OsharpBuilder"/>类型的新实例
         /// </summary>
-        public OsharpBuilder()
+        public OsharpBuilder(IServiceCollection services)
         {
-            AddPacks = new List<Type>();
-            ExceptPacks = new List<Type>();
+            Services = services;
+            _packs = new List<OsharpPack>();
+            _source = GetAllPacks(services);
         }
+
+        /// <summary>
+        /// 获取 服务集合
+        /// </summary>
+        public IServiceCollection Services { get; }
 
         /// <summary>
         /// 获取 加载的模块集合
         /// </summary>
-        public IEnumerable<Type> AddPacks { get; private set; }
-
-        /// <summary>
-        /// 获取 排除的模块集合
-        /// </summary>
-        public IEnumerable<Type> ExceptPacks { get; private set; }
+        public IEnumerable<OsharpPack> Packs => _packs;
 
         /// <summary>
         /// 获取 OSharp选项配置委托
@@ -49,27 +56,48 @@ namespace OSharp.Core.Builders
         public Action<OsharpOptions> OptionsAction { get; private set; }
 
         /// <summary>
-        /// 添加指定模块，执行此功能后将仅加载指定的模块
+        /// 添加指定模块
         /// </summary>
         /// <typeparam name="TPack">要添加的模块类型</typeparam>
         public IOsharpBuilder AddPack<TPack>() where TPack : OsharpPack
         {
-            List<Type> list = AddPacks.ToList();
-            list.AddIfNotExist(typeof(TPack));
-            AddPacks = list;
-            return this;
-        }
+            Type type = typeof(TPack);
+            if (_packs.Any(m => m.GetType() == type))
+            {
+                return this;
+            }
 
-        /// <summary>
-        /// 移除指定模块，执行此功能以从自动加载的模块中排除指定模块
-        /// </summary>
-        /// <typeparam name="TPack"></typeparam>
-        /// <returns></returns>
-        public IOsharpBuilder ExceptPack<TPack>() where TPack : OsharpPack
-        {
-            List<Type> list = ExceptPacks.ToList();
-            list.AddIfNotExist(typeof(TPack));
-            ExceptPacks = list;
+            OsharpPack[] tmpPacks = new OsharpPack[_packs.Count];
+            _packs.CopyTo(tmpPacks);
+
+            OsharpPack pack = _source.FirstOrDefault(m => m.GetType() == type);
+            if (pack == null)
+            {
+                throw new OsharpException($"类型为“{type.FullName}”的模块实例无法找到");
+            }
+            _packs.AddIfNotExist(pack);
+
+            // 添加依赖模块
+            Type[] dependTypes = pack.GetDependPackTypes();
+            foreach (Type dependType in dependTypes)
+            {
+                OsharpPack dependPack = _source.Find(m => m.GetType() == dependType);
+                if (dependPack == null)
+                {
+                    throw new OsharpException($"加载模块{pack.GetType().FullName}时无法找到依赖模块{dependType.FullName}");
+                }
+                _packs.AddIfNotExist(dependPack);
+            }
+
+            // 按先层级后顺序的规则进行排序
+            _packs = _packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
+
+            tmpPacks = _packs.Except(tmpPacks).ToArray();
+            foreach (OsharpPack tmpPack in tmpPacks)
+            {
+                AddPack(Services, tmpPack);
+            }
+
             return this;
         }
 
@@ -83,6 +111,40 @@ namespace OSharp.Core.Builders
             Check.NotNull(optionsAction, nameof(optionsAction));
             OptionsAction = optionsAction;
             return this;
+        }
+
+        private static List<OsharpPack> GetAllPacks(IServiceCollection services)
+        {
+            IOsharpPackTypeFinder packTypeFinder =
+                services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
+            Type[] packTypes = packTypeFinder.FindAll();
+            return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)).ToList();
+        }
+
+        private static IServiceCollection AddPack(IServiceCollection services, OsharpPack pack)
+        {
+            Type type = pack.GetType();
+            Type serviceType = typeof(OsharpPack);
+
+            if (type.BaseType?.IsAbstract == false)
+            {
+                //移除多重继承的模块
+                ServiceDescriptor[] descriptors = services.Where(m =>
+                    m.Lifetime == ServiceLifetime.Singleton && m.ServiceType == serviceType
+                    && m.ImplementationInstance?.GetType() == type.BaseType).ToArray();
+                foreach (var descriptor in descriptors)
+                {
+                    services.Remove(descriptor);
+                }
+            }
+
+            if (!services.Any(m => m.Lifetime == ServiceLifetime.Singleton && m.ServiceType == serviceType && m.ImplementationInstance?.GetType() == type))
+            {
+                services.AddSingleton(typeof(OsharpPack), pack);
+                pack.AddServices(services);
+            }
+
+            return services;
         }
     }
 }

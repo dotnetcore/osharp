@@ -21,7 +21,6 @@ using Microsoft.IdentityModel.Tokens;
 
 using OSharp.Core.Options;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
 using OSharp.Exceptions;

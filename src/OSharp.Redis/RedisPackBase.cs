@@ -15,9 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Extensions;
+
+using StackExchange.Redis;
 
 
 namespace OSharp.Redis
@@ -27,8 +28,6 @@ namespace OSharp.Redis
     /// </summary>
     public abstract class RedisPackBase : OsharpPack
     {
-        private bool _enabled = false;
-
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
@@ -42,11 +41,6 @@ namespace OSharp.Redis
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
-            _enabled = configuration["OSharp:Redis:Enabled"].CastTo(false);
-            if (!_enabled)
-            {
-                return services;
-            }
 
             string config = configuration["OSharp:Redis:Configuration"];
             if (config.IsNullOrEmpty())
@@ -63,15 +57,6 @@ namespace OSharp.Redis
             });
 
             return services;
-        }
-
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public override void UsePack(IServiceProvider provider)
-        {
-            IsEnabled = _enabled;
         }
     }
 }

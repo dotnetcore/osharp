@@ -16,7 +16,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class RoleClaimConfiguration : EntityTypeConfigurationBase<RoleClaim, int>
+    public partial class RoleClaimConfiguration : EntityTypeConfigurationBase<RoleClaim, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -25,6 +25,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<RoleClaim> builder)
         {
             builder.HasOne(rc => rc.Role).WithMany(r => r.RoleClaims).HasForeignKey(m => m.RoleId).IsRequired();
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<RoleClaim> builder);
     }
 }

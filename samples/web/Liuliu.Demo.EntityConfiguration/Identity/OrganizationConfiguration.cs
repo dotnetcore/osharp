@@ -16,7 +16,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class OrganizationConfiguration : EntityTypeConfigurationBase<Organization, int>
+    public partial class OrganizationConfiguration : EntityTypeConfigurationBase<Organization, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -25,6 +25,13 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         public override void Configure(EntityTypeBuilder<Organization> builder)
         {
             builder.HasOne<Organization>().WithMany().HasForeignKey(m => m.ParentId).IsRequired(false);
+
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<Organization> builder);
     }
 }

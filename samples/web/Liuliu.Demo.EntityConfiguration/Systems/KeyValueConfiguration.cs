@@ -15,7 +15,7 @@ using System;
 
 namespace Liuliu.Demo.EntityConfiguration.Systems
 {
-    public class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, Guid>
+    public partial class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, Guid>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -23,10 +23,12 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<KeyValue> builder)
         {
-            builder.HasData(
-                new KeyValue() { Id = Guid.Parse("534d7813-0eea-44cc-b88e-a9cb010c6981"), Key = SystemSettingKeys.SiteName, Value = "OSHARP" },
-                new KeyValue() { Id = Guid.Parse("977e4bba-97b2-4759-a768-a9cb010c698c"), Key = SystemSettingKeys.SiteDescription, Value = "Osharp with AspNetCore & Angular" }
-            );
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<KeyValue> builder);
     }
 }

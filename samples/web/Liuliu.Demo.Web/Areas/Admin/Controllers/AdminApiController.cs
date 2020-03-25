@@ -8,11 +8,9 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
-using OSharp.Core;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers

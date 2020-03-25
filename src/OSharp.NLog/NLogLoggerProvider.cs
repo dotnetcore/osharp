@@ -25,7 +25,7 @@ namespace OSharp.NLog
     /// <summary>
     /// NLog 日志对象提供者
     /// </summary>
-    public class NLogLoggerProvider : ILoggerProvider
+    public class NLogLoggerProvider : Disposable, ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, NLogLogger> _loggers = new ConcurrentDictionary<string, NLogLogger>();
         private const string DefaultNLogFileName = "nlog.config";
@@ -100,20 +100,14 @@ namespace OSharp.NLog
             return null;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if (!disposing)
+            if (!Disposed)
             {
-                return;
+                _loggers.Clear();
             }
-            _loggers.Clear();
-        }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
     }
 }

@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Properties;
 using OSharp.Security;
@@ -27,7 +26,6 @@ namespace OSharp.Http
     /// <summary>
     /// Http客户端通信加密解密器
     /// </summary>
-    [Dependency(ServiceLifetime.Transient, TryAdd = true)]
     public class ClientHttpCrypto : IClientHttpCrypto
     {
         private readonly ILogger _logger;

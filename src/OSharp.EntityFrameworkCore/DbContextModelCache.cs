@@ -11,9 +11,7 @@ using System;
 using System.Collections.Concurrent;
 
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 
-using OSharp.Dependency;
 using OSharp.Extensions;
 
 
@@ -22,7 +20,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 上下文数据模型缓存
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, AddSelf = true)]
     public class DbContextModelCache
     {
         private readonly ConcurrentDictionary<Type, IModel> _dict = new ConcurrentDictionary<Type, IModel>();

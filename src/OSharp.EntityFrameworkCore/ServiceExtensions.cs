@@ -13,20 +13,20 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
 using OSharp.Dependency;
+using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
 
-namespace OSharp.Entity
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 依赖注入服务集合扩展
     /// </summary>
-    public static class ServiceCollectionExtensions
+    public static class ServiceExtensions
     {
         /// <summary>
         /// 将基于Osharp数据上下文基类<see cref="DbContextBase"/>上下文类型添加到服务集合中

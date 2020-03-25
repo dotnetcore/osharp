@@ -556,25 +556,6 @@ namespace Liuliu.Demo.Web.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Auth_Module",
-                columns: new[] { "Id", "Code", "Name", "OrderCode", "ParentId", "Remark", "TreePathString" },
-                values: new object[] { 1, "Root", "根节点", 1.0, null, "系统根节点", "$1$" });
-
-            migrationBuilder.InsertData(
-                table: "Identity_Role",
-                columns: new[] { "Id", "ConcurrencyStamp", "CreatedTime", "DeletedTime", "IsAdmin", "IsDefault", "IsLocked", "IsSystem", "MessageId", "Name", "NormalizedName", "Remark" },
-                values: new object[] { 1, "97313840-7874-47e5-81f2-565613c8cdcc", new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, true, false, false, true, null, "系统管理员", "系统管理员", "系统最高权限管理角色" });
-
-            migrationBuilder.InsertData(
-                table: "Systems_KeyValue",
-                columns: new[] { "Id", "IsLocked", "Key", "ValueJson", "ValueType" },
-                values: new object[,]
-                {
-                    { new Guid("534d7813-0eea-44cc-b88e-a9cb010c6981"), false, "Site.Name", "\"OSHARP\"", "System.String,System.Private.CoreLib" },
-                    { new Guid("977e4bba-97b2-4759-a768-a9cb010c698c"), false, "Site.Description", "\"Osharp with AspNetCore & Angular\"", "System.String,System.Private.CoreLib" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
                 table: "Auth_EntityInfo",

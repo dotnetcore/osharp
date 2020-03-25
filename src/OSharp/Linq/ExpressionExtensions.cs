@@ -12,7 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using OSharp.Data;
-using OSharp.Extensions;
 
 
 namespace OSharp.Linq
@@ -32,9 +31,10 @@ namespace OSharp.Linq
         /// <returns>组合后的表达式</returns>
         public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
-            first.CheckNotNull("first");
-            second.CheckNotNull("second");
-            merge.CheckNotNull("merge");
+            Check.NotNull(first, nameof(first));
+            Check.NotNull(second, nameof(second));
+            Check.NotNull(merge, nameof(merge));
+            
             Dictionary<ParameterExpression, ParameterExpression> map =
                 first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
             Expression secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
@@ -51,9 +51,11 @@ namespace OSharp.Linq
         /// <returns>组合后的表达式</returns>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second, bool ifExp = true)
         {
+            Check.NotNull(first, nameof(first));
+            Check.NotNull(second, nameof(second));
             return ifExp ? first.Compose(second, Expression.AndAlso) : first;
         }
-        
+
         /// <summary>
         /// 以 Expression.OrElse 组合两个Expression表达式
         /// </summary>
@@ -64,6 +66,8 @@ namespace OSharp.Linq
         /// <returns>组合后的表达式</returns>
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second, bool ifExp = true)
         {
+            Check.NotNull(first, nameof(first));
+            Check.NotNull(second, nameof(second));
             return ifExp ? first.Compose(second, Expression.OrElse) : first;
         }
         

@@ -7,14 +7,12 @@
 //  <last-date>2019-03-08 4:32</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Audits;
 using OSharp.Authorization.EntityInfos;
@@ -28,7 +26,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 数据审计信息提供者
     /// </summary>
-    [Dependency(ServiceLifetime.Scoped, TryAdd = true)]
     public class AuditEntityProvider : IAuditEntityProvider
     {
         private readonly ScopedDictionary _scopedDict;
@@ -41,7 +38,6 @@ namespace OSharp.Entity
         {
             _scopedDict = scopedDict;
             _entityInfoHandler = entityInfoHandler;
-
         }
 
         /// <summary>
@@ -114,7 +110,7 @@ namespace OSharp.Entity
                 AuditPropertyEntry auditProperty = new AuditPropertyEntry()
                 {
                     FieldName = name,
-                    DisplayName = entityProperties.First(m => m.Name == name).Display,
+                    DisplayName = entityProperties.First(m => m.Name == name)?.Display ?? name,
                     DataType = property.ClrType.ToString()
                 };
                 if (entry.State == EntityState.Added)

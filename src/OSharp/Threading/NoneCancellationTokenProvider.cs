@@ -9,17 +9,12 @@
 
 using System.Threading;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
-
 
 namespace OSharp.Threading
 {
     /// <summary>
     /// 默认的异步任务取消标识提供者空实现
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class NoneCancellationTokenProvider : ICancellationTokenProvider
     {
         /// <summary>

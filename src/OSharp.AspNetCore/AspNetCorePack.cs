@@ -12,7 +12,9 @@ using System.Security.Principal;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using OSharp.AspNetCore.Http;
 using OSharp.Core.Packs;
 
 
@@ -42,6 +44,7 @@ namespace OSharp.AspNetCore
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+            services.TryAddSingleton<IHostHttpCrypto, HostHttpCrypto>();
 
             //注入当前用户，替换Thread.CurrentPrincipal的作用
             services.AddTransient<IPrincipal>(provider =>

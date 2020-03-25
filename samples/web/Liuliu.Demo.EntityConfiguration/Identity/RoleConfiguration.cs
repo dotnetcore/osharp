@@ -7,8 +7,6 @@
 //  <last-date>2018-06-27 4:48</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +17,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public class RoleConfiguration : EntityTypeConfigurationBase<Role, int>
+    public partial class RoleConfiguration : EntityTypeConfigurationBase<Role, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -31,7 +29,12 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 
-            builder.HasData(new Role() { Id = 1, Name = "系统管理员", NormalizedName = "系统管理员", Remark = "系统最高权限管理角色", ConcurrencyStamp = "97313840-7874-47e5-81f2-565613c8cdcc", IsAdmin = true, IsSystem = true, CreatedTime = new DateTime(1970, 1, 1) });
+            EntityConfigurationAppend(builder);
         }
+
+        /// <summary>
+        /// 额外的数据映射
+        /// </summary>
+        partial void EntityConfigurationAppend(EntityTypeBuilder<Role> builder);
     }
 }

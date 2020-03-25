@@ -17,7 +17,6 @@ using Microsoft.Extensions.Logging;
 using OSharp.Authorization.Entities;
 using OSharp.Authorization.Functions;
 using OSharp.Caching;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Identity.Entities;
 
@@ -82,7 +81,7 @@ namespace OSharp.Authorization
         {
             foreach (Guid functionId in functionIds)
             {
-                string key = $"Security_FunctionRoles_{functionId}";
+                string key = GetFunctionRolesKey(functionId);
                 _cache.Remove(key);
                 _logger.LogDebug($"移除功能“{functionId}”的“Function-Roles[]”缓存");
             }
@@ -97,7 +96,7 @@ namespace OSharp.Authorization
         {
             foreach (string userName in userNames)
             {
-                string key = $"Security_UserFunctions_{userName}";
+                string key = GetUserFunctionsKey(userName);
                 _cache.Remove(key);
             }
         }
@@ -109,7 +108,7 @@ namespace OSharp.Authorization
         /// <returns>能执行功能的角色名称集合</returns>
         public virtual string[] GetFunctionRoles(Guid functionId)
         {
-            string key = $"Security_FunctionRoles_{functionId}";
+            string key = GetFunctionRolesKey(functionId);
             string[] roleNames = _cache.Get<string[]>(key);
             if (roleNames != null)
             {
@@ -150,7 +149,7 @@ namespace OSharp.Authorization
         /// <returns>用户的所有特权功能</returns>
         public virtual Guid[] GetUserFunctions(string userName)
         {
-            string key = $"Security_UserFunctions_{userName}";
+            string key = GetUserFunctionsKey(userName);
             Guid[] functionIds = _cache.Get<Guid[]>(key);
             if (functionIds != null)
             {
@@ -180,6 +179,16 @@ namespace OSharp.Authorization
                 _cache.Set(key, functionIds);
             }
             return functionIds;
+        }
+
+        private static string GetFunctionRolesKey(Guid functionId)
+        {
+            return $"Auth:Function:FunctionRoles:{functionId}";
+        }
+
+        private static string GetUserFunctionsKey(string userName)
+        {
+            return $"Auth:Function:UserFunctions:{userName}";
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 
 namespace OSharp.Dependency
@@ -8,7 +6,6 @@ namespace OSharp.Dependency
     /// <summary>
     /// 默认<see cref="IServiceScope"/>工厂，行为和<see cref="IServiceScopeFactory"/>一样
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DefaultServiceScopeFactory : IHybridServiceScopeFactory
     {
         /// <summary>

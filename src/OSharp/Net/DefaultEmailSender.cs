@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
@@ -25,7 +24,6 @@ namespace OSharp.Net
     /// <summary>
     /// 默认邮件发送者
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class DefaultEmailSender : IEmailSender
     {
         private readonly IServiceProvider _provider;
@@ -45,22 +43,30 @@ namespace OSharp.Net
         /// <param name="subject">Email标题</param>
         /// <param name="body">Email内容</param>
         /// <returns></returns>
-        public Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
             OsharpOptions options = _provider.GetOSharpOptions();
             MailSenderOptions mailSender = options.MailSender;
             if (mailSender == null || mailSender.Host == null || mailSender.Host.Contains("请替换"))
             {
-                throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp.MailSender节点");
+                throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp:MailSender节点");
             }
 
             string host = mailSender.Host,
                 displayName = mailSender.DisplayName,
                 userName = mailSender.UserName,
                 password = mailSender.Password;
-            SmtpClient client = new SmtpClient(host)
+            bool enableSsl = mailSender.EnableSsl;
+            int port = mailSender.Port;
+            if (port == 0)
             {
-                UseDefaultCredentials = false,
+                port = enableSsl ? 465 : 25;
+            }
+
+            SmtpClient client = new SmtpClient(host, port)
+            {
+                UseDefaultCredentials = true,
+                EnableSsl = enableSsl,
                 Credentials = new NetworkCredential(userName, password)
             };
 
@@ -73,7 +79,7 @@ namespace OSharp.Net
                 IsBodyHtml = true
             };
             mail.To.Add(email);
-            return client.SendMailAsync(mail);
+            await client.SendMailAsync(mail);
         }
     }
 }

@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Collections;
 using OSharp.Dependency;
 

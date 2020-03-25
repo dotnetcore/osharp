@@ -28,10 +28,5 @@ namespace OSharp.Core.Options
         /// 获取或设置 Url
         /// </summary>
         public string Url { get; set; }
-
-        /// <summary>
-        /// 获取或设置 是否启用
-        /// </summary>
-        public bool Enabled { get; set; }
     }
 }

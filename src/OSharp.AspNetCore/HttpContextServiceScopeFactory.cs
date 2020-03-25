@@ -20,7 +20,6 @@ namespace OSharp.AspNetCore
     /// <summary>
     /// 基于当前HttpContext的<see cref="IServiceScope"/>工厂，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, ReplaceExisting = true)]
     public class HttpContextServiceScopeFactory : IHybridServiceScopeFactory
     {
         /// <summary>

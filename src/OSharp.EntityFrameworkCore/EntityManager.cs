@@ -14,12 +14,10 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.EntityInfos;
 using OSharp.Authorization.Functions;
 using OSharp.Collections;
-using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -29,7 +27,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体管理器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class EntityManager : IEntityManager
     {
         private readonly ConcurrentDictionary<Type, IEntityRegister[]> _entityRegistersDict

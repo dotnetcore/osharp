@@ -12,6 +12,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using OSharp.Authorization.EntityInfos;
 using OSharp.Core.Packs;
 using OSharp.EventBuses;
 
@@ -21,7 +22,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore基模块
     /// </summary>
-    [DependsOnPacks(typeof(EventBusPack))]
+    [DependsOnPacks(typeof(EventBusPack), typeof(EntityInfoPack))]
     public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
         /// <summary>
@@ -36,7 +37,12 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.TryAddScoped<IAuditEntityProvider, AuditEntityProvider>();
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
+            services.TryAddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
+            services.TryAddSingleton<IEntityManager, EntityManager>();
+            services.AddSingleton<DbContextModelCache>();
             services.AddOsharpDbContext<DefaultDbContext>();
 
             return services;

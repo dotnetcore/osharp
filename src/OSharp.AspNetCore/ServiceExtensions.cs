@@ -1,25 +1,39 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="ServiceProviderExtensions.cs" company="OSharp开源团队">
+//  <copyright file="ServiceCollectionExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-12-19 23:15</last-date>
+//  <last-date>2018-12-31 0:45</last-date>
 // -----------------------------------------------------------------------
 
 using System;
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 
-namespace OSharp.AspNetCore
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// 服务解析扩展
+    /// <see cref="IServiceCollection"/>扩展方法
     /// </summary>
-    public static class ServiceProviderExtensions
+    public static class ServiceExtensions
     {
+        #region IServiceCollection
+
+        /// <summary>
+        /// 获取<see cref="IHostingEnvironment"/>环境信息
+        /// </summary>
+        public static IWebHostEnvironment GetWebHostEnvironment(this IServiceCollection services)
+        {
+            return services.GetSingletonInstance<IWebHostEnvironment>();
+        }
+
+        #endregion
+
+        #region IServiceProvider
+
         /// <summary>
         /// 获取HttpContext实例
         /// </summary>
@@ -37,5 +51,7 @@ namespace OSharp.AspNetCore
             var context = provider.HttpContext();
             return context != null;
         }
+
+        #endregion
     }
 }

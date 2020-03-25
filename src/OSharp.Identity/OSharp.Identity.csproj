@@ -17,13 +17,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.2" />
+    <Compile Remove="Identity\Mappers\**" />
+    <EmbeddedResource Remove="Identity\Mappers\**" />
+    <None Remove="Identity\Mappers\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Identity\Mappers\" />
+    <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>

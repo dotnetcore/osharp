@@ -7,9 +7,6 @@
 //  <last-date>2017-08-16 22:37</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-
 namespace OSharp.Entity
 {
     /// <summary>

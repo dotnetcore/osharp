@@ -24,7 +24,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
-using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Authorization;
@@ -45,7 +44,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-认证")]
     [ModuleInfo(Order = 1)]
-    public class IdentityController : ApiController
+    public class IdentityController : SiteApiController
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;

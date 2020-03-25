@@ -23,7 +23,7 @@ using Liuliu.Demo.Identity.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -33,6 +33,7 @@ using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
 using OSharp.Identity;
@@ -80,17 +81,39 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             Func<User, bool> updateFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Update).Compile();
             Func<User, bool> deleteFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Delete).Compile();
             Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
-            var page = _cacheService.ToPageCache(_userManager.Users, predicate, request.PageCondition, m => new
+
+            //查询某一角色的所有用户
+            //var roleId = request.FilterGroup.Rules.FirstOrDefault(m => m.Field == "RoleId")?.CastTo(0);
+            //if (roleId != 0)
+            //{
+            //    predicate = predicate.And(m => m.UserRoles.Any(n => n.RoleId == roleId));
+            //}
+
+            var page = _userManager.Users.ToPage(predicate, request.PageCondition, m => new
             {
                 D = m,
                 Roles = m.UserRoles.Select(n => n.Role.Name)
-            }, function).ToPageResult(data => data.Select(m => new UserOutputDto(m.D)
+            }).ToPageResult(data => data.Select(m => new UserOutputDto(m.D)
             {
                 Roles = m.Roles.ToArray(),
                 Updatable = updateFunc(m.D),
                 Deletable = deleteFunc(m.D)
             }).ToArray());
+
+
             return page.ToPageData();
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         /// <summary>

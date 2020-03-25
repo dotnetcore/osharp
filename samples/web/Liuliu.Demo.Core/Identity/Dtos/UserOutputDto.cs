@@ -25,6 +25,12 @@ namespace Liuliu.Demo.Identity.Dtos
         /// <summary>
         /// 初始化一个<see cref="UserOutputDto"/>类型的新实例
         /// </summary>
+        public UserOutputDto()
+        { }
+
+        /// <summary>
+        /// 初始化一个<see cref="UserOutputDto"/>类型的新实例
+        /// </summary>
         public UserOutputDto(User u)
         {
             Id = u.Id;

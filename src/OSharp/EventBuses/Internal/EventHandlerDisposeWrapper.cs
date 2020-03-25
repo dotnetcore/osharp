@@ -15,7 +15,7 @@ namespace OSharp.EventBuses.Internal
     /// <summary>
     /// <see cref="IEventHandler"/>事件处理器的可释放包装
     /// </summary>
-    public class EventHandlerDisposeWrapper : IDisposable
+    public class EventHandlerDisposeWrapper : Disposable
     {
         private readonly Action _disposeAction;
 
@@ -33,10 +33,13 @@ namespace OSharp.EventBuses.Internal
         /// </summary>
         public IEventHandler EventHandler { get; set; }
 
-        /// <summary>释放资源.</summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            _disposeAction?.Invoke();
+            if (!Disposed)
+            {
+                _disposeAction?.Invoke();
+            }
+            base.Dispose(disposing);
         }
     }
 }

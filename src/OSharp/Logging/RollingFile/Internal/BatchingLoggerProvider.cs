@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 
 namespace OSharp.Logging.RollingFile.Internal
 {
-//power by https://github.com/andrewlock/NetEscapades.Extensions.Logging
-    public abstract class BatchingLoggerProvider : ILoggerProvider
+    //power by https://github.com/andrewlock/NetEscapades.Extensions.Logging
+    public abstract class BatchingLoggerProvider : Disposable, ILoggerProvider
     {
         private readonly List<LogMessageEntry> _currentBatch = new List<LogMessageEntry>();
         private readonly TimeSpan _interval;
@@ -124,9 +124,13 @@ namespace OSharp.Logging.RollingFile.Internal
             }
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Stop();
+            if (!Disposed)
+            {
+                Stop();
+            }
+            base.Dispose(disposing);
         }
 
         public ILogger CreateLogger(string categoryName)

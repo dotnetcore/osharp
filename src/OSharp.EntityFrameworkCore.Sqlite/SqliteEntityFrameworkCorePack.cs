@@ -43,6 +43,7 @@ namespace OSharp.Entity.Sqlite
             services = base.AddServices(services);
 
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqliteDapperSqlExecutor<,>));
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

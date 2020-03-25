@@ -18,7 +18,7 @@ namespace OSharp.Reflection
     /// <summary>
     /// 不注册Com组件的方式加载Com组件
     /// </summary>
-    public class ComLibraryLoader : IDisposable
+    public class ComLibraryLoader : Disposable
     {
         private delegate int DllGetClassObjectInvoker([MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             [MarshalAs(UnmanagedType.LPStruct)] Guid iid,
@@ -93,14 +93,14 @@ namespace OSharp.Reflection
             Type type = Type.GetTypeFromCLSID(clsid);
             return Activator.CreateInstance(type);
         }
-        
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+
+        protected override void Dispose(bool disposing)
         {
-            NativeMethods.FreeLibrary(_lib);
-            GC.SuppressFinalize(this);
+            if (!Disposed)
+            {
+                NativeMethods.FreeLibrary(_lib);
+            }
+            base.Dispose(disposing);
         }
     }
 }

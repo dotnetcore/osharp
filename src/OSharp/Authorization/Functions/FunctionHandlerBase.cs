@@ -17,7 +17,6 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Data;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Reflection;
@@ -228,8 +227,12 @@ namespace OSharp.Authorization.Functions
         /// <returns></returns>
         protected virtual bool IsIgnoreMethod(TFunction action, MethodInfo method, IEnumerable<TFunction> functions)
         {
-            TFunction exist = GetFunction(functions, action.Area, action.Controller, action.Action, action.Name);
-            return exist != null && method.HasAttribute<NonFunctionAttribute>();
+            if (method.HasAttribute<NonFunctionAttribute>())
+            {
+                return true;
+            }
+            TFunction existing = GetFunction(functions, action.Area, action.Controller, action.Action, action.Name);
+            return existing != null;
         }
 
         /// <summary>

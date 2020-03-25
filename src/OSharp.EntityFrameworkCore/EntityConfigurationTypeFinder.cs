@@ -7,9 +7,6 @@
 //  <last-date>2019-03-08 3:05</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
 using OSharp.Reflection;
 
 
@@ -18,7 +15,6 @@ namespace OSharp.Entity
     /// <summary>
     /// 实体类配置类型查找器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton, TryAdd = true)]
     public class EntityConfigurationTypeFinder : BaseTypeFinderBase<IEntityRegister>, IEntityConfigurationTypeFinder
     {
         /// <summary>

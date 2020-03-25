@@ -10,6 +10,8 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 
@@ -22,14 +24,14 @@ namespace OSharp.Core.Builders
     public interface IOsharpBuilder
     {
         /// <summary>
-        /// 获取 加载的模块集合
+        /// 获取 服务集合
         /// </summary>
-        IEnumerable<Type> AddPacks { get; }
+        IServiceCollection Services { get; }
 
         /// <summary>
-        /// 获取 排除的模块集合
+        /// 获取 加载的模块集合
         /// </summary>
-        IEnumerable<Type> ExceptPacks { get; }
+        IEnumerable<OsharpPack> Packs { get; }
 
         /// <summary>
         /// 获取 OSharp选项配置委托
@@ -41,13 +43,6 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <typeparam name="TPack">要添加的模块类型</typeparam>
         IOsharpBuilder AddPack<TPack>() where TPack : OsharpPack;
-
-        /// <summary>
-        /// 排除指定模块
-        /// </summary>
-        /// <typeparam name="TPack"></typeparam>
-        /// <returns></returns>
-        IOsharpBuilder ExceptPack<TPack>() where TPack : OsharpPack;
 
         /// <summary>
         /// 添加OSharp选项配置

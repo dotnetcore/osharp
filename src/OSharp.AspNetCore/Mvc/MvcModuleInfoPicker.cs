@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -82,7 +83,8 @@ namespace OSharp.AspNetCore.Mvc
             {
                 AreaAttribute areaAttr = type.GetAttribute<AreaAttribute>();
                 area = areaAttr?.RouteValue ?? "Site";
-                name = area == "Site" ? "站点" : area;
+                DisplayNameAttribute display = type.GetAttribute<DisplayNameAttribute>();
+                name = display?.DisplayName ?? area;
             }
             info = new ModuleInfo()
             {

@@ -17,7 +17,6 @@ using Microsoft.Extensions.Logging;
 using OSharp.Authorization.Entities;
 using OSharp.Authorization.EntityInfos;
 using OSharp.Caching;
-using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -120,7 +119,7 @@ namespace OSharp.Authorization
 
         private static string GetKey(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            return $"Security_EntityRole_{roleName}_{entityTypeFullName}_{operation}";
+            return $"Auth:Data:EntityRole:{roleName}:{entityTypeFullName}:{operation}";
         }
 
         private static string GetName(string roleName, string entityTypeFullName, DataAuthOperation operation)

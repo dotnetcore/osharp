@@ -7,7 +7,6 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

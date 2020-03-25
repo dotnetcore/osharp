@@ -42,7 +42,7 @@ namespace OSharp.Identity
     /// <typeparam name="TUserRole">用户角色类型</typeparam>
     /// <typeparam name="TUserRoleKey">用户角色编号类型</typeparam>
     public abstract class UserStoreBase<TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey>
-        : IQueryableUserStore<TUser>,
+        : Disposable, IQueryableUserStore<TUser>,
           IUserLoginStore<TUser>,
           IUserClaimStore<TUser>,
           IUserPasswordStore<TUser>,
@@ -75,7 +75,6 @@ namespace OSharp.Identity
         private readonly IRepository<TRole, TRoleKey> _roleRepository;
         private readonly IRepository<TUserRole, TUserRoleKey> _userRoleRepository;
         private readonly IEventBus _eventBus;
-        private bool _disposed;
 
         /// <summary>
         /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey}"/>类型的新实例
@@ -113,16 +112,6 @@ namespace OSharp.Identity
         /// </summary>
         /// <value>An <see cref="T:System.Linq.IQueryable`1" /> collection of users.</value>
         public IQueryable<TUser> Users => _userRepository.Query();
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
-            _disposed = true;
-        }
 
         #endregion
 
@@ -270,7 +259,7 @@ namespace OSharp.Identity
             await _userRepository.UpdateAsync(user);
 
             //移除用户在线缓存
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = new []{user.UserName}};
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
             _eventBus.Publish(eventData);
 
             return IdentityResult.Success;
@@ -1302,7 +1291,7 @@ namespace OSharp.Identity
         /// </summary>
         protected void ThrowIfDisposed()
         {
-            if (_disposed)
+            if (Disposed)
             {
                 throw new ObjectDisposedException(GetType().Name);
             }

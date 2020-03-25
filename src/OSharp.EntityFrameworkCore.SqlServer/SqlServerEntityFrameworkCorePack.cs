@@ -14,7 +14,6 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
-using OSharp.Dependency;
 
 
 namespace OSharp.Entity.SqlServer
@@ -44,6 +43,7 @@ namespace OSharp.Entity.SqlServer
         {
             services = base.AddServices(services);
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

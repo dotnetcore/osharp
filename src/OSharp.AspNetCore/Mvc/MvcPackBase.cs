@@ -8,15 +8,15 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Internal;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Newtonsoft.Json.Serialization;
 
-using OSharp.AspNetCore.Mvc.Conventions;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
+using OSharp.Dependency;
+using OSharp.Threading;
 
 
 namespace OSharp.AspNetCore.Mvc
@@ -40,17 +40,20 @@ namespace OSharp.AspNetCore.Mvc
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = AddCors(services);
-            services.AddControllersWithViews(options =>
-            {
-                options.Conventions.Add(new DashedRoutingConvention());
-            }).AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
 
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
-            services.AddDistributedMemoryCache();
+
+            services.AddScoped<UnitOfWorkAttribute>();
+            services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();
+            services.TryAddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
+            services.Replace<ICancellationTokenProvider, HttpContextCancellationTokenProvider>(ServiceLifetime.Singleton);
+            services.Replace<IHybridServiceScopeFactory, HttpContextServiceScopeFactory>(ServiceLifetime.Singleton);
 
             return services;
         }
