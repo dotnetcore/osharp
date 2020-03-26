@@ -854,6 +854,22 @@ namespace OSharp.Entity
             }
         }
 
+        private void SetEmptyGuidKey(TEntity entity)
+        {
+            if (typeof(TKey) != typeof(Guid))
+            {
+                return;
+            }
+
+            if (!entity.Id.Equals(Guid.Empty))
+            {
+                return;
+            }
+
+            DatabaseType databaseType = _dbContext.GetDatabaseType();
+            entity.Id = SequentialGuid.Create(databaseType).CastTo<TKey>();
+        }
+
         private static string GetNameValue(object value)
         {
             dynamic obj = value;
@@ -897,9 +913,10 @@ namespace OSharp.Entity
             for (int i = 0; i < entities.Length; i++)
             {
                 TEntity entity = entities[i];
+                SetEmptyGuidKey(entity);
                 entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
 
-                string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault("userIdTypeName");
+                string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault(OsharpConstants.UserIdTypeName);
                 if (userIdTypeName == null)
                 {
                     continue;
@@ -926,7 +943,7 @@ namespace OSharp.Entity
         {
             CheckDataAuth(DataAuthOperation.Update, entities);
 
-            string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault("userIdTypeName");
+            string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault(OsharpConstants.UserIdTypeName);
             if (userIdTypeName == null)
             {
                 return entities;

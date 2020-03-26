@@ -16,14 +16,14 @@
 
   <ItemGroup>
     <Compile Remove="Startups\CodeGeneratorPack.cs" />
+    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
+    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\PostgreSqlDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
     <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqlServerDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqlServerDesignTimeDefaultDbContextFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>

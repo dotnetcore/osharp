@@ -24,14 +24,6 @@ namespace Liuliu.Demo.Identity.Entities
     public class LoginLog : EntityBase<Guid>, ICreatedTime
     {
         /// <summary>
-        /// 初始化一个<see cref="LoginLog"/>类型的新实例
-        /// </summary>
-        public LoginLog()
-        {
-            Id = CombGuid.NewGuid();
-        }
-
-        /// <summary>
         /// 获取或设置 登录IP
         /// </summary>
         [DisplayName("登录IP")]

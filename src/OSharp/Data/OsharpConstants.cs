@@ -23,5 +23,7 @@ namespace OSharp.Data
         /// 验证码缓存键名前缀
         /// </summary>
         public const string VerifyCodeKeyPrefix = "OSHARP_VERIFY_CODE";
+
+        public const string UserIdTypeName = "userIdTypeName";
     }
 }

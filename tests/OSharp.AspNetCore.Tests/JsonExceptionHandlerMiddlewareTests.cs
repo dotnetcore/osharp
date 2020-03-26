@@ -40,7 +40,7 @@ namespace OSharp.AspNetCore.Tests
                 new RequestDelegate(c => throw new Exception("a exception")));
             await middleware.InvokeAsync(context);
 
-            Assert.Equal(500, context.Response.StatusCode);
+            Assert.Equal(200, context.Response.StatusCode);
             Assert.Equal("application/json; charset=utf-8", context.Response.ContentType);
         }
 
@@ -54,7 +54,7 @@ namespace OSharp.AspNetCore.Tests
                 new RequestDelegate(c => throw new Exception("a exception")));
             await middleware.InvokeAsync(context);
 
-            context.Response.StatusCode.ShouldBe(500);
+            context.Response.StatusCode.ShouldBe(200);
             context.Response.ContentType.ShouldBe("application/json; charset=utf-8");
         }
 
@@ -62,6 +62,7 @@ namespace OSharp.AspNetCore.Tests
         public async Task InvokeAsyncTest3()
         {
             HttpContext context = new DefaultHttpContext();
+            context.Request.Headers.Add("Content-Type", "text/html; charset=utf-8");
 
             var middleware = ActivatorUtilities.CreateInstance<JsonExceptionHandlerMiddleware>(_provider,
                 new RequestDelegate(c => throw new Exception("a exception")));

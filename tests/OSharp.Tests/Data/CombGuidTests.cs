@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Shouldly;
 
@@ -12,9 +14,12 @@ namespace OSharp.Data.Tests
         [Fact]
         public void NewGuid_Test()
         {
-            Guid id = CombGuid.NewGuid();
-            DateTime dt = CombGuid.GetDateFrom(id);
-            DateTime.Now.Subtract(dt).ShouldBeLessThan(TimeSpan.FromSeconds(1));
+            List<Guid> ids = new List<Guid>();
+            for (int i = 0; i < 100; i++)
+            {
+                ids.Add(CombGuid.NewGuid());
+            }
+            ids.Distinct().Count().ShouldBe(100);
         }
     }
 }

@@ -31,23 +31,11 @@ namespace OSharp.Authorization.Dtos
             FilterGroup = new FilterGroup();
         }
 
-        private Guid _id;
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
         [DisplayName("编号")]
-        public Guid Id
-        {
-            get { return _id; }
-            set
-            {
-                if (value == Guid.Empty)
-                {
-                    value = CombGuid.NewGuid();
-                }
-                _id = value;
-            }
-        }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// 获取或设置 角色编号

@@ -10,8 +10,6 @@
 using System;
 using System.ComponentModel;
 
-using OSharp.Data;
-using OSharp.Extensions;
 using OSharp.Reflection;
 
 
@@ -22,17 +20,6 @@ namespace OSharp.Entity
     /// </summary>
     public abstract class EntityBase<TKey> : IEntity<TKey> where TKey : IEquatable<TKey>
     {
-        /// <summary>
-        /// 初始化一个<see cref="EntityBase{TKey}"/>类型的新实例
-        /// </summary>
-        protected EntityBase()
-        {
-            if (typeof(TKey) == typeof(Guid))
-            {
-                Id = CombGuid.NewGuid().CastTo<TKey>();
-            }
-        }
-
         /// <summary>
         /// 获取或设置 编号
         /// </summary>

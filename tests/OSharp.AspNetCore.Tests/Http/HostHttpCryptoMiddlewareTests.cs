@@ -11,6 +11,8 @@ using OSharp.Extensions;
 using OSharp.Http;
 using OSharp.Security;
 
+using Shouldly;
+
 using Xunit;
 
 
@@ -39,7 +41,7 @@ namespace OSharp.AspNetCore.Http.Tests
         public void HostHttpCryptoMiddlewareTest()
         {
             var middleware = _provider.GetService<HostHttpCryptoMiddleware>();
-            Assert.NotNull(middleware);
+            middleware.ShouldBeNull();
         }
 
         [Fact()]
