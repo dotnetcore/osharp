@@ -4,7 +4,8 @@
     <VersionPrefix>2</VersionPrefix>
     <VersionSuffix>-preview</VersionSuffix>
     <VersionSuffixVersion>3-26</VersionSuffixVersion>
-    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
+    <!--<Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>-->
+    <Version>$(VersionMain).$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionMain).$(VersionSuffixVersion)</FileVersion>
   </PropertyGroup>

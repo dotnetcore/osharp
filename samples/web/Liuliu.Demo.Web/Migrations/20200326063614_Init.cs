@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Liuliu.Demo.Web.Migrations
@@ -52,7 +51,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Remark = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: false),
@@ -76,7 +75,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Remark = table.Column<string>(nullable: true),
                     ParentId = table.Column<int>(nullable: true)
@@ -289,7 +288,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -336,7 +335,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: false),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -351,7 +350,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterIp = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false)
                 },
@@ -420,7 +419,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     NormalizedName = table.Column<string>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
@@ -449,7 +448,7 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(nullable: false),
                     NormalizedUserName = table.Column<string>(nullable: false),
                     NickName = table.Column<string>(nullable: true),
@@ -587,7 +586,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "AreaControllerActionIndex",
                 table: "Auth_Function",
                 columns: new[] { "Area", "Controller", "Action" },
-                unique: true);
+                unique: true,
+                filter: "[Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Auth_Module_ParentId",
@@ -646,7 +646,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "RoleNameIndex",
                 table: "Identity_Role",
                 columns: new[] { "NormalizedName", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_RoleClaim_RoleId",
@@ -667,7 +668,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserNameIndex",
                 table: "Identity_User",
                 columns: new[] { "NormalizedUserName", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_UserClaim_UserId",
@@ -689,7 +691,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserLoginIndex",
                 table: "Identity_UserLogin",
                 columns: new[] { "LoginProvider", "ProviderKey" },
-                unique: true);
+                unique: true,
+                filter: "[LoginProvider] IS NOT NULL AND [ProviderKey] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_UserRole_RoleId",
@@ -700,13 +703,15 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserRoleIndex",
                 table: "Identity_UserRole",
                 columns: new[] { "UserId", "RoleId", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserTokenIndex",
                 table: "Identity_UserToken",
                 columns: new[] { "UserId", "LoginProvider", "Name" },
-                unique: true);
+                unique: true,
+                filter: "[LoginProvider] IS NOT NULL AND [Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Infos_Message_SenderId",

@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
+using OSharp.Data;
 using OSharp.EventBuses;
 using OSharp.Identity.Entities;
 using OSharp.Identity.Events;
@@ -78,7 +79,7 @@ namespace OSharp.Identity
                         PropertyInfo property = typeof(TUser).GetProperty("Id");
                         if (property != null)
                         {
-                            identity.AddClaim(new Claim("userIdTypeName", property.PropertyType.FullName));
+                            identity.AddClaim(new Claim(OsharpConstants.UserIdTypeName, property.PropertyType.FullName));
                         }
                     }
 

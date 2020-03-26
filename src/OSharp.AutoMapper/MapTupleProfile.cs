@@ -77,7 +77,7 @@ namespace OSharp.AutoMapper
                 CreateMap(tuple.Source, tuple.Target);
                 _logger.LogDebug($"创建“{tuple.Source}”到“{tuple.Target}”的对象映射关系");
             }
-            _logger.LogInformation($"创建{tuples.Count}个对象映射关系");
+            _logger.LogInformation($"创建了 {tuples.Count} 个对象映射关系");
         }
     }
 }

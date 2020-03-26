@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
+using OSharp.Audits;
 using OSharp.Entity;
 
 
@@ -41,13 +42,13 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 标准化角色名称
         /// </summary>
-        [Required, DisplayName("标准化角色名称")]
+        [Required, DisplayName("标准化角色名称"), AuditIgnore]
         public string NormalizedName { get; set; }
 
         /// <summary>
         /// 获取或设置 一个随机值，每当某个角色被保存到存储区时，该值将发生变化。
         /// </summary>
-        [DisplayName("版本标识")]
+        [DisplayName("版本标识"), AuditIgnore]
         public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>

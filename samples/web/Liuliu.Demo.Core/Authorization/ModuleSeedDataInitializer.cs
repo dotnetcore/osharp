@@ -34,7 +34,7 @@ namespace Liuliu.Demo.Authorization
         {
             return new[]
             {
-                new Module(){Id=1, Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = "$1$"},
+                new Module() { Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = "$1$" },
             };
         }
 
