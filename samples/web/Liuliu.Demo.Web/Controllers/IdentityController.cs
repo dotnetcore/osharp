@@ -202,7 +202,7 @@ namespace Liuliu.Demo.Web.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [Description("JwtToken")]
+        [Description("Token")]
         public async Task<AjaxResult> Token(TokenDto dto)
         {
             string grantType = dto.GrantType?.UpperToLowerAndSplit("_");

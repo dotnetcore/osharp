@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
+using OSharp.Audits;
 using OSharp.Entity;
 
 
@@ -41,7 +42,7 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 标准化的用户名
         /// </summary>
-        [Required, DisplayName("标准化的用户名")]
+        [Required, DisplayName("标准化的用户名"), AuditIgnore]
         public string NormalizedUserName { get; set; }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 标准化的电子邮箱
         /// </summary>
-        [DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress)]
+        [DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress), AuditIgnore]
         public string NormalizeEmail { get; set; }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 密码哈希值
         /// </summary>
-        [DisplayName("密码哈希值")]
+        [DisplayName("密码哈希值"), AuditIgnore]
         public string PasswordHash { get; set; }
 
         /// <summary>
@@ -83,13 +84,13 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 每当用户凭据发生变化（密码更改、登录删除）时必须更改的随机值。
         /// </summary>
-        [DisplayName("安全标识")]
+        [DisplayName("安全标识"), AuditIgnore]
         public string SecurityStamp { get; set; }
 
         /// <summary>
         /// 获取或设置 一个随机值，必须在用户持续存储时更改。
         /// </summary>
-        [DisplayName("版本标识")]
+        [DisplayName("版本标识"), AuditIgnore]
         public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>

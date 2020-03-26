@@ -19,6 +19,7 @@ using OSharp.Authorization.EntityInfos;
 using OSharp.Authorization.Functions;
 using OSharp.Collections;
 using OSharp.Dependency;
+using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -100,6 +101,12 @@ namespace OSharp.Entity
                 {
                     continue;
                 }
+
+                if (property.PropertyInfo == null || property.PropertyInfo.HasAttribute<AuditIgnoreAttribute>())
+                {
+                    continue;
+                }
+
                 string name = property.Name;
                 if (property.IsPrimaryKey())
                 {
@@ -110,7 +117,7 @@ namespace OSharp.Entity
                 AuditPropertyEntry auditProperty = new AuditPropertyEntry()
                 {
                     FieldName = name,
-                    DisplayName = entityProperties.First(m => m.Name == name)?.Display ?? name,
+                    DisplayName = entityProperties.FirstOrDefault(m => m.Name == name)?.Display ?? name,
                     DataType = property.ClrType.ToString()
                 };
                 if (entry.State == EntityState.Added)

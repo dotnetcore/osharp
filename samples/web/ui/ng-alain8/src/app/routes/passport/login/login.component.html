@@ -66,7 +66,7 @@
     </nz-col>
   </nz-form-item>
   <nz-form-item>
-    <button nz-button type="submit" nzType="primary" nzSize="large" acl="Root.Site.Identity.Jwtoken" [nzLoading]="http.loading" nzBlock [disabled]="http.loading">
+    <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="http.loading" nzBlock [disabled]="http.loading">
       {{ 'app.login.login' | translate }}
     </button>
   </nz-form-item>
