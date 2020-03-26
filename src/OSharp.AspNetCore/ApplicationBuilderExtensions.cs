@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
+using OSharp.Reflection;
 
 
 namespace Microsoft.AspNetCore.Builder
@@ -31,12 +32,14 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
         {
             IServiceProvider provider = app.ApplicationServices;
-            ILogger logger = provider.GetLogger(typeof(ApplicationBuilderExtensions));
-            logger.LogInformation("OSharp框架初始化开始");
+            ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
+            logger.LogInformation(0, "OSharp框架初始化开始");
             Stopwatch watch = Stopwatch.StartNew();
             OsharpPack[] packs = provider.GetAllPacks();
             foreach (OsharpPack pack in packs)
             {
+                string packName = pack.GetType().GetDescription();
+                logger.LogInformation($"正在初始化模块 “{packName}”");
                 if (pack is AspOsharpPack aspPack)
                 {
                     aspPack.UsePack(app);
@@ -45,10 +48,11 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     pack.UsePack(provider);
                 }
+                logger.LogInformation($"模块 “{packName}” 初始化完成");
             }
 
             watch.Stop();
-            logger.LogInformation($"OSharp框架初始化完成，耗时：{watch.Elapsed}");
+            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}");
 
             return app;
         }

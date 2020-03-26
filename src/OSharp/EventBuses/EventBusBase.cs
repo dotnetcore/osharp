@@ -125,7 +125,7 @@ namespace OSharp.EventBuses
                 EventStore.Add(eventDataType, factory);
                 Logger.LogDebug($"创建事件“{eventDataType}”到处理器“{eventHandlerType}”的订阅配对");
             }
-            Logger.LogInformation($"共从程序集创建了{eventHandlerTypes.Length}个事件处理器的事件订阅");
+            Logger.LogInformation($"共从程序集创建了 {eventHandlerTypes.Length} 个事件处理器的事件订阅");
         }
 
         /// <summary>
