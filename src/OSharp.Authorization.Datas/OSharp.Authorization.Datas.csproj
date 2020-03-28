@@ -11,6 +11,11 @@
     <RootNamespace>OSharp.Authorization</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\OSharp.Authorization.Datas.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Identity\OSharp.Identity.csproj" />
   </ItemGroup>

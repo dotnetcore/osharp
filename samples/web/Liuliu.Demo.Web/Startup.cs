@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="Startup.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:50</last-date>
+//  <last-date>2020-03-26 21:47</last-date>
 // -----------------------------------------------------------------------
 
 using Liuliu.Demo.Authorization;
@@ -21,7 +21,6 @@ using OSharp.AspNetCore;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
 using OSharp.Log4Net;
-using OSharp.Redis;
 using OSharp.Swagger;
 
 
