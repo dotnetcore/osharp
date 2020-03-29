@@ -2,9 +2,12 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master, dev/develop ]
+    branches: 
+      - master
+      - dev/develop
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:

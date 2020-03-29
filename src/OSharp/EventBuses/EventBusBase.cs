@@ -383,6 +383,7 @@ namespace OSharp.EventBuses
             {
                 string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
                 Logger.LogError(ex, msg);
+                throw;
             }
         }
 
@@ -397,8 +398,8 @@ namespace OSharp.EventBuses
             {
                 string msg = $"执行事件“{eventType.Name}”的处理器“{handler.GetType()}”时引发异常：{ex.Message}";
                 Logger.LogError(ex, msg);
+                throw;
             }
-            return Task.FromResult(0);
         }
 
         #endregion
