@@ -44,41 +44,5 @@ namespace OSharp.Timing.Tests
             }
         }
 
-        [Fact()]
-        public void ToUniqueStringTest()
-        {
-            DateTime now = new DateTime(2015, 11, 4, 15, 10, 25);
-            Assert.Equal("1530854625", now.ToUniqueString());
-            Assert.Equal("1530854625000", now.ToUniqueString(true));
-        }
-
-        [Fact()]
-        public void ToUtcTimeTest()
-        {
-            Assert.Equal(new DateTime(2000, 1, 1), new DateTime(2000, 1, 1, 8, 0, 0).ToUtcTime());
-        }
-
-        [Fact()]
-        public void FromUtcTimeTest()
-        {
-            //Assert.Equal(new DateTime(2000, 1, 1, 8, 0, 0), new DateTime(2000, 1, 1).FromUtcTime());
-        }
-
-        [Fact()]
-        public void ToJsGetTimeTest()
-        {
-            Assert.Equal("0", new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToJsGetTime(false));
-            Assert.Equal("0", new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).ToJsGetTime());
-            Assert.Equal("1500000000", new DateTime(2017, 7, 14, 2, 40, 0, DateTimeKind.Utc).ToJsGetTime(false));
-            Assert.Equal("1500000000000", new DateTime(2017, 7, 14, 2, 40, 0, DateTimeKind.Utc).ToJsGetTime());
-        }
-
-        [Fact()]
-        public void FromJsGetTimeTest()
-        {
-            DateTime now = new DateTime(2017, 7, 14, 10, 40, 0, DateTimeKind.Utc);
-            Assert.Equal(((long)1500000000).FromJsGetTime(), now);
-        }
-
     }
 }
