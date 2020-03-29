@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 
 
@@ -23,18 +24,28 @@ namespace OSharp.Develop
         /// <summary>
         /// 内存计算，传入操作标识名，重复次数，操作过程获取操作的性能数据
         /// </summary>
+        public static void RamConsole(string name, Action action)
+        {
+            string output = Ram(name, action);
+            Console.WriteLine(output);
+        }
+
+        /// <summary>
+        /// 内存计算，传入操作标识名，重复次数，操作过程获取操作的性能数据
+        /// </summary>
         /// <param name="name"> 操作标识名 </param>
         /// <param name="action"> 操作过程的Action </param>
-        public static void Ram(string name, Action action)
+        public static string Ram(string name, Action action)
         {
+            StringBuilder sb = new StringBuilder();
             if (string.IsNullOrEmpty(name))
             {
-                return;
+                return null;
             }
 
             ConsoleColor currentForeColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(name);
+            sb.AppendLine(name);
 
             GC.Collect();
             long start = GC.GetTotalMemory(true);
@@ -45,10 +56,13 @@ namespace OSharp.Develop
 
             Console.ForegroundColor = currentForeColor;
             long result = end - start;
-            Console.WriteLine("\tRam:\t" + result + " B");
-            Console.WriteLine("\tRam:\t" + result / 1024 + " KB");
-            Console.WriteLine("\tRam:\t" + result / 1024 / 1024 + " MB");
-            Console.WriteLine();
+
+            sb.AppendLine("\tRam:\t" + result + " B");
+            sb.AppendLine("\tRam:\t" + result / 1024 + " KB");
+            sb.AppendLine("\tRam:\t" + result / 1024 / 1024 + " MB");
+            sb.AppendLine();
+
+            return sb.ToString();
         }
     }
 }

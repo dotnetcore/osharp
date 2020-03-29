@@ -7,7 +7,7 @@ namespace OSharp.Net.Tests
         [Fact()]
         public void PingTest()
         {
-            bool flag = NetHelper.Ping("baidu.com");
+            bool flag = NetHelper.Ping("localhost");
             Assert.True(flag);
         }
 

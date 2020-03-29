@@ -14,7 +14,7 @@ namespace OSharp.Entity.Tests
         {
             GuidKeyEntity guidKeyEntity = new GuidKeyEntity();
             guidKeyEntity.Id.ShouldBeOfType<Guid>();
-            guidKeyEntity.Id.ShouldNotBe(Guid.Empty);
+            guidKeyEntity.Id.ShouldBe(Guid.Empty);
         }
 
         [Fact]
