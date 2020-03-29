@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 
@@ -44,16 +45,30 @@ namespace OSharp.Develop
         /// <param name="name"> 操作标识名 </param>
         /// <param name="iteration"> 重复次数 </param>
         /// <param name="action"> 操作过程的Action </param>
-        public static void Time(string name, int iteration, Action action)
+        public static void TimeConsole(string name, int iteration, Action action)
+        {
+            string output = Time(name, iteration, action);
+            Console.WriteLine(output);
+        }
+
+        /// <summary>
+        /// 计时器，传入操作标识名，重复次数，操作过程获取操作的性能数据
+        /// </summary>
+        /// <param name="name"> 操作标识名 </param>
+        /// <param name="iteration"> 重复次数 </param>
+        /// <param name="action"> 操作过程的Action </param>
+        public static string Time(string name, int iteration, Action action)
         {
             if (string.IsNullOrEmpty(name))
             {
-                return;
+                return null;
             }
+
+            StringBuilder sb = new StringBuilder();
 
             ConsoleColor currentForeColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(name);
+            sb.AppendLine(name);
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             int[] gcCounts = new int[GC.MaxGeneration + 1];
@@ -73,16 +88,18 @@ namespace OSharp.Develop
             watch.Stop();
 
             Console.ForegroundColor = currentForeColor;
-            Console.WriteLine("\tTime Elapsed:\t" + watch.Elapsed.TotalMilliseconds + "ms");
-            Console.WriteLine("\tCPU Cycles:\t" + cpuCycles.ToString("N0"));
+            sb.AppendLine("\tTime Elapsed:\t" + watch.Elapsed.TotalMilliseconds + "ms");
+            sb.AppendLine("\tCPU Cycles:\t" + cpuCycles.ToString("N0"));
 
             for (int i = 0; i < GC.MaxGeneration; i++)
             {
                 int count = GC.CollectionCount(i) - gcCounts[i];
-                Console.WriteLine("\tGen" + i + "\t\t" + count);
+                sb.AppendLine("\tGen" + i + "\t\t" + count);
             }
 
-            Console.WriteLine();
+            sb.AppendLine();
+
+            return sb.ToString();
         }
 
         #endregion

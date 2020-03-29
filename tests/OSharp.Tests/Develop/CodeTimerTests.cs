@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Shouldly;
+
 using Xunit;
 
 namespace OSharp.Develop.Tests
@@ -10,15 +12,17 @@ namespace OSharp.Develop.Tests
         public void Time_Test()
         {
             CodeTimer.Initialize();
-            CodeTimer.Time("name", 10000, () =>
+            string output = CodeTimer.Time("name", 10000, () =>
             {
                 int sum = 0;
                 for (int i = 1; i <= 100; i++)
                 {
                     sum++;
                 }
-                Console.WriteLine(sum);
+                sum.ShouldBe(100);
             });
+            output.ShouldContain("CPU Cycles");
+            output.ShouldContain("ms");
         }
     }
 }
