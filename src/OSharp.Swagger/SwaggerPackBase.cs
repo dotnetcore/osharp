@@ -50,6 +50,11 @@ namespace OSharp.Swagger
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
+            bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+            if (!enabled)
+            {
+                return services;
+            }
 
             string url = configuration["OSharp:Swagger:Url"];
             if (string.IsNullOrEmpty(url))
@@ -99,6 +104,11 @@ namespace OSharp.Swagger
         public override void UsePack(IApplicationBuilder app)
         {
             IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+            bool enabled = configuration["OSharp:Swagger:Enabled"].CastTo(false);
+            if (!enabled)
+            {
+                return;
+            }
 
             app.UseSwagger().UseSwaggerUI(options =>
             {
