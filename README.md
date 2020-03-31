@@ -1,6 +1,6 @@
 # OSharp Framework with .NETStandard2.0
 
-[![osharp@66soft](https://img.shields.io/badge/66soft-osharp.org-bc17da.svg)](http://www.osharp.org)
+[![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
 [![NuGet Pre Release](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
