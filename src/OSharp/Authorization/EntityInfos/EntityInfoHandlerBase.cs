@@ -133,7 +133,7 @@ namespace OSharp.Authorization.EntityInfos
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
-                _logger.LogWarning("初始化实体数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
+                _logger.LogWarning("初始化实体数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCorePack 模块");
                 return;
             }
 
