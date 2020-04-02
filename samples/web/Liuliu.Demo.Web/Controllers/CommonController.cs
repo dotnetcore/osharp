@@ -28,6 +28,7 @@ using OSharp.Data;
 using OSharp.Drawing;
 using OSharp.IO;
 using OSharp.Reflection;
+using OSharp.Swagger;
 
 using AssemblyExtensions = OSharp.Reflection.AssemblyExtensions;
 
@@ -36,6 +37,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
+    [ApiExplorerSettings(GroupName = "buss")]
     public class CommonController : SiteApiController
     {
         private readonly IVerifyCodeService _verifyCodeService;

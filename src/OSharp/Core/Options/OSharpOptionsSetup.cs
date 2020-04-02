@@ -12,6 +12,8 @@ using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+
+using OSharp.Collections;
 using OSharp.Entity;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -93,9 +95,14 @@ namespace OSharp.Core.Options
             SwaggerOptions swagger = section.Get<SwaggerOptions>();
             if (swagger != null)
             {
-                if (swagger.Url.IsMissing())
+                if (swagger.Endpoints.IsNullOrEmpty())
                 {
-                    throw new OsharpException("配置文件中Swagger节点的Url不能为空");
+                    throw new OsharpException("配置文件中Swagger节点的EndPoints不能为空");
+                }
+
+                if (swagger.RoutePrefix == null)
+                {
+                    swagger.RoutePrefix = "swagger";
                 }
                 options.Swagger = swagger;
             }
