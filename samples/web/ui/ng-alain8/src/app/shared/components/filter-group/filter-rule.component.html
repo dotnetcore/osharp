@@ -27,7 +27,7 @@
           <ng-template #NotEnum>
             <!--用户类型-->
             <ng-container *ngIf="property.IsUserFlag&&rule.Operate==3; else NotUser">
-              <nz-select [(ngModel)]="rule.Value" nzMode="tags" nzMaxMultipleCount="1" (ngModelChange)="onTagsChangeEvent($event)" nzSize="small">
+              <nz-select [(ngModel)]="rule.Value" nzSize="small">
                 <nz-option nzValue="@CurrentUserId" nzLabel="@当前用户"></nz-option>
               </nz-select>
             </ng-container>
