@@ -97,7 +97,10 @@ export class AdSearchModalComponent implements OnInit {
       group.Groups.push(this.copyGroup(item));
     }
     for (const item of g.Rules) {
-      group.Rules.push(new FilterRule(item.Field, item.Value, item.Operate));
+      let field: string = item.Field;
+      let column = this.columns.find(m => m.index === field);
+      field = column.filterIndex || field;
+      group.Rules.push(new FilterRule(field, item.Value, item.Operate));
     }
     return group;
   }
