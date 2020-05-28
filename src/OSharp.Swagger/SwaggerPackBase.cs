@@ -135,7 +135,7 @@ namespace OSharp.Swagger
             {
                 if (swagger.Endpoints?.Count > 0)
                 {
-                    foreach (SwaggerEndpoint endpoint in swagger.Endpoints.Reverse())
+                    foreach (SwaggerEndpoint endpoint in swagger.Endpoints)
                     {
                         options.SwaggerEndpoint(endpoint.Url, endpoint.Title);
                     }

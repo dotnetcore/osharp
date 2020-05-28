@@ -54,10 +54,11 @@ namespace OSharp.Entity
                 return;
             }
 
-            dict.Clear();
+            //创建实体映射类的实例
             List<IEntityRegister> registers = types.Select(type => Activator.CreateInstance(type) as IEntityRegister).ToList();
             List<IGrouping<Type, IEntityRegister>> groups = registers.GroupBy(m => m.DbContextType).ToList();
             Type key;
+            dict.Clear();
             foreach (IGrouping<Type, IEntityRegister> group in groups)
             {
                 key = group.Key ?? typeof(DefaultDbContext);
