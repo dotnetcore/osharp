@@ -11,7 +11,7 @@ using Liuliu.Demo.Authorization;
 using Liuliu.Demo.Identity;
 using Liuliu.Demo.Infos;
 using Liuliu.Demo.Systems;
-using Liuliu.Demo.WebApi.Startups;
+using Liuliu.Demo.Web.Startups;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +26,7 @@ using OSharp.Log4Net;
 using OSharp.Swagger;
 
 
-namespace Liuliu.Demo.WebApi
+namespace Liuliu.Demo.Web
 {
     public class Startup
     {

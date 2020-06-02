@@ -28,7 +28,7 @@ using OSharp.Collections;
 using OSharp.Data;
 
 
-namespace Liuliu.Demo.WebApi.Controllers
+namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-测试")]
     [ClassFilter]

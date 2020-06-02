@@ -22,7 +22,7 @@ using OSharp.Extensions;
 using OSharp.Reflection;
 
 
-namespace Liuliu.Demo.WebApi.Startups
+namespace Liuliu.Demo.Web.Startups
 {
     public class SqlServerDesignTimeDefaultDbContextFactory : DesignTimeDbContextFactoryBase<DefaultDbContext>
     {

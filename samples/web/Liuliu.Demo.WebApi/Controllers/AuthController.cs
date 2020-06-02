@@ -25,7 +25,7 @@ using OSharp.Authorization.Modules;
 using OSharp.Collections;
 
 
-namespace Liuliu.Demo.WebApi.Controllers
+namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-授权")]
     [ModuleInfo(Order = 2)]

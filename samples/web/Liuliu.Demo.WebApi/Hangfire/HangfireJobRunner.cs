@@ -26,7 +26,7 @@ using OSharp.Entity;
 using OSharp.Hangfire;
 
 
-namespace Liuliu.Demo.WebApi.Hangfire
+namespace Liuliu.Demo.Web.Hangfire
 {
     [Dependency(ServiceLifetime.Singleton)]
     public class HangfireJobRunner : IHangfireJobRunner

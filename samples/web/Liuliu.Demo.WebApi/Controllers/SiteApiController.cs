@@ -16,7 +16,7 @@ using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
 
 
-namespace Liuliu.Demo.WebApi.Controllers
+namespace Liuliu.Demo.Web.Controllers
 {
     [DisplayName("网站")]
     [Authorize(Policy = FunctionRequirement.OsharpPolicy)]

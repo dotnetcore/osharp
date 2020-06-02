@@ -33,7 +33,7 @@ using OSharp.Identity.JwtBearer;
 using OSharp.Net;
 
 
-namespace Liuliu.Demo.WebApi.Controllers
+namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-认证")]
     [ModuleInfo(Order = 1)]
