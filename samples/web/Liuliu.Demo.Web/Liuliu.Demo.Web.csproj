@@ -46,7 +46,6 @@
     <ProjectReference Include="..\..\..\src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
-    <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>
 

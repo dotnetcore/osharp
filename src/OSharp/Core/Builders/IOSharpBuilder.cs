@@ -49,6 +49,6 @@ namespace OSharp.Core.Builders
         /// </summary>
         /// <param name="optionsAction">OSharp操作选项</param>
         /// <returns>OSharp构建器</returns>
-        IOsharpBuilder AddOptions(Action<OsharpOptions>optionsAction);
+        IOsharpBuilder AddOptions(Action<OsharpOptions> optionsAction);
     }
 }

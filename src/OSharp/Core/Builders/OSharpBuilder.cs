@@ -118,7 +118,8 @@ namespace OSharp.Core.Builders
             IOsharpPackTypeFinder packTypeFinder =
                 services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
             Type[] packTypes = packTypeFinder.FindAll();
-            return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)).ToList();
+            return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m))
+                .OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToList();
         }
 
         private static IServiceCollection AddPack(IServiceCollection services, OsharpPack pack)

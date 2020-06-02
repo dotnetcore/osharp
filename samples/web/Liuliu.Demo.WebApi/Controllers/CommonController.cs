@@ -32,7 +32,7 @@ using OSharp.Reflection;
 using AssemblyExtensions = OSharp.Reflection.AssemblyExtensions;
 
 
-namespace Liuliu.Demo.Web.Controllers
+namespace Liuliu.Demo.WebApi.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
