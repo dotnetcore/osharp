@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\samples\web\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
   </ItemGroup>
 
