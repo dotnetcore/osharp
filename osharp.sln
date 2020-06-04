@@ -72,7 +72,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization.Functi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization.Datas", "src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj", "{EA6307A2-ECC2-4469-A937-CA59B0344ED5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.WebApi", "samples\web\Liuliu.Demo.WebApi\Liuliu.Demo.WebApi.csproj", "{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.WebApi", "samples\web\Liuliu.Demo.WebApi\Liuliu.Demo.WebApi.csproj", "{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Mvc", "samples\web\Liuliu.Demo.Mvc\Liuliu.Demo.Mvc.csproj", "{6D835D4A-FEE2-453B-9265-8959AE1001BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.BlazorServer", "samples\web\Liuliu.Demo.BlazorServer\Liuliu.Demo.BlazorServer.csproj", "{920BCB86-456C-47E6-9FE3-4AF613A91D07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liuliu.Demo.BlazorClient", "samples\web\Liuliu.Demo.BlazorClient\Liuliu.Demo.BlazorClient.csproj", "{A25EDEDC-A8AB-4343-A12B-1A72790C8939}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,6 +190,18 @@ Global
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{920BCB86-456C-47E6-9FE3-4AF613A91D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{920BCB86-456C-47E6-9FE3-4AF613A91D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{920BCB86-456C-47E6-9FE3-4AF613A91D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{920BCB86-456C-47E6-9FE3-4AF613A91D07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25EDEDC-A8AB-4343-A12B-1A72790C8939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25EDEDC-A8AB-4343-A12B-1A72790C8939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25EDEDC-A8AB-4343-A12B-1A72790C8939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25EDEDC-A8AB-4343-A12B-1A72790C8939}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,6 +234,9 @@ Global
 		{2A9C56F8-E906-4DD6-87A9-C540C2DF50FB} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{EA6307A2-ECC2-4469-A937-CA59B0344ED5} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
+		{6D835D4A-FEE2-453B-9265-8959AE1001BA} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
+		{920BCB86-456C-47E6-9FE3-4AF613A91D07} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
+		{A25EDEDC-A8AB-4343-A12B-1A72790C8939} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}
