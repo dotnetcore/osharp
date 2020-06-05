@@ -1,6 +1,6 @@
 using System;
 
-namespace Liuliu.Demo.BlazorServer.Data
+namespace Liuliu.Demo.Web.Data
 {
     public class WeatherForecast
     {
