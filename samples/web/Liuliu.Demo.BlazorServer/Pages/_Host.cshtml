@@ -6,7 +6,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,12 +17,12 @@
   <link rel="stylesheet" href="_content/BootstrapBlazor/lib/chartjs/Chart.min.css" />
   <link rel="stylesheet" href="_content/BootstrapBlazor/lib/summernote/summernote-lite.min.css" />
   <link rel="stylesheet" href="_content/BootstrapBlazor/css/bootstrap.blazor.css" />
-  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+  @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />*@
   <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
   <app>
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    @(await Html.RenderComponentAsync<App>(RenderMode.Server))
   </app>
 
   <div id="blazor-error-ui">
@@ -33,7 +33,7 @@
       An unhandled exception has occurred. See browser dev tools for details.
     </environment>
     <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+    <a class="dismiss"><i class="fa fa-times"></i></a>
   </div>
   <script src="_content/BootstrapBlazor/lib/jquery/jquery.min.js"></script>
   <script src="_content/BootstrapBlazor/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
