@@ -1,11 +1,10 @@
-﻿@page "/fetchdata"
-
-@using Liuliu.Demo.Web.Data
-@inject WeatherForecastService ForecastService
+@page "/fetchdata"
+@using Liuliu.Demo.BlazorShared
+@inject HttpClient Http
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from the server.</p>
 
 @if (forecasts == null)
 {
@@ -41,6 +40,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
+
 }
