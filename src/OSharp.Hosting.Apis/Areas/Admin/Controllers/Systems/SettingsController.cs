@@ -48,7 +48,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("读取设置")]
-        public IActionResult Read(string root)
+        public SettingOutputDto Read(string root)
         {
             ISetting setting;
             switch (root)
@@ -60,7 +60,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                     throw new OsharpException($"未知的设置根节点: {root}");
             }
 
-            return Json(new SettingOutputDto(setting));
+            return new SettingOutputDto(setting);
         }
 
         /// <summary>

@@ -210,10 +210,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [DependOnFunction("ReadRoleModules", Controller = "Module")]
         [UnitOfWork]
         [Description("设置模块")]
-        public async Task<ActionResult> SetModules(RoleSetModuleDto dto)
+        public async Task<AjaxResult> SetModules(RoleSetModuleDto dto)
         {
             OperationResult result = await _functionAuthorizationManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
-            return Json(result.ToAjaxResult());
+            return result.ToAjaxResult();
         }
     }
 }
