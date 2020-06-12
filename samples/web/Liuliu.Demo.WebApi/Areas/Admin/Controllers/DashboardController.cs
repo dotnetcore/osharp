@@ -12,9 +12,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Liuliu.Demo.Authorization;
-using Liuliu.Demo.Identity.Entities;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +22,8 @@ using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Entity;
 using OSharp.Hosting.Apis.Areas.Admin.Controllers;
+using OSharp.Hosting.Authorization;
+using OSharp.Hosting.Identity.Entities;
 
 
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers

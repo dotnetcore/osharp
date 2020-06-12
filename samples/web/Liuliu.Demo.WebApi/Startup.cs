@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Startup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -7,10 +7,6 @@
 //  <last-date>2020-06-02 14:35</last-date>
 // -----------------------------------------------------------------------
 
-using Liuliu.Demo.Authorization;
-using Liuliu.Demo.Identity;
-using Liuliu.Demo.Infos;
-using Liuliu.Demo.Systems;
 using Liuliu.Demo.Web.Startups;
 
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +18,10 @@ using Microsoft.Extensions.Hosting;
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Hosting.Authorization;
+using OSharp.Hosting.Identity;
+using OSharp.Hosting.Infos;
+using OSharp.Hosting.Systems;
 using OSharp.Log4Net;
 using OSharp.Swagger;
 

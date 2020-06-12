@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="HangfireJobRunner.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -14,9 +14,6 @@ using System.Threading.Tasks;
 
 using Hangfire;
 
-using Liuliu.Demo.Identity;
-using Liuliu.Demo.Identity.Entities;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +21,8 @@ using OSharp.Collections;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.Hangfire;
+using OSharp.Hosting.Identity;
+using OSharp.Hosting.Identity.Entities;
 
 
 namespace Liuliu.Demo.Web.Hangfire
