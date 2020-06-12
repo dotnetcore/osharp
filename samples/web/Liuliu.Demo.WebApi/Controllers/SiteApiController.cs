@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SiteApiController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -20,7 +20,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [DisplayName("网站")]
     [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
-    public abstract class SiteApiController : ApiController
+    public abstract class SiteApiController : ApiControllerBase
     {
         protected static Random Random = new Random();
     }
