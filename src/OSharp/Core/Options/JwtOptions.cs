@@ -27,7 +27,7 @@ namespace OSharp.Core.Options
         /// <summary>
         /// 获取或设置 订阅方
         /// </summary>
-        public string Audience{ get; set; }
+        public string Audience { get; set; }
 
         /// <summary>
         /// 获取或设置 AccessToken有效期分钟数
@@ -43,5 +43,10 @@ namespace OSharp.Core.Options
         /// 获取或设置 RefreshToken是否绝对过期
         /// </summary>
         public bool IsRefreshAbsoluteExpired { get; set; } = true;
+
+        /// <summary>
+        /// 获取或设置 是否启用
+        /// </summary>
+        public bool Enabled { get; set; }
     }
 }

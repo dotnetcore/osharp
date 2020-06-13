@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Startup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -7,11 +7,22 @@
 //  <last-date>2020-06-02 23:31</last-date>
 // -----------------------------------------------------------------------
 
+using Liuliu.Demo.Web.Startups;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using OSharp.AspNetCore;
+using OSharp.AspNetCore.Routing;
+using OSharp.AutoMapper;
+using OSharp.Hosting.Authorization;
+using OSharp.Hosting.Identity;
+using OSharp.Hosting.Systems;
+using OSharp.Log4Net;
+using OSharp.Swagger;
 
 
 namespace Liuliu.Demo.Web
@@ -28,7 +39,16 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddOSharp()
+                .AddPack<Log4NetPack>()
+                .AddPack<AutoMapperPack>()
+                .AddPack<EndpointsPack>()
+                .AddPack<SwaggerPack>()
+                .AddPack<AuthenticationPack>()
+                .AddPack<FunctionAuthorizationPack>()
+                .AddPack<DataAuthorizationPack>()
+                .AddPack<SqlServerDefaultDbContextMigrationPack>()
+                .AddPack<AuditPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,18 +63,10 @@ namespace Liuliu.Demo.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseMiddleware<JsonExceptionHandlerMiddleware>();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseOSharp();
         }
     }
 }

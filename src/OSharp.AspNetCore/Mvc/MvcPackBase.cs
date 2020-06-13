@@ -46,6 +46,8 @@ namespace OSharp.AspNetCore.Mvc
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
 
+            services.AddRouting(opts => opts.LowercaseUrls = true);
+
             services.AddScoped<UnitOfWorkFilterImpl>();
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 

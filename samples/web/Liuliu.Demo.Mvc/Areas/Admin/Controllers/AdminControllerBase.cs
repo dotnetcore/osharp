@@ -1,13 +1,13 @@
 // -----------------------------------------------------------------------
-//  <copyright file="AdminApiController.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="AdminControllerBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-27 4:50</last-date>
+//  <last-date>2020-06-13 1:12</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
 using OSharp.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public abstract class AdminApiController : AreaApiControllerBase
+    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    public abstract class AdminControllerBase : AreaBaseController
     { }
 }

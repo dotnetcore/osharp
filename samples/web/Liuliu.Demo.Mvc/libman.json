@@ -3,6 +3,11 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
+      "provider": "unpkg",
+      "library": "bootstrap@4.5.0",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
       "library": "layui@2.5.6",
       "destination": "wwwroot/lib/layui/"
     },
@@ -11,9 +16,8 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "provider": "unpkg",
-      "library": "bootstrap@4.5.0",
-      "destination": "wwwroot/lib/bootstrap/"
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/"
     }
   ]
 }

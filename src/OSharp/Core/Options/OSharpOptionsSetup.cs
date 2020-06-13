@@ -78,6 +78,14 @@ namespace OSharp.Core.Options
                 options.Jwt = jwt;
             }
 
+            //CookieOptions
+            section = _configuration.GetSection("OSharp:Cookie");
+            CookieOptions cookie = section.Get<CookieOptions>();
+            if (cookie != null)
+            {
+                options.Cookie = cookie;
+            }
+
             // RedisOptions
             section = _configuration.GetSection("OSharp:Redis");
             RedisOptions redis = section.Get<RedisOptions>();
