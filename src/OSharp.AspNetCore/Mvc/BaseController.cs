@@ -20,7 +20,7 @@ namespace OSharp.AspNetCore.Mvc
     /// Mvc控制器基类，配置了操作审计
     /// </summary>
     [AuditOperation]
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         /// <summary>
         /// 获取或设置 日志对象

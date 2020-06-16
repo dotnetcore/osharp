@@ -15,7 +15,7 @@ trim_trailing_whitespace = true
 #是否在文件的最后插入一个空行
 insert_final_newline = true
 
-[*.{cshtml,xaml,json,csproj}]
+[*.{cshtml,xaml,js,json,csproj}]
 #缩进大小2
 indent_size = 2
 

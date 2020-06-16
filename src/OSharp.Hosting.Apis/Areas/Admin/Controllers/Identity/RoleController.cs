@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,7 +69,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<RoleOutputDto> Read(PageRequest request)
+        [AllowAnonymous]
+        public AjaxResult Read(PageRequest request)
         {
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
@@ -76,7 +78,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
             var page = _cacheService.ToPageCache<Role, RoleOutputDto>(_roleManager.Roles, predicate, request.PageCondition, function);
 
-            return page.ToPageData();
+            return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }
 
         /// <summary>

@@ -1,0 +1,27 @@
+@{
+  Layout = "_Layout_Table";
+  ViewBag.Title = "用户信息管理";
+  ViewBag.Name = "user";
+}
+@section tableParam
+{
+  <script>
+    columns = [[
+      { type: 'checkbox', fixed: 'left' },
+      { field: 'Id', title: '编号', fixed: 'left', sort: true, width: 65 },
+      { field: 'UserName', title: '用户名', sort: true },
+      { field: 'NickName', title: '昵称', sort: true },
+      { field: 'Email', title: '邮箱', sort: true },
+      { field: 'EmailConfirmed', title: '邮箱确认', sort: true, width: 90, templet: d => renderBool(d.EmailConfirmed) },
+      { field: 'PhoneNumber', title: '手机', sort: true },
+      { field: 'PhoneNumberConfirmed', title: '手机确认', sort: true, width: 90, templet: d => renderBool(d.PhoneNumberConfirmed) },
+      { field: 'Roles', title: '角色', width: 150 },
+      { field: 'IsLocked', title: '锁定', sort: true, templet: d => renderBool(d.IsLocked) },
+      { field: 'LockoutEnabled', title: '登录锁', sort: true, width: 90, templet: d => renderBool(d.LockoutEnabled) },
+      { field: 'AccessFailedCount', title: '登录错误', sort: true, width: 90 },
+      { field: 'LockoutEnd', title: '锁时间', sort: true, templet: d => osharp.tools.dateFormat(d.LockoutEnd) },
+      { field: 'CreatedTime', title: '注册时间', sort: true, templet: d => osharp.tools.dateFormat(d.CreatedTime) },
+      { fixed: 'right', title: '操作', width: 90, toolbar: '#rowActionTpl' }
+    ]];
+  </script>
+}

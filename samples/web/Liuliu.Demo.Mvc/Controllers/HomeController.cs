@@ -7,6 +7,7 @@
 //  <last-date>2020-06-02 23:32</last-date>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
 using System.Diagnostics;
 
 using Liuliu.Demo.Web.Models;
@@ -14,10 +15,14 @@ using Liuliu.Demo.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using OSharp.Authorization.Modules;
+
 
 namespace Liuliu.Demo.Web.Controllers
 {
-    public class HomeController : Controller
+    [Description("网站-主页")]
+    [ModuleInfo(Order = 1)]
+    public class HomeController : SiteControllerBase
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -26,11 +31,14 @@ namespace Liuliu.Demo.Web.Controllers
             _logger = logger;
         }
 
+        [ModuleInfo]
+        [Description("网站首页")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Description("错误页")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

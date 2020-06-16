@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc;
@@ -56,7 +57,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<FunctionOutputDto> Read(PageRequest request)
+        [AllowAnonymous]
+        public AjaxResult Read(PageRequest request)
         {
             IFunction function = this.GetExecuteFunction();
             request.AddDefaultSortCondition(
@@ -66,7 +68,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
             Expression<Func<Function, bool>> predicate = _filterService.GetExpression<Function>(request.FilterGroup);
             PageResult<FunctionOutputDto> page = _cacheService.ToPageCache<Function, FunctionOutputDto>(_functionAuthManager.Functions, predicate, request.PageCondition, function);
-            return page.ToPageData();
+            return new AjaxResult("数据获取成功", AjaxResultType.Success, page.ToPageData());
         }
 
         /// <summary>

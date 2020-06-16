@@ -48,7 +48,8 @@ namespace Liuliu.Demo.Web
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<AuditPack>();
+                .AddPack<AuditPack>()
+                .AddPack<SwaggerPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

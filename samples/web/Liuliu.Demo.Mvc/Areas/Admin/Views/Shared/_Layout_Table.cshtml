@@ -1,0 +1,123 @@
+@{
+  Layout = "_Layout";
+  string name = ViewBag.Name;
+  string tableId = $"table-{name}";
+  string title = ViewBag.Title;
+  string toolbarActions = ViewBag.ToolbarActions ?? "add,delete";
+  string rowActions = ViewBag.RowActions ?? "edit,delete";
+}
+@section header{
+  <style>
+    .layui-table-cell {
+      padding: 0 5px;
+    }
+  </style>
+  @RenderSection("header", false)
+}
+<div class="layuimini-main">
+  <table class="layui-hide" id="@tableId" lay-filter="@tableId"></table>
+</div>
+@section footer{
+  <script src="~/lib/moment.js/moment.min.js"></script>
+
+  <script>
+    var columns = [[]], page = true, toolbar = '#toolbarDefaultTpl', defaultToolbar = ["filter", "exports", "print"];
+    var height = 'full-30', title = "@title";
+    var readUrl = '/api/admin/@name/read', request = new osharp.PageRequest();
+  </script>
+  @RenderSection("tableParam", false)
+
+  <script type="text/html" id="rowActionTpl">
+    <div class="layui-btn-group">
+      @if (rowActions.Contains("edit"))
+      {
+        <button type="button" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+      }
+      @if (rowActions.Contains("delete"))
+      {
+        <button type="button" class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon layui-icon-delete"></i></button>
+      }
+    </div>
+  </script>
+  <script type="text/html" id="toolbarDefaultTpl">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-circle"></i>新增</button>
+      <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</button>
+    </div>
+  </script>
+  <script type="text/html" id="dateFormatTpl">
+    <span>{{d.CreatedTime}}</span>
+  </script>
+  <script>
+    var tableOptions = {
+      elem: '#@tableId',
+      url: readUrl,
+      method: 'post',
+      contentType: 'application/json; charset=utf-8',
+      request: request,
+      parseData: function(res) {
+        return {
+          code: res.Type === 200 ? 0 : 1,
+          msg: res.Content,
+          count: res.Data.Total,
+          data: res.Data.Rows
+        };
+      },
+      title: title,
+      cellMinWidth: 65,
+      cols: columns,
+      height: height,
+      even: true,
+      page: page,
+      toolbar: toolbar,
+      defaultToolbar: defaultToolbar,
+    };
+  </script>
+  @RenderSection("tableOptions", false)
+  <script>
+    layui.use('table',
+      function() {
+        var table = layui.table;
+        table.render(tableOptions);
+
+        //工具栏
+        table.on('toolbar(@tableId)',
+          function(obj) {
+            console.log(obj);
+            switch (obj.event) {
+              case 'add':
+                layer.msg('添加');
+                break;
+              case 'delete':
+                layer.msg('删除');
+                break;
+            }
+          });
+        //行按钮
+        table.on('tool(@tableId)', function(obj) {
+          var data = obj.data;
+          switch (obj.event) {
+            case 'edit':
+              layer.msg('编辑一行: '+data.Name);
+              break;
+            case 'delete':
+              layer.msg('删除一行: ' + data.Name);
+              break;
+          }
+        });
+      });
+
+    function getCheckData(table, obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      var data = checkStatus.data;
+      return data;
+    }
+
+    function renderBool(flag) {
+      if (flag) {
+        return '<input type="checkbox" lay-skin="switch" lay-text="是|否" checked disabled>';
+      }
+      return '<input type="checkbox" lay-skin="switch" lay-text="是|否" disabled>';
+    }
+  </script>
+}

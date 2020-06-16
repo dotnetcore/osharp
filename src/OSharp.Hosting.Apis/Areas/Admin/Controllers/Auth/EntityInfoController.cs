@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -52,7 +53,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<EntityInfoOutputDto> Read(PageRequest request)
+        [AllowAnonymous]
+        public AjaxResult Read(PageRequest request)
         {
             if (request.PageCondition.SortConditions.Length == 0)
             {
@@ -60,7 +62,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             }
             Expression<Func<EntityInfo, bool>> predicate = _filterService.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _dataAuthManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
-            return page.ToPageData();
+            return new AjaxResult("成功", AjaxResultType.Success, page.ToPageData());
         }
 
         /// <summary>
