@@ -1,0 +1,39 @@
+@using Microsoft.AspNetCore.Identity
+@using OSharp.Hosting.Identity.Entities
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav">
+  @if (SignInManager.IsSignedIn(User))
+  {
+    <li class="nav-item">
+      <a class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+    </li>
+    <li class="nav-item">
+      <form class="form-inline layui-form" action="#">
+        <button class="nav-link btn btn-link text-dark" lay-submit="" lay-filter="logout-submit">退出</button>
+      </form>
+    </li>
+  }
+  else
+  {
+    <li class="nav-item">
+      <a class="nav-link text-dark" href="/identity/register">免费注册</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-dark" href="/identity/login">登录</a>
+    </li>
+  }
+</ul>
+<script>
+  layui.use(['form', 'layer', 'jquery'], function() {
+    var form = layui.form, layer = layui.layer, $ = layui.jquery;
+    form.on('submit(logout-submit)', function(data) {
+      var url = "/api/identity/logout";
+      osharp.tools.post($, url, {}, function(res) {
+        layer.msg("退出成功", { icon: 1 });
+        osharp.tools.goto("/", 1000);
+      });
+    });
+  });
+</script>

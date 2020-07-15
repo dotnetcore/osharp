@@ -222,7 +222,34 @@
         format = "YYYY/MM/DD hh:mm";
       }
       return moment(date).format(format);
+    },
+    post: function(jQuery, url, data, success) {
+      jQuery.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: success
+      });
+    },
+    goto: function(url, timeout) {
+      if (!timeout) timeout = 500;
+      setTimeout(function() {
+        location.href = url;
+      }, timeout);
     }
+  };
+
+  OSharp.prototype.post = function(jQuery, url, data, success) {
+    jQuery.ajax({
+      type: "POST",
+      url: url,
+      contentType: "application/json;charset=utf-8",
+      data: JSON.stringify(data),
+      dataType: "json",
+      success: success
+    });
   };
 
   win.osharp = new OSharp();

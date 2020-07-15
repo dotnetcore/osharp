@@ -196,7 +196,37 @@ namespace OSharp.Hosting.Apis.Controllers
 
             return new AjaxResult("GrantType错误", AjaxResultType.Error);
         }
-        
+
+        [HttpPost]
+        [ModuleInfo]
+        [Description("用户登录")]
+        public async Task<AjaxResult> Login(LoginDto dto)
+        {
+            Check.NotNull(dto, nameof(dto));
+
+            if (!ModelState.IsValid)
+            {
+                return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
+            }
+            //todo: 校验验证码
+
+            dto.Ip = HttpContext.GetClientIp();
+            dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
+
+            OperationResult<User> result = await _identityContract.Login(dto);
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
+            unitOfWork.Commit();
+
+            if (!result.Succeeded)
+            {
+                return result.ToAjaxResult();
+            }
+
+            User user = result.Data;
+            await _signInManager.SignInAsync(user, dto.Remember);
+            return new AjaxResult("登录成功");
+        }
+
         /// <summary>
         /// 用户登出
         /// </summary>

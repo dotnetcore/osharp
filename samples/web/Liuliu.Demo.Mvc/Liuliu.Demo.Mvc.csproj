@@ -37,6 +37,10 @@
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="log\" />
+  </ItemGroup>
+
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties appsettings_1json__JsonSchema="" />

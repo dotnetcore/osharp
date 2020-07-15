@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Liuliu.Demo.Web</title>
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <script src="/lib/layui/layui.min.js"></script>
+  <script src="/js/osharp.js"></script>
 </head>
 <body>
   <header>
@@ -16,18 +18,13 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+          <partial name="_LoginPartial" />
           <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">首页</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Logout">Logout</a>
+              <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">管理</a>
             </li>
           </ul>
         </div>
@@ -42,7 +39,7 @@
 
   <footer class="border-top footer text-muted">
     <div class="container">
-      &copy; 2020 - Liuliu.Demo.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+      &copy; 2020 - Liuliu.Demo.Web - <a asp-area="" asp-controller="Home" asp-action="Index">首页</a>
     </div>
   </footer>
   @RenderSection("Scripts", required: false)

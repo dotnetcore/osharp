@@ -65,7 +65,6 @@ namespace OSharp.Authentication
             AuthenticationBuilder builder = services.AddAuthentication(opts =>
             {
                 opts.DefaultScheme = IdentityConstants.ApplicationScheme;
-                opts.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
             });
             AddJwtBearer(services, builder);
             AddCookie(services, builder);
