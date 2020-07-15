@@ -14,7 +14,10 @@ namespace OSharp.Core.Options
     /// </summary>
     public class CookieOptions
     {
-
+        /// <summary>
+        /// 获取或设置 Cookie名称
+        /// </summary>
+        public string CookieName { get; set; }
 
         /// <summary>
         /// 获取或设置 登录地址

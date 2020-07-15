@@ -5,6 +5,7 @@
  * @Author 郭明锋
  * @License apache 2.0 
  */
+
 !function (win) {
   "use strict";
   var OSharp = function () {

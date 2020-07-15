@@ -2,6 +2,7 @@
   Layout = "_Layout_Table";
   ViewBag.Title = "数据实体信息管理";
   ViewBag.Name = "entityinfo";
+  ViewBag.RowActions = "edit";
 }
 @section tableParam
 {
@@ -12,7 +13,7 @@
       { field: 'Name', title: '实体名称', sort: true },
       { field: 'TypeName', title: '实体类型', sort: true },
       { field: 'AuditEnabled', title: '数据审计', sort: true, width: 120, templet: d => renderBool(d.AuditEnabled) },
-      { fixed: 'right', title: '操作', width: 90, toolbar: '#rowActionTpl' }
+      { fixed: 'right', title: '操作', width: 50, toolbar: '#rowActionTpl' }
     ]];
   </script>
 }

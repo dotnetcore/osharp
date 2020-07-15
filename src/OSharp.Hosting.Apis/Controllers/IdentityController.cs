@@ -196,7 +196,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             return new AjaxResult("GrantType错误", AjaxResultType.Error);
         }
-
+        
         /// <summary>
         /// 用户登出
         /// </summary>

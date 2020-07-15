@@ -16,7 +16,7 @@ using OSharp.Authorization;
 namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [AreaInfo("Admin", Display = "管理")]
-    //[RoleLimit]
+    [RoleLimit]
     [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
     public abstract class AdminControllerBase : AreaBaseController
     { }

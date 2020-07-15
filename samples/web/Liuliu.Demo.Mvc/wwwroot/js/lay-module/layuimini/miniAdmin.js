@@ -43,7 +43,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             options.maxTabNum = options.maxTabNum || 20;
             $.getJSON(options.iniUrl, function (data) {
                 if (data == null) {
-                    miniAdmin.error('暂无菜单信息')
+                  miniAdmin.error('暂无菜单信息');
                 } else {
                     miniAdmin.renderLogo(data.logoInfo);
                     miniAdmin.renderClear(options.clearUrl);

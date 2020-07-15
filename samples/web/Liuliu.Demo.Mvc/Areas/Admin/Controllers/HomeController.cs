@@ -52,7 +52,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 
         [HttpGet("admin/home/init")]
         [AllowAnonymous]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Init()
         {
             HomeInfo home = new HomeInfo() { Title = "主页", Icon = "layui-icon layui-icon-home", Href = Url.Action("Dashboard") };
@@ -100,7 +99,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                             new MenuInfo(){Title = "系统设置", Icon = "layui-icon layui-icon-set", Target = "_self", Href = Url.Action("Settings", "Systems")},
                             new MenuInfo(){Title = "操作审计", Icon = "layui-icon layui-icon-chart-screen", Target = "_self", Href = Url.Action("AuditOperations", "Systems")},
                             new MenuInfo(){Title = "数据审计", Icon = "layui-icon layui-icon-chart", Target = "_self", Href = Url.Action("AuditEntities", "Systems")},
-                            new MenuInfo(){Title = "模块包管理", Icon = "layui-icon layui-icon-app", Target = "_self", Href = Url.Action("Packs", "Systems")},
+                            new MenuInfo(){Title = "模块包管理", Icon = "layui-icon layui-icon-app", Target = "_self", Href = Url.Action("Index", "Pack")},
                         }
                     }
                 }

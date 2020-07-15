@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
 using OSharp.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace Liuliu.Demo.Web.Controllers
     /// 站点根节点的MVC控制器基类，使用OSharpPolicy权限策略
     /// </summary>
     [DisplayName("网站")]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
+    [Authorize( Policy = FunctionRequirement.OsharpPolicy)]
     public class SiteControllerBase : BaseController
     {
         protected static readonly Random Random = new Random();

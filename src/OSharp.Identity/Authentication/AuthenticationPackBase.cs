@@ -13,9 +13,9 @@ using System.ComponentModel;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -61,10 +61,11 @@ namespace OSharp.Authentication
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddScoped<OsharpCookieAuthenticationEvents>();
             AuthenticationBuilder builder = services.AddAuthentication(opts =>
             {
-                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultScheme = IdentityConstants.ApplicationScheme;
+                opts.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
             });
             AddJwtBearer(services, builder);
             AddCookie(services, builder);
@@ -133,9 +134,14 @@ namespace OSharp.Authentication
                 return builder;
             }
 
-            builder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+            builder.AddCookie(IdentityConstants.ApplicationScheme,
                 opts =>
                 {
+                    if (cookie.CookieName != null)
+                    {
+                        opts.Cookie.Name = cookie.CookieName;
+                    }
+
                     opts.LoginPath = cookie.LoginPath ?? opts.LoginPath;
                     opts.LogoutPath = cookie.LogoutPath ?? opts.LogoutPath;
                     opts.AccessDeniedPath = cookie.AccessDeniedPath ?? opts.AccessDeniedPath;
@@ -146,7 +152,7 @@ namespace OSharp.Authentication
                         opts.ExpireTimeSpan = TimeSpan.FromMinutes(cookie.ExpireMins);
                     }
 
-                    opts.Events = new OsharpCookieAuthenticationEvents();
+                    opts.EventsType = typeof(OsharpCookieAuthenticationEvents);
                 });
             return builder;
         }

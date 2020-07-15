@@ -12,14 +12,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Core.Packs;
+using OSharp.Data;
 using OSharp.Filter;
 using OSharp.Hosting.Systems.Dtos;
 using OSharp.Reflection;
@@ -52,7 +55,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<PackOutputDto> Read(PageRequest request)
+        public AjaxResult Read(PageRequest request)
         {
             request.AddDefaultSortCondition(
                 new SortCondition("Level"),
@@ -62,7 +65,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             Expression<Func<OsharpPack, bool>> exp = _filterService.GetExpression<OsharpPack>(request.FilterGroup);
             IServiceProvider provider = HttpContext.RequestServices;
 
-            return _cacheService.ToPageCache(provider.GetAllPacks().AsQueryable(), exp,
+            var page = _cacheService.ToPageCache(provider.GetAllPacks().AsQueryable(),
+                exp,
                 request.PageCondition,
                 m => new PackOutputDto()
                 {
@@ -73,7 +77,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                     Order = m.Order,
                     IsEnabled = m.IsEnabled
                 },
-                function).ToPageData();
+                function);
+            return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }
     }
 }
