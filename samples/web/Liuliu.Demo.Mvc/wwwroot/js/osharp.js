@@ -238,6 +238,25 @@
       setTimeout(function() {
         location.href = url;
       }, timeout);
+    },
+    success: function(layer, msg) {
+      layer.msg(msg, { icon: 1 });
+    },
+    error: function(layer, msg) {
+      layer.alert(msg, { icon: 2 });
+    },
+    ajaxResult: function(res, layer, onSuccess, onFail) {
+      if (res.Type === 200) {
+        this.success(layer, res.Content);
+        if (onSuccess && typeof onSuccess === 'function') {
+          onSuccess();
+        } 
+      } else {
+        this.error(layer, res.Content);
+        if (onFail && typeof onFail === "function") {
+          onFail();
+        }
+      }
     }
   };
 

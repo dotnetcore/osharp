@@ -49,25 +49,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Models
 
     public class MenuInfo
     {
-        private string _href;
-
         public string Title { get; set; }
 
         public string Icon { get; set; }
 
-        public string Href
-        {
-            get => _href;
-            set
-            {
-                // Url.Action生成的URL以/开头，会造成前端hash时显示#//admin/xxx，要去掉
-                if (value.StartsWith('/'))
-                {
-                    value = value.TrimStart('/');
-                }
-                _href = value;
-            }
-        }
+        public string Href { get; set; }
 
         public string Target { get; set; }
 

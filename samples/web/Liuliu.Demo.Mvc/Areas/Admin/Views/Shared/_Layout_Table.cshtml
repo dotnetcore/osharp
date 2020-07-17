@@ -8,14 +8,14 @@
 }
 @section header{
   <style>
-    .layui-table-cell {
-      padding: 0 5px;
-    }
+    .layui-table-cell { padding: 0 5px; }
+    #edit-@name { margin: 20px; display: none; }
   </style>
   @await RenderSectionAsync("header", false)
 }
 <div class="layuimini-main">
   <table class="layui-hide" id="@tableId" lay-filter="@tableId"></table>
+@await RenderSectionAsync("html", false)
 </div>
 @section footer{
   <script src="~/lib/moment.js/moment.min.js"></script>
@@ -23,8 +23,51 @@
   <script>
     var columns = [[]], toolbar = '#toolbarDefaultTpl', defaultToolbar = ["filter", "exports", "print"];
     var page = { limits: [10, 20, 50, 100], layout: ['prev', 'page', 'next', 'skip', 'count', 'limit', 'refresh'] };
-    var height = 'full-22', title = "@title";
-    var readUrl = '/api/admin/@name/read', request = new osharp.PageRequest();
+    var height = 'full-22', title = "@title", request = new osharp.PageRequest();
+    var tableIns, tableOptions;
+    var readUrl = '/api/admin/@name/read', createUrl = '/api/admin/@name/create';
+    var updateUrl = '/api/admin/@name/update', deleteUrl = '/api/admin/@name/delete';
+
+    var editFunction = function(data, $, form) {
+      layer.open({
+        type: 1,
+        title: '编辑',
+        area: ['700px', '500px'],
+        shade: 0.3,
+        maxmin: true,
+        content: $('#edit-@name'),
+        zIndex: layer.zIndex,
+        closeBtn: 1,
+        btn: ['保存', '取消'],
+        success: function() {
+          editShow(data, form);
+        },
+        yes: function(index) {
+          editSubmit(form, $, index);
+        }
+      });
+    };
+    var editShow = function(data, form) {
+      form.val('edit-@name', { Id: data.Id });
+    };
+    var editSubmit = function(form, $, index) {
+      var data = form.val('edit-@name');
+      osharp.tools.post($, '/api/admin/@name/update', [data], function(res) {
+        osharp.tools.ajaxResult(res, layer, function() {
+          tableIns.reload(tableOptions);
+          layer.close(index);
+        });
+      });
+    };
+
+    var deleteFunction = function(data) {
+      layer.confirm("是否要删除编号为“" + data.Id + "”的行？",
+        { btn: ['确定', '取消'], icon: 3 },
+        function() {
+          layer.msg('数据删除成功。', { icon: 1 });
+        });
+    };
+
   </script>
   @await RenderSectionAsync("tableParam", false)
 
@@ -50,7 +93,7 @@
     <span>{{d.CreatedTime}}</span>
   </script>
   <script>
-    var tableOptions = {
+    tableOptions = {
       elem: '#@tableId',
       url: readUrl,
       method: 'post',
@@ -87,15 +130,14 @@
   </script>
   @await RenderSectionAsync("tableOptions", false)
   <script>
-    layui.use('table',
+    layui.use(['table', 'form', 'jquery'],
       function() {
-        var table = layui.table;
-        table.render(tableOptions);
+        var table = layui.table, form = layui.form, $ = layui.jquery;
+        tableIns = table.render(tableOptions);
 
         //工具栏
         table.on('toolbar(@tableId)',
           function(obj) {
-            console.log(obj);
             switch (obj.event) {
               case 'add':
                 layer.msg('添加');
@@ -111,10 +153,10 @@
             var data = obj.data;
             switch (obj.event) {
               case 'edit':
-                layer.msg('编辑一行: ' + data.Name);
+                editFunction(data, $, form);
                 break;
               case 'delete':
-                layer.msg('删除一行: ' + data.Name);
+                deleteFunction(data);
                 break;
             }
           });

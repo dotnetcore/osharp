@@ -95,23 +95,21 @@
 {
   <script>
     var returnUrl = "@ViewBag.ReturnUrl";
-    layui.use(['form', 'layer', 'jquery'], function() {
-      var form = layui.form, layer = layui.layer, $ = layui.jquery;
-      form.on('submit(login-submit)', function(data) {
-        var url = '/api/identity/login';
-        var field = data.field;
-        var dto = { Account: field.Account, Password: field.Password, Remember: field.Remember === 'on' };
-        osharp.tools.post($, url, dto, function(res) {
-          if (res.Type === 500) {
-            layer.alert('登录失败：' + res.Content, { icon: 2 });
-            return;
-          }
-          layer.msg('登录成功', { icon: 1 });
-          osharp.tools.goto(returnUrl);
+    layui.use(['form', 'layer', 'jquery'],
+      function() {
+        var form = layui.form, layer = layui.layer, $ = layui.jquery;
+        form.on('submit(login-submit)', function(data) {
+          var url = '/api/identity/login';
+          var field = data.field;
+          var dto = { Account: field.Account, Password: field.Password, Remember: field.Remember === 'on' };
+          osharp.tools.post($, url, dto, function(res) {
+            osharp.tools.ajaxResult(res, layer, function() {
+              osharp.tools.goto(returnUrl);
+            });
+          });
+          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
-        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
       });
-    });
 
   </script>
 }
