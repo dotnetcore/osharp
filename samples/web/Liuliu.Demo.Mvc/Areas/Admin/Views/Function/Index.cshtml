@@ -8,21 +8,25 @@
 {
   <script>
     toolbar = true;
-    columns = [[
-      { field: 'Id', title: '编号', sort: true },
-      { field: 'Name', title: '名称', sort: true },
-      { field: 'AccessType', title: '功能类型', width: 100, sort: true },
-      { field: 'AuditOperationEnabled', title: '操作审计', sort: true, width: 90, templet: d => renderBool(d.AuditOperationEnabled) },
-      { field: 'AuditEntityEnabled', title: '数据审计', sort: true, width: 90, templet: d => renderBool(d.AuditEntityEnabled) },
-      { field: 'CacheExpirationSeconds', title: '缓存秒数', sort: true, width: 90 },
-      { field: 'IsCacheSliding', title: '滑动过期', sort: true, width: 90, templet: d => renderBool(d.IsCacheSliding) },
-      { field: 'IsLocked', title: '锁定', sort: true, width: 90, templet: d => renderBool(d.IsLocked) },
-      { field: 'IsAjax', title: 'Ajax访问', sort: true, width: 90, templet: d => renderBool(d.IsAjax) },
-      { field: 'IsController', title: '是否控制器', sort: true, width: 90, templet: d => renderBool(d.IsController) },
-      { field: 'Area', title: '区域', width: 100, sort: true },
-      { field: 'Controller', title: '控制器', width: 100, sort: true },
-      { field: 'Action', title: '功能方法', width: 100, sort: true },
-      { fixed: 'right', title: '操作', width: 50, toolbar: '#rowActionTpl' }
-    ]];
+    columns = [
+      [
+        { type: 'numbers', title: '序号' },
+        { field: 'Id', title: '编号', sort: true },
+        { field: 'Name', title: '名称', sort: true },
+        { field: 'AccessType', title: '功能类型', width: 100, sort: true },
+        { field: 'AuditOperationEnabled', title: '操作审计', sort: true, width: 90, templet: d => renderBool(d.AuditOperationEnabled) },
+        { field: 'AuditEntityEnabled', title: '数据审计', sort: true, width: 90, templet: d => renderBool(d.AuditEntityEnabled) },
+        { field: 'CacheExpirationSeconds', title: '缓存秒数', sort: true, width: 90 },
+        { field: 'IsCacheSliding', title: '滑动过期', sort: true, width: 90, templet: d => renderBool(d.IsCacheSliding) },
+        { field: 'IsLocked', title: '锁定', sort: true, width: 90, templet: d => renderBool(d.IsLocked) },
+        { field: 'IsAjax', title: 'Ajax访问', sort: true, width: 90, templet: d => renderBool(d.IsAjax) },
+        { field: 'IsController', title: '是否控制器', sort: true, width: 90, templet: d => renderBool(d.IsController) },
+        { field: 'Area', title: '区域', width: 100, sort: true },
+        { field: 'Controller', title: '控制器', width: 100, sort: true },
+        { field: 'Action', title: '功能方法', width: 100, sort: true },
+        { fixed: 'right', title: '操作', width: 50, toolbar: '#rowActionTpl' }
+      ]
+    ];
+
   </script>
 }

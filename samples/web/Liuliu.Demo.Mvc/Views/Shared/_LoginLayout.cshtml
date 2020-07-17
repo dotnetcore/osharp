@@ -10,7 +10,7 @@
   <link rel="icon" href="/images/favicon.ico">
   <link rel="stylesheet" href="/lib/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="/css/public.css" media="all">
-  @RenderSection("header", false)
+  @await RenderSectionAsync("header", false)
 </head>
 <body>
   <div class="layui-container">
@@ -18,6 +18,6 @@
   </div>
   <script src="/lib/layui/layui.js" charset="utf-8"></script>
   <script src="/js/osharp.js" charset="utf-8"></script>
-  @RenderSection("footer", false)
+  @await RenderSectionAsync("footer", false)
 </body>
 </html>

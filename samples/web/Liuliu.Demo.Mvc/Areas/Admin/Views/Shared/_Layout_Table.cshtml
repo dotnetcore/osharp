@@ -12,7 +12,7 @@
       padding: 0 5px;
     }
   </style>
-  @RenderSection("header", false)
+  @await RenderSectionAsync("header", false)
 }
 <div class="layuimini-main">
   <table class="layui-hide" id="@tableId" lay-filter="@tableId"></table>
@@ -21,11 +21,12 @@
   <script src="~/lib/moment.js/moment.min.js"></script>
 
   <script>
-    var columns = [[]], page = true, toolbar = '#toolbarDefaultTpl', defaultToolbar = ["filter", "exports", "print"];
+    var columns = [[]], toolbar = '#toolbarDefaultTpl', defaultToolbar = ["filter", "exports", "print"];
+    var page = { limits: [10, 20, 50, 100], layout: ['prev', 'page', 'next', 'skip', 'count', 'limit', 'refresh'] };
     var height = 'full-22', title = "@title";
     var readUrl = '/api/admin/@name/read', request = new osharp.PageRequest();
   </script>
-  @RenderSection("tableParam", false)
+  @await RenderSectionAsync("tableParam", false)
 
   <script type="text/html" id="rowActionTpl">
     <div class="layui-btn-group">
@@ -49,64 +50,75 @@
     <span>{{d.CreatedTime}}</span>
   </script>
   <script>
-    var parseData = function(res) {
-      var code = res.Type === 200 ? 0 : res.Type;
-      if (code === 0) {
-        return { code: code, msg: res.Content, count: res.Data.Total, data: res.Data.Rows };
-      }
-      return { code: code, msg: res.Content, count: 0, data: [] };
-    };
-
     var tableOptions = {
       elem: '#@tableId',
       url: readUrl,
       method: 'post',
       contentType: 'application/json; charset=utf-8',
-      request: request,
-      parseData: parseData,
+      where: request,
       title: title,
       cellMinWidth: 65,
       cols: columns,
       height: height,
       even: true,
       page: page,
+      limit: request.PageCondition.PageSize,
+      loading: true,
       toolbar: toolbar,
-      defaultToolbar: defaultToolbar
+      defaultToolbar: defaultToolbar,
+      parseParams: function(params) {
+        params.PageCondition.PageIndex = params.page;
+        params.PageCondition.PageSize = params.limit;
+        return params;
+      },
+      response: {
+        statusName: 'Type',
+        statusCode: 200,
+        msgName: 'Content',
+        countName: 'Total',
+        dataName: 'Rows'
+      },
+      parseData: function(res) {
+        res.Total = res.Data.Total;
+        res.Rows = res.Data.Rows;
+        return res;
+      }
     };
   </script>
-  @RenderSection("tableOptions", false)
+  @await RenderSectionAsync("tableOptions", false)
   <script>
-    layui.use('table', function() {
-      var table = layui.table;
-      table.render(tableOptions);
+    layui.use('table',
+      function() {
+        var table = layui.table;
+        table.render(tableOptions);
 
-      //工具栏
-      table.on('toolbar(@tableId)',
-        function(obj) {
-          console.log(obj);
-          switch (obj.event) {
-            case 'add':
-              layer.msg('添加');
-              break;
-            case 'delete':
-              layer.msg('删除');
-              break;
-          }
-        });
-      //行按钮
-      table.on('tool(@tableId)',
-        function(obj) {
-          var data = obj.data;
-          switch (obj.event) {
-            case 'edit':
-              layer.msg('编辑一行: ' + data.Name);
-              break;
-            case 'delete':
-              layer.msg('删除一行: ' + data.Name);
-              break;
-          }
-        });
-    });
+        //工具栏
+        table.on('toolbar(@tableId)',
+          function(obj) {
+            console.log(obj);
+            switch (obj.event) {
+              case 'add':
+                layer.msg('添加');
+                break;
+              case 'delete':
+                layer.msg('删除');
+                break;
+            }
+          });
+        //行按钮
+        table.on('tool(@tableId)',
+          function(obj) {
+            var data = obj.data;
+            switch (obj.event) {
+              case 'edit':
+                layer.msg('编辑一行: ' + data.Name);
+                break;
+              case 'delete':
+                layer.msg('删除一行: ' + data.Name);
+                break;
+            }
+          });
+      });
 
     function getCheckData(table, obj) {
       var checkStatus = table.checkStatus(obj.config.id);

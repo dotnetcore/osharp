@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/layui/lay/modules/table.min.js",
+    "inputFiles": [
+      "wwwroot/lib/layui/lay/modules/table.js"
+    ]
+  }
+]
