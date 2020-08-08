@@ -50,5 +50,12 @@ namespace OSharp.Core.Builders
         /// <param name="optionsAction">OSharp操作选项</param>
         /// <returns>OSharp构建器</returns>
         IOsharpBuilder AddOptions(Action<OsharpOptions> optionsAction);
+
+        /// <summary>
+        /// 添加加载的所有Pack，并可排除指定的Pack类型
+        /// </summary>
+        /// <param name="exceptPackTypes">要排除的Pack类型</param>
+        /// <returns></returns>
+        IOsharpBuilder AddPacks(params Type[] exceptPackTypes);
     }
 }

@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Hangfire;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Systems;
@@ -39,17 +40,17 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOSharp()
-                .AddPack<Log4NetPack>()
-                .AddPack<AutoMapperPack>()
-                .AddPack<EndpointsPack>()
-                .AddPack<SwaggerPack>()
-                .AddPack<AuthenticationPack>()
-                .AddPack<FunctionAuthorizationPack>()
-                .AddPack<DataAuthorizationPack>()
-                .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<AuditPack>()
-                .AddPack<SwaggerPack>();
+            services.AddOSharp().AddPacks(typeof(HangfirePack));
+            //.AddPack<Log4NetPack>()
+            //.AddPack<AutoMapperPack>()
+            //.AddPack<EndpointsPack>()
+            //.AddPack<SwaggerPack>()
+            //.AddPack<AuthenticationPack>()
+            //.AddPack<FunctionAuthorizationPack>()
+            //.AddPack<DataAuthorizationPack>()
+            //.AddPack<SqlServerDefaultDbContextMigrationPack>()
+            //.AddPack<AuditPack>()
+            //.AddPack<SwaggerPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
