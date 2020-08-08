@@ -4,7 +4,7 @@
  * @author: yelog
  * @link: https://github.com/yelog/layui-soul-table
  * @license: MIT
- * @version: v1.5.15
+ * @version: v1.5.16
  */
 layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
 
@@ -99,13 +99,74 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
               $(this).children('td:eq(' + curIndex + ')').find('.childTable').on('click', function (e) {
                 layui.stope(e)
                 var rowIndex = $(this).parents('tr:eq(0)').data('index'),
+                  tableId = myTable.id,
                   key = $(this).parents('td:eq(0)').data('key'),
                   $this = $noFixedBody.children('tbody').children('tr[data-index=' + rowIndex + ']').children('td[data-key="' + key + '"]').find('.childTable:eq(0)'),
                   $fixedThis = $fixedBody.find('tr[data-index=' + rowIndex + ']').children('td[data-key="' + key + '"]').find('.childTable:eq(0)'),
-                  data = table.cache[myTable.id][rowIndex],
-                  children = child.children;
-                if (typeof child.children === 'function') {
-                  children = child.children(data)
+                  data = table.cache[tableId][rowIndex],
+                  children = child.children,
+                  isTpl = false,
+                  tplContent = '',
+                  tr = $tableBody.children('tbody').children('tr[data-index="' + rowIndex + '"]'),
+                  obj = {
+                    data: data,
+                    tr: tr,
+                    del: function () {
+                      table.cache[tableId][rowIndex] = [];
+                      _this.destroyChildren(rowIndex, myTable, icon)
+                      tr.remove();
+                      table.resize(tableId);
+                    },
+                    update: function (fields) {
+                      fields = fields || {};
+                      layui.each(fields, function (key, value) {
+                        if (key in data) {
+                          var templet, td = tr.children('td[data-field="' + key + '"]');
+                          data[key] = value;
+                          table.eachCols(tableId, function (i, item2) {
+                            if (item2.field == key && item2.templet) {
+                              templet = item2.templet;
+                            }
+                          });
+                          td.children('.layui-table-cell').html(function () {
+                            return templet ? function () {
+                              return typeof templet === 'function'
+                                ? templet(data)
+                                : laytpl($(templet).html() || value).render(data)
+                            }() : value;
+                          }());
+                          td.data('content', value);
+                        }
+                      });
+                    },
+                    close: function () {
+                      _this.destroyChildren(rowIndex, myTable, icon)
+                      table.resize(tableId);
+                    }
+
+                  };
+                if ($this.hasClass(icon[1])) {
+                  if (typeof child.childClose === 'function') {
+                    if (child.childClose(obj) === false) {
+                      return;
+                    }
+                  }
+                } else {
+                  // 展开事件
+                  if (typeof child.childOpen === 'function') {
+                    if (child.childOpen(obj) === false) {
+                      return;
+                    }
+                  }
+                }
+
+                if (typeof children === 'function') {
+                  children = children(data)
+                }
+                // 如果是 templet 自定义内容
+                if (typeof children === 'string') {
+                  isTpl = true
+                  tplContent = _this.parseTempData(child, child.field ? data[child.field] : null, data)
                 }
                 if (child.show === 2) { // 弹窗模式
 
@@ -114,11 +175,21 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
                     type: 1,
                     title: '子表',
                     maxmin: true,
-                    content: _this.getTables(this, data, child, myTable, children),
+                    content: _this.getTables(this, data, child, myTable, children, isTpl, tplContent),
                     area: '1000px',
-                    offset: '100px'
+                    offset: '100px',
+                    cancel: function () {
+                      if (typeof child.childClose === 'function') {
+                        if (child.childClose(obj) === false) {
+                          return;
+                        }
+                      }
+                    }
                   }, child.layerOption || {}));
-                  _this.renderTable(this, data, child, myTable, children, icon);
+
+                  if (!isTpl) {
+                    _this.renderTable(this, data, child, myTable, children, icon);
+                  }
 
                 } else { // 展开模式
 
@@ -152,8 +223,8 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
 
                   if ($this.hasClass(icon[1])) {
                     var newTr = [];
-                    newTr.push('<tr class="noHover childTr"><td colspan="' + $tableHead.find('th:visible').length + '"  style="cursor: inherit; padding: 0; width: ' + $this.parents('tr:eq(0)').width() + 'px">');
-                    newTr.push(_this.getTables(this, data, child, myTable, children));
+                    newTr.push('<tr data-tpl="' + isTpl + '" class="noHover childTr"><td colspan="' + $tableHead.find('th:visible').length + '"  style="cursor: inherit; padding: 0;">');
+                    newTr.push(_this.getTables(this, data, child, myTable, children, isTpl, tplContent));
                     newTr.push('</td></tr>');
 
                     if (rowspanIndex) {
@@ -163,7 +234,22 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
                       $this.parents('tr:eq(0)').after(newTr.join(''));
                     }
                     layui.element.init('tab')
-                    _this.renderTable(this, data, child, myTable, children, icon);
+                    if (!isTpl) {
+                      _this.renderTable(this, data, child, myTable, children, icon);
+                      // 阻止事件冒泡
+                      $this.parents('tr:eq(0)').next().children('td').children('.layui-tab').children('.layui-tab-content').on('click', function (e) {
+                        // 不阻止 tab 切换点击事件
+                        if (!$(e.target.parentElement).hasClass('layui-tab-title')) {
+                          e.stopPropagation()
+                        }
+                      }).off('dblclick').on('dblclick', function (e) {
+                        e.stopPropagation()
+                      }).on('mouseenter', 'td', function (e) {
+                        e.stopPropagation()
+                      }).on('change', function (e) {
+                        layui.stope(e)
+                      })
+                    }
                     if ($fixedBody.length > 0) {
                       var $tr = $this.parents('tr:eq(0)').next(),
                         height = $tr.children('td').height(),
@@ -185,19 +271,7 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
                       $this.parents('tr:eq(0)').next().find('.layui-table-view').css({margin: 0, 'border-width': 0});
                       $this.parents('tr:eq(0)').next().find('.layui-table-header').css('display', 'none');
                     }
-                    // 阻止事件冒泡
-                    $this.parents('tr:eq(0)').next().children('td').children('.layui-tab').children('.layui-tab-content').on('click', function (e) {
-                      // 不阻止 tab 切换点击事件
-                      if (!$(e.target.parentElement).hasClass('layui-tab-title')) {
-                        e.stopPropagation()
-                      }
-                    }).off('dblclick').on('dblclick', function (e) {
-                      e.stopPropagation()
-                    }).on('mouseenter', 'td', function (e) {
-                      e.stopPropagation()
-                    }).on('change', function (e) {
-                      layui.stope(e)
-                    })
+
                   } else {
                     _this.destroyChildren(rowIndex, myTable, icon);
                     table.resize(tableId)
@@ -223,18 +297,26 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
      * @param child
      * @param myTable
      * @param children 子表配置
+     * @param isTpl 是否是自定义模版
+     * @param tplContent 自定义模版内容
      * @returns {string}
      */
-    getTables: function (_this, data, child, myTable, children) {
+    getTables: function (_this, data, child, myTable, children, isTpl, tplContent) {
       var tables = [],
         $table = $(myTable.elem),
+        $tableBox = $table.next().children('.layui-table-box'),
         tableId = myTable.id,
         rowTableId = tableId + $(_this).parents('tr:eq(0)').data('index'),
+        $tableHead = $tableBox.children('.layui-table-header').children('table'),
         $tableMain = $table.next().children('.layui-table-box').children('.layui-table-body'),
         $tableBody = $tableMain.children('table'),
         scrollWidth = 0,
         i;
-      tables.push('<div class="layui-tab layui-tab-card" lay-filter="table-child-tab-' + rowTableId + '" style="margin: 0;border: 0;box-shadow: none;');
+      if (isTpl) {
+        tables.push('<div style="margin: 0;border: 0;box-shadow: none;');
+      } else {
+        tables.push('<div class="layui-tab layui-tab-card" lay-filter="table-child-tab-' + rowTableId + '" style="margin: 0;border: 0;box-shadow: none;');
+      }
       if (child.show === 2) {
         tables.push('max-width: ' + ($tableBody.width() - 2) + 'px">')
       } else if (child.show === 3) {
@@ -245,29 +327,36 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
           //不限制宽度
           tables.push('">')
         } else {
+          // 如果有滚动条
           if ($tableMain.prop('scrollHeight') + (children.length > 0 ? children[0].height : 0) > $tableMain.height()) {
             scrollWidth = this.getScrollWidth();
           }
-          tables.push('max-width: ' + ($tableMain.width() - 1 - scrollWidth) + 'px">')
+          var maxWidth = $tableMain.width() - 1 - scrollWidth;
+          tables.push('max-width: ' + (maxWidth > $tableHead.width() ? $tableHead.width() : maxWidth) + 'px">')
         }
       }
-      if (child.show !== 3 && (typeof child.childTitle === 'undefined' || child.childTitle)) {
-        tables.push('<ul class="layui-tab-title">')
-        for (i = 0; i < children.length; i++) {
-          tables.push('<li class="' + (i === 0 ? 'layui-this' : '') + '">' + (typeof children[i].title === 'function' ? children[i].title(data) : children[i].title) + '</li>');
-        }
-        tables.push('</ul>')
-      }
-      if (child.show === 3) {
-        tables.push('<div class="layui-tab-content" style="padding: 0">');
+      if (isTpl) {
+        tables.push(tplContent)
       } else {
-        tables.push('<div class="layui-tab-content" style="padding: 0 10px">');
+        if (child.show !== 3 && (typeof child.childTitle === 'undefined' || child.childTitle)) {
+          tables.push('<ul class="layui-tab-title">')
+          for (i = 0; i < children.length; i++) {
+            tables.push('<li class="' + (i === 0 ? 'layui-this' : '') + '">' + (typeof children[i].title === 'function' ? children[i].title(data) : children[i].title) + '</li>');
+          }
+          tables.push('</ul>')
+        }
+        if (child.show === 3) {
+          tables.push('<div class="layui-tab-content" style="padding: 0">');
+        } else {
+          tables.push('<div class="layui-tab-content" style="padding: 0 10px">');
+        }
+        for (i = 0; i < children.length; i++) {
+          var childTableId = rowTableId + i;
+          tables.push('<div class="layui-tab-item layui-show"><form action="" class="layui-form" ><table id="' + childTableId + '" lay-filter="' + childTableId + '"></table></form></div>');
+        }
+        tables.push('</div>');
       }
-      for (i = 0; i < children.length; i++) {
-        var childTableId = rowTableId + i;
-        tables.push('<div class="layui-tab-item layui-show"><form action="" class="layui-form" ><table id="' + childTableId + '" lay-filter="' + childTableId + '"></table></form></div>');
-      }
-      tables.push('</div></div>');
+      tables.push('</div>');
       return tables.join('')
     },
     /**
@@ -422,7 +511,8 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
         $tableBox = $table.next().children('.layui-table-box'),
         $fixedBody = $tableBox.children('.layui-table-fixed').children('.layui-table-body').children('table'),
         $tableBody = $.merge($tableBox.children('.layui-table-body').children('table'), $fixedBody),
-        $tr = $tableBody.children('tbody').children('tr[data-index="' + rowIndex + '"]');
+        $tr = $tableBody.children('tbody').children('tr[data-index="' + rowIndex + '"]'),
+        isTpl = $tr.next().data('tpl');
 
       $tr.find('.childTable').removeClass(icon[1]).addClass(icon[0]);
 
@@ -435,13 +525,15 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
       //     $this.parents('tr:eq(0)').next().remove();
       // }
       $tr.next().remove()
-      var tables = tableChildren[tableId + rowIndex];
-      if (layui.tableFilter) { //如果使用了筛选功能，同时清理筛选渲染的数据
-        layui.tableFilter.destroy(tables);
-      }
-      if (layui.soulTable) { // 清除记忆
-        for (var i = 0; i < tableChildren[tableId + rowIndex].length; i++) {
-          layui.soulTable.clearOriginCols(tableChildren[tableId + rowIndex][i].config.id)
+      if (isTpl === 'false') {
+        var tables = tableChildren[tableId + rowIndex];
+        if (layui.tableFilter) { //如果使用了筛选功能，同时清理筛选渲染的数据
+          layui.tableFilter.destroy(tables);
+        }
+        if (layui.soulTable) { // 清除记忆
+          for (var i = 0; i < tableChildren[tableId + rowIndex].length; i++) {
+            layui.soulTable.clearOriginCols(tableChildren[tableId + rowIndex][i].config.id)
+          }
         }
       }
       delete tableChildren[tableId + rowIndex]
@@ -553,6 +645,15 @@ layui.define(['table', 'element', 'form', 'laytpl'], function (exports) {
         document.body.removeChild(elem);
       }
       return width;
+    },
+    //解析自定义模板数据
+    parseTempData: function (item3, content, tplData, text) { //表头数据、原始内容、表体数据、是否只返回文本
+      var str = item3.children ? function () {
+        return typeof item3.children === 'function'
+          ? item3.children(tplData)
+          : laytpl($(item3.children).html() || String(content)).render(tplData)
+      }() : content;
+      return text ? $('<div>' + str + '</div>').text() : str;
     }
   };
 

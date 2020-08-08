@@ -62,21 +62,22 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 new SortCondition("Order")
             );
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<OsharpPack, bool>> exp = _filterService.GetExpression<OsharpPack>(request.FilterGroup);
+            Expression<Func<PackOutputDto, bool>> exp = _filterService.GetExpression<PackOutputDto>(request.FilterGroup);
             IServiceProvider provider = HttpContext.RequestServices;
+            IQueryable<PackOutputDto> query = provider.GetAllPacks().Select(m => new PackOutputDto()
+            {
+                Name = m.GetType().Name,
+                Display = m.GetType().GetDescription(true),
+                Class = m.GetType().FullName,
+                Level = m.Level,
+                Order = m.Order,
+                IsEnabled = m.IsEnabled
+            }).AsQueryable();
 
-            var page = _cacheService.ToPageCache(provider.GetAllPacks().AsQueryable(),
+            var page = _cacheService.ToPageCache(query,
                 exp,
                 request.PageCondition,
-                m => new PackOutputDto()
-                {
-                    Name = m.GetType().Name,
-                    Display = m.GetType().GetDescription(true),
-                    Class = m.GetType().FullName,
-                    Level = m.Level,
-                    Order = m.Order,
-                    IsEnabled = m.IsEnabled
-                },
+                m => m,
                 function);
             return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }

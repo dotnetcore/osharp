@@ -99,9 +99,9 @@
     Ascending: 0,
     Descending: 1
   };
-  OSharp.prototype.SortCondition = {
-    SortField: null,
-    ListSortDirection: OSharp.prototype.ListSortDirection.Ascending
+  OSharp.prototype.SortCondition = function (field, direction) {
+    this.SortField = field;
+    this.ListSortDirection = direction;
   };
   OSharp.prototype.PageCondition = function () {
     this.PageIndex = 1;
@@ -112,6 +112,84 @@
     this.PageCondition = new OSharp.prototype.PageCondition();
     this.FilterGroup = new OSharp.prototype.FilterGroup();
   };
+  OSharp.prototype.ParseParams = function (params) {
+    var req = new osharp.PageRequest();
+    if (params.page !== undefined) {
+      req.PageCondition.PageIndex = params.page;
+    }
+    if (params.limit !== undefined) {
+      req.PageCondition.PageSize = params.limit;
+    }
+    if (params.field) {
+      var condition = new osharp.SortCondition(params.field, params.order === "asc" ? osharp.ListSortDirection.Ascending : osharp.ListSortDirection.Descending);
+      req.PageCondition.SortConditions = [condition];
+    }
+    if (params.filterSos) {
+      var sos = JSON.parse(params.filterSos);
+      console.log(sos);
+      if (sos.length > 0) {
+        for (var i = 0; i < sos.length; i++) {
+          var item = sos[i];
+          if (item.mode === "condition") {
+            req.FilterGroup.Rules.push(toRule(item));
+          } else {
+            req.FilterGroup.Groups.push(toGroup(item));
+          }
+        }
+      }
+    }
+
+    console.log(req);
+    return req;
+
+    function toRule(item) {
+      var operate = toOperate(item.type);
+      var rule = new OSharp.prototype.FilterRule(item.field, item.value, operate);
+      return rule;
+    }
+
+    function toGroup(item) {
+      var operate = item.prefix === "and" ? OSharp.prototype.FilterOperate.And : OSharp.prototype.FilterOperate.Or;
+      var group = new OSharp.prototype.FilterGroup();
+      group.Operate = operate;
+
+
+
+    }
+
+    function toOperate(type) {
+      switch (type) {
+        case "eq":
+          return OSharp.prototype.FilterOperate.Equal;
+        case "ne":
+          return OSharp.prototype.FilterOperate.NotEqual;
+        case "gt":
+          return OSharp.prototype.FilterOperate.Greater;
+        case "ge":
+          return OSharp.prototype.FilterOperate.GreaterOrEqual;
+        case "lt":
+          return OSharp.prototype.FilterOperate.Less;
+        case "le":
+          return OSharp.prototype.FilterOperate.LessOrEqual;
+        case "contain":
+          return OSharp.prototype.FilterOperate.Contains;
+        case "notContain":
+          return OSharp.prototype.FilterOperate.NotContains;
+        case "start":
+          return OSharp.prototype.FilterOperate.StartsWith;
+        case "end":
+          return OSharp.prototype.FilterOperate.EndsWith;
+        case "null":
+          return OSharp.prototype.FilterOperate.Equal;
+        case "notNull":
+          return OSharp.prototype.FilterOperate.NotEqual;
+        default:
+          return OSharp.prototype.FilterOperate.Equal;
+      }
+    }
+
+  }
+
 
   /**工具类 */
   OSharp.prototype.tools = {
@@ -219,11 +297,11 @@
         return "";
       }
       if (!format) {
-        format = "YYYY/MM/DD hh:mm";
+        format = "YYYY/MM/DD HH:mm";
       }
       return moment(date).format(format);
     },
-    post: function(jQuery, url, data, success) {
+    post: function (jQuery, url, data, success) {
       jQuery.ajax({
         type: "POST",
         url: url,
@@ -233,24 +311,24 @@
         success: success
       });
     },
-    goto: function(url, timeout) {
+    goto: function (url, timeout) {
       if (!timeout) timeout = 500;
-      setTimeout(function() {
+      setTimeout(function () {
         location.href = url;
       }, timeout);
     },
-    success: function(layer, msg) {
+    success: function (layer, msg) {
       layer.msg(msg, { icon: 1 });
     },
-    error: function(layer, msg) {
+    error: function (layer, msg) {
       layer.alert(msg, { icon: 2 });
     },
-    ajaxResult: function(res, layer, onSuccess, onFail) {
+    ajaxResult: function (res, layer, onSuccess, onFail) {
       if (res.Type === 200) {
         this.success(layer, res.Content);
-        if (onSuccess && typeof onSuccess === 'function') {
+        if (onSuccess && typeof onSuccess === "function") {
           onSuccess();
-        } 
+        }
       } else {
         this.error(layer, res.Content);
         if (onFail && typeof onFail === "function") {
@@ -260,7 +338,7 @@
     }
   };
 
-  OSharp.prototype.post = function(jQuery, url, data, success) {
+  OSharp.prototype.post = function (jQuery, url, data, success) {
     jQuery.ajax({
       type: "POST",
       url: url,
@@ -270,6 +348,9 @@
       success: success
     });
   };
+
+
+
 
   win.osharp = new OSharp();
 }(window);

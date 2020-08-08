@@ -4,7 +4,7 @@
  * @author: yelog
  * @link: https://github.com/yelog/layui-soul-table
  * @license: MIT
- * @version: v1.5.15
+ * @version: v1.5.16
  */
 layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exports) {
 
@@ -26,7 +26,9 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
       overflow: false, // 自定义内容超出样式
       fixFixedScroll: true, // 固定列支持鼠标滚轮滚动
       filter: false  // 筛选及记忆相关
-    };
+    },
+    _BODY = $('body'),
+    _DOC = $(document);
 
   // 封装方法
   var mod = {
@@ -204,7 +206,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
           $tableBodytr = $table.next().children('.layui-table-box').children('.layui-table-body').children('table').children('tbody').children('tr'),
           $totalTr = $table.next().children('.layui-table-total').find('tr');
         String.prototype.width = function (font) {
-          var f = font || $('body').css('font'),
+          var f = font || _BODY.css('font'),
             o = $('<div>' + this + '</div>')
               .css({
                 'position': 'absolute',
@@ -213,7 +215,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
                 'visibility': 'hidden',
                 'font': f
               })
-              .appendTo($('body')),
+              .appendTo(_BODY),
             w = o.width();
 
           o.remove();
@@ -240,7 +242,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
           var key = othis.data('key')
             , keyArray = key.split('-')
             , curKey = keyArray.length === 3 ? keyArray[1] + '-' + keyArray[2] : ''
-          if (othis.attr('colspan') > 1) {
+          if (othis.attr('colspan') > 1 || othis.data('unresize')) {
             return;
           }
           if (isHandle) {
@@ -352,12 +354,12 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
 
 
               // 阻止文本选中
-              $(document).bind("selectstart", function () {
+              _DOC.bind("selectstart", function () {
                 return false;
               });
 
               // 移动事件
-              $('body').on('mousemove', function (e) {
+              _BODY.on('mousemove', function (e) {
                 if (isStart && $cloneHead) {
                   $tableBox.removeClass('no-left-border');
                   if (!isDragging) {
@@ -511,7 +513,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
                   /* 拖动隐藏列 */
                   if (e.clientY - originTop < -15) {
                     if ($('#column-remove').length === 0) {
-                      $('body').append('<i id="column-remove" class="layui-red layui-icon layui-icon-delete"></i>')
+                      _BODY.append('<i id="column-remove" class="layui-red layui-icon layui-icon-delete"></i>')
                     }
                     $('#column-remove').css({
                       top: e.clientY - $('#column-remove').height() / 2,
@@ -524,8 +526,8 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
                   }
                 }
               }).on('mouseup', function () {
-                $(document).unbind("selectstart");
-                $('body').off('mousemove').off('mouseup')
+                _DOC.unbind("selectstart");
+                _BODY.off('mousemove').off('mouseup')
                 if (isStart && $cloneHead) {
                   isStart = false;
                   if (isDragging) {
@@ -806,7 +808,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
           originTop = $this.position().top,
           disY = e.clientY - originTop; // 鼠标距离被移动元素上侧的距离
 
-        $('body').on('mousemove', function (e) {
+        _BODY.on('mousemove', function (e) {
 
           if (!isDragging) {
             isDragging = true;
@@ -880,7 +882,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
           }
 
         }).on('mouseup', function (e) {
-          $('body').off('mousemove').off('mouseup');
+          _BODY.off('mousemove').off('mouseup');
 
           if (isDragging) {
             isDragging = false;
@@ -1117,7 +1119,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
         (function (name) {
           options[name].box.find(options[name].tag).on('contextmenu', function (e) {
             $('#soul-table-contextmenu-wrapper').remove();
-            $('body').append('<div id="soul-table-contextmenu-wrapper"></div>');
+            _BODY.append('<div id="soul-table-contextmenu-wrapper"></div>');
             $('#soul-table-contextmenu-wrapper').on('click', function (e) {
               e.stopPropagation()
             })
@@ -1138,7 +1140,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
       }
 
 
-      $('body').on('click', function () {
+      _BODY.on('click', function () {
         $('#soul-table-contextmenu-wrapper').remove();
       })
 
@@ -1164,7 +1166,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
         html.push('</ul>');
         $parent.append(html.join(''));
         var $curPanel = $parent.children().last();
-        if (top + $curPanel.outerHeight() > $('body').prop('scrollHeight')) {
+        if (top + $curPanel.outerHeight() > _BODY.prop('scrollHeight')) {
           top = top - $curPanel.outerHeight()
           if (top < 0) {
             top = 0
@@ -1173,7 +1175,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
         if ($parent.parent().data('direction') === 'left' && ($parent.offset().left - $curPanel.outerWidth()) > 0) {
           left = -$curPanel.outerWidth();
           $curPanel.data('direction', 'left')
-        } else if (left + $curPanel.outerWidth() + $parent.offset().left > $('body').prop('scrollWidth')) {
+        } else if (left + $curPanel.outerWidth() + $parent.offset().left > _BODY.prop('scrollWidth')) {
           left = left - $curPanel.outerWidth() - $parent.outerWidth()
           if (left + $parent.offset().left < 0) {
             left = -$parent.offset().left
@@ -1288,7 +1290,7 @@ layui.define(['table', 'tableFilter', 'tableChild', 'tableMerge'], function (exp
         $table = $(myTable.elem),
         $tableBox = $table.next().children('.layui-table-box'),
         $fixedHead = $tableBox.children('.layui-table-fixed-r').children('.layui-table-header').children('table'),
-        dict = {}, _BODY = $('body'), _DOC = $(document), resizing, ELEM_SORT = 'layui-table-sort',
+        dict = {}, resizing, ELEM_SORT = 'layui-table-sort',
         ELEM_NO_SORT = 'layui-table-sort-invalid';
       if ($fixedHead.length > 0) {
         $fixedHead.find('th').off('mousemove').on('mousemove', function (e) {

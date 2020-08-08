@@ -8,10 +8,6 @@
       "destination": "wwwroot/lib/bootstrap/"
     },
     {
-      "library": "layui@2.5.6",
-      "destination": "wwwroot/lib/layui/"
-    },
-    {
       "library": "jquery@3.5.1",
       "destination": "wwwroot/lib/jquery/"
     },

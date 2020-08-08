@@ -4,7 +4,7 @@
  * @author: yelog
  * @link: https://github.com/yelog/layui-soul-table
  * @license: MIT
- * @version: v1.5.15
+ * @version: v1.5.16
  */
 layui.define(['table'], function (exports) {
 

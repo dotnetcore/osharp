@@ -7,6 +7,7 @@
   string rowActions = ViewBag.RowActions ?? "edit,delete";
 }
 @section header{
+  <link href="~/js/lay-module/soulTable/soulTable.min.css" rel="stylesheet" media="all"/>
   <style>
     .layui-table-cell { padding: 0 5px; }
     #edit-@name { margin: 20px; display: none; }
@@ -52,12 +53,17 @@
     };
     var editSubmit = function(form, $, index) {
       var data = form.val('edit-@name');
-      osharp.tools.post($, '/api/admin/@name/update', [data], function(res) {
-        osharp.tools.ajaxResult(res, layer, function() {
-          tableIns.reload(tableOptions);
-          layer.close(index);
+      osharp.tools.post($,
+        '/api/admin/@name/update',
+        [data],
+        function(res) {
+          osharp.tools.ajaxResult(res,
+            layer,
+            function() {
+              tableIns.reload(tableOptions);
+              layer.close(index);
+            });
         });
-      });
     };
 
     var deleteFunction = function(data) {
@@ -109,11 +115,7 @@
       loading: true,
       toolbar: toolbar,
       defaultToolbar: defaultToolbar,
-      parseParams: function(params) {
-        params.PageCondition.PageIndex = params.page;
-        params.PageCondition.PageSize = params.limit;
-        return params;
-      },
+      parseParams: osharp.ParseParams,
       response: {
         statusName: 'Type',
         statusCode: 200,
@@ -130,9 +132,13 @@
   </script>
   @await RenderSectionAsync("tableOptions", false)
   <script>
-    layui.use(['table', 'form', 'jquery'],
+    layui.use(['table', 'form', 'jquery', 'soulTable'],
       function() {
-        var table = layui.table, form = layui.form, $ = layui.jquery;
+        var table = layui.table, form = layui.form, $ = layui.jquery,
+        soulTable = layui.soulTable;
+        tableOptions.done = function() {
+          soulTable.render(this);
+        };
         tableIns = table.render(tableOptions);
 
         //工具栏
