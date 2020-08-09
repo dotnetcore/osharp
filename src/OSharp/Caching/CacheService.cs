@@ -588,7 +588,7 @@ namespace OSharp.Caching
         private string GetKey<TSource, TOutputDto>(IQueryable<TSource> source,
             params object[] keyParams)
         {
-            IQueryable<TOutputDto> query = source.ToOutput<TSource, TOutputDto>();
+            IQueryable<TOutputDto> query = source.ToOutput<TSource, TOutputDto>(true);
             return GetKey(query.Expression, keyParams);
         }
 
