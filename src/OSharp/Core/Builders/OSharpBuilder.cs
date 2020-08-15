@@ -9,9 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Core.Options;
@@ -39,6 +42,33 @@ namespace OSharp.Core.Builders
             Services = services;
             _source = GetAllPacks(services);
             _packs = new List<OsharpPack>();
+
+            IConfiguration configuration = services.GetConfiguration();
+            if (configuration == null)
+            {
+                IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+                configuration = configurationBuilder.Build();
+            }
+            Singleton<IConfiguration>.Instance = configuration;
+
+            if (!services.AnyServiceType(typeof(ILoggerFactory)))
+            {
+                services.AddLogging(opts =>
+                {
+#if DEBUG
+                    opts.SetMinimumLevel(LogLevel.Debug);
+#else
+                opts.SetMinimumLevel(LogLevel.Information);
+#endif
+                });
+            }
+
+            OsharpOptions options = new OsharpOptions();
+            configuration.Bind("OSharp", options);
+            Options = options;
         }
 
         /// <summary>
@@ -52,9 +82,9 @@ namespace OSharp.Core.Builders
         public IEnumerable<OsharpPack> Packs => _packs;
 
         /// <summary>
-        /// 获取 OSharp选项配置委托
+        /// 获取 OSharp选项配置
         /// </summary>
-        public Action<OsharpOptions> OptionsAction { get; private set; }
+        public OsharpOptions Options { get; }
 
         /// <summary>
         /// 添加指定模块
@@ -102,24 +132,19 @@ namespace OSharp.Core.Builders
             // 按先层级后顺序的规则进行排序
             _packs = _packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
 
+            string logName = typeof(OsharpBuilder).FullName;
             tmpPacks = _packs.Except(tmpPacks).ToArray();
             foreach (OsharpPack tmpPack in tmpPacks)
             {
+                Type packType = tmpPack.GetType();
+                string packName = packType.GetDescription();
+                Services.LogInformation($"添加模块 “{packName} ({packType.Name})” 的服务", logName);
+                ServiceDescriptor[] tmp = Services.ToArray();
                 AddPack(Services, tmpPack);
+                Services.ServiceLogDebug(tmp, packType.FullName);
+                Services.LogInformation($"模块 “{packName} ({packType.Name})” 的服务添加完毕，添加了 {Services.Count - tmp.Length} 个服务", logName);
             }
 
-            return this;
-        }
-
-        /// <summary>
-        /// 添加OSharp选项配置
-        /// </summary>
-        /// <param name="optionsAction">OSharp操作选项</param>
-        /// <returns>OSharp构建器</returns>
-        public IOsharpBuilder AddOptions(Action<OsharpOptions> optionsAction)
-        {
-            Check.NotNull(optionsAction, nameof(optionsAction));
-            OptionsAction = optionsAction;
             return this;
         }
 
