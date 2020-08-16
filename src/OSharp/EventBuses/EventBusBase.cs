@@ -35,16 +35,10 @@ namespace OSharp.EventBuses
         protected EventBusBase(IServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            ServiceScopeFactory = serviceScopeFactory;
             EventStore = serviceProvider.GetService<IEventStore>();
             Logger = serviceProvider.GetLogger(GetType());
         }
         
-        /// <summary>
-        /// 获取 服务作用域工厂
-        /// </summary>
-        protected IServiceScopeFactory ServiceScopeFactory { get; }
-
         /// <summary>
         /// 获取 事件仓储
         /// </summary>
@@ -122,7 +116,7 @@ namespace OSharp.EventBuses
                     continue;
                 }
                 Type eventDataType = handlerInterface.GetGenericArguments()[0]; //泛型的EventData类型
-                IEventHandlerFactory factory = new IocEventHandlerFactory(ServiceScopeFactory, eventHandlerType);
+                IEventHandlerFactory factory = new IocEventHandlerFactory(_serviceProvider, eventHandlerType);
                 EventStore.Add(eventDataType, factory);
                 Logger.LogDebug($"创建事件“{eventDataType}”到处理器“{eventHandlerType}”的订阅配对");
             }
