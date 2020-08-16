@@ -14,6 +14,8 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Authorization.EntityInfos;
 using OSharp.Authorization.Functions;
@@ -31,15 +33,17 @@ namespace OSharp.Entity
     {
         private readonly ConcurrentDictionary<Type, IEntityRegister[]> _entityRegistersDict
             = new ConcurrentDictionary<Type, IEntityRegister[]>();
+        private readonly ILogger _logger;
         private readonly IEntityConfigurationTypeFinder _typeFinder;
         private bool _initialized;
 
         /// <summary>
         /// 初始化一个<see cref="EntityManager"/>类型的新实例
         /// </summary>
-        public EntityManager(IEntityConfigurationTypeFinder typeFinder)
+        public EntityManager(IServiceProvider provider)
         {
-            _typeFinder = typeFinder;
+            _logger = provider.GetLogger<EntityManager>();
+            _typeFinder = provider.GetService<IEntityConfigurationTypeFinder>();
         }
 
         /// <summary>
@@ -75,6 +79,15 @@ namespace OSharp.Entity
                 list.AddIfNotExist(new EntityInfoConfiguration(), m => m.EntityType.IsBaseOn<IEntityInfo>());
                 list.AddIfNotExist(new FunctionConfiguration(), m => m.EntityType.IsBaseOn<IFunction>());
                 dict[key] = list.ToArray();
+            }
+
+            foreach (KeyValuePair<Type, IEntityRegister[]> item in dict)
+            {
+                foreach (IEntityRegister register in item.Value)
+                {
+                    _logger.LogDebug($"数据上下文“{item.Key}”添加实体类型“{register.EntityType}”");
+                }
+                _logger.LogInformation($"数据上下文“{item.Key}”添加了 {item.Value.Length} 个实体");
             }
 
             _initialized = true;
