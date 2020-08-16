@@ -7,9 +7,12 @@
 //  <last-date>2017-08-21 1:07</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 
 namespace OSharp.Entity.SqlServer
@@ -19,6 +22,16 @@ namespace OSharp.Entity.SqlServer
     /// </summary>
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// </summary>
+        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        {
+            _logger = provider.GetLogger(typeof(DbContextOptionsBuilderDriveHandler));
+        }
+
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
         /// </summary>
@@ -35,9 +48,11 @@ namespace OSharp.Entity.SqlServer
         {
             if (existingConnection == null)
             {
-                return builder.UseSqlServer(connectionString, opts => opts.UseRowNumberForPaging());
+                _logger.LogDebug($"使用新连接“{connectionString}”应用SqlServer数据库");
+                return builder.UseSqlServer(connectionString);
             }
-            return builder.UseSqlServer(existingConnection, opts => opts.UseRowNumberForPaging());
+            _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用SqlServer数据库");
+            return builder.UseSqlServer(existingConnection);
         }
     }
 }
