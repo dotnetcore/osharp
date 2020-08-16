@@ -8,9 +8,16 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+using OSharp.Core.Options;
+using OSharp.Exceptions;
+using OSharp.Json;
 
 
 namespace OSharp.Entity
@@ -22,20 +29,45 @@ namespace OSharp.Entity
         where TDbContext : DbContext
     {
         /// <summary>
+        /// 初始化一个<see cref="DesignTimeDbContextFactoryBase{TDbContext}"/>类型的新实例
+        /// </summary>
+        protected DesignTimeDbContextFactoryBase(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+        }
+
+        protected IServiceProvider ServiceProvider { get; private set; }
+
+        /// <summary>
         /// 创建一个数据上下文实例
         /// </summary>
         /// <param name="args">参数</param>
         /// <returns></returns>
         public virtual TDbContext CreateDbContext(string[] args)
         {
-            string connString = GetConnectionString();
+            if (ServiceProvider == null)
+            {
+                ServiceProvider = CreateServiceProvider();
+            }
+
+            OsharpOptions options = ServiceProvider.GetOSharpOptions();
+            OsharpDbContextOptions contextOptions = options.GetDbContextOptions(typeof(TDbContext));
+            if (contextOptions == null)
+            {
+                throw new OsharpException($"上下文“{typeof(TDbContext)}”的配置信息不存在");
+            }
+
+            string connString = contextOptions.ConnectionString;
             if (connString == null)
             {
                 return null;
             }
-            IEntityManager entityManager = GetEntityManager();
+
+            IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
+            entityManager.Initialize();
+
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
-            if (LazyLoadingProxiesEnabled())
+            if (contextOptions.LazyLoadingProxiesEnabled)
             {
                 builder.UseLazyLoadingProxies();
             }
@@ -44,21 +76,22 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 重写以获取数据上下文数据库连接字符串
-        /// </summary>
-        public abstract string GetConnectionString();
-
-        /// <summary>
-        /// 重写以获取数据实体管理器
+        /// 创建ServiceProvider
         /// </summary>
         /// <returns></returns>
-        public abstract IEntityManager GetEntityManager();
+        protected virtual IServiceProvider CreateServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.Development.json", true, true);
+            IConfiguration configuration = configurationBuilder.Build();
+            services.AddSingleton<IConfiguration>(configuration);
 
-        /// <summary>
-        /// 重写以获取是否开启延迟加载代理特性
-        /// </summary>
-        /// <returns></returns>
-        public abstract bool LazyLoadingProxiesEnabled();
+            services.AddOSharp().AddPacks();
+            IServiceProvider provider = services.BuildServiceProvider();
+            return provider;
+        }
 
         /// <summary>
         /// 重写以实现数据上下文选项构建器加载数据库驱动程序
