@@ -26,6 +26,7 @@ using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Entity;
 using OSharp.EventBuses;
+using OSharp.Logging;
 using OSharp.Reflection;
 
 
@@ -38,20 +39,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 创建OSharp构建器，开始构建OSharp服务
         /// </summary>
-        public static IOsharpBuilder AddOSharp(this IServiceCollection services)
+        public static IOsharpBuilder AddOSharp(this IServiceCollection services, Action<OsharpOptions> optionAction = null)
         {
             Check.NotNull(services, nameof(services));
 
-            IConfiguration configuration = services.GetConfiguration();
-            Singleton<IConfiguration>.Instance = configuration;
-
             //初始化所有程序集查找器
-            services.TryAddSingleton<IAllAssemblyFinder>(new AppDomainAllAssemblyFinder());
+            services.GetOrAddSingletonInstance(() => new StartupLogger());
+            services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder());
 
-            IOsharpBuilder builder = services.GetSingletonInstanceOrNull<IOsharpBuilder>() ?? new OsharpBuilder(services);
-            services.TryAddSingleton<IOsharpBuilder>(builder);
-
+            IOsharpBuilder builder = services.GetOrAddSingletonInstance<IOsharpBuilder>(() => new OsharpBuilder(services));
             builder.AddCorePack();
+
+            optionAction?.Invoke(builder.Options);
 
             return builder;
         }
@@ -63,6 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.GetSingletonInstanceOrNull<IConfiguration>();
         }
+
+        /// <summary>
+        /// 判断指定服务类型是否存在
+        /// </summary>
+        public static bool AnyServiceType(this IServiceCollection services, Type serviceType)
+        {
+            return services.Any(m => m.ServiceType == serviceType);
+        }
+
         /// <summary>
         /// 替换服务
         /// </summary>
@@ -112,6 +120,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 item = factory();
                 services.AddSingleton<TServiceType>(item);
+                services.ServiceLogDebug(typeof(TServiceType), item.GetType(), nameof(ServiceExtensions));
             }
             return item;
         }
@@ -148,6 +157,67 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             return instance;
+        }
+
+        /// <summary>
+        /// 添加服务调试日志
+        /// </summary>
+        public static IServiceCollection ServiceLogDebug(this IServiceCollection services, ServiceDescriptor[] oldDescriptors, string logName)
+        {
+            var list = services.Except(oldDescriptors);
+            foreach (ServiceDescriptor desc in list)
+            {
+                if (desc.ImplementationType != null)
+                {
+                    services.ServiceLogDebug(desc.ServiceType, desc.ImplementationType, logName, desc.Lifetime);
+                    continue;
+                }
+
+                if (desc.ImplementationInstance != null)
+                {
+                    services.ServiceLogDebug(desc.ServiceType, desc.ImplementationInstance.GetType(), logName, desc.Lifetime);
+                }
+            }
+
+            return services;
+        }
+
+        /// <summary>
+        /// 添加服务调试日志
+        /// </summary>
+        public static IServiceCollection ServiceLogDebug<TServiceType, TImplementType>(this IServiceCollection services, string logName, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        {
+            Type serviceType = typeof(TServiceType), implementType = typeof(TImplementType);
+            return services.ServiceLogDebug(serviceType, implementType, logName, lifetime);
+        }
+
+        /// <summary>
+        /// 添加服务调试日志
+        /// </summary>
+        public static IServiceCollection ServiceLogDebug(this IServiceCollection services, Type serviceType, Type implementType, string logName, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        {
+            string lifetimeType = lifetime == ServiceLifetime.Singleton ? "单例" : lifetime == ServiceLifetime.Scoped ? "作用域" : "瞬时";
+            return services.LogDebug($"添加服务，{lifetimeType}，{serviceType.FullName} -> {implementType.FullName}", logName);
+        }
+
+        /// <summary>
+        /// 添加启动调试日志
+        /// </summary>
+        public static IServiceCollection LogDebug(this IServiceCollection services, string message, string logName)
+        {
+            StartupLogger logger = services.GetOrAddSingletonInstance(() => new StartupLogger());
+            logger.LogDebug(message, logName);
+            return services;
+        }
+
+        /// <summary>
+        /// 添加启动消息日志
+        /// </summary>
+        public static IServiceCollection LogInformation(this IServiceCollection services, string message, string logName)
+        {
+            StartupLogger logger = services.GetOrAddSingletonInstance(() => new StartupLogger());
+            logger.LogInformation(message, logName);
+            return services;
         }
 
         /// <summary>
@@ -238,7 +308,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static OsharpPack[] GetAllPacks(this IServiceProvider provider)
         {
-            return provider.GetServices<OsharpPack>().OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToArray();
+            OsharpPack[] packs = provider.GetServices<OsharpPack>().OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToArray();
+            return packs;
         }
 
         /// <summary>
