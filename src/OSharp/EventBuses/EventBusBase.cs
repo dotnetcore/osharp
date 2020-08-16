@@ -32,7 +32,7 @@ namespace OSharp.EventBuses
         /// <summary>
         /// 初始化一个<see cref="EventBusBase"/>类型的新实例
         /// </summary>
-        protected EventBusBase(IHybridServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
+        protected EventBusBase(IServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             ServiceScopeFactory = serviceScopeFactory;
@@ -43,7 +43,7 @@ namespace OSharp.EventBuses
         /// <summary>
         /// 获取 服务作用域工厂
         /// </summary>
-        protected IHybridServiceScopeFactory ServiceScopeFactory { get; }
+        protected IServiceScopeFactory ServiceScopeFactory { get; }
 
         /// <summary>
         /// 获取 事件仓储
@@ -103,6 +103,7 @@ namespace OSharp.EventBuses
             Check.NotNull(eventHandler, nameof(eventHandler));
 
             EventStore.Add(eventType, eventHandler);
+            Logger.LogDebug($"创建事件“{eventType}”到处理器“{eventHandler.GetType()}”的订阅配对");
         }
 
         /// <summary>
@@ -160,6 +161,7 @@ namespace OSharp.EventBuses
         public virtual void Unsubscribe(Type eventType, IEventHandler eventHandler)
         {
             EventStore.Remove(eventType, eventHandler);
+            Logger.LogDebug($"移除事件“{eventType}”到处理器“{eventHandler.GetType()}”的订阅配对");
         }
 
         /// <summary>
@@ -312,10 +314,6 @@ namespace OSharp.EventBuses
                     Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
                     return;
                 }
-                if (!handler.CanHandle(eventData))
-                {
-                    return;
-                }
                 if (wait)
                 {
                     Run(factory, handler, eventType, eventData);
@@ -351,10 +349,6 @@ namespace OSharp.EventBuses
                 if (handler == null)
                 {
                     Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
-                    return Task.FromResult(0);
-                }
-                if (!handler.CanHandle(eventData))
-                {
                     return Task.FromResult(0);
                 }
                 if (wait)

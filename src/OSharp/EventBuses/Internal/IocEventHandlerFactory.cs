@@ -12,6 +12,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Dependency;
+using OSharp.Entity;
 
 
 namespace OSharp.EventBuses.Internal
@@ -21,7 +22,7 @@ namespace OSharp.EventBuses.Internal
     /// </summary>
     internal class IocEventHandlerFactory : IEventHandlerFactory
     {
-        private readonly IHybridServiceScopeFactory _serviceScopeFactory;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly Type _handlerType;
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace OSharp.EventBuses.Internal
         /// </summary>
         /// <param name="serviceScopeFactory">服务作用域工厂</param>
         /// <param name="handlerType">事件处理器类型</param>
-        public IocEventHandlerFactory(IHybridServiceScopeFactory serviceScopeFactory, Type handlerType)
+        public IocEventHandlerFactory(IServiceScopeFactory serviceScopeFactory, Type handlerType)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _handlerType = handlerType;
@@ -42,7 +43,13 @@ namespace OSharp.EventBuses.Internal
         public EventHandlerDisposeWrapper GetHandler()
         {
             IServiceScope scope = _serviceScopeFactory.CreateScope();
-            return new EventHandlerDisposeWrapper((IEventHandler)scope.ServiceProvider.GetService(_handlerType), () => scope.Dispose());
+            return new EventHandlerDisposeWrapper((IEventHandler)scope.ServiceProvider.GetService(_handlerType),
+                () =>
+                {
+                    IUnitOfWorkManager unitOfWorkManager = scope.ServiceProvider.GetService<IUnitOfWorkManager>();
+                    unitOfWorkManager.Commit();
+                    scope.Dispose();
+                });
         }
     }
 }
