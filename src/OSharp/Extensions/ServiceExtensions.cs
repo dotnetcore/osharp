@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder());
 
             IOsharpBuilder builder = services.GetOrAddSingletonInstance<IOsharpBuilder>(() => new OsharpBuilder(services));
-            builder.AddCorePack();
+            builder.AddCorePack().AddPacks();
 
             optionAction?.Invoke(builder.Options);
 

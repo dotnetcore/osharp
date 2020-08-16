@@ -52,7 +52,11 @@ namespace OSharp.Core.Builders
                     .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
                 configuration = configurationBuilder.Build();
             }
-            Singleton<IConfiguration>.Instance = configuration;
+
+            if (configuration != null)
+            {
+                Singleton<IConfiguration>.Instance = configuration;
+            }
 
             if (!services.AnyServiceType(typeof(ILoggerFactory)))
             {
