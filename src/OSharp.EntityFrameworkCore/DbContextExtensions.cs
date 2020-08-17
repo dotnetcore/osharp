@@ -51,15 +51,13 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取未提交的迁移记录并提交迁移
         /// </summary>
-        public static void CheckAndMigration(this DbContext dbContext)
+        public static void CheckAndMigration(this DbContext dbContext, ILogger logger = null)
         {
             string[] migrations = dbContext.Database.GetPendingMigrations().ToArray();
             if (migrations.Length > 0)
             {
                 dbContext.Database.Migrate();
-                ILoggerFactory loggerFactory = dbContext.GetService<ILoggerFactory>();
-                ILogger logger = loggerFactory.CreateLogger("OSharp.Entity.DbContextExtensions");
-                logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
+                logger?.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
             }
         }
 

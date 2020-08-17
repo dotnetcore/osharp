@@ -55,7 +55,7 @@ namespace OSharp.Entity
         public override void UsePack(IServiceProvider provider)
         {
             IEntityManager manager = provider.GetService<IEntityManager>();
-            manager?.Initialize();
+            manager.Initialize();
             IsEnabled = true;
         }
     }

@@ -12,6 +12,7 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
@@ -49,12 +50,13 @@ namespace OSharp.Entity
                 return;
             }
 
+            ILogger logger = provider.GetLogger(GetType());
             using (IServiceScope scope = provider.CreateScope())
             {
                 TDbContext context = CreateDbContext(scope.ServiceProvider);
                 if (context != null && contextOptions.AutoMigrationEnabled)
                 {
-                    context.CheckAndMigration();
+                    context.CheckAndMigration(logger);
                     DbContextModelCache modelCache = scope.ServiceProvider.GetService<DbContextModelCache>();
                     modelCache?.Set(context.GetType(), context.Model);
                 }
@@ -66,8 +68,7 @@ namespace OSharp.Entity
             {
                 initializer.Initialize();
             }
-
-
+            
             IsEnabled = true;
         }
 

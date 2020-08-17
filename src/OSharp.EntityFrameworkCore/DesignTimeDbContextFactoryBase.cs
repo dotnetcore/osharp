@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Exceptions;
@@ -28,12 +29,15 @@ namespace OSharp.Entity
     public abstract class DesignTimeDbContextFactoryBase<TDbContext> : IDesignTimeDbContextFactory<TDbContext>
         where TDbContext : DbContext
     {
+        private readonly ILogger _logger;
+
         /// <summary>
         /// 初始化一个<see cref="DesignTimeDbContextFactoryBase{TDbContext}"/>类型的新实例
         /// </summary>
         protected DesignTimeDbContextFactoryBase(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
+            _logger = serviceProvider?.GetLogger(GetType());
         }
 
         protected IServiceProvider ServiceProvider { get; private set; }
@@ -70,9 +74,12 @@ namespace OSharp.Entity
             if (contextOptions.LazyLoadingProxiesEnabled)
             {
                 builder.UseLazyLoadingProxies();
+                _logger?.LogDebug($"对数据上下文“{typeof(TDbContext)}”应用延迟加载代理");
             }
             builder = UseSql(builder, connString);
-            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager, null);
+            TDbContext context = (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager, null);
+            _logger?.LogDebug($"创建数据上下文“{typeof(TDbContext)}”的数据迁移上下文对象");
+            return context;
         }
 
         /// <summary>
@@ -90,6 +97,7 @@ namespace OSharp.Entity
 
             services.AddOSharp().AddPacks();
             IServiceProvider provider = services.BuildServiceProvider();
+            
             return provider;
         }
 

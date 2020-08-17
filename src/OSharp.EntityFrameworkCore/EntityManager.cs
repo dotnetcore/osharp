@@ -55,6 +55,7 @@ namespace OSharp.Entity
             Type[] types = _typeFinder.FindAll(true);
             if (types.Length == 0 || _initialized)
             {
+                _logger.LogDebug("数据库上下文实体已初始化，跳过");
                 return;
             }
 
