@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder());
 
             IOsharpBuilder builder = services.GetOrAddSingletonInstance<IOsharpBuilder>(() => new OsharpBuilder(services));
-            builder.AddCorePack().AddPacks();
+            builder.AddCorePack();
 
             optionAction?.Invoke(builder.Options);
 
@@ -335,66 +335,38 @@ namespace Microsoft.Extensions.DependencyInjection
         }
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
-        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
-        /// 生命周期的ServiceProvider来执行，并释放资源
-        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action, bool useHttpScope = true)
+        public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
         {
-            using (IServiceScope scope = useHttpScope
-                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
-                : provider.CreateScope())
-            {
-                action(scope.ServiceProvider);
-            }
+            using IServiceScope scope =  provider.CreateScope();
+            action(scope.ServiceProvider);
         }
 
         /// <summary>
         /// 异步执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
-        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
-        /// 生命周期的ServiceProvider来执行，并释放资源
-        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action, bool useHttpScope = true)
+        public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
         {
-            using (IServiceScope scope = useHttpScope
-                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
-                : provider.CreateScope())
-            {
-                await action(scope.ServiceProvider);
-            }
+            using IServiceScope scope =  provider.CreateScope();
+            await action(scope.ServiceProvider);
         }
 
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
-        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
-        /// 生命周期的ServiceProvider来执行，并释放资源
-        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func, bool useHttpScope = true)
+        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
         {
-            using (IServiceScope scope = useHttpScope
-                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
-                : provider.CreateScope())
-            {
-                return func(scope.ServiceProvider);
-            }
+            using IServiceScope scope =  provider.CreateScope();
+            return func(scope.ServiceProvider);
         }
 
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
-        /// 1.当前处理<see cref="ServiceLifetime.Scoped"/>生命周期外，使用CreateScope创建<see cref="ServiceLifetime.Scoped"/>
-        /// 生命周期的ServiceProvider来执行，并释放资源
-        /// 2.当前处于<see cref="ServiceLifetime.Scoped"/>生命周期内，直接使用<see cref="ServiceLifetime.Scoped"/>的ServiceProvider来执行
         /// </summary>
-        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func, bool useHttpScope = true)
+        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
         {
-            using (IServiceScope scope = useHttpScope
-                ? provider.GetService<IHybridServiceScopeFactory>().CreateScope()
-                : provider.CreateScope())
-            {
-                return await func(scope.ServiceProvider);
-            }
+            using IServiceScope scope =  provider.CreateScope();
+            return await func(scope.ServiceProvider);
         }
 
         /// <summary>
@@ -417,26 +389,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="provider">信赖注入服务提供程序</param>
         /// <param name="action">要执行的业务委托</param>
-        /// <param name="createScope">是否创建一个新的<see cref="IServiceScope"/>，如false，则使用传入的 provider</param>
-        public static void BeginUnitOfWorkTransaction(this IServiceProvider provider, Action<IServiceProvider> action, bool createScope = false)
+        public static void BeginUnitOfWorkTransaction(this IServiceProvider provider, Action<IServiceProvider> action)
         {
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(action, nameof(action));
-            if (!createScope)
-            {
-                IServiceProvider scopeProvider = provider;
-                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-                action(scopeProvider);
-                unitOfWorkManager.Commit();
-            }
-            else
-            {
-                using IServiceScope scope = provider.CreateScope();
-                IServiceProvider scopeProvider = scope.ServiceProvider;
-                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-                action(scopeProvider);
-                unitOfWorkManager.Commit();
-            }
+
+            using IServiceScope scope = provider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
+            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+            action(scopeProvider);
+            unitOfWorkManager.Commit();
         }
 
         /// <summary>
@@ -444,19 +406,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="provider">信赖注入服务提供程序</param>
         /// <param name="actionAsync">要执行的业务委托</param>
-        /// <param name="createScope">是否创建一个新的<see cref="IServiceScope"/>，如false，则使用传入的 provider</param>
         public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider provider,
-            Func<IServiceProvider, Task> actionAsync,
-            bool createScope = false)
+            Func<IServiceProvider, Task> actionAsync)
         {
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(actionAsync, nameof(actionAsync));
-            IServiceProvider scopeProvider = provider;
-            if (createScope)
-            {
-                using IServiceScope scope = provider.CreateScope();
-                scopeProvider = scope.ServiceProvider;
-            }
+
+            using IServiceScope scope = provider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
 
             IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
             await actionAsync(scopeProvider);
