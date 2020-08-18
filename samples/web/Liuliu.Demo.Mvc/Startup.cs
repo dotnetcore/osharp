@@ -23,6 +23,7 @@ using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Systems;
 using OSharp.Log4Net;
+using OSharp.Redis;
 using OSharp.Swagger;
 
 
@@ -40,7 +41,7 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOSharp().AddPacks(typeof(HangfirePack));
+            services.AddOSharp().AddPacks(typeof(HangfirePack), typeof(RedisPack));
             //.AddPack<Log4NetPack>()
             //.AddPack<AutoMapperPack>()
             //.AddPack<EndpointsPack>()
