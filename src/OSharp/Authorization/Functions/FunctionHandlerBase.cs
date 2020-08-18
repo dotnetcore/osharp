@@ -66,7 +66,7 @@ namespace OSharp.Authorization.Functions
 
             Type[] functionTypes = FunctionTypeFinder.FindAll(true);
             TFunction[] functions = GetFunctions(functionTypes);
-            Logger.LogInformation($"功能信息初始化，共找到{functions.Length}个功能信息");
+            Logger.LogInformation($"功能信息初始化，共找到 {functions.Length} 个功能信息");
 
             _serviceProvider.ExecuteScopedWork(provider =>
             {
@@ -105,6 +105,7 @@ namespace OSharp.Authorization.Functions
             {
                 _functions.Clear();
                 _functions.AddRange(GetFromDatabase(provider));
+                Logger.LogInformation($"刷新功能信息缓存，从数据库获取到 {_functions.Count} 个功能信息");
             });
         }
 
@@ -135,6 +136,7 @@ namespace OSharp.Authorization.Functions
                 if (!HasPickup(functions, controller))
                 {
                     functions.Add(controller);
+                    Logger.LogDebug($"找到功能：{controller.Name}[{controller.Area}/{controller.Controller}]");
                 }
 
                 List<MethodInfo> methods = MethodInfoFinder.FindAll(type).ToList();
@@ -164,6 +166,7 @@ namespace OSharp.Authorization.Functions
                     }
 
                     functions.Add(action);
+                    Logger.LogDebug($"找到功能：{action.Name}[{action.Area}/{action.Controller}/{action.Action}]");
                 }
             }
 
@@ -268,13 +271,21 @@ namespace OSharp.Authorization.Functions
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action)).ToArray();
             int removeCount = removeItems.Length;
             //todo：由于外键关联不能物理删除的实体，需要实现逻辑删除
-            repository.Delete(removeItems);
+            foreach (TFunction function in removeItems)
+            {
+                repository.Delete(function);
+                Logger.LogDebug($"删除功能：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+            }
 
             //新增的功能
             TFunction[] addItems = functions.Except(dbItems,
                 EqualityHelper<TFunction>.CreateComparer(m => m.Area + m.Controller + m.Action)).ToArray();
             int addCount = addItems.Length;
-            repository.Insert(addItems);
+            foreach (TFunction function in addItems)
+            {
+                repository.Insert(function);
+                Logger.LogDebug($"新增功能：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+            }
 
             //更新的功能信息
             int updateCount = 0;
@@ -370,7 +381,8 @@ namespace OSharp.Authorization.Functions
                 return new TFunction[0];
             }
 
-            return repository.QueryAsNoTracking(null, false).ToArray();
+            TFunction[] functions = repository.QueryAsNoTracking(null, false).ToArray();
+            return functions;
         }
     }
 }

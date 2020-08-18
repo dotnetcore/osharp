@@ -54,9 +54,11 @@ namespace OSharp.Authorization.Modules
         /// </summary>
         public ModuleInfo[] Pickup()
         {
+            Logger.LogInformation($"开始提取Module模块信息");
             Check.NotNull(FunctionHandler, nameof(FunctionHandler));
             Type[] moduleTypes = FunctionHandler.FunctionTypeFinder.Find(type => type.HasAttribute<ModuleInfoAttribute>());
             ModuleInfo[] modules = GetModules(moduleTypes);
+            Logger.LogInformation($"提取到 {modules.Length} 个Module模块信息");
             return modules;
         }
 
@@ -78,15 +80,22 @@ namespace OSharp.Authorization.Modules
                     {
                         info.Order = infos.Count(m => m.Position == info.Position) + 1;
                     }
-
-                    infos.AddIfNotExist(info);
+                    if (!infos.Contains(info))
+                    {
+                        infos.Add(info);
+                        Logger.LogDebug($"提取到Module模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
+                    }
                 }
 
                 MethodInfo[] methods = FunctionHandler.MethodInfoFinder.Find(moduleType, type => type.HasAttribute<ModuleInfoAttribute>());
                 for (int index = 0; index < methods.Length; index++)
                 {
-                    ModuleInfo methodInfo = GetModule(methods[index], typeInfos.Last(), index);
-                    infos.AddIfNotNull(methodInfo);
+                    ModuleInfo info = GetModule(methods[index], typeInfos.Last(), index);
+                    if (info != null)
+                    {
+                        infos.Add(info);
+                        Logger.LogDebug($"提取到Module模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
+                    }
                 }
             }
 

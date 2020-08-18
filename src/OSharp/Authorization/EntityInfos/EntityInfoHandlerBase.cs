@@ -62,6 +62,7 @@ namespace OSharp.Authorization.EntityInfos
                 TEntityInfo entityInfo = new TEntityInfo();
                 entityInfo.FromType(entityType);
                 _entityInfos.Add(entityInfo);
+                _logger.LogDebug($"找到实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
             }
 
             _serviceProvider.ExecuteScopedWork(provider =>
@@ -122,6 +123,7 @@ namespace OSharp.Authorization.EntityInfos
             {
                 _entityInfos.Clear();
                 _entityInfos.AddRange(GetFromDatabase(provider));
+                _logger.LogInformation($"刷新实体信息缓存，从数据库获取到 {_entityInfos.Count} 个实体信息");
             });
         }
 
@@ -150,12 +152,21 @@ namespace OSharp.Authorization.EntityInfos
             TEntityInfo[] removeItems = dbItems.Except(entityInfos, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
             int removeCount = removeItems.Length;
             //todo：由于外键关联不能物理删除的实体，需要实现逻辑删除
-            repository.Delete(removeItems);
+            foreach (TEntityInfo entityInfo in removeItems)
+            {
+                repository.Delete(entityInfo);
+                _logger.LogDebug($"删除实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+            }
 
             //处理新增的实体信息
             TEntityInfo[] addItems = entityInfos.Except(dbItems, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
             int addCount = addItems.Length;
             repository.Insert(addItems);
+            foreach (TEntityInfo entityInfo in addItems)
+            {
+                repository.Insert(entityInfo);
+                _logger.LogDebug($"新增实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+            }
 
             //处理更新的实体信息
             int updateCount = 0;
@@ -183,6 +194,7 @@ namespace OSharp.Authorization.EntityInfos
                 if (isUpdate)
                 {
                     repository.Update(item);
+                    _logger.LogDebug($"更新实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
                     updateCount++;
                 }
             }
@@ -225,7 +237,8 @@ namespace OSharp.Authorization.EntityInfos
                 return new TEntityInfo[0];
             }
 
-            return repository.QueryAsNoTracking(null, false).ToArray();
+            TEntityInfo[] entityInfos = repository.QueryAsNoTracking(null, false).ToArray();
+            return entityInfos;
         }
     }
 }
