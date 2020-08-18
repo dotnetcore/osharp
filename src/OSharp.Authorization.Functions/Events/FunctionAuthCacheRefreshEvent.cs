@@ -73,7 +73,7 @@ namespace OSharp.Authorization.Events
                 cache.RemoveFunctionCaches(eventData.FunctionIds);
                 foreach (Guid functionId in eventData.FunctionIds)
                 {
-                    cache.GetFunctionRoles(functionId);
+                    cache.GetFunctionRoles(functionId, _provider);
                 }
             }
             if (eventData.UserNames.Length > 0)

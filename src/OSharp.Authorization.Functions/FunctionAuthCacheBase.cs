@@ -60,17 +60,17 @@ namespace OSharp.Authorization
         public virtual void BuildRoleCaches()
         {
             //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
-            TFunction[] functions = _serviceProvider.ExecuteScopedWork(provider =>
+            _serviceProvider.ExecuteScopedWork(provider =>
             {
                 IRepository<TFunction, Guid> functionRepository = provider.GetService<IRepository<TFunction, Guid>>();
-                return functionRepository.QueryAsNoTracking(null, false).ToArray();
-            });
+                Guid[] functionIds = functionRepository.QueryAsNoTracking(null, false).Select(m => m.Id).ToArray();
 
-            foreach (TFunction function in functions)
-            {
-                GetFunctionRoles(function.Id);
-            }
-            _logger.LogInformation($"功能权限：创建{functions.Length}个功能的“Function-Roles[]”缓存");
+                foreach (Guid functionId in functionIds)
+                {
+                    GetFunctionRoles(functionId, provider);
+                }
+                _logger.LogInformation($"功能权限：创建 {functionIds.Length} 个功能的“Function-Roles[]”缓存");
+            });
         }
 
         /// <summary>
@@ -105,8 +105,9 @@ namespace OSharp.Authorization
         /// 获取能执行指定功能的所有角色
         /// </summary>
         /// <param name="functionId">功能编号</param>
+        /// <param name="scopeProvider">局部服务提供者</param>
         /// <returns>能执行功能的角色名称集合</returns>
-        public virtual string[] GetFunctionRoles(Guid functionId)
+        public string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null)
         {
             string key = GetFunctionRolesKey(functionId);
             string[] roleNames = _cache.Get<string[]>(key);
@@ -115,30 +116,39 @@ namespace OSharp.Authorization
                 _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存");
                 return roleNames;
             }
-            roleNames = _serviceProvider.ExecuteScopedWork(provider =>
+
+            IServiceProvider provider = scopeProvider;
+            IServiceScope serviceScope = null;
+            if (provider == null)
             {
-                IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
-                TModuleKey[] moduleIds = moduleFunctionRepository.QueryAsNoTracking(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
-                    .ToArray();
-                if (moduleIds.Length == 0)
-                {
-                    return new string[0];
-                }
-                IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
-                TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
-                if (roleIds.Length == 0)
-                {
-                    return new string[0];
-                }
-                IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
-                return roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
-            });
+                serviceScope = _serviceProvider.CreateScope();
+                provider = serviceScope.ServiceProvider;
+            }
+
+            IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
+            TModuleKey[] moduleIds = moduleFunctionRepository.QueryAsNoTracking(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
+                .ToArray();
+            if (moduleIds.Length == 0)
+            {
+                serviceScope?.Dispose();
+                return new string[0];
+            }
+            IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
+            TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
+            if (roleIds.Length == 0)
+            {
+                serviceScope?.Dispose();
+                return new string[0];
+            }
+            IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
+            roleNames = roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
 
             if (roleNames != null)
             {
                 _cache.Set(key, roleNames);
                 _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存");
             }
+            serviceScope?.Dispose();
             return roleNames;
         }
 
