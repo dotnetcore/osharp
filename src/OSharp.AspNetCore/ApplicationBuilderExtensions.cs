@@ -56,7 +56,7 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     pack.UsePack(provider);
                 }
-                logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成");
+                logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
             }
 
             watch.Stop();

@@ -83,9 +83,6 @@ namespace OSharp.Authorization
             IEntityInfoHandler entityInfoHandler = provider.GetService<IEntityInfoHandler>();
             entityInfoHandler.RefreshCache();
 
-            IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
-            functionAuthCache.BuildRoleCaches();
-
             IDataAuthCache dataAuthCache = provider.GetService<IDataAuthCache>();
             dataAuthCache.BuildCaches();
 

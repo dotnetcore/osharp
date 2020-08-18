@@ -146,7 +146,7 @@ namespace OSharp.Core.Builders
                 ServiceDescriptor[] tmp = Services.ToArray();
                 AddPack(Services, tmpPack);
                 Services.ServiceLogDebug(tmp, packType.FullName);
-                Services.LogInformation($"模块 “{packName} ({packType.Name})” 的服务添加完毕，添加了 {Services.Count - tmp.Length} 个服务", logName);
+                Services.LogInformation($"模块 “{packName} ({packType.Name})” 的服务添加完毕，添加了 {Services.Count - tmp.Length} 个服务\n", logName);
             }
 
             return this;
