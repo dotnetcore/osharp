@@ -15,14 +15,14 @@ namespace OSharp.Core.Options
     public class HttpEncryptOptions
     {
         /// <summary>
-        /// 获取或设置 服务端私钥
+        /// 获取或设置 服务端私钥，服务端生成并自己拥有的私钥
         /// </summary>
         public string HostPrivateKey { get; set; }
 
         /// <summary>
-        /// 获取或设置 客户端公钥
+        /// 获取或设置 服务端公钥，服务端生成并分配给客户端的公钥
         /// </summary>
-        public string ClientPublicKey { get; set; }
+        public string HostPublicKey { get; set; }
 
         /// <summary>
         /// 获取或设置 是否启用
