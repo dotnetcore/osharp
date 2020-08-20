@@ -313,6 +313,22 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// 获取当前用户
+        /// </summary>
+        public static ClaimsPrincipal GetCurrentUser(this IServiceProvider provider)
+        {
+            try
+            {
+                IPrincipal user = provider.GetService<IPrincipal>();
+                return user as ClaimsPrincipal;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// OSharp框架初始化，适用于非AspNetCore环境
         /// </summary>
         public static IServiceProvider UseOsharp(this IServiceProvider provider)
@@ -333,6 +349,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return provider;
         }
+
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
         /// </summary>
@@ -369,21 +386,6 @@ namespace Microsoft.Extensions.DependencyInjection
             return await func(scope.ServiceProvider);
         }
 
-        /// <summary>
-        /// 获取当前用户
-        /// </summary>
-        public static ClaimsPrincipal GetCurrentUser(this IServiceProvider provider)
-        {
-            try
-            {
-                IPrincipal user = provider.GetService<IPrincipal>();
-                return user as ClaimsPrincipal;
-            }
-            catch
-            {
-                return null;
-            }
-        }
         /// <summary>
         /// 开启一个事务处理
         /// </summary>

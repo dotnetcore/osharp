@@ -76,7 +76,7 @@ namespace OSharp.Authorization.Modules
                 ModuleInfo[] typeInfos = GetModules(moduleType, existPaths);
                 foreach (ModuleInfo info in typeInfos)
                 {
-                    if (info.Order == 0)
+                    if (info.Order.Equals(0))
                     {
                         info.Order = infos.Count(m => m.Position == info.Position) + 1;
                     }
