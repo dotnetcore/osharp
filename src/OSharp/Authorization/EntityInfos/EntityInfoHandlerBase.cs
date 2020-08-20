@@ -161,7 +161,6 @@ namespace OSharp.Authorization.EntityInfos
             //处理新增的实体信息
             TEntityInfo[] addItems = entityInfos.Except(dbItems, EqualityHelper<TEntityInfo>.CreateComparer(m => m.TypeName)).ToArray();
             int addCount = addItems.Length;
-            repository.Insert(addItems);
             foreach (TEntityInfo entityInfo in addItems)
             {
                 repository.Insert(entityInfo);
