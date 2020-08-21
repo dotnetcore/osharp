@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-//  <copyright file="SqlServerDbContextOptionsBuilderCreator.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2017 OSharp. All rights reserved.
+//  <copyright file="DbContextOptionsBuilderDriveHandler.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2017-08-21 1:07</last-date>
+//  <last-date>2020-08-21 13:37</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -29,7 +29,7 @@ namespace OSharp.Entity.SqlServer
         /// </summary>
         public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
-            _logger = provider.GetLogger(typeof(DbContextOptionsBuilderDriveHandler));
+            _logger = provider.GetLogger(this);
         }
 
         /// <summary>
@@ -51,6 +51,7 @@ namespace OSharp.Entity.SqlServer
                 _logger.LogDebug($"使用新连接“{connectionString}”应用SqlServer数据库");
                 return builder.UseSqlServer(connectionString);
             }
+
             _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用SqlServer数据库");
             return builder.UseSqlServer(existingConnection);
         }
