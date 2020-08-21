@@ -41,6 +41,11 @@ namespace OSharp.Entity
         public virtual int Order => 0;
 
         /// <summary>
+        /// 获取 所属实体类型
+        /// </summary>
+        public Type EntityType => typeof(TEntity);
+
+        /// <summary>
         /// 初始化种子数据
         /// </summary>
         public void Initialize()

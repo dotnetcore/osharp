@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
@@ -62,8 +63,11 @@ namespace OSharp.Entity
                 }
             }
 
-            //种子数据
-            var seedDataInitializers = provider.GetServices<ISeedDataInitializer>().OrderBy(m => m.Order);
+            //初始化种子数据，只初始化当前上下文的种子数据
+            IEntityManager entityManager = provider.GetService<IEntityManager>();
+            Type[] entityTypes = entityManager.GetEntityRegisters(typeof(TDbContext)).Select(m => m.EntityType).Distinct().ToArray();
+            IEnumerable<ISeedDataInitializer> seedDataInitializers = provider.GetServices<ISeedDataInitializer>()
+                .Where(m => entityTypes.Contains(m.EntityType)).OrderBy(m => m.Order);
             foreach (ISeedDataInitializer initializer in seedDataInitializers)
             {
                 initializer.Initialize();
