@@ -272,8 +272,21 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>日志对象</returns>
         public static ILogger GetLogger(this IServiceProvider provider, Type type)
         {
+            Check.NotNull(type, nameof(type));
             ILoggerFactory factory = provider.GetService<ILoggerFactory>();
             return factory.CreateLogger(type);
+        }
+
+        /// <summary>
+        /// 获取指定对象类型的日志对象
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="instance">要获取日志的类型对象，一般指当前类，即this</param>
+        public static ILogger GetLogger(this IServiceProvider provider, object instance)
+        {
+            Check.NotNull(instance, nameof(instance));
+            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            return factory.CreateLogger(instance.GetType());
         }
 
         /// <summary>
