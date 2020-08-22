@@ -62,7 +62,7 @@ namespace OSharp.Authorization.EntityInfos
                 TEntityInfo entityInfo = new TEntityInfo();
                 entityInfo.FromType(entityType);
                 _entityInfos.Add(entityInfo);
-                _logger.LogDebug($"找到实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+                _logger.LogDebug($"提取实体信息：{entityInfo.Name}[{entityInfo.TypeName}]");
             }
 
             _serviceProvider.ExecuteScopedWork(provider =>
@@ -155,7 +155,7 @@ namespace OSharp.Authorization.EntityInfos
             foreach (TEntityInfo entityInfo in removeItems)
             {
                 repository.Delete(entityInfo);
-                _logger.LogDebug($"删除实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+                _logger.LogDebug($"删除实体信息：{entityInfo.Name}[{entityInfo.TypeName}]");
             }
 
             //处理新增的实体信息
@@ -164,7 +164,7 @@ namespace OSharp.Authorization.EntityInfos
             foreach (TEntityInfo entityInfo in addItems)
             {
                 repository.Insert(entityInfo);
-                _logger.LogDebug($"新增实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+                _logger.LogDebug($"新增实体信息：{entityInfo.Name}[{entityInfo.TypeName}]");
             }
 
             //处理更新的实体信息
@@ -193,7 +193,7 @@ namespace OSharp.Authorization.EntityInfos
                 if (isUpdate)
                 {
                     repository.Update(item);
-                    _logger.LogDebug($"更新实体类：{entityInfo.Name}[{entityInfo.TypeName}]");
+                    _logger.LogDebug($"更新实体信息：{entityInfo.Name}[{entityInfo.TypeName}]");
                     updateCount++;
                 }
             }
@@ -205,19 +205,16 @@ namespace OSharp.Authorization.EntityInfos
                 if (addCount > 0)
                 {
                     msg += $"，添加实体信息 {addCount} 个";
-                    _logger.LogInformation($"新增{addItems.Length}个数据实体：{addItems.Select(m => m.TypeName).ExpandAndToString()}");
-                }
-
-                if (removeCount > 0)
-                {
-                    msg += $"，删除实体信息 {removeCount} 个";
-                    _logger.LogInformation($"删除{removeItems.Length}个数据实体：{removeItems.Select(m => m.TypeName).ExpandAndToString()}");
                 }
 
                 if (updateCount > 0)
                 {
                     msg += $"，更新实体信息 {updateCount} 个";
-                    _logger.LogInformation($"更新{updateCount}个数据实体");
+                }
+
+                if (removeCount > 0)
+                {
+                    msg += $"，删除实体信息 {removeCount} 个";
                 }
 
                 _logger.LogInformation(msg);

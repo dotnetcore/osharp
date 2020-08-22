@@ -136,7 +136,7 @@ namespace OSharp.Authorization.Functions
                 if (!HasPickup(functions, controller))
                 {
                     functions.Add(controller);
-                    Logger.LogDebug($"找到功能：{controller.Name}[{controller.Area}/{controller.Controller}]");
+                    Logger.LogDebug($"提取功能信息：{controller.Name}[{controller.Area}/{controller.Controller}]");
                 }
 
                 List<MethodInfo> methods = MethodInfoFinder.FindAll(type).ToList();
@@ -166,7 +166,7 @@ namespace OSharp.Authorization.Functions
                     }
 
                     functions.Add(action);
-                    Logger.LogDebug($"找到功能：{action.Name}[{action.Area}/{action.Controller}/{action.Action}]");
+                    Logger.LogDebug($"提取功能信息：{action.Name}[{action.Area}/{action.Controller}/{action.Action}]");
                 }
             }
 
@@ -274,7 +274,7 @@ namespace OSharp.Authorization.Functions
             foreach (TFunction function in removeItems)
             {
                 repository.Delete(function);
-                Logger.LogDebug($"删除功能：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+                Logger.LogDebug($"删除功能信息：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
             }
 
             //新增的功能
@@ -284,7 +284,7 @@ namespace OSharp.Authorization.Functions
             foreach (TFunction function in addItems)
             {
                 repository.Insert(function);
-                Logger.LogDebug($"新增功能：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+                Logger.LogDebug($"新增功能信息：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
             }
 
             //更新的功能信息
@@ -332,7 +332,7 @@ namespace OSharp.Authorization.Functions
                 {
                     repository.Update(item);
                     updateCount++;
-                    Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
+                    Logger.LogDebug($"更新功能信息：{function.Name}({function.Area}/{function.Controller}/{function.Action})");
                 }
             }
 
@@ -342,11 +342,6 @@ namespace OSharp.Authorization.Functions
                 string msg = "刷新功能信息";
                 if (addCount > 0)
                 {
-                    foreach (TFunction function in addItems)
-                    {
-                        Logger.LogDebug($"新增功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
-                    }
-
                     msg += "，添加功能信息 " + addCount + " 个";
                 }
 
@@ -357,12 +352,7 @@ namespace OSharp.Authorization.Functions
 
                 if (removeCount > 0)
                 {
-                    foreach (TFunction function in removeItems)
-                    {
-                        Logger.LogDebug($"更新功能“{function.Name}({function.Area}/{function.Controller}/{function.Action})”");
-                    }
-
-                    msg += "，移除功能信息 " + removeCount + " 个";
+                    msg += "，删除功能信息 " + removeCount + " 个";
                 }
 
                 Logger.LogInformation(msg);

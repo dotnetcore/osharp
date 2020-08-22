@@ -54,7 +54,7 @@ namespace OSharp.Authorization.Modules
         /// </summary>
         public ModuleInfo[] Pickup()
         {
-            Logger.LogInformation($"开始提取Module模块信息");
+            Logger.LogInformation("开始提取Module模块信息");
             Check.NotNull(FunctionHandler, nameof(FunctionHandler));
             Type[] moduleTypes = FunctionHandler.FunctionTypeFinder.Find(type => type.HasAttribute<ModuleInfoAttribute>());
             ModuleInfo[] modules = GetModules(moduleTypes);
@@ -83,7 +83,7 @@ namespace OSharp.Authorization.Modules
                     if (!infos.Contains(info))
                     {
                         infos.Add(info);
-                        Logger.LogDebug($"提取到Module模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
+                        Logger.LogDebug($"提取模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
                     }
                 }
 
@@ -94,7 +94,7 @@ namespace OSharp.Authorization.Modules
                     if (info != null)
                     {
                         infos.Add(info);
-                        Logger.LogDebug($"提取到Module模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
+                        Logger.LogDebug($"提取模块信息：{info.Name}[{info.Code}]({info.Position}),FunctionCount:{info.DependOnFunctions.Length}");
                     }
                 }
             }
