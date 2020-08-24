@@ -69,7 +69,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlCommand(new RawSqlString(sql), parameters);
         }
@@ -82,7 +82,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlCommandAsync(new RawSqlString(sql), parameters);
         }
@@ -94,7 +94,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlRaw(sql, parameters);
         }
@@ -106,7 +106,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlRawAsync(sql, parameters);
         }
@@ -118,7 +118,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlInterpolated(sql);
         }
@@ -130,7 +130,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
             return context.Database.ExecuteSqlInterpolatedAsync(sql);
         }
@@ -142,7 +142,7 @@ namespace OSharp.Entity
         {
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
 
             OsharpOptions options = context.GetService<IOptions<OsharpOptions>>()?.Value;

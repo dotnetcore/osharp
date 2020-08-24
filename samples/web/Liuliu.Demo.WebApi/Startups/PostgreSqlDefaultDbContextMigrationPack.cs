@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="PostgreSqlDefaultDbContextMigrationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -15,7 +15,7 @@ using OSharp.Entity;
 using OSharp.Entity.PostgreSql;
 
 
-namespace Liuliu.Demo.WebApi.Startups
+namespace Liuliu.Demo.Web.Startups
 {
     /// <summary>
     /// PostgreSql-DefaultDbContext迁移模块
@@ -42,7 +42,7 @@ namespace Liuliu.Demo.WebApi.Startups
         /// <returns></returns>
         protected override DefaultDbContext CreateDbContext(IServiceProvider scopedProvider)
         {
-            return new PostgreSqlDesignTimeDefaultDbContextFactory(scopedProvider).CreateDbContext(new string[0]);
+            return new DesignTimeDefaultDbContextFactory(scopedProvider).CreateDbContext(new string[0]);
         }
     }
 }

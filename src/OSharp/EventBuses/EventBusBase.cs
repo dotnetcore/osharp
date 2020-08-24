@@ -226,13 +226,18 @@ namespace OSharp.EventBuses
             eventData.EventSource = eventSource;
 
             IDictionary<Type, IEventHandlerFactory[]> dict = EventStore.GetHandlers(eventType);
-            foreach (var typeItem in dict)
+            if (dict.Count == 0)
+            {
+                return;
+            }
+            foreach (KeyValuePair<Type, IEventHandlerFactory[]> typeItem in dict)
             {
                 foreach (IEventHandlerFactory factory in typeItem.Value)
                 {
                     InvokeHandler(factory, eventType, eventData, wait);
                 }
             }
+            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType()} 的总线事件");
         }
 
         /// <summary>
@@ -281,6 +286,10 @@ namespace OSharp.EventBuses
             eventData.EventSource = eventSource;
 
             IDictionary<Type, IEventHandlerFactory[]> dict = EventStore.GetHandlers(eventType);
+            if (dict.Count == 0)
+            {
+                return;
+            }
             foreach (var typeItem in dict)
             {
                 foreach (IEventHandlerFactory factory in typeItem.Value)
@@ -288,6 +297,7 @@ namespace OSharp.EventBuses
                     await InvokeHandlerAsync(factory, eventType, eventData, wait);
                 }
             }
+            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType()} 的总线事件");
         }
 
         /// <summary>

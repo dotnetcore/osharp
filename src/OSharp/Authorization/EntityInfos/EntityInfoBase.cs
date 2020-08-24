@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -26,6 +27,7 @@ namespace OSharp.Authorization.EntityInfos
     /// <summary>
     /// 实体信息基类
     /// </summary>
+    [DebuggerDisplay("{ToString()}")]
     public abstract class EntityInfoBase : EntityBase<Guid>, IEntityInfo
     {
         /// <summary>
@@ -114,5 +116,16 @@ namespace OSharp.Authorization.EntityInfos
                 return ep;
             }).ToArray().ToJsonString();
         }
+
+        #region Overrides of Object
+
+        /// <summary>返回一个表示当前对象的 string。</summary>
+        /// <returns>表示当前对象的字符串。</returns>
+        public override string ToString()
+        {
+            return $"{Name}[{TypeName}]";
+        }
+
+        #endregion
     }
 }

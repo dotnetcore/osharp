@@ -54,7 +54,7 @@ namespace OSharp.Entity
         public Repository(IServiceProvider serviceProvider)
         {
             UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
-            _dbContext = UnitOfWork.GetDbContext<TEntity, TKey>();
+            _dbContext = UnitOfWork.GetEntityDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
@@ -179,8 +179,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”添加成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息添加成功".FormatWith(dtos.Count))
+                        ? $"信息 {names.ExpandAndToString()} 添加成功"
+                        : $"{dtos.Count}个信息添加成功")
                 : new OperationResult(OperationResultType.NoChanged);
         }
 
@@ -255,8 +255,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”删除成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息删除成功".FormatWith(ids.Count))
+                        ? $"信息 {names.ExpandAndToString()} 删除成功"
+                        : $"{ids.Count}个信息删除成功")
                 : new OperationResult(OperationResultType.NoChanged);
         }
 
@@ -346,8 +346,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”更新成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息更新成功".FormatWith(dtos.Count))
+                        ? $"信息 {names.ExpandAndToString()} 更新成功"
+                        : $"{dtos.Count}个信息更新成功")
                 : new OperationResult(OperationResultType.NoChanged);
         }
 
@@ -611,8 +611,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”添加成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息添加成功".FormatWith(dtos.Count))
+                        ? $"信息 {names.ExpandAndToString()} 添加成功"
+                        : $"{dtos.Count}个信息添加成功")
                 : OperationResult.NoChanged;
         }
 
@@ -689,8 +689,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”删除成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息删除成功".FormatWith(ids.Count))
+                        ? $"信息 {names.ExpandAndToString()} 删除成功"
+                        : $"{ids.Count}个信息删除成功")
                 : new OperationResult(OperationResultType.NoChanged);
         }
 
@@ -780,8 +780,8 @@ namespace OSharp.Entity
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
-                        ? "信息“{0}”更新成功".FormatWith(names.ExpandAndToString())
-                        : "{0}个信息更新成功".FormatWith(dtos.Count))
+                        ? $"信息 {names.ExpandAndToString()} 更新成功"
+                        : $"{dtos.Count}个信息更新成功")
                 : new OperationResult(OperationResultType.NoChanged);
         }
 
@@ -899,7 +899,7 @@ namespace OSharp.Entity
             bool flag = entities.All(func);
             if (!flag)
             {
-                throw new OsharpException($"实体“{typeof(TEntity)}”的数据“{entities.ExpandAndToString(m => m.Id.ToString())}”进行“{operation.ToDescription()}”操作时权限不足");
+                throw new OsharpException($"实体 {typeof(TEntity)} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
             }
         }
 

@@ -51,6 +51,7 @@ namespace OSharp.Core.Builders
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
                 configuration = configurationBuilder.Build();
+                services.AddSingleton<IConfiguration>(configuration);
             }
 
             if (configuration != null)
