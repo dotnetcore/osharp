@@ -43,7 +43,7 @@ namespace OSharp.Entity
         public IModel Get(Type dbContextType)
         {
             IModel model = _dict.GetOrDefault(dbContextType);
-            _logger.LogDebug($"从 DbContextModelCache 中获取数据上下文“{dbContextType}”的Model缓存，结果：{model != null}");
+            _logger.LogDebug($"从 DbContextModelCache 中获取数据上下文 {dbContextType} 的Model缓存，结果：{model != null}");
             return model;
         }
 
@@ -54,7 +54,7 @@ namespace OSharp.Entity
         /// <param name="model">模型</param>
         public void Set(Type dbContextType, IModel model)
         {
-            _logger.LogDebug($"在 DbContextModelCache 中存入数据上下文“{dbContextType}”的Model缓存");
+            _logger.LogDebug($"在 DbContextModelCache 中存入数据上下文 {dbContextType} 的Model缓存");
             _dict[dbContextType] = model;
         }
 
@@ -63,7 +63,7 @@ namespace OSharp.Entity
         /// </summary>
         public void Remove(Type dbContextType)
         {
-            _logger.LogDebug($"从 DbContextModelCache 中移除数据上下文“{dbContextType}”的Model缓存");
+            _logger.LogDebug($"从 DbContextModelCache 中移除数据上下文 {dbContextType} 的Model缓存");
             _dict.TryRemove(dbContextType, out IModel model);
         }
     }

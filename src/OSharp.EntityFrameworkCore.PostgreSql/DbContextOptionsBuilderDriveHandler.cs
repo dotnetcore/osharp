@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+
 
 namespace OSharp.Entity.PostgreSql
 {
@@ -46,14 +48,25 @@ namespace OSharp.Entity.PostgreSql
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
+            Action<NpgsqlDbContextOptionsBuilder> action = null;
+            if (ServiceExtensions.MigrationAssemblyName != null)
+            {
+                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+            }
+
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用PostgreSql数据库");
-                return builder.UseNpgsql(connectionString);
+                builder.UseNpgsql(connectionString, action);
+            }
+            else
+            {
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用PostgreSql数据库");
+                builder.UseNpgsql(existingConnection, action);
             }
 
-            _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用PostgreSql数据库");
-            return builder.UseNpgsql(existingConnection);
+            ServiceExtensions.MigrationAssemblyName = null;
+            return builder;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace OSharp.Authorization.EntityInfos
                 TEntityInfo entityInfo = new TEntityInfo();
                 entityInfo.FromType(entityType);
                 _entityInfos.Add(entityInfo);
-                _logger.LogDebug($"提取实体信息：{entityInfo.Name}[{entityInfo.TypeName}]");
+                _logger.LogDebug($"提取实体信息：{entityInfo}]");
             }
 
             _serviceProvider.ExecuteScopedWork(provider =>

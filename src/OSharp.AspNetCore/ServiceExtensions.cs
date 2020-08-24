@@ -11,9 +11,10 @@ using System;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace OSharp.AspNetCore
 {
     /// <summary>
     /// <see cref="IServiceCollection"/>扩展方法

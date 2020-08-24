@@ -136,7 +136,7 @@ namespace OSharp.Authorization.Functions
                 if (!HasPickup(functions, controller))
                 {
                     functions.Add(controller);
-                    Logger.LogDebug($"提取功能信息：{controller.Name}[{controller.Area}/{controller.Controller}]");
+                    Logger.LogDebug($"提取功能信息：{controller}");
                 }
 
                 List<MethodInfo> methods = MethodInfoFinder.FindAll(type).ToList();
@@ -166,7 +166,7 @@ namespace OSharp.Authorization.Functions
                     }
 
                     functions.Add(action);
-                    Logger.LogDebug($"提取功能信息：{action.Name}[{action.Area}/{action.Controller}/{action.Action}]");
+                    Logger.LogDebug($"提取功能信息：{action}");
                 }
             }
 
@@ -274,7 +274,7 @@ namespace OSharp.Authorization.Functions
             foreach (TFunction function in removeItems)
             {
                 repository.Delete(function);
-                Logger.LogDebug($"删除功能信息：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+                Logger.LogDebug($"删除功能信息：{function}");
             }
 
             //新增的功能
@@ -284,7 +284,7 @@ namespace OSharp.Authorization.Functions
             foreach (TFunction function in addItems)
             {
                 repository.Insert(function);
-                Logger.LogDebug($"新增功能信息：{function.Name}[{function.Area}/{function.Controller}/{function.Action}]");
+                Logger.LogDebug($"新增功能信息：{function}");
             }
 
             //更新的功能信息
@@ -332,7 +332,7 @@ namespace OSharp.Authorization.Functions
                 {
                     repository.Update(item);
                     updateCount++;
-                    Logger.LogDebug($"更新功能信息：{function.Name}({function.Area}/{function.Controller}/{function.Action})");
+                    Logger.LogDebug($"更新功能信息：{function}");
                 }
             }
 

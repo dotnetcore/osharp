@@ -32,7 +32,7 @@ using OSharp.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static partial class ServiceExtensions
+    public static class ServiceExtensions
     {
         #region IServiceCollection
 

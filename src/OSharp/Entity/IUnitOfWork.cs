@@ -25,19 +25,26 @@ namespace OSharp.Entity
         bool HasCommitted { get; }
 
         /// <summary>
-        /// 获取指定数据上下文类型<typeparamref name="TEntity"/>的实例
+        /// 获取指定数据上下文类型的实例
         /// </summary>
         /// <typeparam name="TEntity">实体类型</typeparam>
         /// <typeparam name="TKey">实体主键类型</typeparam>
         /// <returns><typeparamref name="TEntity"/>所属上下文类的实例</returns>
-        IDbContext GetDbContext<TEntity, TKey>() where TEntity : IEntity<TKey>;
+        IDbContext GetEntityDbContext<TEntity, TKey>() where TEntity : IEntity<TKey>;
 
         /// <summary>
-        /// 获取指定数据实体的上下文类型
+        /// 获取指定数据实体的上下文实例
         /// </summary>
         /// <param name="entityType">实体类型</param>
         /// <returns>实体所属上下文实例</returns>
-        IDbContext GetDbContext(Type entityType);
+        IDbContext GetEntityDbContext(Type entityType);
+
+        /// <summary>
+        /// 获取指定类型的上下文实例
+        /// </summary>
+        /// <param name="dbContextType">上下文类型</param>
+        /// <returns></returns>
+        IDbContext GetDbContext(Type dbContextType);
 
         /// <summary>
         /// 对数据库连接开启事务

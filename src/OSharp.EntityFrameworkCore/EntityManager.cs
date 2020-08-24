@@ -86,9 +86,9 @@ namespace OSharp.Entity
             {
                 foreach (IEntityRegister register in item.Value)
                 {
-                    _logger.LogDebug($"数据上下文“{item.Key}”添加实体类型“{register.EntityType}”");
+                    _logger.LogDebug($"数据上下文 {item.Key} 添加实体类型 {register.EntityType} ");
                 }
-                _logger.LogInformation($"数据上下文“{item.Key}”添加了 {item.Value.Length} 个实体");
+                _logger.LogInformation($"数据上下文 {item.Key} 添加了 {item.Value.Length} 个实体");
             }
 
             _initialized = true;
@@ -121,11 +121,12 @@ namespace OSharp.Entity
             {
                 if (item.Value.Any(m => m.EntityType == entityType))
                 {
+                    _logger.LogDebug($"由实体类 {entityType} 获取到所属上下文类型：{item.Key}");
                     return item.Key;
                 }
             }
 
-            throw new OsharpException($"无法获取实体类“{entityType}”的所属上下文类型，请通过继承基类“EntityTypeConfigurationBase<TEntity, TKey>”配置实体加载到上下文中");
+            throw new OsharpException($"无法获取实体类 {entityType} 的所属上下文类型，请通过继承基类“EntityTypeConfigurationBase<TEntity, TKey>”配置实体加载到上下文中");
         }
 
 

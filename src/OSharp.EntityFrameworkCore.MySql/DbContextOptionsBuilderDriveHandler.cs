@@ -11,6 +11,7 @@ using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -46,14 +47,25 @@ namespace OSharp.Entity.MySql
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
+            Action<MySqlDbContextOptionsBuilder> action = null;
+            if (ServiceExtensions.MigrationAssemblyName != null)
+            {
+                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+            }
+
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
-                return builder.UseMySql(connectionString);
+                builder.UseMySql(connectionString, action);
+            }
+            else
+            {
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
+                builder.UseMySql(existingConnection, action);
             }
 
-            _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
-            return builder.UseMySql(existingConnection);
+            ServiceExtensions.MigrationAssemblyName = null;
+            return builder;
         }
     }
 }

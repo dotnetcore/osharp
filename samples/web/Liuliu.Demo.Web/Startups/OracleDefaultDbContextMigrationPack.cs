@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OracleDefaultDbContextMigrationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -42,7 +42,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <returns></returns>
         protected override DefaultDbContext CreateDbContext(IServiceProvider scopedProvider)
         {
-            return new OracleDesignTimeDefaultDbContextFactory(scopedProvider).CreateDbContext(new string[0]);
+            return new DesignTimeDefaultDbContextFactory(scopedProvider).CreateDbContext(new string[0]);
         }
     }
 }
