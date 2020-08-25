@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <Import Project="../../../build/public.props" />
   <Import Project="../../../build/version.props" />
@@ -6,18 +6,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Startups\CodeGeneratorPack.cs" />
-    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\PostgreSqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Update="log4net.config">
@@ -38,6 +26,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />

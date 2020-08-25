@@ -4,17 +4,14 @@
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2020-08-25 0:39</last-date>
+//  <last-date>2020-08-25 23:16</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Entity;
-
-using ServiceExtensions = OSharp.Entity.ServiceExtensions;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -39,9 +36,6 @@ namespace Liuliu.Demo.Web.Startups
             Startup startup = new Startup();
             startup.ConfigureServices(services);
             IServiceProvider provider = services.BuildServiceProvider();
-            string migrationAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            ServiceExtensions.MigrationAssemblyName = migrationAssemblyName;
-            Console.WriteLine($@"MigrationAssembly: {migrationAssemblyName}");
             return provider;
         }
     }

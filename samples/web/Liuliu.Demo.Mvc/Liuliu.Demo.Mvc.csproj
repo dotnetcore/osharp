@@ -9,14 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="bundleconfig.json" />
+    <None Include="bundleconfig.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="bundleconfig.json" />
   </ItemGroup>
 
   <ProjectExtensions>

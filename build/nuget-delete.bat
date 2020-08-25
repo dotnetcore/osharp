@@ -1,23 +1,26 @@
-:: ´ËÃüÁî½«É¾³ınuget¹ÙÍøÉÏµÄosharpÖ¸¶¨°æ±¾µÄ°ü
+ï»¿:: æ­¤å‘½ä»¤å°†åˆ é™¤nugetå®˜ç½‘ä¸Šçš„osharpæŒ‡å®šç‰ˆæœ¬çš„åŒ…
 @echo off
-set /p version=ÇëÊäÈëÒªÉ¾³ıµÄ°æ±¾ºÅ£º
+set /p version=è¯·è¾“å…¥è¦åˆ é™¤çš„ç‰ˆæœ¬å·ï¼š
 nuget delete OSharpNS.Core %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.AspNetCore %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Authorization.Datas %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Authorization.Functions %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.AutoMapper %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.EntityFrameworkCore %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.EntityFrameworkCore.SqlServer %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.EntityFrameworkCore.MySql %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.EntityFrameworkCore.Sqlite %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.EntityFrameworkCore.PostgreSql %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.EntityFrameworkCore.Oracle %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.EntityFrameworkCore.PostgreSql %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.EntityFrameworkCore.Sqlite %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.EntityFrameworkCore.SqlServer %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Exceptionless %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Hangfire %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Hosting.Apis %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Hosting.Core %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Hosting.EntityConfiguration %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Identity %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Log4Net %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.Redis %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.Hangfire %version% -src https://www.nuget.org -NonInteractive
-nuget delete OSharpNS.Exceptionless %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.MiniProfiler %version% -src https://www.nuget.org -NonInteractive
+nuget delete OSharpNS.Redis %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Swagger %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Template.Mvc_Angular %version% -src https://www.nuget.org -NonInteractive
