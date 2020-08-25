@@ -1,8 +1,9 @@
-<Project>
+﻿<Project>
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>LiuliuSoft</Authors>
+    <Owners>LiuliuSoft,NCC</Owners>
     <Company>柳柳软件(66soft.net)</Company>
     <Copyright>Copyright @ 66SOFT 2014-2020</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

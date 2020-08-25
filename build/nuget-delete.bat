@@ -1,6 +1,6 @@
-ï»¿:: æ­¤å‘½ä»¤å°†åˆ é™¤nugetå®˜ç½‘ä¸Šçš„osharpæŒ‡å®šç‰ˆæœ¬çš„åŒ…
+:: ´ËÃüÁî½«É¾³ınuget¹ÙÍøÉÏµÄosharpÖ¸¶¨°æ±¾µÄ°ü
 @echo off
-set /p version=è¯·è¾“å…¥è¦åˆ é™¤çš„ç‰ˆæœ¬å·ï¼š
+set /p version=ÇëÊäÈëÒªÉ¾³ıµÄ°æ±¾ºÅ£º
 nuget delete OSharpNS.Core %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.AspNetCore %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Authorization.Datas %version% -src https://www.nuget.org -NonInteractive
