@@ -62,6 +62,7 @@ namespace OSharp.Authorization
             {
                 return;
             }
+            Logger.LogInformation($"模块信息初始化，共找到 {moduleInfos.Length} 个模块Module信息");
             _serviceProvider.ExecuteScopedWork(provider =>
             {
                 SyncToDatabase(provider, moduleInfos);
@@ -119,6 +120,7 @@ namespace OSharp.Authorization
                 {
                     throw new OsharpException(result.Message);
                 }
+                Logger.LogDebug($"删除模块：{result.Message}");
             }
 
             //新增或更新传入的模块

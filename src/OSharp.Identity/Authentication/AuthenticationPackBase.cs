@@ -15,12 +15,14 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 using OSharp.AspNetCore;
+using OSharp.Authentication.Cookies;
 using OSharp.Authentication.JwtBearer;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
@@ -59,10 +61,10 @@ namespace OSharp.Authentication
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.AddScoped<OsharpCookieAuthenticationEvents>();
             AuthenticationBuilder builder = services.AddAuthentication(opts =>
             {
-                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultScheme = IdentityConstants.ApplicationScheme;
             });
             AddJwtBearer(services, builder);
             AddCookie(services, builder);
@@ -87,28 +89,35 @@ namespace OSharp.Authentication
         /// </summary>
         protected virtual AuthenticationBuilder AddJwtBearer(IServiceCollection services, AuthenticationBuilder builder)
         {
+            IConfiguration configuration = services.GetConfiguration();
+            JwtOptions jwt = new JwtOptions();
+            configuration.Bind("OSharp:Jwt", jwt);
+            if (!jwt.Enabled)
+            {
+                return builder;
+            }
+
             services.TryAddScoped<IJwtBearerService, JwtBearerService<TUser, TUserKey>>();
             services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<TUser, TUserKey>>();
 
-            IConfiguration configuration = services.GetConfiguration();
             builder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-                jwt =>
+                opts =>
                 {
-                    string secret = configuration["OSharp:Jwt:Secret"];
+                    string secret = jwt.Secret;
                     if (secret.IsNullOrEmpty())
                     {
-                        throw new OsharpException("配置文件中OSharp配置的Jwt节点的Secret不能为空");
+                        throw new OsharpException("配置文件中节点OSharp:Jwt:Secret不能为空");
                     }
 
-                    jwt.TokenValidationParameters = new TokenValidationParameters()
+                    opts.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        ValidIssuer = configuration["OSharp:Jwt:Issuer"] ?? "osharp identity",
-                        ValidAudience = configuration["OSharp:Jwt:Audience"] ?? "osharp client",
+                        ValidIssuer = jwt.Issuer ?? "osharp identity",
+                        ValidAudience = jwt.Audience ?? "osharp client",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
                         LifetimeValidator = (nbf, exp, token, param) => exp > DateTime.UtcNow
                     };
 
-                    jwt.Events = new OsharpJwtBearerEvents();
+                    opts.Events = new OsharpJwtBearerEvents();
                 });
 
             return builder;
@@ -116,11 +125,34 @@ namespace OSharp.Authentication
 
         protected virtual AuthenticationBuilder AddCookie(IServiceCollection services, AuthenticationBuilder builder)
         {
-            //builder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-            //    opts =>
-            //    {
-            //        opts.Events = new OsharpCookieAuthenticationEvents();
-            //    });
+            IConfiguration configuration = services.GetConfiguration();
+            CookieOptions cookie = new CookieOptions();
+            configuration.Bind("OSharp:Cookie", cookie);
+            if (!cookie.Enabled)
+            {
+                return builder;
+            }
+
+            builder.AddCookie(IdentityConstants.ApplicationScheme,
+                opts =>
+                {
+                    if (cookie.CookieName != null)
+                    {
+                        opts.Cookie.Name = cookie.CookieName;
+                    }
+
+                    opts.LoginPath = cookie.LoginPath ?? opts.LoginPath;
+                    opts.LogoutPath = cookie.LogoutPath ?? opts.LogoutPath;
+                    opts.AccessDeniedPath = cookie.AccessDeniedPath ?? opts.AccessDeniedPath;
+                    opts.ReturnUrlParameter = cookie.ReturnUrlParameter ?? opts.ReturnUrlParameter;
+                    opts.SlidingExpiration = cookie.SlidingExpiration;
+                    if (cookie.ExpireMins > 0)
+                    {
+                        opts.ExpireTimeSpan = TimeSpan.FromMinutes(cookie.ExpireMins);
+                    }
+
+                    opts.EventsType = typeof(OsharpCookieAuthenticationEvents);
+                });
             return builder;
         }
 

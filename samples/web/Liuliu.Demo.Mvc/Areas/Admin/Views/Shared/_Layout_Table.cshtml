@@ -1,0 +1,184 @@
+@{
+  Layout = "_Layout";
+  string name = ViewBag.Name;
+  string tableId = $"table-{name}";
+  string title = ViewBag.Title;
+  string toolbarActions = ViewBag.ToolbarActions ?? "add,delete";
+  string rowActions = ViewBag.RowActions ?? "edit,delete";
+}
+@section header{
+  <link href="~/js/lay-module/soulTable/soulTable.min.css" rel="stylesheet" media="all"/>
+  <style>
+    .layui-table-cell { padding: 0 5px; }
+    #edit-@name { margin: 20px; display: none; }
+  </style>
+  @await RenderSectionAsync("header", false)
+}
+<div class="layuimini-main">
+  <table class="layui-hide" id="@tableId" lay-filter="@tableId"></table>
+@await RenderSectionAsync("html", false)
+</div>
+@section footer{
+  <script src="~/lib/moment.js/moment.min.js"></script>
+
+  <script>
+    var columns = [[]], toolbar = '#toolbarDefaultTpl', defaultToolbar = ["filter", "exports", "print"];
+    var page = { limits: [10, 20, 50, 100], layout: ['prev', 'page', 'next', 'skip', 'count', 'limit', 'refresh'] };
+    var height = 'full-22', title = "@title", request = new osharp.PageRequest();
+    var tableIns, tableOptions;
+    var readUrl = '/api/admin/@name/read', createUrl = '/api/admin/@name/create';
+    var updateUrl = '/api/admin/@name/update', deleteUrl = '/api/admin/@name/delete';
+
+    var editFunction = function(data, $, form) {
+      layer.open({
+        type: 1,
+        title: '编辑',
+        area: ['700px', '500px'],
+        shade: 0.3,
+        maxmin: true,
+        content: $('#edit-@name'),
+        zIndex: layer.zIndex,
+        closeBtn: 1,
+        btn: ['保存', '取消'],
+        success: function() {
+          editShow(data, form);
+        },
+        yes: function(index) {
+          editSubmit(form, $, index);
+        }
+      });
+    };
+    var editShow = function(data, form) {
+      form.val('edit-@name', { Id: data.Id });
+    };
+    var editSubmit = function(form, $, index) {
+      var data = form.val('edit-@name');
+      osharp.tools.post($,
+        '/api/admin/@name/update',
+        [data],
+        function(res) {
+          osharp.tools.ajaxResult(res,
+            layer,
+            function() {
+              tableIns.reload(tableOptions);
+              layer.close(index);
+            });
+        });
+    };
+
+    var deleteFunction = function(data) {
+      layer.confirm("是否要删除编号为“" + data.Id + "”的行？",
+        { btn: ['确定', '取消'], icon: 3 },
+        function() {
+          layer.msg('数据删除成功。', { icon: 1 });
+        });
+    };
+
+  </script>
+  @await RenderSectionAsync("tableParam", false)
+
+  <script type="text/html" id="rowActionTpl">
+    <div class="layui-btn-group">
+      @if (rowActions.Contains("edit"))
+      {
+        <button type="button" class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+      }
+      @if (rowActions.Contains("delete"))
+      {
+        <button type="button" class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon layui-icon-delete"></i></button>
+      }
+    </div>
+  </script>
+  <script type="text/html" id="toolbarDefaultTpl">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-circle"></i>新增</button>
+      <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</button>
+    </div>
+  </script>
+  <script type="text/html" id="dateFormatTpl">
+    <span>{{d.CreatedTime}}</span>
+  </script>
+  <script>
+    tableOptions = {
+      elem: '#@tableId',
+      url: readUrl,
+      method: 'post',
+      contentType: 'application/json; charset=utf-8',
+      where: request,
+      title: title,
+      cellMinWidth: 65,
+      cols: columns,
+      height: height,
+      even: true,
+      page: page,
+      limit: request.PageCondition.PageSize,
+      loading: true,
+      toolbar: toolbar,
+      defaultToolbar: defaultToolbar,
+      parseParams: osharp.ParseParams,
+      response: {
+        statusName: 'Type',
+        statusCode: 200,
+        msgName: 'Content',
+        countName: 'Total',
+        dataName: 'Rows'
+      },
+      parseData: function(res) {
+        res.Total = res.Data.Total;
+        res.Rows = res.Data.Rows;
+        return res;
+      }
+    };
+  </script>
+  @await RenderSectionAsync("tableOptions", false)
+  <script>
+    layui.use(['table', 'form', 'jquery', 'soulTable'],
+      function() {
+        var table = layui.table, form = layui.form, $ = layui.jquery,
+        soulTable = layui.soulTable;
+        tableOptions.done = function() {
+          soulTable.render(this);
+        };
+        tableIns = table.render(tableOptions);
+
+        //工具栏
+        table.on('toolbar(@tableId)',
+          function(obj) {
+            switch (obj.event) {
+              case 'add':
+                layer.msg('添加');
+                break;
+              case 'delete':
+                layer.msg('删除');
+                break;
+            }
+          });
+        //行按钮
+        table.on('tool(@tableId)',
+          function(obj) {
+            var data = obj.data;
+            switch (obj.event) {
+              case 'edit':
+                editFunction(data, $, form);
+                break;
+              case 'delete':
+                deleteFunction(data);
+                break;
+            }
+          });
+      });
+
+    function getCheckData(table, obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      var data = checkStatus.data;
+      return data;
+    }
+
+    function renderBool(flag) {
+      if (flag) {
+        return '<input type="checkbox" lay-skin="switch" lay-text="是|否" checked disabled>';
+      }
+      return '<input type="checkbox" lay-skin="switch" lay-text="是|否" disabled>';
+    }
+  </script>
+}

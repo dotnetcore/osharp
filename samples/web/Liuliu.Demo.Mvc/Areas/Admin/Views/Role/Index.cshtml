@@ -1,0 +1,77 @@
+@{
+  Layout = "_Layout_Table";
+  ViewData["Title"] = "角色信息管理";
+  ViewBag.Name = "role";
+}
+@section html
+{
+  <form class="layui-form" id="edit-@ViewBag.Name" action="#" lay-filter="edit-@ViewBag.Name">
+    <div class="layui-form-item">
+      <label for="Id" class="layui-form-label">编号</label>
+      <div class="layui-input-inline">
+        <input type="text" name="Id" id="Id" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="Name" class="layui-form-label">角色名</label>
+      <div class="layui-input-inline">
+        <input type="text" name="Name" id="Name" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label for="Remark" class="layui-form-label">备注</label>
+      <div class="layui-input-block">
+        <textarea name="Remark" id="Remark" placeholder="请输入角色备注" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label for="IsAdmin" class="layui-form-label">管理角色</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsAdmin" id="IsAdmin" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsDefault" class="layui-form-label">是否默认</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsDefault" id="IsDefault" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">是否锁定</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsLocked" id="IsLocked" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+  </form>
+}
+@section tableParam
+{
+  <script>
+    columns = [
+      [
+        { type: 'checkbox', fixed: 'left' },
+        { field: 'Id', title: '编号', fixed: 'left', sort: true, width: 65 },
+        { field: 'Name', title: '角色名', sort: true },
+        { field: 'Remark', title: '备注', sort: true },
+        { field: 'IsAdmin', title: '管理角色', sort: true, templet: d => renderBool(d.IsAdmin) },
+        { field: 'IsDefault', title: '默认', sort: true, templet: d => renderBool(d.IsDefault) },
+        { field: 'IsLocked', title: '锁定', sort: true, templet: d => renderBool(d.IsLocked) },
+        { field: 'CreatedTime', title: '创建时间', sort: true, templet: d => osharp.tools.dateFormat(d.CreatedTime) },
+        { fixed: 'right', title: '操作', width: 90, toolbar: '#rowActionTpl' }
+      ]
+    ];
+    editShow = function(data, form) {
+      form.val('edit-@ViewBag.Name',
+        {
+          Id: data.Id,
+          Name: data.Name,
+          Remark: data.Remark,
+          IsAdmin: data.IsAdmin,
+          IsDefault: data.IsDefault,
+          IsLocked: data.IsLocked
+        });
+    };
+  </script>
+}

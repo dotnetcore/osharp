@@ -43,6 +43,12 @@ namespace OSharp.Entity
         IUnitOfWork GetUnitOfWork(Type entityType);
 
         /// <summary>
+        /// 获取指定上下文类型的上下文实例
+        /// </summary>
+        /// <returns></returns>
+        IUnitOfWork GetDbContextUnitOfWork(Type dbContextType);
+
+        /// <summary>
         /// 获取指定实体类所属的上下文类型
         /// </summary>
         /// <param name="entityType">实体类型</param>

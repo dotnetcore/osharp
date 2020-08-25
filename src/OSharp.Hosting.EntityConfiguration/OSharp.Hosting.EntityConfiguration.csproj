@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>OSharpNS.Hosting.EntityConfiguration</PackageId>
+    <Summary>OSharp框架非业务实体映射</Summary>
+    <Description>OSharp框架非业务实体映射，封装框架非业务如认证，权限，系统，消息等模块的EFCore实体映射</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\OSharp.Hosting.Core\OSharp.Hosting.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>OSharpNS.Hosting.Core</PackageId>
+    <Summary>OSharp框架非业务核心</Summary>
+    <Description>OSharp框架业务核心，封装框架非业务如认证，权限，系统，消息等模块的接口与业务实现</Description>
+    <RootNamespace>OSharp.Hosting</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
+    <ProjectReference Include="..\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
+    <ProjectReference Include="..\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Identity\IdentityService.UserLogin.cs">
+      <DependentUpon>IdentityService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Identity\IdentityService.UserRole.cs">
+      <DependentUpon>IdentityService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infos\InfosService.Message.cs">
+      <DependentUpon>InfosService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infos\InfosServiceBase.Message.generated.cs">
+      <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infos\InfosServiceBase.MessageReceive.generated.cs">
+      <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infos\InfosServiceBase.MessageReply.generated.cs">
+      <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

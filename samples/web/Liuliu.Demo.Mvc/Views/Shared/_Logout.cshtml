@@ -1,0 +1,15 @@
+<form class="form-inline layui-form" action="#">
+  <button class="nav-link btn btn-link text-dark" lay-submit="" lay-filter="logout-submit">退出</button>
+</form>
+<script>
+  layui.use(['form', 'layer', 'jquery'], function() {
+    var form = layui.form, layer = layui.layer, $ = layui.jquery;
+    form.on('submit(logout-submit)', function(data) {
+      var url = "/api/identity/logout";
+      osharp.tools.post($, url, {}, function(res) {
+        layer.msg(res.Content, { icon: 1 });
+        osharp.tools.goto("/", 1000);
+      });
+    });
+  });
+</script>

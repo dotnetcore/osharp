@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Packs;
+using OSharp.Logging;
 using OSharp.Reflection;
 
 
@@ -34,12 +35,19 @@ namespace Microsoft.AspNetCore.Builder
             IServiceProvider provider = app.ApplicationServices;
             ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
             logger.LogInformation(0, "OSharp框架初始化开始");
+
+            // 输出注入服务的日志
+            StartupLogger startupLogger = provider.GetService<StartupLogger>();
+            startupLogger.Output(provider);
+
             Stopwatch watch = Stopwatch.StartNew();
             OsharpPack[] packs = provider.GetAllPacks();
+            logger.LogInformation($"共有 {packs.Length} 个Pack模块需要初始化");
             foreach (OsharpPack pack in packs)
             {
-                string packName = pack.GetType().GetDescription();
-                logger.LogInformation($"正在初始化模块 “{packName}”");
+                Type packType = pack.GetType();
+                string packName = packType.GetDescription();
+                logger.LogInformation($"正在初始化模块 “{packName} ({packType.Name})”");
                 if (pack is AspOsharpPack aspPack)
                 {
                     aspPack.UsePack(app);
@@ -48,11 +56,11 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     pack.UsePack(provider);
                 }
-                logger.LogInformation($"模块 “{packName}” 初始化完成");
+                logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
             }
 
             watch.Stop();
-            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}");
+            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
 
             return app;
         }

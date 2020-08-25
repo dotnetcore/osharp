@@ -14,6 +14,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Authorization.Functions;
 using OSharp.Collections;
@@ -32,13 +34,15 @@ namespace OSharp.Caching
     public class CacheService : ICacheService
     {
         private readonly IDistributedCache _cache;
+        private readonly ILogger<CacheService> _logger;
 
         /// <summary>
         /// 初始化一个<see cref="CacheService"/>类型的新实例
         /// </summary>
-        public CacheService(IDistributedCache cache)
+        public CacheService(IServiceProvider provider)
         {
-            _cache = cache;
+            _cache = provider.GetService<IDistributedCache>();
+            _logger = provider.GetLogger<CacheService>();
         }
 
         #region Implementation of ICacheService
@@ -489,7 +493,7 @@ namespace OSharp.Caching
 
         #region 私有方法
 
-        private static string GetKey<TEntity, TResult>(IQueryable<TEntity> source,
+        private string GetKey<TEntity, TResult>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
             Expression<Func<TEntity, TResult>> selector,
@@ -535,7 +539,7 @@ namespace OSharp.Caching
             return GetKey(query.Expression, keyParams);
         }
 
-        private static string GetKey<TEntity, TOutputDto>(IQueryable<TEntity> source,
+        private string GetKey<TEntity, TOutputDto>(IQueryable<TEntity> source,
             Expression<Func<TEntity, bool>> predicate,
             PageCondition pageCondition,
             params object[] keyParams)
@@ -581,14 +585,14 @@ namespace OSharp.Caching
             return GetKey(query.Expression, keyParams);
         }
 
-        private static string GetKey<TSource, TOutputDto>(IQueryable<TSource> source,
+        private string GetKey<TSource, TOutputDto>(IQueryable<TSource> source,
             params object[] keyParams)
         {
-            IQueryable<TOutputDto> query = source.ToOutput<TSource, TOutputDto>();
+            IQueryable<TOutputDto> query = source.ToOutput<TSource, TOutputDto>(true);
             return GetKey(query.Expression, keyParams);
         }
 
-        private static string GetKey<TSource, TResult>(IQueryable<TSource> source,
+        private string GetKey<TSource, TResult>(IQueryable<TSource> source,
             Expression<Func<TSource, TResult>> selector,
             params object[] keyParams)
         {
@@ -596,7 +600,7 @@ namespace OSharp.Caching
             return GetKey(query.Expression, keyParams);
         }
 
-        private static string GetKey(Expression expression, params object[] keyParams)
+        private string GetKey(Expression expression, params object[] keyParams)
         {
             string key;
             try
@@ -608,7 +612,9 @@ namespace OSharp.Caching
                 key = new StringCacheKeyGenerator().GetKey(keyParams);
             }
 
-            return $"Query:{key.ToMd5Hash()}";
+            key = $"Query:{key.ToMd5Hash()}";
+            _logger.LogDebug($"get cache key: {key}");
+            return key;
         }
 
         #endregion

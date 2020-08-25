@@ -64,7 +64,7 @@ namespace OSharp.Log4Net
                 DatePattern = "yyyyMMdd-HH\".log\"",
                 StaticLogFileName = false,
                 MaxSizeRollBackups = 10,
-                Layout = new PatternLayout("[%d{HH:mm:ss.fff}] %-5p %c T%t %n%m%n")
+                Layout = new PatternLayout("[%d{HH:mm:ss.fff}] %-5p %c T%t:%n%m%n")
             };
             appender.ClearFilters();
             appender.AddFilter(new LevelMatchFilter() { LevelToMatch = Level.Debug });

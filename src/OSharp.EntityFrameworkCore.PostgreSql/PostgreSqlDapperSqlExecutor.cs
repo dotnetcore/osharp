@@ -1,12 +1,13 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="PostgreSqlDapperSqlExecutor.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2019 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-01-04 1:22</last-date>
+//  <last-date>2020-08-21 13:37</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Data;
 
 using Npgsql;
@@ -24,8 +25,8 @@ namespace OSharp.Entity.PostgreSql
         /// <summary>
         /// 初始化一个<see cref="SqlExecutorBase{TEntity,TKey}"/>类型的新实例
         /// </summary>
-        public PostgreSqlDapperSqlExecutor(IUnitOfWorkManager unitOfWorkManager)
-            : base(unitOfWorkManager)
+        public PostgreSqlDapperSqlExecutor(IServiceProvider provider)
+            : base(provider)
         { }
 
         /// <summary>

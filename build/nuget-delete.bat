@@ -1,8 +1,6 @@
 :: 此命令将删除nuget官网上的osharp指定版本的包
 @echo off
-echo 请输入要删除的版本号：
-set version=:
-set /p version=
+set /p version=请输入要删除的版本号：
 nuget delete OSharpNS.Core %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.AspNetCore %version% -src https://www.nuget.org -NonInteractive
 nuget delete OSharpNS.Authorization.Datas %version% -src https://www.nuget.org -NonInteractive

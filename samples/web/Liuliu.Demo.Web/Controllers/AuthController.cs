@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SecurityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -29,7 +29,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-授权")]
     [ModuleInfo(Order = 2)]
-    public class AuthController : SiteApiController
+    public class AuthController : SiteApiControllerBase
     {
         private readonly FunctionAuthManager _functionAuthManager;
 
@@ -95,7 +95,7 @@ namespace Liuliu.Demo.Web.Controllers
         {
             IServiceProvider services = HttpContext.RequestServices;
             IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
-          
+
             Function[] functions = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.Function).ToArray();
             empty = functions.Length == 0;
             if (empty)

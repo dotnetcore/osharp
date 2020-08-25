@@ -44,7 +44,7 @@ namespace OSharp.AspNetCore
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.TryAddSingleton<IHostHttpCrypto, HostHttpCrypto>();
+            services.TryAddTransient<IHostHttpCrypto, HostHttpCrypto>();
 
             //注入当前用户，替换Thread.CurrentPrincipal的作用
             services.AddTransient<IPrincipal>(provider =>

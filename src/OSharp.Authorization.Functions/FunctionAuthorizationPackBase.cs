@@ -48,15 +48,15 @@ namespace OSharp.Authorization
     public abstract class FunctionAuthorizationPackBase<TFunctionAuthorizationManager, TFunctionAuthorization, TFunctionAuthCache, TModuleHandler,
         TFunction, TFunctionInputDto,
         TModule, TModuleInputDto, TModuleKey, TModuleFunction, TModuleRole, TModuleUser, TRoleKey, TUserKey> : AspOsharpPack
-        where TFunctionAuthorizationManager : class, 
+        where TFunctionAuthorizationManager : class,
             IFunctionStore<TFunction, TFunctionInputDto>,
             IModuleStore<TModule, TModuleInputDto, TModuleKey>,
             IModuleFunctionStore<TModuleFunction, TModuleKey>,
             IModuleRoleStore<TModuleRole, TRoleKey, TModuleKey>,
             IModuleUserStore<TModuleUser, TUserKey, TModuleKey>
-        where TFunctionAuthorization : IFunctionAuthorization
-        where TFunctionAuthCache : IFunctionAuthCache
-        where TModuleHandler : IModuleHandler
+        where TFunctionAuthorization : class, IFunctionAuthorization
+        where TFunctionAuthCache : class, IFunctionAuthCache
+        where TModuleHandler : class, IModuleHandler
         where TFunction : IFunction
         where TFunctionInputDto : FunctionInputDtoBase
         where TModule : ModuleBase<TModuleKey>
@@ -88,9 +88,9 @@ namespace OSharp.Authorization
         {
             services.AddFunctionAuthorizationHandler();
 
-            services.AddSingleton(typeof(IFunctionAuthorization), typeof(TFunctionAuthorization));
-            services.AddSingleton(typeof(IFunctionAuthCache), typeof(TFunctionAuthCache));
-            services.AddSingleton(typeof(IModuleHandler), typeof(TModuleHandler));
+            services.AddSingleton<IFunctionAuthorization, TFunctionAuthorization>();
+            services.AddSingleton<IFunctionAuthCache, TFunctionAuthCache>();
+            services.AddSingleton<IModuleHandler, TModuleHandler>();
 
             services.AddScoped<TFunctionAuthorizationManager>();
             services.AddScoped(typeof(IFunctionStore<TFunction, TFunctionInputDto>), provider => provider.GetService<TFunctionAuthorizationManager>());

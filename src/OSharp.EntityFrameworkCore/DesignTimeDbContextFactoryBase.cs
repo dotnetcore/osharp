@@ -8,9 +8,18 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using OSharp.Collections;
+using OSharp.Core.Options;
+using OSharp.Exceptions;
+using OSharp.Json;
 
 
 namespace OSharp.Entity
@@ -19,8 +28,21 @@ namespace OSharp.Entity
     /// 设计时数据上下文实例工厂基类，用于执行数据迁移
     /// </summary>
     public abstract class DesignTimeDbContextFactoryBase<TDbContext> : IDesignTimeDbContextFactory<TDbContext>
-        where TDbContext : DbContext
+        where TDbContext : DbContext, IDbContext
     {
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 初始化一个<see cref="DesignTimeDbContextFactoryBase{TDbContext}"/>类型的新实例
+        /// </summary>
+        protected DesignTimeDbContextFactoryBase(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+            _logger = serviceProvider?.GetLogger(GetType());
+        }
+
+        protected IServiceProvider ServiceProvider { get; private set; }
+
         /// <summary>
         /// 创建一个数据上下文实例
         /// </summary>
@@ -28,44 +50,25 @@ namespace OSharp.Entity
         /// <returns></returns>
         public virtual TDbContext CreateDbContext(string[] args)
         {
-            string connString = GetConnectionString();
-            if (connString == null)
+            if (ServiceProvider == null)
             {
-                return null;
+                ServiceProvider = CreateDesignTimeServiceProvider();
             }
-            IEntityManager entityManager = GetEntityManager();
+
+            IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
+            entityManager.Initialize();
+
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();
-            if (LazyLoadingProxiesEnabled())
-            {
-                builder.UseLazyLoadingProxies();
-            }
-            builder = UseSql(builder, connString);
-            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), builder.Options, entityManager, null);
+            builder = ServiceProvider.BuildDbContextOptionsBuilder<TDbContext>(builder);
+
+            TDbContext context = (TDbContext)ActivatorUtilities.CreateInstance(ServiceProvider, typeof(TDbContext), builder.Options);
+            return context;
         }
 
         /// <summary>
-        /// 重写以获取数据上下文数据库连接字符串
-        /// </summary>
-        public abstract string GetConnectionString();
-
-        /// <summary>
-        /// 重写以获取数据实体管理器
+        /// 创建设计时使用的ServiceProvider，主要用于执行 Add-Migration 功能
         /// </summary>
         /// <returns></returns>
-        public abstract IEntityManager GetEntityManager();
-
-        /// <summary>
-        /// 重写以获取是否开启延迟加载代理特性
-        /// </summary>
-        /// <returns></returns>
-        public abstract bool LazyLoadingProxiesEnabled();
-
-        /// <summary>
-        /// 重写以实现数据上下文选项构建器加载数据库驱动程序
-        /// </summary>
-        /// <param name="builder">数据上下文选项构建器</param>
-        /// <param name="connString">数据库连接字符串</param>
-        /// <returns>数据上下文选项构建器</returns>
-        public abstract DbContextOptionsBuilder UseSql(DbContextOptionsBuilder builder, string connString);
+        protected abstract IServiceProvider CreateDesignTimeServiceProvider();
     }
 }

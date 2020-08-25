@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="log\**" />
-    <Content Remove="log\**" />
-    <EmbeddedResource Remove="log\**" />
-    <None Remove="log\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Startups\CodeGeneratorPack.cs" />
     <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
     <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
@@ -33,12 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,8 +46,13 @@
     <ProjectReference Include="..\..\..\src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
-    <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="log\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
 
 </Project>

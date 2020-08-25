@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TestController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -32,7 +32,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-测试")]
     [ClassFilter]
-    public class TestController : SiteApiController
+    public class TestController : SiteApiControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly IIdentityContract _identityContract;
@@ -74,7 +74,7 @@ namespace Liuliu.Demo.Web.Controllers
 
                 dto = new RegisterDto()
                 {
-                    UserName ="osharp",
+                    UserName = "osharp",
                     Password = "osharp123456",
                     Email = "mf.guo@qq.com",
                     NickName = "测试号",

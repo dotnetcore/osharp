@@ -39,8 +39,8 @@ namespace OSharp.Authorization
                 return dict.Function;
             }
 
-            string area = endpoint.GetAreaName(), 
-                controller = endpoint.GetControllerName(), 
+            string area = endpoint.GetAreaName(),
+                controller = endpoint.GetControllerName(),
                 action = endpoint.GetActionName();
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
@@ -63,7 +63,7 @@ namespace OSharp.Authorization
         public static string GetAreaName(this RouteEndpoint endpoint)
         {
             string area = null;
-            if (endpoint.RoutePattern.Defaults.TryGetValue("area", out object value))
+            if (endpoint.RoutePattern.RequiredValues.TryGetValue("area", out object value))
             {
                 area = (string)value;
                 if (area.IsNullOrWhiteSpace())
@@ -80,7 +80,7 @@ namespace OSharp.Authorization
         /// </summary>
         public static string GetControllerName(this RouteEndpoint endpoint)
         {
-            return endpoint.RoutePattern.Defaults["controller"].ToString();
+            return endpoint.RoutePattern.RequiredValues["controller"].ToString();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace OSharp.Authorization
         /// </summary>
         public static string GetActionName(this RouteEndpoint endpoint)
         {
-            return endpoint.RoutePattern.Defaults["action"].ToString();
+            return endpoint.RoutePattern.RequiredValues["action"].ToString();
         }
 
         /// <summary>

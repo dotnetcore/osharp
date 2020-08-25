@@ -61,7 +61,7 @@ namespace OSharp.Entity
             {
                 entity1.CreatedTime = DateTime.Now;
             }
-            
+
             return (TEntity)entity1;
         }
 

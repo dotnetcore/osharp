@@ -63,17 +63,16 @@ namespace OSharp.AspNetCore.Http
                 return request;
             }
 
-            string publicKey = request.Headers.GetOrDefault(HttpHeaderNames.ClientPublicKey);
-            if (publicKey != null)
+            string clientPublicKey = request.Headers.GetOrDefault(HttpHeaderNames.ClientPublicKey);
+            if (clientPublicKey != null)
             {
-                //throw new OsharpException("在请求头中客户端公钥信息无法找到");
-                _encryptor = new TransmissionEncryptor(_privateKey, publicKey);
+                _encryptor = new TransmissionEncryptor(_privateKey, clientPublicKey);
             }
-
             if (_encryptor == null)
             {
                 return request;
             }
+            _logger.LogDebug("使用传入的客户端公钥和服务端私钥创建服务端通信加密器");
 
             try
             {
@@ -88,7 +87,7 @@ namespace OSharp.AspNetCore.Http
                 {
                     throw new OsharpException("服务器解析请求数据时发生异常");
                 }
-
+                _logger.LogDebug("使用服务端私钥解密请求数据，并使用客户端公钥验证数据");
                 await request.WriteBodyAsync(data);
                 return request;
 
@@ -121,6 +120,7 @@ namespace OSharp.AspNetCore.Http
             try
             {
                 data = _encryptor.EncryptData(data);
+                _logger.LogDebug("使用服务端公钥加密响应数据");
                 response = await response.WriteBodyAsync(data);
                 return response;
             }

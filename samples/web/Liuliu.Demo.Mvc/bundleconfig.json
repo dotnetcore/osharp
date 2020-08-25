@@ -1,0 +1,86 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/layui/lay/modules/table.min.js",
+    "inputFiles": [
+      "wwwroot/lib/layui/lay/modules/table.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/excel.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/excel.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/soulTable.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/soulTable.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/tableChild.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/tableChild.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/tableFilter.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/tableFilter.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/tableMerge.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/tableMerge.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/layui-soul-table/soulTable.min.css",
+    "inputFiles": [
+      "wwwroot/js/lay-module/layui-soul-table/soulTable.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/layuimini.min.css",
+    "inputFiles": [
+      "wwwroot/css/layuimini.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/excel.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/excel.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/soulTable.min.css",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/soulTable.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/soulTable.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/soulTable.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/tableChild.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/tableChild.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/tableFilter.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/tableFilter.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/lay-module/soulTable/tableMerge.min.js",
+    "inputFiles": [
+      "wwwroot/js/lay-module/soulTable/tableMerge.js"
+    ]
+  }
+]

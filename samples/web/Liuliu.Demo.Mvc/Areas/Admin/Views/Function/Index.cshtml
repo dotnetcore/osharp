@@ -1,0 +1,102 @@
+@{
+  Layout = "_Layout_Table";
+  ViewBag.Title = "功能信息管理";
+  ViewBag.Name = "function";
+  ViewBag.RowActions = "edit";
+}
+@section html{
+  <form class="layui-form" id="edit-@ViewBag.Name" action="#" lay-filter="edit-@ViewBag.Name">
+    <div class="layui-form-item">
+      <label for="Id" class="layui-form-label">编号</label>
+      <div class="layui-input-block">
+        <input type="text" name="Id" id="Id" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">功能名称</label>
+      <div class="layui-input-block">
+        <input type="text" name="Name" id="Name" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label for="AccessType" class="layui-form-label">功能类型</label>
+        <div class="layui-input-inline">
+          <input type="text" name="AccessType" id="AccessType" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">操作审计</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="AuditOperationEnabled" id="AuditOperationEnabled" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">数据审计</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="AuditEntityEnabled" id="AuditEntityEnabled" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label for="CacheExpirationSeconds" class="layui-form-label">缓存秒数</label>
+        <div class="layui-input-inline">
+          <input type="number" name="CacheExpirationSeconds" id="CacheExpirationSeconds" value="0" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">滑动过期</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsCacheSliding" id="IsCacheSliding" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">是否锁定</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsLocked" id="IsLocked" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+  </form>
+}
+@section tableParam
+{
+  <script>
+    toolbar = true;
+    columns = [
+      [
+        { type: 'numbers', title: '序号' },
+        { field: 'Id', title: '编号', sort: true },
+        { field: 'Name', title: '名称', sort: true },
+        { field: 'AccessType', title: '功能类型', width: 100, sort: true },
+        { field: 'AuditOperationEnabled', title: '操作审计', sort: true, width: 90, templet: d => renderBool(d.AuditOperationEnabled) },
+        { field: 'AuditEntityEnabled', title: '数据审计', sort: true, width: 90, templet: d => renderBool(d.AuditEntityEnabled) },
+        { field: 'CacheExpirationSeconds', title: '缓存秒数', sort: true, width: 90 },
+        { field: 'IsCacheSliding', title: '滑动过期', sort: true, width: 90, templet: d => renderBool(d.IsCacheSliding) },
+        { field: 'IsLocked', title: '锁定', sort: true, width: 90, templet: d => renderBool(d.IsLocked) },
+        { field: 'IsAjax', title: 'Ajax访问', sort: true, width: 90, templet: d => renderBool(d.IsAjax) },
+        { field: 'IsController', title: '是否控制器', sort: true, width: 90, templet: d => renderBool(d.IsController) },
+        { field: 'Area', title: '区域', width: 100, sort: true },
+        { field: 'Controller', title: '控制器', width: 100, sort: true },
+        { field: 'Action', title: '功能方法', width: 100, sort: true },
+        { fixed: 'right', title: '操作', width: 50, toolbar: '#rowActionTpl' }
+      ]
+    ];
+    editShow = function(data, form) {
+      form.val('edit-@ViewBag.Name',
+        {
+          Id: data.Id,
+          Name: data.Name,
+          AccessType: data.AccessType,
+          AuditOperationEnabled: data.AuditOperationEnabled,
+          AuditEntityEnabled: data.AuditEntityEnabled,
+          CacheExpirationSeconds: data.CacheExpirationSeconds,
+          IsCacheSliding: data.IsCacheSliding,
+          IsLocked: data.IsLocked
+        });
+    }
+  </script>
+}

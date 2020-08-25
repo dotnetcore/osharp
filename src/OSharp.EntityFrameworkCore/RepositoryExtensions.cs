@@ -111,10 +111,10 @@ namespace OSharp.Entity
             where TKey : IEquatable<TKey>
         {
             IUnitOfWork uow = repository.UnitOfWork;
-            IDbContext dbContext = uow.GetDbContext<TEntity, TKey>();
+            IDbContext dbContext = uow.GetEntityDbContext<TEntity, TKey>();
             if (!(dbContext is DbContext context))
             {
-                throw new OsharpException($"参数dbContext类型为“{dbContext.GetType()}”，不能转换为 DbContext");
+                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
             }
 
             return context.Set<TEntity>().FromSqlRaw(sql, parameters);

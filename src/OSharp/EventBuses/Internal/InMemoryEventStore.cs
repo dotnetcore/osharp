@@ -12,6 +12,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Reflection;
@@ -24,13 +27,15 @@ namespace OSharp.EventBuses.Internal
     /// </summary>
     internal class InMemoryEventStore : IEventStore
     {
+        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<Type, List<IEventHandlerFactory>> _handlerFactories;
 
         /// <summary>
         /// 初始化一个<see cref="InMemoryEventStore"/>类型的新实例
         /// </summary>
-        public InMemoryEventStore()
+        public InMemoryEventStore(IServiceProvider provider)
         {
+            _logger = provider.GetLogger<InMemoryEventStore>();
             _handlerFactories = new ConcurrentDictionary<Type, List<IEventHandlerFactory>>();
         }
 
@@ -70,6 +75,7 @@ namespace OSharp.EventBuses.Internal
             Check.NotNull(factory, nameof(factory));
 
             GetOrCreateHandlerFactories(eventType).Locking(factories => factories.AddIfNotExist(factory));
+            _logger.LogDebug($"添加事件类型“{eventType}”的处理器订阅到内存事件存储 InMemoryEventStore");
         }
 
         /// <summary>
@@ -95,6 +101,7 @@ namespace OSharp.EventBuses.Internal
                     }
                     return handler.Action == action;
                 });
+                _logger.LogDebug($"移除事件处理处理委托“{action}”的处理器订阅");
             });
         }
 
@@ -108,6 +115,8 @@ namespace OSharp.EventBuses.Internal
             GetOrCreateHandlerFactories(eventType).Locking(factories =>
             {
                 factories.RemoveAll(factory => (factory as SingletonEventHandlerFactory)?.HandlerInstance == eventHandler);
+                _logger.LogDebug($"移除事件处理类型“{eventType}”的“{eventHandler.GetType()}”处理器订阅");
+
             });
         }
 
@@ -117,7 +126,11 @@ namespace OSharp.EventBuses.Internal
         /// <param name="eventType">事件源类型</param>
         public void RemoveAll(Type eventType)
         {
-            GetOrCreateHandlerFactories(eventType).Locking(factories => factories.Clear());
+            GetOrCreateHandlerFactories(eventType).Locking(factories =>
+            {
+                factories.Clear();
+                _logger.LogDebug($"移除事件处理类型“{eventType}”的所有处理器订阅");
+            });
         }
 
         /// <summary>

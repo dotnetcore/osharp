@@ -81,8 +81,7 @@ namespace Liuliu.Demo.Identity
                                 throw new OsharpException($"进行角色种子数据“{role.Name}”同步时出错：{result.ErrorMessage()}");
                             }
                         }
-                    },
-                    true);
+                    });
             }
         }
     }

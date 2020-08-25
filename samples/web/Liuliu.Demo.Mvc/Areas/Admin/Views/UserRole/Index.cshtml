@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout_Table";
+  ViewData["Title"] = "用户角色管理";
+  ViewBag.Name = "userrole";
+}
+@section tableParam
+{
+  <script>
+    columns = [[
+      { type: 'checkbox', fixed: 'left' },
+      { field: 'UserName', title: '用户名', sort: true },
+      { field: 'RoleName', title: '角色', sort: true },
+      { field: 'IsLocked', title: '锁定', sort: true, templet: d => renderBool(d.IsLocked) },
+      { field: 'CreatedTime', title: '创建时间', sort: true, templet: d => osharp.tools.dateFormat(d.CreatedTime) },
+      { fixed: 'right', title: '操作', width: 90, toolbar: '#rowActionTpl' }
+    ]];
+  </script>
+}

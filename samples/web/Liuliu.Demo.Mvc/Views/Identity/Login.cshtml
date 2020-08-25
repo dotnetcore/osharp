@@ -1,0 +1,115 @@
+@{
+  Layout = "_LoginLayout";
+  ViewBag.Title = "用户登录";
+}
+@section header
+{
+  <style>
+    .login-main {
+      width: 450px;
+      margin: 50px auto;
+    }
+
+    .login-link {
+      color: #029789 !important
+    }
+
+      .login-link:hover {
+        opacity: .8
+      }
+
+    .login-jump-change {
+      float: right;
+    }
+
+    .layadmin-user-login-other {
+      position: relative;
+      font-size: 0;
+      line-height: 38px;
+      padding-top: 20px
+    }
+
+      .layadmin-user-login-other > * {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+        font-size: 14px
+      }
+
+      .layadmin-user-login-other .layui-icon {
+        position: relative;
+        top: 2px;
+        font-size: 26px
+      }
+
+    .layui-icon {
+      -ms-opacity: .5;
+      opacity: .5
+    }
+
+      .layui-icon:hover {
+        -ms-opacity: 1;
+        opacity: 1
+      }
+  </style>
+}
+<div class="login-main">
+  <h2 style="text-align: center; margin-bottom: 30px;">用户登录</h2>
+  <form class="layui-form" action="#">
+    <div class="layui-form-item">
+      <label class="layui-form-label">账号</label>
+      <div class="layui-input-block">
+        <input type="text" name="Account" autocomplete="off" placeholder="请输入登录账号" lay-verify="required" lay-reqtext="登录账号不能为空" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">密码</label>
+      <div class="layui-input-block">
+        <input type="password" name="Password" autocomplete="off" placeholder="请输入登录密码" lay-verify="required" lay-reqtext="登录密码不能为空" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">记住登录</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="Remember" lay-skin="switch" lay-text="是|否">
+        <a href="@Url.ActionLink("Forget")" class="login-jump-change login-link" style="margin-top: 7px;">忘记密码？</a>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-block">
+        <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login-submit">登 入</button>
+      </div>
+    </div>
+    <div class="layui-trans layui-form-item layadmin-user-login-other">
+      <label class="layui-form-label"></label>
+      <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
+      <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
+      <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
+      <a href="@Url.Action("Register")" class="login-jump-change login-link">注册帐号</a>
+    </div>
+  </form>
+
+</div>
+@section footer
+{
+  <script>
+    var returnUrl = "@ViewBag.ReturnUrl";
+    layui.use(['form', 'layer', 'jquery'],
+      function() {
+        var form = layui.form, layer = layui.layer, $ = layui.jquery;
+        form.on('submit(login-submit)', function(data) {
+          var url = '/api/identity/login';
+          var field = data.field;
+          var dto = { Account: field.Account, Password: field.Password, Remember: field.Remember === 'on' };
+          osharp.tools.post($, url, dto, function(res) {
+            osharp.tools.ajaxResult(res, layer, function() {
+              osharp.tools.goto(returnUrl);
+            });
+          });
+          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+      });
+
+  </script>
+}

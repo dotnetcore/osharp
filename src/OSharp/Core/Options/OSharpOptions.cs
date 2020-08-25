@@ -50,6 +50,11 @@ namespace OSharp.Core.Options
         public JwtOptions Jwt { get; set; }
 
         /// <summary>
+        /// 获取或设置 Cookie身份认证选项
+        /// </summary>
+        public CookieOptions Cookie { get; set; }
+
+        /// <summary>
         /// 获取或设置 Redis选项
         /// </summary>
         public RedisOptions Redis { get; set; }

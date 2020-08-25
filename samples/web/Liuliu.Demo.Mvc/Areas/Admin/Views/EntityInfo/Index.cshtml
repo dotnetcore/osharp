@@ -1,0 +1,62 @@
+@{
+  Layout = "_Layout_Table";
+  ViewBag.Title = "数据实体信息管理";
+  ViewBag.Name = "entityinfo";
+  ViewBag.RowActions = "edit";
+}
+@section html
+{
+  <form class="layui-form" id="edit-@ViewBag.Name" action="#" lay-filter="edit-@ViewBag.Name">
+    <div class="layui-form-item">
+      <label for="Id" class="layui-form-label">编号</label>
+      <div class="layui-input-block">
+        <input type="text" name="Id" id="Id" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">实体名称</label>
+      <div class="layui-input-block">
+        <input type="text" name="Name" id="Name" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">实体类型</label>
+      <div class="layui-input-block">
+        <input type="text" name="TypeName" id="TypeName" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">数据审计</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="AuditEnabled" id="AuditEnabled" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+  </form>
+}
+@section tableParam
+{
+  <script>
+    toolbar = true;
+    columns = [
+      [
+        { type: 'numbers', title: '序号' },
+        { field: 'Id', title: '编号', sort: true },
+        { field: 'Name', title: '实体名称', sort: true },
+        { field: 'TypeName', title: '实体类型', sort: true },
+        { field: 'AuditEnabled', title: '数据审计', sort: true, width: 120, templet: d => renderBool(d.AuditEnabled) },
+        { fixed: 'right', title: '操作', width: 50, toolbar: '#rowActionTpl' }
+      ]
+    ];
+    editShow = function(data, form) {
+      form.val('edit-@ViewBag.Name',
+        {
+          Id: data.Id,
+          Name: data.Name,
+          TypeName: data.TypeName,
+          AuditEnabled: data.AuditEnabled
+        });
+    }
+  </script>
+}

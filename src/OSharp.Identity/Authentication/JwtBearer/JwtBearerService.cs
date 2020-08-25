@@ -113,8 +113,7 @@ namespace OSharp.Authentication.JwtBearer
                             }
 
                             return result;
-                        },
-                        false);
+                        });
                 }
                 throw new OsharpException("RefreshToken 不存在或已过期");
             }
@@ -161,8 +160,7 @@ namespace OSharp.Authentication.JwtBearer
                     eventBus.Publish(eventData);
                 }
                 return result;
-            },
-                false);
+            });
 
             // New AccessToken
             IAccessClaimsProvider claimsProvider = _provider.GetService<IAccessClaimsProvider>();

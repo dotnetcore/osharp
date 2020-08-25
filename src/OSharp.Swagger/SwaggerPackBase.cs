@@ -10,17 +10,22 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Microsoft.OpenApi.Models;
 
 using OSharp.AspNetCore;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Exceptions;
-using OSharp.Extensions;
+using OSharp.Reflection;
+
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 
 namespace OSharp.Swagger
@@ -31,6 +36,8 @@ namespace OSharp.Swagger
     [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class SwaggerPackBase : AspOsharpPack
     {
+        private OsharpOptions _osharpOptions;
+
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
@@ -50,20 +57,39 @@ namespace OSharp.Swagger
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             IConfiguration configuration = services.GetConfiguration();
-
-            string url = configuration["OSharp:Swagger:Url"];
-            if (string.IsNullOrEmpty(url))
+            _osharpOptions = configuration.GetOsharpOptions();
+            if (_osharpOptions?.Swagger?.Enabled != true)
             {
-                throw new OsharpException("配置文件中Swagger节点的Url不能为空");
+                return services;
             }
-
-            string title = configuration["OSharp:Swagger:Title"];
-            int version = configuration["OSharp:Swagger:Version"].CastTo(1);
 
             services.AddMvcCore().AddApiExplorer();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc($"v{version}", new OpenApiInfo() { Title = title, Version = $"{version}" });
+                if (_osharpOptions?.Swagger?.Endpoints?.Count > 0)
+                {
+                    foreach (SwaggerEndpoint endpoint in _osharpOptions.Swagger.Endpoints)
+                    {
+                        options.SwaggerDoc($"{endpoint.Version}",
+                            new OpenApiInfo() { Title = endpoint.Title, Version = endpoint.Version });
+                    }
+
+                    options.DocInclusionPredicate((version, desc) =>
+                    {
+                        if (!desc.TryGetMethodInfo(out MethodInfo method))
+                        {
+                            return false;
+                        }
+
+                        string[] versions = method.DeclaringType.GetAttributes<ApiExplorerSettingsAttribute>().Select(m => m.GroupName).ToArray();
+                        if (version.ToLower()== "v1" && versions.Length == 0)
+                        {
+                            return true;
+                        }
+
+                        return versions.Any(m => m.ToString() == version);
+                    });
+                }
 
                 Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                 {
@@ -87,6 +113,7 @@ namespace OSharp.Swagger
                         new[] { "readAccess", "writeAccess" }
                     }
                 });
+                options.DocumentFilter<HiddenApiFilter>();
             });
 
             return services;
@@ -98,16 +125,25 @@ namespace OSharp.Swagger
         /// <param name="app">Asp应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+            if (_osharpOptions?.Swagger?.Enabled != true)
+            {
+                return;
+            }
 
+            SwaggerOptions swagger = _osharpOptions.Swagger;
             app.UseSwagger().UseSwaggerUI(options =>
             {
-                string url = configuration["OSharp:Swagger:Url"];
-                string title = configuration["OSharp:Swagger:Title"];
-                int version = configuration["OSharp:Swagger:Version"].CastTo(1);
-                options.SwaggerEndpoint(url, $"{title} V{version}");
-                bool miniProfilerEnabled = configuration["OSharp:Swagger:MiniProfiler"].CastTo(false);
-                if (miniProfilerEnabled)
+                if (swagger.Endpoints?.Count > 0)
+                {
+                    foreach (SwaggerEndpoint endpoint in swagger.Endpoints)
+                    {
+                        options.SwaggerEndpoint(endpoint.Url, endpoint.Title);
+                    }
+                }
+
+                options.RoutePrefix = swagger.RoutePrefix;
+
+                if (swagger.MiniProfiler)
                 {
                     options.IndexStream = () => GetType().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
                 }
