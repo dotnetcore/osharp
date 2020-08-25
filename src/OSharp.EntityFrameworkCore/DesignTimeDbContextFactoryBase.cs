@@ -1,25 +1,18 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="DesignTimeDbContextFactoryBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-03-20 17:10</last-date>
+//  <last-date>2020-08-25 23:12</last-date>
 // -----------------------------------------------------------------------
 
 using System;
-using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using OSharp.Collections;
-using OSharp.Core.Options;
-using OSharp.Exceptions;
-using OSharp.Json;
 
 
 namespace OSharp.Entity
@@ -50,10 +43,11 @@ namespace OSharp.Entity
         /// <returns></returns>
         public virtual TDbContext CreateDbContext(string[] args)
         {
-            if (ServiceProvider == null)
-            {
-                ServiceProvider = CreateDesignTimeServiceProvider();
-            }
+            string migrationAssemblyName = GetType().Assembly.GetName().Name;
+            ServiceExtensions.MigrationAssemblyName = migrationAssemblyName;
+            Console.WriteLine($@"MigrationAssembly: {migrationAssemblyName}");
+
+            ServiceProvider ??= CreateDesignTimeServiceProvider();
 
             IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
             entityManager.Initialize();

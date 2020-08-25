@@ -97,6 +97,9 @@ ipch/
 *.vspx
 *.sap
 
+# Sqlite Database
+*.db
+
 # TFS 2012 Local Workspace
 $tf/
 

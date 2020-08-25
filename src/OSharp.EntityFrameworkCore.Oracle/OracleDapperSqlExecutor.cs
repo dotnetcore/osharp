@@ -16,8 +16,8 @@ namespace OSharp.Entity.Oracle
         /// <summary>
         /// 初始化一个<see cref="SqlExecutorBase{TEntity,TKey}"/>类型的新实例
         /// </summary>
-        public OracleDapperSqlExecutor(IUnitOfWorkManager unitOfWorkManager)
-            : base(unitOfWorkManager)
+        public OracleDapperSqlExecutor(IServiceProvider provider)
+            : base(provider)
         { }
 
         /// <summary>

@@ -9,18 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\PostgreSqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="bundleconfig.json" />
+    <None Include="bundleconfig.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +26,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Hangfire\OSharp.Hangfire.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Hosting.Apis\OSharp.Hosting.Apis.csproj" />
@@ -46,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="bundleconfig.json" />
   </ItemGroup>
 
   <ProjectExtensions>
