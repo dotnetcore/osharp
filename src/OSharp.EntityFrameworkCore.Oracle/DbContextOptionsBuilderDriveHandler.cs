@@ -1,7 +1,11 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using Oracle.EntityFrameworkCore.Infrastructure;
 
 using OSharp.Dependency;
 
@@ -14,6 +18,16 @@ namespace OSharp.Entity.Oracle
     [Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// </summary>
+        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        {
+            _logger = provider.GetLogger(this);
+        }
+
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
         /// </summary>
@@ -28,11 +42,25 @@ namespace OSharp.Entity.Oracle
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
+            Action<OracleDbContextOptionsBuilder> action = null;
+            if (ServiceExtensions.MigrationAssemblyName != null)
+            {
+                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+            }
+
             if (existingConnection == null)
             {
-                return builder.UseOracle(connectionString);
+                _logger.LogDebug($"使用新连接“{connectionString}”应用Oracle数据库");
+                builder.UseOracle(connectionString, action);
             }
-            return builder.UseOracle(existingConnection);
+            else
+            {
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用Oracle数据库");
+                builder.UseOracle(existingConnection, action);
+            }
+
+            ServiceExtensions.MigrationAssemblyName = null;
+            return builder;
         }
     }
 }
