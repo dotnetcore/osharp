@@ -60,7 +60,7 @@ namespace Microsoft.AspNetCore.Builder
             }
 
             watch.Stop();
-            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}");
+            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
 
             return app;
         }
