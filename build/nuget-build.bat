@@ -13,6 +13,7 @@ dotnet pack ../src/OSharp.EntityFrameworkCore.Oracle/OSharp.EntityFrameworkCore.
 dotnet pack ../src/OSharp.EntityFrameworkCore.PostgreSql/OSharp.EntityFrameworkCore.PostgreSql.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.EntityFrameworkCore.Sqlite/OSharp.EntityFrameworkCore.Sqlite.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.EntityFrameworkCore.SqlServer/OSharp.EntityFrameworkCore.SqlServer.csproj -c Release --output nupkgs
+dotnet pack ../src/OSharp.Exceptionless/OSharp.Exceptionless.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.Hangfire/OSharp.Hangfire.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj -c Release --output nupkgs
 dotnet pack ../src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj -c Release --output nupkgs
