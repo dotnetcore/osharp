@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="DbContextBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -45,7 +45,7 @@ namespace OSharp.Entity
             _serviceProvider = serviceProvider;
             _entityManager = serviceProvider.GetService<IEntityManager>();
             _osharpDbOptions = serviceProvider?.GetOSharpOptions()?.DbContexts?.Values.FirstOrDefault(m => m.DbContextType == GetType());
-            Logger = serviceProvider?.GetLogger(this);
+            Logger = serviceProvider.GetLogger(this);
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace OSharp.Entity
         public override int SaveChanges()
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions?.AuditEntityEnabled == true)
+            if (_osharpDbOptions.AuditEntityEnabled == true)
             {
                 IAuditEntityProvider auditEntityProvider = _serviceProvider.GetService<IAuditEntityProvider>();
-                auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
+                auditEntities = auditEntityProvider?.GetAuditEntities(this).ToList();
             }
 
             //开启或使用现有事务
@@ -94,7 +94,7 @@ namespace OSharp.Entity
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = _serviceProvider.GetService<IEventBus>();
-                eventBus?.Publish(this, eventData);
+                eventBus.Publish(this, eventData);
             }
 
             return count;
@@ -128,10 +128,10 @@ namespace OSharp.Entity
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             IList<AuditEntityEntry> auditEntities = new List<AuditEntityEntry>();
-            if (_osharpDbOptions?.AuditEntityEnabled == true)
+            if (_osharpDbOptions.AuditEntityEnabled == true)
             {
                 IAuditEntityProvider auditEntityProvider = _serviceProvider.GetService<IAuditEntityProvider>();
-                auditEntities = auditEntityProvider?.GetAuditEntities(this)?.ToList();
+                auditEntities = auditEntityProvider?.GetAuditEntities(this).ToList();
             }
 
             //开启或使用现有事务
@@ -189,20 +189,26 @@ namespace OSharp.Entity
             foreach (IEntityRegister register in registers)
             {
                 register.RegisterTo(modelBuilder);
-                Logger?.LogDebug($"将实体类 {register.EntityType} 注册到上下文 {contextType} 中");
+                Logger.LogDebug($"将实体类 {register.EntityType} 注册到上下文 {contextType} 中");
             }
-            Logger?.LogInformation($"上下文 {contextType} 注册了{registers.Length}个实体类");
+            Logger.LogInformation($"上下文 {contextType} 注册了{registers.Length}个实体类");
 
-            //按预定前缀更改表名
-            var entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+            List<IMutableEntityType> entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
             foreach (IMutableEntityType entityType in entityTypes)
             {
+                //启用时间属性UTC格式
+                if (_osharpDbOptions.DateTimeUtcFormatEnabled)
+                {
+                    IEntityDateTimeUtcConversion utcConversion = _serviceProvider.GetService<IEntityDateTimeUtcConversion>();
+                    utcConversion.Convert(entityType);
+                }
+
+                //按预定前缀更改表名
                 string prefix = GetTableNamePrefix(entityType.ClrType);
                 if (prefix.IsNullOrEmpty())
                 {
                     continue;
                 }
-
                 modelBuilder.Entity(entityType.ClrType).ToTable($"{prefix}_{entityType.GetTableName()}");
             }
         }
