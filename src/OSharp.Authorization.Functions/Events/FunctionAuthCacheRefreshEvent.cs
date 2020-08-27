@@ -11,6 +11,7 @@ using System;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore;
 using OSharp.EventBuses;
 
 
@@ -67,13 +68,14 @@ namespace OSharp.Authorization.Events
             {
                 return;
             }
+
             IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
             if (eventData.FunctionIds.Length > 0)
             {
                 cache.RemoveFunctionCaches(eventData.FunctionIds);
                 foreach (Guid functionId in eventData.FunctionIds)
                 {
-                    cache.GetFunctionRoles(functionId);
+                    cache.GetFunctionRoles(functionId, _provider);
                 }
             }
             if (eventData.UserNames.Length > 0)

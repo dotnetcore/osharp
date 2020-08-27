@@ -940,6 +940,32 @@ $public$ $type$ $property$  { get; private set; }</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=354AE64A27D05A4683CE963435035574/Shortcut/@EntryValue">asrt</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=354AE64A27D05A4683CE963435035574/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=354AE64A27D05A4683CE963435035574/Text/@EntryValue">System.Diagnostics.Debug.Assert($END$);</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Description/@EntryValue">API的Post-Action</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=ActionName/Expression/@EntryValue">constant("ActionName")</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=bool/Expression/@EntryValue">constant("object")</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=_529F_80FD_63CF_8FF0/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=_529F_80FD_63CF_8FF0/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=ActionName/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=ActionName/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=bool/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=bool/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=param/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Field/=param/Order/@EntryValue">3</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Shortcut/@EntryValue">actpa</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3744FC232AB492419C5F501271E14910/Text/@EntryValue">[HttpPost]&#xD;
+[UnitOfWork]&#xD;
+[Description("$功能描述$")]&#xD;
+public $bool$ $ActionName$($param$)&#xD;
+{&#xD;
+	return null;$END$&#xD;
+}</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3ABB0DF9F0CAB94CA4C0D49D6D29A04B/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3ABB0DF9F0CAB94CA4C0D49D6D29A04B/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3ABB0DF9F0CAB94CA4C0D49D6D29A04B/Categories/=Imported_00202016_002F10_002F25/@EntryIndexedValue">Imported 2016/10/25</s:String>
@@ -4160,6 +4186,7 @@ finally&#xD;
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Hanzis/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=ints/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Jwtoken/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=layui/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Levenshtein/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Liuliu/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Metadatas/@EntryIndexedValue">True</s:Boolean>
@@ -4175,4 +4202,5 @@ finally&#xD;
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Startups/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Strs/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Stylet/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=templet/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Updatable/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

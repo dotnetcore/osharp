@@ -34,9 +34,9 @@ namespace OSharp.Core.Builders
         IEnumerable<OsharpPack> Packs { get; }
 
         /// <summary>
-        /// 获取 OSharp选项配置委托
+        /// 获取 OSharp选项配置
         /// </summary>
-        Action<OsharpOptions> OptionsAction { get; }
+        OsharpOptions Options { get; }
 
         /// <summary>
         /// 添加指定模块
@@ -45,10 +45,10 @@ namespace OSharp.Core.Builders
         IOsharpBuilder AddPack<TPack>() where TPack : OsharpPack;
 
         /// <summary>
-        /// 添加OSharp选项配置
+        /// 添加加载的所有Pack，并可排除指定的Pack类型
         /// </summary>
-        /// <param name="optionsAction">OSharp操作选项</param>
-        /// <returns>OSharp构建器</returns>
-        IOsharpBuilder AddOptions(Action<OsharpOptions>optionsAction);
+        /// <param name="exceptPackTypes">要排除的Pack类型</param>
+        /// <returns></returns>
+        IOsharpBuilder AddPacks(params Type[] exceptPackTypes);
     }
 }

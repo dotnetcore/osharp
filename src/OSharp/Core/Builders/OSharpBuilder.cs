@@ -9,15 +9,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.Builders
@@ -36,8 +40,40 @@ namespace OSharp.Core.Builders
         public OsharpBuilder(IServiceCollection services)
         {
             Services = services;
-            _packs = new List<OsharpPack>();
             _source = GetAllPacks(services);
+            _packs = new List<OsharpPack>();
+
+            IConfiguration configuration = services.GetConfiguration();
+            if (configuration == null)
+            {
+                IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+                configuration = configurationBuilder.Build();
+                services.AddSingleton<IConfiguration>(configuration);
+            }
+
+            if (configuration != null)
+            {
+                Singleton<IConfiguration>.Instance = configuration;
+            }
+
+            if (!services.AnyServiceType(typeof(ILoggerFactory)))
+            {
+                services.AddLogging(opts =>
+                {
+#if DEBUG
+                    opts.SetMinimumLevel(LogLevel.Debug);
+#else
+                opts.SetMinimumLevel(LogLevel.Information);
+#endif
+                });
+            }
+
+            OsharpOptions options = new OsharpOptions();
+            configuration.Bind("OSharp", options);
+            Options = options;
         }
 
         /// <summary>
@@ -51,9 +87,9 @@ namespace OSharp.Core.Builders
         public IEnumerable<OsharpPack> Packs => _packs;
 
         /// <summary>
-        /// 获取 OSharp选项配置委托
+        /// 获取 OSharp选项配置
         /// </summary>
-        public Action<OsharpOptions> OptionsAction { get; private set; }
+        public OsharpOptions Options { get; }
 
         /// <summary>
         /// 添加指定模块
@@ -62,6 +98,16 @@ namespace OSharp.Core.Builders
         public IOsharpBuilder AddPack<TPack>() where TPack : OsharpPack
         {
             Type type = typeof(TPack);
+            return AddPack(type);
+        }
+
+        private IOsharpBuilder AddPack(Type type)
+        {
+            if (!type.IsBaseOn(typeof(OsharpPack)))
+            {
+                throw new OsharpException($"要加载的Pack类型“{type}”不派生于基类 OsharpPack");
+            }
+
             if (_packs.Any(m => m.GetType() == type))
             {
                 return this;
@@ -69,7 +115,6 @@ namespace OSharp.Core.Builders
 
             OsharpPack[] tmpPacks = new OsharpPack[_packs.Count];
             _packs.CopyTo(tmpPacks);
-
             OsharpPack pack = _source.FirstOrDefault(m => m.GetType() == type);
             if (pack == null)
             {
@@ -92,24 +137,37 @@ namespace OSharp.Core.Builders
             // 按先层级后顺序的规则进行排序
             _packs = _packs.OrderBy(m => m.Level).ThenBy(m => m.Order).ToList();
 
+            string logName = typeof(OsharpBuilder).FullName;
             tmpPacks = _packs.Except(tmpPacks).ToArray();
             foreach (OsharpPack tmpPack in tmpPacks)
             {
+                Type packType = tmpPack.GetType();
+                string packName = packType.GetDescription();
+                Services.LogInformation($"添加模块 “{packName} ({packType.Name})” 的服务", logName);
+                ServiceDescriptor[] tmp = Services.ToArray();
                 AddPack(Services, tmpPack);
+                Services.ServiceLogDebug(tmp, packType.FullName);
+                Services.LogInformation($"模块 “{packName} ({packType.Name})” 的服务添加完毕，添加了 {Services.Count - tmp.Length} 个服务\n", logName);
             }
 
             return this;
         }
 
         /// <summary>
-        /// 添加OSharp选项配置
+        /// 添加加载的所有Pack
         /// </summary>
-        /// <param name="optionsAction">OSharp操作选项</param>
-        /// <returns>OSharp构建器</returns>
-        public IOsharpBuilder AddOptions(Action<OsharpOptions> optionsAction)
+        /// <param name="exceptPackTypes">要排除的Pack类型</param>
+        /// <returns></returns>
+        public IOsharpBuilder AddPacks(params Type[] exceptPackTypes)
         {
-            Check.NotNull(optionsAction, nameof(optionsAction));
-            OptionsAction = optionsAction;
+            OsharpPack[] source = _source.ToArray();
+            OsharpPack[] exceptPacks = source.Where(m => exceptPackTypes.Contains(m.GetType())).ToArray();
+            source = source.Except(exceptPacks).ToArray();
+            foreach (OsharpPack pack in source)
+            {
+                AddPack(pack.GetType());
+            }
+
             return this;
         }
 
@@ -118,7 +176,8 @@ namespace OSharp.Core.Builders
             IOsharpPackTypeFinder packTypeFinder =
                 services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
             Type[] packTypes = packTypeFinder.FindAll();
-            return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)).ToList();
+            return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m))
+                .OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToList();
         }
 
         private static IServiceCollection AddPack(IServiceCollection services, OsharpPack pack)

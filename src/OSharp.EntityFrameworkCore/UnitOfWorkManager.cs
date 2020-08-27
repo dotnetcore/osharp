@@ -10,10 +10,14 @@
 using System;
 using System.Linq;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 using OSharp.Core.Options;
 using OSharp.Dependency;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -23,15 +27,17 @@ namespace OSharp.Entity
     /// </summary>
     public class UnitOfWorkManager : Disposable, IUnitOfWorkManager
     {
+        private readonly ILogger _logger;
         private readonly ScopedDictionary _scopedDictionary;
 
         /// <summary>
         /// 初始化一个<see cref="UnitOfWorkManager"/>类型的新实例
         /// </summary>
-        public UnitOfWorkManager(IServiceProvider serviceProvider)
+        public UnitOfWorkManager(IServiceProvider provider)
         {
-            ServiceProvider = serviceProvider;
-            _scopedDictionary = serviceProvider.GetService<ScopedDictionary>();
+            ServiceProvider = provider;
+            _logger = provider.GetLogger(this);
+            _scopedDictionary = provider.GetService<ScopedDictionary>();
         }
 
         /// <summary>
@@ -71,31 +77,48 @@ namespace OSharp.Entity
         {
             if (!entityType.IsEntityType())
             {
-                throw new OsharpException($"类型“{entityType}”不是实体类型");
+                throw new OsharpException($"类型 {entityType} 不是实体类型");
             }
 
             IUnitOfWork unitOfWork = _scopedDictionary.GetEntityUnitOfWork(entityType);
             if (unitOfWork != null)
             {
+                _logger.LogDebug($"由实体类 {entityType} 获取到已存在的工作单元，工作单元标识：{unitOfWork.GetHashCode()}");
                 return unitOfWork;
             }
 
-            IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
-            Type dbContextType = entityManager.GetDbContextTypeForEntity(entityType);
+            Type dbContextType = GetDbContextType(entityType);
             if (dbContextType == null)
             {
-                throw new OsharpException($"实体类“{entityType}”的所属上下文类型无法找到");
+                throw new OsharpException($"实体类 {entityType} 的所属上下文类型无法找到");
+            }
+
+            unitOfWork = GetDbContextUnitOfWork(dbContextType);
+            _scopedDictionary.SetEntityUnitOfWork(entityType, unitOfWork);
+
+            _logger.LogDebug($"由实体类 {entityType} 创建新的工作单元，工作单元标识：{unitOfWork.GetHashCode()}");
+            return unitOfWork;
+        }
+
+        /// <summary>
+        /// 获取指定上下文类型的上下文实例
+        /// </summary>
+        /// <returns></returns>
+        public IUnitOfWork GetDbContextUnitOfWork(Type dbContextType)
+        {
+            if (!dbContextType.IsBaseOn(typeof(DbContext)))
+            {
+                throw new OsharpException($"类型 {dbContextType} 不是数据上下文类型");
             }
             OsharpDbContextOptions dbContextOptions = GetDbContextResolveOptions(dbContextType);
-            unitOfWork = _scopedDictionary.GetConnUnitOfWork(dbContextOptions.ConnectionString);
+            IUnitOfWork unitOfWork = _scopedDictionary.GetConnUnitOfWork(dbContextOptions.ConnectionString);
             if (unitOfWork != null)
             {
+                _logger.LogDebug($"由上下文 {dbContextType} 的连接串获取到已存在的工作单元，工作单元标识：{unitOfWork.GetHashCode()}");
                 return unitOfWork;
             }
             unitOfWork = ActivatorUtilities.CreateInstance<UnitOfWork>(ServiceProvider);
-            _scopedDictionary.SetEntityUnitOfWork(entityType, unitOfWork);
             _scopedDictionary.SetConnUnitOfWork(dbContextOptions.ConnectionString, unitOfWork);
-
             return unitOfWork;
         }
 
@@ -120,7 +143,7 @@ namespace OSharp.Entity
             OsharpDbContextOptions dbContextOptions = ServiceProvider.GetOSharpOptions()?.GetDbContextOptions(dbContextType);
             if (dbContextOptions == null)
             {
-                throw new OsharpException($"无法找到数据上下文“{dbContextType}”的配置信息");
+                throw new OsharpException($"无法找到数据上下文 {dbContextType} 的配置信息");
             }
             return dbContextOptions;
         }
@@ -132,6 +155,7 @@ namespace OSharp.Entity
         {
             foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
             {
+                _logger.LogDebug($"提交工作单元事务，工作单元标识：{unitOfWork.GetHashCode()}");
                 unitOfWork.Commit();
             }
         }
@@ -142,6 +166,7 @@ namespace OSharp.Entity
             {
                 foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
                 {
+                    _logger.LogDebug($"释放工作单元，工作单元标识：{unitOfWork.GetHashCode()}");
                     unitOfWork.Dispose();
                 }
             }

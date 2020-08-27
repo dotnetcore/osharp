@@ -18,8 +18,6 @@ using OSharp.Core.Packs;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 
-using StackExchange.Redis;
-
 
 namespace OSharp.Redis
 {

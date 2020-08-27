@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DashboardController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -64,7 +64,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [LoggedIn]
         [Description("统计数据")]
-        public IActionResult SummaryData(DateTime start, DateTime end)
+        public object SummaryData(DateTime start, DateTime end)
         {
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
@@ -111,14 +111,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 "Dashboard_Summary_EntityInfo").FirstOrDefault() ?? new { TotalCount = 0, AuditCount = 0 };
 
             var data = new { users, roles, modules, functions, entityInfos };
-            return Json(data);
+            return data;
         }
 
         [HttpGet]
         [ModuleInfo]
         [LoggedIn]
         [Description("曲线数据")]
-        public IActionResult LineData(DateTime start, DateTime end)
+        public object LineData(DateTime start, DateTime end)
         {
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
@@ -139,7 +139,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 DailySum = userData.Where(n => n.Date <= m.Date).Sum(n => n.DailyCount)
             }).ToList();
 
-            return Json(users);
+            return users;
         }
 
         private static Expression<Func<TEntity, bool>> GetExpression<TEntity>(DateTime start, DateTime end)

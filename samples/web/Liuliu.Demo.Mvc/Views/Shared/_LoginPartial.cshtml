@@ -1,0 +1,25 @@
+@using Microsoft.AspNetCore.Identity
+@using OSharp.Hosting.Identity.Entities
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav">
+  @if (SignInManager.IsSignedIn(User))
+  {
+    <li class="nav-item">
+      <a class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+    </li>
+    <li class="nav-item">
+      <partial name="_Logout"/>
+    </li>
+  }
+  else
+  {
+    <li class="nav-item">
+      <a class="nav-link text-dark" href="/identity/register">免费注册</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-dark" href="/identity/login">登录</a>
+    </li>
+  }
+</ul>

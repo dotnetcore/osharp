@@ -8,8 +8,6 @@
     <PackageId>OSharpNS.Hangfire</PackageId>
     <Summary>OSharp Hangfire 后台任务组件</Summary>
     <Description>OSharp Hangfire 后台任务组件，封装基于Hangfire后台任务的服务端实现</Description>
-    <RootNamespace>OSharp.Hangfire</RootNamespace>
-    <AssemblyName>OSharp.Hangfire</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -18,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.7.9" />
+    <PackageReference Include="Hangfire" Version="1.7.12" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
   </ItemGroup>
 

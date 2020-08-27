@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="CommonController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -36,7 +36,8 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
-    public class CommonController : SiteApiController
+    //[ApiExplorerSettings(GroupName = "buss")]
+    public class CommonController : SiteApiControllerBase
     {
         private readonly IVerifyCodeService _verifyCodeService;
         private readonly IWebHostEnvironment _environment;

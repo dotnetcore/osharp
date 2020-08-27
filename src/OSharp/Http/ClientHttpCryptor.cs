@@ -30,7 +30,7 @@ namespace OSharp.Http
     {
         private readonly ILogger _logger;
         private readonly TransmissionEncryptor _encryptor;
-        private readonly string _publicKey;
+        private readonly string _clientPublicKey;
 
         /// <summary>
         /// 初始化一个<see cref="ClientHttpCrypto"/>类型的新实例
@@ -42,14 +42,15 @@ namespace OSharp.Http
             if (options.HttpEncrypt?.Enabled == true)
             {
                 HttpEncryptOptions httpEncrypt = options.HttpEncrypt;
-                string clientPublicKey = httpEncrypt.ClientPublicKey;
-                if (string.IsNullOrEmpty(clientPublicKey))
+                string hostPublicKey = httpEncrypt.HostPublicKey;
+                if (string.IsNullOrEmpty(hostPublicKey))
                 {
-                    throw new OsharpException("配置文件中HttpEncrypt节点的ClientPublicKey不能为空");
+                    throw new OsharpException("配置文件中HttpEncrypt节点的HostPublicKey不能为空");
                 }
                 RsaHelper rsa = new RsaHelper();
-                _encryptor = new TransmissionEncryptor(rsa.PrivateKey, httpEncrypt.ClientPublicKey);
-                _publicKey = rsa.PublicKey;
+                _encryptor = new TransmissionEncryptor(rsa.PrivateKey, hostPublicKey);
+                _clientPublicKey = rsa.PublicKey;
+                _logger.LogDebug("使用新的客户端RSA私钥和服务端公钥创建客户端通信加密器");
             }
         }
 
@@ -60,7 +61,7 @@ namespace OSharp.Http
         /// <returns>加密后的请求</returns>
         public virtual async Task<HttpRequestMessage> EncryptRequest(HttpRequestMessage request)
         {
-            if (_encryptor == null || string.IsNullOrEmpty(_publicKey) || request.Method == HttpMethod.Get || request.Content == null)
+            if (_encryptor == null || string.IsNullOrEmpty(_clientPublicKey) || request.Method == HttpMethod.Get || request.Content == null)
             {
                 return request;
             }
@@ -68,7 +69,8 @@ namespace OSharp.Http
             string data = await request.Content.ReadAsStringAsync();
             data = _encryptor.EncryptData(data);
             request = request.CreateNew(data);
-            request.Headers.Add(HttpHeaderNames.ClientPublicKey, _publicKey);
+            request.Headers.Add(HttpHeaderNames.ClientPublicKey, _clientPublicKey);
+            _logger.LogDebug("使用客户端公钥加密客户端请求数据");
             return request;
         }
 
@@ -98,6 +100,7 @@ namespace OSharp.Http
                     throw new OsharpException(Resources.Http_Security_Client_VerifyResponse_Failt);
                 }
                 response = response.CreateNew(data);
+                _logger.LogDebug("使用客户端私钥解密响应数据，并使用服务端公钥验证数据");
                 return response;
             }
             catch (Exception ex)

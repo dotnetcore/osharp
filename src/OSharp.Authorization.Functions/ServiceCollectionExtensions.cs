@@ -50,6 +50,9 @@ namespace OSharp.Authorization
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             functionHandler.RefreshCache();
 
+            IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
+            functionAuthCache.BuildRoleCaches();
+
             return app;
         }
     }

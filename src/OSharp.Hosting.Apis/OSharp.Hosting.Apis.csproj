@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>OSharpNS.Hosting.Apis</PackageId>
+    <OutputType>Library</OutputType>
+    <Summary>OSharp框架非业务WebAPI实现</Summary>
+    <Description>OSharp框架非业务WebAPI实现，封装框架非业务如认证，权限，系统，消息等模块的WebApi实现</Description>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp.Hosting.EntityConfiguration\OSharp.Hosting.EntityConfiguration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+</Project>

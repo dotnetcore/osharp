@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout_Table";
+  ViewData["Title"] = "模块包管理";
+  ViewBag.Name = "pack";
+}
+@section tableParam
+{
+  <script>
+    toolbar = true;
+    columns = [
+      [
+        { type: 'numbers', title: '序号' },
+        { field: 'Display', title: '名称', sort: true, filter: true },
+        { field: 'Class', title: '类型', sort: true },
+        { field: 'Level', title: '级别', sort: true, filter: true, width: 90 },
+        { field: 'Order', title: '启动顺序', sort: true, filter: true, width: 90 },
+        { field: 'IsEnabled', title: '是否启用', sort: true, filter: true, templet: d => renderBool(d.IsEnabled), width: 90 }
+      ]
+    ];
+  </script>
+}

@@ -6,13 +6,22 @@
 > Install-Package OSharpNS.Swagger
 2. 在 `appsettings.json` 中添加如下配置节点
 ```
-{
-  "Swagger": {
-    "Title": "OSharp API",
-    "Version": 1,
-    "Url": "/swagger/v1/swagger.json",
-    "Enabled": true
-  } 
+"Swagger": {
+  "Endpoints": [
+    {
+      "Title": "框架API",
+      "Version": "v1",
+      "Url": "/swagger/v1/swagger.json"
+    },
+    {
+      "Title": "业务API",
+      "Version": "buss",
+      "Url": "/swagger/buss/swagger.json"
+    }
+  ],
+  "RoutePrefix": "swagger",
+  "MiniProfiler": true,
+  "Enabled": true
 }
 ```
 3. 要禁用Swagger，可以设置`Enabled: false`

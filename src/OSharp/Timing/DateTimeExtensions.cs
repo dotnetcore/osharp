@@ -56,22 +56,6 @@ namespace OSharp.Timing
         }
 
         /// <summary>
-        /// 将当前时区时间转换为UTC时间
-        /// </summary>
-        public static DateTime ToUtcTime(this DateTime dateTime)
-        {
-            return TimeZoneInfo.ConvertTimeToUtc(dateTime, TimeZoneInfo.Local);
-        }
-
-        /// <summary>
-        /// 将指定UTC时间转换为当前时区的时间
-        /// </summary>
-        public static DateTime FromUtcTime(this DateTime dateTime)
-        {
-            return TimeZoneInfo.ConvertTimeFromUtc(dateTime, TimeZoneInfo.Local);
-        }
-
-        /// <summary>
         /// 将时间转换为JS时间格式(Date.getTime())
         /// </summary>
         public static string ToJsGetTime(this DateTime dateTime, bool milsec = true)
@@ -87,10 +71,10 @@ namespace OSharp.Timing
         public static DateTime FromJsGetTime(this long jsTime)
         {
             int length = jsTime.ToString().Length;
-            Check.Required<ArgumentException>(length != 10 || length != 13, "JS时间数值的长度不正确，必须为10位或13位");
+            Check.Required<ArgumentException>(length == 10 || length == 13, "JS时间数值的长度不正确，必须为10位或13位");
             DateTime start = new DateTime(1970, 1, 1);
             DateTime result = length == 10 ? start.AddSeconds(jsTime) : start.AddMilliseconds(jsTime);
-            return result.FromUtcTime();
+            return result.ToUniversalTime();
         }
     }
 }

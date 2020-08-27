@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using StyletIoC;
 
 
@@ -51,7 +53,7 @@ namespace OSharp.Wpf.Stylet
         }
 
         /// <summary>
-        /// 初始化
+        /// 初始化 stylet 的内置IoC
         /// </summary>
         /// <param name="container">依赖注入容器</param>
         public static void Initialize(IContainer container)
@@ -59,6 +61,15 @@ namespace OSharp.Wpf.Stylet
             GetInstance = container.Get;
             GetAllInstances = type => container.GetAll(type);
             BuildUp = container.BuildUp;
+        }
+
+        /// <summary>
+        /// 初始化 .net core 的IoC
+        /// </summary>
+        public static void Initialize(IServiceProvider provider)
+        {
+            GetInstance = (type, key) => provider.GetService(type);
+            GetAllInstances = provider.GetServices;
         }
     }
 }

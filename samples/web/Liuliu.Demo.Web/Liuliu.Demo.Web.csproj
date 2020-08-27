@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <Import Project="../../../build/public.props" />
   <Import Project="../../../build/version.props" />
@@ -8,43 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="log\**" />
-    <Content Remove="log\**" />
-    <EmbeddedResource Remove="log\**" />
-    <None Remove="log\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Startups\CodeGeneratorPack.cs" />
-    <Compile Remove="Startups\MySqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\MySqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\OracleDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\OracleDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\PostgreSqlDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\PostgreSqlDesignTimeDefaultDbContextFactory.cs" />
-    <Compile Remove="Startups\SqliteDefaultDbContextMigrationPack.cs" />
-    <Compile Remove="Startups\SqliteDesignTimeDefaultDbContextFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.PostgreSql\OSharp.EntityFrameworkCore.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.SqlServer\OSharp.EntityFrameworkCore.SqlServer.csproj" />
@@ -53,8 +35,13 @@
     <ProjectReference Include="..\..\..\src\OSharp.MiniProfiler\OSharp.MiniProfiler.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
-    <ProjectReference Include="..\Liuliu.Demo.Core\Liuliu.Demo.Core.csproj" />
     <ProjectReference Include="..\Liuliu.Demo.EntityConfiguration\Liuliu.Demo.EntityConfiguration.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="log\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://json.schemastore.org/appsettings" /></VisualStudio></ProjectExtensions>
 
 </Project>

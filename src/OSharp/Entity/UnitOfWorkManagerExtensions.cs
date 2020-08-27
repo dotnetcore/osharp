@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Options;
 using OSharp.Exceptions;
+using OSharp.Reflection;
 
 
 namespace OSharp.Entity
@@ -43,18 +44,29 @@ namespace OSharp.Entity
                 throw new OsharpException($"类型“{entityType}”不是实体类型");
             }
             IUnitOfWork unitOfWork = unitOfWorkManager.GetUnitOfWork(entityType);
-            return unitOfWork?.GetDbContext(entityType);
+            return unitOfWork?.GetEntityDbContext(entityType);
+        }
+
+        /// <summary>
+        /// 获取指定上下文类型的上下文对象
+        /// </summary>
+        public static IDbContext GetDbContext<TDbContext>(this IUnitOfWorkManager unitOfWorkManager)
+            where TDbContext : IDbContext
+        {
+            Type dbContextType = typeof(TDbContext);
+            IUnitOfWork unitOfWork = unitOfWorkManager.GetDbContextUnitOfWork(dbContextType);
+            return unitOfWork.GetDbContext(dbContextType);
         }
 
         /// <summary>
         /// 获取指定实体类型的数据上下文选项
         /// </summary>
-        public static OsharpDbContextOptions GetDbContextResolveOptions<TEntity,TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
+        public static OsharpDbContextOptions GetDbContextResolveOptions<TEntity, TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
         {
             Type entityType = typeof(TEntity);
             return unitOfWorkManager.GetDbContextResolveOptions(entityType);
         }
-        
+
         /// <summary>
         /// 获取指定实体类型的数据上下文选项
         /// </summary>
@@ -72,7 +84,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 获取指定实体类型的Sql执行器
         /// </summary>
-        public static ISqlExecutor<TEntity,TKey> GetSqlExecutor<TEntity,TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
+        public static ISqlExecutor<TEntity, TKey> GetSqlExecutor<TEntity, TKey>(this IUnitOfWorkManager unitOfWorkManager) where TEntity : IEntity<TKey>
         {
             OsharpDbContextOptions options = unitOfWorkManager.GetDbContextResolveOptions(typeof(TEntity));
             DatabaseType databaseType = options.DatabaseType;

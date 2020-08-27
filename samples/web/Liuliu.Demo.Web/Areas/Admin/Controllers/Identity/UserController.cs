@@ -99,21 +99,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 Updatable = updateFunc(m.D),
                 Deletable = deleteFunc(m.D)
             }).ToArray());
-
-
+            
             return page.ToPageData();
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         /// <summary>

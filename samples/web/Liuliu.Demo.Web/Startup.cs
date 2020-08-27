@@ -9,6 +9,7 @@
 
 using Liuliu.Demo.Authorization;
 using Liuliu.Demo.Identity;
+using Liuliu.Demo.Infos;
 using Liuliu.Demo.Systems;
 using Liuliu.Demo.Web.Startups;
 
@@ -41,7 +42,8 @@ namespace Liuliu.Demo.Web
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<AuditPack>();
+                .AddPack<AuditPack>()
+                .AddPack<InfosPack>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

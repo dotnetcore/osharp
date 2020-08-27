@@ -11,6 +11,7 @@ using System;
 using System.Linq.Expressions;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 
 namespace OSharp.Entity
@@ -23,6 +24,7 @@ namespace OSharp.Entity
         where TKey : IEquatable<TKey>
     {
         private readonly IServiceProvider _rootProvider;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// 初始化一个<see cref="SeedDataInitializerBase{TEntity, TKey}"/>类型的新实例
@@ -30,6 +32,7 @@ namespace OSharp.Entity
         protected SeedDataInitializerBase(IServiceProvider rootProvider)
         {
             _rootProvider = rootProvider;
+            _logger = rootProvider.GetLogger(GetType());
         }
 
         /// <summary>
@@ -38,12 +41,18 @@ namespace OSharp.Entity
         public virtual int Order => 0;
 
         /// <summary>
+        /// 获取 所属实体类型
+        /// </summary>
+        public Type EntityType => typeof(TEntity);
+
+        /// <summary>
         /// 初始化种子数据
         /// </summary>
         public void Initialize()
         {
             TEntity[] entities = SeedData();
             SyncToDatabase(entities);
+            _logger.LogInformation($"同步 {entities.Length} 个“{typeof(TEntity)}”种子数据到数据库");
         }
 
         /// <summary>
@@ -82,8 +91,7 @@ namespace OSharp.Entity
 
                         repository.Insert(entity);
                     }
-                },
-                true);
+                });
         }
     }
 }

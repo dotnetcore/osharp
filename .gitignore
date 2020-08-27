@@ -25,6 +25,7 @@ bld/
 [Ll]og/
 
 /docs/_api
+/build/nupkgs
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -95,6 +96,9 @@ ipch/
 *.vsp
 *.vspx
 *.sap
+
+# Sqlite Database
+*.db
 
 # TFS 2012 Local Workspace
 $tf/

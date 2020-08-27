@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -44,7 +44,7 @@ namespace Liuliu.Demo.Web.Controllers
 {
     [Description("网站-认证")]
     [ModuleInfo(Order = 1)]
-    public class IdentityController : SiteApiController
+    public class IdentityController : SiteApiControllerBase
     {
         private readonly IIdentityContract _identityContract;
         private readonly SignInManager<User> _signInManager;
@@ -271,7 +271,7 @@ namespace Liuliu.Demo.Web.Controllers
             if (remoteError != null)
             {
                 Logger.LogError($"第三方登录错误：{remoteError}");
-                return Json(new AjaxResult($"第三方登录错误：{remoteError}", AjaxResultType.UnAuth));
+                throw new Exception($"第三方登录错误：{remoteError}");
             }
 
             string url;

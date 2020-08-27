@@ -68,7 +68,7 @@ namespace OSharp.Identity
             //在线用户缓存
             services.TryAddScoped<IOnlineUserProvider, OnlineUserProvider<TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey>>();
 
-            // 替换 IPrincipal ，设置用户主键类型，用以在Repository进行审计时注入正确用户主键类型
+            //替换 IPrincipal，设置用户主键类型，用以在Repository进行审计时注入正确用户主键类型
             services.Replace(new ServiceDescriptor(typeof(IPrincipal),
                 provider =>
                 {
@@ -77,7 +77,7 @@ namespace OSharp.Identity
                     if (principal != null && principal.Identity is ClaimsIdentity identity)
                     {
                         PropertyInfo property = typeof(TUser).GetProperty("Id");
-                        if (property != null)
+                        if (property != null && !identity.HasClaim(m => m.Type == OsharpConstants.UserIdTypeName))
                         {
                             identity.AddClaim(new Claim(OsharpConstants.UserIdTypeName, property.PropertyType.FullName));
                         }
@@ -88,17 +88,12 @@ namespace OSharp.Identity
                 ServiceLifetime.Transient));
 
             Action<IdentityOptions> identityOptionsAction = IdentityOptionsAction();
-            IdentityBuilder builder = services.AddIdentity<TUser, TRole>(identityOptionsAction);
+            IdentityBuilder builder = services.AddIdentityCore<TUser>(identityOptionsAction)
+                .AddRoles<TRole>().AddSignInManager();
 
             services.Replace(new ServiceDescriptor(typeof(IdentityErrorDescriber), typeof(IdentityErrorDescriberZhHans), ServiceLifetime.Scoped));
 
             OnIdentityBuild(builder);
-
-            Action<CookieAuthenticationOptions> cookieOptionsAction = CookieOptionsAction();
-            if (cookieOptionsAction != null)
-            {
-                services.ConfigureApplicationCookie(cookieOptionsAction);
-            }
 
             return services;
         }
@@ -120,22 +115,6 @@ namespace OSharp.Identity
                 options.User.RequireUniqueEmail = false;
                 //锁定
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-            };
-        }
-
-        /// <summary>
-        /// 重写以实现<see cref="CookieAuthenticationOptions"/>的配置
-        /// </summary>
-        /// <returns></returns>
-        protected virtual Action<CookieAuthenticationOptions> CookieOptionsAction()
-        {
-            return options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.Cookie.Name = "osharp.identity";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                options.SlidingExpiration = true;
-                options.LoginPath = "/#/identity/login";
             };
         }
 

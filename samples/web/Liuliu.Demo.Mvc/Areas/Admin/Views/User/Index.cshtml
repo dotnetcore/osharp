@@ -1,0 +1,135 @@
+@{
+  Layout = "_Layout_Table";
+  ViewBag.Title = "用户信息管理";
+  ViewBag.Name = "user";
+}
+@section html{
+  <form class="layui-form" id="edit-@ViewBag.Name" action="#" lay-filter="edit-@ViewBag.Name">
+    <div class="layui-form-item">
+      <label for="Id" class="layui-form-label">编号</label>
+      <div class="layui-input-inline">
+        <input type="text" name="Id" id="Id" class="layui-input" readonly>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label for="UserName" class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="UserName" id="UserName" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="NickName" class="layui-form-label">用户昵称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="NickName" id="NickName" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+          <input type="email" name="Email" id="Email" lay-verify="required|email" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">邮箱确认</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="EmailConfirmed" id="EmailConfirmed" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="PhoneNumber" id="PhoneNumber" lay-verify="required|tel" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">手机确认</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="PhoneNumberConfirmed" id="PhoneNumberConfirmed" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">是否锁定</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="IsLocked" id="IsLocked" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">登录锁</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" name="LockoutEnabled" id="LockoutEnabled" value="true" lay-skin="switch" lay-text="是|否" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">登录错误</label>
+        <div class="layui-input-inline">
+          <input type="number" name="AccessFailedCount" id="AccessFailedCount" value="0" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="IsLocked" class="layui-form-label">锁时间</label>
+        <div class="layui-input-inline">
+          <input type="datetime" name="LockoutEnd" id="LockoutEnd" lay-verify="date" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+  </form>
+}
+@section tableParam
+{
+  <script>
+    columns = [
+      [
+        { type: 'checkbox', fixed: 'left' },
+        { field: 'Id', title: '编号', fixed: 'left', sort: true, width: 65 },
+        { field: 'UserName', title: '用户名', sort: true },
+        { field: 'NickName', title: '昵称', sort: true },
+        { field: 'Email', title: '邮箱', sort: true },
+        { field: 'EmailConfirmed', title: '邮箱确认', sort: true, width: 90, templet: d => renderBool(d.EmailConfirmed) },
+        { field: 'PhoneNumber', title: '手机', sort: true },
+        { field: 'PhoneNumberConfirmed', title: '手机确认', sort: true, width: 90, templet: d => renderBool(d.PhoneNumberConfirmed) },
+        { field: 'Roles', title: '角色', width: 150 },
+        { field: 'IsLocked', title: '锁定', sort: true, templet: d => renderBool(d.IsLocked) },
+        { field: 'LockoutEnabled', title: '登录锁', sort: true, width: 90, templet: d => renderBool(d.LockoutEnabled) },
+        { field: 'AccessFailedCount', title: '登录错误', sort: true, width: 90 },
+        { field: 'LockoutEnd', title: '锁时间', sort: true, templet: d => osharp.tools.dateFormat(d.LockoutEnd) },
+        { field: 'CreatedTime', title: '注册时间', sort: true, templet: d => osharp.tools.dateFormat(d.CreatedTime) },
+        { fixed: 'right', title: '操作', width: 90, toolbar: '#rowActionTpl' }
+      ]
+    ];
+    editShow = function(data, form) {
+      form.val('edit-@ViewBag.Name',
+        {
+          Id: data.Id,
+          UserName: data.UserName,
+          NickName: data.NickName,
+          Email: data.Email,
+          EmailConfirmed: data.EmailConfirmed,
+          PhoneNumber: data.PhoneNumber,
+          PhoneNumberConfirmed: data.PhoneNumberConfirmed,
+          Roles: data.Roles,
+          IsLocked: data.IsLocked,
+          LockoutEnabled: data.LockoutEnabled,
+          AccessFailedCount: data.AccessFailedCount,
+          LockoutEnd: data.LockoutEnd
+        });
+    };
+  </script>
+}
+@section tableOptions{
+  <script>
+    layui.use(['form', 'laydate'],
+      function() {
+        var laydate = layui.laydate;
+        laydate.render({
+          elem: '#LockoutEnd', type: 'datetime'
+        });
+      });
+  </script>
+}

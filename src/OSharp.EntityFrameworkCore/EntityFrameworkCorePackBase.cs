@@ -42,6 +42,7 @@ namespace OSharp.Entity
             services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
             services.TryAddSingleton<IEntityConfigurationTypeFinder, EntityConfigurationTypeFinder>();
             services.TryAddSingleton<IEntityManager, EntityManager>();
+            services.TryAddSingleton<IEntityDateTimeUtcConversion, EntityDateTimeUtcConversion>();
             services.AddSingleton<DbContextModelCache>();
             services.AddOsharpDbContext<DefaultDbContext>();
 
@@ -55,7 +56,7 @@ namespace OSharp.Entity
         public override void UsePack(IServiceProvider provider)
         {
             IEntityManager manager = provider.GetService<IEntityManager>();
-            manager?.Initialize();
+            manager.Initialize();
             IsEnabled = true;
         }
     }
