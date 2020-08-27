@@ -92,6 +92,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hosting.Apis", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.EntityFrameworkCore.Oracle", "src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj", "{4E26B25A-11F4-445E-AE75-BCE02FA3CA29}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src\OSharp.Exceptionless\OSharp.Exceptionless.csproj", "{DF42EE5B-627F-408D-8E7F-675FACD5A318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -234,6 +236,10 @@ Global
 		{4E26B25A-11F4-445E-AE75-BCE02FA3CA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E26B25A-11F4-445E-AE75-BCE02FA3CA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E26B25A-11F4-445E-AE75-BCE02FA3CA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -275,6 +281,7 @@ Global
 		{FD428746-CA60-4F80-BC53-BA1A69CF739F} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{3C2FF651-1C3F-4A8B-AB77-89E26DA260D0} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{4E26B25A-11F4-445E-AE75-BCE02FA3CA29} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
+		{DF42EE5B-627F-408D-8E7F-675FACD5A318} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}

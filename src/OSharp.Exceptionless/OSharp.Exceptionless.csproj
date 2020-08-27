@@ -4,23 +4,20 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>OSharpNS.Exceptionless</PackageId>
     <Summary>OSharp Exceptionless 分布式日志组件</Summary>
     <Description>OSharp Exceptionless 分布式日志组件，封装基于Exceptionless 分布式日志记录实现</Description>
     <RootNamespace>OSharp.Exceptionless</RootNamespace>
-    <Version>2.2.6</Version>
-    <AssemblyVersion>2.2.6.0</AssemblyVersion>
-    <FileVersion>2.2.6.0</FileVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\OSharp.Exceptionless.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.AspNetCore" Version="4.3.2027" />
+    <PackageReference Include="Exceptionless.AspNetCore" Version="4.4.1" />
   </ItemGroup>
 
   <ItemGroup>

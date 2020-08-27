@@ -4,8 +4,8 @@
     <VersionPrefix>7</VersionPrefix>
     <VersionSuffix>-preview</VersionSuffix>
     <VersionSuffixVersion>0826</VersionSuffixVersion>
-    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
-    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
+    <!--<Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>-->
+    <Version>$(VersionMain).$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
   </PropertyGroup>
