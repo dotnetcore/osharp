@@ -1,4 +1,4 @@
-# OSharp Framework with .NETStandard2.0
+﻿# OSharp Framework with .NETStandard2.0
 
 [![osharp@66soft](https://img.shields.io/badge/66soft-osharp.org-bc17da.svg)](http://www.osharp.org)
 [![NuGet Pre Release](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)
@@ -19,6 +19,11 @@
 ## <a id="01"/>OSharp简介
 
 OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandard2.x开发的一个.NetCore快速开发框架。这个框架使用最新稳定版的.NetCore SDK（当前是.NET Core 3.1），对 AspNetCore 的配置、依赖注入、日志、缓存、实体框架、Mvc(WebApi)、身份认证、权限授权等模块进行更高一级的自动化封装，并规范了一套业务实现的代码结构与操作流程，使 .Net Core 框架更易于应用到实际项目开发中。
+
+相关示例项目：
+- Mvc版本(layui): [https://github.com/i66soft/osharp-layui](https://github.com/i66soft/osharp-layui)
+- Vue版本(element ui): [https://github.com/i66soft/osharp-element](https://github.com/i66soft/osharp-element)
+- Blazor版本(BootstrapBlazor): [https://github.com/i66soft/osharp-blazor](https://github.com/i66soft/osharp-blazor)
 
 ### 框架组件组织
 
@@ -45,6 +50,9 @@ OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStand
 * OSharp.Redis【缓存组件】：基于Redis的分布式缓存客户端组件
 * OSharp.Swagger【SwaggerAPI组件】：基于Swagger生成MVC的Action的API测试接口信息
 * OSharp.Wpf【OSharp Wpf 客户端组件】：OSharp Wpf 客户端组件，封装Wpf客户端的辅助操作
+* OSharp.Hosting.Core【OSharp框架非业务核心】：OSharp框架业务核心，封装框架非业务如认证，权限，系统，消息等模块的接口与业务实现
+* OSharp.Hosting.EntityConfiguration【OSharp框架非业务实体映射】：OSharp框架非业务实体映射，封装框架非业务如认证，权限，系统，消息等模块的EFCore实体映射
+* OSharp.Hosting.Apis【OSharp框架非业务WebAPI实现】：OSharp框架非业务WebAPI实现，封装框架非业务如认证，权限，系统，消息等模块的WebApi实现
 
 ### Nuget Packages
 | 包名称                                                         | Nuget稳定版本                                                                                                       | Nuget预览版本                                                                                                          | 下载数                                                                                                               |
@@ -70,6 +78,9 @@ OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStand
 | [OSharpNS.Exceptionless](https://www.nuget.org/packages/OSharpNS.Exceptionless/)                                   | [![OSharpNS.Exceptionless](https://img.shields.io/nuget/v/OSharpNS.Exceptionless.svg)](https://www.nuget.org/packages/OSharpNS.Exceptionless/)                             | [![OSharpNS.Exceptionless](https://img.shields.io/nuget/vpre/OSharpNS.Exceptionless.svg)](https://www.nuget.org/packages/OSharpNS.Exceptionless/)                                                   | [![OSharpNS.Exceptionless](https://img.shields.io/nuget/dt/OSharpNS.Exceptionless.svg)](https://www.nuget.org/packages/OSharpNS.Exceptionless/)                                                    |
 | [OSharpNS.Swagger](https://www.nuget.org/packages/OSharpNS.Swagger/)                                               | [![OSharpNS.Swagger](https://img.shields.io/nuget/v/OSharpNS.Swagger.svg)](https://www.nuget.org/packages/OSharpNS.Swagger/)                                       | [![OSharpNS.Swagger](https://img.shields.io/nuget/vpre/OSharpNS.Swagger.svg)](https://www.nuget.org/packages/OSharpNS.Swagger/)                                                                      | [![OSharpNS.Swagger](https://img.shields.io/nuget/dt/OSharpNS.Swagger.svg)](https://www.nuget.org/packages/OSharpNS.Swagger/)                                                                      |
 | [OSharpNS.Wpf](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/v/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/vpre/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) | [![OSharpNS.Wpf](https://img.shields.io/nuget/dt/OSharpNS.Wpf.svg)](https://www.nuget.org/packages/OSharpNS.Wpf/) |
+| [OSharpNS.Hosting.Core](https://www.nuget.org/packages/OSharpNS.Hosting.Core/) | [![OSharpNS.Hosting.Core](https://img.shields.io/nuget/v/OSharpNS.Hosting.Core.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Core/) | [![OSharpNS.Hosting.Core](https://img.shields.io/nuget/vpre/OSharpNS.Hosting.Core.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Core/) | [![OSharpNS.Hosting.Core](https://img.shields.io/nuget/dt/OSharpNS.Hosting.Core.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Core/) |
+| [OSharpNS.Hosting.EntityConfiguration](https://www.nuget.org/packages/OSharpNS.Hosting.EntityConfiguration/) | [![OSharpNS.Hosting.EntityConfiguration](https://img.shields.io/nuget/v/OSharpNS.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.EntityConfiguration/) | [![OSharpNS.Hosting.EntityConfiguration](https://img.shields.io/nuget/vpre/OSharpNS.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.EntityConfiguration/) | [![OSharpNS.Hosting.EntityConfiguration](https://img.shields.io/nuget/dt/OSharpNS.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.EntityConfiguration/) |
+| [OSharpNS.Hosting.Apis](https://www.nuget.org/packages/OSharpNS.Hosting.Apis/) | [![OSharpNS.Hosting.Apis](https://img.shields.io/nuget/v/OSharpNS.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Apis/) | [![OSharpNS.Hosting.Apis](https://img.shields.io/nuget/vpre/OSharpNS.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Apis/) | [![OSharpNS.Hosting.Apis](https://img.shields.io/nuget/dt/OSharpNS.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharpNS.Hosting.Apis/) |
 | [OSharpNS](https://www.nuget.org/packages/OSharpNS/)                                                               | [![OSharpNS](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                   | [![OSharpNS](https://img.shields.io/nuget/vpre/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              | [![OSharpNS](https://img.shields.io/nuget/dt/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              |
 | [OSharpNS.Template.Mvc_Angular](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)                     | [![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/v/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)      |                            | [![OSharpNS.Template.Mvc_Angular](https://img.shields.io/nuget/dt/OSharpNS.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharpNS.Template.Mvc_Angular/)  
 
