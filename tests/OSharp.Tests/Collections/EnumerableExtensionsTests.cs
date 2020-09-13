@@ -1,8 +1,10 @@
-﻿using System;
+﻿using OSharp.Collections;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
+using OSharp.Exceptions;
 using OSharp.Filter;
 using OSharp.UnitTest.Infrastructure;
 
@@ -109,5 +111,13 @@ namespace OSharp.Collections.Tests
             Assert.Equal("fda", source.OrderBy(new SortCondition("IsDeleted")).ThenBy(new SortCondition("Name")).ToArray()[2].Name);
         }
 
+        [Fact()]
+        public void AssertTest()
+        {
+            var list = new List<int>(){ 1, 2, 3, 4, 5, 6, 7 };
+            Assert.Throws<InvalidOperationException>(() => list.Assert(m => m < 6).ToArray());
+            Assert.Throws<OsharpException>(() => list.Assert(m => m < 6, m => new OsharpException()).ToArray());
+            list.Assert(m => m <= 7).ToArray();
+        }
     }
 }
