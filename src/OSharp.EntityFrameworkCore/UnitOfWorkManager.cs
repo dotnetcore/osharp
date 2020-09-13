@@ -160,6 +160,18 @@ namespace OSharp.Entity
             }
         }
 
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
+        public void Rollback()
+        {
+            foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
+            {
+                _logger.LogDebug($"回滚工作单元事务，工作单元标识：{unitOfWork.GetHashCode()}");
+                unitOfWork.Rollback();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (!Disposed)

@@ -41,6 +41,7 @@ namespace OSharp.AspNetCore.Mvc
         {
             services = AddCors(services);
             services.AddControllersWithViews()
+                .AddControllersAsServices()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();

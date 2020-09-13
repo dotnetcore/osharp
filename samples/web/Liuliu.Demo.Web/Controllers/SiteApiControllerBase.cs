@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="SiteApiController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -9,6 +9,7 @@
 
 using System.ComponentModel;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 using OSharp.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ using OSharp.Authorization;
 namespace Liuliu.Demo.Web.Controllers
 {
     [DisplayName("网站")]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
+    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public abstract class SiteApiControllerBase : ApiControllerBase
     { }
 }

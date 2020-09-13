@@ -59,5 +59,10 @@ namespace OSharp.Entity
         /// 提交所有工作单元的事务更改
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
+        void Rollback();
     }
 }
