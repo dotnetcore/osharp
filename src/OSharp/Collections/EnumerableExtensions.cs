@@ -33,7 +33,7 @@ namespace OSharp.Collections
         /// <returns>筛选过的集合</returns>
         public static IEnumerable<T> Assert<T>(this IEnumerable<T> source,
             Func<T, bool> predicate,
-            Func<T, Exception> errorSelector = null)
+            Func<T, Exception>? errorSelector = null)
         {
             foreach (T item in source)
             {
