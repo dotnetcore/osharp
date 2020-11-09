@@ -145,6 +145,38 @@ namespace OSharp.Filter
         }
 
         /// <summary>
+        /// 获取指定字段和条件组表达式
+        /// </summary>
+        /// <typeparam name="T">表达式实体类型</typeparam>
+        /// <param name="group">查询条件组，如果为null，则直接返回 true 表达式</param>
+        /// <param name="filterfields">查询过滤字段集合</param>
+        /// <returns>查询表达式</returns>
+        public static Expression<Func<T, bool>> GetExpression<T>(FilterGroup group, IDictionary<string, string> filterfields)
+        {
+            group.CheckNotNull("group");
+            group.CheckNotNull("filterfields");
+            Expression<Func<T, bool>> expression = x => true;
+            var filters = group.Rules.Where(x => filterfields.Keys.Contains(x.Field?.ToLower()));
+            if (filters != null && filters.Count() > 0)
+            {
+                FilterGroup inspectgroup = new FilterGroup();
+                foreach (var item in filters)
+                {
+                    var field = item.Field?.ToLower();
+                    if (field == filterfields[field]?.ToLower())
+                    {
+                        inspectgroup.AddRule(item);
+                    }
+                    else
+                    {
+                        inspectgroup.AddRule(new FilterRule(filterfields[field], item.Value, item.Operate));
+                    }
+                }
+                expression = GetExpression<T>(inspectgroup);
+            }
+            return expression;
+        }
+        /// <summary>
         /// 获取指定查询条件的查询表达式
         /// </summary>
         /// <typeparam name="T">表达式实体类型</typeparam>

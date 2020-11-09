@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
@@ -130,6 +131,17 @@ namespace OSharp.Filter
         public virtual OperationResult CheckFilterGroup(FilterGroup group, Type type)
         {
             return FilterHelper.CheckFilterGroup(group, type);
+        }
+        /// <summary>
+        /// 获取指定字段和条件组表达式
+        /// </summary>
+        /// <typeparam name="T">表达式实体类型</typeparam>
+        /// <param name="group">查询条件组，如果为null，则直接返回 true 表达式</param>
+        /// <param name="filterfields">查询过滤字段集合</param>
+        /// <returns>查询表达式</returns>
+        public Expression<Func<T, bool>> GetExpression<T>(FilterGroup group, IDictionary<string, string> filterfields)
+        {
+            return FilterHelper.GetExpression<T>(group, filterfields);
         }
 
         #endregion
