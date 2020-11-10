@@ -155,7 +155,7 @@ namespace OSharp.Filter
         {
             group.CheckNotNull("group");
             group.CheckNotNull("filterfields");
-            Expression<Func<T, bool>> expression = null;
+            Expression<Func<T, bool>> expression = x => true;
             var filters = group.Rules.Where(x => filterfields.Keys.Contains(x.Field?.ToLower()));
             if (filters != null && filters.Count() > 0)
             {
