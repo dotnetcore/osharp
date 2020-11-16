@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <PackageId>OSharpNS.Authorization.Functions</PackageId>
     <Summary>OSharp 功能权限组件</Summary>
     <Description>OSharp 功能权限组件，API功能权限授权的设计实现</Description>
@@ -16,8 +16,11 @@
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.8" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[3.1.10,4.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

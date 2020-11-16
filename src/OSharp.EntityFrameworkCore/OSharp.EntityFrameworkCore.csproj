@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
     <PackageId>OSharpNS.EntityFrameworkCore</PackageId>
     <Description>OSharp数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp数据访问组件</Summary>
@@ -18,9 +18,16 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.61" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.10,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.10,4.0.0)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
