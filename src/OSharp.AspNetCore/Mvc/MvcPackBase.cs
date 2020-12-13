@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Newtonsoft.Json.Serialization;
 
+using OSharp.AspNetCore.Cors;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
@@ -27,6 +28,8 @@ namespace OSharp.AspNetCore.Mvc
     [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class MvcPackBase : AspOsharpPack
     {
+        private ICorsInitializer _corsInitializer;
+
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
@@ -39,7 +42,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services = AddCors(services);
+            _corsInitializer = services.GetOrAddSingletonInstance(() => (ICorsInitializer)new DefaultCorsInitializer());
+            _corsInitializer.AddCors(services);
+
             services.AddControllersWithViews()
                 .AddControllersAsServices()
                 .AddNewtonsoftJson(options =>
@@ -68,27 +73,9 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseRouting();
-            UseCors(app);
+            _corsInitializer.UseCors(app);
 
             IsEnabled = true;
-        }
-
-        /// <summary>
-        /// 重写以实现添加Cors服务
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        protected virtual IServiceCollection AddCors(IServiceCollection services)
-        {
-            return services;
-        }
-
-        /// <summary>
-        /// 重写以应用Cors
-        /// </summary>
-        protected virtual IApplicationBuilder UseCors(IApplicationBuilder app)
-        {
-            return app;
         }
     }
 }

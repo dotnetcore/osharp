@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="OSharpOptionsSetup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -84,6 +84,14 @@ namespace OSharp.Core.Options
             if (cookie != null)
             {
                 options.Cookie = cookie;
+            }
+
+            //CorsOptions
+            section = _configuration.GetSection("OSharp:Cors");
+            CorsOptions cors = section.Get<CorsOptions>();
+            if (cors != null)
+            {
+                options.Cors = cors;
             }
 
             // RedisOptions
