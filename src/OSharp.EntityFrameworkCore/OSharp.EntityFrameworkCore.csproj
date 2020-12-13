@@ -22,12 +22,12 @@
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.10,4.0.0)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.1.0" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.1.6,5.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.0" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.6" />
   </ItemGroup>
 
   <ItemGroup>
