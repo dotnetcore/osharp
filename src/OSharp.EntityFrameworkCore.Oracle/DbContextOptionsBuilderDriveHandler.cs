@@ -15,7 +15,7 @@ namespace OSharp.Entity.Oracle
     /// <summary>
     /// Oracle<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton)]
+    //[Dependency(ServiceLifetime.Singleton)]
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
@@ -45,17 +45,20 @@ namespace OSharp.Entity.Oracle
             Action<OracleDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
-                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                action = b => {
+                    b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                    b.UseOracleSQLCompatibility("11");
+                };
             }
 
             if (existingConnection == null)
             {
-                _logger.LogDebug($"使用新连接“{connectionString}”应用Oracle数据库");
+                _logger.LogDebug($"使用新连接“{connectionString}”应用Oracle 11g数据库");
                 builder.UseOracle(connectionString, action);
             }
             else
             {
-                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用Oracle数据库");
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用Oracle 11g数据库");
                 builder.UseOracle(existingConnection, action);
             }
 

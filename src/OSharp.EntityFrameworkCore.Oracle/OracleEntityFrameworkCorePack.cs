@@ -33,7 +33,9 @@ namespace OSharp.Entity.Oracle
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = base.AddServices(services);
+            
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(OracleDapperSqlExecutor<,>));
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 
             return services;
         }
