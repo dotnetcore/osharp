@@ -47,10 +47,13 @@ namespace OSharp.Entity.Oracle
             {
                 action = b => {
                     b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
-                    b.UseOracleSQLCompatibility("11");
                 };
             }
 
+            action += b =>
+            {
+                b.UseOracleSQLCompatibility("11");
+            };
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用Oracle 11g数据库");
