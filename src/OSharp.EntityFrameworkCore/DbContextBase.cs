@@ -209,7 +209,8 @@ namespace OSharp.Entity
                 {
                     continue;
                 }
-                modelBuilder.Entity(entityType.ClrType).ToTable($"{prefix}_{entityType.GetTableName()}");
+                string tableName = $"{prefix}_{entityType.GetTableName()}".ToUpper();
+                modelBuilder.Entity(entityType.ClrType).ToTable(tableName);
             }
         }
 
