@@ -110,7 +110,7 @@ namespace OSharp.Hosting.Identity
             if (count > 0)
             {
                 RegisterEventData eventData = new RegisterEventData() { RegisterDto = dto, User = user };
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
                 return new OperationResult<User>(OperationResultType.Success, "用户注册成功", user);
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
@@ -144,7 +144,7 @@ namespace OSharp.Hosting.Identity
 
             //触发登录成功事件
             LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
-            _eventBus.Publish(loginEventData);
+            await _eventBus.PublishAsync(loginEventData);
 
             return result;
         }

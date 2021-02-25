@@ -45,7 +45,10 @@ namespace OSharp.Entity.Oracle
             Action<OracleDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
-                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                action = b =>
+                {
+                    b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                };
             }
 
             if (existingConnection == null)

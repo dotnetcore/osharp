@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -161,6 +162,19 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 异步提交当前上下文的事务更改
+        /// </summary>
+        /// <returns></returns>
+        public async Task CommitAsync()
+        {
+            foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
+            {
+                _logger.LogDebug($"提交工作单元事务，工作单元标识：{unitOfWork.GetHashCode()}");
+                await unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
         /// 回滚事务
         /// </summary>
         public void Rollback()
@@ -169,6 +183,19 @@ namespace OSharp.Entity
             {
                 _logger.LogDebug($"回滚工作单元事务，工作单元标识：{unitOfWork.GetHashCode()}");
                 unitOfWork.Rollback();
+            }
+        }
+
+        /// <summary>
+        /// 异步回滚所有事务
+        /// </summary>
+        /// <returns></returns>
+        public async Task RollbackAsync()
+        {
+            foreach (IUnitOfWork unitOfWork in _scopedDictionary.GetConnUnitOfWorks())
+            {
+                _logger.LogDebug($"回滚工作单元事务，工作单元标识：{unitOfWork.GetHashCode()}");
+                await unitOfWork.RollbackAsync();
             }
         }
 

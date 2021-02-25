@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 
 
 namespace OSharp.Entity
@@ -61,8 +62,20 @@ namespace OSharp.Entity
         void Commit();
 
         /// <summary>
-        /// 回滚事务
+        /// 异步提交当前上下文的事务更改
+        /// </summary>
+        /// <returns></returns>
+        Task CommitAsync();
+
+        /// <summary>
+        /// 回滚所有事务
         /// </summary>
         void Rollback();
+
+        /// <summary>
+        /// 异步回滚所有事务
+        /// </summary>
+        /// <returns></returns>
+        Task RollbackAsync();
     }
 }

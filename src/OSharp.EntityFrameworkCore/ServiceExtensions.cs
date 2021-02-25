@@ -75,7 +75,7 @@ namespace OSharp.Entity
 
             //处理数据库驱动差异处理
             IDbContextOptionsBuilderDriveHandler driveHandler = provider.GetServices<IDbContextOptionsBuilderDriveHandler>()
-                .FirstOrDefault(m => m.Type == databaseType);
+                .LastOrDefault(m => m.Type == databaseType);
             if (driveHandler == null)
             {
                 throw new OsharpException($"无法解析类型为 {databaseType} 的 {typeof(IDbContextOptionsBuilderDriveHandler).DisplayName()} 实例");

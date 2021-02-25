@@ -9,17 +9,15 @@
 
 using System.ComponentModel;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 using OSharp.AspNetCore.Mvc;
-using OSharp.Authorization;
 
 
 namespace Liuliu.Demo.Web.Controllers
 {
     [DisplayName("网站")]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public abstract class SiteApiControllerBase : ApiControllerBase
     { }
 }

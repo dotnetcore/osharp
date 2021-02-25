@@ -67,7 +67,7 @@ namespace OSharp.Hosting.Identity
             if (result.Succeeded && userNames.Count > 0)
             {
                 OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = userNames.ToArray() };
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
             return result;
         }
@@ -90,7 +90,7 @@ namespace OSharp.Hosting.Identity
             if (result.Succeeded && userNames.Count > 0)
             {
                 OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = userNames.ToArray()};
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
 
             return result;
@@ -135,7 +135,7 @@ namespace OSharp.Hosting.Identity
 
                 //更新用户缓存使角色生效
                 OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
             catch (InvalidOperationException ex)
             {

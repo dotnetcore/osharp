@@ -62,10 +62,12 @@ namespace OSharp.Authentication
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<OsharpCookieAuthenticationEvents>();
-            AuthenticationBuilder builder = services.AddAuthentication(opts =>
-            {
-                opts.DefaultScheme = IdentityConstants.ApplicationScheme;
-            });
+            //AuthenticationBuilder builder = services.AddAuthentication(opts =>
+            //{
+            //    opts.DefaultScheme = IdentityConstants.ApplicationScheme;
+            //    opts.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //});
+            AuthenticationBuilder builder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
             AddJwtBearer(services, builder);
             AddCookie(services, builder);
             AddOAuth2(services, builder);

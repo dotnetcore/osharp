@@ -24,6 +24,9 @@ namespace OSharp.Entity.MySql
     public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
+#if NET5_0
+        private readonly ServerVersion _serverVersion;
+#endif
 
         /// <summary>
         /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
@@ -31,6 +34,9 @@ namespace OSharp.Entity.MySql
         public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
+#if NET5_0
+            _serverVersion = provider.GetService<MySqlServerVersion>()?? MySqlServerVersion.LatestSupportedServerVersion;
+#endif
         }
 
         /// <summary>
@@ -56,12 +62,20 @@ namespace OSharp.Entity.MySql
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
+#if NET5_0
+                builder.UseMySql(connectionString, _serverVersion, action);
+#else
                 builder.UseMySql(connectionString, action);
+#endif
             }
             else
             {
                 _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
+#if NET5_0
+                builder.UseMySql(existingConnection, _serverVersion, action);
+#else
                 builder.UseMySql(existingConnection, action);
+#endif
             }
 
             ServiceExtensions.MigrationAssemblyName = null;

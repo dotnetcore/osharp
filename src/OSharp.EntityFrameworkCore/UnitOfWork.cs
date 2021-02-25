@@ -227,6 +227,34 @@ namespace OSharp.Entity
         }
 
         /// <summary>
+        /// 异步提交当前上下文的事务更改
+        /// </summary>
+        /// <returns></returns>
+        public async Task CommitAsync()
+        {
+            if (HasCommitted || _dbContexts.Count == 0 || _transaction == null)
+            {
+                return;
+            }
+
+            await _transaction.CommitAsync();
+            _logger.LogDebug($"提交事务，事务标识：{_transaction.GetHashCode()}");
+            foreach (DbContextBase context in _dbContexts)
+            {
+                if (context.IsRelationalTransaction())
+                {
+                    context.Database.CurrentTransaction.Dispose();
+                    //关系型数据库共享事务
+                    continue;
+                }
+
+                context.Database.CommitTransaction();
+            }
+
+            HasCommitted = true;
+        }
+
+        /// <summary>
         /// 回滚所有事务
         /// </summary>
         public virtual void Rollback()
@@ -236,6 +264,7 @@ namespace OSharp.Entity
                 _transaction.Rollback();
                 _logger.LogDebug($"回滚事务，事务标识：{_transaction.GetHashCode()}");
             }
+
             foreach (var context in _dbContexts)
             {
                 if (context.IsRelationalTransaction())
@@ -249,6 +278,36 @@ namespace OSharp.Entity
                 }
                 context.Database.RollbackTransaction();
             }
+
+            HasCommitted = true;
+        }
+
+        /// <summary>
+        /// 异步回滚所有事务
+        /// </summary>
+        /// <returns></returns>
+        public async Task RollbackAsync()
+        {
+            if (_transaction?.Connection != null)
+            {
+                await _transaction.RollbackAsync();
+                _logger.LogDebug($"回滚事务，事务标识：{_transaction.GetHashCode()}");
+            }
+
+            foreach (var context in _dbContexts)
+            {
+                if (context.IsRelationalTransaction())
+                {
+                    CleanChanges(context);
+                    if (context.Database.CurrentTransaction != null)
+                    {
+                        context.Database.CurrentTransaction.Dispose();
+                    }
+                    continue;
+                }
+                context.Database.RollbackTransaction();
+            }
+
             HasCommitted = true;
         }
 

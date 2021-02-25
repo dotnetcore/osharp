@@ -137,7 +137,22 @@ namespace OSharp.Entity
             //开启或使用现有事务
             await BeginOrUseTransactionAsync(cancellationToken);
 
-            int count = await base.SaveChangesAsync(cancellationToken);
+            int count;
+            try
+            {
+                count = await base.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                while (ex.InnerException != null)
+                {
+                    msg += $"---{ex.InnerException.Message}";
+                    ex = ex.InnerException;
+                }
+                Logger.LogDebug($"SaveChangesAsync 引发异常：{msg}");
+                throw;
+            }
             if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="AdminApiController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -18,7 +18,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public abstract class AdminApiController : AreaApiControllerBase
     { }
 }
