@@ -7,6 +7,8 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using AspectCore.Extensions.Hosting;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -25,6 +27,6 @@ namespace Liuliu.Demo.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).UseDynamicProxy();
     }
 }

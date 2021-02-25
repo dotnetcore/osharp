@@ -184,7 +184,7 @@ namespace OSharp.Authorization.DataAuthorization
                 });
             if (result.Succeeded && eventData.HasData())
             {
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
 
             return result;
@@ -246,7 +246,7 @@ namespace OSharp.Authorization.DataAuthorization
 
             if (result.Succeeded && eventData.HasData())
             {
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
 
             return result;
@@ -274,7 +274,7 @@ namespace OSharp.Authorization.DataAuthorization
             if (result.Succeeded && eventData.HasData())
             {
                 //移除数据权限缓存
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
             }
 
             return result;

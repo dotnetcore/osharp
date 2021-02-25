@@ -156,7 +156,7 @@ namespace OSharp.Identity
                 }
 
                 IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork<TUser, TUserKey>();
-                unitOfWork.Commit();
+                await unitOfWork.CommitAsync();
             }
 
             return tokens.Except(expiredTokens).ToArray();

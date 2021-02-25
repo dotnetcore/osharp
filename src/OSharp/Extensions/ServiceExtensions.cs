@@ -432,7 +432,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
             await actionAsync(scopeProvider);
-            unitOfWorkManager.Commit();
+            await unitOfWorkManager.CommitAsync();
         }
         #endregion
 

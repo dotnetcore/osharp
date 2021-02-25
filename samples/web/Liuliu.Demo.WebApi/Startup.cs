@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="Startup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -41,7 +41,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
-                .AddPack<SqlServerDefaultDbContextMigrationPack>()
+                .AddPack<SqliteDefaultDbContextMigrationPack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
         }

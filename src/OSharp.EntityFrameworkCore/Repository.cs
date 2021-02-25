@@ -657,7 +657,7 @@ namespace OSharp.Entity
             List<string> names = new List<string>();
             foreach (TKey id in ids)
             {
-                TEntity entity = _dbSet.Find(id);
+                TEntity entity = await _dbSet.FindAsync(id);
                 if (entity == null)
                 {
                     continue;

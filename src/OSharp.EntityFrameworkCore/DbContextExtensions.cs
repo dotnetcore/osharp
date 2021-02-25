@@ -64,32 +64,6 @@ namespace OSharp.Entity
         /// <summary>
         /// 执行指定的Sql语句
         /// </summary>
-        [Obsolete("使用 ExecuteSqlRaw 代替")]
-        public static int ExecuteSqlCommand(this IDbContext dbContext, string sql, params object[] parameters)
-        {
-            if (!(dbContext is DbContext context))
-            {
-                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
-            }
-            return context.Database.ExecuteSqlCommand(new RawSqlString(sql), parameters);
-        }
-
-        /// <summary>
-        /// 异步执行指定的Sql语句
-        /// </summary>
-        [Obsolete("使用 ExecuteSqlRawAsync 代替")]
-        public static Task<int> ExecuteSqlCommandAsync(this IDbContext dbContext, string sql, params object[] parameters)
-        {
-            if (!(dbContext is DbContext context))
-            {
-                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
-            }
-            return context.Database.ExecuteSqlCommandAsync(new RawSqlString(sql), parameters);
-        }
-
-        /// <summary>
-        /// 执行指定的Sql语句
-        /// </summary>
         public static int ExecuteSqlRaw(this IDbContext dbContext, string sql, params object[] parameters)
         {
             if (!(dbContext is DbContext context))

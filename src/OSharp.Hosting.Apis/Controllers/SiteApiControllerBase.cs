@@ -22,7 +22,7 @@ namespace OSharp.Hosting.Apis.Controllers
     /// 站点根节点的API控制器基类，使用OSharpPolicy权限策略
     /// </summary>
     [DisplayName("网站")]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
+    [Authorize()]
     public abstract class SiteApiControllerBase : ApiControllerBase
     {
         protected static readonly Random Random = new Random();

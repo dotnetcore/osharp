@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <PackageId>OSharpNS.EntityFrameworkCore.Oracle</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的Oracle数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件Oracle</Summary>
@@ -16,8 +16,8 @@
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.0-beta2" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.80" />
   </ItemGroup>
 
   <ItemGroup>

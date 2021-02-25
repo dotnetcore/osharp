@@ -35,8 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OShar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
-		build\nuget-build.bat = build\nuget-build.bat
-		build\nuget-delete.bat = build\nuget-delete.bat
+		build\nuget-build.ps1 = build\nuget-build.ps1
+		build\nuget-delete.ps1 = build\nuget-delete.ps1
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
 		README.md = README.md
@@ -73,16 +73,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Authorization.Datas", "src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj", "{EA6307A2-ECC2-4469-A937-CA59B0344ED5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.WebApi", "samples\web\Liuliu.Demo.WebApi\Liuliu.Demo.WebApi.csproj", "{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.Mvc", "samples\web\Liuliu.Demo.Mvc\Liuliu.Demo.Mvc.csproj", "{6D835D4A-FEE2-453B-9265-8959AE1001BA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blazor", "blazor", "{CC70083B-25AB-49EF-9921-3FA84725E06B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.BlazorShared", "samples\blazor\Liuliu.Demo.BlazorShared\Liuliu.Demo.BlazorShared.csproj", "{662D9B55-FFFA-4DAA-B6D0-94FF20392436}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.BlazorClient", "samples\blazor\Liuliu.Demo.BlazorClient\Liuliu.Demo.BlazorClient.csproj", "{48283EBC-6799-486F-98C3-40F251DDB8F4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Liuliu.Demo.BlazorServer", "samples\blazor\Liuliu.Demo.BlazorServer\Liuliu.Demo.BlazorServer.csproj", "{5A22A3C2-DBFC-4389-A652-882378E590C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Hosting.Core", "src\OSharp.Hosting.Core\OSharp.Hosting.Core.csproj", "{9CA30C8D-B1A6-4655-96EA-487EE9402ECE}"
 EndProject
@@ -204,22 +194,6 @@ Global
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D835D4A-FEE2-453B-9265-8959AE1001BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{662D9B55-FFFA-4DAA-B6D0-94FF20392436}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{662D9B55-FFFA-4DAA-B6D0-94FF20392436}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{662D9B55-FFFA-4DAA-B6D0-94FF20392436}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{662D9B55-FFFA-4DAA-B6D0-94FF20392436}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48283EBC-6799-486F-98C3-40F251DDB8F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48283EBC-6799-486F-98C3-40F251DDB8F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48283EBC-6799-486F-98C3-40F251DDB8F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48283EBC-6799-486F-98C3-40F251DDB8F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A22A3C2-DBFC-4389-A652-882378E590C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A22A3C2-DBFC-4389-A652-882378E590C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A22A3C2-DBFC-4389-A652-882378E590C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A22A3C2-DBFC-4389-A652-882378E590C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9CA30C8D-B1A6-4655-96EA-487EE9402ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9CA30C8D-B1A6-4655-96EA-487EE9402ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CA30C8D-B1A6-4655-96EA-487EE9402ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -272,11 +246,6 @@ Global
 		{2A9C56F8-E906-4DD6-87A9-C540C2DF50FB} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{EA6307A2-ECC2-4469-A937-CA59B0344ED5} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{4CAF8878-50F0-4DDB-B7AF-06722C3C840D} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
-		{6D835D4A-FEE2-453B-9265-8959AE1001BA} = {97AC2C5A-5B18-4B4A-BE98-5AD4D68357E5}
-		{CC70083B-25AB-49EF-9921-3FA84725E06B} = {D06C79AC-DB5A-4379-BA2B-5208CF3FBC23}
-		{662D9B55-FFFA-4DAA-B6D0-94FF20392436} = {CC70083B-25AB-49EF-9921-3FA84725E06B}
-		{48283EBC-6799-486F-98C3-40F251DDB8F4} = {CC70083B-25AB-49EF-9921-3FA84725E06B}
-		{5A22A3C2-DBFC-4389-A652-882378E590C5} = {CC70083B-25AB-49EF-9921-3FA84725E06B}
 		{9CA30C8D-B1A6-4655-96EA-487EE9402ECE} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{FD428746-CA60-4F80-BC53-BA1A69CF739F} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{3C2FF651-1C3F-4A8B-AB77-89E26DA260D0} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}

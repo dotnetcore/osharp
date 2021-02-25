@@ -183,14 +183,14 @@ namespace OSharp.Authorization
             {
                 //功能信息缓存刷新事件
                 FunctionCacheRefreshEventData clearEventData = new FunctionCacheRefreshEventData();
-                EventBus.Publish(clearEventData);
+                await EventBus.PublishAsync(clearEventData);
 
                 //功能权限缓存刷新事件
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData()
                 {
                     FunctionIds = dtos.Select(m => m.Id).ToArray()
                 };
-                EventBus.Publish(removeEventData);
+                await EventBus.PublishAsync(removeEventData);
             }
             return result;
         }
@@ -363,7 +363,7 @@ namespace OSharp.Authorization
                 //功能权限缓存刷新事件
                 Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
-                EventBus.Publish(removeEventData);
+                await EventBus.PublishAsync(removeEventData);
             }
             return result;
         }
@@ -459,7 +459,7 @@ namespace OSharp.Authorization
                 {
                     FunctionIds = addFunctionIds.Union(removeFunctionIds).Distinct().ToArray()
                 };
-                EventBus.Publish(removeEventData);
+                await EventBus.PublishAsync(removeEventData);
 
                 return new OperationResult(OperationResultType.Success,
                     $"模块“{module.Name}”添加功能“{addNames.ExpandAndToString()}”，移除功能“{removeNames.ExpandAndToString()}”操作成功");
@@ -541,7 +541,7 @@ namespace OSharp.Authorization
                 Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId))
                     .Select(m => m.FunctionId).Distinct().ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
-                EventBus.Publish(removeEventData);
+                await EventBus.PublishAsync(removeEventData);
 
                 if (addNames.Count > 0 && removeNames.Count == 0)
                 {
@@ -638,7 +638,7 @@ namespace OSharp.Authorization
             {
                 //功能权限缓存刷新事件
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { UserNames = new[] { user.UserName } };
-                EventBus.Publish(removeEventData);
+                await EventBus.PublishAsync(removeEventData);
 
                 if (addNames.Count > 0 && removeNames.Count == 0)
                 {

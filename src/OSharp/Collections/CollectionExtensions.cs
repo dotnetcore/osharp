@@ -93,5 +93,23 @@ namespace OSharp.Collections
         {
             return collection == null || collection.Count == 0;
         }
+
+        /// <summary>
+        /// 交换两项的位置
+        /// </summary>
+        public static void Swap<T>(this List<T> list, int index1, int index2)
+        {
+            Check.Between(index1, nameof(index1), 0, list.Count, true);
+            Check.Between(index2, nameof(index2), 0, list.Count, true);
+
+            if (index1 == index2)
+            {
+                return;
+            }
+
+            T tmp = list[index1];
+            list[index1] = list[index2];
+            list[index2] = tmp;
+        }
     }
 }

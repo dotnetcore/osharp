@@ -9,6 +9,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 using Microsoft.Win32;
@@ -53,6 +54,36 @@ namespace OSharp.Wpf.Utilities
                 pwfi.dwTimeout = 500;
                 User32.FlashWindowEx(ref pwfi);
             });
+        }
+
+        /// <summary>
+        /// 使用管理员权限运行指定程序
+        /// </summary>
+        public static Process RunAsAdministrator(string path)
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            //判断当前用户是否管理员
+            if (principal.IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                return Process.Start(path);
+            }
+
+            ProcessStartInfo info = new ProcessStartInfo
+            {
+                FileName = path, 
+                UseShellExecute = true, 
+                WorkingDirectory = Environment.CurrentDirectory, 
+                Verb = "runas"
+            };
+            try
+            {
+                return Process.Start(info);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

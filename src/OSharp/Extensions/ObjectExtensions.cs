@@ -155,28 +155,6 @@ namespace OSharp.Extensions
             return (ExpandoObject)expando;
         }
 
-        /// <summary>
-        /// 对象深度拷贝，复制出一个数据一样，但地址不一样的新版本
-        /// </summary>
-        public static T DeepClone<T>(this T obj) where T : class
-        {
-            if (obj == null)
-            {
-                return default(T);
-            }
-            if (typeof(T).HasAttribute<SerializableAttribute>())
-            {
-                throw new NotSupportedException("当前对象未标记特性“{0}”，无法进行DeepClone操作".FormatWith(typeof(SerializableAttribute)));
-            }
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                formatter.Serialize(ms, obj);
-                ms.Seek(0L, SeekOrigin.Begin);
-                return (T)formatter.Deserialize(ms);
-            }
-        }
-
         #endregion
     }
 }

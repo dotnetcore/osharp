@@ -1,11 +1,17 @@
 ﻿<Project>
   <PropertyGroup>
     <VersionMain>3.1</VersionMain>
-    <VersionPrefix>7</VersionPrefix>
+    <VersionPrefix>10</VersionPrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <VersionMain>5.0</VersionMain>
+    <VersionPrefix>0</VersionPrefix>
+  </PropertyGroup>
+  <PropertyGroup>
     <VersionSuffix>-preview</VersionSuffix>
-    <VersionSuffixVersion>0826</VersionSuffixVersion>
-    <!--<Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>-->
-    <Version>$(VersionMain).$(VersionPrefix)</Version>
+    <VersionSuffixVersion>1116</VersionSuffixVersion>
+    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
+    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
   </PropertyGroup>

@@ -65,6 +65,19 @@ namespace OSharp.Extensions
         }
 
         /// <summary>
+        /// 在指定的输入字符串中匹配并替换符合指定正则表达式的子串
+        /// </summary>
+        public static string ReplaceRegex(this string value, string pattern, string replacement)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return Regex.Replace(value, pattern, replacement);
+        }
+
+        /// <summary>
         /// 在指定的输入字符串中搜索指定的正则表达式的所有匹配项的字符串集合
         /// </summary>
         /// <param name="value"> 要搜索匹配项的字符串 </param>

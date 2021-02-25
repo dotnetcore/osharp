@@ -182,8 +182,8 @@ namespace Liuliu.Demo.Web.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
-            unitOfWork.Commit();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            await unitOfWorkManager.CommitAsync();
 
             if (!result.Succeeded)
             {
@@ -220,8 +220,8 @@ namespace Liuliu.Demo.Web.Controllers
                 };
 
                 OperationResult<User> result = await _identityContract.Login(loginDto);
-                IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
-                unitOfWork.Commit();
+                IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+                await unitOfWorkManager.CommitAsync();
                 if (!result.Succeeded)
                 {
                     return result.ToAjaxResult();
@@ -331,8 +331,8 @@ namespace Liuliu.Demo.Web.Controllers
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
             OperationResult<User> result = await _identityContract.LoginBind(loginInfo);
-            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
-            unitOfWork.Commit();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            await unitOfWorkManager.CommitAsync();
             if (!result.Succeeded)
             {
                 return result.ToAjaxResult();
@@ -353,8 +353,8 @@ namespace Liuliu.Demo.Web.Controllers
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
             OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo.ProviderKey);
-            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork<User, int>();
-            unitOfWork.Commit();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            await unitOfWorkManager.CommitAsync();
 
             if (!result.Succeeded)
             {

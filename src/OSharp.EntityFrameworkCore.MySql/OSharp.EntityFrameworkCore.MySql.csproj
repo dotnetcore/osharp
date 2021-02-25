@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
     <PackageId>OSharpNS.EntityFrameworkCore.MySql</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的MySql数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件MySql</Summary>
@@ -16,10 +16,12 @@
     <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[3.2.4, 4.0.0)" />
   </ItemGroup>
-
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>

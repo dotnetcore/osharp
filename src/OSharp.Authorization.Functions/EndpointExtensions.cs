@@ -91,12 +91,5 @@ namespace OSharp.Authorization
             return endpoint.RoutePattern.RequiredValues["action"].ToString();
         }
 
-        /// <summary>
-        /// 需要Osharp授权
-        /// </summary>
-        public static ControllerActionEndpointConventionBuilder RequireOsharpAuthorization(this ControllerActionEndpointConventionBuilder builder)
-        {
-            return builder.RequireAuthorization(FunctionRequirement.OsharpPolicy);
-        }
     }
 }

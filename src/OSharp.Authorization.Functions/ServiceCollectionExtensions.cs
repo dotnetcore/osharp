@@ -9,8 +9,11 @@
 
 using System;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
@@ -28,7 +31,18 @@ namespace OSharp.Authorization
         {
             services.AddAuthorization(opts =>
             {
-                opts.AddPolicy(FunctionRequirement.OsharpPolicy, policy => policy.Requirements.Add(new FunctionRequirement()));
+                AuthorizationPolicyBuilder policyBuilder = new AuthorizationPolicyBuilder(
+                    JwtBearerDefaults.AuthenticationScheme,
+                    IdentityConstants.ApplicationScheme);
+                policyBuilder.Requirements.Add(new FunctionRequirement());
+                opts.DefaultPolicy = policyBuilder.Build();
+
+                //opts.AddPolicy(FunctionRequirement.OsharpPolicy, policy =>
+                //{
+                //    policy.Requirements.Add(new FunctionRequirement());
+                //    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                //    policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
+                //});
             });
             services.AddSingleton<IAuthorizationHandler, FunctionAuthorizationHandler>();
 

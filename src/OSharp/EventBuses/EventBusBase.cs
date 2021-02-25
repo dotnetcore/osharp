@@ -32,7 +32,7 @@ namespace OSharp.EventBuses
         /// <summary>
         /// 初始化一个<see cref="EventBusBase"/>类型的新实例
         /// </summary>
-        protected EventBusBase(IServiceScopeFactory serviceScopeFactory, IServiceProvider serviceProvider)
+        protected EventBusBase(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             EventStore = serviceProvider.GetService<IEventStore>();
@@ -344,7 +344,7 @@ namespace OSharp.EventBuses
         /// <param name="eventData">事件数据</param>
         /// <param name="wait">是否等待结果返回</param>
         /// <returns></returns>
-        protected virtual Task InvokeHandlerAsync(IEventHandlerFactory factory, Type eventType, IEventData eventData, bool wait = true)
+        protected virtual async Task InvokeHandlerAsync(IEventHandlerFactory factory, Type eventType, IEventData eventData, bool wait = true)
         {
             EventHandlerDisposeWrapper handlerWrapper = factory.GetHandler();
             IEventHandler handler = handlerWrapper.EventHandler;
@@ -353,17 +353,17 @@ namespace OSharp.EventBuses
                 if (handler == null)
                 {
                     Logger.LogWarning($"事件源“{eventData.GetType()}”的事件处理器无法找到");
-                    return Task.FromResult(0);
+                    return;
                 }
                 if (wait)
                 {
-                    return RunAsync(factory, handler, eventType, eventData);
+                    await RunAsync(factory, handler, eventType, eventData);
+                    return;
                 }
                 Task.Run(async () =>
                 {
                     await RunAsync(factory, handler, eventType, eventData);
                 });
-                return Task.FromResult(0);
             }
             finally
             {
@@ -385,12 +385,12 @@ namespace OSharp.EventBuses
             }
         }
 
-        private Task RunAsync(IEventHandlerFactory factory, IEventHandler handler, Type eventType, IEventData eventData)
+        private async Task RunAsync(IEventHandlerFactory factory, IEventHandler handler, Type eventType, IEventData eventData)
         {
             try
             {
                 ICancellationTokenProvider cancellationTokenProvider = _serviceProvider.GetService<ICancellationTokenProvider>();
-                return handler.HandleAsync(eventData, cancellationTokenProvider.Token);
+                await handler.HandleAsync(eventData, cancellationTokenProvider.Token);
             }
             catch (Exception ex)
             {
