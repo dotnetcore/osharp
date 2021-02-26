@@ -14,8 +14,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -368,8 +369,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            action(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                action(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -377,8 +380,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            await action(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                await action(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -386,8 +391,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            return func(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                return func(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -395,8 +402,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            return await func(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                return await func(scope.ServiceProvider);
+            }
+
         }
 
         /// <summary>
@@ -409,11 +419,13 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(action, nameof(action));
 
-            using IServiceScope scope = provider.CreateScope();
-            IServiceProvider scopeProvider = scope.ServiceProvider;
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            action(scopeProvider);
-            unitOfWorkManager.Commit();
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                action(scopeProvider);
+                unitOfWorkManager.Commit();
+            }
         }
 
         /// <summary>
@@ -427,12 +439,18 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(actionAsync, nameof(actionAsync));
 
-            using IServiceScope scope = provider.CreateScope();
-            IServiceProvider scopeProvider = scope.ServiceProvider;
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
 
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            await actionAsync(scopeProvider);
-            await unitOfWorkManager.CommitAsync();
+                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                await actionAsync(scopeProvider);
+#if NET5_0
+                    await unitOfWorkManager.CommitAsync();
+#else
+                unitOfWorkManager.Commit();
+#endif
+            }
         }
         #endregion
 

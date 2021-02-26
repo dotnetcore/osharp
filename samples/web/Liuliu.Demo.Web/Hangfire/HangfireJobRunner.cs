@@ -76,7 +76,11 @@ namespace Liuliu.Demo.Web.Hangfire
             user2.IsLocked = !user2.IsLocked;
             await userManager.UpdateAsync(user2);
             IUnitOfWorkManager unitOfWorkManager = _provider.GetService<IUnitOfWorkManager>();
+#if NET5_0
             await unitOfWorkManager.CommitAsync();
+#else
+            unitOfWorkManager.Commit();
+#endif
             user2 = await userManager.FindByIdAsync("2");
             list.Add($"user2.IsLocked: {user2.IsLocked}");
             return list.ExpandAndToString();

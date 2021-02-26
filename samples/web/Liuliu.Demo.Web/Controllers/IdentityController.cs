@@ -182,8 +182,12 @@ namespace Liuliu.Demo.Web.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
+#if NET5_0
             await unitOfWorkManager.CommitAsync();
+#else
+            unitOfWorkManager.Commit();
+#endif
 
             if (!result.Succeeded)
             {
@@ -220,8 +224,12 @@ namespace Liuliu.Demo.Web.Controllers
                 };
 
                 OperationResult<User> result = await _identityContract.Login(loginDto);
-                IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+                IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
+#if NET5_0
                 await unitOfWorkManager.CommitAsync();
+#else
+                unitOfWorkManager.Commit();
+#endif
                 if (!result.Succeeded)
                 {
                     return result.ToAjaxResult();
@@ -295,7 +303,7 @@ namespace Liuliu.Demo.Web.Controllers
                 return Redirect(url);
             }
 
-            Logger.LogInformation($"用户“{info.Principal.Identity.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
+            Logger.LogInformation($"用户“{info.Principal.Identity?.Name}”通过 {info.ProviderDisplayName} OAuth2登录成功");
             JsonWebToken token = await CreateJwtToken((User)result.Data);
             url = $"/#/passport/oauth-callback?token={token.ToJsonString()}";
             return Redirect(url);
@@ -331,8 +339,12 @@ namespace Liuliu.Demo.Web.Controllers
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
             OperationResult<User> result = await _identityContract.LoginBind(loginInfo);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
+#if NET5_0
             await unitOfWorkManager.CommitAsync();
+#else
+            unitOfWorkManager.Commit();
+#endif
             if (!result.Succeeded)
             {
                 return result.ToAjaxResult();
@@ -353,8 +365,12 @@ namespace Liuliu.Demo.Web.Controllers
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
             OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo.ProviderKey);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
+#if NET5_0
             await unitOfWorkManager.CommitAsync();
+#else
+            unitOfWorkManager.Commit();
+#endif
 
             if (!result.Succeeded)
             {
@@ -369,7 +385,7 @@ namespace Liuliu.Demo.Web.Controllers
         private async Task<JsonWebToken> CreateJwtToken(User user, RequestClientType clientType = RequestClientType.Browser)
         {
             IServiceProvider provider = HttpContext.RequestServices;
-            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            IJwtBearerService jwtBearerService = provider.GetRequiredService<IJwtBearerService>();
             JsonWebToken token = await jwtBearerService.CreateToken(user.Id.ToString(), user.UserName, clientType);
 
             return token;
@@ -378,7 +394,7 @@ namespace Liuliu.Demo.Web.Controllers
         private async Task<JsonWebToken> CreateJwtToken(string refreshToken)
         {
             IServiceProvider provider = HttpContext.RequestServices;
-            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            IJwtBearerService jwtBearerService = provider.GetRequiredService<IJwtBearerService>();
             JsonWebToken token = await jwtBearerService.RefreshToken(refreshToken);
             return token;
         }
@@ -407,7 +423,7 @@ namespace Liuliu.Demo.Web.Controllers
         [UnitOfWork]
         public async Task<AjaxResult> Logout()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return new AjaxResult("用户登出成功");
             }
@@ -426,7 +442,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("用户信息")]
         public async Task<OnlineUser> Profile()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return null;
             }
@@ -599,7 +615,7 @@ namespace Liuliu.Demo.Web.Controllers
 
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
             token = UrlBase64ReplaceChar(token);
-            IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
+            IEmailSender sender = HttpContext.RequestServices.GetRequiredService<IEmailSender>();
             string url = $"{Request.Scheme}://{Request.Host}/#/passport/reset-password?userId={user.Id}&token={token}";
             string body = $"亲爱的用户 <strong>{user.NickName}</strong>[{user.UserName}]，您好！<br>"
                 + $"欢迎使用柳柳软件账户密码重置功能，请 <a href=\"{url}\" target=\"_blank\"><strong>点击这里</strong></a><br>"
@@ -637,7 +653,7 @@ namespace Liuliu.Demo.Web.Controllers
 
         private async Task SendMailAsync(string email, string subject, string body)
         {
-            IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
+            IEmailSender sender = HttpContext.RequestServices.GetRequiredService<IEmailSender>();
             await sender.SendEmailAsync(email, subject, body);
         }
 
