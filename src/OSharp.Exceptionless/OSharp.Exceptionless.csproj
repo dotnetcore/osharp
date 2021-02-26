@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.AspNetCore" Version="4.5.0" />
+    <PackageReference Include="Exceptionless.AspNetCore" Version="4.6.2" />
   </ItemGroup>
 
   <ItemGroup>

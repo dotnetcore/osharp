@@ -23,8 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.1.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+    <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.ComponentModel" Version=" 4.3.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -33,30 +33,30 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    <PackageReference Include="System.DirectoryServices.Protocols" Version="4.7.0" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.1" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[3.1.10,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[3.1.10,4.0.0)" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[3.1.12,4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />

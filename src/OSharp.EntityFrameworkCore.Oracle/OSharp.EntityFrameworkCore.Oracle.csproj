@@ -23,6 +23,7 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="5.21.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
