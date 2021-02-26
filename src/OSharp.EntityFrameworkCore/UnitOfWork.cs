@@ -158,48 +158,6 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 对数据库连接开启事务
-        /// </summary>
-        /// <param name="cancellationToken">异步取消标记</param>
-        /// <returns></returns>
-        public virtual async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (_dbContexts.Count == 0)
-            {
-                return;
-            }
-            if (_transaction?.Connection == null)
-            {
-                if (_connection.State != ConnectionState.Open)
-                {
-                    await _connection.OpenAsync(cancellationToken);
-                }
-
-                _transaction = await _connection.BeginTransactionAsync(cancellationToken);
-                _logger.LogDebug($"在连接 {_connection.ConnectionString} 上开启新事务，事务标识：{_transaction.GetHashCode()}");
-            }
-
-            foreach (DbContextBase context in _dbContexts)
-            {
-                if (context.Database.CurrentTransaction != null && context.Database.CurrentTransaction.GetDbTransaction() == _transaction)
-                {
-                    continue;
-                }
-                if (context.IsRelationalTransaction())
-                {
-                    await context.Database.UseTransactionAsync(_transaction, cancellationToken);
-                    _logger.LogDebug($"在上下文 {context.GetType()} 上应用现有事务");
-                }
-                else
-                {
-                    await context.Database.BeginTransactionAsync(cancellationToken);
-                }
-            }
-
-            HasCommitted = false;
-        }
-
-        /// <summary>
         /// 提交当前上下文的事务更改
         /// </summary>
         public virtual void Commit()
@@ -210,34 +168,6 @@ namespace OSharp.Entity
             }
 
             _transaction.Commit();
-            _logger.LogDebug($"提交事务，事务标识：{_transaction.GetHashCode()}");
-            foreach (DbContextBase context in _dbContexts)
-            {
-                if (context.IsRelationalTransaction())
-                {
-                    context.Database.CurrentTransaction.Dispose();
-                    //关系型数据库共享事务
-                    continue;
-                }
-
-                context.Database.CommitTransaction();
-            }
-
-            HasCommitted = true;
-        }
-
-        /// <summary>
-        /// 异步提交当前上下文的事务更改
-        /// </summary>
-        /// <returns></returns>
-        public async Task CommitAsync()
-        {
-            if (HasCommitted || _dbContexts.Count == 0 || _transaction == null)
-            {
-                return;
-            }
-
-            await _transaction.CommitAsync();
             _logger.LogDebug($"提交事务，事务标识：{_transaction.GetHashCode()}");
             foreach (DbContextBase context in _dbContexts)
             {
@@ -282,6 +212,77 @@ namespace OSharp.Entity
             HasCommitted = true;
         }
 
+#if NET5_0
+
+        /// <summary>
+        /// 对数据库连接开启事务
+        /// </summary>
+        /// <param name="cancellationToken">异步取消标记</param>
+        /// <returns></returns>
+        public virtual async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (_dbContexts.Count == 0)
+            {
+                return;
+            }
+            if (_transaction?.Connection == null)
+            {
+                if (_connection.State != ConnectionState.Open)
+                {
+                    await _connection.OpenAsync(cancellationToken);
+                }
+                _transaction = await _connection.BeginTransactionAsync(cancellationToken);
+                _logger.LogDebug($"在连接 {_connection.ConnectionString} 上开启新事务，事务标识：{_transaction.GetHashCode()}");
+            }
+
+            foreach (DbContextBase context in _dbContexts)
+            {
+                if (context.Database.CurrentTransaction != null && context.Database.CurrentTransaction.GetDbTransaction() == _transaction)
+                {
+                    continue;
+                }
+                if (context.IsRelationalTransaction())
+                {
+                    await context.Database.UseTransactionAsync(_transaction, cancellationToken);
+                    _logger.LogDebug($"在上下文 {context.GetType()} 上应用现有事务");
+                }
+                else
+                {
+                    await context.Database.BeginTransactionAsync(cancellationToken);
+                }
+            }
+
+            HasCommitted = false;
+        }
+
+        /// <summary>
+        /// 异步提交当前上下文的事务更改
+        /// </summary>
+        /// <returns></returns>
+        public async Task CommitAsync()
+        {
+            if (HasCommitted || _dbContexts.Count == 0 || _transaction == null)
+            {
+                return;
+            }
+
+            await _transaction.CommitAsync();
+            _logger.LogDebug($"提交事务，事务标识：{_transaction.GetHashCode()}");
+            foreach (DbContextBase context in _dbContexts)
+            {
+                if (context.IsRelationalTransaction())
+                {
+                    context.Database.CurrentTransaction.Dispose();
+                    //关系型数据库共享事务
+                    continue;
+                }
+
+                await context.Database.CommitTransactionAsync();
+            }
+
+            HasCommitted = true;
+        }
+
         /// <summary>
         /// 异步回滚所有事务
         /// </summary>
@@ -311,6 +312,7 @@ namespace OSharp.Entity
             HasCommitted = true;
         }
 
+#endif
         private void CleanChanges(DbContext context)
         {
             var entries = context.ChangeTracker.Entries().ToArray();

@@ -176,7 +176,11 @@ namespace OSharp.Hosting.Apis.Controllers
 
                 OperationResult<User> result = await _identityContract.Login(loginDto);
                 IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
+#if NET5_0
                 await unitOfWorkManager.CommitAsync();
+#else
+                unitOfWorkManager.Commit();
+#endif
                 if (!result.Succeeded)
                 {
                     return result.ToAjaxResult();
@@ -215,7 +219,11 @@ namespace OSharp.Hosting.Apis.Controllers
 
             OperationResult<User> result = await _identityContract.Login(dto);
             IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
-            await unitOfWorkManager.CommitAsync();
+#if NET5_0
+                await unitOfWorkManager.CommitAsync();
+#else
+            unitOfWorkManager.Commit();
+#endif
 
             if (!result.Succeeded)
             {

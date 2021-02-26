@@ -7,7 +7,6 @@
 //  <last-date>2020-09-11 0:11</last-date>
 // -----------------------------------------------------------------------
 
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,7 +32,7 @@ namespace OSharp.Collections
         /// <returns>筛选过的集合</returns>
         public static IEnumerable<T> Assert<T>(this IEnumerable<T> source,
             Func<T, bool> predicate,
-            Func<T, Exception>? errorSelector = null)
+            Func<T, Exception> errorSelector = null)
         {
             foreach (T item in source)
             {
@@ -67,29 +66,31 @@ namespace OSharp.Collections
         /// <param name="second">第二个序列</param>
         /// <param name="comparer">元素比较方式</param>
         /// <returns></returns>
-        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
+        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer ??= EqualityComparer<T>.Default;
-
-            List<T> secondList;
-            if (second.TryGetCollectionCount() is { } secondCount)
+            comparer = comparer ?? EqualityComparer<T>.Default;
+            
+            int? secondCount = second.TryGetCollectionCount();
+            if (secondCount != null)
             {
-                if (first.TryGetCollectionCount() is { } firstCount && secondCount > firstCount)
+                int? firstCount = first.TryGetCollectionCount();
+                if (firstCount != null && secondCount > firstCount)
                 {
                     return false;
                 }
 
-                return Impl(second, secondCount);
+                return Impl(second, secondCount.Value);
             }
 
+            List<T> secondList;
             return Impl(secondList = second.ToList(), secondList.Count);
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.TakeLast(count).GetEnumerator())
+                using (var firstIter = first.Reverse().Take(count).Reverse().GetEnumerator())
                 {
                     return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
                 }

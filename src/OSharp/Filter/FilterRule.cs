@@ -8,6 +8,10 @@
 
 using System;
 
+#if NETSTANDARD2_0
+using Microsoft.DotNet.PlatformAbstractions;
+#endif
+
 
 namespace OSharp.Filter
 {
@@ -96,7 +100,15 @@ namespace OSharp.Filter
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+#if NET5_0
             return HashCode.Combine(Field, Value, Operate);
+#else
+            var combiner = new HashCodeCombiner();
+            combiner.Add(Field);
+            combiner.Add(Value);
+            combiner.Add(Operate);
+            return combiner.CombinedHash;
+#endif
         }
 
         #endregion

@@ -42,7 +42,11 @@ namespace OSharp.Entity.DynamicProxy
                 await next(context);
                 if (!RequiredCheckReturnValue)
                 {
+#if NET5_0
                     await unitOfWorkManager.CommitAsync();
+#else
+                    unitOfWorkManager.Commit();
+#endif
                     return;
                 }
                 Type returnType = context.ProxyMethod.ReturnType;
@@ -54,12 +58,20 @@ namespace OSharp.Entity.DynamicProxy
                 }
                 if (decision.CanCommit(context.ReturnValue))
                 {
+#if NET5_0
                     await unitOfWorkManager.CommitAsync();
+#else
+                    unitOfWorkManager.Commit();
+#endif
                 }
             }
             catch (Exception)
             {
-                await unitOfWorkManager.RollbackAsync();
+#if NET5_0
+                    await unitOfWorkManager.CommitAsync();
+#else
+                unitOfWorkManager.Commit();
+#endif
                 throw;
             }
         }

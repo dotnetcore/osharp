@@ -109,7 +109,11 @@ namespace OSharp.Authentication.JwtBearer
                             if (result.Succeeded)
                             {
                                 IUnitOfWork unitOfWork = provider.GetUnitOfWork<TUser, TUserKey>();
+#if NET5_0
                                 await unitOfWork.CommitAsync();
+#else
+                                unitOfWork.Commit();
+#endif
                             }
 
                             return result;
@@ -154,7 +158,11 @@ namespace OSharp.Authentication.JwtBearer
                 if (result.Succeeded)
                 {
                     IUnitOfWork unitOfWork = provider.GetUnitOfWork<TUser, TUserKey>();
+#if NET5_0
                     await unitOfWork.CommitAsync();
+#else
+                    unitOfWork.Commit();
+#endif
                     IEventBus eventBus = _provider.GetService<IEventBus>();
                     OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { userName } };
                     await eventBus.PublishAsync(eventData);

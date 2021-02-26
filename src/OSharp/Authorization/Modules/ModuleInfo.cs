@@ -10,6 +10,8 @@
 using System;
 using System.Diagnostics;
 
+using Microsoft.DotNet.PlatformAbstractions;
+
 using OSharp.Authorization.Functions;
 using OSharp.Entity;
 
@@ -76,7 +78,14 @@ namespace OSharp.Authorization.Modules
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+#if NET5_0
             return HashCode.Combine(Position, Code);
+#else
+            var combiner = new HashCodeCombiner();
+            combiner.Add(Position);
+            combiner.Add(Code);
+            return combiner.CombinedHash;
+#endif
         }
 
         #endregion

@@ -704,7 +704,11 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             // todo: 检测删除的数据权限
 
+#if NET5_0
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+#else
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
+#endif
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
                 // 逻辑删除
@@ -796,7 +800,11 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
+#if NET5_0
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+#else
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
+#endif
             return await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
         }
 

@@ -33,7 +33,7 @@ namespace OSharp.Authorization
         public static IFunction GetExecuteFunction(this RouteEndpoint endpoint, HttpContext context)
         {
             IServiceProvider provider = context.RequestServices;
-            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
+            ScopedDictionary dict = provider.GetRequiredService<ScopedDictionary>();
             if (dict.Function != null)
             {
                 return dict.Function;
