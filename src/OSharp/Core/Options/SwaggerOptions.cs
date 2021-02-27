@@ -21,6 +21,8 @@ namespace OSharp.Core.Options
 
         public string RoutePrefix { get; set; }
 
+        public bool IsHideSchemas { get; set; } = false;
+
         public bool MiniProfiler { get; set; } = true;
 
         public bool Enabled { get; set; }
