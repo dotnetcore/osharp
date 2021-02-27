@@ -2,27 +2,29 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>5.0.3-preview227</version>
+    <version>5.0.3-preview228</version>
     <title>OSharpFramework(.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
+    <owners>LiuliuSoft nnc</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">Apache-2.0</license>
+    <icon>icon.png</icon>
     <projectUrl>https://github.com/dotnetcore/osharp</projectUrl>
-    <iconUrl>https://en.gravatar.com/userimage/140788132/0ff3b1e68fa0154337b1528c4276e276.png?size=128</iconUrl>
     <description>OSharp Framework with .NETCoreApp3.0，此Package包含了OSharpNS的所有常用组件</description>
     <releaseNotes>https://github.com/dotnetcore/osharp/releases</releaseNotes>
-    <copyright>Copyright (c) 2014-2020 LIULIUSOFT. All rights reserved.</copyright>
+    <copyright>Copyright (c) 2014-2021 LIULIUSOFT. All rights reserved.</copyright>
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharpNS.Core" version="5.0.3-preview227" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.3-preview227" />
-        <dependency id="OSharpNS.AutoMapper" version="5.0.3-preview227" />
-        <dependency id="OSharpNS.AspNetCore" version="5.0.3-preview227" />
-        <dependency id="OSharpNS.Log4Net" version="5.0.3-preview227" />
+        <dependency id="OSharpNS.Core" version="5.0.3-preview228" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.3-preview228" />
+        <dependency id="OSharpNS.AutoMapper" version="5.0.3-preview228" />
+        <dependency id="OSharpNS.AspNetCore" version="5.0.3-preview228" />
+        <dependency id="OSharpNS.Log4Net" version="5.0.3-preview228" />
       </group>
     </dependencies>
   </metadata>
   <files>
+    <file src="icon.png" target="icon.png" />
   </files>
 </package>
