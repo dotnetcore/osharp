@@ -1,15 +1,9 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionMain>3.1</VersionMain>
-    <VersionPrefix>10</VersionPrefix>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
     <VersionMain>5.0</VersionMain>
-    <VersionPrefix>0</VersionPrefix>
-  </PropertyGroup>
-  <PropertyGroup>
+    <VersionPrefix>3</VersionPrefix>
     <VersionSuffix>-preview</VersionSuffix>
-    <VersionSuffixVersion>1116</VersionSuffixVersion>
+    <VersionSuffixVersion>227</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
