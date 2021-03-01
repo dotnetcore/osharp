@@ -17,12 +17,11 @@ using Microsoft.Extensions.Caching.Distributed;
 
 using OSharp.Caching;
 using OSharp.Core.Data;
-using OSharp.Core.Systems;
 using OSharp.Data;
 using OSharp.Entity;
 
 
-namespace OSharp.Systems
+namespace OSharp.Core.Systems
 {
     /// <summary>
     /// 键值数据存储

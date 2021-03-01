@@ -43,6 +43,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 //.AddPack<RedisPack>()
+                .AddPack<SystemsPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()

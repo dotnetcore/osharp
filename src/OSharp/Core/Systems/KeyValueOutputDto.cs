@@ -10,12 +10,11 @@
 using System;
 using System.ComponentModel;
 
-using OSharp.Core.Systems;
 using OSharp.Entity;
 using OSharp.Mapping;
 
 
-namespace OSharp.Systems
+namespace OSharp.Core.Systems
 {
     /// <summary>
     /// 输出DTO:键值数据

@@ -20,7 +20,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     /// </summary>
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
+    [Authorize()]
     public abstract class AdminApiControllerBase : AreaApiControllerBase
     { }
 }
