@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Liuliu.Demo.Web.Migrations
 {
@@ -11,7 +10,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_MenuInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     Text = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     Icon = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
@@ -20,7 +20,7 @@ namespace Liuliu.Demo.Web.Migrations
                     Acl = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     OrderCode = table.Column<double>(type: "REAL", nullable: false),
                     TreePathString = table.Column<string>(type: "TEXT", nullable: true),
-                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -33,7 +33,7 @@ namespace OSharp.Hosting.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的菜单信息编号</param>
         /// <returns>菜单信息是否存在</returns>
-        public Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, Guid id = default)
+        public Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, int id = default)
         {
             return MenuInfoRepository.CheckExistsAsync(predicate, id);
         }
@@ -46,14 +46,14 @@ namespace OSharp.Hosting.Systems
         public Task<OperationResult> CreateMenuInfos(params MenuInfoInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInfoInputDto, Guid>(dtos, nameof(dtos));
+            Check.Validate<MenuInfoInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.InsertAsync(dtos,
                 async dto =>
                 {
                     if (await MenuInfoRepository.CheckExistsAsync(m => m.Name == dto.Name))
                     {
-                        throw new OsharpException($"名称为“{dto.ParentId}”的菜单信息已存在，请更换");
+                        throw new OsharpException($"名称为“{dto.Name}”的菜单信息已存在，请更换");
                     }
                 },
                 async (dto, entity) =>
@@ -84,7 +84,7 @@ namespace OSharp.Hosting.Systems
         public Task<OperationResult> UpdateMenuInfos(params MenuInfoInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInfoInputDto, Guid>(dtos, nameof(dtos));
+            Check.Validate<MenuInfoInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
@@ -115,7 +115,7 @@ namespace OSharp.Hosting.Systems
         /// </summary>
         /// <param name="ids">要删除的菜单信息编号</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> DeleteMenuInfos(params Guid[] ids)
+        public Task<OperationResult> DeleteMenuInfos(params int[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             return MenuInfoRepository.DeleteAsync(ids,

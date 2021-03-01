@@ -18,12 +18,12 @@ using OSharp.Mapping;
 namespace OSharp.Hosting.Systems.Dtos
 {
     [MapTo(typeof(MenuInfo))]
-    public class MenuInfoInputDto : IInputDto<Guid>
+    public class MenuInfoInputDto : IInputDto<int>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 获取或设置 菜单名称
@@ -74,6 +74,6 @@ namespace OSharp.Hosting.Systems.Dtos
         /// <summary>
         /// 获取或设置 父级菜单编号
         /// </summary>
-        public Guid? ParentId { get; set; }
+        public int? ParentId { get; set; }
     }
 }

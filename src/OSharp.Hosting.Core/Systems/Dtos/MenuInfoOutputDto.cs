@@ -26,7 +26,7 @@ namespace OSharp.Hosting.Systems.Dtos
         /// <summary>
         /// 获取或设置 编号
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// 获取或设置 菜单名称
@@ -66,7 +66,7 @@ namespace OSharp.Hosting.Systems.Dtos
         /// <summary>
         /// 获取或设置 父菜单编号
         /// </summary>
-        public Guid? ParentId { get; set; }
+        public int? ParentId { get; set; }
         
         /// <summary>
         /// 获取或设置 子菜单集合

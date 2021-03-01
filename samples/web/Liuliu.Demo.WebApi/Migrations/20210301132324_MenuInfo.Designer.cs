@@ -9,7 +9,7 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20210301052102_MenuInfo")]
+    [Migration("20210301132324_MenuInfo")]
     partial class MenuInfo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -886,9 +886,9 @@ namespace Liuliu.Demo.Web.Migrations
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.MenuInfo", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Acl")
                         .HasMaxLength(500)
@@ -906,8 +906,8 @@ namespace Liuliu.Demo.Web.Migrations
                     b.Property<double>("OrderCode")
                         .HasColumnType("REAL");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Target")
                         .HasMaxLength(50)

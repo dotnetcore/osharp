@@ -22,7 +22,7 @@ namespace OSharp.Hosting.Systems.Entities
     /// </summary>
     [TableNamePrefix("Systems")]
     [Description("菜单信息")]
-    public class MenuInfo : EntityBase<Guid>
+    public class MenuInfo : EntityBase<int>
     {
         /// <summary>
         /// 获取或设置 菜单名称
@@ -76,7 +76,7 @@ namespace OSharp.Hosting.Systems.Entities
         /// 获取或设置 父菜单编号
         /// </summary>
         [DisplayName("父菜单编号")]
-        public Guid? ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         /// <summary>
         /// 获取或设置 父级菜单

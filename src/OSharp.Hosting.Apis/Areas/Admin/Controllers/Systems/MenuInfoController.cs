@@ -84,7 +84,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [UnitOfWork]
         [Description("删除")]
-        public async Task<AjaxResult> Delete(Guid[] ids)
+        public async Task<AjaxResult> Delete(int[] ids)
         {
             Check.NotNull(ids, nameof(ids));
 

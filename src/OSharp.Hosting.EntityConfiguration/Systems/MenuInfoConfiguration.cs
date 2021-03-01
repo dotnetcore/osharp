@@ -17,7 +17,7 @@ using OSharp.Hosting.Systems.Entities;
 
 namespace OSharp.Hosting.EntityConfiguration.Systems
 {
-    public partial class MenuInfoConfiguration : EntityTypeConfigurationBase<MenuInfo, Guid>
+    public partial class MenuInfoConfiguration : EntityTypeConfigurationBase<MenuInfo, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

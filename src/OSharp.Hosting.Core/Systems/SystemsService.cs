@@ -32,6 +32,6 @@ namespace OSharp.Hosting.Systems
             _provider = provider;
         }
 
-        protected IRepository<MenuInfo, Guid> MenuInfoRepository => _provider.GetService<IRepository<MenuInfo, Guid>>();
+        protected IRepository<MenuInfo, int> MenuInfoRepository => _provider.GetService<IRepository<MenuInfo, int>>();
     }
 }

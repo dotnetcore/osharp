@@ -37,7 +37,7 @@ namespace OSharp.Hosting.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的菜单信息编号</param>
         /// <returns>菜单信息是否存在</returns>
-        Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, Guid id = default);
+        Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, int id = default);
 
         /// <summary>
         /// 添加菜单信息信息
@@ -58,7 +58,7 @@ namespace OSharp.Hosting.Systems
         /// </summary>
         /// <param name="ids">要删除的菜单信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteMenuInfos(params Guid[] ids);
+        Task<OperationResult> DeleteMenuInfos(params int[] ids);
 
         #endregion
 
