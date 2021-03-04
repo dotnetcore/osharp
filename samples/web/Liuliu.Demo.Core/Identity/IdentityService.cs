@@ -277,8 +277,7 @@ namespace Liuliu.Demo.Identity
         public async Task<OperationResult> Logout(int userId)
         {
             //await _signInManager.SignOutAsync();
-            //HttpContext httpContext = _httpContextAccessor.HttpContext;
-            //await httpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            //todo: Site和API的授权与退出，分别处理
             _logger.LogInformation(4, $"用户 {userId} 登出系统");
 
             //触发登出成功事件

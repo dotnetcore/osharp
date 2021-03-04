@@ -261,7 +261,8 @@ namespace OSharp.Hosting.Identity
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> Logout(int userId)
         {
-            await SignInManager.SignOutAsync();
+            //await SignInManager.SignOutAsync();
+            //todo: Site和API的授权与退出，分别处理
             Logger.LogInformation(4, $"用户 {userId} 登出系统");
 
             //触发登出成功事件
