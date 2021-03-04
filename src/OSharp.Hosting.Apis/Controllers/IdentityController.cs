@@ -170,6 +170,7 @@ namespace OSharp.Hosting.Apis.Controllers
                 {
                     Account = dto.Account,
                     Password = dto.Password,
+                    ClientType = dto.ClientType,
                     Ip = HttpContext.GetClientIp(),
                     UserAgent = Request.Headers["User-Agent"].FirstOrDefault()
                 };
@@ -241,8 +242,8 @@ namespace OSharp.Hosting.Apis.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [Description("用户登出")]
         [UnitOfWork]
+        [Description("用户登出")]
         public async Task<AjaxResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
@@ -287,8 +288,8 @@ namespace OSharp.Hosting.Apis.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [Description("激活邮箱")]
         [UnitOfWork]
+        [Description("激活邮箱")]
         public async Task<AjaxResult> ConfirmEmail(ConfirmEmailDto dto)
         {
             if (!ModelState.IsValid)

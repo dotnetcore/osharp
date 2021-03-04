@@ -23,7 +23,6 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
@@ -102,7 +101,7 @@ namespace OSharp.Hosting.Identity
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
         }
-
+        
         /// <summary>
         /// 使用账号登录
         /// </summary>
@@ -121,6 +120,7 @@ namespace OSharp.Hosting.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, "用户已被冻结，无法登录");
             }
+            
             SignInResult signInResult = await SignInManager.CheckPasswordSignInAsync(user, dto.Password, true);
             OperationResult<User> result = ToOperationResult(signInResult, user);
             if (!result.Succeeded)
@@ -135,7 +135,7 @@ namespace OSharp.Hosting.Identity
 
             return result;
         }
-
+        
         /// <summary>
         /// 使用第三方用户信息进行OAuth2登录
         /// </summary>

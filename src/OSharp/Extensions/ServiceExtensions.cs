@@ -65,6 +65,15 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// 获取<see cref="OsharpOptions"/>配置信息
+        /// </summary>
+        public static OsharpOptions GetOsharpOptions(this IServiceCollection services)
+        {
+            IConfiguration configuration = services.GetConfiguration();
+            return configuration.GetOsharpOptions();
+        }
+
+        /// <summary>
         /// 判断指定服务类型是否存在
         /// </summary>
         public static bool AnyServiceType(this IServiceCollection services, Type serviceType)

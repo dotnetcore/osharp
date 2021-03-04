@@ -53,7 +53,6 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        [AllowAnonymous]
         public AjaxResult Read(PageRequest request)
         {
             if (request.PageCondition.SortConditions.Length == 0)

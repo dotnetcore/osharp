@@ -13,7 +13,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
@@ -51,7 +50,6 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        [AllowAnonymous]
         public AjaxResult Read(PageRequest request)
         {
             Expression<Func<UserRole, bool>> predicate = _filterService.GetExpression<UserRole>(request.FilterGroup);

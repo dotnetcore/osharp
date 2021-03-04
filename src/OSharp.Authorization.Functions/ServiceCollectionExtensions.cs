@@ -13,11 +13,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
+using OSharp.Collections;
+using OSharp.Core.Options;
 
 
 namespace OSharp.Authorization
@@ -29,20 +30,17 @@ namespace OSharp.Authorization
         /// </summary>
         public static IServiceCollection AddFunctionAuthorizationHandler(this IServiceCollection services)
         {
+            OsharpOptions options = services.GetOsharpOptions();
+
+            //services.AddAuthorization();
             services.AddAuthorization(opts =>
             {
-                AuthorizationPolicyBuilder policyBuilder = new AuthorizationPolicyBuilder(
-                    JwtBearerDefaults.AuthenticationScheme,
-                    IdentityConstants.ApplicationScheme);
-                policyBuilder.Requirements.Add(new FunctionRequirement());
-                opts.DefaultPolicy = policyBuilder.Build();
-
-                //opts.AddPolicy(FunctionRequirement.OsharpPolicy, policy =>
-                //{
-                //    policy.Requirements.Add(new FunctionRequirement());
-                //    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                //    policy.AuthenticationSchemes.Add(CookieAuthenticationDefaults.AuthenticationScheme);
-                //});
+                opts.AddPolicy(FunctionRequirement.OsharpPolicy, policy =>
+                {
+                    policy.Requirements.Add(new FunctionRequirement());
+                    //policy.AuthenticationSchemes.AddIf(JwtBearerDefaults.AuthenticationScheme, options.Jwt?.Enabled == true);
+                    //policy.AuthenticationSchemes.AddIf(CookieAuthenticationDefaults.AuthenticationScheme, options.Cookie?.Enabled == true);
+                });
             });
             services.AddSingleton<IAuthorizationHandler, FunctionAuthorizationHandler>();
 

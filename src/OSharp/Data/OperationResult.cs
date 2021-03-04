@@ -157,5 +157,10 @@ namespace OSharp.Data
         {
             return new OperationResult(ResultType, Message, Data);
         }
+
+        public OperationResult<TData2> ToOperationResult<TData2>(TData2 data = null) where TData2 : class
+        {
+            return new OperationResult<TData2>(ResultType, Message, data);
+        }
     }
 }

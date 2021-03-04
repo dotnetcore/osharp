@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 using OSharp.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     /// </summary>
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize()]
+    [ApiAuthorize]
     public abstract class AdminApiControllerBase : AreaApiControllerBase
     { }
 }

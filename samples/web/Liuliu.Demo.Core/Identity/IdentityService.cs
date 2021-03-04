@@ -277,8 +277,8 @@ namespace Liuliu.Demo.Identity
         public async Task<OperationResult> Logout(int userId)
         {
             //await _signInManager.SignOutAsync();
-            HttpContext httpContext = _httpContextAccessor.HttpContext;
-            await httpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            //HttpContext httpContext = _httpContextAccessor.HttpContext;
+            //await httpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
             _logger.LogInformation(4, $"用户 {userId} 登出系统");
 
             //触发登出成功事件

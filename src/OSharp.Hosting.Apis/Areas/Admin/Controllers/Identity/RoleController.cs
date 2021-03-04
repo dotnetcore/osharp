@@ -14,7 +14,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,7 +68,6 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        [AllowAnonymous]
         public AjaxResult Read(PageRequest request)
         {
             Check.NotNull(request, nameof(request));

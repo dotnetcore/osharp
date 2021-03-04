@@ -40,7 +40,7 @@ namespace Liuliu.Demo.Web
             services.AddOSharp().AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
                 .AddPack<EndpointsPack>()
-                .AddPack<MiniProfilerPack>()
+                //.AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 //.AddPack<RedisPack>()
                 .AddPack<SystemsPack>()
