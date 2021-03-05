@@ -1,4 +1,4 @@
-name: develop
+name: depoly
 
 on:
   push:

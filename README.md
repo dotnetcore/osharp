@@ -1,7 +1,7 @@
 ﻿# OSharp Framework
 
 [![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
-[![.NET Core](https://github.com/dotnetcore/OSharp/workflows/.NET%20Core/badge.svg)](https://github.com/dotnetcore/OSharp/actions?query=workflow%3A%22.NET+Core%22)
+[![depoly action](https://github.com/dotnetcore/OSharp/workflows/depoly/badge.svg)](https://github.com/dotnetcore/OSharp/actions?query=workflow%3A%22depoly%22)
 [![NuGet Badge](https://buildstats.info/nuget/osharpns.core)](https://www.nuget.org/packages/osharpns/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
@@ -22,8 +22,8 @@
 OSharpNS 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandard2.x开发的一个.NetCore快速开发框架。这个框架使用最新稳定版的.NetCore SDK（当前是.NET Core 3.1），对 AspNetCore 的配置、依赖注入、日志、缓存、实体框架、Mvc(WebApi)、身份认证、权限授权等模块进行更高一级的自动化封装，并规范了一套业务实现的代码结构与操作流程，使 .Net Core 框架更易于应用到实际项目开发中。
 
 相关示例项目：
+- Vue版本(vben): [https://github.com/i66soft/osharp-vben](https://github.com/i66soft/osharp-vben)
 - Mvc版本(layui): [https://github.com/i66soft/osharp-layui](https://github.com/i66soft/osharp-layui)
-- Vue版本(element ui): [https://github.com/i66soft/osharp-element](https://github.com/i66soft/osharp-element)
 - Blazor版本(BootstrapBlazor): [https://github.com/i66soft/osharp-blazor](https://github.com/i66soft/osharp-blazor)
 
 ### 框架组件组织
