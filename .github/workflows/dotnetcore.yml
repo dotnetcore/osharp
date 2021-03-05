@@ -24,5 +24,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: Test OSharp.Tests
+      run: dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --no-restore --verbosity normal
+    - name: Test OSharp.AspNetCore.Tests
+      run: dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --no-restore --verbosity normal
+    - name: Test Liuliu.Demo.Core.Tests
+      run: dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --no-restore --verbosity normal

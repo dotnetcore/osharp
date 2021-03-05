@@ -40,7 +40,7 @@ namespace Liuliu.Demo.Web
             services.AddOSharp().AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
                 .AddPack<EndpointsPack>()
-                //.AddPack<MiniProfilerPack>()
+                .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 //.AddPack<RedisPack>()
                 .AddPack<SystemsPack>()
@@ -64,8 +64,10 @@ namespace Liuliu.Demo.Web
                 app.UseDatabaseErrorPage();
 #endif
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseMiddleware<JsonExceptionHandlerMiddleware>()
                 .UseDefaultFiles()

@@ -22,7 +22,7 @@ namespace OSharp.Hosting.Systems.Entities
     /// </summary>
     [TableNamePrefix("Systems")]
     [Description("菜单信息")]
-    public class MenuInfo : EntityBase<int>
+    public class Menu : EntityBase<int>
     {
         /// <summary>
         /// 获取或设置 菜单名称
@@ -67,10 +67,28 @@ namespace OSharp.Hosting.Systems.Entities
         public double OrderCode { get; set; }
 
         /// <summary>
+        /// 获取或设置 菜单数据
+        /// </summary>
+        [DisplayName("菜单数据"), StringLength(1000)]
+        public string Data { get; set; }
+
+        /// <summary>
         /// 获取或设置 父节点树形路径
         /// </summary>
-        [DisplayName("父节点树形路径")]
+        [DisplayName("父节点树形路径"), StringLength(1000)]
         public string TreePathString { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否启用
+        /// </summary>
+        [DisplayName("是否启用")]
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否系统
+        /// </summary>
+        [DisplayName("是否系统")]
+        public bool IsSystem { get; set; }
 
         /// <summary>
         /// 获取或设置 父菜单编号
@@ -81,11 +99,11 @@ namespace OSharp.Hosting.Systems.Entities
         /// <summary>
         /// 获取或设置 父级菜单
         /// </summary>
-        public virtual MenuInfo Parent { get; set; }
+        public virtual Menu Parent { get; set; }
 
         /// <summary>
         /// 获取或设置 子菜单集合
         /// </summary>
-        public virtual ICollection<MenuInfo> Children { get; set; } = new List<MenuInfo>();
+        public virtual ICollection<Menu> Children { get; set; } = new List<Menu>();
     }
 }

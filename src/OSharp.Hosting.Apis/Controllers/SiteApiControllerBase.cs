@@ -10,9 +10,6 @@
 using System;
 using System.ComponentModel;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
 

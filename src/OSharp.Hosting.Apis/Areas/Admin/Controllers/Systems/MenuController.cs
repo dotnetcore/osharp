@@ -29,12 +29,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 {
     [ModuleInfo(Order = 5, Position = "Systems", PositionName = "系统管理模块")]
     [Description("管理-菜单信息")]
-    public class MenuInfoController : AdminApiControllerBase
+    public class MenuController : AdminApiControllerBase
     {
         private readonly ISystemsContract _systemsContract;
         private readonly IFilterService _filterService;
 
-        public MenuInfoController(ISystemsContract systemsContract, IFilterService filterService)
+        public MenuController(ISystemsContract systemsContract, IFilterService filterService)
         {
             _systemsContract = systemsContract;
             _filterService = filterService;
@@ -47,8 +47,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(request, nameof(request));
 
-            Expression<Func<MenuInfo, bool>> predicate = _filterService.GetExpression<MenuInfo>(request.FilterGroup);
-            var page = _systemsContract.MenuInfos.ToPage<MenuInfo, MenuInfoOutputDto>(predicate, request.PageCondition);
+            Expression<Func<Menu, bool>> predicate = _filterService.GetExpression<Menu>(request.FilterGroup);
+            var page = _systemsContract.MenuInfos.ToPage<Menu, MenuOutputDto>(predicate, request.PageCondition);
 
             return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }
@@ -58,7 +58,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [UnitOfWork]
         [Description("新增")]
-        public async Task<AjaxResult> Create(MenuInfoInputDto[] dtos)
+        public async Task<AjaxResult> Create(MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
 
@@ -71,7 +71,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [UnitOfWork]
         [Description("更新")]
-        public async Task<AjaxResult> Update(MenuInfoInputDto[] dtos)
+        public async Task<AjaxResult> Update(MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
 
