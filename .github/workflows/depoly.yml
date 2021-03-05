@@ -4,7 +4,7 @@ on:
   push:
     branches: [ dev/develop ]
   pull_request:
-    branches: [ dev/develop ]
+    branches: [ master ]
 
 jobs:
   build-on-dotnetcore:
@@ -39,11 +39,6 @@ jobs:
         dotnet build ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
         dotnet build ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
         dotnet build ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
-    - name: Test
-      run: |
-        dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
-        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --no-restore --verbosity normal
-        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --no-restore --verbosity normal
   build-on-desktop:
     runs-on: windows-latest
     steps:
@@ -54,3 +49,8 @@ jobs:
         dotnet-version: 5.0.x
     - name: Build
       run: dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
+    - name: Test
+      run: |
+        dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
+        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --no-restore --verbosity normal
+        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --no-restore --verbosity normal
