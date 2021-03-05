@@ -17,8 +17,8 @@ using OSharp.Mapping;
 
 namespace OSharp.Hosting.Systems.Dtos
 {
-    [MapTo(typeof(MenuInfo))]
-    public class MenuInfoInputDto : IInputDto<int>
+    [MapTo(typeof(Menu))]
+    public class MenuInputDto : IInputDto<int>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识
@@ -67,9 +67,24 @@ namespace OSharp.Hosting.Systems.Dtos
         public double OrderCode { get; set; }
 
         /// <summary>
+        /// 获取或设置 菜单数据
+        /// </summary>
+        public string Data { get; set; }
+
+        /// <summary>
         /// 获取或设置 父节点树形路径
         /// </summary>
         public string TreePathString { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否启用
+        /// </summary>
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
+        /// 获取或设置 是否系统
+        /// </summary>
+        public bool IsSystem { get; set; }
 
         /// <summary>
         /// 获取或设置 父级菜单编号

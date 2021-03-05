@@ -29,7 +29,7 @@ namespace OSharp.Hosting.Systems
         /// <summary>
         /// 获取 菜单信息查询数据集
         /// </summary>
-        IQueryable<MenuInfo> MenuInfos { get; }
+        IQueryable<Menu> MenuInfos { get; }
 
         /// <summary>
         /// 检查菜单信息信息是否存在
@@ -37,21 +37,21 @@ namespace OSharp.Hosting.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的菜单信息编号</param>
         /// <returns>菜单信息是否存在</returns>
-        Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, int id = default);
+        Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, int id = default);
 
         /// <summary>
         /// 添加菜单信息信息
         /// </summary>
         /// <param name="dtos">要添加的菜单信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateMenuInfos(params MenuInfoInputDto[] dtos);
+        Task<OperationResult> CreateMenuInfos(params MenuInputDto[] dtos);
 
         /// <summary>
         /// 更新菜单信息信息
         /// </summary>
         /// <param name="dtos">包含更新信息的菜单信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> UpdateMenuInfos(params MenuInfoInputDto[] dtos);
+        Task<OperationResult> UpdateMenuInfos(params MenuInputDto[] dtos);
 
         /// <summary>
         /// 删除菜单信息信息

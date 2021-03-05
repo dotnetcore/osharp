@@ -20,8 +20,8 @@ namespace OSharp.Hosting.Systems.Dtos
     /// <summary>
     /// 输出DTO：菜单信息
     /// </summary>
-    [MapFrom(typeof(MenuInfo))]
-    public class MenuInfoOutputDto : IOutputDto
+    [MapFrom(typeof(Menu))]
+    public class MenuOutputDto : IOutputDto
     {
         /// <summary>
         /// 获取或设置 编号
@@ -64,6 +64,21 @@ namespace OSharp.Hosting.Systems.Dtos
         public double OrderCode { get; set; }
 
         /// <summary>
+        /// 获取或设置 菜单数据
+        /// </summary>
+        public string Data { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否启用
+        /// </summary>
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否系统
+        /// </summary>
+        public bool IsSystem { get; set; }
+
+        /// <summary>
         /// 获取或设置 父菜单编号
         /// </summary>
         public int? ParentId { get; set; }
@@ -71,6 +86,6 @@ namespace OSharp.Hosting.Systems.Dtos
         /// <summary>
         /// 获取或设置 子菜单集合
         /// </summary>
-        public List<MenuInfoOutputDto> Children { get; set; } = new List<MenuInfoOutputDto>();
+        public List<MenuOutputDto> Children { get; set; } = new List<MenuOutputDto>();
     }
 }

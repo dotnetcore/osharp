@@ -882,7 +882,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.ToTable("Systems_AuditProperty");
                 });
 
-            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.MenuInfo", b =>
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -892,9 +892,19 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Data")
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Icon")
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -917,6 +927,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TreePathString")
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
@@ -927,7 +938,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Systems_MenuInfo");
+                    b.ToTable("Systems_Menu");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityRole", b =>
@@ -1227,9 +1238,9 @@ namespace Liuliu.Demo.Web.Migrations
                     b.Navigation("AuditEntity");
                 });
 
-            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.MenuInfo", b =>
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
                 {
-                    b.HasOne("OSharp.Hosting.Systems.Entities.MenuInfo", "Parent")
+                    b.HasOne("OSharp.Hosting.Systems.Entities.Menu", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
 
@@ -1287,7 +1298,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.Navigation("AuditEntities");
                 });
 
-            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.MenuInfo", b =>
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
                 {
                     b.Navigation("Children");
                 });

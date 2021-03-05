@@ -28,8 +28,8 @@ namespace OSharp.Hosting.Systems.Dtos
         /// <param name="mapper">映射配置表达</param>
         public void CreateMaps(MapperConfigurationExpression mapper)
         {
-            mapper.CreateMap<MenuInfo, MenuInfoOutputDto>()
-                .ForMember(dto => dto.Children, opt => opt.MapFrom(entity => entity.Children.Select(m => m.MapTo<MenuInfoOutputDto>())));
+            mapper.CreateMap<Menu, MenuOutputDto>()
+                .ForMember(dto => dto.Children, opt => opt.MapFrom(entity => entity.Children.Select(m => m.MapTo<MenuOutputDto>())));
         }
     }
 }

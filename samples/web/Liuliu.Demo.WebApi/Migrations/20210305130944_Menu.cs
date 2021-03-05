@@ -2,12 +2,12 @@
 
 namespace Liuliu.Demo.Web.Migrations
 {
-    public partial class MenuInfo : Migration
+    public partial class Menu : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Systems_MenuInfo",
+                name: "Systems_Menu",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -19,30 +19,33 @@ namespace Liuliu.Demo.Web.Migrations
                     Target = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     Acl = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     OrderCode = table.Column<double>(type: "REAL", nullable: false),
-                    TreePathString = table.Column<string>(type: "TEXT", nullable: true),
+                    Data = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    TreePathString = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsSystem = table.Column<bool>(type: "INTEGER", nullable: false),
                     ParentId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_MenuInfo", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Menu", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Systems_MenuInfo_Systems_MenuInfo_ParentId",
+                        name: "FK_Systems_Menu_Systems_Menu_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Systems_MenuInfo",
+                        principalTable: "Systems_Menu",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Systems_MenuInfo_ParentId",
-                table: "Systems_MenuInfo",
+                name: "IX_Systems_Menu_ParentId",
+                table: "Systems_Menu",
                 column: "ParentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Systems_MenuInfo");
+                name: "Systems_Menu");
         }
     }
 }

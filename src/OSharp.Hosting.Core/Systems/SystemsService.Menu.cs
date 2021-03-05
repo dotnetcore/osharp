@@ -25,7 +25,7 @@ namespace OSharp.Hosting.Systems
         /// <summary>
         /// 获取 菜单信息查询数据集
         /// </summary>
-        public IQueryable<MenuInfo> MenuInfos => MenuInfoRepository.QueryAsNoTracking();
+        public IQueryable<Menu> MenuInfos => MenuInfoRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查菜单信息信息是否存在
@@ -33,7 +33,7 @@ namespace OSharp.Hosting.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的菜单信息编号</param>
         /// <returns>菜单信息是否存在</returns>
-        public Task<bool> CheckMenuInfoExists(Expression<Func<MenuInfo, bool>> predicate, int id = default)
+        public Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, int id = default)
         {
             return MenuInfoRepository.CheckExistsAsync(predicate, id);
         }
@@ -43,10 +43,10 @@ namespace OSharp.Hosting.Systems
         /// </summary>
         /// <param name="dtos">要添加的菜单信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> CreateMenuInfos(params MenuInfoInputDto[] dtos)
+        public Task<OperationResult> CreateMenuInfos(params MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInfoInputDto, int>(dtos, nameof(dtos));
+            Check.Validate<MenuInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.InsertAsync(dtos,
                 async dto =>
@@ -60,7 +60,7 @@ namespace OSharp.Hosting.Systems
                 {
                     if (dto.ParentId != null)
                     {
-                        MenuInfo parent = await MenuInfoRepository.GetAsync(dto.ParentId.Value);
+                        Menu parent = await MenuInfoRepository.GetAsync(dto.ParentId.Value);
                         if (parent == null)
                         {
                             throw new OsharpException($"编号为“{dto.ParentId}”的菜单信息不存在");
@@ -81,22 +81,26 @@ namespace OSharp.Hosting.Systems
         /// </summary>
         /// <param name="dtos">包含更新信息的菜单信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> UpdateMenuInfos(params MenuInfoInputDto[] dtos)
+        public Task<OperationResult> UpdateMenuInfos(params MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInfoInputDto, int>(dtos, nameof(dtos));
+            Check.Validate<MenuInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
                     if (await MenuInfoRepository.CheckExistsAsync(m => m.Name == dto.Name, entity.Id))
                     {
-                        throw new OsharpException($"名称为“{dto.ParentId}”的菜单信息已存在，请更换");
+                        throw new OsharpException($"名称为“{dto.Name}”的菜单信息已存在，请更换");
                     }
 
+                    if (entity.IsSystem)
+                    {
+                        throw new OsharpException($"菜单“{dto.Name}”是系统菜单，不能更新");
+                    }
                     if (dto.ParentId != entity.ParentId && dto.ParentId != null)
                     {
-                        MenuInfo parent = await MenuInfoRepository.GetAsync(dto.ParentId.Value);
+                        Menu parent = await MenuInfoRepository.GetAsync(dto.ParentId.Value);
                         if (parent == null)
                         {
                             throw new OsharpException($"编号为“{dto.ParentId}”的菜单信息不存在");
@@ -124,6 +128,11 @@ namespace OSharp.Hosting.Systems
                     if (await MenuInfoRepository.CheckExistsAsync(m => m.ParentId == entity.Id))
                     {
                         throw new OsharpException($"菜单“{entity.Text}”的子菜单不为空，不能删除");
+                    }
+
+                    if (entity.IsSystem)
+                    {
+                        throw new OsharpException($"菜单“{entity.Name}”是系统菜单，不能删除");
                     }
                 });
         }

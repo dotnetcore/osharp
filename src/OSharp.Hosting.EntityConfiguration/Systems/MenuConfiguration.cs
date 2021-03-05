@@ -17,13 +17,13 @@ using OSharp.Hosting.Systems.Entities;
 
 namespace OSharp.Hosting.EntityConfiguration.Systems
 {
-    public partial class MenuInfoConfiguration : EntityTypeConfigurationBase<MenuInfo, int>
+    public partial class MenuConfiguration : EntityTypeConfigurationBase<Menu, int>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
         /// </summary>
         /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<MenuInfo> builder)
+        public override void Configure(EntityTypeBuilder<Menu> builder)
         {
             builder.HasIndex(m => m.ParentId);
             builder.HasMany(m => m.Children).WithOne(m => m.Parent).HasForeignKey(m => m.ParentId);
@@ -31,6 +31,6 @@ namespace OSharp.Hosting.EntityConfiguration.Systems
             EntityConfigurationAppend(builder);
         }
 
-        partial void EntityConfigurationAppend(EntityTypeBuilder<MenuInfo> builder);
+        partial void EntityConfigurationAppend(EntityTypeBuilder<Menu> builder);
     }
 }
