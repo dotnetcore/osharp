@@ -18,14 +18,32 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
-    - name: OSharp
-      run: dotnet build ./src/OSharp/OSharp.csproj
-    - name: OSharp.AspNetCore
-      run: dotnet build ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
-    - name: OSharp.Authorization.Datas
-      run: dotnet build ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj
-    - name: OSharp.Authorization.Functions
-      run: dotnet build ./src/OSharp.Authorization.Functions/OSharp.Authorization.Functions.csproj
+    - name: Build
+      run: |
+        dotnet build ./src/OSharp/OSharp.csproj
+        dotnet build ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
+        dotnet build ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj
+        dotnet build ./src/OSharp.Authorization.Functions/OSharp.Authorization.Functions.csproj
+        dotnet build ./src/OSharp.AutoMapper/OSharp.AutoMapper.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore/OSharp.EntityFrameworkCore.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore.MySql/OSharp.EntityFrameworkCore.MySql.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore.Oracle/OSharp.EntityFrameworkCore.Oracle.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore.PostgreSql/OSharp.EntityFrameworkCore.PostgreSql.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore.Sqlite/OSharp.EntityFrameworkCore.Sqlite.csproj
+        dotnet build ./src/OSharp.EntityFrameworkCore.SqlServer/OSharp.EntityFrameworkCore.SqlServer.csproj
+        dotnet build ./src/OSharp.Exceptionless/OSharp.Exceptionless.csproj
+        dotnet build ./src/OSharp.Hangfire/OSharp.Hangfire.csproj
+        dotnet build ./src/OSharp.Identity/OSharp.Identity.csproj
+        dotnet build ./src/OSharp.Log4Net/OSharp.Log4Net.csproj
+        dotnet build ./src/OSharp.MiniProfiler/OSharp.MiniProfiler.csproj
+        dotnet build ./src/OSharp.NLog/OSharp.NLog.csproj
+        dotnet build ./src/OSharp.Redis/OSharp.Redis.csproj
+        dotnet build ./src/OSharp.Swagger/OSharp.Swagger.csproj
+        dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
+        dotnet build ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
+        dotnet build ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
+        dotnet build ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
+
 
 #    - name: Restore dependencies
 #      run: dotnet restore
