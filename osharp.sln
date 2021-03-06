@@ -35,6 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OShar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-test.yml = .github\workflows\build-test.yml
 		build\nuget-build.ps1 = build\nuget-build.ps1
 		build\nuget-delete.ps1 = build\nuget-delete.ps1
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec

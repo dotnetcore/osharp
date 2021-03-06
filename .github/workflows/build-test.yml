@@ -1,4 +1,4 @@
-name: depoly
+name: build-test
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Build
+    - name: Linux Build
       run: |
         dotnet build ./src/OSharp/OSharp.csproj
         dotnet build ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
@@ -47,10 +47,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Build
+    - name: Windows Build
       run: dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
-    - name: Test
+    - name: Windows Test
       run: |
         dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
-        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --no-restore --verbosity normal
-        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --no-restore --verbosity normal
+        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --verbosity normal
+        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --verbosity normal
