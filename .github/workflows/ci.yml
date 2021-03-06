@@ -1,4 +1,4 @@
-name: depoly
+name: CI
 
 on:
   push:
@@ -11,11 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET
+    - name: Setup dotnet5.0
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Build
+    - name: Setup dotnet3.1
+      uses: actions/setup-dotnet@v1
+      with: 
+        dotnet-version: 3.1.x
+
+    - name: Linux Build
       run: |
         dotnet build ./src/OSharp/OSharp.csproj
         dotnet build ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
@@ -47,10 +52,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Build
+    - name: Windows Build
       run: dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
-    - name: Test
+    - name: Windows Test
       run: |
         dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
-        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --no-restore --verbosity normal
-        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --no-restore --verbosity normal
+        dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --verbosity normal
+        dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --verbosity normal
