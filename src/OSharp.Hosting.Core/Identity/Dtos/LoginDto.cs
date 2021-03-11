@@ -43,6 +43,11 @@ namespace OSharp.Hosting.Identity.Dtos
         public RequestClientType ClientType { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否Token登录
+        /// </summary>
+        public bool IsToken { get; set; }
+
+        /// <summary>
         /// 获取或设置 IP地址
         /// </summary>
         public string Ip { get; set; }
