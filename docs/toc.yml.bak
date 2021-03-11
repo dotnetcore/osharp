@@ -1,5 +1,0 @@
-- name: 返回文档中心
-  href: /
-- name: API文档
-  href: api/
-  homepage: api/index.md

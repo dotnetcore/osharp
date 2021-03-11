@@ -1,1 +1,0 @@
-md2html updatelogs.md>updatelogs.html
