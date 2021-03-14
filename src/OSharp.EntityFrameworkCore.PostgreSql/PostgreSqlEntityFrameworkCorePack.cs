@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Entity.KeyGenerate;
 
 
 namespace OSharp.Entity.PostgreSql
@@ -43,6 +44,7 @@ namespace OSharp.Entity.PostgreSql
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = base.AddServices(services);
+            services.AddSingleton<ISequentialGuidGenerator, PostgreSqlSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(PostgreSqlDapperSqlExecutor<,>));
             services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 

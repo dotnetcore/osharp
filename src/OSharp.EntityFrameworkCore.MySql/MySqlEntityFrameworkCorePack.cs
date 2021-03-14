@@ -13,6 +13,7 @@ using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 using OSharp.Core.Packs;
+using OSharp.Entity.KeyGenerate;
 
 
 namespace OSharp.Entity.MySql
@@ -42,6 +43,7 @@ namespace OSharp.Entity.MySql
         {
             services = base.AddServices(services);
 
+            services.AddSingleton<ISequentialGuidGenerator, MySqlSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(MySqlDapperSqlExecutor<,>));
             services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 

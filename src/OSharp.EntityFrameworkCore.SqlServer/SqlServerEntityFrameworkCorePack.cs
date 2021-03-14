@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Entity.KeyGenerate;
 
 
 namespace OSharp.Entity.SqlServer
@@ -42,6 +43,7 @@ namespace OSharp.Entity.SqlServer
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = base.AddServices(services);
+            services.AddSingleton<ISequentialGuidGenerator, SqlServerSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
             services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 

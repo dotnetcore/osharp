@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Core.Packs;
+using OSharp.Entity.KeyGenerate;
 
 
 namespace OSharp.Entity.Sqlite
@@ -43,6 +44,7 @@ namespace OSharp.Entity.Sqlite
         {
             services = base.AddServices(services);
 
+            services.AddSingleton<ISequentialGuidGenerator, SqliteSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqliteDapperSqlExecutor<,>));
             services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
 
