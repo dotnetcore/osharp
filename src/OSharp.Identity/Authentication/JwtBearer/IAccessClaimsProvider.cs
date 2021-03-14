@@ -10,6 +10,8 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using OSharp.Data;
+
 
 namespace OSharp.Authentication.JwtBearer
 {
@@ -30,6 +32,6 @@ namespace OSharp.Authentication.JwtBearer
         /// </summary>
         /// <param name="identity">待刷新的Identity</param>
         /// <returns>刷新后的Identity</returns>
-        Task<ClaimsIdentity> RefreshIdentity(ClaimsIdentity identity);
+        Task<OperationResult<ClaimsIdentity>> RefreshIdentity(ClaimsIdentity identity);
     }
 }

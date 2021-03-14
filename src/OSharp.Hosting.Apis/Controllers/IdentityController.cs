@@ -253,7 +253,9 @@ namespace OSharp.Hosting.Apis.Controllers
             }
 
             int userId = User.Identity.GetUserId<int>();
-            OperationResult result = await _identityContract.Logout(userId);
+            bool isToken = Request.Headers["Authorization"].Any(m => m.StartsWith("Bearer"));
+
+            OperationResult result = await _identityContract.Logout(userId, isToken);
             return result.ToAjaxResult();
         }
 

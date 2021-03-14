@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -73,7 +74,7 @@ namespace OSharp.Authentication.JwtBearer
         /// </summary>
         /// <param name="identity">待刷新的Identity</param>
         /// <returns>刷新后的Identity</returns>
-        public async Task<ClaimsIdentity> RefreshIdentity(ClaimsIdentity identity)
+        public async Task<OperationResult<ClaimsIdentity>> RefreshIdentity(ClaimsIdentity identity)
         {
             if (identity != null && identity.IsAuthenticated)
             {
@@ -81,7 +82,13 @@ namespace OSharp.Authentication.JwtBearer
                 OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name);
                 if (onlineUser == null)
                 {
-                    return identity;
+                    return new OperationResult<ClaimsIdentity>(OperationResultType.Error, "在线用户信息创建失败");
+                }
+
+                string clientId = identity.GetClaimValueFirstOrDefault("clientId");
+                if (clientId != null && onlineUser.RefreshTokens.All(m => m.Value.ClientId != clientId))
+                {
+                    return new OperationResult<ClaimsIdentity>(OperationResultType.Error, "当前客户端的Token已过期");
                 }
 
                 if (!string.IsNullOrEmpty(onlineUser.NickName))
@@ -112,7 +119,7 @@ namespace OSharp.Authentication.JwtBearer
                 dict.Identity = identity;
             }
 
-            return identity;
+            return new OperationResult<ClaimsIdentity>(OperationResultType.Success, "ok", identity);
         }
     }
 }

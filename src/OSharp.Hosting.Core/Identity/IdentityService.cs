@@ -258,18 +258,21 @@ namespace OSharp.Hosting.Identity
         /// 账号退出
         /// </summary>
         /// <param name="userId">用户编号</param>
+        /// <param name="isToken">是否token认证</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> Logout(int userId)
+        public async Task<OperationResult> Logout(int userId, bool isToken = true)
         {
-            //await SignInManager.SignOutAsync();
-            //todo: Site和API的授权与退出，分别处理
+            if (!isToken)
+            {
+                await SignInManager.SignOutAsync();
+            }
             Logger.LogInformation(4, $"用户 {userId} 登出系统");
 
             //触发登出成功事件
             LogoutEventData logoutEventData = new LogoutEventData() { UserId = userId };
             await EventBus.PublishAsync(logoutEventData);
 
-            return OperationResult.Success;
+            return new OperationResult(OperationResultType.Success, "用户登出成功");
         }
 
         /// <summary>
