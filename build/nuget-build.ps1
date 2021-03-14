@@ -61,6 +61,7 @@ $props = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.
 foreach($prop in $props)
 {
     $path = ("../src/{0}/{0}.csproj" -f $prop)
+    dotnet build $path -c Release
     dotnet pack $path -c Release --output $nupkgs
 }
 
