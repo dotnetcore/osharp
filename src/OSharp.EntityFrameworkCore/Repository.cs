@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity.KeyGenerate;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -42,6 +43,7 @@ namespace OSharp.Entity
         where TEntity : class, IEntity<TKey>, new()
         where TKey : IEquatable<TKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
@@ -53,6 +55,7 @@ namespace OSharp.Entity
         /// </summary>
         public Repository(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
             _dbContext = UnitOfWork.GetEntityDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
@@ -65,7 +68,7 @@ namespace OSharp.Entity
         /// 获取 当前单元操作对象
         /// </summary>
         public IUnitOfWork UnitOfWork { get; }
-
+        
         /// <summary>
         /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
         /// </summary>
@@ -864,18 +867,28 @@ namespace OSharp.Entity
 
         private void SetEmptyGuidKey(TEntity entity)
         {
-            if (typeof(TKey) != typeof(Guid))
+            Type keyType = typeof(TKey);
+            //自增int
+            if (keyType == typeof(int))
             {
+                IKeyGenerator<int> generator = _serviceProvider.GetService<IKeyGenerator<int>>();
+                entity.Id = generator.Create().CastTo<TKey>();
                 return;
             }
-
-            if (!entity.Id.Equals(Guid.Empty))
+            //雪花long
+            if (keyType == typeof(long))
             {
-                return;
+                IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
+                entity.Id = generator.Create().CastTo<TKey>();
             }
-
-            DatabaseType databaseType = _dbContext.GetDatabaseType();
-            entity.Id = SequentialGuid.Create(databaseType).CastTo<TKey>();
+            //顺序guid
+            if (keyType == typeof(Guid) && entity.Id.Equals(Guid.Empty))
+            {
+                DatabaseType databaseType = _dbContext.GetDatabaseType();
+                ISequentialGuidGenerator generator =
+                    _serviceProvider.GetServices<ISequentialGuidGenerator>().FirstOrDefault(m => m.DatabaseType == databaseType);
+                entity.Id = generator == null ? SequentialGuid.Create(databaseType).CastTo<TKey>() : generator.Create().CastTo<TKey>();
+            }
         }
 
         private static string GetNameValue(object value)

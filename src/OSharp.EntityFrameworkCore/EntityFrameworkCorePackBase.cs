@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Authorization.EntityInfos;
 using OSharp.Core.Packs;
+using OSharp.Data.Snows;
+using OSharp.Entity.KeyGenerate;
 using OSharp.EventBuses;
 
 
@@ -37,6 +39,9 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
+            services.TryAddSingleton<IKeyGenerator<int>, AutoIncreaseKeyGenerator>();
+            services.TryAddSingleton<IKeyGenerator<long>>(new SnowKeyGenerator(new DefaultIdGenerator(new IdGeneratorOptions(1))));
+
             services.TryAddScoped<IAuditEntityProvider, AuditEntityProvider>();
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
