@@ -140,8 +140,9 @@ namespace OSharp.Hosting.Identity
         /// 账号退出
         /// </summary>
         /// <param name="userId">用户编号</param>
+        /// <param name="isToken">是否token认证</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> Logout(int userId);
+        Task<OperationResult> Logout(int userId, bool isToken = true);
 
         #endregion
 
