@@ -102,10 +102,7 @@ namespace OSharp.Entity
 
             IUpdateAudited<TUserKey> entity1 = (IUpdateAudited<TUserKey>)entity;
             entity1.LastUpdaterId = user.Identity.IsAuthenticated ? (TUserKey?)user.Identity.GetUserId<TUserKey>() : null;
-            if (entity1.LastUpdatedTime == null || entity1.LastUpdatedTime.Value == default(DateTime))
-            {
-                entity1.LastUpdatedTime = DateTime.Now;
-            }
+            entity1.LastUpdatedTime = DateTime.Now;
             return (TEntity)entity1;
         }
     }
