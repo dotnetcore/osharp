@@ -11,7 +11,6 @@ using Liuliu.Demo.Web.Startups;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,6 +23,7 @@ using OSharp.Hosting.Infos;
 using OSharp.Hosting.Systems;
 using OSharp.Log4Net;
 using OSharp.MiniProfiler;
+using OSharp.Redis;
 using OSharp.Swagger;
 
 
@@ -42,7 +42,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<EndpointsPack>()
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
-                //.AddPack<RedisPack>()
+                .AddPack<RedisPack>()
                 .AddPack<SystemsPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
