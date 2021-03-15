@@ -32,20 +32,20 @@
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.13,4.0.0)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[3.1.12,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[3.1.12,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[3.1.13,4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />

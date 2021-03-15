@@ -12,10 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="osharpns.db-shm" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -26,17 +22,17 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.12">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[3.1.13,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[3.1.13,4.0.0)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[3.1.5,4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
