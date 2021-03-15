@@ -1,12 +1,12 @@
 ﻿<Project>
   <PropertyGroup>
     <VersionMain>5.0</VersionMain>
-    <VersionPrefix>3</VersionPrefix>
+    <VersionPrefix>4</VersionPrefix>
     <VersionSuffix>-preview</VersionSuffix>
-    <VersionSuffixVersion>304</VersionSuffixVersion>
+    <VersionSuffixVersion>315</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
-    <Version>$(VersionMain).$(VersionPrefix)</Version>
-    <!--<AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>-->
+    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
+    <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
   </PropertyGroup>
 </Project>
