@@ -215,23 +215,19 @@ namespace OSharp.Entity
             }
             Logger.LogInformation($"上下文 {contextType} 注册了{registers.Length}个实体类");
 
-            List<IMutableEntityType> entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
-            foreach (IMutableEntityType entityType in entityTypes)
+            // 应用批量实体配置
+            List<IMutableEntityType> mutableEntityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+            IEntityBatchConfiguration[] entityBatchConfigurations =
+                _serviceProvider.GetServices<IEntityBatchConfiguration>().ToArray();
+            if (entityBatchConfigurations.Length > 0)
             {
-                //启用时间属性UTC格式
-                if (_osharpDbOptions.DateTimeUtcFormatEnabled)
+                foreach (IMutableEntityType mutableEntityType in mutableEntityTypes)
                 {
-                    IEntityDateTimeUtcConversion utcConversion = _serviceProvider.GetService<IEntityDateTimeUtcConversion>();
-                    utcConversion.Convert(entityType);
+                    foreach (IEntityBatchConfiguration entityBatchConfiguration in entityBatchConfigurations)
+                    {
+                        entityBatchConfiguration.Configure(modelBuilder, mutableEntityType);
+                    }
                 }
-
-                //按预定前缀更改表名
-                string prefix = GetTableNamePrefix(entityType.ClrType);
-                if (prefix.IsNullOrEmpty())
-                {
-                    continue;
-                }
-                modelBuilder.Entity(entityType.ClrType).ToTable($"{prefix}_{entityType.GetTableName()}");
             }
         }
 

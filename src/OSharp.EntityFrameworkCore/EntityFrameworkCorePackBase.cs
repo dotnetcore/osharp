@@ -46,8 +46,8 @@ namespace OSharp.Entity
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
             services.TryAddSingleton<IEntityManager, EntityManager>();
-            services.TryAddSingleton<IEntityDateTimeUtcConversion, EntityDateTimeUtcConversion>();
             services.AddSingleton<DbContextModelCache>();
+            services.AddSingleton<IEntityBatchConfiguration, TableNamePrefixConfiguration>();
             services.AddOsharpDbContext<DefaultDbContext>();
 
             return services;
