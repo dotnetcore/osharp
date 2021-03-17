@@ -34,7 +34,6 @@ namespace OSharp.Entity
         private readonly ConcurrentDictionary<Type, IEntityRegister[]> _entityRegistersDict
             = new ConcurrentDictionary<Type, IEntityRegister[]>();
         private readonly ILogger _logger;
-        private readonly IEntityConfigurationTypeFinder _typeFinder;
         private bool _initialized;
 
         /// <summary>
@@ -43,7 +42,6 @@ namespace OSharp.Entity
         public EntityManager(IServiceProvider provider)
         {
             _logger = provider.GetLogger<EntityManager>();
-            _typeFinder = provider.GetService<IEntityConfigurationTypeFinder>();
         }
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace OSharp.Entity
         public virtual void Initialize()
         {
             var dict = _entityRegistersDict;
-            Type[] types = _typeFinder.FindAll(true);
+            Type[] types = AssemblyManager.FindTypesByBase<IEntityRegister>();
             if (types.Length == 0 || _initialized)
             {
                 _logger.LogDebug("数据库上下文实体已初始化，跳过");
@@ -114,7 +112,7 @@ namespace OSharp.Entity
             var dict = _entityRegistersDict;
             if (dict.Count == 0)
             {
-                throw new OsharpException($"未发现任何数据上下文实体映射配置，请通过对各个实体继承基类“EntityTypeConfigurationBase<TEntity, TKey>”以使实体加载到上下文中");
+                throw new OsharpException("未发现任何数据上下文实体映射配置，请通过对各个实体继承基类“EntityTypeConfigurationBase<TEntity, TKey>”以使实体加载到上下文中");
             }
 
             foreach (var item in _entityRegistersDict)

@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
+using OSharp.Collections;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -34,20 +36,37 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public MvcFunctionHandler(IServiceProvider serviceProvider)
             : base(serviceProvider)
+        { }
+        
+        /// <summary>
+        /// 获取所有功能类型
+        /// </summary>
+        /// <returns></returns>
+        public override Type[] GetAllFunctionTypes()
         {
-            FunctionTypeFinder = serviceProvider.GetService<IFunctionTypeFinder>();
-            MethodInfoFinder = new MvcMethodInfoFinder();
+            return AssemblyManager.FindTypes(m => m.IsController());
         }
 
         /// <summary>
-        /// 获取 功能类型查找器
+        /// 查找指定功能的所有功能点方法  
         /// </summary>
-        public override IFunctionTypeFinder FunctionTypeFinder { get; }
+        /// <param name="functionType">功能类型</param>
+        /// <returns></returns>
+        public override MethodInfo[] GetMethodInfos(Type functionType)
+        {
+            List<Type> types = new List<Type>();
+            while (functionType.IsController())
+            {
+                types.AddIfNotExist(functionType);
+                functionType = functionType?.BaseType;
+                if (functionType == null || functionType.Name == "Controller" || functionType.Name == "ControllerBase")
+                {
+                    break;
+                }
+            }
 
-        /// <summary>
-        /// 获取 功能方法查找器
-        /// </summary>
-        public override IMethodInfoFinder MethodInfoFinder { get; }
+            return types.SelectMany(m => m.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)).ToArray();
+        }
 
         /// <summary>
         /// 重写以实现从功能类型创建功能信息

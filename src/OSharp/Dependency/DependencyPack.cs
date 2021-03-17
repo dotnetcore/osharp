@@ -55,11 +55,8 @@ namespace OSharp.Dependency
             services.TryAddSingleton<IHybridServiceScopeFactory, DefaultServiceScopeFactory>();
             services.AddScoped<ScopedDictionary>();
 
-            //查找所有自动注册的服务实现类型
-            IDependencyTypeFinder dependencyTypeFinder =
-                services.GetOrAddTypeFinder<IDependencyTypeFinder>(assemblyFinder => new DependencyTypeFinder(assemblyFinder));
-
-            Type[] dependencyTypes = dependencyTypeFinder.FindAll();
+            //查找所有自动注册的服务实现类型进行注册
+            Type[] dependencyTypes = FindDependencyTypes();
             foreach (Type dependencyType in dependencyTypes)
             {
                 AddToServices(services, dependencyType);
@@ -76,6 +73,18 @@ namespace OSharp.Dependency
         {
             ServiceLocator.Instance.SetApplicationServiceProvider(provider);
             IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 查找所有自动注册的服务实现类型
+        /// </summary>
+        /// <returns></returns>
+        protected virtual Type[] FindDependencyTypes()
+        {
+            Type[] baseTypes = { typeof(ISingletonDependency), typeof(IScopeDependency), typeof(ITransientDependency) };
+            return AssemblyManager.FindTypes(type => type.IsClass && !type.IsAbstract && !type.IsInterface
+                && !type.HasAttribute<IgnoreDependencyAttribute>()
+                && (baseTypes.Any(b => b.IsAssignableFrom(type)) || type.HasAttribute<DependencyAttribute>()));
         }
 
         /// <summary>

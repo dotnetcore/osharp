@@ -51,7 +51,7 @@ namespace OSharp.Collections
         public static void AddIfNotExist<T>(this ICollection<T> collection, T value, Func<T, bool> existFunc = null)
         {
             Check.NotNull(collection, nameof(collection));
-            bool exists = existFunc == null ? collection.Contains(value) : existFunc(value);
+            bool exists = existFunc == null ? collection.Contains(value) : collection.Any(existFunc);
             if (!exists)
             {
                 collection.Add(value);

@@ -45,9 +45,6 @@ namespace OSharp.Core.Packs
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddSingleton<IConfigureOptions<OsharpOptions>, OsharpOptionsSetup>();
-            services.TryAddSingleton<IEntityTypeFinder, EntityTypeFinder>();
-            services.TryAddSingleton<IInputDtoTypeFinder, InputDtoTypeFinder>();
-            services.TryAddSingleton<IOutputDtoTypeFinder, OutputDtoTypeFinder>();
             services.TryAddSingleton<ICancellationTokenProvider, NoneCancellationTokenProvider>();
             services.TryAddSingleton<IEmailSender, DefaultEmailSender>();
             services.TryAddSingleton<StartupLogger>();

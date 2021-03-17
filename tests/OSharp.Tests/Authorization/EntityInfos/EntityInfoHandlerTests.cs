@@ -30,12 +30,10 @@ namespace OSharp.Authorization.EntityInfos.Tests
 
         private IServiceProvider GetServiceProvider()
         {
-            var entityTypeFinder = Substitute.For<IEntityTypeFinder>();
             _logger = Substitute.For<ILogger<EntityInfoHandler>>();
             var factory = Substitute.For<ILoggerFactory>();
 
             var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService<IEntityTypeFinder>().Returns(entityTypeFinder);
             serviceProvider.GetService<ILoggerFactory>().Returns(factory);
             factory.CreateLogger<EntityInfoHandler>().Returns(_logger);
             return serviceProvider;

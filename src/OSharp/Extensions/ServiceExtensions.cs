@@ -46,7 +46,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //初始化所有程序集查找器
             services.GetOrAddSingletonInstance(() => new StartupLogger());
-            services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder());
 
             IOsharpBuilder builder = services.GetOrAddSingletonInstance<IOsharpBuilder>(() => new OsharpBuilder(services));
             builder.AddCorePack();
@@ -105,21 +104,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Add(toAdDescriptor);
             return toAdDescriptor;
         }
-
-        /// <summary>
-        /// 获取或添加指定类型查找器
-        /// </summary>
-        public static TTypeFinder GetOrAddTypeFinder<TTypeFinder>(this IServiceCollection services, Func<IAllAssemblyFinder, TTypeFinder> factory)
-            where TTypeFinder : class
-        {
-            return services.GetOrAddSingletonInstance<TTypeFinder>(() =>
-            {
-                IAllAssemblyFinder allAssemblyFinder =
-                    services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder(true));
-                return factory(allAssemblyFinder);
-            });
-        }
-
+        
         /// <summary>
         /// 如果指定服务不存在，创建实例并添加
         /// </summary>
