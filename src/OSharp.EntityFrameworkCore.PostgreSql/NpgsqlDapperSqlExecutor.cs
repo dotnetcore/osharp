@@ -20,12 +20,12 @@ namespace OSharp.Entity.PostgreSql
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TKey">编号类型</typeparam>
-    public class PostgreSqlDapperSqlExecutor<TEntity, TKey> : SqlExecutorBase<TEntity, TKey> where TEntity : IEntity<TKey>
+    public class NpgsqlDapperSqlExecutor<TEntity, TKey> : SqlExecutorBase<TEntity, TKey> where TEntity : IEntity<TKey>
     {
         /// <summary>
         /// 初始化一个<see cref="SqlExecutorBase{TEntity,TKey}"/>类型的新实例
         /// </summary>
-        public PostgreSqlDapperSqlExecutor(IServiceProvider provider)
+        public NpgsqlDapperSqlExecutor(IServiceProvider provider)
             : base(provider)
         { }
 

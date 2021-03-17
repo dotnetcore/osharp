@@ -11,24 +11,25 @@ using System;
 using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
 
-namespace OSharp.Entity.Sqlite
+
+namespace OSharp.Entity.PostgreSql
 {
     /// <summary>
-    /// Sqlite的<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
+    /// PostgreSql<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
+    public class NpgsqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// 初始化一个<see cref="NpgsqlDbContextOptionsBuilderDriveHandler"/>类型的新实例
         /// </summary>
-        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        public NpgsqlDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
         }
@@ -36,7 +37,7 @@ namespace OSharp.Entity.Sqlite
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
         /// </summary>
-        public DatabaseType Type { get; } = DatabaseType.Sqlite;
+        public DatabaseType Type { get; } = DatabaseType.PostgreSql;
 
         /// <summary>
         /// 处理<see cref="DbContextOptionsBuilder"/>驱动差异
@@ -47,25 +48,42 @@ namespace OSharp.Entity.Sqlite
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
-            Action<SqliteDbContextOptionsBuilder> action = null;
+            DbContextOptionsBuilderAction(builder);
+            Action<NpgsqlDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
-                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                action = b =>
+                {
+                    b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                    NpgsqlDbContextOptionsBuilderAction(b);
+                };
             }
 
             if (existingConnection == null)
             {
-                _logger.LogDebug($"使用新连接“{connectionString}”应用Sqlite数据库");
-                builder.UseSqlite(connectionString, action);
+                _logger.LogDebug($"使用新连接“{connectionString}”应用PostgreSql数据库");
+                builder.UseNpgsql(connectionString, action);
             }
             else
             {
-                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用Sqlite数据库");
-                builder.UseSqlite(existingConnection, action);
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用PostgreSql数据库");
+                builder.UseNpgsql(existingConnection, action);
             }
 
             ServiceExtensions.MigrationAssemblyName = null;
             return builder;
         }
+
+        /// <summary>
+        /// 重写以实现<see cref="NpgsqlDbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void NpgsqlDbContextOptionsBuilderAction(NpgsqlDbContextOptionsBuilder options)
+        { }
+
+        /// <summary>
+        /// 重写以实现<see cref="DbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void DbContextOptionsBuilderAction(DbContextOptionsBuilder builder)
+        { }
     }
 }

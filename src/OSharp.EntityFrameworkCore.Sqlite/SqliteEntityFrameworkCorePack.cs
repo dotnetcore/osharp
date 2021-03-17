@@ -46,7 +46,7 @@ namespace OSharp.Entity.Sqlite
 
             services.AddSingleton<ISequentialGuidGenerator, SqliteSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqliteDapperSqlExecutor<,>));
-            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, SqliteDbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

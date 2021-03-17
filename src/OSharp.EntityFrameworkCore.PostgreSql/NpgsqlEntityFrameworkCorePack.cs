@@ -23,7 +23,7 @@ namespace OSharp.Entity.PostgreSql
     /// PostgreSqlEntityFrameworkCore模块
     /// </summary>
     [Description("PostgreSqlEntityFrameworkCore模块")]
-    public class PostgreSqlEntityFrameworkCorePack : EntityFrameworkCorePackBase
+    public class NpgsqlEntityFrameworkCorePack : EntityFrameworkCorePackBase
     {
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -44,9 +44,9 @@ namespace OSharp.Entity.PostgreSql
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services = base.AddServices(services);
-            services.AddSingleton<ISequentialGuidGenerator, PostgreSqlSequentialGuidGenerator>();
-            services.AddScoped(typeof(ISqlExecutor<,>), typeof(PostgreSqlDapperSqlExecutor<,>));
-            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
+            services.AddSingleton<ISequentialGuidGenerator, NpgsqlSequentialGuidGenerator>();
+            services.AddScoped(typeof(ISqlExecutor<,>), typeof(NpgsqlDapperSqlExecutor<,>));
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, NpgsqlDbContextOptionsBuilderDriveHandler>();
 
             return services;
         }
@@ -57,8 +57,8 @@ namespace OSharp.Entity.PostgreSql
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
-            bool? hasPostgreSql = provider.GetOSharpOptions()?.DbContexts?.Values.Any(m => m.DatabaseType == DatabaseType.PostgreSql);
-            if (hasPostgreSql == null || !hasPostgreSql.Value)
+            bool? hasNpgsql = provider.GetOSharpOptions()?.DbContexts?.Values.Any(m => m.DatabaseType == DatabaseType.PostgreSql);
+            if (hasNpgsql == null || !hasNpgsql.Value)
             {
                 return;
             }
