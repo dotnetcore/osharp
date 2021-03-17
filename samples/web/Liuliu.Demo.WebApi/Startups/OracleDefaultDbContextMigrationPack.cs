@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OracleDefaultDbContextMigrationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -6,7 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2019-04-18 20:57</last-date>
 // -----------------------------------------------------------------------
-#if !NET5_0
 using System;
 using System.ComponentModel;
 
@@ -46,4 +45,3 @@ namespace Liuliu.Demo.Web.Startups
         }
     }
 }
-#endif
