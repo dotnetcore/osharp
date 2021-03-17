@@ -31,7 +31,6 @@ namespace OSharp.Authorization.EntityInfos
         where TEntityInfo : class, IEntityInfo, new()
     {
         private readonly List<TEntityInfo> _entityInfos = new List<TEntityInfo>();
-        private readonly IEntityTypeFinder _entityTypeFinder;
         private readonly ILogger _logger;
         private readonly IServiceProvider _serviceProvider;
 
@@ -41,7 +40,6 @@ namespace OSharp.Authorization.EntityInfos
         protected EntityInfoHandlerBase(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _entityTypeFinder = serviceProvider.GetService<IEntityTypeFinder>();
             _logger = serviceProvider.GetLogger<TEntityInfoHandler>();
         }
 
@@ -50,7 +48,7 @@ namespace OSharp.Authorization.EntityInfos
         /// </summary>
         public void Initialize()
         {
-            Type[] entityTypes = _entityTypeFinder.FindAll(true);
+            Type[] entityTypes = GetEntityTypes();
             _logger.LogInformation($"数据实体处理器开始初始化，共找到 {entityTypes.Length} 个实体类");
             foreach (Type entityType in entityTypes)
             {
@@ -71,6 +69,11 @@ namespace OSharp.Authorization.EntityInfos
             });
 
             RefreshCache();
+        }
+
+        protected virtual Type[] GetEntityTypes()
+        {
+            return AssemblyManager.FindTypesByBase(typeof(IEntity<>));
         }
 
         /// <summary>

@@ -45,7 +45,7 @@ namespace OSharp.Entity.SqlServer
             services = base.AddServices(services);
             services.AddSingleton<ISequentialGuidGenerator, SqlServerSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(SqlServerDapperSqlExecutor<,>));
-            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, SqlServerDbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

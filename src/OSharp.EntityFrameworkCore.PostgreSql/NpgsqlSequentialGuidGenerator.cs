@@ -18,7 +18,7 @@ namespace OSharp.Entity.PostgreSql
     /// <summary>
     /// PostgreSql数据库顺序Guid生成器
     /// </summary>
-    public class PostgreSqlSequentialGuidGenerator : ISequentialGuidGenerator
+    public class NpgsqlSequentialGuidGenerator : ISequentialGuidGenerator
     {
         /// <summary>
         /// 获取一个<see cref="Guid"/>类型的主键数据

@@ -173,9 +173,11 @@ namespace OSharp.Core.Builders
 
         private static List<OsharpPack> GetAllPacks(IServiceCollection services)
         {
-            IOsharpPackTypeFinder packTypeFinder =
-                services.GetOrAddTypeFinder<IOsharpPackTypeFinder>(assemblyFinder => new OsharpPackTypeFinder(assemblyFinder));
-            Type[] packTypes = packTypeFinder.FindAll();
+            //需要排除已经被继承的Pack实类
+            Type[] types = AssemblyManager.FindTypesByBase<OsharpPack>();
+            Type[] packTypes = types.Select(m => m.BaseType).Where(m => m != null && !m.IsAbstract).ToArray();
+            packTypes = types.Except(packTypes).ToArray();
+
             return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m))
                 .OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToList();
         }

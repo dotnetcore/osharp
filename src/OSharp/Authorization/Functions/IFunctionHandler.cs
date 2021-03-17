@@ -7,6 +7,9 @@
 //  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+using System.Reflection;
+
 using OSharp.Reflection;
 
 
@@ -18,19 +21,22 @@ namespace OSharp.Authorization.Functions
     public interface IFunctionHandler
     {
         /// <summary>
-        /// 获取 功能类型查找器
-        /// </summary>
-        IFunctionTypeFinder FunctionTypeFinder { get; }
-
-        /// <summary>
-        /// 获取 功能方法查找器
-        /// </summary>
-        IMethodInfoFinder MethodInfoFinder { get; }
-
-        /// <summary>
         /// 从程序集中获取功能信息（如MVC的Controller-Action）
         /// </summary>
         void Initialize();
+
+        /// <summary>
+        /// 获取所有功能类型
+        /// </summary>
+        /// <returns></returns>
+        Type[] GetAllFunctionTypes();
+
+        /// <summary>
+        /// 查找指定功能的所有功能点方法  
+        /// </summary>
+        /// <param name="functionType">功能类型</param>
+        /// <returns></returns>
+        MethodInfo[] GetMethodInfos(Type functionType);
 
         /// <summary>
         /// 查找指定条件的功能信息

@@ -16,14 +16,14 @@ namespace OSharp.Entity.Oracle
     /// Oracle<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
     [Dependency(ServiceLifetime.Singleton)]
-    public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
+    public class OracleDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// 初始化一个<see cref="OracleDbContextOptionsBuilderDriveHandler"/>类型的新实例
         /// </summary>
-        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        public OracleDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
         }
@@ -40,14 +40,16 @@ namespace OSharp.Entity.Oracle
         /// <param name="connectionString">连接字符串</param>
         /// <param name="existingConnection">已存在的连接对象</param>
         /// <returns></returns>
-        public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
+        public virtual DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
+            DbContextOptionsBuilderAction(builder);
             Action<OracleDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
                 action = b =>
                 {
                     b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                    OracleDbContextOptionsBuilderAction(b);
                 };
             }
 
@@ -65,5 +67,17 @@ namespace OSharp.Entity.Oracle
             ServiceExtensions.MigrationAssemblyName = null;
             return builder;
         }
+
+        /// <summary>
+        /// 重写以实现<see cref="OracleDbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void OracleDbContextOptionsBuilderAction(OracleDbContextOptionsBuilder options)
+        { }
+
+        /// <summary>
+        /// 重写以实现<see cref="DbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void DbContextOptionsBuilderAction(DbContextOptionsBuilder builder)
+        { }
     }
 }

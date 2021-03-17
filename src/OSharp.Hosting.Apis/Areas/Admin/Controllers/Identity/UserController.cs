@@ -14,7 +14,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -130,7 +129,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(UserInputDto[] dtos)
@@ -159,7 +158,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(UserInputDto[] dtos)
@@ -187,7 +186,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(int[] ids)
@@ -214,8 +213,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadUserRoles", Controller = "Role")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadUserRoles), Controller = nameof(RoleController))]
         [UnitOfWork]
         [Description("设置角色")]
         public async Task<AjaxResult> SetRoles(UserSetRoleDto dto)
@@ -231,8 +230,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadUserModules", Controller = "Module")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(ModuleController.ReadUserModules), Controller = nameof(ModuleController))]
         [UnitOfWork]
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(UserSetModuleDto dto)

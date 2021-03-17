@@ -37,7 +37,7 @@ namespace OSharp.Entity.Oracle
             services = base.AddServices(services);
             services.AddSingleton<ISequentialGuidGenerator, OracleSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(OracleDapperSqlExecutor<,>));
-            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, OracleDbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

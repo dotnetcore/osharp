@@ -45,7 +45,7 @@ namespace OSharp.Entity.MySql
 
             services.AddSingleton<ISequentialGuidGenerator, MySqlSequentialGuidGenerator>();
             services.AddScoped(typeof(ISqlExecutor<,>), typeof(MySqlDapperSqlExecutor<,>));
-            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, DbContextOptionsBuilderDriveHandler>();
+            services.AddSingleton<IDbContextOptionsBuilderDriveHandler, MySqlDbContextOptionsBuilderDriveHandler>();
 
             return services;
         }

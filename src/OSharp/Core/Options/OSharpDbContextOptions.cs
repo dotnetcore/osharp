@@ -53,12 +53,7 @@ namespace OSharp.Core.Options
         /// 获取或设置 是否启用延迟加载代理
         /// </summary>
         public bool LazyLoadingProxiesEnabled { get; set; }
-
-        /// <summary>
-        /// 获取或设置 是否启用时间UTC格式
-        /// </summary>
-        public bool DateTimeUtcFormatEnabled { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 是否允许审计实体
         /// </summary>

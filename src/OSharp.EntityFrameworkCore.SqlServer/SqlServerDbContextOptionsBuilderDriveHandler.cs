@@ -21,14 +21,14 @@ namespace OSharp.Entity.SqlServer
     /// <summary>
     /// SqlServer的<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
+    public class SqlServerDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// 初始化一个<see cref="SqlServerDbContextOptionsBuilderDriveHandler"/>类型的新实例
         /// </summary>
-        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        public SqlServerDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
         }
@@ -47,10 +47,15 @@ namespace OSharp.Entity.SqlServer
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
+            DbContextOptionsBuilderAction(builder);
             Action<SqlServerDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
-                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                action = b =>
+                {
+                    b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                    SqlServerDbContextOptionsBuilderAction(b);
+                };
             }
 
             if (existingConnection == null)
@@ -67,5 +72,17 @@ namespace OSharp.Entity.SqlServer
             ServiceExtensions.MigrationAssemblyName = null;
             return builder;
         }
+
+        /// <summary>
+        /// 重写以实现<see cref="SqlServerDbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void SqlServerDbContextOptionsBuilderAction(SqlServerDbContextOptionsBuilder options)
+        { }
+
+        /// <summary>
+        /// 重写以实现<see cref="DbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void DbContextOptionsBuilderAction(DbContextOptionsBuilder builder)
+        { }
     }
 }

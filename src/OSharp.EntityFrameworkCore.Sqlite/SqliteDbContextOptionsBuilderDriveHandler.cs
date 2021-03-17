@@ -16,33 +16,27 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
-namespace OSharp.Entity.MySql
+namespace OSharp.Entity.Sqlite
 {
     /// <summary>
-    /// MySql<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
+    /// Sqlite的<see cref="DbContextOptionsBuilder"/>数据库驱动差异处理器
     /// </summary>
-    public class DbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
+    public class SqliteDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
-#if NET5_0
-        private readonly ServerVersion _serverVersion;
-#endif
 
         /// <summary>
-        /// 初始化一个<see cref="DbContextOptionsBuilderDriveHandler"/>类型的新实例
+        /// 初始化一个<see cref="SqliteDbContextOptionsBuilderDriveHandler"/>类型的新实例
         /// </summary>
-        public DbContextOptionsBuilderDriveHandler(IServiceProvider provider)
+        public SqliteDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
-#if NET5_0
-            _serverVersion = provider.GetService<MySqlServerVersion>()?? MySqlServerVersion.LatestSupportedServerVersion;
-#endif
         }
 
         /// <summary>
         /// 获取 数据库类型名称，如 SQLSERVER，MYSQL，SQLITE等
         /// </summary>
-        public DatabaseType Type { get; } = DatabaseType.MySql;
+        public DatabaseType Type { get; } = DatabaseType.Sqlite;
 
         /// <summary>
         /// 处理<see cref="DbContextOptionsBuilder"/>驱动差异
@@ -53,33 +47,42 @@ namespace OSharp.Entity.MySql
         /// <returns></returns>
         public DbContextOptionsBuilder Handle(DbContextOptionsBuilder builder, string connectionString, DbConnection existingConnection)
         {
-            Action<MySqlDbContextOptionsBuilder> action = null;
+            DbContextOptionsBuilderAction(builder);
+            Action<SqliteDbContextOptionsBuilder> action = null;
             if (ServiceExtensions.MigrationAssemblyName != null)
             {
-                action = b => b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                action = b =>
+                {
+                    b.MigrationsAssembly(ServiceExtensions.MigrationAssemblyName);
+                    SqliteDbContextOptionsBuilderAction(b);
+                };
             }
 
             if (existingConnection == null)
             {
-                _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
-#if NET5_0
-                builder.UseMySql(connectionString, _serverVersion, action);
-#else
-                builder.UseMySql(connectionString, action);
-#endif
+                _logger.LogDebug($"使用新连接“{connectionString}”应用Sqlite数据库");
+                builder.UseSqlite(connectionString, action);
             }
             else
             {
-                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
-#if NET5_0
-                builder.UseMySql(existingConnection, _serverVersion, action);
-#else
-                builder.UseMySql(existingConnection, action);
-#endif
+                _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用Sqlite数据库");
+                builder.UseSqlite(existingConnection, action);
             }
 
             ServiceExtensions.MigrationAssemblyName = null;
             return builder;
         }
+
+        /// <summary>
+        /// 重写以实现<see cref="SqliteDbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void SqliteDbContextOptionsBuilderAction(SqliteDbContextOptionsBuilder options)
+        { }
+
+        /// <summary>
+        /// 重写以实现<see cref="DbContextOptionsBuilder"/>的自定义行为
+        /// </summary>
+        protected virtual void DbContextOptionsBuilderAction(DbContextOptionsBuilder builder)
+        { }
     }
 }

@@ -46,25 +46,13 @@ namespace OSharp.Authorization.Functions
         /// 获取 日志记录对象
         /// </summary>
         protected ILogger Logger { get; }
-
-        /// <summary>
-        /// 获取 功能类型查找器
-        /// </summary>
-        public abstract IFunctionTypeFinder FunctionTypeFinder { get; }
-
-        /// <summary>
-        /// 获取 功能方法查找器
-        /// </summary>
-        public abstract IMethodInfoFinder MethodInfoFinder { get; }
-
+        
         /// <summary>
         /// 从程序集中获取功能信息（如MVC的Controller-Action）
         /// </summary>
         public void Initialize()
         {
-            Check.NotNull(FunctionTypeFinder, nameof(FunctionTypeFinder));
-
-            Type[] functionTypes = FunctionTypeFinder.FindAll(true);
+            Type[] functionTypes = GetAllFunctionTypes();
             TFunction[] functions = GetFunctions(functionTypes);
             Logger.LogInformation($"功能信息初始化，共找到 {functions.Length} 个功能信息");
 
@@ -75,6 +63,19 @@ namespace OSharp.Authorization.Functions
 
             RefreshCache();
         }
+
+        /// <summary>
+        /// 获取所有功能类型
+        /// </summary>
+        /// <returns></returns>
+        public abstract Type[] GetAllFunctionTypes();
+
+        /// <summary>
+        /// 查找指定功能的所有功能点方法  
+        /// </summary>
+        /// <param name="functionType">功能类型</param>
+        /// <returns></returns>
+        public abstract MethodInfo[] GetMethodInfos(Type functionType);
 
         /// <summary>
         /// 查找指定条件的功能信息
@@ -139,7 +140,7 @@ namespace OSharp.Authorization.Functions
                     Logger.LogDebug($"提取功能信息：{controller}");
                 }
 
-                List<MethodInfo> methods = MethodInfoFinder.FindAll(type).ToList();
+                List<MethodInfo> methods = GetMethodInfos(type).ToList();
                 // 移除已被重写的方法
                 MethodInfo[] overriddenMethodInfos = methods.Where(m => m.IsOverridden()).ToArray();
                 foreach (MethodInfo overriddenMethodInfo in overriddenMethodInfos)

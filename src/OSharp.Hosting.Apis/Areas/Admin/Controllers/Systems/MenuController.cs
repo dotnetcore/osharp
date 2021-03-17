@@ -55,7 +55,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read), Controller = nameof(MenuController))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(MenuInputDto[] dtos)
@@ -68,7 +68,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(MenuInputDto[] dtos)
@@ -81,7 +81,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(int[] ids)

@@ -40,7 +40,6 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.GetOrAddTypeFinder<IFunctionTypeFinder>(assemblyFinder => new MvcControllerTypeFinder(assemblyFinder));
             services.AddSingleton<IFunctionHandler, MvcFunctionHandler>();
             services.TryAddSingleton<IModuleInfoPicker, MvcModuleInfoPicker>();
 

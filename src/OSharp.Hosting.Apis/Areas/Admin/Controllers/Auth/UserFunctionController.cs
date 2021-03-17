@@ -67,7 +67,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>用户功能信息</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [Description("读取功能")]
         public PageData<FunctionOutputDto2> ReadFunctions(int userId, [FromBody] PageRequest request)
         {

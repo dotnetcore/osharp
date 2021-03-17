@@ -56,7 +56,7 @@ namespace OSharp.Authorization.Modules
         {
             Logger.LogInformation("开始提取Module模块信息");
             Check.NotNull(FunctionHandler, nameof(FunctionHandler));
-            Type[] moduleTypes = FunctionHandler.FunctionTypeFinder.Find(type => type.HasAttribute<ModuleInfoAttribute>());
+            Type[] moduleTypes = FunctionHandler.GetAllFunctionTypes().Where(type => type.HasAttribute<ModuleInfoAttribute>()).ToArray();
             ModuleInfo[] modules = GetModules(moduleTypes);
             Logger.LogInformation($"提取到 {modules.Length} 个Module模块信息");
             return modules;
@@ -87,7 +87,7 @@ namespace OSharp.Authorization.Modules
                     }
                 }
 
-                MethodInfo[] methods = FunctionHandler.MethodInfoFinder.Find(moduleType, type => type.HasAttribute<ModuleInfoAttribute>());
+                MethodInfo[] methods = FunctionHandler.GetMethodInfos(moduleType).Where(type => type.HasAttribute<ModuleInfoAttribute>()).ToArray();
                 for (int index = 0; index < methods.Length; index++)
                 {
                     ModuleInfo info = GetModule(methods[index], typeInfos.Last(), index);
