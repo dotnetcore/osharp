@@ -124,7 +124,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(RoleInputDto[] dtos)
@@ -151,7 +151,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(RoleInputDto[] dtos)
@@ -179,7 +179,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(int[] ids)
@@ -206,8 +206,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadRoleModules", Controller = "Module")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(ModuleController.ReadRoleModules), Controller = nameof(ModuleController))]
         [UnitOfWork]
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(RoleSetModuleDto dto)

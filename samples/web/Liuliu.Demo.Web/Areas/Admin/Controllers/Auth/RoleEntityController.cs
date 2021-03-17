@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleEntityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -54,7 +54,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>角色数据权限列表分页信息</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("ReadProperties", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(EntityInfoController.ReadProperties), Controller = nameof(EntityInfoController))]
         [Description("读取")]
         public PageData<EntityRoleOutputDto> Read(PageRequest request)
         {
@@ -97,9 +97,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadNode", Controller = "Role")]
-        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadNode), Controller = nameof(RoleController))]
+        [DependOnFunction(nameof(EntityInfoController.ReadNode), Controller = nameof(EntityInfoController))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(params EntityRoleInputDto[] dtos)
@@ -117,9 +117,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadNode", Controller = "Role")]
-        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadNode), Controller = nameof(RoleController))]
+        [DependOnFunction(nameof(EntityInfoController.ReadNode), Controller = nameof(EntityInfoController))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
@@ -136,7 +136,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(params Guid[] ids)

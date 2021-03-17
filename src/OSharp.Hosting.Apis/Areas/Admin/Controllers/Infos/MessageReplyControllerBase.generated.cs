@@ -87,7 +87,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public virtual async Task<AjaxResult> Create(MessageReplyInputDto[] dtos)
@@ -104,7 +104,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public virtual async Task<AjaxResult> Update(MessageReplyInputDto[] dtos)
@@ -121,7 +121,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public virtual async Task<AjaxResult> Delete(Guid[] ids)
