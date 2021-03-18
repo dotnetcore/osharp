@@ -60,5 +60,27 @@ namespace OSharp.Exceptions
         {
             ExceptionDispatchInfo.Capture(exception).Throw();
         }
+
+        /// <summary>
+        /// 如果条件成立，则抛出异常
+        /// </summary>
+        public static void ThrowIf(this Exception exception, bool isThrow)
+        {
+            if (isThrow)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// 如果条件成立，则抛出异常
+        /// </summary>
+        public static void ThrowIf(this Exception exception, Func<bool>isThrowFunc)
+        {
+            if (isThrowFunc())
+            {
+                throw exception;
+            }
+        }
     }
 }
