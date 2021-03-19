@@ -67,3 +67,4 @@ foreach($prop in $props)
 
 nuget pack .\OSharpNS.nuspec -OutputDirectory $nupkgs
 Invoke-Item $nupkgs
+pause
