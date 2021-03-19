@@ -104,7 +104,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Add(toAdDescriptor);
             return toAdDescriptor;
         }
-        
+
         /// <summary>
         /// 如果指定服务不存在，创建实例并添加
         /// </summary>
@@ -249,6 +249,23 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// 从服务提供者获取 <see cref="IUnitOfWork"/>
+        /// </summary>
+        /// <param name="provider">服务提供者</param>
+        /// <param name="enableTransaction">是否启用事务</param>
+        /// <returns></returns>
+        public static IUnitOfWork GetUnitOfWork(this IServiceProvider provider, bool enableTransaction = false)
+        {
+            IUnitOfWork unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+            if (enableTransaction)
+            {
+                unitOfWork.EnableTransaction();
+            }
+
+            return unitOfWork;
+        }
+
+        /// <summary>
         /// 获取指定类型的日志对象
         /// </summary>
         /// <typeparam name="T">非静态强类型</typeparam>
@@ -289,17 +306,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static ILogger GetLogger(this IServiceProvider provider, string name)
         {
-            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
             return factory.CreateLogger(name);
-        }
-
-        /// <summary>
-        /// 获取指定实体类的上下文所在工作单元
-        /// </summary>
-        public static IUnitOfWork GetUnitOfWork<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
-        {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            return unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
         }
 
         /// <summary>
@@ -307,8 +315,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IDbContext GetDbContext<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
         {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            return unitOfWorkManager.GetDbContext<TEntity, TKey>();
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork();
+            return unitOfWork.GetEntityDbContext<TEntity, TKey>();
         }
 
         /// <summary>
@@ -416,9 +424,9 @@ namespace Microsoft.Extensions.DependencyInjection
             using (IServiceScope scope = provider.CreateScope())
             {
                 IServiceProvider scopeProvider = scope.ServiceProvider;
-                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
                 action(scopeProvider);
-                unitOfWorkManager.Commit();
+                unitOfWork.Commit();
             }
         }
 
@@ -437,12 +445,12 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 IServiceProvider scopeProvider = scope.ServiceProvider;
 
-                IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
                 await actionAsync(scopeProvider);
 #if NET5_0
-                    await unitOfWorkManager.CommitAsync();
+                await unitOfWork.CommitAsync();
 #else
-                unitOfWorkManager.Commit();
+                unitOfWork.Commit();
 #endif
             }
         }

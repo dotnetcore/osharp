@@ -110,8 +110,7 @@ namespace OSharp.Entity
             where TEntity : class, IEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            IUnitOfWork uow = repository.UnitOfWork;
-            IDbContext dbContext = uow.GetEntityDbContext<TEntity, TKey>();
+            IDbContext dbContext = repository.DbContext;
             if (!(dbContext is DbContext context))
             {
                 throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");

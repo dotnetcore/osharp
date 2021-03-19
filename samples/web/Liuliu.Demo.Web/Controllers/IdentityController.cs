@@ -181,12 +181,12 @@ namespace Liuliu.Demo.Web.Controllers
             dto.Ip = HttpContext.GetClientIp();
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
 #if NET5_0
-            await unitOfWorkManager.CommitAsync();
+            await unitOfWork.CommitAsync();
 #else
-            unitOfWorkManager.Commit();
+            unitOfWork.Commit();
 #endif
 
             if (!result.Succeeded)
@@ -223,12 +223,12 @@ namespace Liuliu.Demo.Web.Controllers
                     UserAgent = Request.Headers["User-Agent"].FirstOrDefault()
                 };
 
+                IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
                 OperationResult<User> result = await _identityContract.Login(loginDto);
-                IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
 #if NET5_0
-                await unitOfWorkManager.CommitAsync();
+                await unitOfWork.CommitAsync();
 #else
-                unitOfWorkManager.Commit();
+                unitOfWork.Commit();
 #endif
                 if (!result.Succeeded)
                 {
@@ -338,12 +338,12 @@ namespace Liuliu.Demo.Web.Controllers
         public async Task<AjaxResult> LoginBind(UserLoginInfoEx loginInfo)
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await _identityContract.LoginBind(loginInfo);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
 #if NET5_0
-            await unitOfWorkManager.CommitAsync();
+            await unitOfWork.CommitAsync();
 #else
-            unitOfWorkManager.Commit();
+            unitOfWork.Commit();
 #endif
             if (!result.Succeeded)
             {
@@ -364,12 +364,12 @@ namespace Liuliu.Demo.Web.Controllers
         public async Task<AjaxResult> LoginOneKey(UserLoginInfoEx loginInfo)
         {
             loginInfo.RegisterIp = HttpContext.GetClientIp();
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await _identityContract.LoginOneKey(loginInfo.ProviderKey);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
 #if NET5_0
-            await unitOfWorkManager.CommitAsync();
+            await unitOfWork.CommitAsync();
 #else
-            unitOfWorkManager.Commit();
+            unitOfWork.Commit();
 #endif
 
             if (!result.Succeeded)

@@ -150,12 +150,12 @@ namespace OSharp.Identity
             {
                 IServiceProvider scopedProvider = scope.ServiceProvider;
                 UserManager<TUser> userManager = scopedProvider.GetService<UserManager<TUser>>();
+                IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
                 foreach (RefreshToken expiredToken in expiredTokens)
                 {
                     await userManager.RemoveRefreshToken(user, expiredToken.ClientId);
                 }
 
-                IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork<TUser, TUserKey>();
 #if NET5_0
                 await unitOfWork.CommitAsync();
 #else

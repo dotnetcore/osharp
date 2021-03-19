@@ -36,16 +36,16 @@ namespace OSharp.Entity.DynamicProxy
         public override async Task Invoke(AspectContext context, AspectDelegate next)
         {
             IServiceProvider provider = context.ServiceProvider;
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
             try
             {
                 await next(context);
                 if (!RequiredCheckReturnValue)
                 {
 #if NET5_0
-                    await unitOfWorkManager.CommitAsync();
+                    await unitOfWork.CommitAsync();
 #else
-                    unitOfWorkManager.Commit();
+                    unitOfWork.Commit();
 #endif
                     return;
                 }
@@ -59,18 +59,18 @@ namespace OSharp.Entity.DynamicProxy
                 if (decision.CanCommit(context.ReturnValue))
                 {
 #if NET5_0
-                    await unitOfWorkManager.CommitAsync();
+                    await unitOfWork.CommitAsync();
 #else
-                    unitOfWorkManager.Commit();
+                    unitOfWork.Commit();
 #endif
                 }
             }
             catch (Exception)
             {
 #if NET5_0
-                    await unitOfWorkManager.CommitAsync();
+                    await unitOfWork.CommitAsync();
 #else
-                unitOfWorkManager.Commit();
+                unitOfWork.Commit();
 #endif
                 throw;
             }

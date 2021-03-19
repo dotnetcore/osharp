@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -157,6 +158,18 @@ namespace OSharp.Entity
                     TEntity oldEntity = set.Find(entity.Id);
                     context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 清除数据上下文的更改
+        /// </summary>
+        public static void CleanChanges(this DbContext context)
+        {
+            IEnumerable<EntityEntry> entries = context.ChangeTracker.Entries();
+            foreach (var entry in entries)
+            {
+                entry.State = EntityState.Detached;
             }
         }
     }

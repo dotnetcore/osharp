@@ -44,7 +44,7 @@ namespace OSharp.Entity
 
             services.TryAddScoped<IAuditEntityProvider, AuditEntityProvider>();
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.TryAddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
+            services.TryAddScoped<IUnitOfWork, UnitOfWork>();
             services.TryAddSingleton<IEntityManager, EntityManager>();
             services.AddSingleton<DbContextModelCache>();
             services.AddSingleton<IEntityBatchConfiguration, TableNamePrefixConfiguration>();

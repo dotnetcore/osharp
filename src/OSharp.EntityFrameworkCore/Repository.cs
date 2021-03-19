@@ -56,8 +56,7 @@ namespace OSharp.Entity
         public Repository(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
-            _dbContext = UnitOfWork.GetEntityDbContext<TEntity, TKey>();
+            _dbContext = serviceProvider.GetDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
@@ -65,10 +64,10 @@ namespace OSharp.Entity
         }
 
         /// <summary>
-        /// 获取 当前单元操作对象
+        /// 获取 数据上下文
         /// </summary>
-        public IUnitOfWork UnitOfWork { get; }
-        
+        public IDbContext DbContext => _dbContext;
+
         /// <summary>
         /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
         /// </summary>

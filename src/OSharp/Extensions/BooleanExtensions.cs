@@ -23,5 +23,16 @@ namespace OSharp.Extensions
         {
             return value.ToString().ToLower();
         }
+
+        /// <summary>
+        /// 如果条件成立，则抛出异常
+        /// </summary>
+        public static void TrueThrow(this bool flag, Exception exception)
+        {
+            if (flag)
+            {
+                throw exception;
+            }
+        }
     }
 }
