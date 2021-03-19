@@ -32,8 +32,7 @@ namespace OSharp.Entity
         /// </summary>
         protected SqlExecutorBase(IServiceProvider provider)
         {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            DbContext dbContext = (DbContext)unitOfWorkManager.GetDbContext<TEntity, TKey>();
+            DbContext dbContext = (DbContext)provider.GetDbContext<TEntity, TKey>();
             _connectionString = dbContext.Database.GetDbConnection().ConnectionString;
 
             Logger = provider.GetLogger(GetType());

@@ -103,21 +103,21 @@ namespace OSharp.Authentication.JwtBearer
                 {
                     //删除过期的Token
                     await _provider.ExecuteScopedWorkAsync(async provider =>
+                    {
+                        IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
+                        userManager = provider.GetService<UserManager<TUser>>();
+                        var result = await userManager.RemoveRefreshToken(userId, clientId);
+                        if (result.Succeeded)
                         {
-                            userManager = provider.GetService<UserManager<TUser>>();
-                            var result = await userManager.RemoveRefreshToken(userId, clientId);
-                            if (result.Succeeded)
-                            {
-                                IUnitOfWork unitOfWork = provider.GetUnitOfWork<TUser, TUserKey>();
 #if NET5_0
-                                await unitOfWork.CommitAsync();
+                            await unitOfWork.CommitAsync();
 #else
-                                unitOfWork.Commit();
+                            unitOfWork.Commit();
 #endif
-                            }
+                        }
 
-                            return result;
-                        });
+                        return result;
+                    });
                 }
                 throw new OsharpException("RefreshToken 不存在或已过期");
             }
@@ -152,12 +152,12 @@ namespace OSharp.Authentication.JwtBearer
             string refreshTokenStr = token;
             await _provider.ExecuteScopedWorkAsync(async provider =>
             {
+                IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
                 UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
                 refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
-                var result = await userManager.SetRefreshToken(userId, refreshToken);
+                IdentityResult result = await userManager.SetRefreshToken(userId, refreshToken);
                 if (result.Succeeded)
                 {
-                    IUnitOfWork unitOfWork = provider.GetUnitOfWork<TUser, TUserKey>();
 #if NET5_0
                     await unitOfWork.CommitAsync();
 #else

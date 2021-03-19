@@ -98,12 +98,14 @@ namespace OSharp.Authorization
                 return;
             }
 
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
+
             if (!moduleInfos.CheckSyncByHash(provider, Logger))
             {
                 Logger.LogInformation("同步模块数据时，数据签名与上次相同，取消同步");
                 return;
             }
-
+            
             //删除数据库中多余的模块
             TModule[] modules = moduleStore.Modules.ToArray();
             var positionModules = modules.Select(m => new { m.Id, Position = GetModulePosition(modules, m) })
@@ -179,7 +181,6 @@ namespace OSharp.Authorization
                 }
             }
 
-            IUnitOfWork unitOfWork = provider.GetUnitOfWork<TModule, TModuleKey>();
             unitOfWork.Commit();
         }
 

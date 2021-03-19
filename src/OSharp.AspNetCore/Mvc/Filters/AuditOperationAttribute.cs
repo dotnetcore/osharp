@@ -77,15 +77,16 @@ namespace OSharp.AspNetCore.Mvc.Filters
                 return;
             }
             dict.AuditOperation.EndedTime = DateTime.Now;
-            IUnitOfWork unitOfWork = provider.GetUnitOfWork<Function, Guid>();
-            //回滚之前业务处理中的未提交事务，防止审计信息保存时误提交
-            unitOfWork?.Rollback();
+            IUnitOfWork unitOfWork = provider.GetService<IUnitOfWork>();
+            unitOfWork?.Dispose();
             
             //移除当前功能，使保存审计信息的时候不再获取记录变更，审计信息不需要再审计
             dict.Function = null;
             IAuditStore store = provider.GetService<IAuditStore>();
-            store?.Save(dict.AuditOperation);
-            unitOfWork?.Commit();
+            provider.BeginUnitOfWorkTransaction(_ =>
+            {
+                store?.Save(dict.AuditOperation);
+            });
         }
 
     }

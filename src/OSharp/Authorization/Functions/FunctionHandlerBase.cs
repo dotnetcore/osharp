@@ -259,6 +259,8 @@ namespace OSharp.Authorization.Functions
                 return;
             }
 
+            IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
+
             if (!functions.CheckSyncByHash(scopedProvider, Logger))
             {
                 Logger.LogInformation("同步功能数据时，数据签名与上次相同，取消同步");
@@ -337,7 +339,7 @@ namespace OSharp.Authorization.Functions
                 }
             }
 
-            repository.UnitOfWork.Commit();
+            unitOfWork.Commit();
             if (removeCount + addCount + updateCount > 0)
             {
                 string msg = "刷新功能信息";

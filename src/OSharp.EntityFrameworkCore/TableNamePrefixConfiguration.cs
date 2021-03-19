@@ -11,6 +11,7 @@ using System;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Extensions;
 using OSharp.Reflection;
@@ -35,7 +36,7 @@ namespace OSharp.Entity
             {
                 return;
             }
-
+            
             string tableName = $"{prefix}_{mutableEntityType.GetTableName()}";
             modelBuilder.Entity(mutableEntityType.ClrType).ToTable(tableName);
         }

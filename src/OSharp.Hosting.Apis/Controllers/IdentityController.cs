@@ -176,12 +176,12 @@ namespace OSharp.Hosting.Apis.Controllers
                     UserAgent = Request.Headers["User-Agent"].FirstOrDefault()
                 };
 
+                IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
                 OperationResult<User> result = await _identityContract.Login(loginDto);
-                IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
 #if NET5_0
-                await unitOfWorkManager.CommitAsync();
+                await unitOfWork.CommitAsync();
 #else
-                unitOfWorkManager.Commit();
+                unitOfWork.Commit();
 #endif
                 if (!result.Succeeded)
                 {
@@ -202,7 +202,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             return new AjaxResult("GrantType错误", AjaxResultType.Error);
         }
-        
+
         [HttpPost]
         [ModuleInfo]
         [Description("用户登录")]
@@ -219,12 +219,12 @@ namespace OSharp.Hosting.Apis.Controllers
             dto.Ip = HttpContext.GetClientIp();
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
+            IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await _identityContract.Login(dto);
-            IUnitOfWorkManager unitOfWorkManager = HttpContext.RequestServices.GetService<IUnitOfWorkManager>();
 #if NET5_0
-                await unitOfWorkManager.CommitAsync();
+                await unitOfWork.CommitAsync();
 #else
-            unitOfWorkManager.Commit();
+            unitOfWork.Commit();
 #endif
 
             if (!result.Succeeded)

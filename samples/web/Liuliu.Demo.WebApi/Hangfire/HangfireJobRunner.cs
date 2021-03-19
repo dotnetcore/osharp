@@ -74,11 +74,11 @@ namespace Liuliu.Demo.Web.Hangfire
             list.Add($"user2.IsLocked: {user2.IsLocked}");
             user2.IsLocked = !user2.IsLocked;
             await userManager.UpdateAsync(user2);
-            IUnitOfWorkManager unitOfWorkManager = _provider.GetService<IUnitOfWorkManager>();
+            IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
 #if NET5_0
-                await unitOfWorkManager.CommitAsync();
+            await unitOfWork.CommitAsync();
 #else
-            unitOfWorkManager.Commit();
+            unitOfWork.Commit();
 #endif
             user2 = await userManager.FindByIdAsync("2");
             list.Add($"user2.IsLocked: {user2.IsLocked}");

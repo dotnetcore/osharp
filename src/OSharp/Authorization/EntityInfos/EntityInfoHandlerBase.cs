@@ -142,6 +142,8 @@ namespace OSharp.Authorization.EntityInfos
                 return;
             }
 
+            IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
+
             //检查指定实体的Hash值，决定是否需要进行数据库同步
             if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
             {
@@ -201,7 +203,7 @@ namespace OSharp.Authorization.EntityInfos
                 }
             }
 
-            repository.UnitOfWork.Commit();
+            unitOfWork.Commit();
             if (removeCount + addCount + updateCount > 0)
             {
                 string msg = "刷新实体信息";

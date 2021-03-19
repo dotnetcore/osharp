@@ -11,11 +11,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    TypeName = table.Column<string>(nullable: false),
-                    AuditEnabled = table.Column<bool>(nullable: false),
-                    PropertyJson = table.Column<string>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    TypeName = table.Column<string>(type: "TEXT", nullable: false),
+                    AuditEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PropertyJson = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,20 +26,20 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Function",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Area = table.Column<string>(nullable: true),
-                    Controller = table.Column<string>(nullable: true),
-                    Action = table.Column<string>(nullable: true),
-                    IsController = table.Column<bool>(nullable: false),
-                    IsAjax = table.Column<bool>(nullable: false),
-                    AccessType = table.Column<int>(nullable: false),
-                    IsAccessTypeChanged = table.Column<bool>(nullable: false),
-                    AuditOperationEnabled = table.Column<bool>(nullable: false),
-                    AuditEntityEnabled = table.Column<bool>(nullable: false),
-                    CacheExpirationSeconds = table.Column<int>(nullable: false),
-                    IsCacheSliding = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Area = table.Column<string>(type: "TEXT", nullable: true),
+                    Controller = table.Column<string>(type: "TEXT", nullable: true),
+                    Action = table.Column<string>(type: "TEXT", nullable: true),
+                    IsController = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsAjax = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessType = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsAccessTypeChanged = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AuditOperationEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AuditEntityEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CacheExpirationSeconds = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsCacheSliding = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,14 +50,14 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Module",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false),
-                    Remark = table.Column<string>(nullable: true),
-                    Code = table.Column<string>(nullable: false),
-                    OrderCode = table.Column<double>(nullable: false),
-                    TreePathString = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Remark = table.Column<string>(type: "TEXT", nullable: true),
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    OrderCode = table.Column<double>(type: "REAL", nullable: false),
+                    TreePathString = table.Column<string>(type: "TEXT", nullable: true),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,11 +74,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Organization",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false),
-                    Remark = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Remark = table.Column<string>(type: "TEXT", nullable: true),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,19 +95,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditOperation",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    FunctionName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
-                    NickName = table.Column<string>(nullable: true),
-                    Ip = table.Column<string>(nullable: true),
-                    OperationSystem = table.Column<string>(nullable: true),
-                    Browser = table.Column<string>(nullable: true),
-                    UserAgent = table.Column<string>(nullable: true),
-                    ResultType = table.Column<int>(nullable: false),
-                    Message = table.Column<string>(nullable: true),
-                    Elapsed = table.Column<int>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FunctionName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", nullable: true),
+                    NickName = table.Column<string>(type: "TEXT", nullable: true),
+                    Ip = table.Column<string>(type: "TEXT", nullable: true),
+                    OperationSystem = table.Column<string>(type: "TEXT", nullable: true),
+                    Browser = table.Column<string>(type: "TEXT", nullable: true),
+                    UserAgent = table.Column<string>(type: "TEXT", nullable: true),
+                    ResultType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Message = table.Column<string>(type: "TEXT", nullable: true),
+                    Elapsed = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,11 +118,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_KeyValue",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ValueJson = table.Column<string>(nullable: true),
-                    ValueType = table.Column<string>(nullable: true),
-                    Key = table.Column<string>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ValueJson = table.Column<string>(type: "TEXT", nullable: true),
+                    ValueType = table.Column<string>(type: "TEXT", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,12 +130,42 @@ namespace Liuliu.Demo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Systems_Menu",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Text = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
+                    Target = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Acl = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    OrderCode = table.Column<double>(type: "REAL", nullable: false),
+                    Data = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    TreePathString = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsSystem = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Systems_Menu", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Systems_Menu_Systems_Menu_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Systems_Menu",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Auth_ModuleFunction",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false),
-                    FunctionId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ModuleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    FunctionId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,12 +188,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditEntity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    TypeName = table.Column<string>(nullable: true),
-                    EntityKey = table.Column<string>(nullable: true),
-                    OperateType = table.Column<int>(nullable: false),
-                    OperationId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    TypeName = table.Column<string>(type: "TEXT", nullable: true),
+                    EntityKey = table.Column<string>(type: "TEXT", nullable: true),
+                    OperateType = table.Column<int>(type: "INTEGER", nullable: false),
+                    OperationId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,13 +210,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditProperty",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    DisplayName = table.Column<string>(nullable: true),
-                    FieldName = table.Column<string>(nullable: true),
-                    OriginalValue = table.Column<string>(nullable: true),
-                    NewValue = table.Column<string>(nullable: true),
-                    DataType = table.Column<string>(nullable: true),
-                    AuditEntityId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    FieldName = table.Column<string>(type: "TEXT", nullable: true),
+                    OriginalValue = table.Column<string>(type: "TEXT", nullable: true),
+                    NewValue = table.Column<string>(type: "TEXT", nullable: true),
+                    DataType = table.Column<string>(type: "TEXT", nullable: true),
+                    AuditEntityId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,13 +233,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    EntityId = table.Column<Guid>(nullable: false),
-                    Operation = table.Column<int>(nullable: false),
-                    FilterGroupJson = table.Column<string>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    EntityId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Operation = table.Column<int>(type: "INTEGER", nullable: false),
+                    FilterGroupJson = table.Column<string>(type: "TEXT", nullable: true),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,12 +256,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    EntityId = table.Column<Guid>(nullable: false),
-                    FilterGroupJson = table.Column<string>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    EntityId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FilterGroupJson = table.Column<string>(type: "TEXT", nullable: true),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,9 +278,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ModuleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -267,10 +297,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ModuleId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    Disabled = table.Column<bool>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ModuleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Disabled = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,11 +317,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_RoleClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<int>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,12 +332,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    DeletedTime = table.Column<DateTime>(nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -318,12 +348,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_LoginLog",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Ip = table.Column<string>(nullable: true),
-                    UserAgent = table.Column<string>(nullable: true),
-                    LogoutTime = table.Column<DateTime>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Ip = table.Column<string>(type: "TEXT", nullable: true),
+                    UserAgent = table.Column<string>(type: "TEXT", nullable: true),
+                    LogoutTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -334,11 +364,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: false),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -349,10 +379,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RegisterIp = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    RegisterIp = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -363,13 +393,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: true),
-                    ProviderKey = table.Column<string>(nullable: true),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
-                    Avatar = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: true),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    Avatar = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -380,11 +410,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -395,19 +425,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_Message",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: false),
-                    Content = table.Column<string>(nullable: false),
-                    MessageType = table.Column<int>(nullable: false),
-                    NewReplyCount = table.Column<int>(nullable: false),
-                    IsSended = table.Column<bool>(nullable: false),
-                    CanReply = table.Column<bool>(nullable: false),
-                    BeginDate = table.Column<DateTime>(nullable: true),
-                    EndDate = table.Column<DateTime>(nullable: true),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    DeletedTime = table.Column<DateTime>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    SenderId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    MessageType = table.Column<int>(type: "INTEGER", nullable: false),
+                    NewReplyCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsSended = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CanReply = table.Column<bool>(type: "INTEGER", nullable: false),
+                    BeginDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    SenderId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -418,19 +448,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Role",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false),
-                    NormalizedName = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Remark = table.Column<string>(maxLength: 512, nullable: true),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsDefault = table.Column<bool>(nullable: false),
-                    IsSystem = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    DeletedTime = table.Column<DateTime>(nullable: true),
-                    MessageId = table.Column<Guid>(nullable: true)
+                    MessageId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    NormalizedName = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    Remark = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    IsAdmin = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsSystem = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -447,30 +477,30 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserName = table.Column<string>(nullable: false),
-                    NormalizedUserName = table.Column<string>(nullable: false),
-                    NickName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    NormalizeEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    HeadImg = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    IsSystem = table.Column<bool>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    DeletedTime = table.Column<DateTime>(nullable: true),
-                    Remark = table.Column<string>(nullable: true),
-                    MessageId = table.Column<Guid>(nullable: true)
+                    Remark = table.Column<string>(type: "TEXT", nullable: true),
+                    MessageId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", nullable: false),
+                    NickName = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    HeadImg = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsSystem = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -487,48 +517,54 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReceive",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ReadDate = table.Column<DateTime>(nullable: false),
-                    NewReplyCount = table.Column<int>(nullable: false),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    MessageId = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ReadDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    NewReplyCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    MessageId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Infos_MessageReceive", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Infos_MessageReceive_Infos_Message_MessageId",
-                        column: x => x.MessageId,
-                        principalTable: "Infos_Message",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Infos_MessageReceive_Identity_User_UserId",
                         column: x => x.UserId,
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Infos_MessageReceive_Infos_Message_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Infos_Message",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Infos_MessageReply",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Content = table.Column<string>(nullable: false),
-                    IsRead = table.Column<bool>(nullable: false),
-                    ParentMessageId = table.Column<Guid>(nullable: false),
-                    ParentReplyId = table.Column<Guid>(nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    DeletedTime = table.Column<DateTime>(nullable: true),
-                    CreatedTime = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    BelongMessageId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    IsRead = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ParentMessageId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ParentReplyId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BelongMessageId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Infos_MessageReply", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Infos_MessageReply_Identity_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Identity_User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Infos_MessageReply_Infos_Message_BelongMessageId",
                         column: x => x.BelongMessageId,
@@ -547,12 +583,6 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Infos_MessageReply",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Identity_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Identity_User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -562,25 +592,25 @@ namespace Liuliu.Demo.Web.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_EntityRole_RoleId",
-                table: "Auth_EntityRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "EntityRoleIndex",
                 table: "Auth_EntityRole",
                 columns: new[] { "EntityId", "RoleId", "Operation" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_EntityUser_UserId",
-                table: "Auth_EntityUser",
-                column: "UserId");
+                name: "IX_Auth_EntityRole_RoleId",
+                table: "Auth_EntityRole",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EntityUserIndex",
                 table: "Auth_EntityUser",
                 columns: new[] { "EntityId", "UserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auth_EntityUser_UserId",
+                table: "Auth_EntityUser",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "AreaControllerActionIndex",
@@ -653,14 +683,14 @@ namespace Liuliu.Demo.Web.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_User_MessageId",
-                table: "Identity_User",
-                column: "MessageId");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "Identity_User",
                 columns: new[] { "NormalizeEmail", "DeletedTime" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Identity_User_MessageId",
+                table: "Identity_User",
+                column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -751,6 +781,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "IX_Systems_AuditProperty_AuditEntityId",
                 table: "Systems_AuditProperty",
                 column: "AuditEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Systems_Menu_ParentId",
+                table: "Systems_Menu",
+                column: "ParentId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Auth_EntityRole_Identity_Role_RoleId",
@@ -913,6 +948,9 @@ namespace Liuliu.Demo.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "Systems_KeyValue");
+
+            migrationBuilder.DropTable(
+                name: "Systems_Menu");
 
             migrationBuilder.DropTable(
                 name: "Auth_EntityInfo");
