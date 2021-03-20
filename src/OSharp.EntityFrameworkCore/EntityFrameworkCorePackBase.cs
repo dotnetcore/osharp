@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -31,10 +32,17 @@ namespace OSharp.Entity
     [DependsOnPacks(typeof(EventBusPack), typeof(EntityInfoPack))]
     public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
+        private bool _optionsValidated;
+
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public override PackLevel Level => PackLevel.Framework;
+
+        /// <summary>
+        /// 获取 数据库类型
+        /// </summary>
+        protected abstract DatabaseType DatabaseType { get; }
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -63,19 +71,29 @@ namespace OSharp.Entity
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
-            var dbContextOptions = provider.GetOSharpOptions().DbContexts;
-            if (dbContextOptions.IsNullOrEmpty())
+            IDictionary<string, OsharpDbContextOptions> dbContextOptions = provider.GetOSharpOptions().DbContexts;
+            if (!_optionsValidated)
             {
-                throw new OsharpException("配置文件中找不到数据上下文的配置，请配置OSharp:DbContexts节点");
-            }
-
-            foreach (var options in dbContextOptions)
-            {
-                string msg = options.Value.Error;
-                if (msg != null)
+                if (dbContextOptions.IsNullOrEmpty())
                 {
-                    throw new OsharpException($"数据库“{options.Key}”配置错误：{msg}");
+                    throw new OsharpException("配置文件中找不到数据上下文的配置，请配置OSharp:DbContexts节点");
                 }
+
+                foreach (var options in dbContextOptions)
+                {
+                    string msg = options.Value.Error;
+                    if (msg != string.Empty)
+                    {
+                        throw new OsharpException($"数据库“{options.Key}”配置错误：{msg}");
+                    }
+                }
+
+                _optionsValidated = true;
+            }
+            
+            if (dbContextOptions.Values.All(m => m.DatabaseType != DatabaseType))
+            {
+                return;
             }
 
             IEntityManager manager = provider.GetRequiredService<IEntityManager>();
