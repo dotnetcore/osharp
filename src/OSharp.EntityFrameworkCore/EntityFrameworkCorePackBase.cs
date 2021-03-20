@@ -8,15 +8,19 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Authorization.EntityInfos;
+using OSharp.Collections;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data.Snows;
 using OSharp.Entity.KeyGenerate;
 using OSharp.EventBuses;
+using OSharp.Exceptions;
 
 
 namespace OSharp.Entity
@@ -59,7 +63,22 @@ namespace OSharp.Entity
         /// <param name="provider">服务提供者</param>
         public override void UsePack(IServiceProvider provider)
         {
-            IEntityManager manager = provider.GetService<IEntityManager>();
+            var dbContextOptions = provider.GetOSharpOptions().DbContexts;
+            if (dbContextOptions.IsNullOrEmpty())
+            {
+                throw new OsharpException("配置文件中找不到数据上下文的配置，请配置OSharp:DbContexts节点");
+            }
+
+            foreach (var options in dbContextOptions)
+            {
+                string msg = options.Value.Error;
+                if (msg != null)
+                {
+                    throw new OsharpException($"数据库“{options.Key}”配置错误：{msg}");
+                }
+            }
+
+            IEntityManager manager = provider.GetRequiredService<IEntityManager>();
             manager.Initialize();
             IsEnabled = true;
         }
