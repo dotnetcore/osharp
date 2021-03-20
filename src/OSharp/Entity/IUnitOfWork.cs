@@ -27,6 +27,11 @@ namespace OSharp.Entity
         bool HasCommitted { get; }
 
         /// <summary>
+        /// 获取 是否启用事务
+        /// </summary>
+        bool IsEnabledTransaction { get; }
+
+        /// <summary>
         /// 启用事务，事务代码写在 UnitOfWork.EnableTransaction() 与 UnitOfWork.Commit() 之间
         /// </summary>
         void EnableTransaction();
