@@ -7,13 +7,17 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using OSharp.Data;
 using OSharp.Reflection;
 
 
@@ -153,6 +157,55 @@ namespace OSharp.Extensions
                 }
             }
             return (ExpandoObject)expando;
+        }
+
+        private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>> ValidationDict
+            = new ConcurrentDictionary<Type, ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>>();
+
+        /// <summary>
+        /// 验证对象的<see cref="ValidationAttribute"/>特性
+        /// </summary>
+        public static void Validate(this object obj)
+        {
+            Check.NotNull(obj, nameof(obj));
+            Type type = obj.GetType();
+            if (!ValidationDict.TryGetValue(type, out ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>dict))
+            {
+                PropertyInfo[] properties = type.GetProperties();
+                dict = new ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>();
+                if (properties.Length == 0)
+                {
+                    ValidationDict[type] = dict;
+                    return;
+                }
+
+                foreach (PropertyInfo property in properties)
+                {
+                    dict[property] = null;
+                }
+
+                ValidationDict[type] = dict;
+            }
+
+            foreach (PropertyInfo property in dict.Keys)
+            {
+                if (!dict.TryGetValue(property, out ValidationAttribute[] attributes) || attributes == null)
+                {
+                    attributes = property.GetAttributes<ValidationAttribute>();
+                    dict[property] = attributes;
+                }
+
+                if (attributes.Length == 0)
+                {
+                    continue;
+                }
+
+                object value = property.GetValue(obj);
+                foreach (ValidationAttribute attribute in attributes)
+                {
+                    attribute.Validate(value, property.Name);
+                }
+            }
         }
 
         #endregion
