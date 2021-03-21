@@ -67,7 +67,7 @@ namespace OSharp.Entity
             services.AddSingleton<IEntityBatchConfiguration, TableNamePrefixConfiguration>();
             services.AddSingleton<ISlaveDatabaseSelector, RandomSlaveDatabaseSelector>();
             services.AddSingleton<ISlaveDatabaseSelector, SequenceSlaveDatabaseSelector>();
-            services.AddSingleton<ISlaveDatabaseSelector, RandomWeightSlaveDatabaseSelector>();
+            services.AddSingleton<ISlaveDatabaseSelector, WeightSlaveDatabaseSelector>();
 
             return services;
         }
