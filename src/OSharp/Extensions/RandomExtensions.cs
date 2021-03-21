@@ -73,7 +73,7 @@ namespace OSharp.Extensions
             {
                 return default(T);
             }
-            return items[random.Next(0, items.Length)];
+            return items[random.Next(items.Length)];
         }
 
         /// <summary>
