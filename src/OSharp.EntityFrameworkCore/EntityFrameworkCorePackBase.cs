@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -19,6 +20,7 @@ using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Data.Snows;
+using OSharp.Entity.Internal;
 using OSharp.Entity.KeyGenerate;
 using OSharp.EventBuses;
 using OSharp.Exceptions;
@@ -32,7 +34,7 @@ namespace OSharp.Entity
     [DependsOnPacks(typeof(EventBusPack), typeof(EntityInfoPack))]
     public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
-        private bool _optionsValidated;
+        private static bool _optionsValidated;
 
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
@@ -51,16 +53,21 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.TryAddSingleton<IKeyGenerator<int>, AutoIncreaseKeyGenerator>();
-            services.TryAddSingleton<IKeyGenerator<long>>(new SnowKeyGenerator(new DefaultIdGenerator(new IdGeneratorOptions(1))));
-
+            services.AddOsharpDbContext<DefaultDbContext>();
             services.TryAddScoped<IAuditEntityProvider, AuditEntityProvider>();
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.TryAddScoped<IUnitOfWork, UnitOfWork>();
+            services.TryAddScoped<IConnectionStringProvider, ConnectionStringProvider>();
+            services.TryAddScoped<IMasterSlaveSplitPolicy, MasterSlaveSplitPolicy>();
+
+            services.TryAddSingleton<IKeyGenerator<int>, AutoIncreaseKeyGenerator>();
+            services.TryAddSingleton<IKeyGenerator<long>>(new SnowKeyGenerator(new DefaultIdGenerator(new IdGeneratorOptions(1))));
             services.TryAddSingleton<IEntityManager, EntityManager>();
             services.AddSingleton<DbContextModelCache>();
             services.AddSingleton<IEntityBatchConfiguration, TableNamePrefixConfiguration>();
-            services.AddOsharpDbContext<DefaultDbContext>();
+            services.AddSingleton<ISlaveDatabaseSelector, RandomSlaveDatabaseSelector>();
+            services.AddSingleton<ISlaveDatabaseSelector, SequenceSlaveDatabaseSelector>();
+            services.AddSingleton<ISlaveDatabaseSelector, RandomWeightSlaveDatabaseSelector>();
 
             return services;
         }
@@ -90,7 +97,7 @@ namespace OSharp.Entity
 
                 _optionsValidated = true;
             }
-            
+
             if (dbContextOptions.Values.All(m => m.DatabaseType != DatabaseType))
             {
                 return;
