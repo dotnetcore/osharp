@@ -56,9 +56,14 @@ namespace OSharp.Core.Options
         public DatabaseType DatabaseType { get; set; }
 
         /// <summary>
-        /// 获取或设置 从数据库选项
+        /// 获取或设置 从数据库轮询策略
         /// </summary>
-        public SlaveDatabaseOptions[] SlaveDatabases { get; set; }
+        public string SlaveSelectorName { get; set; }
+
+        /// <summary>
+        /// 获取或设置 从数据库选项集合
+        /// </summary>
+        public SlaveDatabaseOptions[] Slaves { get; set; }
 
         /// <summary>
         /// 获取或设置 是否启用延迟加载代理
@@ -96,9 +101,9 @@ namespace OSharp.Core.Options
                     return $"属性DbContextTypeName提供的类型 {DbContextTypeName} 不存在";
                 }
 
-                if (SlaveDatabases != null)
+                if (Slaves != null)
                 {
-                    foreach (var slaveDatabase in SlaveDatabases)
+                    foreach (var slaveDatabase in Slaves)
                     {
                         string msg = slaveDatabase.Error;
                         if (msg != string.Empty)

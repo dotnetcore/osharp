@@ -154,7 +154,7 @@ namespace OSharp.Core.Options
                     DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
                     ConnectionString = connectionString,
                     DatabaseType = DatabaseType.SqlServer,
-                    SlaveDatabases = new SlaveDatabaseOptions[0]
+                    Slaves = new SlaveDatabaseOptions[0]
                 };
                 options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;

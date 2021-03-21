@@ -8,8 +8,10 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 using OSharp.Data;
+using OSharp.Reflection;
 
 
 namespace OSharp.Core.Options
@@ -17,12 +19,20 @@ namespace OSharp.Core.Options
     /// <summary>
     /// 从数据库选项
     /// </summary>
+    [DebuggerDisplay("{Name} - {Weight}")]
     public class SlaveDatabaseOptions : DataErrorInfoBase
     {
         /// <summary>
+        /// 获取或设置 数据库名
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "从数据库名称不能为空")]
+        public string Name { get; set; }
+
+        /// <summary>
         /// 获取或设置 权重
         /// </summary>
-        public int Weight { get; set; }
+        [Range(1, 100, ErrorMessage = "权重值范围为1-100")]
+        public int Weight { get; set; } = 1;
 
         /// <summary>
         /// 获取或设置 数据库连接串

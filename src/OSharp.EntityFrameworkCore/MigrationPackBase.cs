@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
+using OSharp.Entity.Internal;
 
 
 namespace OSharp.Entity
