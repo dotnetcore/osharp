@@ -39,8 +39,9 @@ namespace OSharp.Authorization
         /// </summary>
         /// <param name="functionId">功能编号</param>
         /// <param name="scopeProvider">局部服务提供者</param>
+        /// <param name="forceRefresh">是否强制刷新</param>
         /// <returns>能执行功能的角色名称集合</returns>
-        string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null);
+        string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null, bool forceRefresh = false);
 
         /// <summary>
         /// 获取指定用户的所有特权功能
