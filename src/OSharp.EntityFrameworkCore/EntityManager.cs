@@ -99,6 +99,10 @@ namespace OSharp.Entity
         /// <returns></returns>
         public virtual IEntityRegister[] GetEntityRegisters(Type dbContextType)
         {
+            if (!_initialized)
+            {
+                throw new OsharpException("数据访问模块未初始化，请确认数据上下文配置节点 OSharp:DbContexts 与要使用的数据库类型是否匹配");
+            }
             return _entityRegistersDict.ContainsKey(dbContextType) ? _entityRegistersDict[dbContextType] : new IEntityRegister[0];
         }
 
@@ -109,6 +113,10 @@ namespace OSharp.Entity
         /// <returns>数据上下文类型</returns>
         public virtual Type GetDbContextTypeForEntity(Type entityType)
         {
+            if (!_initialized)
+            {
+                throw new OsharpException("数据访问模块未初始化，请确认数据上下文配置节点 OSharp:DbContexts 与要使用的数据库类型是否匹配");
+            }
             var dict = _entityRegistersDict;
             if (dict.Count == 0)
             {

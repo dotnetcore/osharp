@@ -54,7 +54,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
-                .AddPack<SqliteDefaultDbContextMigrationPack>()
+                .AddPack<SqlServerDefaultDbContextMigrationPack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
         }

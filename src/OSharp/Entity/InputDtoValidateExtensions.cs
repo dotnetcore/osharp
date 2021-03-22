@@ -15,7 +15,7 @@ using System.Linq;
 using System.Reflection;
 
 using OSharp.Data;
-using OSharp.Reflection;
+using OSharp.Extensions;
 
 
 namespace OSharp.Entity
@@ -37,49 +37,7 @@ namespace OSharp.Entity
             Check.NotNull(inputDtos, nameof(dtos));
             foreach (IInputDto<TKey> dto in inputDtos)
             {
-                Validate(dto);
-            }
-        }
-
-        /// <summary>
-        /// InputDto属性验证
-        /// </summary>
-        public static void Validate<TKey>(this IInputDto<TKey> dto)
-        {
-            Check.NotNull(dto, nameof(dto));
-            Type type = dto.GetType();
-            if (!_dict.TryGetValue(type, out ConcurrentDictionary<PropertyInfo, ValidationAttribute[]> dict))
-            {
-                PropertyInfo[] properties = type.GetProperties();
-                dict = new ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>();
-                if (properties.Length == 0)
-                {
-                    _dict[type] = dict;
-                    return;
-                }
-                foreach (var property in properties)
-                {
-                    dict[property] = null;
-                }
-                _dict[type] = dict;
-            }
-
-            foreach (PropertyInfo property in dict.Keys)
-            {
-                if (!dict.TryGetValue(property, out ValidationAttribute[] attributes) || attributes == null)
-                {
-                    attributes = property.GetAttributes<ValidationAttribute>();
-                    dict[property] = attributes;
-                }
-                if (attributes.Length == 0)
-                {
-                    continue;
-                }
-                object value = property.GetValue(dto);
-                foreach (ValidationAttribute attribute in attributes)
-                {
-                    attribute.Validate(value, property.Name);
-                }
+                dto.Validate();
             }
         }
     }

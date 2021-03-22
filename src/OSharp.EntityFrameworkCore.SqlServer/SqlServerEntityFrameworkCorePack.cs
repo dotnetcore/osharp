@@ -31,6 +31,11 @@ namespace OSharp.Entity.SqlServer
         public override PackLevel Level => PackLevel.Framework;
 
         /// <summary>
+        /// 获取 数据库类型
+        /// </summary>
+        protected override DatabaseType DatabaseType => DatabaseType.SqlServer;
+
+        /// <summary>
         /// 获取 模块启动顺序，模块启动的顺序先按级别启动，级别内部再按此顺序启动
         /// </summary>
         public override int Order => 1;
@@ -48,21 +53,6 @@ namespace OSharp.Entity.SqlServer
             services.AddSingleton<IDbContextOptionsBuilderDriveHandler, SqlServerDbContextOptionsBuilderDriveHandler>();
 
             return services;
-        }
-        
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="provider">服务提供者</param>
-        public override void UsePack(IServiceProvider provider)
-        {
-            bool? hasMsSql = provider.GetOSharpOptions()?.DbContexts?.Values.Any(m => m.DatabaseType == DatabaseType.SqlServer);
-            if (hasMsSql == null || !hasMsSql.Value)
-            {
-                return;
-            }
-
-            base.UsePack(provider);
         }
     }
 }

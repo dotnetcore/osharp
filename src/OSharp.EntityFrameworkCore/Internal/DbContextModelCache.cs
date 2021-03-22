@@ -17,12 +17,12 @@ using Microsoft.Extensions.Logging;
 using OSharp.Extensions;
 
 
-namespace OSharp.Entity
+namespace OSharp.Entity.Internal
 {
     /// <summary>
     /// 上下文数据模型缓存
     /// </summary>
-    public class DbContextModelCache
+    internal class DbContextModelCache
     {
         private readonly ConcurrentDictionary<Type, IModel> _dict = new ConcurrentDictionary<Type, IModel>();
         private readonly ILogger _logger;

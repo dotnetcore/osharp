@@ -62,6 +62,11 @@ namespace OSharp.Entity
         public virtual bool HasCommitted { get; private set; }
 
         /// <summary>
+        /// 获取 是否启用事务
+        /// </summary>
+        public bool IsEnabledTransaction => _transactionStack.Count > 0;
+
+        /// <summary>
         /// 允许事务
         /// </summary>
         public void EnableTransaction()
@@ -164,7 +169,7 @@ namespace OSharp.Entity
         /// <param name="context">数据上下文</param>
         public virtual void BeginOrUseTransaction(IDbContext context)
         {
-            if (_contextDict.IsEmpty || _transactionStack.Count == 0)
+            if (_contextDict.IsEmpty || !IsEnabledTransaction)
             {
                 return;
             }
@@ -228,7 +233,7 @@ namespace OSharp.Entity
                 return;
             }
 
-            if(_transactionStack.Count == 0)
+            if(!IsEnabledTransaction)
             {
                 throw new OsharpException("执行 IUnitOfWork.Commit() 之前，需要在事务开始时调用 IUnitOfWork.EnableTransaction()");
             }
@@ -344,7 +349,7 @@ namespace OSharp.Entity
                 return;
             }
 
-            if (_transactionStack.Count == 0)
+            if (!IsEnabledTransaction)
             {
                 throw new OsharpException("执行 IUnitOfWork.Commit() 之前，需要在事务开始时调用 IUnitOfWork.EnableTransaction()");
             }

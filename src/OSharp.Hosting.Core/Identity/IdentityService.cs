@@ -54,6 +54,7 @@ namespace OSharp.Hosting.Identity
         protected RoleManager<Role> RoleManager => _provider.GetService<RoleManager<Role>>();
         protected IRepository<UserDetail, int> UserDetailRepository => _provider.GetService<IRepository<UserDetail, int>>();
         protected IRepository<UserLogin, Guid> UserLoginRepository => _provider.GetService<IRepository<UserLogin, Guid>>();
+        protected IRepository<LoginLog, Guid> LoginLogReqRepository => _provider.GetService<IRepository<LoginLog, Guid>>();
         protected IDistributedCache Cache => _provider.GetService<IDistributedCache>();
         protected IPrincipal CurrentUser => _provider.GetService<IPrincipal>();
         protected IHttpContextAccessor HttpContextAccessor => _provider.GetService<IHttpContextAccessor>();
