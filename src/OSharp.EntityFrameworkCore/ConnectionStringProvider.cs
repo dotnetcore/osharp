@@ -59,7 +59,7 @@ namespace OSharp.Entity
             
             SlaveDatabaseOptions[] slaves = dbContextOptions.Slaves;
             ISlaveDatabaseSelector slaveDatabaseSelector = _slaveDatabaseSelectors.LastOrDefault(m => m.Name == dbContextOptions.SlaveSelectorName)
-                ?? _slaveDatabaseSelectors.First(m => m.Name == "Random");
+                ?? _slaveDatabaseSelectors.First(m => m.Name == "Weight");
             SlaveDatabaseOptions slave = slaveDatabaseSelector.Select(slaves);
             return slave.ConnectionString;
         }

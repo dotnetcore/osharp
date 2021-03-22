@@ -45,7 +45,7 @@ namespace OSharp.Core.Options
         public string DbContextTypeName { get; set; }
 
         /// <summary>
-        /// 获取或设置 连接字符串
+        /// 获取或设置 主数据库连接字符串
         /// </summary>
         [Required(ErrorMessage = "数据库连接串不能为空")]
         public string ConnectionString { get; set; }
@@ -56,7 +56,7 @@ namespace OSharp.Core.Options
         public DatabaseType DatabaseType { get; set; }
 
         /// <summary>
-        /// 获取或设置 从数据库轮询策略
+        /// 获取或设置 从数据库选择策略名
         /// </summary>
         public string SlaveSelectorName { get; set; }
 
