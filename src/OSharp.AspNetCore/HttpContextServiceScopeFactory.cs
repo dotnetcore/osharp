@@ -41,8 +41,6 @@ namespace OSharp.AspNetCore
         /// </summary>
         protected IHttpContextAccessor HttpContextAccessor { get; }
 
-        #region Implementation of IServiceScopeFactory
-
         /// <summary>
         /// 创建依赖注入服务的作用域，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
         /// </summary>
@@ -59,7 +57,6 @@ namespace OSharp.AspNetCore
             return new NonDisposedHttpContextServiceScope(httpContext.RequestServices);
         }
 
-        #endregion
 
         /// <summary>
         /// 当前HttpRequest的<see cref="IServiceScope"/>的包装，保持HttpContext.RequestServices的可传递性，并且不释放

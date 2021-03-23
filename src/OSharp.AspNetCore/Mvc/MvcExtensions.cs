@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
+using OSharp.Data;
 using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
@@ -35,6 +36,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static bool IsController(this Type type)
         {
+            Check.NotNull(type, nameof(type));
+            
             return IsController(type.GetTypeInfo());
         }
 
@@ -43,6 +46,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static bool IsController(this TypeInfo typeInfo)
         {
+            Check.NotNull(typeInfo, nameof(typeInfo));
+
             return typeInfo.IsClass && !typeInfo.IsAbstract && typeInfo.IsPublic && !typeInfo.ContainsGenericParameters
                 && !typeInfo.IsDefined(typeof(NonControllerAttribute)) && (typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
                     || typeInfo.IsDefined(typeof(ControllerAttribute)));
@@ -53,6 +58,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static string GetAreaName(this ActionContext context)
         {
+            Check.NotNull(context, nameof(context));
+
             string area = null;
             if (context.RouteData.Values.TryGetValue("area", out object value))
             {
@@ -70,6 +77,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static string GetControllerName(this ActionContext context)
         {
+            Check.NotNull(context, nameof(context));
+
             return context.RouteData.Values["controller"].ToString();
         }
 
@@ -78,6 +87,7 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static string GetActionName(this ActionContext context)
         {
+            Check.NotNull(context, nameof(context));
             return context.RouteData.Values["action"].ToString();
         }
 
@@ -86,6 +96,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static IFunction GetExecuteFunction(this ActionContext context)
         {
+            Check.NotNull(context, nameof(context));
+
             IServiceProvider provider = context.HttpContext.RequestServices;
             ScopedDictionary dict = provider.GetService<ScopedDictionary>();
             if (dict.Function != null)
@@ -114,6 +126,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static IFunction GetExecuteFunction(this ControllerBase controller)
         {
+            Check.NotNull(controller, nameof(controller));
+
             return controller.ControllerContext.GetExecuteFunction();
         }
 
@@ -122,6 +136,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static IFunction GetFunction(this ControllerBase controller, string url)
         {
+            Check.NotNull(url, nameof(url));
+
             url = url.StartsWith("https://") || url.StartsWith("http://")
                 ? new Uri(url).AbsolutePath : !url.StartsWith("/") ? $"/{url}" : url;
             IServiceProvider provider = controller.HttpContext.RequestServices;
@@ -153,6 +169,9 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static bool CheckFunctionAuth(this ControllerBase controller, string url)
         {
+            Check.NotNull(controller, nameof(controller));
+            Check.NotNull(url, nameof(url));
+
             IFunction function = controller.GetFunction(url);
             if (function == null)
             {
@@ -167,6 +186,7 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public static bool CheckFunctionAuth(this ControllerBase controller, string actionName, string controllerName, string areaName = null)
         {
+            Check.NotNull(controller, nameof(controller));
             IServiceProvider provider = controller.HttpContext.RequestServices;
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             IFunction function = functionHandler?.GetFunction(areaName, controllerName, actionName);
