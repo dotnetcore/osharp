@@ -25,7 +25,7 @@ namespace OSharp.Reflection
     {
         private static readonly string[] Filters = { "dotnet-", "Microsoft.", "mscorlib", "netstandard", "System", "Windows" };
         private static Assembly[] _allAssemblies;
-        private static Type[] _allExportTypes;
+        private static Type[] _allTypes;
 
         static AssemblyManager()
         {
@@ -57,18 +57,18 @@ namespace OSharp.Reflection
         }
 
         /// <summary>
-        /// 获取 所有公开类型
+        /// 获取 所有类型
         /// </summary>
-        public static Type[] AllExportTypes
+        public static Type[] AllTypes
         {
             get
             {
-                if (_allExportTypes == null)
+                if (_allTypes == null)
                 {
                     Init();
                 }
 
-                return _allExportTypes;
+                return _allTypes;
             }
         }
 
@@ -84,7 +84,7 @@ namespace OSharp.Reflection
 
             _allAssemblies = DependencyContext.Default.GetDefaultAssemblyNames()
                 .Where(AssemblyFilterFunc).Select(Assembly.Load).ToArray();
-            _allExportTypes = _allAssemblies.SelectMany(m => m.ExportedTypes).ToArray();
+            _allTypes = _allAssemblies.SelectMany(m => m.GetTypes()).ToArray();
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static Type[] FindTypes(Func<Type, bool> predicate)
         {
-            return AllExportTypes.Where(predicate).ToArray();
+            return AllTypes.Where(predicate).ToArray();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static Type[] FindTypesByBase(Type baseType)
         {
-            return AllExportTypes.Where(type => type.IsDeriveClassFrom(baseType)).Distinct().ToArray();
+            return AllTypes.Where(type => type.IsDeriveClassFrom(baseType)).Distinct().ToArray();
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static Type[] FindTypesByAttribute(Type attributeType, bool inherit = true)
         {
-            return AllExportTypes.Where(type => type.IsDefined(attributeType, inherit)).Distinct().ToArray();
+            return AllTypes.Where(type => type.IsDefined(attributeType, inherit)).Distinct().ToArray();
         }
     }
 }
