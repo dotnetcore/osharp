@@ -40,7 +40,6 @@ namespace OSharp.AspNetCore.Mvc.Filters
                 return;
             }
             ScopedDictionary dict = provider.GetService<ScopedDictionary>();
-            dict.Function = function;
             // 数据权限有效角色，即有当前功能权限的角色
             IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
             string[] roleName = functionAuthorization.GetOkRoles(function, context.HttpContext.User);

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Liuliu.Demo.Identity.Dtos;
 
 using OSharp.Entity;
+using OSharp.Extensions;
 
 using Shouldly;
 

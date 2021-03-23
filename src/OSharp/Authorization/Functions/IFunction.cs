@@ -55,7 +55,7 @@ namespace OSharp.Authorization.Functions
         FunctionAccessType AccessType { get; set; }
 
         /// <summary>
-        /// 获取或设置 访问类型是否理发，如为true，刷新功能时将忽略功能类型
+        /// 获取或设置 访问类型是否可更改，如为true，刷新功能时将忽略功能类型
         /// </summary>
         bool IsAccessTypeChanged { get; set; }
 
@@ -78,5 +78,10 @@ namespace OSharp.Authorization.Functions
         /// 获取或设置 是否相对过期时间，否则为绝对过期
         /// </summary>
         bool IsCacheSliding { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否从库读取数据
+        /// </summary>
+        bool IsSlaveDatabase { get; set; }
     }
 }
