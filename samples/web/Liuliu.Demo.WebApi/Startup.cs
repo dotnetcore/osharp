@@ -44,7 +44,8 @@ namespace Liuliu.Demo.Web
 #if NET5_0
             services.AddDatabaseDeveloperPageExceptionFilter();
 #endif
-            services.AddOSharp().AddPack<Log4NetPack>()
+            services.AddOSharp()
+                .AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
                 .AddPack<EndpointsPack>()
                 .AddPack<MiniProfilerPack>()

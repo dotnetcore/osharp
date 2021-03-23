@@ -31,7 +31,7 @@ namespace OSharp.Entity
     /// <summary>
     /// EntityFrameworkCore基模块
     /// </summary>
-    [DependsOnPacks(typeof(EventBusPack), typeof(EntityInfoPack))]
+    [DependsOnPacks(typeof(EventBusPack))]
     public abstract class EntityFrameworkCorePackBase : OsharpPack
     {
         private static bool _optionsValidated;
