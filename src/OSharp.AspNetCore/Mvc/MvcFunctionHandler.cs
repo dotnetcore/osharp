@@ -14,12 +14,12 @@ using System.Reflection;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
 using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -54,6 +54,8 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override MethodInfo[] GetMethodInfos(Type functionType)
         {
+            Check.NotNull(functionType, nameof(functionType));
+            
             List<Type> types = new List<Type>();
             while (functionType.IsController())
             {
@@ -75,6 +77,8 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override Function GetFunction(Type controllerType)
         {
+            Check.NotNull(controllerType, nameof(controllerType));
+            
             if (!controllerType.IsController())
             {
                 throw new OsharpException($"类型“{controllerType.FullName}”不是MVC控制器类型");
@@ -103,6 +107,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override Function GetFunction(Function typeFunction, MethodInfo method)
         {
+            Check.NotNull(typeFunction, nameof(typeFunction));
+            Check.NotNull(method, nameof(method));
+            
             FunctionAccessType accessType = method.HasAttribute<LoggedInAttribute>()
                 ? FunctionAccessType.LoggedIn
                 : method.HasAttribute<AllowAnonymousAttribute>()
@@ -132,6 +139,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
+            Check.NotNull(action, nameof(action));
+            Check.NotNull(method, nameof(method));
+            
             if (method.HasAttribute<NonActionAttribute>() || method.HasAttribute<NonFunctionAttribute>())
             {
                 return true;
@@ -146,6 +156,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         private static string GetArea(MemberInfo type)
         {
+            Check.NotNull(type, nameof(type));
+            
             AreaAttribute attribute = type.GetAttribute<AreaAttribute>();
             return attribute?.RouteValue;
         }
