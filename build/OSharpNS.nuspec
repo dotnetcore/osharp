@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>5.0.4-preview319</version>
+    <version>5.0.4-preview323</version>
     <title>OSharpFramework(.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>LiuliuSoft nnc</owners>
@@ -16,11 +16,11 @@
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharpNS.Core" version="5.0.4-preview319" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.4-preview319" />
-        <dependency id="OSharpNS.AutoMapper" version="5.0.4-preview319" />
-        <dependency id="OSharpNS.AspNetCore" version="5.0.4-preview319" />
-        <dependency id="OSharpNS.Log4Net" version="5.0.4-preview319" />
+        <dependency id="OSharpNS.Core" version="5.0.4-preview323" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.4-preview323" />
+        <dependency id="OSharpNS.AutoMapper" version="5.0.4-preview323" />
+        <dependency id="OSharpNS.AspNetCore" version="5.0.4-preview323" />
+        <dependency id="OSharpNS.Log4Net" version="5.0.4-preview323" />
       </group>
     </dependencies>
   </metadata>
