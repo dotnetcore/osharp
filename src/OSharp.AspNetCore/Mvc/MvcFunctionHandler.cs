@@ -57,7 +57,8 @@ namespace OSharp.AspNetCore.Mvc
             Check.NotNull(functionType, nameof(functionType));
             
             List<Type> types = new List<Type>();
-            while (functionType.IsController())
+            
+            while (functionType.IsController(true))
             {
                 types.AddIfNotExist(functionType);
                 functionType = functionType?.BaseType;

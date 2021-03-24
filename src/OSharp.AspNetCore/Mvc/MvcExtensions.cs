@@ -34,7 +34,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <summary>
         /// 判断类型是否是Controller
         /// </summary>
-        public static bool IsController(this Type type)
+        public static bool IsController(this Type type, bool isAbstract = false)
         {
             Check.NotNull(type, nameof(type));
             
@@ -44,11 +44,11 @@ namespace OSharp.AspNetCore.Mvc
         /// <summary>
         /// 判断类型是否是Controller
         /// </summary>
-        public static bool IsController(this TypeInfo typeInfo)
+        public static bool IsController(this TypeInfo typeInfo, bool isAbstract = false)
         {
             Check.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeInfo.IsClass && !typeInfo.IsAbstract && typeInfo.IsPublic && !typeInfo.ContainsGenericParameters
+            return typeInfo.IsClass && (isAbstract || !typeInfo.IsAbstract) && typeInfo.IsPublic && !typeInfo.ContainsGenericParameters
                 && !typeInfo.IsDefined(typeof(NonControllerAttribute)) && (typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
                     || typeInfo.IsDefined(typeof(ControllerAttribute)));
         }
@@ -111,7 +111,7 @@ namespace OSharp.AspNetCore.Mvc
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
-                throw new OsharpException("获取正在执行的功能时 IFunctionHandler 无法解析");
+                return null;
             }
             IFunction function = functionHandler.GetFunction(area, controller, action);
             if (function != null)
