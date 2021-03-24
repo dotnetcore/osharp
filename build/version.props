@@ -2,8 +2,8 @@
   <PropertyGroup>
     <VersionMain>5.0</VersionMain>
     <VersionPrefix>4</VersionPrefix>
-    <VersionSuffix>-preview</VersionSuffix>
-    <VersionSuffixVersion>324</VersionSuffixVersion>
+    <VersionSuffix>-preview.</VersionSuffix>
+    <VersionSuffixVersion>324.1</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
