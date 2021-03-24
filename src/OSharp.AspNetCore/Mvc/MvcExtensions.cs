@@ -111,7 +111,7 @@ namespace OSharp.AspNetCore.Mvc
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
-                throw new OsharpException("获取正在执行的功能时 IFunctionHandler 无法解析");
+                return null;
             }
             IFunction function = functionHandler.GetFunction(area, controller, action);
             if (function != null)
