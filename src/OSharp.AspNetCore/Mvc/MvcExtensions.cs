@@ -38,7 +38,7 @@ namespace OSharp.AspNetCore.Mvc
         {
             Check.NotNull(type, nameof(type));
             
-            return IsController(type.GetTypeInfo());
+            return IsController(type.GetTypeInfo(), isAbstract);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace OSharp.AspNetCore.Mvc
         {
             Check.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeInfo.IsClass && (isAbstract || !typeInfo.IsAbstract) && typeInfo.IsPublic && !typeInfo.ContainsGenericParameters
+            return typeInfo.IsClass && (isAbstract || !typeInfo.IsAbstract) && !typeInfo.IsNestedPrivate && !typeInfo.ContainsGenericParameters
                 && !typeInfo.IsDefined(typeof(NonControllerAttribute)) && (typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
                     || typeInfo.IsDefined(typeof(ControllerAttribute)));
         }

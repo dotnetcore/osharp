@@ -10,4 +10,5 @@ $props = @(
 foreach($prop in $props)
 {
     nuget delete $prop $version -src "https://www.nuget.org" -NonInteractive
+    # nuget delete $prop $version -Source "http://nuget.66soft.net/nuget" -NonInteractive
 }
