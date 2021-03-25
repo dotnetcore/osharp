@@ -44,7 +44,7 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override Type[] GetAllFunctionTypes()
         {
-            return AssemblyManager.FindTypes(m => m.IsController());
+            return AssemblyManager.FindTypes(m => m.IsController() && (m.IsPublic || m.IsNestedAssembly));
         }
 
         /// <summary>
