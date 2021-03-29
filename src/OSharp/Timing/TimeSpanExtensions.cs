@@ -57,10 +57,10 @@ namespace OSharp.Timing
         {
             while (ts > TimeSpan.Zero)
             {
-                action(ts);
                 TimeSpan ts2 = TimeSpan.FromMilliseconds(intervalMilliseconds);
                 Thread.Sleep(ts2);
                 ts = ts.Subtract(ts2);
+                action(ts);
             }
         }
 
@@ -71,10 +71,10 @@ namespace OSharp.Timing
         {
             while (ts > TimeSpan.Zero)
             {
-                await action(ts);
                 TimeSpan ts2 = TimeSpan.FromMilliseconds(intervalMilliseconds);
                 await Task.Delay(ts2);
                 ts = ts.Subtract(ts2);
+                await action(ts);
             }
         }
     }
