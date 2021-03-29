@@ -189,11 +189,11 @@ namespace OSharp.Authorization
                 return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             });
 
-            if (functionIds.Length > 0)
-            {
-                _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
-                _cache.Set(key, functionIds);
-            }
+            // 有效期为 7 ± 1 天
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 2600, 24 * 3600);
+            _cache.Set(key, functionIds, seconds);
+            _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
+
             return functionIds;
         }
 
