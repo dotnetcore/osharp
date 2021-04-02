@@ -250,7 +250,7 @@ OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 
 截止到目前，OSharpNS 框架的完成程度已经很高了，计划中的功能点，均已得到较高水准的实现，具体功能点完成进度如下所示：
 
 - [ ] **OSharpNS Framework**
-    - [ ] OSharp
+    - [x] OSharp
         - [x] 添加常用Utility辅助工具类
         - [x] 添加框架配置Options定义
         - [x] 定义Entity数据访问相关接口
@@ -266,6 +266,7 @@ OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 
         - [x] 实现运行时上下文类型初始化及自动加载相关实体类型的功能
         - [x] 实现Repository仓储的数据存储功能
         - [x] 实现UnitOfWork的多上下文管理及同DbConnection的上下文事务同步
+        - [x] 实现主从结构的数据读写分离
     - [x] OSharp.AutoMapper
         - [x] 不同的映射类型，通过实现`Profile`来实现映射注册
         - [x] 实现通过遍历程序集，查找实现了`IMapTuple`接口的`Profile`来自动注册映射策略
@@ -283,19 +284,26 @@ OSharpNS当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 
               - [x] 实现基于MVC的功能权限AOP拦截验证
               - [x] 实现基于MVC的事务提交AOP拦截提交
         - [x] SignalR
-    - [ ] OSharp.Permissions
-        - [ ] 身份认证Identity
+    - [x] OSharp.Identity
+        - [x] 身份认证Authentication
+            - [x] 实现用户Claims提供器`IUserClaimsProvider`
+            - [x] Cookie
+                - [x] 实现Cookie登录，并刷新在线用户信息
+            - [x] JwtBearer
+                - [x] 实现Jwt Token的构建功能
+                - [x] 实现Jwt Token的刷新机制
+            - [x] OAuth2 
+                - [x] 支持QQ、Github、MicroSoft、Google等第三方登录，创建本地用户并关联
+        - [x] 身份标识Identity
             - [x] 用户添加昵称`NickName`属性，并添加默认验证器
             - [x] 重写UserStore，RoleStore，使用现有IRepository进行数据存储
             - [x] 实现第三方OAuth2认证系统的整合
-        - [x] 权限授权Security
-            - [x] 功能权限
-                - [x] 实现功能权限各个业务实体的数据存储
-                - [x] 实现在系统初始化时，遍历反射程序集，自动初始化功能点、数据实体、业务模块等信息并持久化到数据库
-                - [x] 实现系统初始化时，将功能点，数据实体，角色功能权限等信息缓存到内存中
-                - [x] 实现`角色-功能点`，`用户-功能点`的功能权限验证
-            - [x] 数据权限
-                - [x] 实现`角色-实体`，`用户-实体`的数据权限配置
-                - [x] 实现`角色-实体`，`用户-实体`的数据权限过滤
-        - [x] 系统System
-            - [x] 实现键值对数据字典功能
+            - [x] 在线用户信息缓存系统，实现用户信息刷新
+    - [x] OSharp.Authorization.Functions
+        - [x] 实现功能权限各个业务实体的数据存储
+        - [x] 实现在系统初始化时，遍历反射程序集，自动初始化功能点、数据实体、业务模块等信息并持久化到数据库
+        - [x] 实现系统初始化时，将功能点，数据实体，角色功能权限等信息缓存到内存中
+        - [x] 实现`角色-功能点`，`用户-功能点`的功能权限验证
+    - [x] OSharp.Authorization.Datas
+        - [x] 实现`角色-实体`，`用户-实体`的数据权限配置
+        - [x] 实现`角色-实体`，`用户-实体`的数据权限过滤
