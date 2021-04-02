@@ -38,14 +38,14 @@ if(!(Test-Path $nupkgs))
 Set-Location $nupkgs
 Write-Host ("`n正在查找nupkg发布包，当前目录：$(Get-Location)")
 
-$files = [System.IO.Directory]::GetFiles($nupkgs, ("*.{0}.nupkg" -f $version))
+$files = [System.IO.Directory]::GetFiles($nupkgs, ("*.{0}*nupkg" -f $version))
 Write-Host ("共找到 {0} 个版本号为 {1} 的nupkg文件" -f $files.Length, $version)
 if($files.Length -eq 0){
     exit
 }
 Write-Host "是否继续发布？"
 
-# pause
+pause
 $items = @()
 foreach($file in $files){
     $obj = New-Object PSObject -Property @{
@@ -63,3 +63,4 @@ $items | ForEach-Object -Parallel {
     $server = @("push", $name) + @("-Source", $item.Server)
     & nuget $server
 } -ThrottleLimit 5
+pause
