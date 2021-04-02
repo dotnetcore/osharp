@@ -5,8 +5,8 @@
     <VersionSuffix>-preview.</VersionSuffix>
     <VersionSuffixVersion>329</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
-    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
-    <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
+    <Version>$(VersionMain).$(VersionPrefix)</Version>
+    <!--<AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>-->
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
   </PropertyGroup>
 </Project>
