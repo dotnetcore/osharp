@@ -40,6 +40,17 @@ namespace OSharp.Entity
         protected abstract DatabaseType DatabaseType { get; }
 
         /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddOsharpDbContext<TDbContext>();
+            return services;
+        }
+
+        /// <summary>
         /// 应用模块服务
         /// </summary>
         /// <param name="provider">服务提供者</param>
