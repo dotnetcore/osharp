@@ -50,6 +50,11 @@ namespace OSharp.Authorization.Modules
         public string PositionName { get; set; }
 
         /// <summary>
+        /// 获取 位置全名
+        /// </summary>
+        public string FullCode => $"{Position}.{Code}";
+
+        /// <summary>
         /// 获取或设置 依赖功能
         /// </summary>
         public IFunction[] DependOnFunctions { get; set; } = new IFunction[0];
