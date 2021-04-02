@@ -39,7 +39,7 @@ namespace OSharp.Entity
         /// <param name="services">依赖注入服务集合</param>
         /// <param name="optionsAction">数据库选项创建配置，将在内置配置后运行</param>
         /// <returns>依赖注入服务集合</returns>
-        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContextBase
+        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContext
         {
             services = services.AddDbContext<TDbContext>((provider, builder) =>
             {

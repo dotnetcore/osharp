@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.Authorization.Events;
 using OSharp.Caching;
 
 
@@ -133,6 +134,9 @@ namespace OSharp.Hosting.Identity
             //触发登录成功事件
             LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
             await EventBus.PublishAsync(loginEventData);
+            FunctionAuthCacheRefreshEventData functionAuthCacheRefreshEventData =
+                new FunctionAuthCacheRefreshEventData() { UserNames = new[] { user.UserName } };
+            await EventBus.PublishAsync(functionAuthCacheRefreshEventData);
 
             return result;
         }

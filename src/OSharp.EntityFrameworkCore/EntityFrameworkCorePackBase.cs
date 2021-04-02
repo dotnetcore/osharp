@@ -53,7 +53,6 @@ namespace OSharp.Entity
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddOsharpDbContext<DefaultDbContext>();
             services.TryAddScoped<IAuditEntityProvider, AuditEntityProvider>();
             services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.TryAddScoped<IUnitOfWork, UnitOfWork>();

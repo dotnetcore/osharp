@@ -40,6 +40,7 @@ namespace OSharp.Authorization
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
+        private readonly Random _random = new Random();
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
         private readonly ILogger _logger;
@@ -147,7 +148,10 @@ namespace OSharp.Authorization
                 IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
                 roleNames = roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             }
-            _cache.Set(key, roleNames);
+
+            // 有效期为 7 ± 1 天
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 2600, 24 * 3600);
+            _cache.Set(key, roleNames, seconds);
             _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
 
             serviceScope?.Dispose();
@@ -185,11 +189,11 @@ namespace OSharp.Authorization
                 return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             });
 
-            if (functionIds.Length > 0)
-            {
-                _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
-                _cache.Set(key, functionIds);
-            }
+            // 有效期为 7 ± 1 天
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 2600, 24 * 3600);
+            _cache.Set(key, functionIds, seconds);
+            _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
+
             return functionIds;
         }
 

@@ -15,6 +15,11 @@ namespace OSharp.Authorization.Modules
     public interface IModuleHandler
     {
         /// <summary>
+        /// 获取 所有模块信息
+        /// </summary>
+        ModuleInfo[] ModuleInfos { get; }
+
+        /// <summary>
         /// 从程序集中获取模块信息
         /// </summary>
         void Initialize();
