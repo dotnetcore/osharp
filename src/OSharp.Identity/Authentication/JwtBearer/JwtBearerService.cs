@@ -171,7 +171,7 @@ namespace OSharp.Authentication.JwtBearer
             });
 
             // New AccessToken
-            IAccessClaimsProvider claimsProvider = _provider.GetService<IAccessClaimsProvider>();
+            IUserClaimsProvider claimsProvider = _provider.GetService<IUserClaimsProvider>();
             claims = await claimsProvider.CreateClaims(userId);
             List<Claim> claimList = claims.ToList();
             claimList.Add(new Claim("clientId", clientId));

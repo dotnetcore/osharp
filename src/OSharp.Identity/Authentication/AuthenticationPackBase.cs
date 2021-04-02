@@ -62,7 +62,7 @@ namespace OSharp.Authentication
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             OsharpOptions options = services.GetOsharpOptions();
-            services.TryAddScoped<IAccessClaimsProvider, AccessClaimsProvider<TUser, TUserKey>>();
+            services.TryAddScoped<IUserClaimsProvider, UserClaimsProvider<TUser, TUserKey>>();
 
             string defaultSchema = IdentityConstants.ApplicationScheme;
             if (options.Jwt?.Enabled == true && options.Cookie?.Enabled != true)

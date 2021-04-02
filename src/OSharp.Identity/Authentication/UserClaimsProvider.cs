@@ -24,23 +24,23 @@ using OSharp.Identity;
 using OSharp.Identity.Entities;
 
 
-namespace OSharp.Authentication.JwtBearer
+namespace OSharp.Authentication
 {
     /// <summary>
-    /// AccessToken的用户Claims提供器
+    /// 用户Claims提供器
     /// </summary>
     /// <typeparam name="TUser">用户类型</typeparam>
     /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    public class AccessClaimsProvider<TUser, TUserKey> : IAccessClaimsProvider
+    public class UserClaimsProvider<TUser, TUserKey> : IUserClaimsProvider
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
         private readonly IServiceProvider _provider;
 
         /// <summary>
-        /// 初始化一个<see cref="AccessClaimsProvider{TUser, TUserKey}"/>类型的新实例
+        /// 初始化一个<see cref="UserClaimsProvider{TUser,TUserKey}"/>类型的新实例
         /// </summary>
-        public AccessClaimsProvider(IServiceProvider provider)
+        public UserClaimsProvider(IServiceProvider provider)
         {
             _provider = provider;
         }

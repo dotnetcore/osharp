@@ -34,7 +34,7 @@ namespace OSharp.Authentication.JwtBearer
             ClaimsPrincipal user = context.Principal;
             ClaimsIdentity identity = user.Identity as ClaimsIdentity;
             
-            IAccessClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IAccessClaimsProvider>();
+            IUserClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IUserClaimsProvider>();
             OperationResult<ClaimsIdentity> result = await accessClaimsProvider.RefreshIdentity(identity);
             if (!result.Succeeded)
             {
