@@ -57,7 +57,8 @@ $props = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.
 "OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
 "OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
 "OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
-"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
+"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.MultiTenancy", "OSharp.MultiTenancy.EntityFrameworkCore", 
+"OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
 foreach($prop in $props)
 {
     $path = ("../src/{0}/{0}.csproj" -f $prop)

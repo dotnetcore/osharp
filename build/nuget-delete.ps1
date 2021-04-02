@@ -4,7 +4,8 @@ $props = @(
 "OSharpNS.EntityFrameworkCore", "OSharpNS.EntityFrameworkCore.MySql", "OSharpNS.EntityFrameworkCore.Oracle", 
 "OSharpNS.EntityFrameworkCore.PostgreSql", "OSharpNS.EntityFrameworkCore.Sqlite", "OSharpNS.EntityFrameworkCore.SqlServer",
 "OSharpNS.Exceptionless", "OSharpNS.Hangfire", "OSharpNS.Hosting.Apis", "OSharpNS.Hosting.Core", "OSharpNS.Hosting.EntityConfiguration",
-"OSharpNS.Identity", "OSharpNS.Log4Net", "OSharpNS.MiniProfiler", "OSharpNS.Redis", "OSharpNS.Swagger", "OSharpNS", 
+"OSharpNS.Identity", "OSharpNS.Log4Net", "OSharpNS.MiniProfiler", "OSharp.MultiTenancy", "OSharp.MultiTenancy.EntityFrameworkCore", 
+"OSharpNS.Redis", "OSharpNS.Swagger", "OSharpNS", 
 "OSharpNS.Template.Mvc_Angular", "OSharpNS.CodeGeneration"
 )
 foreach($prop in $props)
