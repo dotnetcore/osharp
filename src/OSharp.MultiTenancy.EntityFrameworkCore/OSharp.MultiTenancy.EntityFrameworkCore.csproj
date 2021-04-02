@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../build/public.props" />
+  <Import Project="../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <PackageId>OSharpNS.MultiTenancy.EntityFrameworkCore</PackageId>
+    <Description>OSharp多租户EFCore组件，封装多租户的EFCore数据存储实现</Description>
+    <Summary>OSharp多租户EFCore组件</Summary>
+    <RootNamespace>OSharp.MultiTenancy.EntityFrameworkCore</RootNamespace>
+    <AssemblyName>OSharp.MultiTenancy.EntityFrameworkCore</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\OSharp.MultiTenancy.EntityFrameworkCore.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\OSharp.MultiTenancy\OSharp.MultiTenancy.csproj" />
+  </ItemGroup>
+
+</Project>
