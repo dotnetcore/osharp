@@ -30,4 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Styles\SomeStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>
