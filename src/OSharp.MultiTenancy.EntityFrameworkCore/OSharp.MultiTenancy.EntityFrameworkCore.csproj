@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\OSharp.MultiTenancy\OSharp.MultiTenancy.csproj" />
   </ItemGroup>
 
