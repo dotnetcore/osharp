@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AutoMapper;
 using OSharp.Entity;
 using OSharp.Identity;
+using OSharp.Mapping;
 
 
 namespace OSharp.Hosting.Identity
@@ -36,7 +37,7 @@ namespace OSharp.Hosting.Identity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityContract, IdentityService>();
-            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
             services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
 
             services.AddEventHandler<LoginLoginLogEventHandler>();
