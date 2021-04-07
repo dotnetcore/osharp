@@ -86,6 +86,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webapi", "webapi", "{DBDD134B-7B37-48A4-855E-7D24E798FF63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper.Tests", "tests\OSharp.AutoMapper.Tests\OSharp.AutoMapper.Tests.csproj", "{2CB2A657-9660-458B-809F-B812A218CE14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +218,10 @@ Global
 		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF42EE5B-627F-408D-8E7F-675FACD5A318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CB2A657-9660-458B-809F-B812A218CE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB2A657-9660-458B-809F-B812A218CE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB2A657-9660-458B-809F-B812A218CE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB2A657-9660-458B-809F-B812A218CE14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -254,6 +260,7 @@ Global
 		{4E26B25A-11F4-445E-AE75-BCE02FA3CA29} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{DF42EE5B-627F-408D-8E7F-675FACD5A318} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{DBDD134B-7B37-48A4-855E-7D24E798FF63} = {D06C79AC-DB5A-4379-BA2B-5208CF3FBC23}
+		{2CB2A657-9660-458B-809F-B812A218CE14} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}

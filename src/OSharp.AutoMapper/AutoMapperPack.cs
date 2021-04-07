@@ -45,7 +45,7 @@ namespace OSharp.AutoMapper
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddSingleton<MapperConfigurationExpression>(new MapperConfigurationExpression());
-            services.AddSingleton<IMapTuple, MapTupleProfile>();
+            services.AddSingleton<IMapTuple, MapFromAndMapToProfile>();
 
             return services;
         }
@@ -58,18 +58,9 @@ namespace OSharp.AutoMapper
         {
             ILogger logger = provider.GetLogger<AutoMapperPack>();
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>();
-
-            //先注册特例映射，再注册Attribute标注的通用映射
-            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
-            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
-            foreach (IAutoMapperConfiguration config in configs)
-            {
-                config.CreateMaps(cfg);
-                logger.LogInformation($"初始化对象映射配对：{config.GetType()}");
-            }
-
+            
             //获取已注册到IoC的所有Profile
-            IMapTuple[] tuples = provider.GetServices<IMapTuple>().ToArray();
+            IMapTuple[] tuples = provider.GetServices<IMapTuple>().OrderBy(m => m.Order).ToArray();
             foreach (IMapTuple mapTuple in tuples)
             {
                 mapTuple.CreateMap();
@@ -77,11 +68,11 @@ namespace OSharp.AutoMapper
                 logger.LogInformation($"初始化对象映射配对：{mapTuple.GetType()}");
             }
 
-            MapperConfiguration configuration = new MapperConfiguration(cfg);
+            var configuration = new MapperConfiguration(cfg);
             IMapper mapper = new AutoMapperMapper(configuration);
             MapperExtensions.SetMapper(mapper);
             logger.LogInformation($"初始化对象映射对象到 MapperExtensions：{mapper.GetType()}，共包含 {configuration.GetMappers().Count()} 个映射配对");
-
+            
             IsEnabled = true;
         }
     }
