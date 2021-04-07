@@ -59,6 +59,15 @@ namespace OSharp.AutoMapper
             ILogger logger = provider.GetLogger<AutoMapperPack>();
             MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>();
 
+            //先注册特例映射，再注册Attribute标注的通用映射
+            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
+            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
+            foreach (IAutoMapperConfiguration config in configs)
+            {
+                config.CreateMaps(cfg);
+                logger.LogInformation($"初始化对象映射配对：{config.GetType()}");
+            }
+
             //获取已注册到IoC的所有Profile
             IMapTuple[] tuples = provider.GetServices<IMapTuple>().ToArray();
             foreach (IMapTuple mapTuple in tuples)
@@ -66,14 +75,6 @@ namespace OSharp.AutoMapper
                 mapTuple.CreateMap();
                 cfg.AddProfile(mapTuple as Profile);
                 logger.LogInformation($"初始化对象映射配对：{mapTuple.GetType()}");
-            }
-
-            //各个模块DTO的 IAutoMapperConfiguration 映射实现类
-            IAutoMapperConfiguration[] configs = provider.GetServices<IAutoMapperConfiguration>().ToArray();
-            foreach (IAutoMapperConfiguration config in configs)
-            {
-                config.CreateMaps(cfg);
-                logger.LogInformation($"初始化对象映射配对：{config.GetType()}");
             }
 
             MapperConfiguration configuration = new MapperConfiguration(cfg);
