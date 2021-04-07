@@ -55,6 +55,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Setup dotnet3.1
+      uses: actions/setup-dotnet@v1
+      with: 
+        dotnet-version: 3.1.x
     - name: Windows Build
       run: dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
     - name: Windows Test
