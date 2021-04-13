@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AutoMapper;
 using OSharp.Core.Packs;
 using OSharp.Hosting.Systems.Dtos;
+using OSharp.Mapping;
 
 
 namespace OSharp.Hosting.Systems
@@ -34,7 +35,7 @@ namespace OSharp.Hosting.Systems
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<ISystemsContract, SystemsService>();
-            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
 
             return services;
         }

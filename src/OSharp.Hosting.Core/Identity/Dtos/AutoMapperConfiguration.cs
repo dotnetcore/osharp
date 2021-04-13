@@ -19,15 +19,14 @@ namespace OSharp.Hosting.Identity.Dtos
     /// <summary>
     /// DTO对象映射配置
     /// </summary>
-    public class AutoMapperConfiguration : IAutoMapperConfiguration
+    public class AutoMapperConfiguration : AutoMapperTupleBase
     {
         /// <summary>
         /// 创建对象映射
         /// </summary>
-        /// <param name="mapper">映射配置表达</param>
-        public void CreateMaps(MapperConfigurationExpression mapper)
+        public override void CreateMap()
         {
-            mapper.CreateMap<Role, RoleNode>().ForMember(rn => rn.RoleId, opt => opt.MapFrom(r => r.Id))
+            CreateMap<Role, RoleNode>().ForMember(rn => rn.RoleId, opt => opt.MapFrom(r => r.Id))
                 .ForMember(rn => rn.RoleName, opt => opt.MapFrom(r => r.Name));
         }
     }

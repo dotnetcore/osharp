@@ -24,23 +24,28 @@ namespace OSharp.AutoMapper
     /// <summary>
     /// 创建源类型与目标类型的配对
     /// </summary>
-    public class MapTupleProfile : Profile, IMapTuple
+    public class MapFromAndMapToProfile : AutoMapperTupleBase
     {
-        private readonly ILogger<MapTupleProfile> _logger;
+        private readonly ILogger<MapFromAndMapToProfile> _logger;
 
         /// <summary>
-        /// 初始化一个<see cref="MapTupleProfile"/>类型的新实例
+        /// 初始化一个<see cref="MapFromAndMapToProfile"/>类型的新实例
         /// </summary>
-        public MapTupleProfile(
+        public MapFromAndMapToProfile(
             ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<MapTupleProfile>();
+            _logger = loggerFactory.CreateLogger<MapFromAndMapToProfile>();
         }
+
+        /// <summary>
+        /// 获取 排序
+        /// </summary>
+        public override int Order => -9999;
 
         /// <summary>
         /// 执行对象映射构造
         /// </summary>
-        public void CreateMap()
+        public override void CreateMap()
         {
             List<(Type Source, Type Target)> tuples = new List<(Type Source, Type Target)>();
 

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="KeyValueSeedDataInitializer.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -33,7 +33,7 @@ namespace Liuliu.Demo.Systems
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override KeyValue[] SeedData()
+        protected override KeyValue[] SeedData(IServiceProvider provider)
         {
             return new[]
             {

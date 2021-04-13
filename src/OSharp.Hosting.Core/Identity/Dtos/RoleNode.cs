@@ -7,11 +7,16 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Hosting.Identity.Entities;
+using OSharp.Mapping;
+
+
 namespace OSharp.Hosting.Identity.Dtos
 {
     /// <summary>
     /// 角色节点
     /// </summary>
+    [MapFrom(typeof(Role))]
     public class RoleNode
     {
         /// <summary>

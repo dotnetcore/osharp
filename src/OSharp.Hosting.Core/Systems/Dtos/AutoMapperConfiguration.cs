@@ -20,15 +20,14 @@ using OSharp.Mapping;
 
 namespace OSharp.Hosting.Systems.Dtos
 {
-    public class AutoMapperConfiguration : IAutoMapperConfiguration
+    public class AutoMapperConfiguration : AutoMapperTupleBase
     {
         /// <summary>
         /// 创建对象映射
         /// </summary>
-        /// <param name="mapper">映射配置表达</param>
-        public void CreateMaps(MapperConfigurationExpression mapper)
+        public override void CreateMap()
         {
-            mapper.CreateMap<Menu, MenuOutputDto>()
+            CreateMap<Menu, MenuOutputDto>()
                 .ForMember(dto => dto.Children, opt => opt.MapFrom(entity => entity.Children.Select(m => m.MapTo<MenuOutputDto>())));
         }
     }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AutoMapperConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -20,15 +20,14 @@ namespace Liuliu.Demo.Authorization.Dtos
     /// <summary>
     /// DTO对象映射类
     /// </summary>
-    public class AutoMapperConfiguration : IAutoMapperConfiguration
+    public class AutoMapperConfiguration : AutoMapperTupleBase
     {
         /// <summary>
         /// 创建对象映射
         /// </summary>
-        /// <param name="mapper">映射配置表达</param>
-        public void CreateMaps(MapperConfigurationExpression mapper)
+        public override void CreateMap()
         {
-            mapper.CreateMap<EntityRoleInputDto, EntityRole>()
+            CreateMap<EntityRoleInputDto, EntityRole>()
                 .ForMember(mr => mr.FilterGroupJson, opt => opt.MapFrom(dto => dto.FilterGroup.ToJsonString(false, false)));
 
             //mapper.CreateMap<EntityRole, EntityRoleOutputDto>()

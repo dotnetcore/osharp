@@ -40,7 +40,7 @@ namespace OSharp.Hosting.Identity
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override Role[] SeedData()
+        protected override Role[] SeedData(IServiceProvider provider)
         {
             return new[]
             {
@@ -61,27 +61,24 @@ namespace OSharp.Hosting.Identity
         /// <summary>
         /// 将种子数据初始化到数据库
         /// </summary>
-        /// <param name="entities"></param>
-        protected override void SyncToDatabase(Role[] entities)
+        protected override void SyncToDatabase(Role[] entities, IServiceProvider provider)
         {
-            if (entities?.Length > 0)
+            if (entities.Length == 0)
             {
-                _rootProvider.BeginUnitOfWorkTransaction(provider =>
-                    {
-                        RoleManager<Role> roleManager = provider.GetService<RoleManager<Role>>();
-                        foreach (Role role in entities)
-                        {
-                            if (roleManager.Roles.Any(ExistingExpression(role)))
-                            {
-                                continue;
-                            }
-                            IdentityResult result = roleManager.CreateAsync(role).Result;
-                            if (!result.Succeeded)
-                            {
-                                throw new OsharpException($"进行角色种子数据“{role.Name}”同步时出错：{result.ErrorMessage()}");
-                            }
-                        }
-                    });
+                return;
+            }
+            RoleManager<Role> roleManager = provider.GetService<RoleManager<Role>>();
+            foreach (Role role in entities)
+            {
+                if (roleManager.Roles.Any(ExistingExpression(role)))
+                {
+                    continue;
+                }
+                IdentityResult result = roleManager.CreateAsync(role).Result;
+                if (!result.Succeeded)
+                {
+                    throw new OsharpException($"进行角色种子数据“{role.Name}”同步时出错：{result.ErrorMessage()}");
+                }
             }
         }
     }

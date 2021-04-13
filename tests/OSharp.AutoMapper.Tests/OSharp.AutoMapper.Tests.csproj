@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
-    <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <ProjectReference Include="..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\OSharp.UnitTest.Infrastructure\OSharp.UnitTest.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
