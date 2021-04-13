@@ -33,7 +33,7 @@ namespace OSharp.Hosting.Systems
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override KeyValue[] SeedData()
+        protected override KeyValue[] SeedData(IServiceProvider provider)
         {
             return new[]
             {

@@ -30,7 +30,7 @@ namespace OSharp.Hosting.Authorization
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override Module[] SeedData()
+        protected override Module[] SeedData(IServiceProvider provider)
         {
             return new[]
             {
