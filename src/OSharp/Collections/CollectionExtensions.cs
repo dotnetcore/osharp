@@ -97,7 +97,7 @@ namespace OSharp.Collections
         /// <summary>
         /// 交换两项的位置
         /// </summary>
-        public static void Swap<T>(this List<T> list, int index1, int index2)
+        public static void Swap<T>(this IList<T> list, int index1, int index2)
         {
             Check.Between(index1, nameof(index1), 0, list.Count, true);
             Check.Between(index2, nameof(index2), 0, list.Count, true);
