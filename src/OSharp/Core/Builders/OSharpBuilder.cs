@@ -46,10 +46,16 @@ namespace OSharp.Core.Builders
             IConfiguration configuration = services.GetConfiguration();
             if (configuration == null)
             {
-                IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+                IConfigurationBuilder configurationBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory());
+                if (File.Exists("appsettings.json"))
+                {
+                    configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                }
+
+                if (File.Exists("appsettings.Development.json"))
+                {
+                    configurationBuilder.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+                }
                 configuration = configurationBuilder.Build();
                 services.AddSingleton<IConfiguration>(configuration);
             }
