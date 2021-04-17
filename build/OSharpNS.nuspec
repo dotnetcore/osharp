@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>5.0.5-preview.416.1</version>
+    <version>5.0.5-preview.418</version>
     <title>OSharpFramework(.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>LiuliuSoft nnc</owners>
@@ -16,18 +16,18 @@
     <tags>osharp osharpns</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharpNS.Core" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.AutoMapper" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.AspNetCore" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.Log4Net" version="5.0.5-preview.416.1" />
+        <dependency id="OSharpNS.Core" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.AutoMapper" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.AspNetCore" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.Log4Net" version="5.0.5-preview.418" />
       </group>
       <group targetFramework="net5.0">
-        <dependency id="OSharpNS.Core" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.AutoMapper" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.AspNetCore" version="5.0.5-preview.416.1" />
-        <dependency id="OSharpNS.Log4Net" version="5.0.5-preview.416.1" />
+        <dependency id="OSharpNS.Core" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.EntityFrameworkCore" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.AutoMapper" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.AspNetCore" version="5.0.5-preview.418" />
+        <dependency id="OSharpNS.Log4Net" version="5.0.5-preview.418" />
       </group>
     </dependencies>
   </metadata>
