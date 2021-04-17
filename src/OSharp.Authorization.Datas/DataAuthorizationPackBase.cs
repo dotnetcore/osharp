@@ -65,6 +65,7 @@ namespace OSharp.Authorization
         {
             services.AddSingleton(typeof(IDataAuthCache), typeof(TDataAuthCache));
 
+            services.AddScoped<IDataAuthService, DataAuthService>();
             services.AddScoped<TDataAuthorizationManager>();
             services.AddScoped(typeof(IEntityInfoStore<TEntityInfo, TEntityInfoInputDto>), provider => provider.GetService<TDataAuthorizationManager>());
             services.AddScoped(typeof(IEntityRoleStore<TEntityRole, TEntityRoleInputDto, TRoleKey>), provider => provider.GetService<TDataAuthorizationManager>());

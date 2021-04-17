@@ -135,6 +135,7 @@ namespace OSharp.Filter
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="group">查询条件组，如果为null，则直接返回 true 表达式</param>
         /// <returns>查询表达式</returns>
+        [Obsolete]
         public static Expression<Func<T, bool>> GetExpression<T>(FilterGroup group)
         {
             group.CheckNotNull("group");
@@ -150,6 +151,7 @@ namespace OSharp.Filter
         /// <typeparam name="T">表达式实体类型</typeparam>
         /// <param name="rule">查询条件，如果为null，则直接返回 true 表达式</param>
         /// <returns>查询表达式</returns>
+        [Obsolete]
         public static Expression<Func<T, bool>> GetExpression<T>(FilterRule rule)
         {
             ParameterExpression param = Expression.Parameter(typeof(T), "m");
@@ -165,6 +167,7 @@ namespace OSharp.Filter
         /// <param name="group">传入的查询条件组，为空时则只返回数据权限过滤器</param>
         /// <param name="operation">数据权限操作</param>
         /// <returns>综合之后的表达式</returns>
+        [Obsolete]
         public static Expression<Func<T, bool>> GetDataFilterExpression<T>(FilterGroup group = null,
             DataAuthOperation operation = DataAuthOperation.Read)
         {
@@ -224,6 +227,7 @@ namespace OSharp.Filter
         /// <param name="group">查询条件组</param>
         /// <param name="type">实体类型</param>
         /// <returns>验证操作结果</returns>
+        [Obsolete]
         public static OperationResult CheckFilterGroup(FilterGroup group, Type type)
         {
             try
