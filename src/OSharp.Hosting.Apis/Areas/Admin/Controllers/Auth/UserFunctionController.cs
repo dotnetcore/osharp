@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
@@ -32,18 +33,11 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-用户功能")]
     public class UserFunctionController : AdminApiControllerBase
     {
-        private readonly IFilterService _filterService;
-        private readonly FunctionAuthManager _functionAuthManager;
-        private readonly UserManager<User> _userManager;
+        private readonly IServiceProvider _provider;
 
-        public UserFunctionController(FunctionAuthManager functionAuthManager,
-            UserManager<User> userManager,
-            RoleManager<Role> roleManager,
-            IFilterService filterService)
+        public UserFunctionController(IServiceProvider provider) : base(provider)
         {
-            _functionAuthManager = functionAuthManager;
-            _userManager = userManager;
-            _filterService = filterService;
+            _provider = provider;
         }
 
         /// <summary>
@@ -56,8 +50,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         public PageData<UserOutputDto2> Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
-            var page = _userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
+            Expression<Func<User, bool>> predicate = FilterService.GetExpression<User>(request.FilterGroup);
+            UserManager<User> userManager = _provider.GetRequiredService<UserManager<User>>();
+            var page = userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
 
@@ -76,22 +71,23 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
 
-            int[] moduleIds = _functionAuthManager.GetUserWithRoleModuleIds(userId);
-            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+            FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
+            int[] moduleIds = functionAuthManager.GetUserWithRoleModuleIds(userId);
+            Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
             if (functionIds.Length == 0)
             {
                 return new PageData<FunctionOutputDto2>();
             }
 
-            Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
 
-            PageResult<FunctionOutputDto2> page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+            PageResult<FunctionOutputDto2> page = functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
             return page.ToPageData();
         }
     }

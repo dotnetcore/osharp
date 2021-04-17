@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,14 +34,17 @@ namespace OSharp.Hosting.Apis.Controllers
     [ClassFilter]
     public class TestController : SiteApiControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly IIdentityContract _identityContract;
+        private readonly IServiceProvider _provider;
 
-        public TestController(UserManager<User> userManager, IIdentityContract identityContract)
+        public TestController(IServiceProvider provider)
+            : base(provider)
         {
-            _userManager = userManager;
-            _identityContract = identityContract;
+            _provider = provider;
         }
+
+        private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
+
+        private IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
 
         [HttpGet]
         [UnitOfWork]
@@ -50,7 +54,7 @@ namespace OSharp.Hosting.Apis.Controllers
         {
             List<object> list = new List<object>();
 
-            if (!_userManager.Users.Any())
+            if (!UserManager.Users.Any())
             {
                 RegisterDto dto = new RegisterDto
                 {
@@ -62,12 +66,12 @@ namespace OSharp.Hosting.Apis.Controllers
                     RegisterIp = HttpContext.GetClientIp()
                 };
 
-                OperationResult<User> result = await _identityContract.Register(dto);
+                OperationResult<User> result = await IdentityContract.Register(dto);
                 if (result.Succeeded)
                 {
                     User user = result.Data;
                     user.EmailConfirmed = true;
-                    await _userManager.UpdateAsync(user);
+                    await UserManager.UpdateAsync(user);
                 }
                 list.Add(result.Message);
 
@@ -79,12 +83,12 @@ namespace OSharp.Hosting.Apis.Controllers
                     NickName = "测试号",
                     RegisterIp = HttpContext.GetClientIp()
                 };
-                result = await _identityContract.Register(dto);
+                result = await IdentityContract.Register(dto);
                 if (result.Succeeded)
                 {
                     User user = result.Data;
                     user.EmailConfirmed = true;
-                    await _userManager.UpdateAsync(user);
+                    await UserManager.UpdateAsync(user);
                 }
                 list.Add(result.Message);
             }

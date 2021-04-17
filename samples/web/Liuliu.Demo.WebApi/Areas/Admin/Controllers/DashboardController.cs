@@ -14,12 +14,12 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
-using OSharp.Caching;
 using OSharp.Entity;
 using OSharp.Hosting.Apis.Areas.Admin.Controllers;
 using OSharp.Hosting.Authorization;
@@ -32,27 +32,23 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-信息汇总")]
     public class DashboardController : AdminApiControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly FunctionAuthManager _functionAuthorizationManager;
-        private readonly DataAuthManager _dataAuthorizationManager;
-        private readonly ICacheService _cacheService;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// 初始化一个<see cref="DashboardController"/>类型的新实例
         /// </summary>
-        public DashboardController(UserManager<User> userManager,
-            RoleManager<Role> roleManager,
-            FunctionAuthManager functionAuthorizationManager,
-            DataAuthManager dataAuthorizationManager,
-            ICacheService cacheService)
+        public DashboardController(IServiceProvider provider) : base(provider)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _functionAuthorizationManager = functionAuthorizationManager;
-            _dataAuthorizationManager = dataAuthorizationManager;
-            _cacheService = cacheService;
+            _provider = provider;
         }
+
+        private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
+
+        private RoleManager<Role> RoleManager => _provider.GetRequiredService<RoleManager<Role>>();
+
+        private FunctionAuthManager FunctionAuthManager => _provider.GetRequiredService<FunctionAuthManager>();
+
+        private DataAuthManager DataAuthManager => _provider.GetRequiredService<DataAuthManager>();
 
         /// <summary>
         /// 获取统计数据
@@ -69,7 +65,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
 
-            var users = _cacheService.ToCacheList(_userManager.Users.Where(userExp).GroupBy(m => 1).Select(g => new
+            var users = CacheService.ToCacheList(UserManager.Users.Where(userExp).GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 ValidCount = g.Sum(n => n.EmailConfirmed ? 1 : 0)
@@ -78,7 +74,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 "Dashboard_Summary_User",
                 start,
                 end).FirstOrDefault() ?? new { TotalCount = 0, ValidCount = 0 };
-            var roles = _cacheService.ToCacheList(_roleManager.Roles.GroupBy(m => 1).Select(g => new
+            var roles = CacheService.ToCacheList(RoleManager.Roles.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 AdminCount = g.Sum(n => n.IsAdmin ? 1 : 0)
@@ -87,7 +83,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 "Dashboard_Summary_Role",
                 start,
                 end).FirstOrDefault() ?? new { TotalCount = 0, AdminCount = 0 };
-            var modules = _cacheService.ToCacheList(_functionAuthorizationManager.Modules.GroupBy(m => 1).Select(g => new
+            var modules = CacheService.ToCacheList(FunctionAuthManager.Modules.GroupBy(m => 1).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 SiteCount = g.Sum(n => n.TreePathString.Contains("$2$") ? 1 : 0),
@@ -95,14 +91,14 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             }),
                 function,
                 "Dashboard_Summary_Module").FirstOrDefault() ?? new { TotalCount = 0, SiteCount = 0, AdminCount = 0 };
-            var functions = _cacheService.ToCacheList(_functionAuthorizationManager.Functions.GroupBy(m => m.Id).Select(g => new
+            var functions = CacheService.ToCacheList(FunctionAuthManager.Functions.GroupBy(m => m.Id).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 ControllerCount = g.Sum(m => m.IsController ? 1 : 0)
             }),
                 function,
                 "Dashboard_Summary_Function").FirstOrDefault() ?? new { TotalCount = 0, ControllerCount = 0 };
-            var entityInfos = _cacheService.ToCacheList(_dataAuthorizationManager.EntityInfos.GroupBy(m => m.Id).Select(g => new
+            var entityInfos = CacheService.ToCacheList(DataAuthManager.EntityInfos.GroupBy(m => m.Id).Select(g => new
             {
                 TotalCount = g.Sum(n => 1),
                 AuditCount = g.Sum(m => m.AuditEnabled ? 1 : 0)
@@ -123,7 +119,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> userExp = GetExpression<User>(start, end);
 
-            var userData = _cacheService.ToCacheList(_userManager.Users.Where(userExp).GroupBy(m => m.CreatedTime.Date).Select(g => new
+            var userData = CacheService.ToCacheList(UserManager.Users.Where(userExp).GroupBy(m => m.CreatedTime.Date).Select(g => new
             {
                 Date = g.Key,
                 DailyCount = g.Count()

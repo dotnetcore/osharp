@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
@@ -30,15 +31,18 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-系统设置")]
     public class SettingsController : AdminApiControllerBase
     {
-        private readonly IKeyValueStore _keyValueStore;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// 初始化一个<see cref="SettingsController"/>类型的新实例
         /// </summary>
-        public SettingsController(IKeyValueStore keyValueStore)
+        public SettingsController(IServiceProvider provider)
+            : base(provider)
         {
-            _keyValueStore = keyValueStore;
+            _provider = provider;
         }
+
+        private IKeyValueStore KeyValueStore => _provider.GetRequiredService<IKeyValueStore>();
 
         /// <summary>
         /// 读取设置
@@ -54,7 +58,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             switch (root)
             {
                 case "System":
-                    setting = _keyValueStore.GetSetting<SystemSetting>();
+                    setting = KeyValueStore.GetSetting<SystemSetting>();
                     break;
                 default:
                     throw new OsharpException($"未知的设置根节点: {root}");
@@ -82,7 +86,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 return new AjaxResult($"设置类型\"{dto.SettingTypeName}\"无法找到");
             }
             ISetting setting = JsonConvert.DeserializeObject(dto.SettingJson, type) as ISetting;
-            OperationResult result = await _keyValueStore.SaveSetting(setting);
+            OperationResult result = await KeyValueStore.SaveSetting(setting);
             if (result.Succeeded)
             {
                 return new AjaxResult("设置保存成功");

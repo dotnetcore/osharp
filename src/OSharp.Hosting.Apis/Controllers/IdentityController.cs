@@ -38,21 +38,21 @@ namespace OSharp.Hosting.Apis.Controllers
     [ModuleInfo(Order = 1)]
     public class IdentityController : SiteApiControllerBase
     {
-        private readonly IIdentityContract _identityContract;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IVerifyCodeService _verifyCodeService;
+        private readonly IServiceProvider _provider;
 
-        public IdentityController(IIdentityContract identityContract,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            IVerifyCodeService verifyCodeService)
+        public IdentityController(IServiceProvider provider)
+            : base(provider)
         {
-            _identityContract = identityContract;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _verifyCodeService = verifyCodeService;
+            _provider = provider;
         }
+
+        private IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
+
+        private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
+
+        private SignInManager<User> SignInManager => _provider.GetRequiredService<SignInManager<User>>();
+
+        private IVerifyCodeService VerifyCodeService => _provider.GetRequiredService<IVerifyCodeService>();
 
         /// <summary>
         /// 用户名是否存在
@@ -63,7 +63,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("用户名是否存在")]
         public bool CheckUserNameExists(string userName)
         {
-            bool exists = _userManager.Users.Any(m => m.NormalizedUserName == _userManager.NormalizeName(userName));
+            bool exists = UserManager.Users.Any(m => m.NormalizedUserName == UserManager.NormalizeName(userName));
             return exists;
         }
 
@@ -76,7 +76,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("用户Email是否存在")]
         public bool CheckEmailExists(string email)
         {
-            bool exists = _userManager.Users.Any(m => m.NormalizeEmail == _userManager.NormalizeEmail(email));
+            bool exists = UserManager.Users.Any(m => m.NormalizeEmail == UserManager.NormalizeEmail(email));
             return exists;
         }
 
@@ -90,13 +90,13 @@ namespace OSharp.Hosting.Apis.Controllers
         public async Task<bool> CheckNickNameExists(string nickName)
         {
             IUserValidator<User> nickNameValidator =
-                _userManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, int>));
+                UserManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, int>));
             if (nickNameValidator == null)
             {
                 return false;
             }
 
-            IdentityResult result = await nickNameValidator.ValidateAsync(_userManager, new User() { NickName = nickName });
+            IdentityResult result = await nickNameValidator.ValidateAsync(UserManager, new User() { NickName = nickName });
             return !result.Succeeded;
         }
 
@@ -120,7 +120,7 @@ namespace OSharp.Hosting.Apis.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
@@ -129,12 +129,12 @@ namespace OSharp.Hosting.Apis.Controllers
             dto.NickName = $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
             dto.RegisterIp = HttpContext.GetClientIp();
 
-            OperationResult<User> result = await _identityContract.Register(dto);
+            OperationResult<User> result = await IdentityContract.Register(dto);
 
             if (result.Succeeded)
             {
                 User user = result.Data;
-                string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                 code = UrlBase64ReplaceChar(code);
                 string url = $"{Request.Scheme}://{Request.Host}/#/passport/confirm-email?userId={user.Id}&code={code}";
                 string body =
@@ -177,7 +177,7 @@ namespace OSharp.Hosting.Apis.Controllers
                 };
 
                 IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
-                OperationResult<User> result = await _identityContract.Login(loginDto);
+                OperationResult<User> result = await IdentityContract.Login(loginDto);
 #if NET5_0
                 await unitOfWork.CommitAsync();
 #else
@@ -220,7 +220,7 @@ namespace OSharp.Hosting.Apis.Controllers
             dto.UserAgent = Request.Headers["User-Agent"].FirstOrDefault();
 
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
-            OperationResult<User> result = await _identityContract.Login(dto);
+            OperationResult<User> result = await IdentityContract.Login(dto);
 #if NET5_0
                 await unitOfWork.CommitAsync();
 #else
@@ -233,7 +233,7 @@ namespace OSharp.Hosting.Apis.Controllers
             }
 
             User user = result.Data;
-            await _signInManager.SignInAsync(user, dto.Remember);
+            await SignInManager.SignInAsync(user, dto.Remember);
             return new AjaxResult("登录成功");
         }
 
@@ -255,7 +255,7 @@ namespace OSharp.Hosting.Apis.Controllers
             int userId = User.Identity.GetUserId<int>();
             bool isToken = Request.Headers["Authorization"].Any(m => m.StartsWith("Bearer"));
 
-            OperationResult result = await _identityContract.Logout(userId, isToken);
+            OperationResult result = await IdentityContract.Logout(userId, isToken);
             return result.ToAjaxResult();
         }
 
@@ -300,7 +300,7 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("邮箱激活失败：参数不正确", AjaxResultType.Error);
             }
 
-            User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+            User user = await UserManager.FindByIdAsync(dto.UserId.ToString());
             if (user == null)
             {
                 return new AjaxResult("注册邮箱激活失败：用户不存在", AjaxResultType.Error);
@@ -312,7 +312,7 @@ namespace OSharp.Hosting.Apis.Controllers
             }
 
             string code = UrlBase64ReplaceChar(dto.Code);
-            IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
+            IdentityResult result = await UserManager.ConfirmEmailAsync(user, code);
             return result.ToOperationResult().ToAjaxResult();
         }
 
@@ -332,12 +332,12 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
 
-            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
 
-            User user = await _userManager.FindByEmailAsync(dto.Email);
+            User user = await UserManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
                 return new AjaxResult("发送激活邮件失败：用户不存在", AjaxResultType.Error);
@@ -348,7 +348,7 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("Email已激活，无需再次激活", AjaxResultType.Info);
             }
 
-            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
             code = UrlBase64ReplaceChar(code);
             string url = $"{Request.Scheme}://{Request.Host}/#/passport/confirm-email?userId={user.Id}&code={code}";
             string body =
@@ -376,15 +376,15 @@ namespace OSharp.Hosting.Apis.Controllers
             Check.NotNull(dto, nameof(dto));
 
             int userId = User.Identity.GetUserId<int>();
-            User user = await _userManager.FindByIdAsync(userId.ToString());
+            User user = await UserManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return new AjaxResult($"用户不存在", AjaxResultType.Error);
             }
 
             IdentityResult result = string.IsNullOrEmpty(dto.OldPassword)
-                ? await _userManager.AddPasswordAsync(user, dto.NewPassword)
-                : await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+                ? await UserManager.AddPasswordAsync(user, dto.NewPassword)
+                : await UserManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
             return result.ToOperationResult().ToAjaxResult();
         }
 
@@ -404,18 +404,18 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
 
-            if (!_verifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
 
-            User user = await _userManager.FindByEmailAsync(dto.Email);
+            User user = await UserManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
                 return new AjaxResult("用户不存在", AjaxResultType.Error);
             }
 
-            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string token = await UserManager.GeneratePasswordResetTokenAsync(user);
             token = UrlBase64ReplaceChar(token);
             IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
             string url = $"{Request.Scheme}://{Request.Host}/#/passport/reset-password?userId={user.Id}&token={token}";
@@ -441,14 +441,14 @@ namespace OSharp.Hosting.Apis.Controllers
         {
             Check.NotNull(dto, nameof(dto));
 
-            User user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+            User user = await UserManager.FindByIdAsync(dto.UserId.ToString());
             if (user == null)
             {
                 return new AjaxResult($"用户不存在", AjaxResultType.Error);
             }
 
             string token = UrlBase64ReplaceChar(dto.Token);
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, dto.NewPassword);
+            IdentityResult result = await UserManager.ResetPasswordAsync(user, token, dto.NewPassword);
 
             return result.ToOperationResult().ToAjaxResult();
         }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DataAuthorizationManager.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -31,15 +31,8 @@ namespace Liuliu.Demo.Authorization
         /// <summary>
         /// 初始化一个 SecurityManager 类型的新实例
         /// </summary>
-        /// <param name="eventBus">事件总线</param>
-        /// <param name="entityInfoRepository">实体仓储</param>
-        /// <param name="entityRoleRepository">实体角色仓储</param>
-        /// <param name="roleRepository">角色仓储</param>
-        public DataAuthManager(IEventBus eventBus,
-            IRepository<EntityInfo, Guid> entityInfoRepository,
-            IRepository<EntityRole, Guid> entityRoleRepository,
-            IRepository<Role, int> roleRepository)
-            : base(eventBus, entityInfoRepository, entityRoleRepository, roleRepository)
+        public DataAuthManager(IServiceProvider provider)
+            : base(provider)
         { }
     }
 }

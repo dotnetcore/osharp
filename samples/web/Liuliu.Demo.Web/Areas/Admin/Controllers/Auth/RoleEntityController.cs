@@ -37,15 +37,18 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
     [Description("管理-角色数据权限")]
     public class RoleEntityController : AdminApiController
     {
-        private readonly DataAuthManager _dataAuthManager;
-        private readonly IFilterService _filterService;
+        private readonly IServiceProvider _provider;
 
-        public RoleEntityController(DataAuthManager dataAuthManager,
-            IFilterService filterService)
+        public RoleEntityController(IServiceProvider provider)
         {
-            _dataAuthManager = dataAuthManager;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        protected IFilterService FilterService => _provider.GetService<IFilterService>();
+
+        protected IDataAuthService DataAuthService => _provider.GetService<IDataAuthService>();
+
+        protected DataAuthManager DataAuthManager => _provider.GetService<DataAuthManager>();
 
         /// <summary>
         /// 读取角色数据权限列表信息
@@ -58,7 +61,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<EntityRoleOutputDto> Read(PageRequest request)
         {
-            Expression<Func<EntityRole, bool>> predicate = _filterService.GetExpression<EntityRole>(request.FilterGroup);
+            Expression<Func<EntityRole, bool>> predicate = FilterService.GetExpression<EntityRole>(request.FilterGroup);
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[]
@@ -69,9 +72,9 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 };
             }
             RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
-            Func<EntityRole, bool> updateFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
-            Func<EntityRole, bool> deleteFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
-            var page = _dataAuthManager.EntityRoles.ToPage(predicate,
+            Func<EntityRole, bool> updateFunc = DataAuthService.GetDataFilter<EntityRole>(DataAuthOperation.Update).Compile();
+            Func<EntityRole, bool> deleteFunc = DataAuthService.GetDataFilter<EntityRole>(DataAuthOperation.Delete).Compile();
+            var page = DataAuthManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
                 m => new
                 {
@@ -106,7 +109,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(dtos, nameof(dtos));
             
-            OperationResult result = await _dataAuthManager.CreateEntityRoles(dtos);
+            OperationResult result = await DataAuthManager.CreateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
 
@@ -125,7 +128,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            OperationResult result = await _dataAuthManager.UpdateEntityRoles(dtos);
+            OperationResult result = await DataAuthManager.UpdateEntityRoles(dtos);
             return result.ToAjaxResult();
         }
 
@@ -143,7 +146,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         {
             Check.NotNull(ids, nameof(ids));
             
-            OperationResult result = await _dataAuthManager.DeleteEntityRoles(ids);
+            OperationResult result = await DataAuthManager.DeleteEntityRoles(ids);
             return result.ToAjaxResult();
         }
     }

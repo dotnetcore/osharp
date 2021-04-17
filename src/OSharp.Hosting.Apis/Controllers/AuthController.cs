@@ -28,6 +28,17 @@ namespace OSharp.Hosting.Apis.Controllers
     [ModuleInfo(Order = 2)]
     public class AuthController : SiteApiControllerBase
     {
+        private readonly IServiceProvider _provider;
+
+        /// <summary>
+        /// 初始化一个<see cref="SiteApiControllerBase"/>类型的新实例
+        /// </summary>
+        public AuthController(IServiceProvider provider)
+            : base(provider)
+        {
+            _provider = provider;
+        }
+
         /// <summary>
         /// 检查URL授权
         /// </summary>
@@ -55,9 +66,8 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("获取授权信息")]
         public string[] GetAuthInfo()
         {
-            IServiceProvider provider = HttpContext.RequestServices;
-            IModuleHandler moduleHandler = provider.GetRequiredService<IModuleHandler>();
-            IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
+            IModuleHandler moduleHandler = _provider.GetRequiredService<IModuleHandler>();
+            IFunctionAuthorization functionAuthorization = _provider.GetService<IFunctionAuthorization>();
             ModuleInfo[] moduleInfos = moduleHandler.ModuleInfos;
             
             //先查找出所有有权限的模块
@@ -84,5 +94,6 @@ namespace OSharp.Hosting.Apis.Controllers
             }
             return codes.ToArray();
         }
+
     }
 }
