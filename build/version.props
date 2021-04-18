@@ -3,10 +3,11 @@
     <VersionMain>5.0</VersionMain>
     <VersionPrefix>5</VersionPrefix>
     <VersionSuffix>-preview.</VersionSuffix>
-    <VersionSuffixVersion>418</VersionSuffixVersion>
+    <VersionSuffixVersion>418.2</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
-    <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
+    <!--<FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>-->
+    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>
   </PropertyGroup>
 </Project>

@@ -106,9 +106,9 @@ namespace OSharp.Core.Systems
             {
                 return default(T);
             }
-            if (value is T)
+            if (value is T val)
             {
-                return (T)value;
+                return val;
             }
             try
             {
