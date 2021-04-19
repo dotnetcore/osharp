@@ -63,7 +63,7 @@ namespace OSharp.Core.Systems
             foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(IKeyValue)))
             {
                 string key = ((KeyValue)property.GetValue(setting)).Key;
-                IKeyValue keyValue = GetKeyValue(key);
+                IKeyValue keyValue = GetByKey(key);
                 if (keyValue != null)
                 {
                     property.SetValue(setting, keyValue);
@@ -83,7 +83,18 @@ namespace OSharp.Core.Systems
             Type type = setting.GetType();
             IKeyValue[] keyValues = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.PropertyType == typeof(IKeyValue))
                 .Select(p => (IKeyValue)p.GetValue(setting)).ToArray();
-            return await CreateOrUpdateKeyValues(keyValues);
+            return await CreateOrUpdate(keyValues);
+        }
+
+        /// <summary>
+        /// 获取指定根节点的数据项，如输入“System.User.”，则查找所有键以此开头的项
+        /// </summary>
+        /// <param name="rootKey">根键路径</param>
+        /// <returns>多个数据项</returns>
+        public IKeyValue[] GetByRootKey(string rootKey)
+        {
+            string[] keys = GetKeys(rootKey);
+            return keys.Select(key => GetByKey(key)).Where(value => value != null).ToArray();
         }
 
         /// <summary>
@@ -91,7 +102,7 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="key">键名</param>
         /// <returns>数据项</returns>
-        public IKeyValue GetKeyValue(string key)
+        public IKeyValue GetByKey(string key)
         {
             Check.NotNullOrEmpty(key, nameof(key));
             
@@ -108,7 +119,7 @@ namespace OSharp.Core.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的键值对信息编号</param>
         /// <returns>键值对信息是否存在</returns>
-        public Task<bool> CheckKeyValueExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid))
+        public Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid))
         {
             return KeyValueRepository.CheckExistsAsync(predicate, id);
         }
@@ -119,12 +130,12 @@ namespace OSharp.Core.Systems
         /// <param name="key">键</param>
         /// <param name="value">值</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> CreateOrUpdateKeyValue(string key, object value)
+        public Task<OperationResult> CreateOrUpdate(string key, object value)
         {
             Check.NotNullOrEmpty(key, nameof(key));
 
             IKeyValue pair = new KeyValue(key, value);
-            return CreateOrUpdateKeyValues(pair);
+            return CreateOrUpdate(pair);
         }
 
         /// <summary>
@@ -132,7 +143,7 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> CreateOrUpdateKeyValues(params IKeyValue[] dtos)
+        public async Task<OperationResult> CreateOrUpdate(params IKeyValue[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
             if (dtos.Length == 0)
@@ -176,7 +187,7 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="ids">要删除的键值对信息编号</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> DeleteKeyValues(params Guid[] ids)
+        public async Task<OperationResult> Delete(params Guid[] ids)
         {
             Check.NotNull(ids, nameof(ids));
 
@@ -212,12 +223,19 @@ namespace OSharp.Core.Systems
         /// </summary>
         /// <param name="rootKey">根键路径</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> DeleteKeyValues(string rootKey)
+        public async Task<OperationResult> DeleteByRootKey(string rootKey)
         {
             Guid[] ids = KeyValueRepository.QueryAsNoTracking(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
-            return await DeleteKeyValues(ids);
+            return await Delete(ids);
         }
-        
+
+        private string[] GetKeys(string rootKey)
+        {
+            string[] keys = KeyValueRepository.QueryAsNoTracking(m => m.Key.StartsWith(rootKey))
+                .Select(m => m.Key).Distinct().OrderBy(m => m).ToArray();
+            return keys;
+        }
+
         private static string GetCacheKey(string key)
         {
             return $"Systems:KeyValues:{key}";
