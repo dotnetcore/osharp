@@ -248,7 +248,31 @@ namespace OSharp.Caching
             }
             return cache.GetAsync<TResult>(key, getAsyncFunc, options);
         }
-        
+
+        /// <summary>
+        /// 移除指定键的缓存项
+        /// </summary>
+        public static void Remove(this IDistributedCache cache, params string[] keys)
+        {
+            Check.NotNull(keys, nameof(keys));
+            foreach (string key in keys)
+            {
+                cache.Remove(key);
+            }
+        }
+
+        /// <summary>
+        /// 移除指定键的缓存项
+        /// </summary>
+        public static async Task RemoveAsync(this IDistributedCache cache, params string[] keys)
+        {
+            Check.NotNull(keys, nameof(keys));
+            foreach (string key in keys)
+            {
+                await cache.RemoveAsync(key);
+            }
+        }
+
         /// <summary>
         /// 将<see cref="IFunction"/>的缓存配置转换为<see cref="DistributedCacheEntryOptions"/>
         /// </summary>
