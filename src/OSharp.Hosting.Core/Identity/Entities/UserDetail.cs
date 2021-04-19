@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Entity;
 
@@ -24,7 +25,7 @@ namespace OSharp.Hosting.Identity.Entities
         /// <summary>
         /// 获取或设置 注册IP
         /// </summary>
-        [DisplayName("注册IP")]
+        [DisplayName("注册IP"), StringLength(50)]
         public string RegisterIp { get; set; }
 
         /// <summary>

@@ -69,13 +69,13 @@ namespace OSharp.Hosting.Systems.Entities
         /// <summary>
         /// 获取或设置 菜单数据
         /// </summary>
-        [DisplayName("菜单数据"), StringLength(1000)]
+        [DisplayName("菜单数据"), StringLength(2000)]
         public string Data { get; set; }
 
         /// <summary>
         /// 获取或设置 父节点树形路径
         /// </summary>
-        [DisplayName("父节点树形路径"), StringLength(1000)]
+        [DisplayName("父节点树形路径"), StringLength(3000)]
         public string TreePathString { get; set; }
 
         /// <summary>

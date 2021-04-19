@@ -36,26 +36,25 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 角色名称
         /// </summary>
-        [Required, DisplayName("角色名称")]
+        [Required, DisplayName("角色名称"), StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化角色名称
         /// </summary>
-        [Required, DisplayName("标准化角色名称"), AuditIgnore]
+        [Required, DisplayName("标准化角色名称"), StringLength(200), AuditIgnore]
         public string NormalizedName { get; set; }
 
         /// <summary>
         /// 获取或设置 一个随机值，每当某个角色被保存到存储区时，该值将发生变化。
         /// </summary>
-        [DisplayName("版本标识"), AuditIgnore]
+        [DisplayName("版本标识"), StringLength(200), AuditIgnore]
         public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
         /// 获取或设置 角色描述
         /// </summary>
-        [StringLength(512)]
-        [DisplayName("角色描述")]
+        [DisplayName("角色描述"), StringLength(500)]
         public string Remark { get; set; }
 
         /// <summary>

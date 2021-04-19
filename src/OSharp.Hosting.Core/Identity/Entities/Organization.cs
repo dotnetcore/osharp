@@ -25,13 +25,13 @@ namespace OSharp.Hosting.Identity.Entities
         /// <summary>
         /// 获取或设置 名称
         /// </summary>
-        [Required, DisplayName("名称")]
+        [Required, DisplayName("名称"), StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 描述
         /// </summary>
-        [DisplayName("描述")]
+        [DisplayName("描述"), StringLength(500)]
         public string Remark { get; set; }
 
         /// <summary>

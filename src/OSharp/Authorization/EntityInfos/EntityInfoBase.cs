@@ -33,13 +33,13 @@ namespace OSharp.Authorization.EntityInfos
         /// <summary>
         /// 获取或设置 实体名称
         /// </summary>
-        [Required, DisplayName("实体名称")]
+        [DisplayName("实体名称"), Required, StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 实体类型名称
         /// </summary>
-        [Required, DisplayName("实体类型名称")]
+        [DisplayName("实体类型名称"), Required, StringLength(500)]
         public string TypeName { get; set; }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace OSharp.Authorization.EntityInfos
         /// <summary>
         /// 获取或设置 实体属性信息JSON字符串
         /// </summary>
-        [Required, DisplayName("实体属性信息Json字符串")]
+        [DisplayName("实体属性信息Json字符串"), Required, StringLength(5000)]
         public string PropertyJson { get; set; }
 
         /// <summary>

@@ -18,12 +18,27 @@ namespace OSharp.Core.Data
         /// 获取或设置 数据键
         /// </summary>
         string Key { get; set; }
-
+        
         /// <summary>
         /// 获取或设置 数据值
         /// </summary>
         object Value { get; set; }
 
+        /// <summary>
+        /// 获取 显示
+        /// </summary>
+        string Display { get; set; }
+
+        /// <summary>
+        /// 获取或设置 备注
+        /// </summary>
+        string Remark { get; set; }
+
+        /// <summary>
+        /// 获取或设置 顺序号
+        /// </summary>
+        int Order { get; set; }
+        
         /// <summary>
         /// 获取强类型数据值
         /// </summary>

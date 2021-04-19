@@ -45,6 +45,12 @@ namespace OSharp.Core.Systems
         }
 
         /// <summary>
+        /// 获取或设置 数据键名
+        /// </summary>
+        [Required, DisplayName("数据键名"), StringLength(2000)]
+        public string Key { get; set; }
+
+        /// <summary>
         /// 获取或设置 数据值JSON字符串
         /// </summary>
         [DisplayName("数据值JSON")]
@@ -53,15 +59,8 @@ namespace OSharp.Core.Systems
         /// <summary>
         /// 获取或设置 数据值类型
         /// </summary>
-        [DisplayName("数据值类型名")]
+        [DisplayName("数据值类型名"), StringLength(1000)]
         public string ValueType { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据键名
-        /// </summary>
-        [Required]
-        [DisplayName("数据键名")]
-        public string Key { get; set; }
 
         /// <summary>
         /// 获取或设置 数据值
@@ -89,6 +88,23 @@ namespace OSharp.Core.Systems
                 ValueJson = value?.ToJsonString();
             }
         }
+
+        /// <summary>
+        /// 获取 显示名称
+        /// </summary>
+        [DisplayName("显示名称"), StringLength(100)]
+        public string Display { get; set; }
+
+        /// <summary>
+        /// 获取或设置 备注
+        /// </summary>
+        [DisplayName("显示名称"), StringLength(1000)]
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 获取或设置 顺序号
+        /// </summary>
+        public int Order { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定

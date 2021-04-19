@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Audits;
 using OSharp.Data;
@@ -30,41 +31,49 @@ namespace OSharp.Hosting.Systems.Entities
         /// <summary>
         /// 获取或设置 执行的功能名
         /// </summary>
+        [DisplayName("执行的功能名"), Required, StringLength(200)]
         public string FunctionName { get; set; }
 
         /// <summary>
         /// 获取或设置 当前用户标识
         /// </summary>
+        [DisplayName("当前用户标识"), StringLength(100)]
         public string UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 当前用户名
         /// </summary>
+        [DisplayName("当前用户名"), StringLength(300)]
         public string UserName { get; set; }
 
         /// <summary>
         /// 获取或设置 当前用户昵称
         /// </summary>
+        [DisplayName("当前用户昵称"), StringLength(300)]
         public string NickName { get; set; }
 
         /// <summary>
         /// 获取或设置 当前访问IP
         /// </summary>
+        [DisplayName("当前访问IP"), StringLength(50)]
         public string Ip { get; set; }
 
         /// <summary>
         /// 获取或设置 操作系统
         /// </summary>
+        [DisplayName("操作系统"), StringLength(300)]
         public string OperationSystem { get; set; }
 
         /// <summary>
         /// 获取或设置 浏览器
         /// </summary>
+        [DisplayName("浏览器"), StringLength(200)]
         public string Browser { get; set; }
 
         /// <summary>
         /// 获取或设置 当前访问UserAgent
         /// </summary>
+        [DisplayName("UserAgent"), StringLength(500)]
         public string UserAgent { get; set; }
 
         /// <summary>
@@ -75,6 +84,7 @@ namespace OSharp.Hosting.Systems.Entities
         /// <summary>
         /// 获取或设置 消息
         /// </summary>
+        [DisplayName("消息"), StringLength(1000)]
         public string Message { get; set; }
 
         /// <summary>

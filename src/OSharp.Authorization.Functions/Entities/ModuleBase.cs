@@ -29,20 +29,20 @@ namespace OSharp.Authorization.Entities
         /// <summary>
         /// 获取或设置 模块名称
         /// </summary>
-        [Required, DisplayName("模块名称")]
+        [Required, DisplayName("模块名称"), StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 备注
         /// </summary>
-        [DisplayName("模块描述")]
+        [DisplayName("模块描述"), StringLength(500)]
         public string Remark { get; set; }
 
         /// <summary>
         /// 获取或设置 模块代码
         /// </summary>
         [Required]
-        [DisplayName("模块代码")]
+        [DisplayName("模块代码"), StringLength(200)]
         public string Code { get; set; }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace OSharp.Authorization.Entities
         /// <summary>
         /// 获取或设置 父节点树形路径，父级树链Id根据一定格式构建的字符串，形如："$1$,$3$,$4$,$7$"，编辑时更新
         /// </summary>
-        [DisplayName("父节点树形路径")]
+        [DisplayName("父节点树形路径"), StringLength(2000)]
         public string TreePathString { get; set; }
 
         /// <summary>

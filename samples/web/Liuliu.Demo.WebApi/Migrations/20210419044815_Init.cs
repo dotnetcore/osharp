@@ -12,10 +12,10 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TypeName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     AuditEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    PropertyJson = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PropertyJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,10 +27,10 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Area = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Controller = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Action = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Area = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Controller = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     IsController = table.Column<bool>(type: "bit", nullable: false),
                     IsAjax = table.Column<bool>(type: "bit", nullable: false),
                     AccessType = table.Column<int>(type: "int", nullable: false),
@@ -53,11 +53,11 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Remark = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     OrderCode = table.Column<double>(type: "float", nullable: false),
-                    TreePathString = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TreePathString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -77,8 +77,8 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Remark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -97,16 +97,16 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FunctionName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OperationSystem = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Browser = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    NickName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    OperationSystem = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Browser = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ResultType = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Elapsed = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -120,9 +120,12 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ValueJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ValueType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    ValueJson = table.Column<string>(type: "text", nullable: true),
+                    ValueType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Display = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -143,8 +146,8 @@ namespace Liuliu.Demo.Web.Migrations
                     Target = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Acl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     OrderCode = table.Column<double>(type: "float", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    TreePathString = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Data = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    TreePathString = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true)
@@ -190,9 +193,9 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EntityKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OperateType = table.Column<int>(type: "int", nullable: false),
                     OperationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -212,11 +215,11 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OriginalValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NewValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     AuditEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -238,7 +241,7 @@ namespace Liuliu.Demo.Web.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Operation = table.Column<int>(type: "int", nullable: false),
-                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -260,7 +263,7 @@ namespace Liuliu.Demo.Web.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -321,8 +324,8 @@ namespace Liuliu.Demo.Web.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -350,8 +353,8 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Ip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
@@ -368,8 +371,8 @@ namespace Liuliu.Demo.Web.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -382,7 +385,7 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -395,10 +398,10 @@ namespace Liuliu.Demo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -413,9 +416,9 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -452,10 +455,10 @@ namespace Liuliu.Demo.Web.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NormalizedName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
@@ -480,19 +483,19 @@ namespace Liuliu.Demo.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Remark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizeEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NickName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HeadImg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    HeadImg = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -788,6 +791,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "IX_Systems_AuditProperty_AuditEntityId",
                 table: "Systems_AuditProperty",
                 column: "AuditEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "KeyIndex",
+                table: "Systems_KeyValue",
+                column: "Key",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Systems_Menu_ParentId",
