@@ -150,7 +150,7 @@ namespace OSharp.Authorization
             }
 
             // 有效期为 7 ± 1 天
-            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 2600, 24 * 3600);
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 3600, 24 * 3600);
             _cache.Set(key, roleNames, seconds);
             _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
 
@@ -190,7 +190,7 @@ namespace OSharp.Authorization
             });
 
             // 有效期为 7 ± 1 天
-            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 2600, 24 * 3600);
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 3600, 24 * 3600);
             _cache.Set(key, functionIds, seconds);
             _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
 

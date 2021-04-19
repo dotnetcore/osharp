@@ -38,7 +38,12 @@ namespace OSharp.Core.Data
         /// 获取或设置 顺序号
         /// </summary>
         int Order { get; set; }
-        
+
+        /// <summary>
+        /// 获取或设置 是否锁定
+        /// </summary>
+        bool IsLocked { get; set; }
+
         /// <summary>
         /// 获取强类型数据值
         /// </summary>
