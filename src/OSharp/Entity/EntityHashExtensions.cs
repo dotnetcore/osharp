@@ -32,6 +32,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 检查指定实体的Hash值，决定是否需要进行数据库同步
         /// </summary>
+        /// <returns>同步返回true，不同步返回false</returns>
         public static bool CheckSyncByHash(this IEnumerable<IEntityHash> entityHashes, IServiceProvider provider, ILogger logger)
         {
             IEntityHash[] hashes = entityHashes as IEntityHash[] ?? entityHashes.ToArray();

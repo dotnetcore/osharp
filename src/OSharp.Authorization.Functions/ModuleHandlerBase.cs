@@ -107,7 +107,7 @@ namespace OSharp.Authorization
 
             IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
 
-            if (!moduleInfos.CheckSyncByHash(provider, Logger))
+            if (!moduleInfos.CheckSyncByHash(provider, Logger) && moduleStore.Modules.Any())
             {
                 Logger.LogInformation("同步模块数据时，数据签名与上次相同，取消同步");
                 return;
