@@ -15,6 +15,7 @@ using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore.Cors;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.Threading;
@@ -51,14 +52,18 @@ namespace OSharp.AspNetCore.Mvc
             _corsInitializer = services.GetOrAddSingletonInstance(() => (ICorsInitializer)new DefaultCorsInitializer());
             _corsInitializer.AddCors(services);
 
+            OsharpOptions osharp = services.GetOsharpOptions();
             services.AddControllersWithViews()
                 .AddControllersAsServices()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    if (osharp.Mvc?.IsLowercaseJsonProperty == false)
+                    {
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    }
                 });
 
-            services.AddRouting(opts => opts.LowercaseUrls = true);
+            services.AddRouting(opts => opts.LowercaseUrls = osharp.Mvc?.IsLowercaseUrls ?? true);
             
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 

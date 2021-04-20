@@ -384,7 +384,7 @@ namespace OSharp.Extensions
             value.CheckNotNull("value");
             return new string(value.Reverse().ToArray());
         }
-
+        
         /// <summary>
         /// 单词变成单数形式
         /// </summary>
@@ -830,7 +830,7 @@ namespace OSharp.Extensions
         /// <summary>
         /// 将驼峰字符串的第一个字符小写
         /// </summary>
-        public static string LowerFirstChar(this string str)
+        public static string ToLowerCase(this string str)
         {
             if (string.IsNullOrEmpty(str) || !char.IsUpper(str[0]))
             {
@@ -846,7 +846,7 @@ namespace OSharp.Extensions
         /// <summary>
         /// 将小驼峰字符串的第一个字符大写
         /// </summary>
-        public static string UpperFirstChar(this string str)
+        public static string ToUpperCase(this string str)
         {
             if (string.IsNullOrEmpty(str) || !char.IsLower(str[0]))
             {

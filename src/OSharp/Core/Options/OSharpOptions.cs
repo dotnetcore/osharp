@@ -55,6 +55,11 @@ namespace OSharp.Core.Options
         public CookieOptions Cookie { get; set; }
 
         /// <summary>
+        /// 获取或设置 Mvc选项
+        /// </summary>
+        public MvcOptions Mvc { get; set; }
+
+        /// <summary>
         /// 获取或设置 Cors选项
         /// </summary>
         public CorsOptions Cors { get; set; }

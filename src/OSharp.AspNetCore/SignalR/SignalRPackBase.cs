@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Serialization;
 
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 
 
@@ -84,8 +85,14 @@ namespace OSharp.AspNetCore.SignalR
         /// <returns></returns>
         protected virtual Action<ISignalRServerBuilder> GetSignalRServerBuildAction(IServiceCollection services)
         {
+            OsharpOptions osharp = services.GetOsharpOptions();
             return builder => builder.AddNewtonsoftJsonProtocol(options =>
-                options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver());
+            {
+                if (osharp.Mvc?.IsLowercaseJsonProperty == false)
+                {
+                    options.PayloadSerializerSettings.ContractResolver = new DefaultContractResolver();
+                }
+            });
         }
     }
 }

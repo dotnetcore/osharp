@@ -325,6 +325,10 @@ namespace OSharp.Filter
         private static LambdaExpression GetPropertyLambdaExpression(ParameterExpression param, FilterRule rule)
         {
             string[] propertyNames = rule.Field.Split('.');
+            if (rule.IsLowerCaseToUpperCase)
+            {
+                propertyNames = propertyNames.Select(m => m.ToUpperCase()).ToArray();
+            }
             Expression propertyAccess = param;
             Type type = param.Type;
             for (var index = 0; index < propertyNames.Length; index++)

@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using OSharp.Extensions;
+
+using System.Linq;
+
+using Shouldly;
 
 using Xunit;
 
@@ -176,7 +180,7 @@ namespace OSharp.Extensions.Tests
             value = "37132819810401653x";
             Assert.False(value.IsIdentityCardId());
         }
-        
+
         [Fact()]
         public void ToUnicodeStringTest()
         {
@@ -200,6 +204,44 @@ namespace OSharp.Extensions.Tests
             string url =
                 "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2cb8ad06a252b27c&redirect_uri=http%3A%2F%2Ftpkwx.tpk.com%2FAdmin%2FWeixin%2FWeixinAuthCallback.aspx&response_type=code&scope=snsapi_userinfo&state=1$promotion#wechat_redirect";
             Assert.True(url.IsUrl());
+        }
+
+        [Fact()]
+        public void ToLowerCaseTest()
+        {
+            string value = null;
+            value.ToLowerCase().ShouldBe(null);
+            value = string.Empty;
+            value.ToLowerCase().ShouldBe(string.Empty);
+            value = "123456";
+            value.ToLowerCase().ShouldBe(value);
+            value = "123Abc";
+            value.ToLowerCase().ShouldBe(value);
+            value = "abc123";
+            value.ToLowerCase().ShouldBe(value);
+            value = "Abc123";
+            value.ToLowerCase().ShouldBe("abc123");
+            value = "AbcEfg";
+            value.ToLowerCase().ShouldBe("abcEfg");
+        }
+
+        [Fact()]
+        public void ToUpperCaseTest()
+        {
+            string value = null;
+            value.ToUpperCase().ShouldBe(value);
+            value = string.Empty;
+            value.ToUpperCase().ShouldBe(value);
+            value = "123456";
+            value.ToUpperCase().ShouldBe(value);
+            value = "123Abc";
+            value.ToUpperCase().ShouldBe(value);
+            value = "Abc123";
+            value.ToUpperCase().ShouldBe(value);
+            value = "abc123";
+            value.ToUpperCase().ShouldBe("Abc123");
+            value = "abcEfg";
+            value.ToUpperCase().ShouldBe("AbcEfg");
         }
     }
 }
