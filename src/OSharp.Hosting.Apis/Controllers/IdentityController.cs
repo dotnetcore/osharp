@@ -281,6 +281,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(User.Identity.Name);
             onlineUser.RefreshTokens.Clear();
+            onlineUser.ExtendData.Clear();
             return onlineUser;
         }
 
