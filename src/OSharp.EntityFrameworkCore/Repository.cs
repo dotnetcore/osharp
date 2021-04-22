@@ -888,7 +888,7 @@ namespace OSharp.Entity
         /// <param name="entities">要验证的实体对象</param>
         private void CheckDataAuth(DataAuthOperation operation, params TEntity[] entities)
         {
-            if (entities.Length == 0)
+            if (entities.Length == 0 || _dataAuthService == null)
             {
                 return;
             }
