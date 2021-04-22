@@ -3,7 +3,7 @@
     <VersionMain>5.0</VersionMain>
     <VersionPrefix>5</VersionPrefix>
     <VersionSuffix>-preview.</VersionSuffix>
-    <VersionSuffixVersion>418.2</VersionSuffixVersion>
+    <VersionSuffixVersion>422.1</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
     <AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>
