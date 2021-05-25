@@ -30,6 +30,7 @@ namespace OSharp.Hosting.Apis.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
+    //[ApiExplorerSettings(GroupName = "buss")]
     public class CommonController : SiteApiControllerBase
     {
         private readonly IServiceProvider _provider;

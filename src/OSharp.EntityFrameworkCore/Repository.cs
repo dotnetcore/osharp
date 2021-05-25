@@ -853,7 +853,7 @@ namespace OSharp.Entity
                 return;
             }
             //雪花long
-            if (keyType == typeof(long) && entity.Id.Equals(0))
+            if (keyType == typeof(long) && entity.Id.Equals(default(long)))
             {
                 IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
                 entity.Id = generator.Create().CastTo<TKey>();
