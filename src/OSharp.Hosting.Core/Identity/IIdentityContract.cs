@@ -114,8 +114,7 @@ namespace OSharp.Hosting.Identity
         Task<OperationResult> DeleteLoginLogs(params Guid[] ids);
 
         #endregion
-
-
+        
         #region 身份认证
 
         /// <summary>

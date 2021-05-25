@@ -11,6 +11,11 @@
     <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Liuliu.Demo.WebApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
