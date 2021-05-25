@@ -83,7 +83,7 @@ namespace OSharp.Filter
         /// <summary>
         /// 获取或设置 是否将属性名称驼峰(lowerCase)写法转换为帕斯卡(UpperCase)写法
         /// </summary>
-        public bool IsLowerCaseToUpperCase { get; set; }
+        public bool IsLowerCaseToUpperCase { get; set; } = true;
 
         #endregion
 
