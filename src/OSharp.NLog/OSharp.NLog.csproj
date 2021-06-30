@@ -11,11 +11,6 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.NLog.xml</DocumentationFile>
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.7.9" />
   </ItemGroup>

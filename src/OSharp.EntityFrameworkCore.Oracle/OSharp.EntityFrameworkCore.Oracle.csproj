@@ -11,11 +11,6 @@
     <RootNamespace>OSharp.Entity.Oracle</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.EntityFrameworkCore.Oracle.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.110" />
   </ItemGroup>

@@ -11,11 +11,6 @@
     <RootNamespace>OSharp.Hosting</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\OSharp.Hosting.Core.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />

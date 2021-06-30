@@ -10,16 +10,7 @@
     <Summary>OSharp核心组件</Summary>
     <RootNamespace>OSharp</RootNamespace>
     <AssemblyName>OSharp</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\OSharp.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -12,11 +12,6 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\OSharp.Hosting.Apis.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Hosting.EntityConfiguration\OSharp.Hosting.EntityConfiguration.csproj" />
   </ItemGroup>

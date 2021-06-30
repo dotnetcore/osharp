@@ -11,11 +11,6 @@
     <RootNamespace>OSharp.Entity.MySql</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.EntityFrameworkCore.MySql.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[3.2.4, 4.0.0)" />
   </ItemGroup>

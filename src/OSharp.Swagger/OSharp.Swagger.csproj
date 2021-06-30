@@ -10,11 +10,6 @@
     <Description>OSharp Swagger 客户端组件，封装基于Redis客户端实现</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\OSharp.Swagger.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="index.html" />
   </ItemGroup>
