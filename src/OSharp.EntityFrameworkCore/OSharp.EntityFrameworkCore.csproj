@@ -15,14 +15,14 @@
     <PackageReference Include="Dapper" Version="2.0.78" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.14,4.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.14,4.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.1.30,5.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.19,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.19,4.0.0)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.2.13,5.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.5" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.1.30" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.2.13" />
   </ItemGroup>
 
   <ItemGroup>
