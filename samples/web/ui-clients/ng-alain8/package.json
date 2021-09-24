@@ -104,7 +104,7 @@
     "ng-alain-codelyzer": "^0.0.1",
     "prettier": "^1.18.2",
     "prettier-stylelint": "^0.4.2",
-    "protractor": "~5.4.0",
+    "protractor": "5.4.4",
     "stylelint": "^10.1.0",
     "stylelint-config-prettier": "^5.2.0",
     "stylelint-config-rational-order": "^0.1.2",
