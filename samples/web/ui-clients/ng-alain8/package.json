@@ -59,7 +59,7 @@
     "@delon/auth": "^8.9.0",
     "@delon/cache": "^8.9.0",
     "@delon/chart": "^8.9.0",
-    "@delon/form": "^8.9.0",
+    "@delon/form": "8.9.3",
     "@delon/mock": "^8.9.0",
     "@delon/theme": "^8.9.0",
     "@delon/util": "^8.9.0",
