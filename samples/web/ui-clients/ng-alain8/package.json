@@ -65,7 +65,7 @@
     "@delon/util": "^8.9.0",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
-    "ajv": "^6.10.2",
+    "ajv": "6.12.6",
     "heartbeats": "^5.0.1",
     "jquery": "^3.4.1",
     "linqts": "^1.12.6",
