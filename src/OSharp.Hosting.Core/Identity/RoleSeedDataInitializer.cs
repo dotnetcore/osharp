@@ -67,6 +67,8 @@ namespace OSharp.Hosting.Identity
             {
                 return;
             }
+
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
             RoleManager<Role> roleManager = provider.GetService<RoleManager<Role>>();
             foreach (Role role in entities)
             {
@@ -80,6 +82,8 @@ namespace OSharp.Hosting.Identity
                     throw new OsharpException($"进行角色种子数据“{role.Name}”同步时出错：{result.ErrorMessage()}");
                 }
             }
+
+            unitOfWork.Commit();
         }
     }
 }

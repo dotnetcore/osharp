@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Audits;
 using OSharp.Entity;
@@ -28,26 +29,31 @@ namespace OSharp.Hosting.Systems.Entities
         /// <summary>
         /// 获取或设置 名称
         /// </summary>
+        [DisplayName("名称"), StringLength(200)]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// 获取或设置 字段
         /// </summary>
+        [DisplayName("字段"), StringLength(200)]
         public string FieldName { get; set; }
 
         /// <summary>
         /// 获取或设置 旧值
         /// </summary>
+        [DisplayName("旧值"), StringLength(5000)]
         public string OriginalValue { get; set; }
 
         /// <summary>
         /// 获取或设置 新值
         /// </summary>
+        [DisplayName("新值"), StringLength(5000)]
         public string NewValue { get; set; }
 
         /// <summary>
         /// 获取或设置 数据类型
         /// </summary>
+        [DisplayName("数据类型"), StringLength(200)]
         public string DataType { get; set; }
 
         /// <summary>

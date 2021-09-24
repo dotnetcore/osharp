@@ -145,7 +145,7 @@ namespace OSharp.Authorization.EntityInfos
             IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
 
             //检查指定实体的Hash值，决定是否需要进行数据库同步
-            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger))
+            if (!entityInfos.CheckSyncByHash(scopedProvider, _logger) && repository.QueryAsNoTracking().Any())
             {
                 _logger.LogInformation("同步实体数据时，数据签名与上次相同，取消同步");
                 return;

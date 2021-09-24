@@ -21,6 +21,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -42,25 +43,20 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-站内信接收记录信息")]
     public abstract class MessageReceiveControllerBase : AdminApiControllerBase
     {
+        private readonly IServiceProvider _provider;
+
         /// <summary>
         /// 初始化一个<see cref="MessageReceiveController"/>类型的新实例
         /// </summary>
-        protected MessageReceiveControllerBase(IInfosContract infosContract,
-            IFilterService filterService)
+        protected MessageReceiveControllerBase(IServiceProvider provider) : base(provider)
         {
-            InfosContract = infosContract;
-            FilterService = filterService;
+            _provider = provider;
         }
-
-        /// <summary>
-        /// 获取或设置 数据过滤服务对象
-        /// </summary>
-        protected IFilterService FilterService { get; }
-
+        
         /// <summary>
         /// 获取或设置 信息模块业务契约对象
         /// </summary>
-        protected IInfosContract InfosContract { get; }
+        protected IInfosContract InfosContract => _provider.GetRequiredService<IInfosContract>();
 
         /// <summary>
         /// 读取站内信接收记录列表信息

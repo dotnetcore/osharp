@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Modules;
 using OSharp.Entity;
@@ -28,17 +29,17 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-数据审计信息")]
     public class AuditEntityController : AdminApiControllerBase
     {
-        private readonly IAuditContract _auditContract;
-        private readonly IFilterService _filterService;
-
+        private readonly IServiceProvider _provider;
+        
         /// <summary>
         /// 初始化一个<see cref="AuditEntityController"/>类型的新实例
         /// </summary>
-        public AuditEntityController(IAuditContract auditContract, IFilterService filterService)
+        public AuditEntityController(IServiceProvider provider) : base(provider)
         {
-            _auditContract = auditContract;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        private IAuditContract AuditContract => _provider.GetRequiredService<IAuditContract>();
 
         /// <summary>
         /// 读取数据审计信息列表
@@ -50,19 +51,19 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<AuditEntityOutputDto> Read(PageRequest request)
         {
-            Expression<Func<AuditEntity, bool>> predicate = _filterService.GetExpression<AuditEntity>(request.FilterGroup);
+            Expression<Func<AuditEntity, bool>> predicate = FilterService.GetExpression<AuditEntity>(request.FilterGroup);
             PageResult<AuditEntityOutputDto> page;
             //有操作参数，是从操作列表来的
             if (request.FilterGroup.Rules.Any(m => m.Field == "OperationId"))
             {
-                page = _auditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+                page = AuditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
                 {
                     Id = m.Id,
                     Name = m.Name,
                     TypeName = m.TypeName,
                     EntityKey = m.EntityKey,
                     OperateType = m.OperateType,
-                    Properties = _auditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
+                    Properties = AuditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
                     {
                         DisplayName = n.DisplayName,
                         FieldName = n.FieldName,
@@ -74,7 +75,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 return page.ToPageData();
             }
             request.AddDefaultSortCondition(new SortCondition("Operation.CreatedTime", ListSortDirection.Descending));
-            page = _auditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
+            page = AuditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -84,7 +85,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 NickName = m.Operation.NickName,
                 FunctionName = m.Operation.FunctionName,
                 CreatedTime = m.Operation.CreatedTime,
-                Properties = _auditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
+                Properties = AuditContract.AuditProperties.Where(n => n.AuditEntityId == m.Id).OrderBy(n => n.FieldName != "Id").ThenBy(n => n.FieldName).Select(n => new AuditPropertyOutputDto()
                 {
                     DisplayName = n.DisplayName,
                     FieldName = n.FieldName,

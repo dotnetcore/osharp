@@ -13,6 +13,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.Entities;
 using OSharp.Authorization.EntityInfos;
@@ -48,37 +50,32 @@ namespace OSharp.Authorization.DataAuthorization
         where TRole : RoleBase<TRoleKey>
         where TRoleKey : IEquatable<TRoleKey>
     {
-        private readonly IRepository<TEntityInfo, Guid> _entityInfoRepository;
-        private readonly IRepository<TEntityRole, Guid> _entityRoleRepository;
-        private readonly IEventBus _eventBus;
-        private readonly IRepository<TRole, TRoleKey> _roleRepository;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// 初始化一个 SecurityManager 类型的新实例
         /// </summary>
-        /// <param name="eventBus">事件总线</param>
-        /// <param name="entityInfoRepository">实体仓储</param>
-        /// <param name="entityRoleRepository">实体角色仓储</param>
-        /// <param name="roleRepository">角色仓储</param>
-        protected DataAuthorizationManagerBase(
-            IEventBus eventBus,
-            IRepository<TEntityInfo, Guid> entityInfoRepository,
-            IRepository<TEntityRole, Guid> entityRoleRepository,
-            IRepository<TRole, TRoleKey> roleRepository
-        )
+        protected DataAuthorizationManagerBase(IServiceProvider provider)
         {
-            _eventBus = eventBus;
-            _entityInfoRepository = entityInfoRepository;
-            _entityRoleRepository = entityRoleRepository;
-            _roleRepository = roleRepository;
+            _provider = provider;
         }
+
+        protected IRepository<TEntityInfo, Guid> EntityInfoRepository => _provider.GetRequiredService<IRepository<TEntityInfo, Guid>>();
+
+        protected IRepository<TEntityRole, Guid> EntityRoleRepository => _provider.GetRequiredService<IRepository<TEntityRole, Guid>>();
+
+        protected IEventBus EventBus => _provider.GetRequiredService<IEventBus>();
+
+        protected IRepository<TRole, TRoleKey> RoleRepository => _provider.GetRequiredService<IRepository<TRole, TRoleKey>>();
+
+        protected IFilterService FilterService => _provider.GetRequiredService<IFilterService>();
 
         #region Implementation of IEntityInfoStore<TEntityInfo,in TEntityInfoInputDto>
 
         /// <summary>
         /// 获取 实体信息查询数据集
         /// </summary>
-        public IQueryable<TEntityInfo> EntityInfos => _entityInfoRepository.QueryAsNoTracking();
+        public IQueryable<TEntityInfo> EntityInfos => EntityInfoRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查实体信息是否存在
@@ -88,7 +85,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>实体信息是否存在</returns>
         public virtual Task<bool> CheckEntityInfoExists(Expression<Func<TEntityInfo, bool>> predicate, Guid id = default(Guid))
         {
-            return _entityInfoRepository.CheckExistsAsync(predicate, id);
+            return EntityInfoRepository.CheckExistsAsync(predicate, id);
         }
 
         /// <summary>
@@ -99,7 +96,7 @@ namespace OSharp.Authorization.DataAuthorization
         public virtual Task<OperationResult> UpdateEntityInfos(params TEntityInfoInputDto[] dtos)
         {
             Check.Validate<TEntityInfoInputDto, Guid>(dtos, nameof(dtos));
-            return _entityInfoRepository.UpdateAsync(dtos);
+            return EntityInfoRepository.UpdateAsync(dtos);
         }
 
         #endregion Implementation of IEntityInfoStore<TEntityInfo,in TEntityInfoInputDto>
@@ -109,7 +106,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <summary>
         /// 获取 实体角色信息查询数据集
         /// </summary>
-        public virtual IQueryable<TEntityRole> EntityRoles => _entityRoleRepository.QueryAsNoTracking();
+        public virtual IQueryable<TEntityRole> EntityRoles => EntityRoleRepository.QueryAsNoTracking();
 
         /// <summary>
         /// 检查实体角色信息是否存在
@@ -119,7 +116,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>实体角色信息是否存在</returns>
         public virtual Task<bool> CheckEntityRoleExists(Expression<Func<TEntityRole, bool>> predicate, Guid id = default(Guid))
         {
-            return _entityRoleRepository.CheckExistsAsync(predicate, id);
+            return EntityRoleRepository.CheckExistsAsync(predicate, id);
         }
 
         /// <summary>
@@ -131,7 +128,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>过滤条件组</returns>
         public virtual FilterGroup[] GetEntityRoleFilterGroups(TRoleKey roleId, Guid entityId, DataAuthOperation operation)
         {
-            return _entityRoleRepository.QueryAsNoTracking(m => m.RoleId.Equals(roleId) && m.EntityId == entityId && m.Operation == operation)
+            return EntityRoleRepository.QueryAsNoTracking(m => m.RoleId.Equals(roleId) && m.EntityId == entityId && m.Operation == operation)
                 .Select(m => m.FilterGroupJson).ToArray().Select(m => m.FromJsonString<FilterGroup>()).ToArray();
         }
 
@@ -145,16 +142,16 @@ namespace OSharp.Authorization.DataAuthorization
             Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
 
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
-            OperationResult result = await _entityRoleRepository.InsertAsync(dtos,
+            OperationResult result = await EntityRoleRepository.InsertAsync(dtos,
                 async dto =>
                 {
-                    TRole role = await _roleRepository.GetAsync(dto.RoleId);
+                    TRole role = await RoleRepository.GetAsync(dto.RoleId);
                     if (role == null)
                     {
                         throw new OsharpException($"编号为“{dto.RoleId}”的角色信息不存在");
                     }
 
-                    TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(dto.EntityId);
+                    TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(dto.EntityId);
                     if (entityInfo == null)
                     {
                         throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
@@ -184,7 +181,7 @@ namespace OSharp.Authorization.DataAuthorization
                 });
             if (result.Succeeded && eventData.HasData())
             {
-                await _eventBus.PublishAsync(eventData);
+                await EventBus.PublishAsync(eventData);
             }
 
             return result;
@@ -200,16 +197,16 @@ namespace OSharp.Authorization.DataAuthorization
             Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
 
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
-            OperationResult result = await _entityRoleRepository.UpdateAsync(dtos,
+            OperationResult result = await EntityRoleRepository.UpdateAsync(dtos,
                 async (dto, entity) =>
                 {
-                    TRole role = await _roleRepository.GetAsync(dto.RoleId);
+                    TRole role = await RoleRepository.GetAsync(dto.RoleId);
                     if (role == null)
                     {
                         throw new OsharpException($"编号为“{dto.RoleId}”的角色信息不存在");
                     }
 
-                    TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(dto.EntityId);
+                    TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(dto.EntityId);
                     if (entityInfo == null)
                     {
                         throw new OsharpException($"编号为“{dto.EntityId}”的数据实体信息不存在");
@@ -246,7 +243,7 @@ namespace OSharp.Authorization.DataAuthorization
 
             if (result.Succeeded && eventData.HasData())
             {
-                await _eventBus.PublishAsync(eventData);
+                await EventBus.PublishAsync(eventData);
             }
 
             return result;
@@ -260,11 +257,11 @@ namespace OSharp.Authorization.DataAuthorization
         public virtual async Task<OperationResult> DeleteEntityRoles(params Guid[] ids)
         {
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
-            OperationResult result = await _entityRoleRepository.DeleteAsync(ids,
+            OperationResult result = await EntityRoleRepository.DeleteAsync(ids,
                 async entity =>
                 {
-                    TRole role = await _roleRepository.GetAsync(entity.RoleId);
-                    TEntityInfo entityInfo = await _entityInfoRepository.GetAsync(entity.EntityId);
+                    TRole role = await RoleRepository.GetAsync(entity.RoleId);
+                    TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(entity.EntityId);
                     if (role != null && entityInfo != null)
                     {
                         eventData.RemoveItems.Add(new DataAuthCacheItem()
@@ -274,13 +271,13 @@ namespace OSharp.Authorization.DataAuthorization
             if (result.Succeeded && eventData.HasData())
             {
                 //移除数据权限缓存
-                await _eventBus.PublishAsync(eventData);
+                await EventBus.PublishAsync(eventData);
             }
 
             return result;
         }
 
-        private static OperationResult CheckFilterGroup(FilterGroup group, TEntityInfo entityInfo)
+        private OperationResult CheckFilterGroup(FilterGroup group, TEntityInfo entityInfo)
         {
             EntityProperty[] properties = entityInfo.Properties;
 
@@ -323,7 +320,7 @@ namespace OSharp.Authorization.DataAuthorization
             }
 
             Type entityType = Type.GetType(entityInfo.TypeName);
-            result = FilterHelper.CheckFilterGroup(group, entityType);
+            result = FilterService.CheckFilterGroup(group, entityType);
             if (!result.Succeeded)
             {
                 return result;

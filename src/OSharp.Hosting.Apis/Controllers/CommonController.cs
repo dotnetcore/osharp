@@ -30,16 +30,19 @@ namespace OSharp.Hosting.Apis.Controllers
 {
     [Description("网站-通用")]
     [ModuleInfo(Order = 3)]
+    //[ApiExplorerSettings(GroupName = "buss")]
     public class CommonController : SiteApiControllerBase
     {
-        private readonly IVerifyCodeService _verifyCodeService;
-        private readonly IWebHostEnvironment _environment;
+        private readonly IServiceProvider _provider;
 
-        public CommonController(IVerifyCodeService verifyCodeService,
-            IWebHostEnvironment environment)
+        private IVerifyCodeService VerifyCodeService => _provider.GetRequiredService<IVerifyCodeService>();
+
+        private IWebHostEnvironment Environment => _provider.GetRequiredService<IWebHostEnvironment>();
+
+        public CommonController(IServiceProvider provider)
+            : base(provider)
         {
-            _verifyCodeService = verifyCodeService;
-            _environment = environment;
+            _provider = provider;
         }
 
         /// <summary>
@@ -60,8 +63,8 @@ namespace OSharp.Hosting.Apis.Controllers
                 RandomPosition = true
             };
             Bitmap bitmap = coder.CreateImage(4, out string code);
-            string id = _verifyCodeService.SetCode(code);
-            return _verifyCodeService.GetImageString(bitmap, id);
+            string id = VerifyCodeService.SetCode(code);
+            return VerifyCodeService.GetImageString(bitmap, id);
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("验证验证码的有效性")]
         public bool CheckVerifyCode(string code, string id)
         {
-            return _verifyCodeService.CheckCode(code, id, false);
+            return VerifyCodeService.CheckCode(code, id, false);
         }
 
         /// <summary>

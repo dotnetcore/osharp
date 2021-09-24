@@ -42,11 +42,18 @@ namespace OSharp.Core.Systems
         Task<OperationResult> SaveSetting(ISetting setting);
 
         /// <summary>
+        /// 获取指定根节点的数据项，如输入“System.User.”，则查找所有键以此开头的项
+        /// </summary>
+        /// <param name="rootKey">根键路径</param>
+        /// <returns>多个数据项</returns>
+        IKeyValue[] GetByRootKey(string rootKey);
+
+        /// <summary>
         /// 获取指定键名的数据项
         /// </summary>
         /// <param name="key">键名</param>
         /// <returns>数据项</returns>
-        IKeyValue GetKeyValue(string key);
+        IKeyValue GetByKey(string key);
 
         /// <summary>
         /// 检查键值对信息信息是否存在
@@ -54,7 +61,7 @@ namespace OSharp.Core.Systems
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的键值对信息编号</param>
         /// <returns>键值对信息是否存在</returns>
-        Task<bool> CheckKeyValueExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid));
 
         /// <summary>
         /// 添加或更新键值对信息信息
@@ -62,27 +69,27 @@ namespace OSharp.Core.Systems
         /// <param name="key">键</param>
         /// <param name="value">值</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateOrUpdateKeyValue(string key, object value);
+        Task<OperationResult> CreateOrUpdate(string key, object value);
 
         /// <summary>
         /// 添加或更新键值对信息信息
         /// </summary>
         /// <param name="dtos">要添加的键值对信息DTO信息</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> CreateOrUpdateKeyValues(params IKeyValue[] dtos);
+        Task<OperationResult> CreateOrUpdate(params IKeyValue[] dtos);
 
         /// <summary>
         /// 删除键值对信息信息
         /// </summary>
         /// <param name="ids">要删除的键值对信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteKeyValues(params Guid[] ids);
+        Task<OperationResult> Delete(params Guid[] ids);
 
         /// <summary>
         /// 删除以根键路径为起始的所有字典项，如输入“System.User.”，所有键以此开头的项都会被删除
         /// </summary>
         /// <param name="rootKey">根键路径</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteKeyValues(string rootKey);
+        Task<OperationResult> DeleteByRootKey(string rootKey);
     }
 }

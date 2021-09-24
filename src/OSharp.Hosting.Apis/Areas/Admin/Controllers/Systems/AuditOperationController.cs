@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Modules;
 using OSharp.Entity;
@@ -27,14 +28,15 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-操作审计信息")]
     public class AuditOperationController : AdminApiControllerBase
     {
-        private readonly IAuditContract _auditContract;
-        private readonly IFilterService _filterService;
+        private readonly IServiceProvider _provider;
 
-        public AuditOperationController(IAuditContract auditContract, IFilterService filterService)
+        public AuditOperationController(IServiceProvider provider)
+            : base(provider)
         {
-            _auditContract = auditContract;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        public IAuditContract AuditContract => _provider.GetRequiredService<IAuditContract>();
 
         /// <summary>
         /// 读取操作审计信息
@@ -46,9 +48,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [Description("读取")]
         public PageData<AuditOperationOutputDto> Read(PageRequest request)
         {
-            Expression<Func<AuditOperation, bool>> predicate = _filterService.GetExpression<AuditOperation>(request.FilterGroup);
+            Expression<Func<AuditOperation, bool>> predicate = FilterService.GetExpression<AuditOperation>(request.FilterGroup);
             request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
-            var page = _auditContract.AuditOperations.ToPage<AuditOperation, AuditOperationOutputDto>(predicate, request.PageCondition);
+            var page = AuditContract.AuditOperations.ToPage<AuditOperation, AuditOperationOutputDto>(predicate, request.PageCondition);
             return page.ToPageData();
         }
     }

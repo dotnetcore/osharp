@@ -31,5 +31,9 @@
   // Angular schematics 插件: https://marketplace.visualstudio.com/items?itemName=cyrilletuzi.angular-schematics
   "ngschematics.schematics": [
     "ng-alain"
+  ],
+  "i18n-ally.localesPaths": [
+    "src/app/core/i18n",
+    "src/assets/osharp/i18n"
   ]
 }

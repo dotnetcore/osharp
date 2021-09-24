@@ -49,6 +49,7 @@ namespace OSharp.Entity
         private readonly ILogger _logger;
         private readonly ICancellationTokenProvider _cancellationTokenProvider;
         private readonly IPrincipal _principal;
+        private readonly IDataAuthService _dataAuthService;
 
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
@@ -61,36 +62,13 @@ namespace OSharp.Entity
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
+            _dataAuthService = serviceProvider.GetService<IDataAuthService>();
         }
 
         /// <summary>
         /// 获取 数据上下文
         /// </summary>
         public IDbContext DbContext => _dbContext;
-
-        /// <summary>
-        /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
-        /// </summary>
-        public virtual IQueryable<TEntity> Entities
-        {
-            get
-            {
-                Expression<Func<TEntity, bool>> dataFilterExp = GetDataFilter(DataAuthOperation.Read);
-                return _dbSet.AsQueryable().AsNoTracking().Where(dataFilterExp);
-            }
-        }
-
-        /// <summary>
-        /// 获取 <typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
-        /// </summary>
-        public virtual IQueryable<TEntity> TrackEntities
-        {
-            get
-            {
-                Expression<Func<TEntity, bool>> dataFilterExp = GetDataFilter(DataAuthOperation.Read);
-                return _dbSet.AsQueryable().Where(dataFilterExp);
-            }
-        }
 
         #region 同步方法
 
@@ -489,9 +467,9 @@ namespace OSharp.Entity
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
-            if (filterByDataAuth)
+            if (filterByDataAuth && _dataAuthService != null)
             {
-                Expression<Func<TEntity, bool>> dataAuthExp = GetDataFilter(DataAuthOperation.Read);
+                Expression<Func<TEntity, bool>> dataAuthExp = _dataAuthService.GetDataFilter<TEntity>(DataAuthOperation.Read);
                 query = query.Where(dataAuthExp);
             }
             if (predicate == null)
@@ -875,7 +853,7 @@ namespace OSharp.Entity
                 return;
             }
             //雪花long
-            if (keyType == typeof(long))
+            if (keyType == typeof(long) && entity.Id.Equals(default(long)))
             {
                 IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
                 entity.Id = generator.Create().CastTo<TKey>();
@@ -908,26 +886,20 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="operation">数据权限操作</param>
         /// <param name="entities">要验证的实体对象</param>
-        private static void CheckDataAuth(DataAuthOperation operation, params TEntity[] entities)
+        private void CheckDataAuth(DataAuthOperation operation, params TEntity[] entities)
         {
-            if (entities.Length == 0)
+            if (entities.Length == 0 || _dataAuthService == null)
             {
                 return;
             }
-            Expression<Func<TEntity, bool>> exp = GetDataFilter(operation);
-            Func<TEntity, bool> func = exp.Compile();
-            bool flag = entities.All(func);
+            
+            bool flag = _dataAuthService.CheckDataAuth<TEntity>(operation, entities);
             if (!flag)
             {
                 throw new OsharpException($"实体 {typeof(TEntity)} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
             }
         }
-
-        private static Expression<Func<TEntity, bool>> GetDataFilter(DataAuthOperation operation)
-        {
-            return FilterHelper.GetDataFilterExpression<TEntity>(operation: operation);
-        }
-
+        
         private TEntity[] CheckInsert(params TEntity[] entities)
         {
             for (int i = 0; i < entities.Length; i++)

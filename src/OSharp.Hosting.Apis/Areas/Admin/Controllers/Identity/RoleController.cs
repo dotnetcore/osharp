@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
@@ -42,24 +43,18 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-角色信息")]
     public class RoleController : AdminApiControllerBase
     {
-        private readonly IIdentityContract _identityContract;
-        private readonly FunctionAuthManager _functionAuthorizationManager;
-        private readonly ICacheService _cacheService;
-        private readonly IFilterService _filterService;
-        private readonly RoleManager<Role> _roleManager;
+        private readonly IServiceProvider _provider;
 
-        public RoleController(RoleManager<Role> roleManager,
-            IIdentityContract identityContract,
-            FunctionAuthManager functionAuthorizationManager,
-            ICacheService cacheService,
-            IFilterService filterService)
+        public RoleController(IServiceProvider provider) : base(provider)
         {
-            _roleManager = roleManager;
-            _identityContract = identityContract;
-            _functionAuthorizationManager = functionAuthorizationManager;
-            _cacheService = cacheService;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        public IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
+
+        public FunctionAuthManager FunctionAuthorizationManager => _provider.GetRequiredService<FunctionAuthManager>();
+
+        public RoleManager<Role> RoleManager => _provider.GetRequiredService<RoleManager<Role>>();
 
         /// <summary>
         /// 读取角色
@@ -73,8 +68,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
 
-            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
-            var page = _cacheService.ToPageCache<Role, RoleOutputDto>(_roleManager.Roles, predicate, request.PageCondition, function);
+            Expression<Func<Role, bool>> predicate = FilterService.GetExpression<Role>(request.FilterGroup);
+            var page = CacheService.ToPageCache<Role, RoleOutputDto>(RoleManager.Roles, predicate, request.PageCondition, function);
 
             return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }
@@ -91,7 +86,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             IFunction function = this.GetExecuteFunction();
             Expression<Func<Role, bool>> exp = m => !m.IsLocked;
 
-            RoleNode[] nodes = _cacheService.ToCacheArray(_roleManager.Roles, exp, m => new RoleNode()
+            RoleNode[] nodes = CacheService.ToCacheArray(RoleManager.Roles, exp, m => new RoleNode()
             {
                 RoleId = m.Id,
                 RoleName = m.Name
@@ -110,8 +105,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.GreaterThan(userId, nameof(userId), 0);
 
-            int[] checkRoleIds = _identityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
-            List<UserRoleNode> nodes = _identityContract.Roles.Where(m => !m.IsLocked)
+            int[] checkRoleIds = IdentityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
+            List<UserRoleNode> nodes = IdentityContract.Roles.Where(m => !m.IsLocked)
                 .OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<Role, UserRoleNode>().ToList();
             nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
             return nodes;
@@ -134,7 +129,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             foreach (RoleInputDto dto in dtos)
             {
                 Role role = dto.MapTo<Role>();
-                IdentityResult result = await _roleManager.CreateAsync(role);
+                IdentityResult result = await RoleManager.CreateAsync(role);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -160,9 +155,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (RoleInputDto dto in dtos)
             {
-                Role role = await _roleManager.FindByIdAsync(dto.Id.ToString());
+                Role role = await RoleManager.FindByIdAsync(dto.Id.ToString());
                 role = dto.MapTo(role);
-                IdentityResult result = await _roleManager.UpdateAsync(role);
+                IdentityResult result = await RoleManager.UpdateAsync(role);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -188,8 +183,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (int id in ids)
             {
-                Role role = await _roleManager.FindByIdAsync(id.ToString());
-                IdentityResult result = await _roleManager.DeleteAsync(role);
+                Role role = await RoleManager.FindByIdAsync(id.ToString());
+                IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -212,7 +207,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(RoleSetModuleDto dto)
         {
-            OperationResult result = await _functionAuthorizationManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
+            OperationResult result = await FunctionAuthorizationManager.SetRoleModules(dto.RoleId, dto.ModuleIds);
             return result.ToAjaxResult();
         }
     }

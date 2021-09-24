@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Data;
 using OSharp.Entity;
@@ -26,13 +27,13 @@ namespace OSharp.Hosting.Identity.Entities
         /// <summary>
         /// 获取或设置 登录IP
         /// </summary>
-        [DisplayName("登录IP")]
+        [DisplayName("登录IP"), StringLength(50)]
         public string Ip { get; set; }
 
         /// <summary>
         /// 获取或设置 用户代理头
         /// </summary>
-        [DisplayName("用户代理头")]
+        [DisplayName("用户代理头"), StringLength(500)]
         public string UserAgent { get; set; }
 
         /// <summary>

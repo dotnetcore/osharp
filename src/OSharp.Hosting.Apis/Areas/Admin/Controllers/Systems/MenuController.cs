@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -31,14 +32,15 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-菜单信息")]
     public class MenuController : AdminApiControllerBase
     {
-        private readonly ISystemsContract _systemsContract;
-        private readonly IFilterService _filterService;
+        private readonly IServiceProvider _provider;
 
-        public MenuController(ISystemsContract systemsContract, IFilterService filterService)
+        public MenuController(IServiceProvider provider)
+            : base(provider)
         {
-            _systemsContract = systemsContract;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        private ISystemsContract SystemsContract => _provider.GetRequiredService<ISystemsContract>();
 
         [HttpPost]
         [ModuleInfo]
@@ -47,8 +49,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(request, nameof(request));
 
-            Expression<Func<Menu, bool>> predicate = _filterService.GetExpression<Menu>(request.FilterGroup);
-            var page = _systemsContract.MenuInfos.ToPage<Menu, MenuOutputDto>(predicate, request.PageCondition);
+            Expression<Func<Menu, bool>> predicate = FilterService.GetExpression<Menu>(request.FilterGroup);
+            var page = SystemsContract.MenuInfos.ToPage<Menu, MenuOutputDto>(predicate, request.PageCondition);
 
             return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
         }
@@ -62,7 +64,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(dtos, nameof(dtos));
 
-            OperationResult result = await _systemsContract.CreateMenuInfos(dtos);
+            OperationResult result = await SystemsContract.CreateMenuInfos(dtos);
             return result.ToAjaxResult();
         }
 
@@ -75,7 +77,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(dtos, nameof(dtos));
 
-            OperationResult result = await _systemsContract.UpdateMenuInfos(dtos);
+            OperationResult result = await SystemsContract.UpdateMenuInfos(dtos);
             return result.ToAjaxResult();
         }
 
@@ -88,7 +90,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(ids, nameof(ids));
 
-            OperationResult result = await _systemsContract.DeleteMenuInfos(ids);
+            OperationResult result = await SystemsContract.DeleteMenuInfos(ids);
             return result.ToAjaxResult();
         }
     }

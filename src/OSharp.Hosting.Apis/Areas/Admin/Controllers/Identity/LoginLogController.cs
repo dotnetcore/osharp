@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -32,14 +33,14 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-登录日志信息")]
     public class LoginLogController : AdminApiControllerBase
     {
-        private readonly IFilterService _filterService;
-        private readonly IIdentityContract _identityContract;
+        private readonly IServiceProvider _provider;
 
-        public LoginLogController(IFilterService filterService, IIdentityContract identityContract)
+        public LoginLogController(IServiceProvider provider) : base(provider)
         {
-            _filterService = filterService;
-            _identityContract = identityContract;
+            _provider = provider;
         }
+
+        public IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
 
         [HttpPost]
         [ModuleInfo]
@@ -48,8 +49,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(request, nameof(request));
 
-            Expression<Func<LoginLog, bool>> exp = _filterService.GetExpression<LoginLog>(request.FilterGroup);
-            var page = _identityContract.LoginLogs.ToPage(exp,
+            Expression<Func<LoginLog, bool>> exp = FilterService.GetExpression<LoginLog>(request.FilterGroup);
+            var page = IdentityContract.LoginLogs.ToPage(exp,
                 request.PageCondition,
                 m => new
                 {

@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Entity;
 
@@ -34,19 +35,19 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 当前用户标识的登录提供者
         /// </summary>
-        [DisplayName("登录提供者")]
+        [DisplayName("登录提供者"), StringLength(200)]
         public string LoginProvider { get; set; }
 
         /// <summary>
         /// 获取或设置 令牌名称
         /// </summary>
-        [DisplayName("令牌名称")]
+        [DisplayName("令牌名称"), StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 令牌值
         /// </summary>
-        [DisplayName("令牌值")]
+        [DisplayName("令牌值"), StringLength(2000)]
         public string Value { get; set; }
     }
 }

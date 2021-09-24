@@ -11,6 +11,8 @@
 //  <last-editor>郭明锋</last-editor>
 // -----------------------------------------------------------------------
 
+using System;
+
 using OSharp.Filter;
 
 using OSharp.Hosting.Infos;
@@ -26,9 +28,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <summary>
         /// 初始化一个<see cref="MessageReceiveController"/>类型的新实例
         /// </summary>
-        public MessageReceiveController(IInfosContract infosContract,
-            IFilterService filterService)
-            : base(infosContract, filterService)
+        public MessageReceiveController(IServiceProvider provider) : base(provider)
         { }
     }
 }

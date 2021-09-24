@@ -24,5 +24,11 @@ namespace OSharp.Hosting.Apis.Controllers
     public abstract class SiteApiControllerBase : ApiControllerBase
     {
         protected static readonly Random Random = new Random();
+
+        /// <summary>
+        /// 初始化一个<see cref="SiteApiControllerBase"/>类型的新实例
+        /// </summary>
+        protected SiteApiControllerBase(IServiceProvider provider)
+        { }
     }
 }

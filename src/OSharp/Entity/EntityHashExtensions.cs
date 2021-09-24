@@ -32,6 +32,7 @@ namespace OSharp.Entity
         /// <summary>
         /// 检查指定实体的Hash值，决定是否需要进行数据库同步
         /// </summary>
+        /// <returns>同步返回true，不同步返回false</returns>
         public static bool CheckSyncByHash(this IEnumerable<IEntityHash> entityHashes, IServiceProvider provider, ILogger logger)
         {
             IEntityHash[] hashes = entityHashes as IEntityHash[] ?? entityHashes.ToArray();
@@ -43,14 +44,14 @@ namespace OSharp.Entity
             IKeyValueStore store = provider.GetService<IKeyValueStore>();
             string entityType = hashes[0].GetType().FullName;
             string key = $"OSharp.Initialize.SyncToDatabaseHash-{entityType}";
-            IKeyValue keyValue = store.GetKeyValue(key);
+            IKeyValue keyValue = store.GetByKey(key);
             if (keyValue != null && keyValue.Value?.ToString() == hash)
             {
                 logger.LogInformation($"{hashes.Length}条基础数据“{entityType}”的内容签名 {hash} 与上次相同，取消数据库同步");
                 return false;
             }
 
-            store.CreateOrUpdateKeyValue(key, hash).GetAwaiter().GetResult();
+            store.CreateOrUpdate(key, hash).GetAwaiter().GetResult();
             logger.LogInformation($"{hashes.Length}条基础数据“{entityType}”的内容签名 {hash} 与上次 {keyValue?.Value} 不同，将进行数据库同步");
             return true;
         }

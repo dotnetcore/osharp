@@ -173,6 +173,7 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<KeyValue> builder)
             {
+                builder.Property(m => m.ValueJson).HasColumnType("text");
                 builder.HasIndex(m => m.Key).HasName("KeyIndex").IsUnique();
             }
         }

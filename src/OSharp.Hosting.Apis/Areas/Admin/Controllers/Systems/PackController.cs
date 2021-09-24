@@ -34,18 +34,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-模块包信息")]
     public class PackController : AdminApiControllerBase
     {
-        private readonly ICacheService _cacheService;
-        private readonly IFilterService _filterService;
-
         /// <summary>
         /// 初始化一个<see cref="PackController"/>类型的新实例
         /// </summary>
-        public PackController(ICacheService cacheService,
-            IFilterService filterService)
-        {
-            _cacheService = cacheService;
-            _filterService = filterService;
-        }
+        public PackController(IServiceProvider provider)
+            : base(provider)
+        { }
 
         /// <summary>
         /// 读取模块包列表信息
@@ -62,7 +56,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 new SortCondition("Order")
             );
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<PackOutputDto, bool>> exp = _filterService.GetExpression<PackOutputDto>(request.FilterGroup);
+            Expression<Func<PackOutputDto, bool>> exp = FilterService.GetExpression<PackOutputDto>(request.FilterGroup);
             IServiceProvider provider = HttpContext.RequestServices;
             IQueryable<PackOutputDto> query = provider.GetAllPacks().Select(m => new PackOutputDto()
             {
@@ -74,7 +68,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 IsEnabled = m.IsEnabled
             }).AsQueryable();
 
-            var page = _cacheService.ToPageCache(query,
+            var page = CacheService.ToPageCache(query,
                 exp,
                 request.PageCondition,
                 m => m,

@@ -261,7 +261,7 @@ namespace OSharp.Authorization.Functions
 
             IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
 
-            if (!functions.CheckSyncByHash(scopedProvider, Logger))
+            if (!functions.CheckSyncByHash(scopedProvider, Logger) && repository.QueryAsNoTracking().Any())
             {
                 Logger.LogInformation("同步功能数据时，数据签名与上次相同，取消同步");
                 return;

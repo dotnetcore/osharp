@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -36,13 +37,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     public class EntityInfoController : AdminApiControllerBase
     {
         private readonly DataAuthManager _dataAuthManager;
-        private readonly IFilterService _filterService;
 
-        public EntityInfoController(DataAuthManager dataAuthManager,
-            IFilterService filterService)
+        public EntityInfoController(IServiceProvider provider) : base(provider)
         {
-            _dataAuthManager = dataAuthManager;
-            _filterService = filterService;
+            _dataAuthManager = provider.GetRequiredService<DataAuthManager>();
         }
 
         /// <summary>
@@ -58,7 +56,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
-            Expression<Func<EntityInfo, bool>> predicate = _filterService.GetExpression<EntityInfo>(request.FilterGroup);
+            Expression<Func<EntityInfo, bool>> predicate = FilterService.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _dataAuthManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return new AjaxResult("成功", AjaxResultType.Success, page.ToPageData());
         }

@@ -36,31 +36,31 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 用户名
         /// </summary>
-        [Required, DisplayName("用户名")]
+        [Required, DisplayName("用户名"), StringLength(200)]
         public string UserName { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的用户名
         /// </summary>
-        [Required, DisplayName("标准化的用户名"), AuditIgnore]
+        [Required, DisplayName("标准化的用户名"), StringLength(200), AuditIgnore]
         public string NormalizedUserName { get; set; }
 
         /// <summary>
         /// 获取或设置 用户昵称
         /// </summary>
-        [DisplayName("用户昵称")]
+        [DisplayName("用户昵称"), StringLength(200)]
         public string NickName { get; set; }
 
         /// <summary>
         /// 获取或设置 电子邮箱
         /// </summary>
-        [DisplayName("电子邮箱"), DataType(DataType.EmailAddress)]
+        [DisplayName("电子邮箱"), StringLength(200), DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         /// <summary>
         /// 获取或设置 标准化的电子邮箱
         /// </summary>
-        [DisplayName("标准化的电子邮箱"), DataType(DataType.EmailAddress), AuditIgnore]
+        [DisplayName("标准化的电子邮箱"), StringLength(200), DataType(DataType.EmailAddress), AuditIgnore]
         public string NormalizeEmail { get; set; }
 
         /// <summary>
@@ -72,31 +72,31 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 密码哈希值
         /// </summary>
-        [DisplayName("密码哈希值"), AuditIgnore]
+        [DisplayName("密码哈希值"), StringLength(500), AuditIgnore]
         public string PasswordHash { get; set; }
 
         /// <summary>
         /// 获取或设置 用户头像
         /// </summary>
-        [DisplayName("用户头像")]
+        [DisplayName("用户头像"), StringLength(1000)]
         public string HeadImg { get; set; }
 
         /// <summary>
         /// 获取或设置 每当用户凭据发生变化（密码更改、登录删除）时必须更改的随机值。
         /// </summary>
-        [DisplayName("安全标识"), AuditIgnore]
+        [DisplayName("安全标识"), StringLength(500), AuditIgnore]
         public string SecurityStamp { get; set; }
 
         /// <summary>
         /// 获取或设置 一个随机值，必须在用户持续存储时更改。
         /// </summary>
-        [DisplayName("版本标识"), AuditIgnore]
+        [DisplayName("版本标识"), StringLength(500), AuditIgnore]
         public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
         /// 获取或设置 手机号码
         /// </summary>
-        [DisplayName("手机号码")]
+        [DisplayName("手机号码"), StringLength(50)]
         public string PhoneNumber { get; set; }
 
         /// <summary>

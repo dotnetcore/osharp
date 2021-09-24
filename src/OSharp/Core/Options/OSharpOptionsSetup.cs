@@ -86,6 +86,14 @@ namespace OSharp.Core.Options
                 options.Cookie = cookie;
             }
 
+            //MvcOptions
+            section = _configuration.GetSection("OSharp:Mvc");
+            MvcOptions mvc = section.Get<MvcOptions>();
+            if (mvc != null)
+            {
+                options.Mvc = mvc;
+            }
+
             //CorsOptions
             section = _configuration.GetSection("OSharp:Cors");
             CorsOptions cors = section.Get<CorsOptions>();

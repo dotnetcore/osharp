@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 using OSharp.Entity;
@@ -35,13 +36,13 @@ namespace OSharp.Identity.Entities
         /// <summary>
         /// 获取或设置 声明类型
         /// </summary>
-        [DisplayName("声明类型")]
+        [DisplayName("声明类型"), StringLength(500)]
         public string ClaimType { get; set; }
 
         /// <summary>
         /// 获取或设置 声明值
         /// </summary>
-        [DisplayName("声明值")]
+        [DisplayName("声明值"), StringLength(1000)]
         public string ClaimValue { get; set; }
 
         /// <summary>

@@ -45,18 +45,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <summary>
         /// 初始化一个<see cref="MessageController"/>类型的新实例
         /// </summary>
-        protected MessageControllerBase(IInfosContract infosContract,
-            IFilterService filterService)
+        protected MessageControllerBase(IServiceProvider provider) : base(provider)
         {
-            InfosContract = infosContract;
-            FilterService = filterService;
         }
-
-        /// <summary>
-        /// 获取或设置 数据过滤服务对象
-        /// </summary>
-        protected IFilterService FilterService { get; }
-
+        
         /// <summary>
         /// 获取或设置 信息模块业务契约对象
         /// </summary>

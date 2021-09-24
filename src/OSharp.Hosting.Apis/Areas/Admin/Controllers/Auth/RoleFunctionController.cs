@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
@@ -32,18 +33,14 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-角色功能")]
     public class RoleFunctionController : AdminApiControllerBase
     {
-        private readonly FunctionAuthManager _functionAuthManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly IFilterService _filterService;
+        private readonly IServiceProvider _provider;
 
-        public RoleFunctionController(FunctionAuthManager functionAuthManager,
-            RoleManager<Role> roleManager,
-            IFilterService filterService)
+        public RoleFunctionController(IServiceProvider provider) : base(provider)
         {
-            _functionAuthManager = functionAuthManager;
-            _roleManager = roleManager;
-            _filterService = filterService;
+            _provider = provider;
         }
+        
+        public RoleManager<Role> RoleManager => _provider.GetRequiredService<RoleManager<Role>>();
 
         /// <summary>
         /// 读取角色信息
@@ -55,8 +52,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         public PageData<RoleOutputDto2> Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<Role, bool>> predicate = _filterService.GetExpression<Role>(request.FilterGroup);
-            PageResult<RoleOutputDto2> page = _roleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
+            Expression<Func<Role, bool>> predicate = FilterService.GetExpression<Role>(request.FilterGroup);
+            PageResult<RoleOutputDto2> page = RoleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
             return page.ToPageData();
         }
 
@@ -74,22 +71,24 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             {
                 return new PageData<FunctionOutputDto2>();
             }
-            int[] moduleIds = _functionAuthManager.GetRoleModuleIds(roleId);
-            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+
+            FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
+            int[] moduleIds = functionAuthManager.GetRoleModuleIds(roleId);
+            Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
             if (functionIds.Length == 0)
             {
                 return new PageData<FunctionOutputDto2>();
             }
 
-            Expression<Func<Function, bool>> funcExp = _filterService.GetExpression<Function>(request.FilterGroup);
+            Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
             funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
 
-            var page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+            var page = functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
             return page.ToPageData();
         }
     }
