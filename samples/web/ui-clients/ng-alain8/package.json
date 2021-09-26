@@ -61,7 +61,7 @@
     "@delon/chart": "^8.9.0",
     "@delon/form": "^8.9.0",
     "@delon/mock": "^8.9.0",
-    "@delon/theme": "^8.9.0",
+    "@delon/theme": "8.9.3",
     "@delon/util": "8.9.3",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
