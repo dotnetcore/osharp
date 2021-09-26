@@ -89,7 +89,7 @@
     "@types/node": "~8.9.4",
     "@types/jasmine": "3.9.1",
     "@types/jasminewd2": "~2.0.3",
-    "antd-theme-generator": "^1.1.7",
+    "antd-theme-generator": "1.2.10",
     "codelyzer": "^5.0.0",
     "husky": "^3.0.0",
     "jasmine-core": "~3.4.0",
