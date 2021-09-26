@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Hangfire" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="3.0.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="3.0.0" />
