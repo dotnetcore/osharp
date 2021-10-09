@@ -52,7 +52,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@antv/data-set": "^0.10.2",
-    "@antv/g2": "^3.5.3",
+    "@antv/g2": "3.5.19",
     "@antv/g2-plugin-slider": "^2.1.1",
     "@delon/abc": "^8.9.0",
     "@delon/acl": "^8.9.0",
