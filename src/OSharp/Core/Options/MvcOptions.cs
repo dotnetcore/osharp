@@ -20,8 +20,8 @@ namespace OSharp.Core.Options
         public bool IsLowercaseJsonProperty { get; set; } = true;
 
         /// <summary>
-        /// 获取或设置 是否URL小写，默认：true
+        /// 获取或设置 是否URL小写，默认：false
         /// </summary>
-        public bool IsLowercaseUrls { get; set; } = true;
+        public bool IsLowercaseUrls { get; set; } = false;
     }
 }
