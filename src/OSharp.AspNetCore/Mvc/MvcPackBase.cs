@@ -63,7 +63,7 @@ namespace OSharp.AspNetCore.Mvc
                     }
                 });
 
-            services.AddRouting(opts => opts.LowercaseUrls = osharp.Mvc?.IsLowercaseUrls ?? true);
+            services.AddRouting(opts => opts.LowercaseUrls = osharp.Mvc?.IsLowercaseUrls ?? false);
             
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 
