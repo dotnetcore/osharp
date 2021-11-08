@@ -22,10 +22,10 @@
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.21" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0-windows'">
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />

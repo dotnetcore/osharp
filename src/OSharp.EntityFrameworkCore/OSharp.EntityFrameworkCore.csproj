@@ -20,8 +20,8 @@
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.2.13,5.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.12" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="5.2.13" />
   </ItemGroup>
 
