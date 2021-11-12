@@ -11,13 +11,6 @@
     <RootNamespace>OSharp.Authorization</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="[3.1.19,4.0.0)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.10" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Identity\OSharp.Identity.csproj" />
   </ItemGroup>
