@@ -14,9 +14,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
@@ -46,25 +46,18 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-用户信息")]
     public class UserController : AdminApiControllerBase
     {
-        private readonly IIdentityContract _identityContract;
-        private readonly ICacheService _cacheService;
-        private readonly IFilterService _filterService;
-        private readonly UserManager<User> _userManager;
-        private readonly FunctionAuthManager _functionAuthManager;
+        private readonly IServiceProvider _provider;
 
-        public UserController(
-            UserManager<User> userManager,
-            FunctionAuthManager functionAuthManager,
-            IIdentityContract identityContract,
-            ICacheService cacheService,
-            IFilterService filterService)
+        public UserController(IServiceProvider provider) : base(provider)
         {
-            _userManager = userManager;
-            _functionAuthManager = functionAuthManager;
-            _identityContract = identityContract;
-            _cacheService = cacheService;
-            _filterService = filterService;
+            _provider = provider;
         }
+
+        public IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
+
+        public UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
+
+        public FunctionAuthManager FunctionAuthManager => _provider.GetRequiredService<FunctionAuthManager>();
 
         /// <summary>
         /// 读取用户列表信息
@@ -73,15 +66,14 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        [AllowAnonymous]
         public AjaxResult Read(PageRequest request)
         {
             Check.NotNull(request, nameof(request));
             IFunction function = this.GetExecuteFunction();
 
-            Func<User, bool> updateFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Update).Compile();
-            Func<User, bool> deleteFunc = _filterService.GetDataFilterExpression<User>(null, DataAuthOperation.Delete).Compile();
-            Expression<Func<User, bool>> predicate = _filterService.GetExpression<User>(request.FilterGroup);
+            Func<User, bool> updateFunc = FilterService.GetDataFilterExpression<User>(null, DataAuthOperation.Update).Compile();
+            Func<User, bool> deleteFunc = FilterService.GetDataFilterExpression<User>(null, DataAuthOperation.Delete).Compile();
+            Expression<Func<User, bool>> predicate = FilterService.GetExpression<User>(request.FilterGroup);
 
             //查询某一角色的所有用户
             //var roleId = request.FilterGroup.Rules.FirstOrDefault(m => m.Field == "RoleId")?.CastTo(0);
@@ -90,7 +82,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             //    predicate = predicate.And(m => m.UserRoles.Any(n => n.RoleId == roleId));
             //}
 
-            var page = _userManager.Users.ToPage(predicate, request.PageCondition, m => new
+            var page = UserManager.Users.ToPage(predicate, request.PageCondition, m => new
             {
                 D = m,
                 Roles = m.UserRoles.Select(n => n.Role.Name)
@@ -115,8 +107,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Check.NotNull(group, nameof(group));
             IFunction function = this.GetExecuteFunction();
-            Expression<Func<User, bool>> exp = _filterService.GetExpression<User>(group);
-            ListNode[] nodes = _cacheService.ToCacheArray<User, ListNode>(_userManager.Users, exp, m => new ListNode()
+            Expression<Func<User, bool>> exp = FilterService.GetExpression<User>(group);
+            ListNode[] nodes = CacheService.ToCacheArray<User, ListNode>(UserManager.Users, exp, m => new ListNode()
             {
                 Id = m.Id,
                 Name = m.NickName
@@ -131,7 +123,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(UserInputDto[] dtos)
@@ -142,8 +134,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             {
                 User user = dto.MapTo<User>();
                 IdentityResult result = dto.Password.IsMissing()
-                    ? await _userManager.CreateAsync(user)
-                    : await _userManager.CreateAsync(user, dto.Password);
+                    ? await UserManager.CreateAsync(user)
+                    : await UserManager.CreateAsync(user, dto.Password);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -160,7 +152,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(UserInputDto[] dtos)
@@ -169,9 +161,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (var dto in dtos)
             {
-                User user = await _userManager.FindByIdAsync(dto.Id.ToString());
+                User user = await UserManager.FindByIdAsync(dto.Id.ToString());
                 user = dto.MapTo(user);
-                IdentityResult result = await _userManager.UpdateAsync(user);
+                IdentityResult result = await UserManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -188,7 +180,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(int[] ids)
@@ -197,8 +189,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             List<string> names = new List<string>();
             foreach (int id in ids)
             {
-                User user = await _userManager.FindByIdAsync(id.ToString());
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                User user = await UserManager.FindByIdAsync(id.ToString());
+                IdentityResult result = await UserManager.DeleteAsync(user);
                 if (!result.Succeeded)
                 {
                     return result.ToOperationResult().ToAjaxResult();
@@ -215,13 +207,13 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadUserRoles", Controller = "Role")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadUserRoles), Controller = nameof(RoleController))]
         [UnitOfWork]
         [Description("设置角色")]
         public async Task<AjaxResult> SetRoles(UserSetRoleDto dto)
         {
-            OperationResult result = await _identityContract.SetUserRoles(dto.UserId, dto.RoleIds);
+            OperationResult result = await IdentityContract.SetUserRoles(dto.UserId, dto.RoleIds);
             return result.ToAjaxResult();
         }
 
@@ -232,13 +224,13 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadUserModules", Controller = "Module")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(ModuleController.ReadUserModules), Controller = nameof(ModuleController))]
         [UnitOfWork]
         [Description("设置模块")]
         public async Task<AjaxResult> SetModules(UserSetModuleDto dto)
         {
-            OperationResult result = await _functionAuthManager.SetUserModules(dto.UserId, dto.ModuleIds);
+            OperationResult result = await FunctionAuthManager.SetUserModules(dto.UserId, dto.ModuleIds);
             return result.ToAjaxResult();
         }
     }

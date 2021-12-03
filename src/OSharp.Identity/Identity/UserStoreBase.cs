@@ -260,7 +260,7 @@ namespace OSharp.Identity
 
             //移除用户在线缓存
             OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { user.UserName } };
-            _eventBus.Publish(eventData);
+            await _eventBus.PublishAsync(eventData);
 
             return IdentityResult.Success;
         }

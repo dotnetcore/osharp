@@ -40,6 +40,7 @@ namespace OSharp.Authorization
         where TUser : UserBase<TUserKey>
         where TUserKey : IEquatable<TUserKey>
     {
+        private readonly Random _random = new Random();
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
         private readonly ILogger _logger;
@@ -67,7 +68,7 @@ namespace OSharp.Authorization
 
                 foreach (Guid functionId in functionIds)
                 {
-                    GetFunctionRoles(functionId, provider);
+                    GetFunctionRoles(functionId, provider, true);
                 }
                 _logger.LogInformation($"功能权限：创建 {functionIds.Length} 个功能的“Function-Roles[]”缓存");
             });
@@ -106,15 +107,20 @@ namespace OSharp.Authorization
         /// </summary>
         /// <param name="functionId">功能编号</param>
         /// <param name="scopeProvider">局部服务提供者</param>
+        /// <param name="forceRefresh">是否强制刷新</param>
         /// <returns>能执行功能的角色名称集合</returns>
-        public string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null)
+        public string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null, bool forceRefresh = false)
         {
             string key = GetFunctionRolesKey(functionId);
-            string[] roleNames = _cache.Get<string[]>(key);
-            if (roleNames != null)
+            string[] roleNames;
+            if (!forceRefresh)
             {
-                _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存");
-                return roleNames;
+                roleNames = _cache.Get<string[]>(key);
+                if (roleNames != null)
+                {
+                    _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
+                    return roleNames;
+                }
             }
 
             IServiceProvider provider = scopeProvider;
@@ -133,21 +139,21 @@ namespace OSharp.Authorization
                 serviceScope?.Dispose();
                 return new string[0];
             }
+
+            roleNames = new string[0];
             IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
             TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
-            if (roleIds.Length == 0)
+            if (roleIds.Length > 0)
             {
-                serviceScope?.Dispose();
-                return new string[0];
+                IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
+                roleNames = roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             }
-            IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
-            roleNames = roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
 
-            if (roleNames != null)
-            {
-                _cache.Set(key, roleNames);
-                _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存");
-            }
+            // 有效期为 7 ± 1 天
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 3600, 24 * 3600);
+            _cache.Set(key, roleNames, seconds);
+            _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
+
             serviceScope?.Dispose();
             return roleNames;
         }
@@ -183,11 +189,11 @@ namespace OSharp.Authorization
                 return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             });
 
-            if (functionIds.Length > 0)
-            {
-                _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
-                _cache.Set(key, functionIds);
-            }
+            // 有效期为 7 ± 1 天
+            int seconds = 7 * 24 * 3600 + _random.Next(-24 * 3600, 24 * 3600);
+            _cache.Set(key, functionIds, seconds);
+            _logger.LogDebug($"创建用户“{userName}”的“User-Function[]”缓存");
+
             return functionIds;
         }
 

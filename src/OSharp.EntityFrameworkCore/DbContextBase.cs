@@ -52,12 +52,7 @@ namespace OSharp.Entity
         /// 获取 日志对象
         /// </summary>
         protected ILogger Logger { get; }
-
-        /// <summary>
-        /// 获取或设置 当前上下文所在工作单元，为null将使用EF自动事务而不启用手动事务
-        /// </summary>
-        public IUnitOfWork UnitOfWork { get; set; }
-
+        
         /// <summary>
         ///     将在此上下文中所做的所有更改保存到数据库中，同时自动开启事务或使用现有同连接事务
         /// </summary>
@@ -94,7 +89,7 @@ namespace OSharp.Entity
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
                 IEventBus eventBus = _serviceProvider.GetService<IEventBus>();
-                eventBus.Publish(this, eventData);
+                eventBus?.Publish(this, eventData);
             }
 
             return count;
@@ -110,7 +105,7 @@ namespace OSharp.Entity
         ///         <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
         ///     </para>
         ///     <para>
-        ///         不支持同一上下文实例上的多个活动操作。请使用“等待”确保在此上下文上调用其他方法之前任何异步操作都已完成。
+        ///         不支持同一上下文实例上的多个活动操作。请使用“await”确保在此上下文上调用其他方法之前任何异步操作都已完成。
         ///     </para>
         /// </remarks>
         /// <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken" /> to observe while waiting for the task to complete.</param>
@@ -135,9 +130,28 @@ namespace OSharp.Entity
             }
 
             //开启或使用现有事务
+#if NET5_0
             await BeginOrUseTransactionAsync(cancellationToken);
+#else
+            BeginOrUseTransaction();
+#endif
 
-            int count = await base.SaveChangesAsync(cancellationToken);
+            int count;
+            try
+            {
+                count = await base.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                while (ex.InnerException != null)
+                {
+                    msg += $"---{ex.InnerException.Message}";
+                    ex = ex.InnerException;
+                }
+                Logger.LogDebug($"SaveChangesAsync 引发异常：{msg}");
+                throw;
+            }
             if (count > 0 && auditEntities?.Count > 0)
             {
                 AuditEntityEventData eventData = new AuditEntityEventData(auditEntities);
@@ -156,27 +170,25 @@ namespace OSharp.Entity
         /// </summary>
         public void BeginOrUseTransaction()
         {
-            if (UnitOfWork == null)
-            {
-                return;
-            }
-
-            UnitOfWork.BeginOrUseTransaction();
+            IUnitOfWork unitOfWork = _serviceProvider.GetService<IUnitOfWork>();
+            unitOfWork?.BeginOrUseTransaction(this);
         }
 
+#if NET5_0
+        
         /// <summary>
         /// 异步开启或使用现有事务
         /// </summary>
         public async Task BeginOrUseTransactionAsync(CancellationToken cancellationToken)
         {
-            if (UnitOfWork == null)
+            IUnitOfWork unitOfWork = _serviceProvider.GetService<IUnitOfWork>();
+            if (unitOfWork != null)
             {
-                return;
+                await unitOfWork.BeginOrUseTransactionAsync(this, cancellationToken);
             }
-
-            await UnitOfWork.BeginOrUseTransactionAsync(cancellationToken);
         }
-
+        
+#endif
         /// <summary>
         /// 创建上下文数据模型时，对各个实体类的数据库映射细节进行配置
         /// </summary>
@@ -193,37 +205,22 @@ namespace OSharp.Entity
             }
             Logger.LogInformation($"上下文 {contextType} 注册了{registers.Length}个实体类");
 
-            List<IMutableEntityType> entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
-            foreach (IMutableEntityType entityType in entityTypes)
+            // 应用批量实体配置
+            List<IMutableEntityType> mutableEntityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+            IEntityBatchConfiguration[] entityBatchConfigurations =
+                _serviceProvider.GetServices<IEntityBatchConfiguration>().ToArray();
+            if (entityBatchConfigurations.Length > 0)
             {
-                //启用时间属性UTC格式
-                if (_osharpDbOptions.DateTimeUtcFormatEnabled)
+                foreach (IMutableEntityType mutableEntityType in mutableEntityTypes)
                 {
-                    IEntityDateTimeUtcConversion utcConversion = _serviceProvider.GetService<IEntityDateTimeUtcConversion>();
-                    utcConversion.Convert(entityType);
+                    foreach (IEntityBatchConfiguration entityBatchConfiguration in entityBatchConfigurations)
+                    {
+                        entityBatchConfiguration.Configure(modelBuilder, mutableEntityType);
+                    }
                 }
-
-                //按预定前缀更改表名
-                string prefix = GetTableNamePrefix(entityType.ClrType);
-                if (prefix.IsNullOrEmpty())
-                {
-                    continue;
-                }
-                modelBuilder.Entity(entityType.ClrType).ToTable($"{prefix}_{entityType.GetTableName()}");
             }
         }
-
-        /// <summary>
-        /// 从实体类型获取表名前缀
-        /// </summary>
-        /// <param name="entityType">实体类型</param>
-        /// <returns></returns>
-        protected virtual string GetTableNamePrefix(Type entityType)
-        {
-            TableNamePrefixAttribute attribute = entityType.GetAttribute<TableNamePrefixAttribute>();
-            return attribute?.Prefix;
-        }
-
+        
         ///// <summary>
         ///// 模型配置
         ///// </summary>
@@ -235,14 +232,5 @@ namespace OSharp.Entity
         //        optionsBuilder.UseLazyLoadingProxies();
         //    }
         //}
-
-        /// <summary>
-        ///     Releases the allocated resources for this context.
-        /// </summary>
-        public override void Dispose()
-        {
-            base.Dispose();
-            UnitOfWork = null;
-        }
     }
 }

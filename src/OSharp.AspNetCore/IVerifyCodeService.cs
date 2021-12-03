@@ -25,11 +25,11 @@ namespace OSharp.AspNetCore
         /// <param name="removeIfSuccess">验证成功时是否移除</param>
         /// <returns></returns>
         bool CheckCode(string code, string id, bool removeIfSuccess = true);
-        
+
         /// <summary>
         /// 设置验证码到Session中
         /// </summary>
-        void SetCode(string code, out string id);
+        string SetCode(string code, int seconds = 60 * 3);
 
         /// <summary>
         /// 将图片序列化成字符串

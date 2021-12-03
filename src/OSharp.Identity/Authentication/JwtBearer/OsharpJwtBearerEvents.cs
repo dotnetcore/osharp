@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
+using OSharp.Data;
+
 
 namespace OSharp.Authentication.JwtBearer
 {
@@ -27,13 +29,17 @@ namespace OSharp.Authentication.JwtBearer
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task TokenValidated(TokenValidatedContext context)
+        public override async Task TokenValidated(TokenValidatedContext context)
         {
             ClaimsPrincipal user = context.Principal;
             ClaimsIdentity identity = user.Identity as ClaimsIdentity;
             
-            IAccessClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IAccessClaimsProvider>();
-            return accessClaimsProvider.RefreshIdentity(identity);
+            IUserClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IUserClaimsProvider>();
+            OperationResult<ClaimsIdentity> result = await accessClaimsProvider.RefreshIdentity(identity);
+            if (!result.Succeeded)
+            {
+                context.Fail(result.Message);
+            }
         }
 
         /// <summary>

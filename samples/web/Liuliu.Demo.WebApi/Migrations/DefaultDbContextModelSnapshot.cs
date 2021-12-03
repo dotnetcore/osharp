@@ -15,8 +15,8 @@ namespace Liuliu.Demo.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("OSharp.Authorization.EntityInfos.EntityInfo", b =>
@@ -30,21 +30,24 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PropertyJson")
                         .IsRequired()
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TypeName")
                         .IsUnique()
-                        .HasName("ClassFullNameIndex");
+                        .HasDatabaseName("ClassFullNameIndex");
 
                     b.ToTable("Auth_EntityInfo");
                 });
@@ -59,10 +62,12 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Action")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Area")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("AuditEntityEnabled")
                         .HasColumnType("bit");
@@ -74,7 +79,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Controller")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsAccessTypeChanged")
                         .HasColumnType("bit");
@@ -91,14 +97,18 @@ namespace Liuliu.Demo.Web.Migrations
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSlaveDatabase")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Area", "Controller", "Action")
                         .IsUnique()
-                        .HasName("AreaControllerActionIndex")
+                        .HasDatabaseName("AreaControllerActionIndex")
                         .HasFilter("[Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL");
 
                     b.ToTable("Auth_Function");
@@ -110,20 +120,37 @@ namespace Liuliu.Demo.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Display")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ValueJson")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ValueType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique()
+                        .HasDatabaseName("KeyIndex");
 
                     b.ToTable("Systems_KeyValue");
                 });
@@ -141,6 +168,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilterGroupJson")
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsLocked")
@@ -158,7 +186,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("EntityId", "RoleId", "Operation")
                         .IsUnique()
-                        .HasName("EntityRoleIndex");
+                        .HasDatabaseName("EntityRoleIndex");
 
                     b.ToTable("Auth_EntityRole");
                 });
@@ -176,6 +204,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilterGroupJson")
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsLocked")
@@ -189,7 +218,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("UserId");
 
                     b.HasIndex("EntityId", "UserId")
-                        .HasName("EntityUserIndex");
+                        .HasDatabaseName("EntityUserIndex");
 
                     b.ToTable("Auth_EntityUser");
                 });
@@ -203,11 +232,13 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<double>("OrderCode")
                         .HasColumnType("float");
@@ -216,10 +247,12 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("TreePathString")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.HasKey("Id");
 
@@ -246,7 +279,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ModuleId", "FunctionId")
                         .IsUnique()
-                        .HasName("ModuleFunctionIndex");
+                        .HasDatabaseName("ModuleFunctionIndex");
 
                     b.ToTable("Auth_ModuleFunction");
                 });
@@ -269,7 +302,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ModuleId", "RoleId")
                         .IsUnique()
-                        .HasName("ModuleRoleIndex");
+                        .HasDatabaseName("ModuleRoleIndex");
 
                     b.ToTable("Auth_ModuleRole");
                 });
@@ -295,7 +328,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ModuleId", "UserId")
                         .IsUnique()
-                        .HasName("ModuleUserIndex");
+                        .HasDatabaseName("ModuleUserIndex");
 
                     b.ToTable("Auth_ModuleUser");
                 });
@@ -310,13 +343,15 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Ip")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("LogoutTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserAgent")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -337,13 +372,15 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -361,7 +398,8 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -386,15 +424,17 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(512)")
-                        .HasMaxLength(512);
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -402,7 +442,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("NormalizedName", "DeletedTime")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("Identity_Role");
@@ -416,10 +456,12 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -443,7 +485,8 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -452,13 +495,15 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("HeadImg")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
@@ -476,47 +521,55 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NormalizeEmail")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NormalizedUserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MessageId");
 
                     b.HasIndex("NormalizeEmail", "DeletedTime")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName", "DeletedTime")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("Identity_User");
@@ -531,10 +584,12 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("ClaimType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -554,7 +609,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("RegisterIp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -574,19 +630,23 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -597,7 +657,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("LoginProvider", "ProviderKey")
                         .IsUnique()
-                        .HasName("UserLoginIndex")
+                        .HasDatabaseName("UserLoginIndex")
                         .HasFilter("[LoginProvider] IS NOT NULL AND [ProviderKey] IS NOT NULL");
 
                     b.ToTable("Identity_UserLogin");
@@ -630,7 +690,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId", "RoleId", "DeletedTime")
                         .IsUnique()
-                        .HasName("UserRoleIndex")
+                        .HasDatabaseName("UserRoleIndex")
                         .HasFilter("[DeletedTime] IS NOT NULL");
 
                     b.ToTable("Identity_UserRole");
@@ -643,22 +703,25 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId", "LoginProvider", "Name")
                         .IsUnique()
-                        .HasName("UserTokenIndex")
+                        .HasDatabaseName("UserTokenIndex")
                         .HasFilter("[LoginProvider] IS NOT NULL AND [Name] IS NOT NULL");
 
                     b.ToTable("Identity_UserToken");
@@ -799,10 +862,13 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EntityKey")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("OperateType")
                         .HasColumnType("int");
@@ -811,7 +877,9 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TypeName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -827,7 +895,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Browser")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -836,31 +905,40 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FunctionName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Ip")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("OperationSystem")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("ResultType")
                         .HasColumnType("int");
 
                     b.Property<string>("UserAgent")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
@@ -877,18 +955,23 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DataType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("FieldName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NewValue")
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OriginalValue")
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -896,6 +979,66 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("AuditEntityId");
 
                     b.ToTable("Systems_AuditProperty");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Acl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Data")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<double>("OrderCode")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Target")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("TreePathString")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Systems_Menu");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityRole", b =>
@@ -911,6 +1054,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EntityInfo");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityUser", b =>
@@ -926,6 +1073,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EntityInfo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.Module", b =>
@@ -933,6 +1084,8 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasOne("OSharp.Hosting.Authorization.Entities.Module", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleFunction", b =>
@@ -948,6 +1101,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Function");
+
+                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleRole", b =>
@@ -963,6 +1120,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Module");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleUser", b =>
@@ -978,6 +1139,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Module");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.LoginLog", b =>
@@ -987,6 +1152,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.Organization", b =>
@@ -1010,6 +1177,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.User", b =>
@@ -1026,6 +1195,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserDetail", b =>
@@ -1035,6 +1206,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("OSharp.Hosting.Identity.Entities.UserDetail", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserLogin", b =>
@@ -1044,6 +1217,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserRole", b =>
@@ -1059,6 +1234,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserToken", b =>
@@ -1068,6 +1247,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.Message", b =>
@@ -1077,6 +1258,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReceive", b =>
@@ -1092,6 +1275,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Message");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReply", b =>
@@ -1119,6 +1306,14 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("BelongMessage");
+
+                    b.Navigation("ParentMessage");
+
+                    b.Navigation("ParentReply");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditEntity", b =>
@@ -1128,6 +1323,8 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("OperationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Operation");
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditProperty", b =>
@@ -1137,6 +1334,73 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasForeignKey("AuditEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AuditEntity");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
+                {
+                    b.HasOne("OSharp.Hosting.Systems.Entities.Menu", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.Module", b =>
+                {
+                    b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Identity.Entities.Role", b =>
+                {
+                    b.Navigation("RoleClaims");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Identity.Entities.User", b =>
+                {
+                    b.Navigation("UserClaims");
+
+                    b.Navigation("UserDetail");
+
+                    b.Navigation("UserLogins");
+
+                    b.Navigation("UserRoles");
+
+                    b.Navigation("UserTokens");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Infos.Entities.Message", b =>
+                {
+                    b.Navigation("PublicRoles");
+
+                    b.Navigation("Receives");
+
+                    b.Navigation("Recipients");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReply", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditEntity", b =>
+                {
+                    b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditOperation", b =>
+                {
+                    b.Navigation("AuditEntities");
+                });
+
+            modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

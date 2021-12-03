@@ -30,15 +30,13 @@ namespace OSharp.Authorization.EntityInfos.Tests
 
         private IServiceProvider GetServiceProvider()
         {
-            var entityTypeFinder = Substitute.For<IEntityTypeFinder>();
             _logger = Substitute.For<ILogger<EntityInfoHandler>>();
             var factory = Substitute.For<ILoggerFactory>();
 
-            var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService<IEntityTypeFinder>().Returns(entityTypeFinder);
-            serviceProvider.GetService<ILoggerFactory>().Returns(factory);
+            var provider = Substitute.For<IServiceProvider>();
+            provider.GetService<ILoggerFactory>().Returns(factory);
             factory.CreateLogger<EntityInfoHandler>().Returns(_logger);
-            return serviceProvider;
+            return provider;
         }
 
         [Fact]
@@ -61,6 +59,8 @@ namespace OSharp.Authorization.EntityInfos.Tests
             IServiceProvider scopedProvider = Substitute.For<IServiceProvider>();
             IRepository<EntityInfo, Guid> repository = Substitute.For<IRepository<EntityInfo, Guid>>();
             scopedProvider.GetService<IRepository<EntityInfo, Guid>>().Returns(repository);
+            IUnitOfWork unitOfWork = Substitute.For<IUnitOfWork>();
+            scopedProvider.GetService(typeof(IUnitOfWork)).Returns(unitOfWork);
 
             List<EntityInfo> entityInfos = Substitute.For<List<EntityInfo>>();
             //entityInfos.CheckSyncByHash(scopedProvider, _logger).Returns(false);

@@ -1,15 +1,22 @@
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
+using Liuliu.Demo.Identity.Entities;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using Microsoft.Extensions.DependencyModel;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Modules;
 using OSharp.Collections;
 using OSharp.Core.Options;
+using OSharp.Data;
 using OSharp.Entity;
-using OSharp.Redis;
+using OSharp.Entity.DynamicProxy;
+using OSharp.Identity;
 
 using StackExchange.Profiling.Internal;
 
@@ -19,19 +26,23 @@ namespace Liuliu.Demo.Web.Controllers
     public class Test2Controller : SiteApiControllerBase
     {
         private readonly DefaultDbContext _dbContext;
+        private readonly RoleManager<Role> _roleManager;
 
-        public Test2Controller(DefaultDbContext dbContext)
+        public Test2Controller(DefaultDbContext dbContext, RoleManager<Role> roleManager)
         {
             _dbContext = dbContext;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         [Description("测试一下")]
-        public IActionResult Test01()
+        [Transactional]
+        public virtual async Task<OperationResult<Role>> Test01(string name)
         {
-            RedisClient redis = new RedisClient();
-            redis.StringSet("Test:Key001", "value001", TimeSpan.FromSeconds(20));
-            return Content(redis.StringGet("Test:Key001"));
+            Role role = new Role() { Name = name, IsDefault = false };
+            var result = await _roleManager.CreateAsync(role);
+            OperationResult result2 = result.ToOperationResult();
+            return new OperationResult<Role>(result2.ResultType, result2.Message, role);
         }
 
         /// <summary>
@@ -48,5 +59,6 @@ namespace Liuliu.Demo.Web.Controllers
 
             return DependencyContext.Default.CompileLibraries.Select(m => $"{m.Name},{m.Version}").ExpandAndToString("\r\n");
         }
+
     }
 }

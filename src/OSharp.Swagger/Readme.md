@@ -20,6 +20,7 @@
     }
   ],
   "RoutePrefix": "swagger",
+  "IsHideSchemas": false,
   "MiniProfiler": true,
   "Enabled": true
 }

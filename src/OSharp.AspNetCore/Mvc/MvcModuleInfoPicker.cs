@@ -133,7 +133,7 @@ namespace OSharp.AspNetCore.Mvc
             foreach (DependOnFunctionAttribute dependOnAttr in dependOnAttrs)
             {
                 string dependArea = dependOnAttr.Area == null ? area : dependOnAttr.Area == string.Empty ? null : dependOnAttr.Area;
-                string dependController = dependOnAttr.Controller ?? controller;
+                string dependController = dependOnAttr.Controller?.Replace("Controller", string.Empty) ?? controller;
                 IFunction function = FunctionHandler.GetFunction(dependArea, dependController, dependOnAttr.Action);
                 if (function == null)
                 {

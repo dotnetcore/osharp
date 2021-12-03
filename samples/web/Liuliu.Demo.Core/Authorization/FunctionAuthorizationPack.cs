@@ -23,6 +23,9 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.Authorization
 {
+    /// <summary>
+    /// 功能权限模块
+    /// </summary>
     [DependsOnPacks(typeof(IdentityPack), typeof(MvcFunctionPack))]
     public class FunctionAuthorizationPack
         : FunctionAuthorizationPackBase<FunctionAuthManager, FunctionAuthorization, FunctionAuthCache, ModuleHandler, Function,

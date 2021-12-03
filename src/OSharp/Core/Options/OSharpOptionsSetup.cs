@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="OSharpOptionsSetup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -86,6 +86,22 @@ namespace OSharp.Core.Options
                 options.Cookie = cookie;
             }
 
+            //MvcOptions
+            section = _configuration.GetSection("OSharp:Mvc");
+            MvcOptions mvc = section.Get<MvcOptions>();
+            if (mvc != null)
+            {
+                options.Mvc = mvc;
+            }
+
+            //CorsOptions
+            section = _configuration.GetSection("OSharp:Cors");
+            CorsOptions cors = section.Get<CorsOptions>();
+            if (cors != null)
+            {
+                options.Cors = cors;
+            }
+
             // RedisOptions
             section = _configuration.GetSection("OSharp:Redis");
             RedisOptions redis = section.Get<RedisOptions>();
@@ -145,7 +161,8 @@ namespace OSharp.Core.Options
                 {
                     DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
                     ConnectionString = connectionString,
-                    DatabaseType = DatabaseType.SqlServer
+                    DatabaseType = DatabaseType.SqlServer,
+                    Slaves = new SlaveDatabaseOptions[0]
                 };
                 options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;

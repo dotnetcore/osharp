@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity.KeyGenerate;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -42,53 +43,32 @@ namespace OSharp.Entity
         where TEntity : class, IEntity<TKey>, new()
         where TKey : IEquatable<TKey>
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
         private readonly ICancellationTokenProvider _cancellationTokenProvider;
         private readonly IPrincipal _principal;
+        private readonly IDataAuthService _dataAuthService;
 
         /// <summary>
         /// 初始化一个<see cref="Repository{TEntity, TKey}"/>类型的新实例
         /// </summary>
         public Repository(IServiceProvider serviceProvider)
         {
-            UnitOfWork = serviceProvider.GetUnitOfWork<TEntity, TKey>();
-            _dbContext = UnitOfWork.GetEntityDbContext<TEntity, TKey>();
+            _serviceProvider = serviceProvider;
+            _dbContext = serviceProvider.GetDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
             _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
+            _dataAuthService = serviceProvider.GetService<IDataAuthService>();
         }
 
         /// <summary>
-        /// 获取 当前单元操作对象
+        /// 获取 数据上下文
         /// </summary>
-        public IUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
-        /// 获取 <typeparamref name="TEntity"/>不跟踪数据更改（NoTracking）的查询数据源
-        /// </summary>
-        public virtual IQueryable<TEntity> Entities
-        {
-            get
-            {
-                Expression<Func<TEntity, bool>> dataFilterExp = GetDataFilter(DataAuthOperation.Read);
-                return _dbSet.AsQueryable().AsNoTracking().Where(dataFilterExp);
-            }
-        }
-
-        /// <summary>
-        /// 获取 <typeparamref name="TEntity"/>跟踪数据更改（Tracking）的查询数据源
-        /// </summary>
-        public virtual IQueryable<TEntity> TrackEntities
-        {
-            get
-            {
-                Expression<Func<TEntity, bool>> dataFilterExp = GetDataFilter(DataAuthOperation.Read);
-                return _dbSet.AsQueryable().Where(dataFilterExp);
-            }
-        }
+        public IDbContext DbContext => _dbContext;
 
         #region 同步方法
 
@@ -487,9 +467,9 @@ namespace OSharp.Entity
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> predicate, bool filterByDataAuth)
         {
             IQueryable<TEntity> query = _dbSet.AsQueryable();
-            if (filterByDataAuth)
+            if (filterByDataAuth && _dataAuthService != null)
             {
-                Expression<Func<TEntity, bool>> dataAuthExp = GetDataFilter(DataAuthOperation.Read);
+                Expression<Func<TEntity, bool>> dataAuthExp = _dataAuthService.GetDataFilter<TEntity>(DataAuthOperation.Read);
                 query = query.Where(dataAuthExp);
             }
             if (predicate == null)
@@ -657,7 +637,7 @@ namespace OSharp.Entity
             List<string> names = new List<string>();
             foreach (TKey id in ids)
             {
-                TEntity entity = _dbSet.Find(id);
+                TEntity entity = await _dbSet.FindAsync(id);
                 if (entity == null)
                 {
                     continue;
@@ -704,7 +684,11 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             // todo: 检测删除的数据权限
 
+#if NET5_0
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+#else
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
+#endif
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
                 // 逻辑删除
@@ -796,7 +780,11 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
+#if NET5_0
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
+#else
+            ((DbContextBase)_dbContext).BeginOrUseTransaction();
+#endif
             return await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
         }
 
@@ -856,18 +844,28 @@ namespace OSharp.Entity
 
         private void SetEmptyGuidKey(TEntity entity)
         {
-            if (typeof(TKey) != typeof(Guid))
+            Type keyType = typeof(TKey);
+            //自增int
+            if (keyType == typeof(int))
             {
+                IKeyGenerator<int> generator = _serviceProvider.GetService<IKeyGenerator<int>>();
+                entity.Id = generator.Create().CastTo<TKey>();
                 return;
             }
-
-            if (!entity.Id.Equals(Guid.Empty))
+            //雪花long
+            if (keyType == typeof(long) && entity.Id.Equals(default(long)))
             {
-                return;
+                IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
+                entity.Id = generator.Create().CastTo<TKey>();
             }
-
-            DatabaseType databaseType = _dbContext.GetDatabaseType();
-            entity.Id = SequentialGuid.Create(databaseType).CastTo<TKey>();
+            //顺序guid
+            if (keyType == typeof(Guid) && entity.Id.Equals(Guid.Empty))
+            {
+                DatabaseType databaseType = _dbContext.GetDatabaseType();
+                ISequentialGuidGenerator generator =
+                    _serviceProvider.GetServices<ISequentialGuidGenerator>().FirstOrDefault(m => m.DatabaseType == databaseType);
+                entity.Id = generator == null ? SequentialGuid.Create(databaseType).CastTo<TKey>() : generator.Create().CastTo<TKey>();
+            }
         }
 
         private static string GetNameValue(object value)
@@ -888,26 +886,20 @@ namespace OSharp.Entity
         /// </summary>
         /// <param name="operation">数据权限操作</param>
         /// <param name="entities">要验证的实体对象</param>
-        private static void CheckDataAuth(DataAuthOperation operation, params TEntity[] entities)
+        private void CheckDataAuth(DataAuthOperation operation, params TEntity[] entities)
         {
-            if (entities.Length == 0)
+            if (entities.Length == 0 || _dataAuthService == null)
             {
                 return;
             }
-            Expression<Func<TEntity, bool>> exp = GetDataFilter(operation);
-            Func<TEntity, bool> func = exp.Compile();
-            bool flag = entities.All(func);
+            
+            bool flag = _dataAuthService.CheckDataAuth<TEntity>(operation, entities);
             if (!flag)
             {
                 throw new OsharpException($"实体 {typeof(TEntity)} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
             }
         }
-
-        private static Expression<Func<TEntity, bool>> GetDataFilter(DataAuthOperation operation)
-        {
-            return FilterHelper.GetDataFilterExpression<TEntity>(operation: operation);
-        }
-
+        
         private TEntity[] CheckInsert(params TEntity[] entities)
         {
             for (int i = 0; i < entities.Length; i++)

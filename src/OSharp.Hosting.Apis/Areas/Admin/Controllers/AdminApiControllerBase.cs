@@ -7,10 +7,14 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Authorization;
+using System;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
+using OSharp.Caching;
+using OSharp.Filter;
 
 
 namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
@@ -20,7 +24,18 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     /// </summary>
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy)]
+    [ApiAuthorize]
     public abstract class AdminApiControllerBase : AreaApiControllerBase
-    { }
+    {
+        private readonly IServiceProvider _provider;
+
+        protected AdminApiControllerBase(IServiceProvider provider)
+        {
+            _provider = provider;
+        }
+
+        protected ICacheService CacheService => _provider.GetRequiredService<ICacheService>();
+
+        protected IFilterService FilterService => _provider.GetRequiredService<IFilterService>();
+    }
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -23,8 +23,11 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 
+using OSharp.Authorization.Events;
 using OSharp.Caching;
 
 
@@ -42,6 +45,7 @@ namespace Liuliu.Demo.Identity
         private readonly IRepository<UserLogin, Guid> _userLoginRepository;
         private readonly IDistributedCache _cache;
         private readonly IPrincipal _currentUser;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
         private readonly IRepository<UserRole, Guid> _userRoleRepository;
         private readonly ILogger<IdentityService> _logger;
@@ -58,7 +62,8 @@ namespace Liuliu.Demo.Identity
             IRepository<UserDetail, int> userDetailRepository,
             IRepository<UserLogin, Guid> userLoginRepository,
             IDistributedCache cache,
-            IPrincipal currentUser)
+            IPrincipal currentUser,
+            IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -70,6 +75,7 @@ namespace Liuliu.Demo.Identity
             _userLoginRepository = userLoginRepository;
             _cache = cache;
             _currentUser = currentUser;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace Liuliu.Demo.Identity
             if (count > 0)
             {
                 RegisterEventData eventData = new RegisterEventData() { RegisterDto = dto, User = user };
-                _eventBus.Publish(eventData);
+                await _eventBus.PublishAsync(eventData);
                 return new OperationResult<User>(OperationResultType.Success, "用户注册成功", user);
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
@@ -144,7 +150,10 @@ namespace Liuliu.Demo.Identity
 
             //触发登录成功事件
             LoginEventData loginEventData = new LoginEventData() { LoginDto = dto, User = user };
-            _eventBus.Publish(loginEventData);
+            await _eventBus.PublishAsync(loginEventData);
+            FunctionAuthCacheRefreshEventData functionAuthCacheRefreshEventData =
+                new FunctionAuthCacheRefreshEventData() { UserNames = new[] { user.UserName } };
+            await _eventBus.PublishAsync(functionAuthCacheRefreshEventData);
 
             return result;
         }
@@ -271,7 +280,8 @@ namespace Liuliu.Demo.Identity
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> Logout(int userId)
         {
-            await _signInManager.SignOutAsync();
+            //await _signInManager.SignOutAsync();
+            //todo: Site和API的授权与退出，分别处理
             _logger.LogInformation(4, $"用户 {userId} 登出系统");
 
             //触发登出成功事件

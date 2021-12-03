@@ -50,16 +50,19 @@ namespace OSharp.Entity
         /// </summary>
         public void Initialize()
         {
-            TEntity[] entities = SeedData();
-            SyncToDatabase(entities);
-            _logger.LogInformation($"同步 {entities.Length} 个“{typeof(TEntity)}”种子数据到数据库");
+            _rootProvider.ExecuteScopedWork(provider =>
+            {
+                TEntity[] entities = SeedData(provider);
+                SyncToDatabase(entities, provider);
+                _logger.LogInformation($"同步 {entities.Length} 个“{typeof(TEntity)}”种子数据到数据库");
+            });
         }
 
         /// <summary>
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected abstract TEntity[] SeedData();
+        protected abstract TEntity[] SeedData(IServiceProvider provider);
 
         /// <summary>
         /// 重写以提供判断某个实体是否存在的表达式
@@ -71,27 +74,26 @@ namespace OSharp.Entity
         /// <summary>
         /// 将种子数据初始化到数据库
         /// </summary>
-        /// <param name="entities"></param>
-        protected virtual void SyncToDatabase(TEntity[] entities)
+        protected virtual void SyncToDatabase(TEntity[] entities, IServiceProvider provider)
         {
             if (entities == null || entities.Length == 0)
             {
                 return;
             }
 
-            _rootProvider.BeginUnitOfWorkTransaction(provider =>
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
+            IRepository<TEntity, TKey> repository = provider.GetService<IRepository<TEntity, TKey>>();
+            foreach (TEntity entity in entities)
+            {
+                if (repository.CheckExists(ExistingExpression(entity)))
                 {
-                    IRepository<TEntity, TKey> repository = provider.GetService<IRepository<TEntity, TKey>>();
-                    foreach (TEntity entity in entities)
-                    {
-                        if (repository.CheckExists(ExistingExpression(entity)))
-                        {
-                            continue;
-                        }
+                    continue;
+                }
 
-                        repository.Insert(entity);
-                    }
-                });
+                repository.Insert(entity);
+            }
+
+            unitOfWork.Commit();
         }
     }
 }

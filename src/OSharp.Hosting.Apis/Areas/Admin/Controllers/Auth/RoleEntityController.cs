@@ -37,13 +37,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     public class RoleEntityController : AdminApiControllerBase
     {
         private readonly DataAuthManager _dataAuthManager;
-        private readonly IFilterService _filterService;
 
-        public RoleEntityController(DataAuthManager dataAuthManager,
-            IFilterService filterService)
+        public RoleEntityController(IServiceProvider provider) : base(provider)
         {
-            _dataAuthManager = dataAuthManager;
-            _filterService = filterService;
+            _dataAuthManager = provider.GetRequiredService<DataAuthManager>();
         }
 
         /// <summary>
@@ -53,11 +50,11 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>角色数据权限列表分页信息</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("ReadProperties", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(EntityInfoController.ReadProperties), Controller = nameof(EntityInfoController))]
         [Description("读取")]
         public PageData<EntityRoleOutputDto> Read(PageRequest request)
         {
-            Expression<Func<EntityRole, bool>> predicate = _filterService.GetExpression<EntityRole>(request.FilterGroup);
+            Expression<Func<EntityRole, bool>> predicate = FilterService.GetExpression<EntityRole>(request.FilterGroup);
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[]
@@ -68,8 +65,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 };
             }
             RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
-            Func<EntityRole, bool> updateFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
-            Func<EntityRole, bool> deleteFunc = _filterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
+            Func<EntityRole, bool> updateFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
+            Func<EntityRole, bool> deleteFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
             var page = _dataAuthManager.EntityRoles.ToPage(predicate,
                 request.PageCondition,
                 m => new
@@ -96,9 +93,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadNode", Controller = "Role")]
-        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadNode), Controller = nameof(RoleController))]
+        [DependOnFunction(nameof(EntityInfoController.ReadNode), Controller = nameof(EntityInfoController))]
         [UnitOfWork]
         [Description("新增")]
         public async Task<AjaxResult> Create(params EntityRoleInputDto[] dtos)
@@ -116,9 +113,9 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
-        [DependOnFunction("ReadNode", Controller = "Role")]
-        [DependOnFunction("ReadNode", Controller = "EntityInfo")]
+        [DependOnFunction(nameof(Read))]
+        [DependOnFunction(nameof(RoleController.ReadNode), Controller = nameof(RoleController))]
+        [DependOnFunction(nameof(EntityInfoController.ReadNode), Controller = nameof(EntityInfoController))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(params EntityRoleInputDto[] dtos)
@@ -135,7 +132,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete(params Guid[] ids)

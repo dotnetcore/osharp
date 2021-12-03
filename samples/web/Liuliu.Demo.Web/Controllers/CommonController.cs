@@ -68,7 +68,7 @@ namespace Liuliu.Demo.Web.Controllers
                 RandomPosition = true
             };
             Bitmap bitmap = coder.CreateImage(4, out string code);
-            _verifyCodeService.SetCode(code, out string id);
+            string id = _verifyCodeService.SetCode(code);
             return _verifyCodeService.GetImageString(bitmap, id);
         }
 

@@ -7,12 +7,14 @@
 //  <last-date>2020-02-11 14:12</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
 
@@ -26,14 +28,16 @@ namespace OSharp.Authorization
     {
         private readonly IFunctionAuthorization _functionAuthorization;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IServiceProvider _provider;
 
         /// <summary>
         /// 初始化一个<see cref="FunctionAuthorizationHandler"/>类型的新实例
         /// </summary>
-        public FunctionAuthorizationHandler(IFunctionAuthorization functionAuthorization, IHttpContextAccessor httpContextAccessor)
+        public FunctionAuthorizationHandler(IFunctionAuthorization functionAuthorization, IHttpContextAccessor httpContextAccessor, IServiceProvider provider)
         {
             _functionAuthorization = functionAuthorization;
             _httpContextAccessor = httpContextAccessor;
+            _provider = provider;
         }
 
         /// <summary>
@@ -43,15 +47,30 @@ namespace OSharp.Authorization
         /// <param name="requirement">The requirement to evaluate.</param>
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, FunctionRequirement requirement)
         {
-            HttpContext httpContext = _httpContextAccessor.HttpContext;
-            if (context.Resource is RouteEndpoint endpoint)
+            RouteEndpoint endpoint = null;
+            HttpContext httpContext = null;
+            switch (context.Resource)
             {
-                IFunction function = endpoint.GetExecuteFunction(httpContext);
-                AuthorizationResult result = AuthorizeCore(context, function);
-                if (result.IsOk)
-                {
-                    context.Succeed(requirement);
-                }
+                case HttpContext resource1:
+                    httpContext = resource1;
+                    endpoint = httpContext.GetEndpoint() as RouteEndpoint;
+                    break;
+                case RouteEndpoint resource2:
+                    httpContext = _httpContextAccessor.HttpContext;
+                    endpoint = resource2;
+                    break;
+            }
+
+            if (endpoint == null || httpContext == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            IFunction function = endpoint.GetExecuteFunction(httpContext);
+            AuthorizationResult result = AuthorizeCore(context, function);
+            if (result.IsOk)
+            {
+                context.Succeed(requirement);
             }
 
             return Task.CompletedTask;

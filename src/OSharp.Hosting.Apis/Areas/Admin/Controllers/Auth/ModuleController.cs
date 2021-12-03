@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
@@ -32,12 +33,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     public class ModuleController : AdminApiControllerBase
     {
         private readonly FunctionAuthManager _functionAuthManager;
-        private readonly IFilterService _filterService;
 
-        public ModuleController(FunctionAuthManager functionAuthManager, IFilterService filterService)
+        public ModuleController(IServiceProvider provider) : base(provider)
         {
-            _functionAuthManager = functionAuthManager;
-            _filterService = filterService;
+            _functionAuthManager = provider.GetRequiredService<FunctionAuthManager>();
         }
 
         /// <summary>
@@ -139,7 +138,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>模块功能信息</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [Description("读取模块功能")]
         public PageData<FunctionOutputDto2> ReadFunctions(PageRequest request)
         {
@@ -147,7 +146,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             {
                 return new PageData<FunctionOutputDto2>();
             }
-            Expression<Func<Module, bool>> moduleExp = _filterService.GetExpression<Module>(request.FilterGroup);
+            Expression<Func<Module, bool>> moduleExp = FilterService.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
@@ -174,7 +173,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("新增子节点")]
         public async Task<AjaxResult> Create(ModuleInputDto dto)
@@ -192,7 +191,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(ModuleInputDto dto)
@@ -214,7 +213,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("删除")]
         public async Task<AjaxResult> Delete([FromForm] int id)
@@ -237,7 +236,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [DependOnFunction("ReadTreeNode", Controller = "Function")]
         [UnitOfWork]
         [Description("设置功能")]

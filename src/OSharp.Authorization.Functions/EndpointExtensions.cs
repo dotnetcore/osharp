@@ -33,7 +33,7 @@ namespace OSharp.Authorization
         public static IFunction GetExecuteFunction(this RouteEndpoint endpoint, HttpContext context)
         {
             IServiceProvider provider = context.RequestServices;
-            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
+            ScopedDictionary dict = provider.GetRequiredService<ScopedDictionary>();
             if (dict.Function != null)
             {
                 return dict.Function;
@@ -45,7 +45,7 @@ namespace OSharp.Authorization
             IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
             if (functionHandler == null)
             {
-                throw new OsharpException("获取正在执行的功能时 IFunctionHandler 无法解析");
+                return null;
             }
 
             IFunction function = functionHandler.GetFunction(area, controller, action);
@@ -91,12 +91,5 @@ namespace OSharp.Authorization
             return endpoint.RoutePattern.RequiredValues["action"].ToString();
         }
 
-        /// <summary>
-        /// 需要Osharp授权
-        /// </summary>
-        public static ControllerActionEndpointConventionBuilder RequireOsharpAuthorization(this ControllerActionEndpointConventionBuilder builder)
-        {
-            return builder.RequireAuthorization(FunctionRequirement.OsharpPolicy);
-        }
     }
 }

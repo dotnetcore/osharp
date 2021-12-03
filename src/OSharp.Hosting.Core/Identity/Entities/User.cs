@@ -9,6 +9,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using OSharp.Identity.Entities;
 
@@ -24,7 +25,7 @@ namespace OSharp.Hosting.Identity.Entities
         /// <summary>
         /// 获取或设置 备注
         /// </summary>
-        [DisplayName("备注")]
+        [DisplayName("备注"), StringLength(500)]
         public string Remark { get; set; }
 
         /// <summary>

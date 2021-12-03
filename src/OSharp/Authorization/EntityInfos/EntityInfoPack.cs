@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
-using OSharp.Systems;
+using OSharp.Core.Systems;
 
 
 namespace OSharp.Authorization.EntityInfos
@@ -23,7 +23,6 @@ namespace OSharp.Authorization.EntityInfos
     /// 实体信息模块
     /// </summary>
     [Description("数据实体模块")]
-    [DependsOnPacks(typeof(SystemPack))]
     public class EntityInfoPack : OsharpPack
     {
         /// <summary>

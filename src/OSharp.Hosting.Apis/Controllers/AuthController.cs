@@ -10,13 +10,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Authorization;
 using OSharp.Authorization.Modules;
-using OSharp.Hosting.Authorization;
+using OSharp.Collections;
 
 
 namespace OSharp.Hosting.Apis.Controllers
@@ -25,11 +28,15 @@ namespace OSharp.Hosting.Apis.Controllers
     [ModuleInfo(Order = 2)]
     public class AuthController : SiteApiControllerBase
     {
-        private readonly FunctionAuthManager _functionAuthManager;
+        private readonly IServiceProvider _provider;
 
-        public AuthController(FunctionAuthManager functionAuthManager)
+        /// <summary>
+        /// 初始化一个<see cref="SiteApiControllerBase"/>类型的新实例
+        /// </summary>
+        public AuthController(IServiceProvider provider)
+            : base(provider)
         {
-            _functionAuthManager = functionAuthManager;
+            _provider = provider;
         }
 
         /// <summary>
@@ -48,14 +55,45 @@ namespace OSharp.Hosting.Apis.Controllers
 
         /// <summary>
         /// 获取授权信息
-        /// </summary>
+        /// 步骤：
+        /// 1.获取初始化时缓存的所有ModuleInfo信息，此信息已经包含最新版本的Module->Function[]信息
+        /// 2.判断当前用户对于Function的权限
+        /// 3.提取有效的模块代码节点
+        /// </summary> 
         /// <returns>权限节点</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("获取授权信息")]
-        public List<string> GetAuthInfo()
+        public string[] GetAuthInfo()
         {
-            throw new NotImplementedException();
+            IModuleHandler moduleHandler = _provider.GetRequiredService<IModuleHandler>();
+            IFunctionAuthorization functionAuthorization = _provider.GetService<IFunctionAuthorization>();
+            ModuleInfo[] moduleInfos = moduleHandler.ModuleInfos;
+            
+            //先查找出所有有权限的模块
+            List<ModuleInfo> authModules = new List<ModuleInfo>();
+            foreach (ModuleInfo moduleInfo in moduleInfos)
+            {
+                bool hasAuth = moduleInfo.DependOnFunctions.All(m => functionAuthorization.Authorize(m, User).IsOk);
+                if (moduleInfo.DependOnFunctions.Length == 0 || hasAuth)
+                {
+                    authModules.Add(moduleInfo);
+                }
+            }
+
+            List<string> codes = new List<string>();
+            foreach (ModuleInfo moduleInfo in authModules)
+            {
+                string fullCode = moduleInfo.FullCode;
+                //模块下边有功能，或者拥有子模块
+                if (moduleInfo.DependOnFunctions.Length > 0 
+                    || authModules.Any(m => m.FullCode.Length > fullCode.Length && m.FullCode.Contains(fullCode) && m.DependOnFunctions.Length > 0))
+                {
+                    codes.AddIfNotExist(fullCode);
+                }
+            }
+            return codes.ToArray();
         }
+
     }
 }

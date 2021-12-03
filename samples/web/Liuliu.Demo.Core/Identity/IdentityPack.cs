@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.AutoMapper;
 using OSharp.Entity;
 using OSharp.Identity;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Identity
@@ -36,7 +37,7 @@ namespace Liuliu.Demo.Identity
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityContract, IdentityService>();
-            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
             services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
 
             services.AddEventHandler<LoginLoginLogEventHandler>();

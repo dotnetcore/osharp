@@ -27,9 +27,9 @@ namespace OSharp.Entity
         where TEntity : IEntity<TKey>
     {
         /// <summary>
-        /// 获取 当前单元操作对象
+        /// 获取 数据上下文
         /// </summary>
-        IUnitOfWork UnitOfWork { get; }
+        IDbContext DbContext { get; }
 
         #region 同步方法
 

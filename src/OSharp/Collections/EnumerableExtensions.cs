@@ -1,4 +1,13 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+//  <copyright file="EnumerableExtensions.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2020 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2020-09-11 0:11</last-date>
+// -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,6 +16,7 @@ using System.Text;
 using OSharp.Extensions;
 using OSharp.Filter;
 
+
 namespace OSharp.Collections
 {
     /// <summary>
@@ -14,8 +24,81 @@ namespace OSharp.Collections
     /// </summary>
     public static class EnumerableExtensions
     {
+        /// <summary>断言集合中的元素符合指定表达式，否则抛出异常</summary>
+        /// <typeparam name="T">集合项类型</typeparam>
+        /// <param name="source">源集合</param>
+        /// <param name="predicate">元素判断表达式</param>
+        /// <param name="errorSelector">异常选择器</param>
+        /// <returns>筛选过的集合</returns>
+        public static IEnumerable<T> Assert<T>(this IEnumerable<T> source,
+            Func<T, bool> predicate,
+            Func<T, Exception> errorSelector = null)
+        {
+            foreach (T item in source)
+            {
+                bool success = predicate(item);
+                if (!success)
+                {
+                    throw errorSelector?.Invoke(item) ?? new InvalidOperationException("Sequence contains an invalid item.");
+                }
+
+                yield return item;
+            }
+        }
+
         /// <summary>
-        /// 打乱一个集合的项顺序
+        /// 确定第一个序列的末尾是否等价于第二个序列。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="first">第一个序列</param>
+        /// <param name="second">第二个序列</param>
+        /// <returns></returns>
+        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
+        {
+            return EndsWith(first, second, null);
+        }
+
+        /// <summary>
+        /// 确定第一个序列的末尾是否等价于第二个序列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="first">第一个序列</param>
+        /// <param name="second">第二个序列</param>
+        /// <param name="comparer">元素比较方式</param>
+        /// <returns></returns>
+        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+
+            comparer = comparer ?? EqualityComparer<T>.Default;
+            
+            int? secondCount = second.TryGetCollectionCount();
+            if (secondCount != null)
+            {
+                int? firstCount = first.TryGetCollectionCount();
+                if (firstCount != null && secondCount > firstCount)
+                {
+                    return false;
+                }
+
+                return Impl(second, secondCount.Value);
+            }
+
+            List<T> secondList;
+            return Impl(secondList = second.ToList(), secondList.Count);
+
+            bool Impl(IEnumerable<T> snd, int count)
+            {
+                using (var firstIter = first.Reverse().Take(count).Reverse().GetEnumerator())
+                {
+                    return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 打乱一个集合的项顺序，将一个集合洗牌
         /// </summary>
         public static IEnumerable<TSource> Shuffle<TSource>(this IEnumerable<TSource> source)
         {
@@ -34,7 +117,7 @@ namespace OSharp.Collections
         /// <returns> 拼接后的字符串 </returns>
         public static string ExpandAndToString<T>(this IEnumerable<T> collection, string separator = ",")
         {
-            return collection.ExpandAndToString(t => t?.ToString(), separator);
+            return collection.ExpandAndToString(item => item?.ToString() ?? string.Empty, separator);
         }
 
         /// <summary>
@@ -53,21 +136,24 @@ namespace OSharp.Collections
             {
                 return string.Empty;
             }
+
             StringBuilder sb = new StringBuilder();
             int i = 0;
             int count = collection.Count();
-            foreach (T t in collection)
+            foreach (T item in collection)
             {
                 if (i == count - 1)
                 {
-                    sb.Append(itemFormatFunc(t));
+                    sb.Append(itemFormatFunc(item));
                 }
                 else
                 {
-                    sb.Append(itemFormatFunc(t) + separator);
+                    sb.Append(itemFormatFunc(item) + separator);
                 }
+
                 i++;
             }
+
             return sb.ToString();
         }
 
@@ -112,6 +198,7 @@ namespace OSharp.Collections
                 all = all.Except(tmpList).ToList();
                 result.AddRange(tmpList);
             }
+
             result.AddRange(all);
             return result;
         }
@@ -205,5 +292,41 @@ namespace OSharp.Collections
             return source.ThenBy(sortCondition.SortField, sortCondition.ListSortDirection);
         }
 
+        #region Internal
+
+        internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
+        {
+            switch (source)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(source));
+                case ICollection<T> collection:
+                    return collection.Count;
+                case IReadOnlyCollection<T> collection:
+                    return collection.Count;
+                default:
+                    return null;
+            }
+        }
+
+        static int CountUpTo<T>(this IEnumerable<T> source, int max)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
+
+            var count = 0;
+
+            using (var e = source.GetEnumerator())
+            {
+                while (count < max && e.MoveNext())
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        #endregion
     }
 }

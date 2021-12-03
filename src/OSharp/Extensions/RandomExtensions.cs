@@ -69,7 +69,11 @@ namespace OSharp.Extensions
         /// <returns>元素数组中的某个随机项</returns>
         public static T NextItem<T>(this Random random, T[] items)
         {
-            return items[random.Next(0, items.Length)];
+            if (items == null || items.Length == 0)
+            {
+                return default(T);
+            }
+            return items[random.Next(items.Length)];
         }
 
         /// <summary>

@@ -133,6 +133,10 @@ namespace OSharp.Swagger
             SwaggerOptions swagger = _osharpOptions.Swagger;
             app.UseSwagger().UseSwaggerUI(options =>
             {
+                if (swagger.IsHideSchemas)
+                {
+                    options.DefaultModelsExpandDepth(-1); 
+                }
                 if (swagger.Endpoints?.Count > 0)
                 {
                     foreach (SwaggerEndpoint endpoint in swagger.Endpoints)

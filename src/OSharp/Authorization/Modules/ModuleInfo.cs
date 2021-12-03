@@ -10,6 +10,8 @@
 using System;
 using System.Diagnostics;
 
+using Microsoft.DotNet.PlatformAbstractions;
+
 using OSharp.Authorization.Functions;
 using OSharp.Entity;
 
@@ -48,6 +50,11 @@ namespace OSharp.Authorization.Modules
         public string PositionName { get; set; }
 
         /// <summary>
+        /// 获取 位置全名
+        /// </summary>
+        public string FullCode => $"{Position}.{Code}";
+
+        /// <summary>
         /// 获取或设置 依赖功能
         /// </summary>
         public IFunction[] DependOnFunctions { get; set; } = new IFunction[0];
@@ -76,7 +83,14 @@ namespace OSharp.Authorization.Modules
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+#if NET5_0
             return HashCode.Combine(Position, Code);
+#else
+            var combiner = new HashCodeCombiner();
+            combiner.Add(Position);
+            combiner.Add(Code);
+            return combiner.CombinedHash;
+#endif
         }
 
         #endregion

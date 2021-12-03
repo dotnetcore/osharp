@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleSeedDataInitializer.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -30,7 +30,7 @@ namespace Liuliu.Demo.Authorization
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override Module[] SeedData()
+        protected override Module[] SeedData(IServiceProvider provider)
         {
             return new[]
             {

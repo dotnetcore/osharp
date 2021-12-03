@@ -10,8 +10,11 @@
 using System;
 using System.Data;
 
+#if NET5_0
+using MySqlConnector;
+#else
 using MySql.Data.MySqlClient;
-
+#endif
 
 namespace OSharp.Entity.MySql
 {

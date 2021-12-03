@@ -21,6 +21,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -42,25 +43,21 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     [Description("管理-站内信回复信息")]
     public abstract class MessageReplyControllerBase : AdminApiControllerBase
     {
+        private readonly IServiceProvider _provider;
+
         /// <summary>
         /// 初始化一个<see cref="MessageReplyController"/>类型的新实例
         /// </summary>
-        protected MessageReplyControllerBase(IInfosContract infosContract,
-            IFilterService filterService)
+        protected MessageReplyControllerBase(IServiceProvider provider)
+            : base(provider)
         {
-            InfosContract = infosContract;
-            FilterService = filterService;
+            _provider = provider;
         }
-
-        /// <summary>
-        /// 获取或设置 数据过滤服务对象
-        /// </summary>
-        protected IFilterService FilterService { get; }
 
         /// <summary>
         /// 获取或设置 信息模块业务契约对象
         /// </summary>
-        protected IInfosContract InfosContract { get; }
+        protected IInfosContract InfosContract => _provider.GetRequiredService<IInfosContract>();
 
         /// <summary>
         /// 读取站内信回复列表信息
@@ -87,7 +84,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public virtual async Task<AjaxResult> Create(MessageReplyInputDto[] dtos)
@@ -104,7 +101,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public virtual async Task<AjaxResult> Update(MessageReplyInputDto[] dtos)
@@ -121,7 +118,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public virtual async Task<AjaxResult> Delete(Guid[] ids)

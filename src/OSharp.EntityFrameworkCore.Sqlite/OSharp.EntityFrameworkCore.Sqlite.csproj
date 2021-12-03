@@ -4,20 +4,18 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <PackageId>OSharpNS.EntityFrameworkCore.Sqlite</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的Sqlite数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件Sqlite</Summary>
     <RootNamespace>OSharp.Entity.Sqlite</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\OSharp.EntityFrameworkCore.Sqlite.xml</DocumentationFile>
-    <OutputPath>bin\Release</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[3.1.21,4.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[5.0.12,6.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

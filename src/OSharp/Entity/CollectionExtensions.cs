@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 
 using OSharp.Authorization;
 using OSharp.Collections;
+using OSharp.Dependency;
 using OSharp.Exceptions;
 using OSharp.Extensions;
 using OSharp.Filter;
@@ -144,8 +145,9 @@ namespace OSharp.Entity
 
             List<TEntity> entities = source.ToList();
             List<TOutputDto> dtos = new List<TOutputDto>();
-            Func<TEntity, bool> updateFunc = FilterHelper.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Update).Compile();
-            Func<TEntity, bool> deleteFunc = FilterHelper.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Delete).Compile();
+            IFilterService filterService = ServiceLocator.Instance.GetService<IFilterService>();
+            Func<TEntity, bool> updateFunc = filterService.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Update).Compile();
+            Func<TEntity, bool> deleteFunc = filterService.GetDataFilterExpression<TEntity>(null, DataAuthOperation.Delete).Compile();
             foreach (TEntity entity in entities)
             {
                 TOutputDto dto = entity.MapTo<TOutputDto>();

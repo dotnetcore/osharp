@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using OSharp.Entity;
@@ -39,7 +40,7 @@ namespace OSharp.Authorization.Entities
         /// <summary>
         /// 获取或设置 过滤条件组Json字符串
         /// </summary>
-        [DisplayName("过滤条件组Json字符串")]
+        [DisplayName("过滤条件组Json字符串"), StringLength(5000)]
         public string FilterGroupJson { get; set; }
 
         /// <summary>

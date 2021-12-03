@@ -58,6 +58,12 @@ namespace OSharp.Authorization.Dtos
         public bool IsCacheSliding { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否从库读取数据
+        /// </summary>
+        [DisplayName("是否从库")]
+        public bool IsSlaveDatabase { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否锁定当前信息
         /// </summary>
         [DisplayName("是否锁定")]

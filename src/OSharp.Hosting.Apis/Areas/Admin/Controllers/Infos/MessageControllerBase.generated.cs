@@ -45,18 +45,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <summary>
         /// 初始化一个<see cref="MessageController"/>类型的新实例
         /// </summary>
-        protected MessageControllerBase(IInfosContract infosContract,
-            IFilterService filterService)
+        protected MessageControllerBase(IServiceProvider provider) : base(provider)
         {
-            InfosContract = infosContract;
-            FilterService = filterService;
         }
-
-        /// <summary>
-        /// 获取或设置 数据过滤服务对象
-        /// </summary>
-        protected IFilterService FilterService { get; }
-
+        
         /// <summary>
         /// 获取或设置 信息模块业务契约对象
         /// </summary>
@@ -87,7 +79,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("新增")]
         public virtual async Task<AjaxResult> Create(MessageInputDto[] dtos)
@@ -104,7 +96,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("更新")]
         public virtual async Task<AjaxResult> Update(MessageInputDto[] dtos)
@@ -121,7 +113,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
         public virtual async Task<AjaxResult> Delete(Guid[] ids)

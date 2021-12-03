@@ -45,12 +45,18 @@ namespace OSharp.Authorization
             _serviceProvider = serviceProvider;
             _moduleInfoPicker = serviceProvider.GetService<IModuleInfoPicker>();
             Logger = serviceProvider.GetLogger(GetType());
+            ModuleInfos = new ModuleInfo[0];
         }
 
         /// <summary>
         /// 获取 日志记录对象
         /// </summary>
         protected ILogger Logger { get; }
+
+        /// <summary>
+        /// 获取 所有模块信息
+        /// </summary>
+        public ModuleInfo[] ModuleInfos { get; private set; }
 
         /// <summary>
         /// 从程序集中获取模块信息
@@ -67,8 +73,9 @@ namespace OSharp.Authorization
             {
                 SyncToDatabase(provider, moduleInfos);
             });
+            ModuleInfos = moduleInfos.OrderBy(m => $"{m.Position}.{m.Code}").ToArray();
         }
-
+        
         /// <summary>
         /// 重写以实现将提取到的模块信息同步到数据库中
         /// </summary>
@@ -98,12 +105,14 @@ namespace OSharp.Authorization
                 return;
             }
 
-            if (!moduleInfos.CheckSyncByHash(provider, Logger))
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
+
+            if (!moduleInfos.CheckSyncByHash(provider, Logger) && moduleStore.Modules.Any())
             {
                 Logger.LogInformation("同步模块数据时，数据签名与上次相同，取消同步");
                 return;
             }
-
+            
             //删除数据库中多余的模块
             TModule[] modules = moduleStore.Modules.ToArray();
             var positionModules = modules.Select(m => new { m.Id, Position = GetModulePosition(modules, m) })
@@ -179,7 +188,6 @@ namespace OSharp.Authorization
                 }
             }
 
-            IUnitOfWork unitOfWork = provider.GetUnitOfWork<TModule, TModuleKey>();
             unitOfWork.Commit();
         }
 

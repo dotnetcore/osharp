@@ -40,7 +40,12 @@ namespace OSharp.Reflection
         {
             assembly.CheckNotNull("assembly");
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return info.ProductVersion;
+            string version = info.ProductVersion;
+            if (version.Contains("+"))
+            {
+                version = version.ReplaceRegex(@"\+(\w+)?", "");
+            }
+            return version;
         }
 
         /// <summary>

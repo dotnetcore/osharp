@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
+using OSharp.Entity.Internal;
 
 
 namespace OSharp.Entity
@@ -37,6 +38,17 @@ namespace OSharp.Entity
         /// 获取 数据库类型
         /// </summary>
         protected abstract DatabaseType DatabaseType { get; }
+
+        /// <summary>
+        /// 将模块服务添加到依赖注入服务容器中
+        /// </summary>
+        /// <param name="services">依赖注入服务容器</param>
+        /// <returns></returns>
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddOsharpDbContext<TDbContext>();
+            return services;
+        }
 
         /// <summary>
         /// 应用模块服务

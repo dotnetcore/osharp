@@ -14,8 +14,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -45,7 +46,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //初始化所有程序集查找器
             services.GetOrAddSingletonInstance(() => new StartupLogger());
-            services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder());
 
             IOsharpBuilder builder = services.GetOrAddSingletonInstance<IOsharpBuilder>(() => new OsharpBuilder(services));
             builder.AddCorePack();
@@ -61,6 +61,15 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IConfiguration GetConfiguration(this IServiceCollection services)
         {
             return services.GetSingletonInstanceOrNull<IConfiguration>();
+        }
+
+        /// <summary>
+        /// 获取<see cref="OsharpOptions"/>配置信息
+        /// </summary>
+        public static OsharpOptions GetOsharpOptions(this IServiceCollection services)
+        {
+            IConfiguration configuration = services.GetConfiguration();
+            return configuration.GetOsharpOptions();
         }
 
         /// <summary>
@@ -94,20 +103,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.Add(toAdDescriptor);
             return toAdDescriptor;
-        }
-
-        /// <summary>
-        /// 获取或添加指定类型查找器
-        /// </summary>
-        public static TTypeFinder GetOrAddTypeFinder<TTypeFinder>(this IServiceCollection services, Func<IAllAssemblyFinder, TTypeFinder> factory)
-            where TTypeFinder : class
-        {
-            return services.GetOrAddSingletonInstance<TTypeFinder>(() =>
-            {
-                IAllAssemblyFinder allAssemblyFinder =
-                    services.GetOrAddSingletonInstance<IAllAssemblyFinder>(() => new AppDomainAllAssemblyFinder(true));
-                return factory(allAssemblyFinder);
-            });
         }
 
         /// <summary>
@@ -254,6 +249,23 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
+        /// 从服务提供者获取 <see cref="IUnitOfWork"/>
+        /// </summary>
+        /// <param name="provider">服务提供者</param>
+        /// <param name="enableTransaction">是否启用事务</param>
+        /// <returns></returns>
+        public static IUnitOfWork GetUnitOfWork(this IServiceProvider provider, bool enableTransaction = false)
+        {
+            IUnitOfWork unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+            if (enableTransaction)
+            {
+                unitOfWork.EnableTransaction();
+            }
+
+            return unitOfWork;
+        }
+
+        /// <summary>
         /// 获取指定类型的日志对象
         /// </summary>
         /// <typeparam name="T">非静态强类型</typeparam>
@@ -294,17 +306,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static ILogger GetLogger(this IServiceProvider provider, string name)
         {
-            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
             return factory.CreateLogger(name);
-        }
-
-        /// <summary>
-        /// 获取指定实体类的上下文所在工作单元
-        /// </summary>
-        public static IUnitOfWork GetUnitOfWork<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
-        {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            return unitOfWorkManager.GetUnitOfWork<TEntity, TKey>();
         }
 
         /// <summary>
@@ -312,8 +315,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IDbContext GetDbContext<TEntity, TKey>(this IServiceProvider provider) where TEntity : IEntity<TKey>
         {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            return unitOfWorkManager.GetDbContext<TEntity, TKey>();
+            IUnitOfWork unitOfWork = provider.GetUnitOfWork();
+            return unitOfWork.GetEntityDbContext<TEntity, TKey>();
         }
 
         /// <summary>
@@ -368,8 +371,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            action(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                action(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -377,8 +382,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            await action(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                await action(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -386,8 +393,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            return func(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                return func(scope.ServiceProvider);
+            }
         }
 
         /// <summary>
@@ -395,8 +404,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
         {
-            using IServiceScope scope =  provider.CreateScope();
-            return await func(scope.ServiceProvider);
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                return await func(scope.ServiceProvider);
+            }
+
         }
 
         /// <summary>
@@ -409,11 +421,13 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(action, nameof(action));
 
-            using IServiceScope scope = provider.CreateScope();
-            IServiceProvider scopeProvider = scope.ServiceProvider;
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            action(scopeProvider);
-            unitOfWorkManager.Commit();
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+                action(scopeProvider);
+                unitOfWork.Commit();
+            }
         }
 
         /// <summary>
@@ -427,12 +441,18 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(provider, nameof(provider));
             Check.NotNull(actionAsync, nameof(actionAsync));
 
-            using IServiceScope scope = provider.CreateScope();
-            IServiceProvider scopeProvider = scope.ServiceProvider;
+            using (IServiceScope scope = provider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
 
-            IUnitOfWorkManager unitOfWorkManager = scopeProvider.GetService<IUnitOfWorkManager>();
-            await actionAsync(scopeProvider);
-            unitOfWorkManager.Commit();
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+                await actionAsync(scopeProvider);
+#if NET5_0
+                await unitOfWork.CommitAsync();
+#else
+                unitOfWork.Commit();
+#endif
+            }
         }
         #endregion
 

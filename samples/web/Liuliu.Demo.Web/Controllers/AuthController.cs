@@ -54,81 +54,45 @@ namespace Liuliu.Demo.Web.Controllers
 
         /// <summary>
         /// 获取授权信息
-        /// </summary>
+        /// 步骤：
+        /// 1.获取初始化时缓存的所有ModuleInfo信息，此信息已经包含最新版本的Module->Function[]信息
+        /// 2.判断当前用户对于Function的权限
+        /// 3.提取有效的模块代码节点
+        /// </summary> 
         /// <returns>权限节点</returns>
         [HttpGet]
         [ModuleInfo]
         [Description("获取授权信息")]
-        public List<string> GetAuthInfo()
+        public string[] GetAuthInfo()
         {
-            Module[] modules = _functionAuthManager.Modules.ToArray();
-            List<AuthItem> list = new List<AuthItem>();
-            foreach (Module module in modules)
+            IServiceProvider provider = HttpContext.RequestServices;
+            IModuleHandler moduleHandler = provider.GetRequiredService<IModuleHandler>();
+            IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
+            ModuleInfo[] moduleInfos = moduleHandler.ModuleInfos;
+
+            //先查找出所有有权限的模块
+            List<ModuleInfo> authModules = new List<ModuleInfo>();
+            foreach (ModuleInfo moduleInfo in moduleInfos)
             {
-                if (CheckFuncAuth(module, out bool empty))
+                bool hasAuth = moduleInfo.DependOnFunctions.All(m => functionAuthorization.Authorize(m, User).IsOk);
+                if (moduleInfo.DependOnFunctions.Length == 0 || hasAuth)
                 {
-                    list.Add(new AuthItem { Code = GetModuleTreeCode(module, modules), HasFunc = !empty });
+                    authModules.Add(moduleInfo);
                 }
             }
+
             List<string> codes = new List<string>();
-            foreach (AuthItem item in list)
+            foreach (ModuleInfo moduleInfo in authModules)
             {
-                if (item.HasFunc)
+                string fullCode = moduleInfo.FullCode;
+                //模块下边有功能，或者拥有子模块
+                if (moduleInfo.DependOnFunctions.Length > 0
+                    || authModules.Any(m => m.FullCode.Length > fullCode.Length && m.FullCode.Contains(fullCode) && m.DependOnFunctions.Length > 0))
                 {
-                    codes.Add(item.Code);
-                }
-                else if (list.Any(m => m.Code.Length > item.Code.Length && m.Code.Contains(item.Code) && m.HasFunc))
-                {
-                    codes.Add(item.Code);
-                }
-            }
-            return codes;
-        }
-
-        /// <summary>
-        /// 验证是否拥有指定模块的权限
-        /// </summary>
-        /// <param name="module">要验证的模块</param>
-        /// <param name="empty">返回模块是否为空模块，即是否分配有功能</param>
-        /// <returns></returns>
-        private bool CheckFuncAuth(Module module, out bool empty)
-        {
-            IServiceProvider services = HttpContext.RequestServices;
-            IFunctionAuthorization authorization = services.GetService<IFunctionAuthorization>();
-
-            Function[] functions = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == module.Id).Select(m => m.Function).ToArray();
-            empty = functions.Length == 0;
-            if (empty)
-            {
-                return true;
-            }
-
-            foreach (Function function in functions)
-            {
-                if (!authorization.Authorize(function, User).IsOk)
-                {
-                    return false;
+                    codes.AddIfNotExist(fullCode);
                 }
             }
-            return true;
-        }
-
-        /// <summary>
-        /// 获取模块的树形路径代码串
-        /// </summary>
-        private static string GetModuleTreeCode(Module module, Module[] source)
-        {
-            var pathIds = module.TreePathIds;
-            string[] names = pathIds.Select(m => source.First(n => n.Id == m)).Select(m => m.Code).ToArray();
-            return names.ExpandAndToString(".");
-        }
-
-
-        private class AuthItem
-        {
-            public string Code { get; set; }
-
-            public bool HasFunc { get; set; }
+            return codes.ToArray();
         }
     }
 }

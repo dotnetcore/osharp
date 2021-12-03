@@ -80,7 +80,10 @@ namespace OSharp.Entity
 
             ICreationAudited<TUserKey> entity1 = (ICreationAudited<TUserKey>)entity;
             entity1.CreatorId = user.Identity.IsAuthenticated ? (TUserKey?)user.Identity.GetUserId<TUserKey>() : null;
-            entity1.CreatedTime = DateTime.Now;
+            if (entity1.CreatedTime == default(DateTime))
+            {
+                entity1.CreatedTime = DateTime.Now;
+            }
             return (TEntity)entity1;
         }
 

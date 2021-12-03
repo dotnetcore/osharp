@@ -7,6 +7,9 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Identity;
+
+
 namespace OSharp.Hosting.Identity.Dtos
 {
     /// <summary>
@@ -33,6 +36,16 @@ namespace OSharp.Hosting.Identity.Dtos
         /// 获取或设置 记住登录
         /// </summary>
         public bool Remember { get; set; }
+
+        /// <summary>
+        /// 获取或设置 客户端类型
+        /// </summary>
+        public RequestClientType ClientType { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否Token登录
+        /// </summary>
+        public bool IsToken { get; set; }
 
         /// <summary>
         /// 获取或设置 IP地址

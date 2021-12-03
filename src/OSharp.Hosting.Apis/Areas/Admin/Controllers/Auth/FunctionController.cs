@@ -13,8 +13,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.AspNetCore.Mvc.Filters;
@@ -22,7 +22,6 @@ using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
-using OSharp.Caching;
 using OSharp.Data;
 using OSharp.Entity;
 using OSharp.Filter;
@@ -38,16 +37,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     public class FunctionController : AdminApiControllerBase
     {
         private readonly FunctionAuthManager _functionAuthManager;
-        private readonly ICacheService _cacheService;
-        private readonly IFilterService _filterService;
 
-        public FunctionController(FunctionAuthManager functionAuthManager,
-            ICacheService cacheService,
-            IFilterService filterService)
+        public FunctionController(IServiceProvider provider) : base(provider)
         {
-            _functionAuthManager = functionAuthManager;
-            _cacheService = cacheService;
-            _filterService = filterService;
+            _functionAuthManager = provider.GetRequiredService<FunctionAuthManager>();
         }
 
         /// <summary>
@@ -65,8 +58,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 new SortCondition("Controller"),
                 new SortCondition("IsController", ListSortDirection.Descending));
 
-            Expression<Func<Function, bool>> predicate = _filterService.GetExpression<Function>(request.FilterGroup);
-            PageResult<FunctionOutputDto> page = _cacheService.ToPageCache<Function, FunctionOutputDto>(_functionAuthManager.Functions, predicate, request.PageCondition, function);
+            Expression<Func<Function, bool>> predicate = FilterService.GetExpression<Function>(request.FilterGroup);
+            PageResult<FunctionOutputDto> page = CacheService.ToPageCache<Function, FunctionOutputDto>(_functionAuthManager.Functions, predicate, request.PageCondition, function);
             return new AjaxResult("数据获取成功", AjaxResultType.Success, page.ToPageData());
         }
 
@@ -134,7 +127,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(FunctionInputDto[] dtos)

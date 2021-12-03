@@ -7,8 +7,7 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using System;
 
 using OSharp.AspNetCore.Mvc;
 using OSharp.Authorization;
@@ -18,7 +17,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 {
     [AreaInfo("Admin", Display = "管理")]
     [RoleLimit]
-    [Authorize(Policy = FunctionRequirement.OsharpPolicy, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiAuthorize]
     public abstract class AdminApiController : AreaApiControllerBase
     { }
 }

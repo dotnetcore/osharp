@@ -16,6 +16,7 @@ using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
 using OSharp.AutoMapper;
+using OSharp.Mapping;
 
 
 namespace OSharp.Hosting.Authorization
@@ -30,7 +31,7 @@ namespace OSharp.Hosting.Authorization
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
 
             return base.AddServices(services);
         }

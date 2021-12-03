@@ -99,6 +99,22 @@ namespace OSharp.Hosting.Identity
 
         #endregion
 
+        #region 登录日志信息业务
+
+        /// <summary>
+        /// 获取 登录日志信息查询数据集
+        /// </summary>
+        IQueryable<LoginLog> LoginLogs { get; }
+        
+        /// <summary>
+        /// 删除登录日志信息信息
+        /// </summary>
+        /// <param name="ids">要删除的登录日志信息编号</param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> DeleteLoginLogs(params Guid[] ids);
+
+        #endregion
+        
         #region 身份认证
 
         /// <summary>
@@ -140,8 +156,9 @@ namespace OSharp.Hosting.Identity
         /// 账号退出
         /// </summary>
         /// <param name="userId">用户编号</param>
+        /// <param name="isToken">是否token认证</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> Logout(int userId);
+        Task<OperationResult> Logout(int userId, bool isToken = true);
 
         #endregion
 

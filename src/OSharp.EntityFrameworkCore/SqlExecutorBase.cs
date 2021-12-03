@@ -32,8 +32,7 @@ namespace OSharp.Entity
         /// </summary>
         protected SqlExecutorBase(IServiceProvider provider)
         {
-            IUnitOfWorkManager unitOfWorkManager = provider.GetService<IUnitOfWorkManager>();
-            DbContext dbContext = (DbContext)unitOfWorkManager.GetDbContext<TEntity, TKey>();
+            DbContext dbContext = (DbContext)provider.GetDbContext<TEntity, TKey>();
             _connectionString = dbContext.Database.GetDbConnection().ConnectionString;
 
             Logger = provider.GetLogger(GetType());
@@ -65,10 +64,12 @@ namespace OSharp.Entity
         /// <returns>结果集</returns>
         public virtual IEnumerable<TResult> FromSql<TResult>(string sql, object param = null)
         {
-            using IDbConnection db = GetDbConnection(_connectionString);
-            IEnumerable<TResult> result = db.Query<TResult>(sql, param);
-            Logger.LogDebug($"使用Dapper执行Sql查询：{sql}");
-            return result;
+            using (IDbConnection db = GetDbConnection(_connectionString))
+            {
+                IEnumerable<TResult> result = db.Query<TResult>(sql, param);
+                Logger.LogDebug($"使用Dapper执行Sql查询：{sql}");
+                return result;
+            }
         }
 
         /// <summary>
@@ -79,10 +80,12 @@ namespace OSharp.Entity
         /// <returns>操作影响的行数</returns>
         public virtual int ExecuteSqlCommand(string sql, object param = null)
         {
-            using IDbConnection db = GetDbConnection(_connectionString);
-            Logger.LogDebug($"使用Dapper执行Sql命令：{sql}");
-            int count = db.Execute(sql, param);
-            return count;
+            using (IDbConnection db = GetDbConnection(_connectionString))
+            {
+                Logger.LogDebug($"使用Dapper执行Sql命令：{sql}");
+                int count = db.Execute(sql, param);
+                return count;
+            }
         }
     }
 }

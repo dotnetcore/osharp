@@ -63,12 +63,12 @@ namespace OSharp.AspNetCore
         /// <summary>
         /// 设置验证码到Session中
         /// </summary>
-        public void SetCode(string code, out string id)
+        public string SetCode(string code, int seconds = 60 * 3)
         {
-            id = Guid.NewGuid().ToString("N");
+            string id = Guid.NewGuid().ToString("N");
             string key = $"{OsharpConstants.VerifyCodeKeyPrefix}_{id}";
-            const int seconds = 60 * 3;
             _cache.SetString(key, code, new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds) });
+            return id;
         }
 
         /// <summary>

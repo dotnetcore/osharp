@@ -23,15 +23,12 @@ namespace OSharp.Entity
     public abstract class DesignTimeDbContextFactoryBase<TDbContext> : IDesignTimeDbContextFactory<TDbContext>
         where TDbContext : DbContext, IDbContext
     {
-        private readonly ILogger _logger;
-
         /// <summary>
         /// 初始化一个<see cref="DesignTimeDbContextFactoryBase{TDbContext}"/>类型的新实例
         /// </summary>
         protected DesignTimeDbContextFactoryBase(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
-            _logger = serviceProvider?.GetLogger(GetType());
         }
 
         protected IServiceProvider ServiceProvider { get; private set; }
@@ -47,7 +44,7 @@ namespace OSharp.Entity
             ServiceExtensions.MigrationAssemblyName = migrationAssemblyName;
             Console.WriteLine($@"MigrationAssembly: {migrationAssemblyName}");
 
-            ServiceProvider ??= CreateDesignTimeServiceProvider();
+            ServiceProvider = ServiceProvider ?? CreateDesignTimeServiceProvider();
 
             IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
             entityManager.Initialize();

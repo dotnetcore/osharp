@@ -9,15 +9,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization;
 using OSharp.Authorization.Functions;
+using OSharp.Collections;
+using OSharp.Data;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -34,20 +36,41 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         public MvcFunctionHandler(IServiceProvider serviceProvider)
             : base(serviceProvider)
+        { }
+
+        /// <summary>
+        /// 获取所有功能类型
+        /// </summary>
+        /// <returns></returns>
+        public override Type[] GetAllFunctionTypes()
         {
-            FunctionTypeFinder = serviceProvider.GetService<IFunctionTypeFinder>();
-            MethodInfoFinder = new MvcMethodInfoFinder();
+            return AssemblyManager.FindTypes(m => m.IsController() && (m.IsPublic || m.IsNestedAssembly));
         }
 
         /// <summary>
-        /// 获取 功能类型查找器
+        /// 查找指定功能的所有功能点方法  
         /// </summary>
-        public override IFunctionTypeFinder FunctionTypeFinder { get; }
+        /// <param name="functionType">功能类型</param>
+        /// <returns></returns>
+        public override MethodInfo[] GetMethodInfos(Type functionType)
+        {
+            Check.NotNull(functionType, nameof(functionType));
 
-        /// <summary>
-        /// 获取 功能方法查找器
-        /// </summary>
-        public override IMethodInfoFinder MethodInfoFinder { get; }
+            List<Type> types = new List<Type>();
+
+            while (functionType.IsController(true))
+            {
+                types.AddIfNotExist(functionType);
+                functionType = functionType?.BaseType;
+                if (functionType == null || functionType.Name == "Controller" || functionType.Name == "ControllerBase")
+                {
+                    break;
+                }
+            }
+
+            return types.SelectMany(m => m.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                .Where(m => !m.IsSpecialName).ToArray();
+        }
 
         /// <summary>
         /// 重写以实现从功能类型创建功能信息
@@ -56,6 +79,8 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override Function GetFunction(Type controllerType)
         {
+            Check.NotNull(controllerType, nameof(controllerType));
+
             if (!controllerType.IsController())
             {
                 throw new OsharpException($"类型“{controllerType.FullName}”不是MVC控制器类型");
@@ -84,6 +109,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override Function GetFunction(Function typeFunction, MethodInfo method)
         {
+            Check.NotNull(typeFunction, nameof(typeFunction));
+            Check.NotNull(method, nameof(method));
+
             FunctionAccessType accessType = method.HasAttribute<LoggedInAttribute>()
                 ? FunctionAccessType.LoggedIn
                 : method.HasAttribute<AllowAnonymousAttribute>()
@@ -113,6 +141,9 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         protected override bool IsIgnoreMethod(Function action, MethodInfo method, IEnumerable<Function> functions)
         {
+            Check.NotNull(action, nameof(action));
+            Check.NotNull(method, nameof(method));
+
             if (method.HasAttribute<NonActionAttribute>() || method.HasAttribute<NonFunctionAttribute>())
             {
                 return true;
@@ -127,6 +158,8 @@ namespace OSharp.AspNetCore.Mvc
         /// </summary>
         private static string GetArea(MemberInfo type)
         {
+            Check.NotNull(type, nameof(type));
+
             AreaAttribute attribute = type.GetAttribute<AreaAttribute>();
             return attribute?.RouteValue;
         }

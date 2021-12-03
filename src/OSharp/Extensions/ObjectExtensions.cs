@@ -7,13 +7,17 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using OSharp.Data;
 using OSharp.Reflection;
 
 
@@ -155,25 +159,52 @@ namespace OSharp.Extensions
             return (ExpandoObject)expando;
         }
 
+        private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>> ValidationDict
+            = new ConcurrentDictionary<Type, ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>>();
+
         /// <summary>
-        /// 对象深度拷贝，复制出一个数据一样，但地址不一样的新版本
+        /// 验证对象的<see cref="ValidationAttribute"/>特性
         /// </summary>
-        public static T DeepClone<T>(this T obj) where T : class
+        public static void Validate(this object obj)
         {
-            if (obj == null)
+            Check.NotNull(obj, nameof(obj));
+            Type type = obj.GetType();
+            if (!ValidationDict.TryGetValue(type, out ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>dict))
             {
-                return default(T);
+                PropertyInfo[] properties = type.GetProperties();
+                dict = new ConcurrentDictionary<PropertyInfo, ValidationAttribute[]>();
+                if (properties.Length == 0)
+                {
+                    ValidationDict[type] = dict;
+                    return;
+                }
+
+                foreach (PropertyInfo property in properties)
+                {
+                    dict[property] = null;
+                }
+
+                ValidationDict[type] = dict;
             }
-            if (typeof(T).HasAttribute<SerializableAttribute>())
+
+            foreach (PropertyInfo property in dict.Keys)
             {
-                throw new NotSupportedException("当前对象未标记特性“{0}”，无法进行DeepClone操作".FormatWith(typeof(SerializableAttribute)));
-            }
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                formatter.Serialize(ms, obj);
-                ms.Seek(0L, SeekOrigin.Begin);
-                return (T)formatter.Deserialize(ms);
+                if (!dict.TryGetValue(property, out ValidationAttribute[] attributes) || attributes == null)
+                {
+                    attributes = property.GetAttributes<ValidationAttribute>();
+                    dict[property] = attributes;
+                }
+
+                if (attributes.Length == 0)
+                {
+                    continue;
+                }
+
+                object value = property.GetValue(obj);
+                foreach (ValidationAttribute attribute in attributes)
+                {
+                    attribute.Validate(value, property.Name);
+                }
             }
         }
 

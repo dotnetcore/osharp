@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+﻿using OSharp.Reflection;
+// -----------------------------------------------------------------------
 //  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
@@ -11,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using OSharp.Authorization.EntityInfos;
 using OSharp.Entity;
@@ -157,6 +159,20 @@ namespace OSharp.Reflection.Tests
             Assert.False(property.IsVirtual());
             property = type.GetProperty("TestEntities");
             Assert.True(property.IsVirtual());
+        }
+
+        [Fact()]
+        public void IsGenericForTest()
+        {
+            Type type = typeof(Task);
+            Assert.False(type.IsGenericFor(typeof(string)));
+            //type = typeof(Task<>);
+            //Assert.False(type.IsGenericFor(typeof(string)));
+            //type = typeof(List<>);
+            //Assert.False(type.IsGenericFor(typeof(string)));
+            //type = typeof(Task<string>);
+            //Assert.True(type.IsGenericFor(typeof(string)));
+
         }
     }
 }

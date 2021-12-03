@@ -14,8 +14,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
@@ -37,13 +37,10 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
     public class EntityInfoController : AdminApiControllerBase
     {
         private readonly DataAuthManager _dataAuthManager;
-        private readonly IFilterService _filterService;
 
-        public EntityInfoController(DataAuthManager dataAuthManager,
-            IFilterService filterService)
+        public EntityInfoController(IServiceProvider provider) : base(provider)
         {
-            _dataAuthManager = dataAuthManager;
-            _filterService = filterService;
+            _dataAuthManager = provider.GetRequiredService<DataAuthManager>();
         }
 
         /// <summary>
@@ -53,14 +50,13 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        [AllowAnonymous]
         public AjaxResult Read(PageRequest request)
         {
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("TypeName") };
             }
-            Expression<Func<EntityInfo, bool>> predicate = _filterService.GetExpression<EntityInfo>(request.FilterGroup);
+            Expression<Func<EntityInfo, bool>> predicate = FilterService.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _dataAuthManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
             return new AjaxResult("成功", AjaxResultType.Success, page.ToPageData());
         }
@@ -106,7 +102,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>JSON操作结果</returns>
         [HttpPost]
         [ModuleInfo]
-        [DependOnFunction("Read")]
+        [DependOnFunction(nameof(Read))]
         [UnitOfWork]
         [Description("更新")]
         public async Task<AjaxResult> Update(EntityInfoInputDto[] dtos)

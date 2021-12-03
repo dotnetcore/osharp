@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DataAuthorizationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -16,6 +16,7 @@ using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
 using OSharp.AutoMapper;
+using OSharp.Mapping;
 
 
 namespace Liuliu.Demo.Authorization
@@ -30,7 +31,7 @@ namespace Liuliu.Demo.Authorization
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services.AddSingleton<IAutoMapperConfiguration, AutoMapperConfiguration>();
+            services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
 
             return base.AddServices(services);
         }

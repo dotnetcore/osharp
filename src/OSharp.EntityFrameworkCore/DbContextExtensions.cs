@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,32 +60,6 @@ namespace OSharp.Entity
                 dbContext.Database.Migrate();
                 logger?.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{migrations.ExpandAndToString()}");
             }
-        }
-
-        /// <summary>
-        /// 执行指定的Sql语句
-        /// </summary>
-        [Obsolete("使用 ExecuteSqlRaw 代替")]
-        public static int ExecuteSqlCommand(this IDbContext dbContext, string sql, params object[] parameters)
-        {
-            if (!(dbContext is DbContext context))
-            {
-                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
-            }
-            return context.Database.ExecuteSqlCommand(new RawSqlString(sql), parameters);
-        }
-
-        /// <summary>
-        /// 异步执行指定的Sql语句
-        /// </summary>
-        [Obsolete("使用 ExecuteSqlRawAsync 代替")]
-        public static Task<int> ExecuteSqlCommandAsync(this IDbContext dbContext, string sql, params object[] parameters)
-        {
-            if (!(dbContext is DbContext context))
-            {
-                throw new OsharpException($"参数dbContext类型为 {dbContext.GetType()} ，不能转换为 DbContext");
-            }
-            return context.Database.ExecuteSqlCommandAsync(new RawSqlString(sql), parameters);
         }
 
         /// <summary>
@@ -183,6 +158,18 @@ namespace OSharp.Entity
                     TEntity oldEntity = set.Find(entity.Id);
                     context.Entry(oldEntity).CurrentValues.SetValues(entity);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 清除数据上下文的更改
+        /// </summary>
+        public static void CleanChanges(this DbContext context)
+        {
+            IEnumerable<EntityEntry> entries = context.ChangeTracker.Entries();
+            foreach (var entry in entries)
+            {
+                entry.State = EntityState.Detached;
             }
         }
     }

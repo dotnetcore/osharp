@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Authorization.Dtos;
+using OSharp.Hosting.Authorization.Entities;
+using OSharp.Mapping;
 
 
 namespace OSharp.Hosting.Authorization.Dtos
@@ -15,6 +17,7 @@ namespace OSharp.Hosting.Authorization.Dtos
     /// <summary>
     /// 输入DTO：实体角色信息
     /// </summary>
+    [MapTo(typeof(EntityRole))]
     public class EntityRoleInputDto : EntityRoleInputDtoBase<int>
     { }
 }

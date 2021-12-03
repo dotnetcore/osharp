@@ -47,7 +47,11 @@ namespace OSharp.Wpf.FluentValidation
         /// <returns>Array of validation errors, or null / empty if validation was successful</returns>
         public async Task<IEnumerable<string>> ValidatePropertyAsync(string propertyName)
         {
-            ValidationResult result = await _validator.ValidateAsync(_subject, CancellationToken.None, propertyName);
+            ValidationResult result = await _validator.ValidateAsync(_subject,
+                m =>
+                {
+                    m.IncludeProperties(propertyName);
+                });
             return result.Errors.Select(m => m.ErrorMessage);
         }
 

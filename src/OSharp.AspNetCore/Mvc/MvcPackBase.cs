@@ -13,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Newtonsoft.Json.Serialization;
 
+using OSharp.AspNetCore.Cors;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Core.Options;
 using OSharp.Core.Packs;
 using OSharp.Dependency;
 using OSharp.Threading;
@@ -27,10 +29,18 @@ namespace OSharp.AspNetCore.Mvc
     [DependsOnPacks(typeof(AspNetCorePack))]
     public abstract class MvcPackBase : AspOsharpPack
     {
+        private ICorsInitializer _corsInitializer;
+
         /// <summary>
         /// 获取 模块级别，级别越小越先启动
         /// </summary>
         public override PackLevel Level => PackLevel.Application;
+
+        /// <summary>
+        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
+        /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
+        /// </summary>
+        public override int Order => 0;
 
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中
@@ -39,19 +49,26 @@ namespace OSharp.AspNetCore.Mvc
         /// <returns></returns>
         public override IServiceCollection AddServices(IServiceCollection services)
         {
-            services = AddCors(services);
+            _corsInitializer = services.GetOrAddSingletonInstance(() => (ICorsInitializer)new DefaultCorsInitializer());
+            _corsInitializer.AddCors(services);
+
+            OsharpOptions osharp = services.GetOsharpOptions();
             services.AddControllersWithViews()
+                .AddControllersAsServices()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    if (osharp.Mvc?.IsLowercaseJsonProperty == false)
+                    {
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    }
                 });
 
-            services.AddRouting(opts => opts.LowercaseUrls = true);
-
-            services.AddScoped<UnitOfWorkFilterImpl>();
+            services.AddRouting(opts => opts.LowercaseUrls = osharp.Mvc?.IsLowercaseUrls ?? false);
+            
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 
-            services.AddScoped<UnitOfWorkAttribute>();
+            services.AddScoped<UnitOfWorkImpl>();
+            services.AddTransient<UnitOfWorkAttribute>();
             services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();
             services.TryAddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
             services.Replace<ICancellationTokenProvider, HttpContextCancellationTokenProvider>(ServiceLifetime.Singleton);
@@ -67,27 +84,9 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseRouting();
-            UseCors(app);
+            _corsInitializer.UseCors(app);
 
             IsEnabled = true;
-        }
-
-        /// <summary>
-        /// 重写以实现添加Cors服务
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        protected virtual IServiceCollection AddCors(IServiceCollection services)
-        {
-            return services;
-        }
-
-        /// <summary>
-        /// 重写以应用Cors
-        /// </summary>
-        protected virtual IApplicationBuilder UseCors(IApplicationBuilder app)
-        {
-            return app;
         }
     }
 }

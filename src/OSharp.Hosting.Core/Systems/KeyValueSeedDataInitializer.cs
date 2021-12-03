@@ -33,12 +33,12 @@ namespace OSharp.Hosting.Systems
         /// 重写以提供要初始化的种子数据
         /// </summary>
         /// <returns></returns>
-        protected override KeyValue[] SeedData()
+        protected override KeyValue[] SeedData(IServiceProvider provider)
         {
             return new[]
             {
-                new KeyValue(SystemSettingKeys.SiteName, "OSHARP"),
-                new KeyValue(SystemSettingKeys.SiteDescription, "Osharp with AspNetCore & Angular"),
+                new KeyValue(SystemSettingKeys.SiteName, "OSHARP") { Display = "站点名称", Remark = "站点名称", Order = 1 },
+                new KeyValue(SystemSettingKeys.SiteDescription, "Osharp with AspNetCore & Angular") { Display = "站点描述", Remark = "站点描述" },
             };
         }
 

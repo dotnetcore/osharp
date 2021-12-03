@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.Core.Options;
 using OSharp.Dependency;
+using OSharp.Entity.Internal;
 using OSharp.Exceptions;
 using OSharp.Reflection;
 
@@ -38,7 +39,7 @@ namespace OSharp.Entity
         /// <param name="services">依赖注入服务集合</param>
         /// <param name="optionsAction">数据库选项创建配置，将在内置配置后运行</param>
         /// <returns>依赖注入服务集合</returns>
-        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContextBase
+        public static IServiceCollection AddOsharpDbContext<TDbContext>(this IServiceCollection services, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContext
         {
             services = services.AddDbContext<TDbContext>((provider, builder) =>
             {
@@ -64,7 +65,6 @@ namespace OSharp.Entity
             }
 
             ILogger logger = provider.GetLogger(typeof(ServiceExtensions));
-
             //启用延迟加载
             if (osharpDbContextOptions.LazyLoadingProxiesEnabled)
             {
@@ -75,16 +75,20 @@ namespace OSharp.Entity
 
             //处理数据库驱动差异处理
             IDbContextOptionsBuilderDriveHandler driveHandler = provider.GetServices<IDbContextOptionsBuilderDriveHandler>()
-                .FirstOrDefault(m => m.Type == databaseType);
+                .LastOrDefault(m => m.Type == databaseType);
             if (driveHandler == null)
             {
                 throw new OsharpException($"无法解析类型为 {databaseType} 的 {typeof(IDbContextOptionsBuilderDriveHandler).DisplayName()} 实例");
             }
 
+            //选择主/从数据库连接串
+            IConnectionStringProvider connectionStringProvider = provider.GetRequiredService<IConnectionStringProvider>();
+            string connectionString = connectionStringProvider.GetConnectionString(typeof(TDbContext));
+
             ScopedDictionary scopedDictionary = provider.GetService<ScopedDictionary>();
-            string key = $"DbConnection_{osharpDbContextOptions.ConnectionString}";
+            string key = $"DbConnection_{connectionString}";
             DbConnection existingDbConnection = scopedDictionary.GetValue<DbConnection>(key);
-            builder = driveHandler.Handle(builder, osharpDbContextOptions.ConnectionString, existingDbConnection);
+            builder = driveHandler.Handle(builder, connectionString, existingDbConnection);
 
             //使用模型缓存
             DbContextModelCache modelCache = provider.GetService<DbContextModelCache>();

@@ -8,6 +8,10 @@
 
 using System;
 
+#if NETSTANDARD2_0
+using Microsoft.DotNet.PlatformAbstractions;
+#endif
+
 
 namespace OSharp.Filter
 {
@@ -76,6 +80,11 @@ namespace OSharp.Filter
         /// </summary>
         public FilterOperate Operate { get; set; }
 
+        /// <summary>
+        /// 获取或设置 是否将属性名称驼峰(lowerCase)写法转换为帕斯卡(UpperCase)写法
+        /// </summary>
+        public bool IsLowerCaseToUpperCase { get; set; } = true;
+
         #endregion
 
         #region Overrides of Object
@@ -96,7 +105,15 @@ namespace OSharp.Filter
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+#if NET5_0
             return HashCode.Combine(Field, Value, Operate);
+#else
+            var combiner = new HashCodeCombiner();
+            combiner.Add(Field);
+            combiner.Add(Value);
+            combiner.Add(Operate);
+            return combiner.CombinedHash;
+#endif
         }
 
         #endregion

@@ -92,8 +92,8 @@ namespace OSharp.Http
             data = aes.Encrypt(data);
             //RSA加密AES密钥
             byte[] keyBytes = aes.Key.ToBytes();
-            string enDesKey = Convert.ToBase64String(RsaHelper.Encrypt(keyBytes, _facePublicKey));
-            return new[] { enDesKey, data }.ExpandAndToString(separator);
+            string enAesKey = Convert.ToBase64String(RsaHelper.Encrypt(keyBytes, _facePublicKey));
+            return new[] { enAesKey, data }.ExpandAndToString(separator);
         }
 
         private static string GetSeparator(string separator)

@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
 //  <copyright file="OsharpCookieAuthenticationEvents.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2020 OSharp. All rights reserved.
+//      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2020-02-16 19:00</last-date>
+//  <last-date>2021-04-02 19:15</last-date>
 // -----------------------------------------------------------------------
 
 using System.Security.Claims;
@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Authentication.JwtBearer;
 
 
 namespace OSharp.Authentication.Cookies
@@ -33,7 +31,7 @@ namespace OSharp.Authentication.Cookies
             ClaimsPrincipal user = context.Principal;
             ClaimsIdentity identity = user.Identity as ClaimsIdentity;
 
-            IAccessClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IAccessClaimsProvider>();
+            IUserClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IUserClaimsProvider>();
             return accessClaimsProvider.RefreshIdentity(identity);
         }
     }

@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 using OSharp.Entity;
@@ -25,25 +26,25 @@ namespace OSharp.Authorization.Functions
         /// <summary>
         /// 获取或设置 功能名称
         /// </summary>
-        [DisplayName("名称")]
+        [DisplayName("名称"), StringLength(200)]
         public string Name { get; set; }
 
         /// <summary>
         /// 获取或设置 区域名称
         /// </summary>
-        [DisplayName("区域")]
+        [DisplayName("区域"), StringLength(200)]
         public string Area { get; set; }
 
         /// <summary>
         /// 获取或设置 控制器名称
         /// </summary>
-        [DisplayName("控制器")]
+        [DisplayName("控制器"), StringLength(200)]
         public string Controller { get; set; }
 
         /// <summary>
         /// 获取或设置 控制器的功能名称
         /// </summary>
-        [DisplayName("功能")]
+        [DisplayName("功能"), StringLength(200)]
         public string Action { get; set; }
 
         /// <summary>
@@ -93,6 +94,12 @@ namespace OSharp.Authorization.Functions
         /// </summary>
         [DisplayName("是否相对过期时间")]
         public bool IsCacheSliding { get; set; }
+
+        /// <summary>
+        /// 获取或设置 是否从库读取数据
+        /// </summary>
+        [DisplayName("是否从库")]
+        public bool IsSlaveDatabase { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
