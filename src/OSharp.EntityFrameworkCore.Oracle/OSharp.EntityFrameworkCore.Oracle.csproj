@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.120" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="[3.19.130, 4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="5.21.3" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="[5.21.4, 6.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
