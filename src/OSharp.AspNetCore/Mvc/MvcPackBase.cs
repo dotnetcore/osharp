@@ -67,7 +67,8 @@ namespace OSharp.AspNetCore.Mvc
             
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 
-            services.AddScoped<UnitOfWorkAttribute>();
+            services.AddScoped<UnitOfWorkImpl>();
+            services.AddTransient<UnitOfWorkAttribute>();
             services.TryAddSingleton<IVerifyCodeService, VerifyCodeService>();
             services.TryAddSingleton<IScopedServiceResolver, RequestScopedServiceResolver>();
             services.Replace<ICancellationTokenProvider, HttpContextCancellationTokenProvider>(ServiceLifetime.Singleton);
