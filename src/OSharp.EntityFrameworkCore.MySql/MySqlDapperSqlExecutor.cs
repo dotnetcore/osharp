@@ -10,7 +10,7 @@
 using System;
 using System.Data;
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 using MySqlConnector;
 #else
 using MySql.Data.MySqlClient;

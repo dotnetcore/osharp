@@ -42,7 +42,7 @@ namespace OSharp.Entity.DynamicProxy
                 await next(context);
                 if (!RequiredCheckReturnValue)
                 {
-#if NET5_0
+#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
 #else
                     unitOfWork.Commit();
@@ -58,7 +58,7 @@ namespace OSharp.Entity.DynamicProxy
                 }
                 if (decision.CanCommit(context.ReturnValue))
                 {
-#if NET5_0
+#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
 #else
                     unitOfWork.Commit();
@@ -67,8 +67,8 @@ namespace OSharp.Entity.DynamicProxy
             }
             catch (Exception)
             {
-#if NET5_0
-                    await unitOfWork.CommitAsync();
+#if NET5_0_OR_GREATER
+                await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
 #endif

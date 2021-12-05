@@ -83,7 +83,7 @@ namespace OSharp.Authorization.Modules
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-#if NET5_0
+#if NET5_0_OR_GREATER
             return HashCode.Combine(Position, Code);
 #else
             var combiner = new HashCodeCombiner();

@@ -14,7 +14,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
 #endif
@@ -275,8 +275,8 @@ namespace OSharp.Entity
             base.Dispose(disposing);
         }
 
-#if NET5_0
-        
+#if NET5_0_OR_GREATER
+
         /// <summary>
         /// 对数据库连接开启事务
         /// </summary>

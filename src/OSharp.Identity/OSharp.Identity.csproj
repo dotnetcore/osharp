@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <PackageId>OSharpNS.Identity</PackageId>
     <Summary>OSharp 身份认证组件</Summary>
     <Description>OSharp 身份认证组件，基于AspNetCore.Identity和Osharp仓储系统的身份认证实现</Description>
@@ -27,6 +27,10 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[5.0.12, 6.0.0)" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="[5.0.12, 6.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
