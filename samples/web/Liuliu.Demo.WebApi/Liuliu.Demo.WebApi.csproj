@@ -63,7 +63,6 @@
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.MySql\OSharp.EntityFrameworkCore.MySql.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Oracle\OSharp.EntityFrameworkCore.Oracle.csproj" />
   </ItemGroup>
   <ItemGroup>
