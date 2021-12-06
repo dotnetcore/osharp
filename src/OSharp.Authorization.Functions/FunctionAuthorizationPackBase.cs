@@ -109,7 +109,11 @@ namespace OSharp.Authorization
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
+#if NET6_0_OR_GREATER
+        public override void UsePack(WebApplication app)
+#else
         public override void UsePack(IApplicationBuilder app)
+#endif
         {
             app.UseCookiePolicy();
             app.UseFunctionAuthorization();

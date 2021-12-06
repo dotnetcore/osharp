@@ -203,6 +203,7 @@ namespace OSharp.Collections
             return result;
         }
 
+#if !NET6_0_OR_GREATER
         /// <summary>
         /// 根据指定条件返回集合中不重复的元素
         /// </summary>
@@ -218,6 +219,7 @@ namespace OSharp.Collections
 
             return source.GroupBy(keySelector).Select(group => group.First());
         }
+#endif
 
         /// <summary>
         /// 把<see cref="IEnumerable{T}"/>集合按指定字段与排序方式进行排序
@@ -292,7 +294,7 @@ namespace OSharp.Collections
             return source.ThenBy(sortCondition.SortField, sortCondition.ListSortDirection);
         }
 
-        #region Internal
+#region Internal
 
         internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
         {
@@ -327,6 +329,6 @@ namespace OSharp.Collections
             return count;
         }
 
-        #endregion
+#endregion
     }
 }

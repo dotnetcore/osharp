@@ -84,8 +84,12 @@ namespace OSharp.Authentication
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
+        /// <param name="app">应用程序</param>
+#if NET6_0_OR_GREATER
+        public override void UsePack(WebApplication app)
+#else
         public override void UsePack(IApplicationBuilder app)
+#endif
         {
             app.UseAuthentication();
 

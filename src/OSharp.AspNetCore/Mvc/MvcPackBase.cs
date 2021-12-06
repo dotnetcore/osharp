@@ -77,6 +77,14 @@ namespace OSharp.AspNetCore.Mvc
             return services;
         }
 
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="app">应用程序</param>
+        public override void UsePack(WebApplication app)
+        {
+#else
         /// <summary>
         /// 应用模块服务
         /// </summary>
@@ -84,6 +92,7 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseRouting();
+#endif
             _corsInitializer.UseCors(app);
 
             IsEnabled = true;

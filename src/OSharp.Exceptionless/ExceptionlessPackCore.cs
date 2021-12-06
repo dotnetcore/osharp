@@ -57,9 +57,16 @@ namespace OSharp.Exceptionless
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
+#if NET6_0_OR_GREATER
+        public override void UsePack(WebApplication app)
+        {
+            IServiceProvider provider = app.Services;
+#else
         public override void UsePack(IApplicationBuilder app)
         {
-            IConfiguration configuration = app.ApplicationServices.GetService<IConfiguration>();
+            IServiceProvider provider = app.ApplicationServices;
+#endif
+            IConfiguration configuration = provider.GetService<IConfiguration>();
             bool enabled = configuration["OSharp:Exceptionless:Enabled"].CastTo(false);
             if (!enabled)
             {
@@ -81,7 +88,7 @@ namespace OSharp.Exceptionless
 
             app.UseExceptionless();
 
-            UsePack(app.ApplicationServices);
+            UsePack(provider);
         }
 
     }

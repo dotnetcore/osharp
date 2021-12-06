@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Dtos;

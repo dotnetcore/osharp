@@ -30,9 +30,17 @@ namespace Microsoft.AspNetCore.Builder
         /// <summary>
         /// OSharp框架初始化，适用于AspNetCore环境
         /// </summary>
+#if NET6_0_OR_GREATER
+        public static WebApplication UseOSharp(this WebApplication app)
+#else
         public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
+#endif
         {
+#if NET6_0_OR_GREATER
+            IServiceProvider provider = app.Services;
+#else
             IServiceProvider provider = app.ApplicationServices;
+#endif
             ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
             logger.LogInformation(0, "OSharp框架初始化开始");
 

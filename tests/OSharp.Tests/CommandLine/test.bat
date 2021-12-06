@@ -1,1 +1,1 @@
-﻿dotnet --info
+dotnet --info

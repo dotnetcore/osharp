@@ -33,10 +33,54 @@ namespace OSharp.AspNetCore.Routing
         /// </summary>
         public override int Order => 99;
 
+#if NET6_0_OR_GREATER
         /// <summary>
         /// 应用AspNetCore的服务业务
         /// </summary>
-        /// <param name="app">Asp应用程序构建器</param>
+        /// <param name="app">Web应用程序</param>
+        public override void UsePack(WebApplication app)
+        {
+            MapMvc(app);
+            MapSignalR(app);
+            MapOther(app);
+
+            IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 重写以配置MVC的路由
+        /// </summary>
+        /// <param name="app">Web应用程序</param>
+        protected virtual WebApplication MapMvc(WebApplication app)
+        {
+            app.MapControllersWithAreaRoute();
+
+            return app;
+        }
+
+        /// <summary>
+        /// 重写以配置SignalR的路由
+        /// </summary>
+        /// <param name="app">Web应用程序</param>
+        protected virtual WebApplication MapSignalR(WebApplication app)
+        {
+            return app;
+        }
+
+        /// <summary>
+        /// 重写以配置其他路由
+        /// </summary>
+        /// <param name="app">Web应用程序</param>
+        /// <returns></returns>
+        protected virtual WebApplication MapOther(WebApplication app)
+        {
+            return app;
+        }
+#else
+        /// <summary>
+        /// 应用AspNetCore的服务业务
+        /// </summary>
+        /// <param name="app">Web应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
             app.UseEndpoints(endpoints =>
@@ -77,6 +121,6 @@ namespace OSharp.AspNetCore.Routing
         {
             return endpoints;
         }
-
+#endif
     }
 }

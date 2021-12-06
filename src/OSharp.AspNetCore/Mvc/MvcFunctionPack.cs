@@ -7,6 +7,7 @@
 //  <last-date>2018-06-23 15:26</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -46,13 +47,24 @@ namespace OSharp.AspNetCore.Mvc
             return services;
         }
 
+#if NET6_0_OR_GREATER
         /// <summary>
         /// 应用模块服务
         /// </summary>
-        /// <param name="app">应用程序构建器</param>
+        /// <param name="app">Web应用程序</param>
+        public override void UsePack(WebApplication app)
+        {
+            IServiceProvider provider = app.Services;
+#else
+        /// <summary>
+        /// 应用模块服务
+        /// </summary>
+        /// <param name="app">Web应用程序构建器</param>
         public override void UsePack(IApplicationBuilder app)
         {
-            IFunctionHandler functionHandler = app.ApplicationServices.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
+            IServiceProvider provider = app.ApplicationServices;
+#endif
+            IFunctionHandler functionHandler = provider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
             if (functionHandler == null)
             {
                 return;
