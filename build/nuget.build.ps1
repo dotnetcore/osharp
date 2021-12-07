@@ -53,7 +53,7 @@ function BuildNugetPackages()
         Write-Host "创建文件夹：$($output)"
     }
 
-    $projs = @("OSharp")#, "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
+    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions")#, 
 #"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
 #"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
 #"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
@@ -74,6 +74,43 @@ function BuildNugetPackages()
     }
 }
 
+function PushNugetPackages()
+{
+    $output = "$($rootPath)\build\output"
+    if(!(Test-Path $output))
+    {
+        Write-Host "输出文件夹 $($output) 不存在"
+        exit    
+    }
+    Write-Host "正在查找 nupkg 发布包"
+    $files = [System.IO.Directory]::GetFiles($output, "*.$($version)*nupkg")
+    Write-Host "共找到 $($files.Length) 个版本号为 $($version) 的nuget文件"
+    if($files.Length -eq 0)
+    {
+        exit
+    }
+    
+    $server = "https://www.nuget.org"
+    $items=@()
+    foreach($file in $files)
+    {
+        $obj = New-Object PSObject -Property @{
+            Server = $server
+            File = $file
+        }
+        $items += @($obj)
+    }
+
+    $items | ForEach-Object -Parallel {
+        $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
+        $item = $_
+        $name = [System.IO.Path]::GetFileName($item.File)
+        Write-Host ("正在 {0} 向发布{1}" -f $item.Server, $name)
+        $server = @("push", $item.File) + @("-Source", $item.Server)
+        & $nuget $server
+    } -ThrottleLimit 5
+}
+
 $now = [DateTime]::Now
 $rootPath = ($ENV:WORKSPACE)
 if($rootPath -eq $null)
@@ -86,3 +123,4 @@ $version = GetVersion
 Write-Host ("当前版本：$($version)")
 SetOsharpNSVersion
 BuildNugetPackages
+PushNugetPackages
