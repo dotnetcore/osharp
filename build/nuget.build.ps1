@@ -53,11 +53,11 @@ function BuildNugetPackages()
         Write-Host "创建文件夹：$($output)"
     }
 
-    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
-"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
-"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
-"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
-"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
+    $projs = @("OSharp")#, "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
+#"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
+#"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
+#"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
+#"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
     foreach($proj in $projs)
     {
         $path = "$($rootPath)/src/$($proj)/$($proj).csproj"
@@ -67,7 +67,7 @@ function BuildNugetPackages()
 
     $file = "$($rootPath)\build\OSharpNS.nuspec"
     $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
-    $nuget pack $file -OutputDirectory $output
+    & $nuget pack $file -OutputDirectory $output
     if($ENV:WORKSPACE -eq $null)
     {
         Invoke-Item $output
