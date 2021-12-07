@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.Identity</PackageId>
+    <PackageId>OSharp.Identity</PackageId>
     <Summary>OSharp 身份认证组件</Summary>
     <Description>OSharp 身份认证组件，基于AspNetCore.Identity和Osharp仓储系统的身份认证实现</Description>
     <RootNamespace>OSharp</RootNamespace>

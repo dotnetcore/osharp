@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.Redis</PackageId>
+    <PackageId>OSharp.Redis</PackageId>
     <Summary>OSharp Redis 缓存组件</Summary>
     <Description>OSharp Redis 缓存组件，封装基于Redis客户端的缓存实现</Description>
   </PropertyGroup>

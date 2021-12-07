@@ -5,7 +5,7 @@
 ## 使用方法
 
 1. 通过nuget引用 `OSharp.Exceptionless` 程序集
-> Install-Package OSharpNS.Exceptionless
+> Install-Package OSharp.Exceptionless
 
 2. 在 `appsettings.json` 中添加如下配置节点
 ```

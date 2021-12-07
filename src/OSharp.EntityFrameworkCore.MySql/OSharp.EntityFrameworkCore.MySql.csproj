@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.EntityFrameworkCore.MySql</PackageId>
+    <PackageId>OSharp.EntityFrameworkCore.MySql</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的MySql数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件MySql</Summary>
     <RootNamespace>OSharp.Entity.MySql</RootNamespace>

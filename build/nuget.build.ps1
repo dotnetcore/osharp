@@ -36,7 +36,7 @@ function SetOsharpNSVersion()
         $node.version = $version
     }
     WriteXml $xml $file
-    Write-Host "OSharpNS.nuspec 版本号更新成功"
+    Write-Host "OSharp.nuspec 版本号更新成功"
 }
 
 function BuildNugetPackages()

@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.EntityFrameworkCore.SqlServer</PackageId>
+    <PackageId>OSharp.EntityFrameworkCore.SqlServer</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的SqlServer数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件SqlServer</Summary>
     <RootNamespace>OSharp.Entity.SqlServer</RootNamespace>

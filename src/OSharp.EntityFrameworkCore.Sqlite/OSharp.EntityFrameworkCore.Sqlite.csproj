@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.EntityFrameworkCore.Sqlite</PackageId>
+    <PackageId>OSharp.EntityFrameworkCore.Sqlite</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的Sqlite数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件Sqlite</Summary>
     <RootNamespace>OSharp.Entity.Sqlite</RootNamespace>

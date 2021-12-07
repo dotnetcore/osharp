@@ -65,6 +65,6 @@ foreach($prop in $props)
     dotnet pack $path -c Release --output $output
 }
 
-nuget pack .\OSharpNS.nuspec -OutputDirectory $output
+nuget pack .\OSharp.nuspec -OutputDirectory $output
 Invoke-Item $output
 pause

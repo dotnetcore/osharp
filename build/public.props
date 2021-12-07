@@ -11,7 +11,7 @@
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/dotnetcore/osharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>osharp osharpns</PackageTags>
+    <PackageTags>osharp</PackageTags>
     <NeutralLanguage>zh-CHS</NeutralLanguage>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)OSharp.Keys.snk</AssemblyOriginatorKeyFile>
