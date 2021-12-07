@@ -2,7 +2,7 @@
 
 [![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
 [![depoly action](https://github.com/dotnetcore/OSharp/workflows/CI/badge.svg)](https://github.com/dotnetcore/OSharp/actions?query=workflow%3A%22CI%22)
-[![NuGet Badge](https://buildstats.info/nuget/osharpns.core)](https://www.nuget.org/packages/osharpns/)
+[![NuGet Badge](https://buildstats.info/nuget/osharp.core)](https://www.nuget.org/packages/osharpns/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
 ---

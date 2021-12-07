@@ -13,7 +13,7 @@
     <description>OSharp Framework with .NETCoreApp3.0，此Package包含了OSharp的所有常用组件</description>
     <releaseNotes>https://github.com/dotnetcore/osharp/releases</releaseNotes>
     <copyright>Copyright (c) 2014-2021 LIULIUSOFT. All rights reserved.</copyright>
-    <tags>osharp osharpns</tags>
+    <tags>osharp</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
         <dependency id="OSharp.Core" version="6.0.0-preview.1207" />
