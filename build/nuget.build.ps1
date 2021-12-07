@@ -66,8 +66,7 @@ function BuildNugetPackages()
     }
 
     $file = "$($rootPath)\build\OSharpNS.nuspec"
-    $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
-    $nuget pack $file -OutputDirectory $output
+    nuget pack $file -OutputDirectory $output
     if($ENV:WORKSPACE -eq $null)
     {
         Invoke-Item $output
@@ -102,12 +101,11 @@ function PushNugetPackages()
     }
 
     $items | ForEach-Object -Parallel {
-        $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
         $item = $_
         $name = [System.IO.Path]::GetFileName($item.File)
         Write-Host ("正在 {0} 向发布{1}" -f $item.Server, $name)
         $server = @("push", $item.File) + @("-Source", $item.Server)
-        & $nuget $server
+        & nuget $server
     } -ThrottleLimit 5
 }
 
