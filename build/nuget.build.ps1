@@ -123,4 +123,4 @@ $version = GetVersion
 Write-Host ("当前版本：$($version)")
 SetOsharpNSVersion
 BuildNugetPackages
-PushNugetPackages
+#PushNugetPackages
