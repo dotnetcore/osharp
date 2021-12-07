@@ -6,8 +6,7 @@
     <VersionSuffixVersion>1207</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>-->
-    <!--<AssemblyVersion>$(VersionMain).$(VersionPrefix)</AssemblyVersion>-->
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
-    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>
+    <!--<FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>-->
   </PropertyGroup>
 </Project>
