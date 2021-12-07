@@ -3,7 +3,7 @@
 ## 单机用法
 如果只是单台服务器使用Redis，可按照如下配置方式使用：
 1. 通过nuget引用 `OSharp.Redis` 程序集
-> Install-Package OSharpNS.Redis
+> Install-Package OSharp.Redis
 2. 在 `appsettings.json` 中添加如下配置节点
 ```
 {

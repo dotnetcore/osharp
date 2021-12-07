@@ -335,7 +335,7 @@
 
 ### 0.2.1-beta02-03 (2018/06/24)
 1. 修正一些使用OSharp作为命名空间的类型，使之符合模板要求
-2. 发布dotnetcli的模板nuget包：`OSharpNS.Template.Mvc_Angular`
+2. 发布dotnetcli的模板nuget包：`OSharp.Template.Mvc_Angular`
 
 ### 0.2.0-beta01 (2018/06/24)
 1. 将IRepository中的`Query`，`TrackQuery`方法标记为过时，使用属性`Entities`，`TrackEntities`代替

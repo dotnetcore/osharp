@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.Swagger</PackageId>
+    <PackageId>OSharp.Swagger</PackageId>
     <Summary>OSharp Swagger 客户端组件</Summary>
     <Description>OSharp Swagger 客户端组件，封装基于Redis客户端实现</Description>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>

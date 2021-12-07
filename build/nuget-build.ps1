@@ -15,9 +15,9 @@
     return $version
 }
 
-function SetOsharpNSVersion()
+function SetOSharpVersion()
 {
-    $file = "OSharpNS.nuspec"
+    $file = "OSharp.nuspec"
     $xml = New-Object -TypeName XML
     $xml.Load($file)
     $xml.package.metadata.version = $version
@@ -39,7 +39,7 @@ $rootPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Write-Host ("当前目录：{0}" -f $rootPath)
 $version = GetVersion
 Write-Host ("当前版本：{0}" -f $version)
-SetOsharpNSVersion
+SetOSharpVersion
 
 
 $output = ".\output"
@@ -65,6 +65,6 @@ foreach($prop in $props)
     dotnet pack $path -c Release --output $output
 }
 
-nuget pack .\OSharpNS.nuspec -OutputDirectory $output
+nuget pack .\OSharp.nuspec -OutputDirectory $output
 Invoke-Item $output
 pause

@@ -23,9 +23,9 @@ function GetVersion()
     return $version
 }
 
-function SetOsharpNSVersion()
+function SetOSharpVersion()
 {
-    $file = "$($rootPath)\build\OSharpNS.nuspec"
+    $file = "$($rootPath)\build\OSharp.nuspec"
     Write-Host ("正在更新文件 $($file) 的版本号：$($version)")
     $xml = New-Object -TypeName XML
     $xml.Load($file)
@@ -36,7 +36,7 @@ function SetOsharpNSVersion()
         $node.version = $version
     }
     WriteXml $xml $file
-    Write-Host "OSharpNS.nuspec 版本号更新成功"
+    Write-Host "OSharp.nuspec 版本号更新成功"
 }
 
 function BuildNugetPackages()
@@ -65,7 +65,7 @@ function BuildNugetPackages()
         dotnet pack $path -c Release --output $output
     }
 
-    $file = "$($rootPath)\build\OSharpNS.nuspec"
+    $file = "$($rootPath)\build\OSharp.nuspec"
     $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
     & $nuget pack $file -OutputDirectory $output
     if($ENV:WORKSPACE -eq $null)
@@ -124,6 +124,6 @@ if($rootPath -eq $null)
 Write-Host ("当前目录：$($rootPath)")
 $version = GetVersion
 Write-Host ("当前版本：$($version)")
-SetOsharpNSVersion
+SetOSharpVersion
 BuildNugetPackages
 PushNugetPackages

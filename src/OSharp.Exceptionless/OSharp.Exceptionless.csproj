@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <PackageId>OSharpNS.Exceptionless</PackageId>
+    <PackageId>OSharp.Exceptionless</PackageId>
     <Summary>OSharp Exceptionless 分布式日志组件</Summary>
     <Description>OSharp Exceptionless 分布式日志组件，封装基于Exceptionless 分布式日志记录实现</Description>
     <RootNamespace>OSharp.Exceptionless</RootNamespace>
