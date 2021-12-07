@@ -1,6 +1,6 @@
 ﻿function GetVersion()
 {
-    $file = "version.props"
+    $file = "./version.props"
     $xml = New-Object -TypeName XML
     $xml.Load($file)
     $version = $xml.Project.PropertyGroup.Version
