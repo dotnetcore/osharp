@@ -53,11 +53,11 @@ function BuildNugetPackages()
         Write-Host "创建文件夹：$($output)"
     }
 
-    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions")#, 
-#"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
-#"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
-#"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
-#"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
+    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions"), 
+"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
+"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
+"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
+"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
     foreach($proj in $projs)
     {
         $path = "$($rootPath)/src/$($proj)/$($proj).csproj"
@@ -90,6 +90,8 @@ function PushNugetPackages()
         exit
     }
     
+    $key = "D:\GreenSoft\Envs\nuget\nuget.org-apikey.txt"
+    $key = [System.IO.File]::ReadAllText($key)
     $server = "https://www.nuget.org"
     $items=@()
     foreach($file in $files)
@@ -97,6 +99,7 @@ function PushNugetPackages()
         $obj = New-Object PSObject -Property @{
             Server = $server
             File = $file
+            Key = $key
         }
         $items += @($obj)
     }
@@ -106,7 +109,7 @@ function PushNugetPackages()
         $item = $_
         $name = [System.IO.Path]::GetFileName($item.File)
         Write-Host ("正在 {0} 向发布{1}" -f $item.Server, $name)
-        $server = @("push", $item.File) + @("-Source", $item.Server)
+        $server = @("push", $item.File, "-Source", $item.Server, "-ApiKey", $item.Key, "-SkipDuplicate", "-SkipDuplicate")
         & $nuget $server
     } -ThrottleLimit 5
 }
@@ -123,4 +126,4 @@ $version = GetVersion
 Write-Host ("当前版本：$($version)")
 SetOsharpNSVersion
 BuildNugetPackages
-#PushNugetPackages
+PushNugetPackages
