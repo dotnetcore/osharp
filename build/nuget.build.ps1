@@ -112,7 +112,7 @@ function PushNugetPackages()
         Write-Host ("正在 {0} 向发布{1}" -f $item.Server, $name)
         $server = @("push", $item.File, "-Source", $item.Server, "-ApiKey", $item.Key, "-SkipDuplicate")
         & $nuget $server
-    } -ThrottleLimit 1
+    } -ThrottleLimit 5
 }
 
 $now = [DateTime]::Now
