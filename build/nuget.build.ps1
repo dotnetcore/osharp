@@ -93,6 +93,7 @@ function PushNugetPackages()
     $key = "D:\GreenSoft\Envs\nuget\nuget.org-apikey.txt"
     $key = [System.IO.File]::ReadAllText($key)
     $server = "https://www.nuget.org"
+    Write-Host "nuget服务器：$($server)，密钥：$($key)"
     $items=@()
     foreach($file in $files)
     {
