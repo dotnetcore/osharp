@@ -26,6 +26,7 @@ bld/
 
 /docs/_api
 /build/nupkgs
+/build/output
 
 # Visual Studio 2015 cache/options directory
 .vs/
