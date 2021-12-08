@@ -105,10 +105,13 @@ namespace OSharp.Filter
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+            // ReSharper disable NonReadonlyMemberInGetHashCode
 #if NET5_0_OR_GREATER
             return HashCode.Combine(Field, Value, Operate);
 #else
+#pragma warning disable CS0618 // 类型或成员已过时
             var combiner = new HashCodeCombiner();
+#pragma warning restore CS0618 // 类型或成员已过时
             combiner.Add(Field);
             combiner.Add(Value);
             combiner.Add(Operate);

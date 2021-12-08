@@ -46,7 +46,7 @@ namespace Microsoft.AspNetCore.Builder
 
             // 输出注入服务的日志
             StartupLogger startupLogger = provider.GetService<StartupLogger>();
-            startupLogger.Output(provider);
+            startupLogger?.Output(provider);
 
             Stopwatch watch = Stopwatch.StartNew();
             OsharpPack[] packs = provider.GetAllPacks();

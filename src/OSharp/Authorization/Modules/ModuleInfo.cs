@@ -57,7 +57,7 @@ namespace OSharp.Authorization.Modules
         /// <summary>
         /// 获取或设置 依赖功能
         /// </summary>
-        public IFunction[] DependOnFunctions { get; set; } = new IFunction[0];
+        public IFunction[] DependOnFunctions { get; set; } = Array.Empty<IFunction>();
 
         private string ToDebugDisplay()
         {
@@ -83,10 +83,13 @@ namespace OSharp.Authorization.Modules
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
+            // ReSharper disable NonReadonlyMemberInGetHashCode
 #if NET5_0_OR_GREATER
             return HashCode.Combine(Position, Code);
 #else
+#pragma warning disable CS0618 // 类型或成员已过时
             var combiner = new HashCodeCombiner();
+#pragma warning restore CS0618 // 类型或成员已过时
             combiner.Add(Position);
             combiner.Add(Code);
             return combiner.CombinedHash;

@@ -25,7 +25,11 @@ namespace OSharp.Hosting.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<Role> builder)
         {
+#if NET5_0_OR_GREATER
+            builder.HasIndex(m => new { m.NormalizedName, m.DeletedTime }).HasDatabaseName("RoleNameIndex").IsUnique();
+#else
             builder.HasIndex(m => new { m.NormalizedName, m.DeletedTime }).HasName("RoleNameIndex").IsUnique();
+#endif
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 

@@ -13,12 +13,12 @@ using System;
 namespace OSharp.Entity.KeyGenerate
 {
     /// <summary>
-    /// 定义<see cref="TKey"/>类型主键生成器
+    /// 定义TKey类型主键生成器
     /// </summary>
     public interface IKeyGenerator<out TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
-        /// 获取一个<see cref="TKey"/>类型的主键数据
+        /// 获取一个TKey类型的主键数据
         /// </summary>
         /// <returns></returns>
         TKey Create();

@@ -29,7 +29,11 @@ namespace OSharp.Hosting.EntityConfiguration.Authorization
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<EntityUser> builder)
         {
+#if NET5_0_OR_GREATER
+            builder.HasIndex(m => new { m.EntityId, m.UserId }).HasDatabaseName("EntityUserIndex");
+#else
             builder.HasIndex(m => new { m.EntityId, m.UserId }).HasName("EntityUserIndex");
+#endif
 
             builder.HasOne<EntityInfo>(eu => eu.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
             builder.HasOne<User>(eu => eu.User).WithMany().HasForeignKey(m => m.UserId);

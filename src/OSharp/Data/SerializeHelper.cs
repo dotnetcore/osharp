@@ -23,6 +23,7 @@ namespace OSharp.Data
     /// </summary>
     public static class SerializeHelper
     {
+#if NETSTANDARD2_0
         #region 二进制序列化
 
         /// <summary>
@@ -108,6 +109,8 @@ namespace OSharp.Data
         }
 
         #endregion
+        
+#endif
 
         #region XML序列化
 

@@ -21,7 +21,7 @@ namespace OSharp.AspNetCore.UI
     public static class AjaxResultExtensions
     {
         /// <summary>
-        /// 将业务操作结果转ajax操作结果，并处理强类型的 <see cref="OperationResult.Data"/>
+        /// 将业务操作结果转ajax操作结果，并处理强类型的 OperationResult.Data
         /// </summary>
         public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result, Func<T, object> dataFunc = null)
         {
@@ -45,7 +45,7 @@ namespace OSharp.AspNetCore.UI
         }
 
         /// <summary>
-        /// 将业务操作结果转ajax操作结果，会将 object 类型的 <see cref="OperationResult.Data"/> 转换为强类型 T，再通过 dataFunc 进行进一步处理
+        /// 将业务操作结果转ajax操作结果，会将 object 类型的 OperationResult.Data 转换为强类型 T，再通过 dataFunc 进行进一步处理
         /// </summary>
         public static AjaxResult ToAjaxResult<T>(this OperationResult result, Func<T, object> dataFunc)
         {

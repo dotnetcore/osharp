@@ -9,6 +9,7 @@
     <Description>OSharp数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
