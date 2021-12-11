@@ -33,7 +33,7 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if NET5_0
+#if NET5_0_OR_GREATER
             services.AddDatabaseDeveloperPageExceptionFilter();
 #endif
             services.AddOSharp()
@@ -57,7 +57,7 @@ namespace Liuliu.Demo.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-#if NET5_0
+#if NET5_0_OR_GREATER
                 app.UseMigrationsEndPoint();
 #else
                 app.UseDatabaseErrorPage();

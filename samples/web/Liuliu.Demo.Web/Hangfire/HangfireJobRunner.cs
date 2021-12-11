@@ -76,7 +76,7 @@ namespace Liuliu.Demo.Web.Hangfire
             user2.IsLocked = !user2.IsLocked;
             IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
             await userManager.UpdateAsync(user2);
-#if NET5_0
+#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync();
 #else
             unitOfWork.Commit();

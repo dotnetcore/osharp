@@ -7,7 +7,7 @@
 //  <last-date>2019-04-18 20:57</last-date>
 // -----------------------------------------------------------------------
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 using System;
 using System.ComponentModel;
 

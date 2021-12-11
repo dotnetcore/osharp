@@ -178,7 +178,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
                 IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
-#if NET5_0
+#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
@@ -221,7 +221,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await IdentityContract.Login(dto);
-#if NET5_0
+#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
             unitOfWork.Commit();
