@@ -236,7 +236,7 @@ namespace OSharp.EventBuses
                 }
             }
 
-            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType()} 的总线事件");
+            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType().FullName ?? "null"} 的总线事件");
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace OSharp.EventBuses
                 }
             }
 
-            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType()} 的总线事件");
+            Logger.LogDebug($"触发 {eventType} 事件类型，事件源 {eventSource?.GetType().FullName ?? "null"} 的总线事件");
         }
 
         /// <summary>

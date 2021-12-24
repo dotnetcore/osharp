@@ -81,7 +81,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
 
             //移除当前功能，使保存审计信息的时候不再获取记录变更，审计信息不需要再审计
             dict.Function = null;
-            provider.BeginUnitOfWorkTransaction( scopeProvider =>
+            provider.BeginUnitOfWorkTransaction(scopeProvider =>
             {
                 IAuditStore store = scopeProvider.GetService<IAuditStore>();
                 store?.Save(dict.AuditOperation);
