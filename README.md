@@ -17,7 +17,7 @@
 
 ---
 
-## <a id="01"/>OSharp简介
+## <a id="01">OSharp简介
 
 OSharp 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandard2.x开发的一个.NetCore快速开发框架。这个框架使用最新稳定版的.NetCore SDK（当前是.NET Core 3.1），对 AspNetCore 的配置、依赖注入、日志、缓存、实体框架、Mvc(WebApi)、身份认证、权限授权等模块进行更高一级的自动化封装，并规范了一套业务实现的代码结构与操作流程，使 .Net Core 框架更易于应用到实际项目开发中。
 
@@ -83,9 +83,9 @@ OSharp 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandar
 | [OSharp.Hosting.EntityConfiguration](https://www.nuget.org/packages/OSharp.Hosting.EntityConfiguration/) | [![OSharp.Hosting.EntityConfiguration](https://img.shields.io/nuget/v/OSharp.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharp.Hosting.EntityConfiguration/) | [![OSharp.Hosting.EntityConfiguration](https://img.shields.io/nuget/vpre/OSharp.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharp.Hosting.EntityConfiguration/) | [![OSharp.Hosting.EntityConfiguration](https://img.shields.io/nuget/dt/OSharp.Hosting.EntityConfiguration.svg)](https://www.nuget.org/packages/OSharp.Hosting.EntityConfiguration/) |
 | [OSharp.Hosting.Apis](https://www.nuget.org/packages/OSharp.Hosting.Apis/) | [![OSharp.Hosting.Apis](https://img.shields.io/nuget/v/OSharp.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharp.Hosting.Apis/) | [![OSharp.Hosting.Apis](https://img.shields.io/nuget/vpre/OSharp.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharp.Hosting.Apis/) | [![OSharp.Hosting.Apis](https://img.shields.io/nuget/dt/OSharp.Hosting.Apis.svg)](https://www.nuget.org/packages/OSharp.Hosting.Apis/) |
 | [OSharpNS](https://www.nuget.org/packages/OSharpNS/)                                                               | [![OSharpNS](https://img.shields.io/nuget/v/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                   | [![OSharpNS](https://img.shields.io/nuget/vpre/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              | [![OSharpNS](https://img.shields.io/nuget/dt/OSharpNS.svg)](https://www.nuget.org/packages/OSharpNS/)                                                                                              |
-| [OSharp.Template.Mvc_Angular](https://www.nuget.org/packages/OSharp.Template.Mvc_Angular/)                     | [![OSharp.Template.Mvc_Angular](https://img.shields.io/nuget/v/OSharp.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharp.Template.Mvc_Angular/)      |                            | [![OSharp.Template.Mvc_Angular](https://img.shields.io/nuget/dt/OSharp.Template.Mvc_Angular.svg)](https://www.nuget.org/packages/OSharp.Template.Mvc_Angular/)  
+| [OSharp.Template.WebApi](https://www.nuget.org/packages/OSharp.Template.WebApi/)                     | [![OSharp.Template.WebApi](https://img.shields.io/nuget/v/OSharp.Template.WebApi.svg)](https://www.nuget.org/packages/OSharp.Template.WebApi/)      |                            | [![OSharp.Template.WebApi](https://img.shields.io/nuget/dt/OSharp.Template.WebApi.svg)](https://www.nuget.org/packages/OSharp.Template.WebApi/)  
 
-## <a id="02"/>OSharp特性
+## <a id="02">OSharp特性
 
 ### 1. 模块化的组件设计
 
@@ -158,15 +158,15 @@ OSharp 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandar
 
 OSharp 快速启动模板的开发模式，集成了`Swagger` API 文档生成组件，更方便了前后端分离的开发模式中前后端开发人员的数据接口对接工作。基于`Swagger`的工作原理，API的输入输出都需使用`强类型`的数据类型，`Swagger`才能发挥更好的作用，而OSharp框架通过`AutoMapper`的`ProjectTo`对业务实体到输出DTO`IOutputDto`提供了自动映射功能，能有效减轻后端开发中数据对象属性映射的工作量。
 
-## <a id="03"/> 快速启动
+## <a id="03"> 快速启动
 
 OSharp框架制作了一个基于`dotnet cli`命令行工具的快速启动模板，下面演示如何来使用这个模板快速创建一个基于OSharp框架的初始化项目。
 ### 1. 安装最新版本 `dotnetcore sdk`
-OSharp当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 `2.2.4`，所以对应的 `dotnetcore sdk` 需要安装到对应版本 [>=v2.2.203](https://www.microsoft.com/net/download/windows)。
+OSharp当前版本（6.0.0）使用了 `.net` 当前最新版本 `6.0.0`，所以对应的 `net sdk` 需要安装到对应版本 [>=v6.0.0](https://www.microsoft.com/net/download/windows)。
 ### 2. 安装OSharp的`dotnet new`项目模板
 在任意空白目录，打开 `cmd`或`powershell` 命令行窗口，执行命令
 
-> dotnet new -i OSharp.Template.Mvc_Angular
+> dotnet new -i OSharp.Template.WebApi
 
 执行后，将能看到`osharp_xxx`系列的命令已安装到列表中
 
@@ -245,7 +245,7 @@ OSharp当前版本（0.5.0-beta04）使用了 `dotnetcore` 当前最新版本 `2
 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0006.png)
 
-## <a id="04"/>项目开发进度
+## <a id="04">项目开发进度
 
 截止到目前，OSharp 框架的完成程度已经很高了，计划中的功能点，均已得到较高水准的实现，具体功能点完成进度如下所示：
 
