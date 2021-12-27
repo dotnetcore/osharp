@@ -6,7 +6,7 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-09-07 22:01</last-date>
 // -----------------------------------------------------------------------
-
+#if !NET6_0
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,8 +50,7 @@ namespace OSharp.Entity.DynamicProxy
                     return;
                 }
                 Type returnType = context.ProxyMethod.ReturnType;
-                ITransactionDecision decision = provider.GetServices<ITransactionDecision>()
-                    .FirstOrDefault(m => m.IsFit(returnType));
+                ITransactionDecision decision = provider.GetServices<ITransactionDecision>().FirstOrDefault(m => m.IsFit(returnType));
                 if (decision == null)
                 {
                     throw new OsharpException($"无法找到与结果类型 {returnType} 匹配的 {typeof(ITransactionDecision)} 事务裁决器，请继承接口实现一个");
@@ -77,3 +76,5 @@ namespace OSharp.Entity.DynamicProxy
         }
     }
 }
+
+#endif

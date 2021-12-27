@@ -6,6 +6,7 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-09-07 21:58</last-date>
 // -----------------------------------------------------------------------
+#if !NET6_0
 
 using System;
 using System.Linq;
@@ -65,7 +66,8 @@ namespace OSharp.Entity.DynamicProxy
             }
 
 
-            throw new NotImplementedException();
+            throw new NotSupportedException($"{returnResult.GetType()}不是 OperationResultTransactionDecision 支持的返回类型");
         }
     }
 }
+#endif

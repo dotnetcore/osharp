@@ -6,6 +6,7 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-09-07 20:37</last-date>
 // -----------------------------------------------------------------------
+#if !NET6_0
 
 using System;
 
@@ -32,3 +33,4 @@ namespace OSharp.Entity.DynamicProxy
         bool CanCommit(object returnResult);
     }
 }
+#endif
