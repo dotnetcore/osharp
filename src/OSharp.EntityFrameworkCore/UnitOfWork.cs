@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UnitOfWork2.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -227,9 +227,10 @@ namespace OSharp.Entity
                 return;
             }
 
+            string token;
             if (_transactionStack.Count > 1)
             {
-                string token = _transactionStack.Pop();
+                token = _transactionStack.Pop();
                 _logger.LogDebug($"跳过事务提交，标识：{token}，当前剩余标识数：{_transactionStack.Count}");
                 return;
             }
@@ -239,10 +240,11 @@ namespace OSharp.Entity
                 throw new OsharpException("执行 IUnitOfWork.Commit() 之前，需要在事务开始时调用 IUnitOfWork.EnableTransaction()");
             }
 
+            token = _transactionStack.Pop();
             foreach (DbTransaction transaction in _transDict.Values)
             {
                 transaction.Commit();
-                _logger.LogDebug($"提交事务，事务标识：{transaction.GetHashCode()}");
+                _logger.LogDebug($"提交事务，标识：{token}，事务标识：{transaction.GetHashCode()}");
             }
 
             HasCommitted = true;
@@ -343,9 +345,10 @@ namespace OSharp.Entity
                 return;
             }
 
+            string token;
             if (_transactionStack.Count > 1)
             {
-                string token = _transactionStack.Pop();
+                token = _transactionStack.Pop();
                 _logger.LogDebug($"跳过事务提交，标识：{token}，当前剩余标识数：{_transactionStack.Count}");
                 return;
             }
@@ -355,11 +358,11 @@ namespace OSharp.Entity
                 throw new OsharpException("执行 IUnitOfWork.Commit() 之前，需要在事务开始时调用 IUnitOfWork.EnableTransaction()");
             }
 
-            _transactionStack.Pop();
+            token = _transactionStack.Pop();
             foreach (DbTransaction transaction in _transDict.Values)
             {
                 await transaction.CommitAsync(cancellationToken);
-                _logger.LogDebug($"提交事务，事务标识：{transaction.GetHashCode()}");
+                _logger.LogDebug($"提交事务，标识：{token}，事务标识：{transaction.GetHashCode()}");
             }
 
             HasCommitted = true;

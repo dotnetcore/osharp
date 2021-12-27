@@ -79,10 +79,13 @@ namespace OSharp.Entity
         /// <returns>操作影响的行数</returns>
         public virtual int Insert(params TEntity[] entities)
         {
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             Check.NotNull(entities, nameof(entities));
             entities = CheckInsert(entities);
             _dbSet.AddRange(entities);
-            return _dbContext.SaveChanges();
+            int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
+            return count;
         }
 
         /// <summary>
@@ -94,6 +97,7 @@ namespace OSharp.Entity
         public virtual int InsertOrUpdate(TEntity[] entities, Func<TEntity, Expression<Func<TEntity, bool>>> existingFunc = null)
         {
             Check.NotNull(entities, nameof(entities));
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TEntity entity in entities)
             {
                 Expression<Func<TEntity, bool>> exp = existingFunc == null
@@ -111,7 +115,9 @@ namespace OSharp.Entity
                 }
             }
 
-            return _dbContext.SaveChanges();
+            int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
+            return count;
         }
 
         /// <summary>
@@ -128,6 +134,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -156,6 +163,7 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -172,9 +180,13 @@ namespace OSharp.Entity
         public virtual int Delete(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
 
             DeleteInternal(entities);
-            return _dbContext.SaveChanges();
+            int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
+
+            return count;
         }
 
         /// <summary>
@@ -201,6 +213,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(ids, nameof(ids));
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TKey id in ids)
             {
                 TEntity entity = _dbSet.Find(id);
@@ -232,6 +245,7 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(entity));
             }
             int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -271,9 +285,12 @@ namespace OSharp.Entity
         public virtual int Update(params TEntity[] entities)
         {
             Check.NotNull(entities, nameof(entities));
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             entities = CheckUpdate(entities);
             ((DbContext)_dbContext).Update<TEntity, TKey>(entities);
-            return _dbContext.SaveChanges();
+            int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
+            return count;
         }
 
         /// <summary>
@@ -290,6 +307,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TEditDto dto in dtos)
             {
                 try
@@ -323,6 +341,7 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = _dbContext.SaveChanges();
+            unitOfWork.Commit();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -512,9 +531,16 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             entities = CheckInsert(entities);
             await _dbSet.AddRangeAsync(entities, _cancellationTokenProvider.Token);
-            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
@@ -526,6 +552,7 @@ namespace OSharp.Entity
         public virtual async Task<int> InsertOrUpdateAsync(TEntity[] entities, Func<TEntity, Expression<Func<TEntity, bool>>> existingFunc = null)
         {
             Check.NotNull(entities, nameof(entities));
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TEntity entity in entities)
             {
                 Expression<Func<TEntity, bool>> exp = existingFunc == null
@@ -543,7 +570,13 @@ namespace OSharp.Entity
                 }
             }
 
-            return await _dbContext.SaveChangesAsync();
+            int count = await _dbContext.SaveChangesAsync();
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
@@ -560,6 +593,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -588,6 +622,11 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -605,8 +644,15 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             DeleteInternal(entities);
-            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
@@ -635,6 +681,7 @@ namespace OSharp.Entity
         {
             Check.NotNull(ids, nameof(ids));
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TKey id in ids)
             {
                 TEntity entity = await _dbSet.FindAsync(id);
@@ -666,6 +713,11 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(entity));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -710,9 +762,16 @@ namespace OSharp.Entity
         {
             Check.NotNull(entities, nameof(entities));
 
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             entities = CheckUpdate(entities);
             ((DbContext)_dbContext).Update<TEntity, TKey>(entities);
-            return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
@@ -728,6 +787,7 @@ namespace OSharp.Entity
             Func<TEditDto, TEntity, Task<TEntity>> updateFunc = null) where TEditDto : IInputDto<TKey>
         {
             List<string> names = new List<string>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (TEditDto dto in dtos)
             {
                 try
@@ -761,6 +821,11 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -818,9 +883,9 @@ namespace OSharp.Entity
             return await _dbSet.FindAsync(key);
         }
 
-        #endregion
+#endregion
 
-        #region 私有方法
+#region 私有方法
 
         private static void CheckEntityKey(object key, string keyName)
         {
@@ -979,6 +1044,6 @@ namespace OSharp.Entity
             }
         }
 
-        #endregion
+#endregion
     }
 }
