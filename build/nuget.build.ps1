@@ -1,4 +1,4 @@
-﻿function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
+function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
 {
     $encoding = New-Object System.Text.UTF8Encoding($true)
     $writer = New-Object System.IO.StreamWriter($file, $false, $encoding)
@@ -92,7 +92,7 @@ function PushNugetPackages()
     
     $key = "D:\GreenSoft\Envs\nuget\nuget.org-apikey.txt"
     $key = [System.IO.File]::ReadAllText($key)
-    $server = "https://www.nuget.org"
+    $server = "https://api.nuget.org/v3/index.json"
     Write-Host "nuget服务器：$($server)，密钥：$($key)"
     $items=@()
     foreach($file in $files)
