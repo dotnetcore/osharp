@@ -1,0 +1,30 @@
+@inherits MiniRazor.TemplateBase<CodeModule>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeModule module = Model;
+}// -----------------------------------------------------------------------
+//  <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//  </once-generated>
+//
+//  <copyright file="src/locales/lang/en/routers/@(module.Name.UpperToLowerAndSplit()).ts" company="@module.Project.Company">
+//      @module.Project.Copyright
+//  </copyright>
+//  <site>@module.Project.SiteUrl</site>
+//  <last-editor>@module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+export default {
+  @(module.Name.ToLowerCase()): '@(module.Name)',
+@foreach (var entity in module.Entities)
+{
+<text>  @(entity.Name.ToLowerCase()): '@(entity.Name.ToPlural())',
+</text>
+}
+};

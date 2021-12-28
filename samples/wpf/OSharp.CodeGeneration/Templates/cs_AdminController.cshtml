@@ -1,0 +1,46 @@
+@inherits MiniRazor.TemplateBase<CodeEntity>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeEntity entity = Model;
+    string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+}// -----------------------------------------------------------------------
+// <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//     可以在此类进行继承重写来扩展基类 @(entity.Name)ControllerBase
+// </once-generated>
+//
+// <copyright file="@(entity.Name).cs" company="@entity.Module.Project.Company">
+//     @entity.Module.Project.Copyright
+// </copyright>
+// <site>@entity.Module.Project.SiteUrl</site>
+// <last-editor>@entity.Module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+using System;
+
+using OSharp.Filter;
+
+using @(entity.Module.Namespace);
+
+
+namespace @(entity.Module.Project.NamespacePrefix).Web.Areas.Admin.Controllers
+{
+    /// <summary>
+    /// 管理控制器: @(entity.Display)信息
+    /// </summary>
+    public class @(entity.Name)Controller : @(entity.Name)ControllerBase
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@(entity.Name)Controller"/>类型的新实例
+        /// </summary>
+        public @(entity.Name)Controller(IServiceProvider provider)
+            : base(provider)
+        { }
+    }
+}

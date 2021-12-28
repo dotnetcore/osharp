@@ -1,0 +1,41 @@
+@inherits MiniRazor.TemplateBase<CodeModule>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeModule module = Model;
+}// -----------------------------------------------------------------------
+// <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//     可以在此类进行继承重写来扩展基类 @(module.Name)ServiceBase
+// </once-generated>
+//
+// <copyright file="@(module.Name)Service.cs" company="@module.Project.Company">
+//     @module.Project.Copyright
+// </copyright>
+// <site>@module.Project.SiteUrl</site>
+// <last-editor>@module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+using System;
+
+
+namespace @(module.Namespace)
+{
+    /// &lt;summary&gt;
+    /// 业务实现基类：@(module.Display)模块
+    /// &lt;/summary&gt;
+    public partial class @(module.Name)Service : @(module.Name)ServiceBase
+    {
+        /// <summary>
+        /// 初始化一个&lt;see cref="@(module.Name)Service"/&gt;类型的新实例
+        /// </summary>
+        public @(module.Name)Service(IServiceProvider provider)
+            : base(provider)
+        { }
+    }
+}

@@ -1,0 +1,47 @@
+@inherits MiniRazor.TemplateBase<CodeModule>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeModule module = Model;
+}// -----------------------------------------------------------------------
+//  <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//  </once-generated>
+//
+//  <copyright file="@(module.Name.UpperToLowerAndSplit()).routing.ts" company="@module.Project.Company">
+//      @module.Project.Copyright
+//  </copyright>
+//  <site>@module.Project.SiteUrl</site>
+//  <last-editor>@module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+import { NgModule } from '@@angular/core';
+import { Routes, RouterModule } from '@@angular/router';
+import { ACLGuard } from '@@delon/acl';
+@foreach (CodeEntity entity in module.Entities.Where(m => m.Listable))
+{
+    var lowerName = entity.Name.UpperToLowerAndSplit();
+    <text>import { @(entity.Name)Component } from './@(lowerName)/@(lowerName).component';
+</text>
+}
+
+const routes: Routes = [
+@foreach (CodeEntity entity in module.Entities.Where(m => m.Listable))
+{
+    var lowerName = entity.Name.UpperToLowerAndSplit(); 
+    <text>  { path: '@(lowerName)', component: @(entity.Name)Component, canActivate: [ACLGuard], data: { title: '@(entity.Display)管理', reuse: true, guard: 'Root.Admin.@(module.Name).@(entity.Name).Read' } },
+</text>
+}
+];
+
+@@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class @(module.Name)RoutingModule { }

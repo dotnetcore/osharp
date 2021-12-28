@@ -1,0 +1,32 @@
+@inherits MiniRazor.TemplateBase<CodeProject>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeProject project = Model;
+}
+项目信息：
+  名称：@project.Name
+命名空间：@project.NamespacePrefix
+
+项目模块：
+@foreach (var module in project.Modules)
+{
+  <text>
+    @module.Name - @module.Display</text>
+  foreach (var entity in module.Entities)
+  {
+    <text>
+      @entity.Name - @entity.Display</text>
+    foreach (var property in entity.Properties)
+    {
+      <text>
+        @property.Name - @property.Display</text>
+    }
+  }
+}

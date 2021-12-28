@@ -1,0 +1,60 @@
+@inherits MiniRazor.TemplateBase<CodeModule>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeModule module = Model;
+}// -----------------------------------------------------------------------
+// <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//     可以在此类的AddServices方法给“@(module.Name)”模块添加自定义服务配对，或者在UsePack方法进行模块初始化
+// </once-generated>
+//
+// <copyright file="@(module.Name)Pack.cs" company="@module.Project.Company">
+//     @module.Project.Copyright
+// </copyright>
+// <site>@module.Project.SiteUrl</site>
+// <last-editor>@module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+using System;
+using System.ComponentModel;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using OSharp.Core.Packs;
+
+
+namespace @(module.Namespace)
+{
+    /// &lt;summary&gt;
+    /// @(module.Display)模块
+    /// &lt;/summary&gt;
+    [Description("@(module.Display)模块")]
+    public class @(module.Name)Pack : OsharpPack
+    {
+        /// &lt;summary&gt;将模块服务添加到依赖注入服务容器中&lt;/summary&gt;
+        /// &lt;param name="services"&gt;依赖注入服务容器&lt;/param&gt;
+        /// &lt;returns&gt;&lt;/returns&gt;
+        public override IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.TryAddScoped&lt;I@(module.Name)Contract, @(module.Name)Service&gt;();
+
+            return services;
+        }
+
+        /// &lt;summary&gt;
+        /// 应用模块服务
+        /// &lt;/summary&gt;
+        /// &lt;param name="provider"&gt;服务提供者&lt;/param&gt;
+        public override void UsePack(IServiceProvider provider)
+        {
+            base.UsePack(provider);
+        }
+    }
+}

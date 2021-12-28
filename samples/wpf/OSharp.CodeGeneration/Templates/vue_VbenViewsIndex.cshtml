@@ -1,0 +1,54 @@
+@inherits MiniRazor.TemplateBase<CodeEntity>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeEntity entity = Model;
+  string moduleName = entity.Module.Name;
+  string urlModule = entity.Module.Name.UpperToLowerAndSplit();
+  string lowerModule = entity.Module.Name.ToLowerCase();
+  string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+  string entityName = entity.Name;
+  string urlEntity = entity.Name.UpperToLowerAndSplit("");
+  string lowerEntity = entity.Name.ToLowerCase();
+}
+<template>
+  <div class="p-4">
+    <BasicTable @@register="registerTable">
+      <template #[slot]="{ record }" :key="slot" v-for="slot in store.boolProps">
+        <Checkbox :checked="record[slot]" />
+      </template>
+    </BasicTable>
+  </div>
+</template>
+
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import { BasicTable, useTable } from '/@@/components/Table';
+  import { Checkbox } from 'ant-design-vue';
+  import { @(entity.Name)Store } from './@(lowerEntity)Store';
+
+  export default defineComponent({
+    components: {
+      BasicTable,
+      Checkbox,
+    },
+    setup() {
+      const entityName = '@(urlEntity)';
+      const store = new @(entity.Name)Store(entityName);
+      const registerTable = useTable(store.tableProps);
+      return {
+        store,
+        registerTable,
+      };
+    },
+  });
+</script>
+
+<style scoped></style>

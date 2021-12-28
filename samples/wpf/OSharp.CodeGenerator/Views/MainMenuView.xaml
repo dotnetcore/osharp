@@ -1,0 +1,74 @@
+<UserControl
+  x:Class="OSharp.CodeGenerator.Views.MainMenuView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator.Views"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:s="https://github.com/canton7/Stylet"
+  mc:Ignorable="d"
+  d:DataContext="{d:DesignInstance local:MainMenuViewModel}"
+  d:DesignHeight="29" d:DesignWidth="400">
+  <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+    <!--<Button x:Name="BtnFile" Cursor="Hand" Initialized="MenuButton_OnInitialized" Click="MenuButton_OnClick">
+      <Button.Content>
+        <StackPanel Orientation="Horizontal">
+          <icons:PackIconMaterial Kind="FileChartOutline" />
+          <TextBlock Text=" 文件"/>
+        </StackPanel>
+      </Button.Content>
+      <Button.ContextMenu>
+        <ContextMenu x:Name="MenuFile" FontSize="12" Padding="5 0 0 0">
+          <MenuItem Header="新建项目(_N)" s:View.ActionTarget="{Binding}" Command="{s:Action New}" Icon="{icons:Material Kind=NewBox}"/>
+          <MenuItem Header="打开项目(_)" s:View.ActionTarget="{Binding}" Command="{s:Action Open}" Icon="{icons:Material Kind=FolderOpenOutline}"/>
+          <MenuItem Header="保存项目(_S)" s:View.ActionTarget="{Binding}" Command="{s:Action Save}" Icon="{icons:Material Kind=ContentSave}"/>
+          <MenuItem Header="项目另存为(_A)" s:View.ActionTarget="{Binding}" Command="{s:Action SaveAs}" Icon="{icons:Material Kind=ContentSaveMove}"/>
+          <MenuItem Header="退出(_X)" s:View.ActionTarget="{Binding}" Command="{s:Action Exit}" Icon="{icons:Material Kind=ExitToApp}"/>
+        </ContextMenu>
+      </Button.ContextMenu>
+    </Button>-->
+    <Button x:Name="BtnProject" Cursor="Hand" Initialized="MenuButton_OnInitialized" Click="MenuButton_OnClick">
+      <Button.Content>
+        <StackPanel Orientation="Horizontal">
+          <icons:PackIconMaterial Kind="AlphaPBoxOutline" />
+          <TextBlock Text=" 项目"/>
+        </StackPanel>
+      </Button.Content>
+      <Button.ContextMenu>
+        <ContextMenu x:Name="MenuProject" FontSize="12" Padding="5 0 0 0">
+          <MenuItem Header="项目管理(_P)" s:View.ActionTarget="{Binding}" Command="{s:Action Project}" Icon="{icons:Octicons Kind=Project}"/>
+          <MenuItem Header="项目模板管理(_T)" s:View.ActionTarget="{Binding}" Command="{s:Action Template}" Icon="{icons:Material Kind=AlphaTBox}"/>
+        </ContextMenu>
+      </Button.ContextMenu>
+    </Button>
+    <Button x:Name="BtnSetting" Cursor="Hand" Initialized="MenuButton_OnInitialized" Click="MenuButton_OnClick">
+      <Button.Content>
+        <StackPanel Orientation="Horizontal">
+          <icons:PackIconMaterial Kind="CogOutline" />
+          <TextBlock Text=" 设置"/>
+        </StackPanel>
+      </Button.Content>
+      <Button.ContextMenu>
+        <ContextMenu x:Name="MenuSetting" FontSize="12" Padding="5 0 0 0">
+          <MenuItem Header="全局模板管理(_T)" s:View.ActionTarget="{Binding}" Command="{s:Action GlobalTemplate}" Icon="{icons:Material Kind=AlphaTBoxOutline}"/>
+        </ContextMenu>
+      </Button.ContextMenu>
+    </Button>
+    <Button x:Name="BtnHelp" Cursor="Hand" Initialized="MenuButton_OnInitialized" Click="MenuButton_OnClick">
+      <Button.Content>
+        <StackPanel Orientation="Horizontal">
+          <icons:PackIconMaterial Kind="HelpNetworkOutline" />
+          <TextBlock Text=" 帮助"/>
+        </StackPanel>
+      </Button.Content>
+      <Button.ContextMenu>
+        <ContextMenu x:Name="MenuHelp" FontSize="12" Padding="5 0 0 0">
+          <MenuItem Header="OSharp on Github(_G)" s:View.ActionTarget="{Binding}" Command="{s:Action Github}" Icon="{icons:Material Kind=Github}"/>
+          <MenuItem Header="CodeSource on Gitee(_G)" s:View.ActionTarget="{Binding}" Command="{s:Action Gitee}" Icon="{icons:Material Kind=Gitlab}"/>
+          <MenuItem Header="关于(_A)" s:View.ActionTarget="{Binding}" Command="{s:Action About}" Icon="{icons:Material Kind=InformationOutline}"/>
+        </ContextMenu>
+      </Button.ContextMenu>
+    </Button>
+  </StackPanel>
+</UserControl>

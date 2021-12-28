@@ -1,0 +1,52 @@
+<UserControl
+  x:Class="OSharp.CodeGenerator.Views.MenuView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator.Views"
+  mc:Ignorable="d"
+  d:DesignHeight="600" d:DesignWidth="250"
+  d:DataContext="{d:DesignInstance local:MenuViewModel}">
+  <GroupBox>
+    <GroupBox.Header>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Foreground="White" FontSize="14">
+          <icons:PackIconMaterial Kind="Menu" Margin="0 -3"/> 导航菜单
+        </TextBlock>
+        <Button Command="{s:Action Method=Init}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}" Margin="15 0 0 0" Padding="2 2" ToolTip="刷新模块列表">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="Refresh"  Width="12" Height="12"/>
+            <TextBlock Text="刷新" FontSize="12" Margin="2 0"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </GroupBox.Header>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="50"/>
+      </Grid.RowDefinitions>
+      <TreeView Grid.Row="0" ItemsSource="{Binding MenuItems}" SelectedItemChanged="{s:Action Select}" s:View.ActionTarget="{Binding}">
+        <TreeView.ItemTemplate>
+          <HierarchicalDataTemplate ItemsSource="{Binding ItemMenus}">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+              <icons:PackIconMaterial Kind="{Binding Icon}"/>
+              <TextBlock Text="{Binding Text}" Margin="8 0 0 0"/>
+            </StackPanel>
+          </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+      </TreeView>
+      <StackPanel Grid.Row="1">
+        <Button Command="{s:Action Generate}" s:View.ActionTarget="{Binding}" Margin="30 10" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" BorderThickness="0">
+          <TextBlock FontSize="18">
+            <icons:PackIconMaterial Kind="RunFast"/>
+            生成代码
+          </TextBlock>
+        </Button>
+      </StackPanel>
+    </Grid>
+  </GroupBox>
+</UserControl>

@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--<Import Project="../../../build/public.props" />-->
+  <Import Project="../../../build/version.props" />
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <AssemblyName>OSharp.CodeGenerator</AssemblyName>
+    <ApplicationIcon>Resources\osharp128-2.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Notifications.Wpf.Core" Version="1.3.2" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="log4net.config" />
+    <None Remove="Resources\osharp128-2.ico" />
+    <None Remove="Resources\osharp128-2.png" />
+    <None Remove="Resources\osharp128.ico" />
+    <None Remove="Resources\osharp128.png" />
+    <None Remove="Resources\osharp128.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.Log4Net\OSharp.Log4Net.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.Wpf\OSharp.Wpf.csproj" />
+    <ProjectReference Include="..\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\osharp128-2.ico" />
+    <Resource Include="Resources\osharp128-2.png" />
+    <Resource Include="Resources\osharp128.ico" />
+    <Resource Include="Resources\osharp128.png" />
+    <Resource Include="Resources\osharp128.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\CustomTemplate001.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+</Project>
