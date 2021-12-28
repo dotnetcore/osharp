@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>6.0.0</version>
+    <version>6.0.1-preview.1228</version>
     <title>OSharpFramework(.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>LiuliuSoft nnc</owners>
@@ -16,25 +16,25 @@
     <tags>osharp</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharp.Core" version="6.0.0" />
-        <dependency id="OSharp.EntityFrameworkCore" version="6.0.0" />
-        <dependency id="OSharp.AutoMapper" version="6.0.0" />
-        <dependency id="OSharp.AspNetCore" version="6.0.0" />
-        <dependency id="OSharp.Log4Net" version="6.0.0" />
+        <dependency id="OSharp.Core" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.EntityFrameworkCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AutoMapper" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AspNetCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.Log4Net" version="6.0.1-preview.1228" />
       </group>
       <group targetFramework="net5.0">
-        <dependency id="OSharp.Core" version="6.0.0" />
-        <dependency id="OSharp.EntityFrameworkCore" version="6.0.0" />
-        <dependency id="OSharp.AutoMapper" version="6.0.0" />
-        <dependency id="OSharp.AspNetCore" version="6.0.0" />
-        <dependency id="OSharp.Log4Net" version="6.0.0" />
+        <dependency id="OSharp.Core" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.EntityFrameworkCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AutoMapper" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AspNetCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.Log4Net" version="6.0.1-preview.1228" />
       </group>
       <group targetFramework="net6.0">
-        <dependency id="OSharp.Core" version="6.0.0" />
-        <dependency id="OSharp.EntityFrameworkCore" version="6.0.0" />
-        <dependency id="OSharp.AutoMapper" version="6.0.0" />
-        <dependency id="OSharp.AspNetCore" version="6.0.0" />
-        <dependency id="OSharp.Log4Net" version="6.0.0" />
+        <dependency id="OSharp.Core" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.EntityFrameworkCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AutoMapper" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.AspNetCore" version="6.0.1-preview.1228" />
+        <dependency id="OSharp.Log4Net" version="6.0.1-preview.1228" />
       </group>
     </dependencies>
   </metadata>

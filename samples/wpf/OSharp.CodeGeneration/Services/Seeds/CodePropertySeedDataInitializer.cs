@@ -51,8 +51,7 @@ namespace OSharp.CodeGeneration.Services.Seeds
                 },
                 new CodeProperty() { Name = "Email", Display = "邮箱", TypeName = "System.String", Order = 3, MaxLength = 200, EntityId = entity.Id },
                 new CodeProperty() { Name = "EmailConfirmed", Display = "邮箱确认", TypeName = "System.Boolean", Order = 4, EntityId = entity.Id },
-                new CodeProperty()
-                    { Name = "PhoneNumber", Display = "手机号", TypeName = "System.String", Order = 5, MaxLength = 50, EntityId = entity.Id },
+                new CodeProperty() { Name = "PhoneNumber", Display = "手机号", TypeName = "System.String", Order = 5, MaxLength = 50, EntityId = entity.Id },
                 new CodeProperty() { Name = "PhoneNumberConfirmed", Display = "手机号确认", TypeName = "System.Boolean", Order = 6, EntityId = entity.Id },
             };
             
