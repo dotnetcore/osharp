@@ -70,8 +70,8 @@ jobs:
     - name: Windows Build
       run: |
         dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
-        dotnet build ./samples/wpf/OSharp.Wpf/OSharp.Wpf.csproj
-        dotnet build ./samples/wpf/OSharp.Wpf/OSharp.Wpf.csproj
+        dotnet build ./samples/wpf/OSharp.CodeGeneration/OSharp.CodeGeneration.csproj
+        dotnet build ./samples/wpf/OSharp.CodeGenerator/OSharp.CodeGenerator.csproj
     - name: Windows Test
       run: |
         dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
