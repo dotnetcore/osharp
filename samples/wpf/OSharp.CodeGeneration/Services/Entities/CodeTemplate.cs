@@ -121,14 +121,12 @@ namespace OSharp.CodeGeneration.Services.Entities
                     return typeof(vue_VbenLocalesLangEn);
                 case "vue_Vben国际化多语言简体中文":
                     return typeof(vue_VbenLocalesLangZhCN);
-                case "vue_Vben路由器菜单":
-                    return typeof(vue_VbenRouterMenus);
                 case "vue_Vben路由器路由":
                     return typeof(vue_VbenRouterRoutes);
-                case "vue_Vben视图Store":
-                    return typeof(vue_VbenViewsStore);
-                case "vue_Vben视图Index":
-                    return typeof(vue_VbenViewsIndex);
+                case "vue_Vben存储Store":
+                    return typeof(vue_VbenStore);
+                case "vue_Vben视图Vue":
+                    return typeof(vue_VbenViewsVue);
                 default:
                     return null;
             }

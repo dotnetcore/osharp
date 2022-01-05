@@ -1,4 +1,4 @@
-@inherits MiniRazor.TemplateBase<CodeModule>
+@inherits MiniRazor.TemplateBase<CodeProject>
 @namespace OSharp.CodeGeneration.Templates
 @using System;
 @using System.Linq;
@@ -8,51 +8,65 @@
 @using OSharp.Exceptions;
 @using OSharp.Extensions;
 @{
-  CodeModule module = Model;
-  string lowerModule = module.Name.ToLowerCase();
-  string urlModule = module.Name.UpperToLowerAndSplit();
+  CodeProject project = Model;
 }// -----------------------------------------------------------------------
 //  <once-generated>
 //     这个文件只生成一次，再次生成不会被覆盖。
 //  </once-generated>
 //
-//  <copyright file="src/router/routes/modules/@(module.Name.UpperToLowerAndSplit()).ts" company="@module.Project.Company">
-//      @module.Project.Copyright
+//  <copyright file="src/router/routes/modules/osharp.ts" company="@project.Company">
+//      @project.Copyright
 //  </copyright>
-//  <site>@module.Project.SiteUrl</site>
-//  <last-editor>@module.Project.Creator</last-editor>
+//  <site>@project.SiteUrl</site>
+//  <last-editor>@project.Creator</last-editor>
 // -----------------------------------------------------------------------
 import type { AppRouteModule } from '/@@/router/types';
-import { LAYOUT } from '/@@/router/constant';
+import { LAYOUT, getParentLayout } from '/@@/router/constant';
 import { t } from '/@@/hooks/web/useI18n';
 
-const @(lowerModule): AppRouteModule = {
-  path: '/@(lowerModule)',
-  name: '@(module.Name)',
+const osharp: AppRouteModule = {
+  path: '/system',
+  name: 'OSharp',
   component: LAYOUT,
-  redirect: '/@(lowerModule)/@(module.Entities.FirstOrDefault()?.Name.UpperToLowerAndSplit())',
+  redirect: '/system',
   meta: {
-    icon: '@(module.Icon)',
-    title: t('routes.@(lowerModule).@(lowerModule)'),
+    orderNo: 1000,
+    icon: 'ion:settings-outline',
+    title: t('routes.osharp.system'),
   },
   children: [
+@foreach (var module in project.Modules)
+{
+  string lowerModule = module.Name.ToLowerCase();
+  string urlModule = module.Name.UpperToLowerAndSplit();
+<text>    {
+      path: '@urlModule',
+      name: '@module.Name',
+      component: getParentLayout('@(module.Name)'),
+      redirect: '/system/@(urlModule)/@(module.Entities.FirstOrDefault()?.Name.UpperToLowerAndSplit() ?? "index")',
+      meta: {
+        title: t('routes.osharp.@(lowerModule).@(lowerModule)'),
+      },
+      children: [
 @foreach (var entity in module.Entities)
 {
-  string urlEntity = entity.Name.UpperToLowerAndSplit();
   string lowerEntity = entity.Name.ToLowerCase();
-<text>    {
-      path: '@(urlEntity)',
-      name: '@(entity.Name)',
-      component: () => import('/@@/views/@(lowerModule)/@(lowerEntity)/index.vue'),
-      meta: {
-        icon: '@(entity.Icon)',
-        title: t('routes.@(lowerModule).@(lowerEntity)'),
-      },
+  string urlEntity = entity.Name.UpperToLowerAndSplit();
+<text>        {
+          path: '@(urlEntity)',
+          name: '@(entity.Name)',
+          component: () => import('/@@/views/osharp/@(lowerModule)/@(lowerEntity).vue'),
+          meta: {
+            title: t('routes.osharp.@(lowerModule).@(lowerEntity)'),
+          },
+        },
+</text>
+}
+      ],
     },
 </text>
 }
   ],
 };
 
-export default @(lowerModule);
-
+export default osharp;

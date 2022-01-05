@@ -25,10 +25,10 @@ namespace OSharp.CodeGeneration.Services
         {
             services.AddScoped<IDataContract, DataService>();
             services.AddSingleton<ISeedDataInitializer, CodeTemplateSeedDataInitializer>();
-            //services.AddSingleton<ISeedDataInitializer, CodeProjectSeedDataInitializer>();
-            //services.AddSingleton<ISeedDataInitializer, CodeModuleSeedDataInitializer>();
-            //services.AddSingleton<ISeedDataInitializer, CodeEntitySeedDataInitializer>();
-            //services.AddSingleton<ISeedDataInitializer, CodePropertySeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeProjectSeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeModuleSeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeEntitySeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodePropertySeedDataInitializer>();
 
             return base.AddServices(services);
         }

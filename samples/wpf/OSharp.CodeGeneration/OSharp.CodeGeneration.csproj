@@ -45,10 +45,9 @@
     <None Remove="Templates\ng_AlainRouting.cshtml" />
     <None Remove="Templates\vue_VbenLocalesLangEn.cshtml" />
     <None Remove="Templates\vue_VbenLocalesLangZhCN.cshtml" />
-    <None Remove="Templates\vue_VbenRouterMenus.cshtml" />
     <None Remove="Templates\vue_VbenRouterRoutes.cshtml" />
-    <None Remove="Templates\vue_VbenViewsIndex.cshtml" />
-    <None Remove="Templates\vue_VbenViewsStore.cshtml" />
+    <None Remove="Templates\vue_VbenStore.cshtml" />
+    <None Remove="Templates\vue_VbenViewsVue.cshtml" />
   </ItemGroup>
 
 </Project>

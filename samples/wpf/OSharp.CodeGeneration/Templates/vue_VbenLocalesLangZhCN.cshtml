@@ -1,4 +1,4 @@
-@inherits MiniRazor.TemplateBase<CodeModule>
+@inherits MiniRazor.TemplateBase<CodeProject>
 @namespace OSharp.CodeGeneration.Templates
 @using System;
 @using System.Linq;
@@ -8,23 +8,32 @@
 @using OSharp.Exceptions;
 @using OSharp.Extensions;
 @{
-    CodeModule module = Model;
+  CodeProject project = Model;
 }// -----------------------------------------------------------------------
 //  <once-generated>
 //     这个文件只生成一次，再次生成不会被覆盖。
 //  </once-generated>
 //
-//  <copyright file="src/locales/lang/zh_CN/routers/@(module.Name.UpperToLowerAndSplit()).ts" company="@module.Project.Company">
-//      @module.Project.Copyright
+//  <copyright file="src/locales/lang/zh_CN/routers/osharp.ts" company="@project.Company">
+//      @project.Copyright
 //  </copyright>
-//  <site>@module.Project.SiteUrl</site>
-//  <last-editor>@module.Project.Creator</last-editor>
+//  <site>@project.SiteUrl</site>
+//  <last-editor>@project.Creator</last-editor>
 // -----------------------------------------------------------------------
 export default {
-  @(module.Name.ToLowerCase()): '@(module.Display)',
-@foreach (var entity in module.Entities)
-{
-<text>  @(entity.Name.ToLowerCase()): '@(entity.Display)管理',
+  system: '系统管理',
+  @foreach (var module in project.Modules)
+  {
+    string moduleName = module.Name;
+    string lowerModule = moduleName.ToLowerCase();
+<text>  @lowerModule: {
+    @lowerModule: '@(module.Display)',
+    @foreach (var entity in module.Entities)
+    {
+<text>    @entity.Name.ToLowerCase(): '@(entity.Display)管理',
 </text>
-}
+    }
+  },
+</text>
+  }
 };

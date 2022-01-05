@@ -1,0 +1,27 @@
+@inherits MiniRazor.TemplateBase<CodeEntity>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeEntity entity = Model;
+  string moduleName = entity.Module.Name;
+  string urlModule = entity.Module.Name.UpperToLowerAndSplit();
+  string lowerModule = entity.Module.Name.ToLowerCase();
+  string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+  string entityName = entity.Name;
+  string urlEntity = entity.Name.UpperToLowerAndSplit("");
+  string lowerEntity = entity.Name.ToLowerCase();
+}
+<template>
+  <div> @(entityName) </div>
+</template>
+
+<script lang="ts" setup></script>
+
+<style scoped></style>
