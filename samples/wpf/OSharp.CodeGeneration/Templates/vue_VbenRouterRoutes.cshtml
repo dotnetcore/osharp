@@ -33,6 +33,7 @@ const osharp: AppRouteModule = {
     orderNo: 1000,
     icon: 'ion:settings-outline',
     title: t('routes.osharp.system'),
+    acl: ['Root.Admin'],
   },
   children: [
 @foreach (var module in project.Modules)
@@ -46,6 +47,7 @@ const osharp: AppRouteModule = {
       redirect: '/system/@(urlModule)/@(module.Entities.FirstOrDefault()?.Name.UpperToLowerAndSplit() ?? "index")',
       meta: {
         title: t('routes.osharp.@(lowerModule).@(lowerModule)'),
+        acl: ['Root.Admin.@(module.Name)'],
       },
       children: [
 @foreach (var entity in module.Entities)
@@ -58,6 +60,7 @@ const osharp: AppRouteModule = {
           component: () => import('/@@/views/osharp/@(lowerModule)/@(lowerEntity).vue'),
           meta: {
             title: t('routes.osharp.@(lowerModule).@(lowerEntity)'),
+            acl: ['Root.Admin.@(module.Name).@(entity.Name)'],
           },
         },
 </text>

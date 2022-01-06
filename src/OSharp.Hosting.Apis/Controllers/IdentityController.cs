@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -247,7 +247,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("用户登出")]
         public async Task<AjaxResult> Logout()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return new AjaxResult("用户登出成功");
             }
@@ -268,7 +268,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("用户信息")]
         public async Task<OnlineUser> Profile()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return null;
             }
