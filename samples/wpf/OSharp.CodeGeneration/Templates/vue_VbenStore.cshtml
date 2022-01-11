@@ -26,22 +26,23 @@
 //    这个文件只生成一次，再次生成不会被覆盖。
 // </once-generated>
 //
-// <copyright file="src/views/@(lowerModule)/@(lowerEntity)/@(lowerEntity)Store.ts" company="@entity.Module.Project.Company">
+// <copyright file="src/store/modules/osharp/@(lowerModule)/@(lowerEntity)Store.ts" company="@entity.Module.Project.Company">
 //    @entity.Module.Project.Copyright
 // </copyright>
 // <site>@entity.Module.Project.SiteUrl</site>
 // <last-editor>@entity.Module.Project.Creator</last-editor>
 // -----------------------------------------------------------------------
-import { BasicColumn, BasicTableProps } from '/@@/components/Table';
-import { TableStoreBase } from '/@@/store/osharp/TableStoreBase';
+import { BooleanRender, DateTimeRender } from '/@@/utils/osharp';
+import { TableStoreBase } from '../TableStoreBase';
+import { ActionItem, BasicColumn, BasicTableProps, EditRecordRow } from '/@@/components/Table';
+import { useMessage } from '/@@/hooks/web/useMessage';
 
 export class @(entity.Name)Store extends TableStoreBase {
-  protected init() {
+  protected init(): void {
     super.init();
-    this.boolProps = [@(properties.Where(m => IsPropertyType(m, typeof(bool))).ExpandAndToString(m => $"'{m.Name.ToLowerCase()}'", ", "))];
   }
 
-  protected GetColumns(): BasicColumn[] {
+  protected getColumns(): BasicColumn[] {
     return [
       { @GetIdColumn(entity) },
 @foreach (var prop in properties)
@@ -52,7 +53,7 @@ export class @(entity.Name)Store extends TableStoreBase {
     ];
   }
 
-  protected UpdateTableProps(props: BasicTableProps) {
+  protected updateTableProps(props: BasicTableProps) {
     props.title = '@(entity.Display)管理';
     return props;
   }
@@ -61,7 +62,7 @@ export class @(entity.Name)Store extends TableStoreBase {
 {
   static string GetIdColumn(CodeEntity entity)
   {
-    string line = $"title: '编号', dataIndex: 'id', align: 'left', width: {(entity.PrimaryKeyTypeFullName == typeof(int).FullName ? 50 : 300)}";
+    string line = $"title: '编号', dataIndex: 'id', width: {(entity.PrimaryKeyTypeFullName == typeof(int).FullName ? 50 : 300)}";
     return line;
   }
 
@@ -70,9 +71,9 @@ export class @(entity.Name)Store extends TableStoreBase {
     List<string> list = new List<string>();
     list.Add($"title: '{prop.Display}'");
     list.Add($"dataIndex: '{prop.Name.ToLowerCase()}'");
-    list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
-    list.AddIf($"width: {(IsPropertyType(prop, typeof(bool)) ? 80 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 100)}", !IsPropertyType(prop, typeof(string)));
-    list.AddIf($"slots: {{ customRender: '{prop.Name.ToLowerCase()}' }}", IsPropertyType(prop, typeof(bool)));
+    // list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
+    list.AddIf($"width: {(IsPropertyType(prop, typeof(bool)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 100)}", !IsPropertyType(prop, typeof(string)));
+    list.AddIf($"customRender: ({{ text }}) => BooleanRender(text),", IsPropertyType(prop, typeof(bool)));
     list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));
 
     return list.ExpandAndToString(", ");
@@ -83,3 +84,5 @@ export class @(entity.Name)Store extends TableStoreBase {
     return types.Any(m => m.FullName == prop.TypeName);
   }
 }
+
+export const @(lowerEntity)Store = new @(entityName)Store('@(lowerEntity)');

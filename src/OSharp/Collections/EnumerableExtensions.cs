@@ -72,25 +72,27 @@ namespace OSharp.Collections
             if (second == null) throw new ArgumentNullException(nameof(second));
 
             comparer = comparer ?? EqualityComparer<T>.Default;
-            
-            int? secondCount = second.TryGetCollectionCount();
+
+            var secondArray = second as T[] ?? second.ToArray();
+            int? secondCount = secondArray.TryGetCollectionCount();
+            var firstArray = first as T[] ?? first.ToArray();
             if (secondCount != null)
             {
-                int? firstCount = first.TryGetCollectionCount();
+                int? firstCount = firstArray.TryGetCollectionCount();
                 if (firstCount != null && secondCount > firstCount)
                 {
                     return false;
                 }
 
-                return Impl(second, secondCount.Value);
+                return Impl(secondArray, secondCount.Value);
             }
 
             List<T> secondList;
-            return Impl(secondList = second.ToList(), secondList.Count);
+            return Impl(secondList = secondArray.ToList(), secondList.Count);
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.Reverse().Take(count).Reverse().GetEnumerator())
+                using (var firstIter = firstArray.Reverse().Take(count).Reverse().GetEnumerator())
                 {
                     return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
                 }

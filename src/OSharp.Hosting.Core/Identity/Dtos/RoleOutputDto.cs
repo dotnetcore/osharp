@@ -61,6 +61,12 @@ namespace OSharp.Hosting.Identity.Dtos
         public bool IsLocked { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否系统
+        /// </summary>
+        [Description("是否系统")]
+        public bool IsSystem { get; set; }
+
+        /// <summary>
         /// 获取或设置 创建时间
         /// </summary>
         [Description("创建时间")]

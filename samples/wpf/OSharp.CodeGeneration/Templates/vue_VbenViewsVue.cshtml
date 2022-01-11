@@ -19,9 +19,26 @@
   string lowerEntity = entity.Name.ToLowerCase();
 }
 <template>
-  <div> @(entityName) </div>
+  <BasicTable @@register="registerTable">
+    <template #toolbar>
+      <Authority value="Root.Admin.@(moduleName).@(entityName).Create">
+        <a-button type="primary" @@click="store.createRow">新增</a-button>
+      </Authority>
+    </template>
+    <template #action="{ record }">
+      <TableAction
+        :actions="store.getActionItems(record)"
+        :drop-down-actions="store.getDropDownActions(record)"
+      />
+    </template>
+  </BasicTable>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { BasicTable, useTable } from '/@@/components/Table';
+  import { @(lowerEntity)Store as store } from '/@@/store/modules/osharp/@(lowerModule)/@(lowerEntity)Store';
+  import TableAction from '/@@/components/Table/src/components/TableAction.vue';
+  import Authority from '/@@/components/Authority/src/Authority.vue';
 
-<style scoped></style>
+  const [registerTable] = useTable(store.tableProps);
+</script>

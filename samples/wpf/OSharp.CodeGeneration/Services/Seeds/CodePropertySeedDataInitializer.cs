@@ -54,7 +54,20 @@ namespace OSharp.CodeGeneration.Services.Seeds
                 new CodeProperty() { Name = "PhoneNumber", Display = "手机号", TypeName = "System.String", Order = 5, MaxLength = 50, EntityId = entity.Id },
                 new CodeProperty() { Name = "PhoneNumberConfirmed", Display = "手机号确认", TypeName = "System.Boolean", Order = 6, EntityId = entity.Id },
             };
-            
+
+            entity = repository.GetFirst(m => m.Name == "Role");
+            properties = new List<CodeProperty>()
+            {
+                new CodeProperty(){Name = "Name", Display = "名称", TypeName = "System.String", Order = 1, MaxLength = 200, EntityId = entity.Id},
+                new CodeProperty(){Name = "Remark", Display = "备注", TypeName = "System.String", Order = 2, MaxLength = 500, EntityId = entity.Id},
+                new CodeProperty(){Name = "IsAdmin", Display = "是否管理", TypeName = "System.Boolean", Order = 3, EntityId = entity.Id},
+                new CodeProperty(){Name = "IsDefault", Display = "是否默认", TypeName = "System.Boolean", Order = 4, EntityId = entity.Id},
+            };
+
+
+
+
+
             return properties.ToArray();
         }
 

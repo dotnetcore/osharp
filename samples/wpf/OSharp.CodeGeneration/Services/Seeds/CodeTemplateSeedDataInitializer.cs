@@ -54,7 +54,7 @@ namespace OSharp.CodeGeneration.Services.Seeds
                 new CodeTemplate(){Name = "vue_Vben国际化多语言英文", MetadataType = MetadataType.Project, TemplateFile = "内置", Order = 17, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/locales/lang/en/routes/osharp.ts"},
                 new CodeTemplate(){Name = "vue_Vben国际化多语言简体中文", MetadataType = MetadataType.Project, TemplateFile = "内置", Order = 18, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/locales/lang/zh-CN/routes/osharp.ts"},
                 new CodeTemplate(){Name = "vue_Vben路由器路由", MetadataType = MetadataType.Project, TemplateFile = "内置", Order = 20, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/router/routes/modules/osharp.ts"},
-                new CodeTemplate(){Name = "vue_Vben存储Store", MetadataType = MetadataType.Entity, TemplateFile = "内置", Order = 21, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/store/osharp/{Module.Name:Lower}/{Entity.Name:Lower}Store.ts"},
+                new CodeTemplate(){Name = "vue_Vben存储Store", MetadataType = MetadataType.Entity, TemplateFile = "内置", Order = 21, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/store/modules/osharp/{Module.Name:Lower}/{Entity.Name:Lower}Store.ts"},
                 new CodeTemplate(){Name = "vue_Vben视图Vue", MetadataType = MetadataType.Entity, TemplateFile = "内置", Order = 22, IsSystem = true, OutputFileFormat = "ui/vue-vben/src/views/osharp/{Module.Name:Lower}/{Entity.Name:Lower}.vue"},
             };
         }
