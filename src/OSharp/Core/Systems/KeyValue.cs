@@ -47,7 +47,7 @@ namespace OSharp.Core.Systems
         /// <summary>
         /// 获取或设置 数据键名
         /// </summary>
-        [Required, DisplayName("数据键名"), StringLength(2000)]
+        [Required, DisplayName("数据键名"), StringLength(512)]
         public string Key { get; set; }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace OSharp.Entity
                 .LastOrDefault(m => m.Type == databaseType);
             if (driveHandler == null)
             {
-                throw new OsharpException($"无法解析类型为 {databaseType} 的 {typeof(IDbContextOptionsBuilderDriveHandler).DisplayName()} 实例");
+                throw new OsharpException($"无法解析类型为 {databaseType} 的 {typeof(IDbContextOptionsBuilderDriveHandler).DisplayName()} 实例，是否未在Startup执行AddPack<{databaseType}DefaultDbContextMigrationPack>()");
             }
 
             //选择主/从数据库连接串

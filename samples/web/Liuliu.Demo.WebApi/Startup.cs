@@ -50,7 +50,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
-                .AddPack<SqlServerDefaultDbContextMigrationPack>()
+                .AddPack<MySqlDefaultDbContextMigrationPack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
         }

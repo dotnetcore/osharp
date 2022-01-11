@@ -66,9 +66,6 @@
     <ProjectReference Include="..\..\..\src\OSharp.Redis\OSharp.Redis.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
 
   <ProjectExtensions>
     <VisualStudio>
