@@ -17,28 +17,83 @@
   string entityName = entity.Name;
   string urlEntity = entity.Name.UpperToLowerAndSplit("");
   string lowerEntity = entity.Name.ToLowerCase();
+  List<CodeProperty> properties = entity.Properties.ToList();
+  properties.AddIf(CodeProperty.GetProperty("IsLocked", "是否锁定", typeof(bool), true), entity.HasLocked);
+  properties.AddIf(CodeProperty.GetProperty("CreatedTime", "创建时间", typeof(DateTime), false), entity.HasCreatedTime || entity.HasCreationAudited);
 }
+<!--
+ <once-generated>
+    这个文件只生成一次，再次生成不会被覆盖。
+ </once-generated>
+ <copyright file="src/views/osharp/@(lowerModule)/@(lowerEntity).vue" company="@(entity.Module.Project.Company)">
+    @(entity.Module.Project.Copyright)
+ </copyright>
+ <site>@(entity.Module.Project.SiteUrl)</site>
+ <last-editor>@(entity.Module.Project.Creator)</last-editor> -->
+
 <template>
-  <BasicTable @@register="registerTable">
-    <template #toolbar>
-      <Authority value="Root.Admin.@(moduleName).@(entityName).Create">
-        <a-button type="primary" @@click="store.createRow">新增</a-button>
-      </Authority>
-    </template>
-    <template #action="{ record }">
-      <TableAction
-        :actions="store.getActionItems(record)"
-        :drop-down-actions="store.getDropDownActions(record)"
-      />
-    </template>
-  </BasicTable>
+  <OSharpAdminTable v-bind="props" />
 </template>
 
 <script lang="ts" setup>
-  import { BasicTable, useTable } from '/@@/components/Table';
-  import { @(lowerEntity)Store as store } from '/@@/store/modules/osharp/@(lowerModule)/@(lowerEntity)Store';
-  import TableAction from '/@@/components/Table/src/components/TableAction.vue';
-  import Authority from '/@@/components/Authority/src/Authority.vue';
+  import { ActionItem, BasicColumn, BasicTableProps, EditRecordRow } from '/@@/components/Table';
+  import { useMessage } from '/@@/hooks/web/useMessage';
+  import { BooleanRender } from '/@@/utils/osharp';
+  import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable/src/props';
+  import OSharpAdminTable from '/@@/components/osharp/OSharpTable/src/OSharpAdminTable.vue';
 
-  const [registerTable] = useTable(store.tableProps);
+  const { createMessage } = useMessage();
+
+  const columns: BasicColumn[] = [
+    { @GetIdColumn(entity) },
+@foreach (var prop in properties)
+{
+<text>    { @GetColumnProps(prop) },
+</text>
+}
+  ];
+
+  const props: OSharpAdminTableProps = {
+    modulePath: 'Admin.@(moduleName)',
+    entity: '@(entity.Name)',
+    tablePropsFn: tablePropsFn,
+    tableDropDownActionsFn: tableDropDownActionsFn,
+  };
+
+  function tablePropsFn(p: BasicTableProps): BasicTableProps {
+    p.title = '@(entity.Display)管理';
+    p.columns = columns;
+    return p;
+  }
+
+  function tableDropDownActionsFn(items: ActionItem[], record: EditRecordRow) {
+    return items;
+  }
 </script>
+@functions
+{
+  static string GetIdColumn(CodeEntity entity)
+  {
+    string line = $"title: '编号', dataIndex: 'id', width: {(entity.PrimaryKeyTypeFullName == typeof(int).FullName ? 50 : 300)}";
+    return line;
+  }
+
+  static string GetColumnProps(CodeProperty prop)
+  {
+    List<string> list = new List<string>();
+    list.Add($"title: '{prop.Display}'");
+    list.Add($"dataIndex: '{prop.Name.ToLowerCase()}'");
+  // list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
+    list.AddIf("sorter: true", prop.Sortable);
+    list.AddIf($"width: {(IsPropertyType(prop, typeof(bool)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 100)}", !IsPropertyType(prop, typeof(string)));
+    list.AddIf($"customRender: ({{ text }}) => BooleanRender(text),", IsPropertyType(prop, typeof(bool)));
+    list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));
+
+    return list.ExpandAndToString(", ");
+  }
+
+  static bool IsPropertyType(CodeProperty prop, params Type[] types)
+  {
+    return types.Any(m => m.FullName == prop.TypeName);
+  }
+}

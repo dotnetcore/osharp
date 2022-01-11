@@ -123,8 +123,6 @@ namespace OSharp.CodeGeneration.Services.Entities
                     return typeof(vue_VbenLocalesLangZhCN);
                 case "vue_Vben路由器路由":
                     return typeof(vue_VbenRouterRoutes);
-                case "vue_Vben存储Store":
-                    return typeof(vue_VbenStore);
                 case "vue_Vben视图Vue":
                     return typeof(vue_VbenViewsVue);
                 default:

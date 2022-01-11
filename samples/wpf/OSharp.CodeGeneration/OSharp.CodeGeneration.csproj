@@ -46,7 +46,6 @@
     <None Remove="Templates\vue_VbenLocalesLangEn.cshtml" />
     <None Remove="Templates\vue_VbenLocalesLangZhCN.cshtml" />
     <None Remove="Templates\vue_VbenRouterRoutes.cshtml" />
-    <None Remove="Templates\vue_VbenStore.cshtml" />
     <None Remove="Templates\vue_VbenViewsVue.cshtml" />
   </ItemGroup>
 

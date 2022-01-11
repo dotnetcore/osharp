@@ -258,12 +258,13 @@ namespace OSharp.Hosting.Apis.Controllers
             OperationResult result = await IdentityContract.Logout(userId, isToken);
             return result.ToAjaxResult();
         }
-
+        
         /// <summary>
         /// 获取用户信息
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [LoggedIn]
         [ModuleInfo]
         [Description("用户信息")]
         public async Task<OnlineUser> Profile()
