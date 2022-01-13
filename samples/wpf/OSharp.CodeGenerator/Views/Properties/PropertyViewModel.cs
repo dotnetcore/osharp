@@ -72,6 +72,8 @@ namespace OSharp.CodeGenerator.Views.Properties
 
         public bool IsReadonly { get; set; }
 
+        public bool IsEnum { get; set; }
+
         public bool IsVirtual { get; set; }
 
         public bool IsForeignKey { get; set; }

@@ -93,6 +93,7 @@
             </DataGridTemplateColumn.CellEditingTemplate>
           </DataGridTemplateColumn>
           <DataGridCheckBoxColumn Header="可空类型" MinWidth="70" Width="70" Binding="{Binding IsNullable}"/>
+          <DataGridCheckBoxColumn Header="枚举" MinWidth="50" Width="50" Binding="{Binding IsEnum}"/>
           <DataGridCheckBoxColumn Header="外键" MinWidth="50" Width="50" Binding="{Binding IsForeignKey}"/>
           <DataGridCheckBoxColumn Header="导航" MinWidth="50" Width="50" Binding="{Binding IsNavigation}"/>
           <DataGridTemplateColumn Header="关联实体" MinWidth="120">

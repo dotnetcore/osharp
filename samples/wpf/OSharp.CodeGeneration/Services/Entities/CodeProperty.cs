@@ -79,6 +79,11 @@ namespace OSharp.CodeGeneration.Services.Entities
         public bool IsNullable { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否枚举类型
+        /// </summary>
+        public bool IsEnum { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否只读
         /// </summary>
         public bool IsReadonly { get; set; }
