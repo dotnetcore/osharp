@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleEntityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -52,7 +52,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction(nameof(EntityInfoController.ReadProperties), Controller = nameof(EntityInfoController))]
         [Description("读取")]
-        public PageData<EntityRoleOutputDto> Read(PageRequest request)
+        public AjaxResult Read(PageRequest request)
         {
             Expression<Func<EntityRole, bool>> predicate = FilterService.GetExpression<EntityRole>(request.FilterGroup);
             if (request.PageCondition.SortConditions.Length == 0)
@@ -83,7 +83,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                     Updatable = updateFunc(m.D),
                     Deletable = deleteFunc(m.D)
                 }).ToArray());
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditEntityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Modules;
 using OSharp.Entity;
 using OSharp.Filter;
@@ -49,7 +50,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<AuditEntityOutputDto> Read(PageRequest request)
+        public AjaxResult Read(PageRequest request)
         {
             Expression<Func<AuditEntity, bool>> predicate = FilterService.GetExpression<AuditEntity>(request.FilterGroup);
             PageResult<AuditEntityOutputDto> page;
@@ -72,7 +73,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                         DataType = n.DataType
                     }).ToList()
                 });
-                return page.ToPageData();
+                return new AjaxResult(page);
             }
             request.AddDefaultSortCondition(new SortCondition("Operation.CreatedTime", ListSortDirection.Descending));
             page = AuditContract.AuditEntities.ToPage(predicate, request.PageCondition, m => new AuditEntityOutputDto
@@ -94,7 +95,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                     DataType = n.DataType
                 }).ToList()
             });
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
     }
 }

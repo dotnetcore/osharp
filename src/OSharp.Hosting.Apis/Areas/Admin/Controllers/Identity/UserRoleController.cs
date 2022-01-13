@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserRoleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -68,7 +68,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 Updatable = updateFunc(m.D),
                 Deletable = deleteFunc(m.D)
             }).ToArray());
-            return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>

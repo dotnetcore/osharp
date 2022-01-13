@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -60,7 +60,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
             Expression<Func<Function, bool>> predicate = FilterService.GetExpression<Function>(request.FilterGroup);
             PageResult<FunctionOutputDto> page = CacheService.ToPageCache<Function, FunctionOutputDto>(_functionAuthManager.Functions, predicate, request.PageCondition, function);
-            return new AjaxResult("数据获取成功", AjaxResultType.Success, page.ToPageData());
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>功能[模块]树数据</returns>
         [HttpGet]
         [Description("读取功能[模块]树数据")]
-        public TreeNode[] ReadTreeNode(int moduleId)
+        public AjaxResult ReadTreeNode(int moduleId)
         {
             Check.GreaterThan(moduleId, nameof(moduleId), 0);
             Guid[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
@@ -117,7 +117,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                     }
                 }
             }
-            return new[] { root };
+            return new AjaxResult(new[] { root });
         }
 
         /// <summary>

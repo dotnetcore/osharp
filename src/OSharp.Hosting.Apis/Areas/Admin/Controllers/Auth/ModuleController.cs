@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Data;
@@ -46,11 +47,11 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public List<ModuleOutputDto> Read()
+        public AjaxResult Read()
         {
             Expression<Func<Module, bool>> predicate = m => true;
             List<ModuleOutputDto> modules = _functionAuthManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
-            return modules;
+            return new AjaxResult(modules);
         }
 
         /// <summary>
@@ -60,14 +61,14 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>模块[用户]树数据</returns>
         [HttpGet]
         [Description("读取模块[用户]树数据")]
-        public List<object> ReadUserModules(int userId)
+        public AjaxResult ReadUserModules(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
             int[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
 
             int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
-            return result;
+            return new AjaxResult(result);
         }
 
         /// <summary>
@@ -77,14 +78,14 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>模块[角色]树数据</returns>
         [HttpGet]
         [Description("读取模块[角色]树数据")]
-        public List<object> ReadRoleModules(int roleId)
+        public AjaxResult ReadRoleModules(int roleId)
         {
             Check.GreaterThan(roleId, nameof(roleId), 0);
             int[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
 
             int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
-            return result;
+            return new AjaxResult(result);
         }
 
         private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
@@ -140,11 +141,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction(nameof(Read))]
         [Description("读取模块功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(PageRequest request)
+        public AjaxResult ReadFunctions(PageRequest request)
         {
+            var emptyPage = new PageData<FunctionOutputDto2>();
             if (request.FilterGroup.Rules.Count == 0)
             {
-                return new PageData<FunctionOutputDto2>();
+                return new AjaxResult(emptyPage);
             }
             Expression<Func<Module, bool>> moduleExp = FilterService.GetExpression<Module>(request.FilterGroup);
             int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
@@ -152,7 +154,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
-                return new PageData<FunctionOutputDto2>();
+                return new AjaxResult(emptyPage);
             }
             if (request.PageCondition.SortConditions.Length == 0)
             {
@@ -161,7 +163,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             var page = _functionAuthManager.Functions.ToPage(m => functionIds.Contains(m.Id),
                 request.PageCondition,
                 m => new FunctionOutputDto2() { Id = m.Id, Name = m.Name, AccessType = m.AccessType, Area = m.Area, Controller = m.Controller });
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
 
         //模块暂时不需要CUD操作

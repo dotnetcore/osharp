@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -93,7 +93,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 Deletable = deleteFunc(m.D)
             }).ToArray());
 
-            return new AjaxResult("数据读取成功", AjaxResultType.Success, page.ToPageData());
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>
@@ -103,17 +103,20 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns></returns>
         [HttpPost]
         [Description("读取节点")]
-        public ListNode[] ReadNode(FilterGroup group)
+        public AjaxResult ReadNode(FilterGroup group)
         {
             Check.NotNull(group, nameof(group));
             IFunction function = this.GetExecuteFunction();
             Expression<Func<User, bool>> exp = FilterService.GetExpression<User>(group);
-            ListNode[] nodes = CacheService.ToCacheArray<User, ListNode>(UserManager.Users, exp, m => new ListNode()
-            {
-                Id = m.Id,
-                Name = m.NickName
-            }, function);
-            return nodes;
+            ListNode[] nodes = CacheService.ToCacheArray<User, ListNode>(UserManager.Users,
+                exp,
+                m => new ListNode()
+                {
+                    Id = m.Id,
+                    Name = m.NickName
+                },
+                function);
+            return new AjaxResult(nodes);
         }
 
         /// <summary>
