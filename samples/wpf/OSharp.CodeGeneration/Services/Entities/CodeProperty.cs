@@ -150,10 +150,20 @@ namespace OSharp.CodeGeneration.Services.Entities
         [JsonIgnore]
         public virtual CodeEntity Entity { get; set; }
 
-        public static CodeProperty GetProperty(string name, string display, Type type, bool input, bool output = true, bool filter = true, bool sort = true) => new CodeProperty()
+        public static CodeProperty GetProperty(string name, string display, Type type, bool input, bool output = true, bool filter = true, bool sort = true, bool update = true) => new CodeProperty()
         {
             Name = name, Display = display, TypeName = type.FullName, Filterable = filter, Sortable = sort, IsInputDto = input,
-            IsOutputDto = output
+            IsOutputDto = output, Updatable = update
         };
+
+        public bool IsString()
+        {
+            return TypeName != "System.String";
+        }
+
+        public bool IsValueType()
+        {
+            return Type.GetType(TypeName)?.IsValueType == true;
+        }
     }
 }

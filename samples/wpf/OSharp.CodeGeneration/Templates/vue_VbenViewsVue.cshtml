@@ -2,6 +2,7 @@
 @namespace OSharp.CodeGeneration.Templates
 @using System;
 @using System.Collections.Generic;
+@using System.Drawing.Drawing2D
 @using System.Linq;
 @using OSharp.CodeGeneration.Services.Entities
 @using OSharp.CodeGeneration.Utils
@@ -19,7 +20,7 @@
   string lowerEntity = entity.Name.ToLowerCase();
   List<CodeProperty> properties = entity.Properties.ToList();
   properties.AddIf(CodeProperty.GetProperty("IsLocked", "是否锁定", typeof(bool), true), entity.HasLocked);
-  properties.AddIf(CodeProperty.GetProperty("CreatedTime", "创建时间", typeof(DateTime), false), entity.HasCreatedTime || entity.HasCreationAudited);
+  properties.AddIf(CodeProperty.GetProperty("CreatedTime", "创建时间", typeof(DateTime), false, true, true, true, false), entity.HasCreatedTime || entity.HasCreationAudited);
 }
 <!--
  <once-generated>
@@ -32,15 +33,26 @@
  <last-editor>@(entity.Module.Project.Creator)</last-editor> -->
 
 <template>
-  <OSharpAdminTable v-bind="props" />
+  <div>
+    <OSharpAdminTable v-bind="tableProps" />
+  </div>
 </template>
 
 <script lang="ts" setup>
-  import { ActionItem, BasicColumn, BasicTableProps, EditRecordRow } from '/@@/components/Table';
+  import { ActionItem, BasicColumn, BasicTableProps, FormSchema, FormProps } from '/@@/components/Table';
   import { useMessage } from '/@@/hooks/web/useMessage';
-  import { BooleanRender } from '/@@/utils/osharp';
-  import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable/src/props';
+  import { ModuleInfo } from '/@@/utils/osharp/types';
+  import { CheckboxRender, TagRender, defaultModuleInfo } from '/@@/utils/osharp';
+  import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable';
   import OSharpAdminTable from '/@@/components/osharp/OSharpTable/src/OSharpAdminTable.vue';
+  
+  const module: ModuleInfo = {
+    ...defaultModuleInfo,
+    moduleName: '@(moduleName)',
+    moduleDisplay: '@(entity.Module.Display)',
+    entityName: '@(entityName)',
+    entityDisplay: '@(entity.Display)',
+  };
 
   const { createMessage } = useMessage();
 
@@ -48,26 +60,45 @@
     { @GetIdColumn(entity) },
 @foreach (var prop in properties)
 {
-<text>    { @GetColumnProps(prop) },
+<text>    { @GetPropColumn(prop) },
 </text>
 }
   ];
 
-  const props: OSharpAdminTableProps = {
-    modulePath: 'Admin.@(moduleName)',
-    entity: '@(entity.Name)',
+  const schemas: FormSchema[] = [
+    { @GetIdSchema(entity) },
+@foreach (var prop in properties.Where(m => m.IsInputDto || m.Updatable))
+{
+<text>    { @GetPropSchema(prop) },
+</text>
+}
+  ];
+
+  const tableProps: OSharpAdminTableProps = {
+    module: module,
     tablePropsFn: tablePropsFn,
+    tableActionsFn: tableActionsFn,
     tableDropDownActionsFn: tableDropDownActionsFn,
+    editFormPropsFn: editFormPropsFn,
   };
 
   function tablePropsFn(p: BasicTableProps): BasicTableProps {
-    p.title = '@(entity.Display)管理';
+    p.title = `${module.entityDisplay}管理`;
     p.columns = columns;
     return p;
   }
 
-  function tableDropDownActionsFn(items: ActionItem[], record: EditRecordRow) {
+  function tableActionsFn(items: ActionItem[], record: Recordable) {
     return items;
+  }
+
+  function tableDropDownActionsFn(items: ActionItem[], record: Recordable) {
+    return items;
+  }
+
+  function editFormPropsFn(p: FormProps): FormProps {
+    p.schemas = schemas;
+    return p;
   }
 </script>
 @functions
@@ -78,16 +109,32 @@
     return line;
   }
 
-  static string GetColumnProps(CodeProperty prop)
+  static string GetPropColumn(CodeProperty prop)
   {
     List<string> list = new List<string>();
-    list.Add($"title: '{prop.Display}'");
-    list.Add($"dataIndex: '{prop.Name.ToLowerCase()}'");
-  // list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
+    list.Add($"title: '{prop.Display}', dataIndex: '{prop.Name.ToLowerCase()}'");
+    list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
     list.AddIf("sorter: true", prop.Sortable);
     list.AddIf($"width: {(IsPropertyType(prop, typeof(bool)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 100)}", !IsPropertyType(prop, typeof(string)));
-    list.AddIf($"customRender: ({{ text }}) => BooleanRender(text),", IsPropertyType(prop, typeof(bool)));
+    list.AddIf($"customRender: ({{ text }}) => CheckboxRender(text)", IsPropertyType(prop, typeof(bool)));
+    list.AddIf($"customRender: ({{ text }}) => TagRender(text, {prop.Name.ToPlural().ToLowerCase()})", prop.IsEnum);
     list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));
+
+    return list.ExpandAndToString(", ");
+  }
+  
+  static string GetIdSchema(CodeEntity entity)
+  {
+    string line = $"label: '编号', field: 'id', component: 'Input', render: ({{ values }}) => values?.id || '自动生成'";
+    return line;
+  }
+
+  static string GetPropSchema(CodeProperty prop)
+  {
+    List<string> list = new List<string>();
+    list.Add($"label: '{prop.Display}', field: '{prop.Name.ToLowerCase()}', component: '{GetPropComponent(prop)}'");
+    list.AddIf("required: true", prop.IsString() && prop.IsRequired == true);
+    list.AddIf("colProps: { span: 12 }", prop.IsValueType());
 
     return list.ExpandAndToString(", ");
   }
@@ -96,4 +143,59 @@
   {
     return types.Any(m => m.FullName == prop.TypeName);
   }
+
+  static string GetPropComponent(CodeProperty prop)
+  {
+    switch (prop.TypeName)
+    {
+      case "System.String":
+      case "System.Guid":
+        return "Input";
+      case "System.Int32":
+      case "System.Int64":
+      case "System.Double":
+        return "InputNumber";
+      case "System.Boolean":
+        return "Switch";
+      case "System.DateTime":
+        return "DatePicker";
+      default:
+        return "Input";
+    }
+  }
+
+  /*
+   *   | 'Input'
+  | 'InputGroup'
+  | 'InputPassword'
+  | 'InputSearch'
+  | 'InputTextArea'
+  | 'InputNumber'
+  | 'InputCountDown'
+  | 'Select'
+  | 'ApiSelect'
+  | 'TreeSelect'
+  | 'ApiTreeSelect'
+  | 'ApiRadioGroup'
+  | 'RadioButtonGroup'
+  | 'RadioGroup'
+  | 'Checkbox'
+  | 'CheckboxGroup'
+  | 'AutoComplete'
+  | 'ApiCascader'
+  | 'Cascader'
+  | 'DatePicker'
+  | 'MonthPicker'
+  | 'RangePicker'
+  | 'WeekPicker'
+  | 'TimePicker'
+  | 'Switch'
+  | 'StrengthMeter'
+  | 'Upload'
+  | 'IconPicker'
+  | 'Render'
+  | 'Slider'
+  | 'Rate'
+  | 'Divider';
+   */
 }
