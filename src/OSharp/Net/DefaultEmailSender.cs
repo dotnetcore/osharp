@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DefaultEmailSender.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -50,9 +50,9 @@ namespace OSharp.Net
         public async Task SendEmailAsync(string email, string subject, string body)
         {
             MailSenderOptions mailSender = _options.MailSender;
-            if (mailSender == null || mailSender.Host == null || mailSender.Host.Contains("请替换"))
+            if (mailSender?.Host == null || mailSender.Host.Contains("请替换"))
             {
-                throw new OsharpException("邮件发送选项不存在，请在appsetting.json配置OSharp:MailSender节点");
+                throw new OsharpException("邮件发送选项不存在，请在appsettings.json配置OSharp:MailSender节点");
             }
 
             string host = mailSender.Host,

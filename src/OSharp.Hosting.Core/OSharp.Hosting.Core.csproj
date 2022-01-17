@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
     <ProjectReference Include="..\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />

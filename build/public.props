@@ -1,6 +1,6 @@
-﻿<Project>
+<Project>
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>LiuliuSoft nnc</Authors>
     <Company>柳柳软件(liuliusoft)</Company>
