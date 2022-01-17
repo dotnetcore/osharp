@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RegisterDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -51,10 +51,10 @@ namespace OSharp.Hosting.Identity.Dtos
         /// </summary>
         public string RegisterIp { get; set; }
 
-        /// <summary>
-        /// 获取或设置 验证码
-        /// </summary>
-        public string VerifyCode { get; set; }
+        ///// <summary>
+        ///// 获取或设置 验证码
+        ///// </summary>
+        //public string VerifyCode { get; set; }
 
         /// <summary>
         /// 获取或设置 验证码编号

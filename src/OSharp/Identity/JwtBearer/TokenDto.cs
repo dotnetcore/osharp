@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TokenDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -33,10 +33,10 @@ namespace OSharp.Identity.JwtBearer
         /// </summary>
         public string Password { get; set; }
 
-        /// <summary>
-        /// 获取或设置 验证码
-        /// </summary>
-        public string VerifyCode { get; set; }
+        ///// <summary>
+        ///// 获取或设置 验证码
+        ///// </summary>
+        //public string VerifyCode { get; set; }
 
         /// <summary>
         /// 获取或设置 客户端类型
