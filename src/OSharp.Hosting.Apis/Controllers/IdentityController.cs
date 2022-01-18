@@ -125,7 +125,7 @@ namespace OSharp.Hosting.Apis.Controllers
             //    return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             //}
 
-            dto.UserName = dto.Email;
+            dto.UserName = dto.UserName ?? dto.Email;
             dto.NickName = $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
             dto.RegisterIp = HttpContext.GetClientIp();
 
@@ -258,7 +258,7 @@ namespace OSharp.Hosting.Apis.Controllers
             OperationResult result = await IdentityContract.Logout(userId, isToken);
             return result.ToAjaxResult();
         }
-        
+
         /// <summary>
         /// 获取用户信息
         /// </summary>
