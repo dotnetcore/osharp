@@ -1,21 +1,21 @@
-# http://editorconfig.org
+ï»¿# http://editorconfig.org
 root = true
 
 [*]
-#Ëõ½ø·ç¸ñ£º¿Õ¸ñ
+#ç¼©è¿›é£æ ¼ï¼šç©ºæ ¼
 indent_style = space
-#Ëõ½ø´óĞ¡2
+#ç¼©è¿›å¤§å°2
 indent_size = 4
-#»»ĞĞ·ûlf
+#æ¢è¡Œç¬¦lf
 end_of_line = lf
-#×Ö·û¼¯utf-8
+#å­—ç¬¦é›†utf-8
 charset = utf-8
-#ÊÇ·ñÉ¾³ıĞĞÎ²µÄ¿Õ¸ñ
+#æ˜¯å¦åˆ é™¤è¡Œå°¾çš„ç©ºæ ¼
 trim_trailing_whitespace = true
-#ÊÇ·ñÔÚÎÄ¼şµÄ×îºó²åÈëÒ»¸ö¿ÕĞĞ
+#æ˜¯å¦åœ¨æ–‡ä»¶çš„æœ€åæ’å…¥ä¸€ä¸ªç©ºè¡Œ
 insert_final_newline = true
 
-[*.{xaml,json,csproj,cshtml}]
+[*.{xaml,json,csproj,cshtml,yml}]
 indent_size = 2
 
 [*.md]
