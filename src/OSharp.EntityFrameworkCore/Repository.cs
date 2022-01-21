@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Repository.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -263,18 +263,24 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
             // todo: 检测删除的数据权限
-
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+            int count;
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
                 // 逻辑删除
                 TEntity[] entities = _dbSet.Where(predicate).ToArray();
                 DeleteInternal(entities);
-                return _dbContext.SaveChanges();
+                count = _dbContext.SaveChanges();
+            }
+            else
+            {
+                //物理删除
+                count = _dbSet.Where(predicate).Delete();
             }
 
-            //物理删除
-            return _dbSet.Where(predicate).Delete();
+            unitOfWork.Commit();
+            return count;
         }
 
         /// <summary>
@@ -360,9 +366,12 @@ namespace OSharp.Entity
         {
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
-
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+            
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
-            return _dbSet.Where(predicate).Update(updateExpression);
+            int count = _dbSet.Where(predicate).Update(updateExpression);
+            unitOfWork.Commit();
+            return count;
         }
 
         /// <summary>
@@ -736,21 +745,33 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             // todo: 检测删除的数据权限
 
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+
 #if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
 #else
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
 #endif
+            int count;
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
                 // 逻辑删除
                 TEntity[] entities = _dbSet.Where(predicate).ToArray();
                 DeleteInternal(entities);
-                return await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+                count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            }
+            else
+            {
+                // 物理删除
+                count = await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
             }
 
-            // 物理删除
-            return await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
@@ -845,12 +866,21 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
 
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+
 #if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
 #else
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
 #endif
-            return await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
+            int count = await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
+
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
+#else
+            unitOfWork.Commit();
+#endif
+            return count;
         }
 
         /// <summary>
