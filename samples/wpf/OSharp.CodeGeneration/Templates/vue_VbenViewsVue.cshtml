@@ -42,7 +42,7 @@
   import { ActionItem, BasicColumn, BasicTableProps, FormSchema, FormProps } from '/@@/components/Table';
   import { useMessage } from '/@@/hooks/web/useMessage';
   import { ModuleInfo } from '/@@/utils/osharp/types';
-  import { CheckboxRender, TagRender, defaultModuleInfo } from '/@@/utils/osharp';
+  import { CheckboxRender, TagRender, defaultModuleInfo, transTagToOptions } from '/@@/utils/osharp';
   import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable';
   import OSharpAdminTable from '/@@/components/osharp/OSharpTable/src/OSharpAdminTable.vue';
   
@@ -115,9 +115,9 @@
     list.Add($"title: '{prop.Display}', dataIndex: '{prop.Name.ToLowerCase()}'");
     list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
     list.AddIf("sorter: true", prop.Sortable);
-    list.AddIf($"width: {(IsPropertyType(prop, typeof(bool)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 100)}", !IsPropertyType(prop, typeof(string)));
+    list.Add($"width: {(IsPropertyType(prop, typeof(bool), typeof(int), typeof(long)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 150)}");
     list.AddIf($"customRender: ({{ text }}) => CheckboxRender(text)", IsPropertyType(prop, typeof(bool)));
-    list.AddIf($"customRender: ({{ text }}) => TagRender(text, {prop.Name.ToPlural().ToLowerCase()})", prop.IsEnum);
+    list.AddIf($"customRender: ({{ text }}) => TagRender(text, {prop.Name.ToLowerCase()}Tags)", prop.IsEnum);
     list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));
 
     return list.ExpandAndToString(", ");
@@ -134,6 +134,7 @@
     List<string> list = new List<string>();
     list.Add($"label: '{prop.Display}', field: '{prop.Name.ToLowerCase()}', component: '{GetPropComponent(prop)}'");
     list.AddIf("required: true", prop.IsString() && prop.IsRequired == true);
+    list.AddIf($"componentProps: {{ options: transTagToOptions({prop.Name.ToLowerCase()}Tags) }}", prop.IsEnum );
     list.AddIf("colProps: { span: 12 }", prop.IsValueType());
 
     return list.ExpandAndToString(", ");
@@ -146,6 +147,10 @@
 
   static string GetPropComponent(CodeProperty prop)
   {
+    if (prop.IsEnum)
+    {
+      return "Select";
+    }
     switch (prop.TypeName)
     {
       case "System.String":

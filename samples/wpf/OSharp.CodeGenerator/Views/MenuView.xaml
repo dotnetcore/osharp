@@ -30,6 +30,11 @@
         <RowDefinition Height="50"/>
       </Grid.RowDefinitions>
       <TreeView Grid.Row="0" ItemsSource="{Binding MenuItems}" SelectedItemChanged="{s:Action Select}" s:View.ActionTarget="{Binding}">
+        <TreeView.ItemContainerStyle>
+          <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True"/>
+          </Style>
+        </TreeView.ItemContainerStyle>
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemsSource="{Binding ItemMenus}">
             <StackPanel Orientation="Horizontal" Margin="0 10">

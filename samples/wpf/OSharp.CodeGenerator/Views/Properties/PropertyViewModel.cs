@@ -14,8 +14,6 @@ using FluentValidation;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Notifications.Wpf.Core;
-
 using OSharp.CodeGeneration.Services;
 using OSharp.CodeGeneration.Services.Dtos;
 using OSharp.CodeGeneration.Services.Entities;

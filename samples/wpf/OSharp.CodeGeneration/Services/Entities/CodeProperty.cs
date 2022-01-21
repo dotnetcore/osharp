@@ -168,7 +168,7 @@ namespace OSharp.CodeGeneration.Services.Entities
 
         public bool IsValueType()
         {
-            return Type.GetType(TypeName)?.IsValueType == true;
+            return Type.GetType(TypeName)?.IsValueType == true || IsEnum;
         }
     }
 }
