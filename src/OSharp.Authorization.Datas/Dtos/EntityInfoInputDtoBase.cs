@@ -31,6 +31,5 @@ namespace OSharp.Authorization.Dtos
         /// </summary>
         [DisplayName("是否数据审计")]
         public bool AuditEnabled { get; set; }
-
     }
 }

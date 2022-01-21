@@ -265,6 +265,7 @@ namespace OSharp.Entity
             // todo: 检测删除的数据权限
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             int count;
+            //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
@@ -367,7 +368,7 @@ namespace OSharp.Entity
             Check.NotNull(predicate, nameof(predicate));
             Check.NotNull(updateExpression, nameof(updateExpression));
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
-            
+            //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
             ((DbContextBase)_dbContext).BeginOrUseTransaction();
             int count = _dbSet.Where(predicate).Update(updateExpression);
             unitOfWork.Commit();
@@ -747,6 +748,7 @@ namespace OSharp.Entity
 
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
 
+            //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
 #if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
 #else
@@ -868,6 +870,7 @@ namespace OSharp.Entity
 
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
 
+            //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
 #if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
 #else

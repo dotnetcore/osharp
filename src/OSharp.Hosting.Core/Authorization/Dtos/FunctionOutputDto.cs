@@ -88,6 +88,11 @@ namespace OSharp.Hosting.Authorization.Dtos
         public bool IsCacheSliding { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否从库读取数据
+        /// </summary>
+        public bool IsSlaveDatabase { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否锁定
         /// </summary>
         public bool IsLocked { get; set; }
