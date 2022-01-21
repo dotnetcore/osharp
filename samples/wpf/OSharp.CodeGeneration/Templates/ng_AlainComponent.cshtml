@@ -75,7 +75,7 @@ export class @(entity.Name)Component extends STComponentBase implements OnInit {
         }]
       },
       @GetIdColumn(entity)
-@foreach (var prop in entity.Properties.Where(m => m.IsOutputDto))
+@foreach (var prop in entity.Properties.Where(m => m.Listable))
 {
     <text>      { @(GetColumnProps(prop)) },
 </text>

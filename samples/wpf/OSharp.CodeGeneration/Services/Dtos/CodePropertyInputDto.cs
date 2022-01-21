@@ -42,6 +42,11 @@ namespace OSharp.CodeGeneration.Services.Dtos
         public string TypeName { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否在列表中列出
+        /// </summary>
+        public bool Listable { get; set; } = true;
+
+        /// <summary>
         /// 获取或设置 是否可更新
         /// </summary>
         public bool Updatable { get; set; }

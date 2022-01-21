@@ -209,6 +209,7 @@ namespace OSharp.CodeGenerator.Views.Projects
                 MaxLength = prop.MaxLength,
                 IsNullable = prop.IsNullable,
                 IsEnum = prop.IsEnum,
+                Listable = prop.Listable,
                 IsReadonly = prop.IsReadonly,
                 IsVirtual = prop.IsVirtual,
                 IsForeignKey = prop.IsForeignKey,

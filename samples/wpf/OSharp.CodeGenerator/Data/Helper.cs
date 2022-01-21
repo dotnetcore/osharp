@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Notifications.Wpf.Core;
@@ -93,18 +94,26 @@ namespace OSharp.CodeGenerator.Data
         /// <summary>
         /// 消息提示
         /// </summary>
-        public static async void Notify(string message, NotificationType type, string title = "消息提示")
+        public static async void Notify(string message, NotificationType type, string title = "消息提示", Action onClick = null)
         {
-            await NotifyAsync(message, type, title);
+            await NotifyAsync(message, type, title, onClick);
         }
         
         /// <summary>
         /// 消息提示
         /// </summary>
-        public static Task NotifyAsync(string message, NotificationType type, string title = "消息提示")
+        public static Task NotifyAsync(string message, NotificationType type, string title = "消息提示", Action onClick = null)
         {
             MainViewModel main = IoC.Get<MainViewModel>();
-            return main.Notify(message, type, title);
+            return main.Notify(message, type, title, onClick);
+        }
+
+        /// <summary>
+        /// 打开文件夹
+        /// </summary>
+        public static void OpenFolder(string path)
+        {
+            Process.Start("explorer.exe", path);
         }
     }
 }

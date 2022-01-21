@@ -57,7 +57,7 @@ namespace OSharp.CodeGeneration.Services.Entities
         /// <summary>
         /// 获取或设置 是否可列表
         /// </summary>
-        public bool Listable { get; set; }
+        public bool Listable { get; set; } = true;
 
         /// <summary>
         /// 获取或设置 是否可添加

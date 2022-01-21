@@ -7,7 +7,10 @@
 //  <last-date>2020-05-03 14:53</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
+
+using JetBrains.Annotations;
 
 using Notifications.Wpf.Core;
 using Notifications.Wpf.Core.Controls;
@@ -61,15 +64,16 @@ namespace OSharp.CodeGenerator.Views
 
         public AboutViewModel About { get; set; } = IoC.Get<AboutViewModel>();
 
-        public async Task Notify(string message, NotificationType type = NotificationType.Information, string title = "消息提示")
+        public async Task Notify(string message, NotificationType type = NotificationType.Information, string title = null, Action onClick = null)
         {
+            title = title ?? "消息提示";
             NotificationContent content = new NotificationContent()
             {
                 Title = title,
                 Message = message,
                 Type = type
             };
-            await _notificationManager.ShowAsync(content, "MainNotifyArea");
+            await _notificationManager.ShowAsync(content, "MainNotifyArea", null, onClick);
         }
 
     }

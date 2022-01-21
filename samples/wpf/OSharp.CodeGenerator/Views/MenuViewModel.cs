@@ -122,7 +122,7 @@ namespace OSharp.CodeGenerator.Views
                 return;
             }
             CodeProject project = null;
-            CodeTemplate[] templates = new CodeTemplate[0];
+            CodeTemplate[] templates = Array.Empty<CodeTemplate>();
             _provider.ExecuteScopedWork(provider =>
             {
                 IDataContract contract = provider.GetRequiredService<IDataContract>();
@@ -141,7 +141,7 @@ namespace OSharp.CodeGenerator.Views
                 return;
             }
 
-            CodeFile[] codeFiles = new CodeFile[0];
+            CodeFile[] codeFiles = Array.Empty<CodeFile>();
             var progress = await Helper.Main.ShowProgressAsync("请稍候", "正在生成代码，请稍候");
             await Task.Run(async () =>
             {
@@ -202,7 +202,7 @@ namespace OSharp.CodeGenerator.Views
                 }
             }
             Helper.Output($"项目“{Project.Name}”代码生成成功，输出{codeFiles.Length}个文件");
-            Helper.Notify($"{codeFiles.Length}个代码文件已输出到：{rootPath}", NotificationType.Success);
+            Helper.Notify($"{codeFiles.Length}个代码文件已输出到：{rootPath}", NotificationType.Success, null, () => Helper.OpenFolder(rootPath));
         }
 
         private MenuItem ToMenu(CodeProject project)

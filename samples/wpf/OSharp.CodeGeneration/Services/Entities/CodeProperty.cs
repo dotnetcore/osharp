@@ -44,6 +44,11 @@ namespace OSharp.CodeGeneration.Services.Entities
         public string TypeName { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否在列表中显示
+        /// </summary>
+        public bool Listable { get; set; } = true;
+
+        /// <summary>
         /// 获取或设置 是否可更新
         /// </summary>
         public bool Updatable { get; set; }
@@ -86,7 +91,7 @@ namespace OSharp.CodeGeneration.Services.Entities
         /// <summary>
         /// 获取或设置 是否只读
         /// </summary>
-        public bool IsReadonly { get; set; }
+        public bool IsReadonly { get; set; } = false;
 
         /// <summary>
         /// 获取或设置 是否虚属性

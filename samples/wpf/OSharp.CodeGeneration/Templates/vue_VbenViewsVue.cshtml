@@ -58,7 +58,7 @@
 
   const columns: BasicColumn[] = [
     { @GetIdColumn(entity) },
-@foreach (var prop in properties)
+@foreach (var prop in properties.Where(m => m.Listable))
 {
 <text>    { @GetPropColumn(prop) },
 </text>

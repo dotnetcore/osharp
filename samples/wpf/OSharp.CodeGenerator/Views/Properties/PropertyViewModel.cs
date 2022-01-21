@@ -55,8 +55,10 @@ namespace OSharp.CodeGenerator.Views.Properties
         public string Display { get; set; }
 
         public string TypeName { get; set; }
-        
-        public bool Updatable { get; set; }
+
+        public bool Listable { get; set; } = true;
+
+        public bool Updatable { get; set; } = true;
 
         public bool Sortable { get; set; } = true;
 
@@ -82,11 +84,11 @@ namespace OSharp.CodeGenerator.Views.Properties
 
         public string RelateEntity { get; set; }
 
+        public bool IsInputDto { get; set; } = true;
+
+        public bool IsOutputDto { get; set; } = true;
+
         public string DataAuthFlag { get; set; }
-
-        public bool IsInputDto { get; set; }
-
-        public bool IsOutputDto { get; set; }
 
         public string DefaultValue { get; set; }
 
