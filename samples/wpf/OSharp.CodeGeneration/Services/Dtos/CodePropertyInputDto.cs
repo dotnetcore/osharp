@@ -92,6 +92,11 @@ namespace OSharp.CodeGeneration.Services.Dtos
         public bool IsReadonly { get; set; }
 
         /// <summary>
+        /// 获取或设置 是否隐藏
+        /// </summary>
+        public bool IsHide { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否虚属性
         /// </summary>
         public bool IsVirtual { get; set; }

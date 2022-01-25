@@ -6,7 +6,6 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
   xmlns:s="https://github.com/canton7/Stylet"
-  xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
   xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
   xmlns:local="clr-namespace:OSharp.CodeGenerator.Views.Projects"
   mc:Ignorable="d"

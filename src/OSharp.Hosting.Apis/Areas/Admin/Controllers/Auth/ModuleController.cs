@@ -51,7 +51,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         {
             Expression<Func<Module, bool>> predicate = m => true;
             List<ModuleOutputDto> modules = _functionAuthManager.Modules.Where(predicate).OrderBy(m => m.OrderCode).ToOutput<Module, ModuleOutputDto>().ToList();
-            return new AjaxResult(modules);
+            return new AjaxResult(new PageData<ModuleOutputDto>(modules, modules.Count));
         }
 
         /// <summary>
