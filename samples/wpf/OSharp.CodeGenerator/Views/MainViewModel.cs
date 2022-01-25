@@ -63,7 +63,7 @@ namespace OSharp.CodeGenerator.Views
         public ProjectTemplateListViewModel ProjectTemplateList { get; set; } = IoC.Get<ProjectTemplateListViewModel>();
 
         public AboutViewModel About { get; set; } = IoC.Get<AboutViewModel>();
-
+        
         public async Task Notify(string message, NotificationType type = NotificationType.Information, string title = null, Action onClick = null)
         {
             title = title ?? "消息提示";

@@ -68,6 +68,7 @@
           <DataGridCheckBoxColumn Header="排序" MinWidth="50" Width="50" Binding="{Binding Sortable}"/>
           <DataGridCheckBoxColumn Header="过滤" MinWidth="50" Width="50" Binding="{Binding Filterable}"/>
           <DataGridCheckBoxColumn Header="只读" MinWidth="50" Width="50" Binding="{Binding IsReadonly}"/>
+          <DataGridCheckBoxColumn Header="隐藏" MinWidth="50" Width="50" Binding="{Binding IsHide}"/>
           <DataGridCheckBoxColumn Header="必填" MinWidth="50" Width="50" Binding="{Binding IsRequired}"/>
           <DataGridTemplateColumn Header="最小长度" MinWidth="80" Width="80">
             <DataGridTemplateColumn.CellTemplate>

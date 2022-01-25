@@ -94,6 +94,11 @@ namespace OSharp.CodeGeneration.Services.Entities
         public bool IsReadonly { get; set; } = false;
 
         /// <summary>
+        /// 获取或设置 是否隐藏
+        /// </summary>
+        public bool IsHide { get; set; }
+
+        /// <summary>
         /// 获取或设置 是否虚属性
         /// </summary>
         public bool IsVirtual { get; set; }

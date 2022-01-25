@@ -211,6 +211,7 @@ namespace OSharp.CodeGenerator.Views.Projects
                 IsEnum = prop.IsEnum,
                 Listable = prop.Listable,
                 IsReadonly = prop.IsReadonly,
+                IsHide = prop.IsHide,
                 IsVirtual = prop.IsVirtual,
                 IsForeignKey = prop.IsForeignKey,
                 IsNavigation = prop.IsNavigation,

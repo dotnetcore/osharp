@@ -116,6 +116,7 @@
     list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
     list.AddIf("sorter: true", prop.Sortable);
     list.Add($"width: {(IsPropertyType(prop, typeof(bool), typeof(int), typeof(long)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 150)}");
+    list.AddIf("defaultHidden: true", prop.IsHide);
     list.AddIf($"customRender: ({{ text }}) => CheckboxRender(text)", IsPropertyType(prop, typeof(bool)));
     list.AddIf($"customRender: ({{ text }}) => TagRender(text, {prop.Name.ToLowerCase()}Tags)", prop.IsEnum);
     list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));

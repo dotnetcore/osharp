@@ -74,6 +74,8 @@ namespace OSharp.CodeGenerator.Views.Properties
 
         public bool IsEnum { get; set; }
 
+        public bool IsHide { get; set; }
+
         public bool IsVirtual { get; set; }
 
         public bool IsForeignKey { get; set; }
