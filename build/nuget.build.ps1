@@ -1,4 +1,6 @@
-﻿function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
+﻿#Requires -Version 6
+
+function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
 {
     $encoding = New-Object System.Text.UTF8Encoding($true)
     $writer = New-Object System.IO.StreamWriter($file, $false, $encoding)
