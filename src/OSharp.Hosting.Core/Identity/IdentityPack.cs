@@ -42,7 +42,7 @@ namespace OSharp.Hosting.Identity
             services.AddScoped<IIdentityContract, IdentityService>();
             services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
             services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
-
+            
             services.AddEventHandler<LoginLoginLogEventHandler>();
             services.AddEventHandler<LogoutLoginLogEventHandler>();
 
