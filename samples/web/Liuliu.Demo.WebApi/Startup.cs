@@ -40,6 +40,8 @@ namespace Liuliu.Demo.Web
         {
 #if NET5_0_OR_GREATER
             services.AddDatabaseDeveloperPageExceptionFilter();
+            IConfiguration configuration = services.GetConfiguration();
+            services.AddCaptcha(configuration);
 #endif
             services.AddOSharp()
                 .AddPack<Log4NetPack>()

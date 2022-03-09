@@ -20,6 +20,7 @@ using OSharp.CodeGeneration.Services;
 using OSharp.CodeGeneration.Services.Dtos;
 using OSharp.CodeGeneration.Services.Entities;
 using OSharp.CodeGenerator.Data;
+using OSharp.CodeGenerator.Views.LoadFromEntities;
 using OSharp.CodeGenerator.Views.Projects;
 using OSharp.Data;
 using OSharp.Mapping;
@@ -116,7 +117,13 @@ namespace OSharp.CodeGenerator.Views.Modules
             }
             Init();
         }
-        
+
+        public void LoadFromEntities()
+        {
+            LoadFromEntitiesViewModel model = IoC.Get<LoadFromEntitiesViewModel>();
+            model.IsShow = true;
+        }
+
         /// <summary>
         /// Called whenever the error state of any properties changes. Calls NotifyOfPropertyChange("HasErrors") by default
         /// </summary>
