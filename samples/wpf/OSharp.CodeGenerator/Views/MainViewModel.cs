@@ -17,6 +17,7 @@ using Notifications.Wpf.Core.Controls;
 
 using OSharp.CodeGenerator.Views.Entities;
 using OSharp.CodeGenerator.Views.Helps;
+using OSharp.CodeGenerator.Views.LoadFromEntities;
 using OSharp.CodeGenerator.Views.Modules;
 using OSharp.CodeGenerator.Views.Projects;
 using OSharp.CodeGenerator.Views.Properties;
@@ -63,6 +64,8 @@ namespace OSharp.CodeGenerator.Views
         public ProjectTemplateListViewModel ProjectTemplateList { get; set; } = IoC.Get<ProjectTemplateListViewModel>();
 
         public AboutViewModel About { get; set; } = IoC.Get<AboutViewModel>();
+
+        public LoadFromEntitiesViewModel LoadFromEntities { get; set; } = IoC.Get<LoadFromEntitiesViewModel>();
         
         public async Task Notify(string message, NotificationType type = NotificationType.Information, string title = null, Action onClick = null)
         {

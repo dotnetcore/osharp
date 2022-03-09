@@ -12,6 +12,7 @@
   xmlns:viewsProperties="clr-namespace:OSharp.CodeGenerator.Views.Properties"
   xmlns:viewsTemplates="clr-namespace:OSharp.CodeGenerator.Views.Templates"
   xmlns:viewsHelps="clr-namespace:OSharp.CodeGenerator.Views.Helps"
+  xmlns:viewsLoadFromEntities="clr-namespace:OSharp.CodeGenerator.Views.LoadFromEntities"
   xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
   xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
   xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -60,6 +61,9 @@
       </mahwin:ChildWindow>
       <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding About}" Title="关于" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
         <viewsHelps:AboutView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding LoadFromEntities}" Title="从实体类加载" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsLoadFromEntities:LoadFromEntitiesView Margin="5"/>
       </mahwin:ChildWindow>
       <notify:NotificationArea Grid.Row="0" x:Name="MainNotifyArea" Position="BottomRight" MaxItems="3"/>
       <views:StatusBarView Grid.Row="1" DataContext="{Binding StatusBar}" Background="DimGray"/>
