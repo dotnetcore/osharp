@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.1.0" />
+    <PackageReference Include="Lazy.Captcha.Core" Version="1.0.9" />
   </ItemGroup>
 
   <ItemGroup>

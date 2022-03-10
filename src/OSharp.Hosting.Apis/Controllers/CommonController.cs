@@ -11,8 +11,11 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+
+using Lazy.Captcha.Core;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +48,31 @@ namespace OSharp.Hosting.Apis.Controllers
             _provider = provider;
         }
 
+        /// <summary>
+        /// 生成验证码
+        /// </summary>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("生成验证码")]
+        public IActionResult GenerateCaptcha(string id)
+        {
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            CaptchaData data = captcha.Generate(id);
+            MemoryStream ms = new MemoryStream(data.Bytes);
+            return File(ms, "image/gif");
+        }
+
+        /// <summary>
+        /// 验证验证码
+        /// </summary>
+        [HttpPost]
+        [ModuleInfo]
+        [Description("验证验证码")]
+        public bool ValidateCaptcha(string id, string code)
+        {
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            return captcha.Validate(id, code);
+        }
         /// <summary>
         /// 获取验证码图片
         /// </summary>
