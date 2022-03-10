@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="IdentityPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
+
+using Microsoft.Extensions.Configuration;
 
 using OSharp.Hosting.Identity.Dtos;
 using OSharp.Hosting.Identity.Entities;
@@ -43,6 +45,9 @@ namespace OSharp.Hosting.Identity
             services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
             services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
             
+            IConfiguration configuration = services.GetConfiguration();
+            services.AddCaptcha(configuration);
+
             services.AddEventHandler<LoginLoginLogEventHandler>();
             services.AddEventHandler<LogoutLoginLogEventHandler>();
 

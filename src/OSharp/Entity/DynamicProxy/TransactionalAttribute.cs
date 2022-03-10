@@ -6,7 +6,7 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-09-07 22:01</last-date>
 // -----------------------------------------------------------------------
-#if !NET6_0
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,5 +76,3 @@ namespace OSharp.Entity.DynamicProxy
         }
     }
 }
-
-#endif
