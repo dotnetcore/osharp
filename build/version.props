@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <VersionMain>6.0</VersionMain>
-    <VersionPrefix>1</VersionPrefix>
+    <VersionPrefix>3</VersionPrefix>
     <VersionSuffix>-preview.</VersionSuffix>
     <VersionSuffixVersion>310</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
