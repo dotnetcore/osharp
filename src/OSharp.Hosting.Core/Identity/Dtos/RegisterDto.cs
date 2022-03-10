@@ -51,14 +51,14 @@ namespace OSharp.Hosting.Identity.Dtos
         /// </summary>
         public string RegisterIp { get; set; }
 
-        ///// <summary>
-        ///// 获取或设置 验证码
-        ///// </summary>
-        //public string VerifyCode { get; set; }
+        /// <summary>
+        /// 获取或设置 验证码
+        /// </summary>
+        public string Captcha { get; set; }
 
         /// <summary>
         /// 获取或设置 验证码编号
         /// </summary>
-        public string VerifyCodeId { get; set; }
+        public string CaptchaId { get; set; }
     }
 }
