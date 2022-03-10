@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -11,6 +11,8 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Lazy.Captcha.Core;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,10 +122,11 @@ namespace OSharp.Hosting.Apis.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            //if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
-            //{
-            //    return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
-            //}
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            if (!captcha.Validate(dto.CaptchaId, dto.Captcha))
+            {
+                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            }
 
             dto.UserName = dto.UserName ?? dto.Email;
             dto.NickName = $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
