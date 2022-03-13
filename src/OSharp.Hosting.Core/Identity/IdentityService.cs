@@ -85,7 +85,7 @@ namespace OSharp.Hosting.Identity
         {
             Check.NotNull(dto, nameof(dto));
 
-            User user = new User() { UserName = dto.UserName, NickName = dto.NickName ?? dto.UserName, Email = dto.Email };
+            User user = new User() { UserName = dto.UserName, NickName = dto.NickName, Email = dto.Email };
             IdentityResult result = dto.Password == null ? await UserManager.CreateAsync(user) : await UserManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {
@@ -103,7 +103,7 @@ namespace OSharp.Hosting.Identity
             }
             return new OperationResult<User>(OperationResultType.NoChanged);
         }
-        
+
         /// <summary>
         /// 使用账号登录
         /// </summary>
@@ -122,7 +122,7 @@ namespace OSharp.Hosting.Identity
             {
                 return new OperationResult<User>(OperationResultType.Error, "用户已被冻结，无法登录");
             }
-            
+
             SignInResult signInResult = await SignInManager.CheckPasswordSignInAsync(user, dto.Password, true);
             OperationResult<User> result = ToOperationResult(signInResult, user);
             if (!result.Succeeded)
@@ -140,7 +140,7 @@ namespace OSharp.Hosting.Identity
 
             return result;
         }
-        
+
         /// <summary>
         /// 使用第三方用户信息进行OAuth2登录
         /// </summary>

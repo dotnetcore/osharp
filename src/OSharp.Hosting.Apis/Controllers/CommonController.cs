@@ -59,7 +59,20 @@ namespace OSharp.Hosting.Apis.Controllers
             MemoryStream ms = new MemoryStream(data.Bytes);
             return File(ms, "image/gif");
         }
-        
+
+        /// <summary>
+        /// 检查验证码
+        /// </summary>
+        [HttpGet]
+        [ModuleInfo]
+        [Description("检查验证码")]
+        public IActionResult CheckCaptcha(string id, string code)
+        {
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            bool flag = captcha.Validate(id, code, false);
+            return new JsonResult(flag);
+        }
+
         /// <summary>
         /// 获取系统信息
         /// </summary>

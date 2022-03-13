@@ -128,8 +128,8 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
 
-            dto.UserName = dto.UserName ?? dto.Email;
-            dto.NickName = $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
+            dto.UserName ??= dto.Email;
+            dto.NickName ??= $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
             dto.RegisterIp = HttpContext.GetClientIp();
 
             OperationResult<User> result = await IdentityContract.Register(dto);
