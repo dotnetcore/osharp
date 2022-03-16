@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IRepository.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -59,7 +59,7 @@ namespace OSharp.Entity
         OperationResult Insert<TInputDto>(ICollection<TInputDto> dtos,
             Action<TInputDto> checkAction = null,
             Func<TInputDto, TEntity, TEntity> updateFunc = null)
-            where TInputDto : IInputDto<TKey>;
+            where TInputDto : class, IInputDto<TKey>;
 
         /// <summary>
         /// 删除实体
@@ -235,7 +235,7 @@ namespace OSharp.Entity
         Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
             Func<TInputDto, Task> checkAction = null,
             Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null)
-            where TInputDto : IInputDto<TKey>;
+            where TInputDto : class, IInputDto<TKey>;
 
         /// <summary>
         /// 异步删除实体
