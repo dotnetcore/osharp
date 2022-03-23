@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleFunctionController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
 using OSharp.Entity;
@@ -49,12 +50,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<RoleOutputDto2> Read(PageRequest request)
+        public AjaxResult Read(PageRequest request)
         {
             request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
             Expression<Func<Role, bool>> predicate = FilterService.GetExpression<Role>(request.FilterGroup);
             PageResult<RoleOutputDto2> page = RoleManager.Roles.ToPage<Role, RoleOutputDto2>(predicate, request.PageCondition);
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>
@@ -65,11 +66,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction(nameof(Read))]
         [Description("读取功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(int roleId, [FromBody] PageRequest request)
+        public AjaxResult ReadFunctions(int roleId, [FromBody] PageRequest request)
         {
+            var empty = new PageData<FunctionOutputDto2>();
             if (roleId == 0)
             {
-                return new PageData<FunctionOutputDto2>();
+                return new AjaxResult(empty);
             }
 
             FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
@@ -78,7 +80,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 .ToArray();
             if (functionIds.Length == 0)
             {
-                return new PageData<FunctionOutputDto2>();
+                return new AjaxResult(empty);
             }
 
             Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
@@ -89,7 +91,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             }
 
             var page = functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
     }
 }

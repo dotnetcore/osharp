@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 
 namespace OSharp.Reflection
@@ -34,6 +35,9 @@ namespace OSharp.Reflection
         /// <param name="clsid">Com组件的clsid</param>
         /// <param name="comFallback">无法加载时是否从注册系统中的Com组件加载</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public object CreateObjectFromPath(string dllPath, Guid clsid, bool comFallback)
         {
             return CreateObjectFromPath(dllPath, clsid, false, comFallback);
@@ -47,6 +51,9 @@ namespace OSharp.Reflection
         /// <param name="setSearchPath">是否设置搜索路径</param>
         /// <param name="comFallback">无法加载时是否从注册系统中的Com组件加载</param>
         /// <returns>创建的Com对象</returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public object CreateObjectFromPath(string dllPath, Guid clsid, bool setSearchPath, bool comFallback)
         {
             if (File.Exists(dllPath) && (_preferURObjects || !comFallback))

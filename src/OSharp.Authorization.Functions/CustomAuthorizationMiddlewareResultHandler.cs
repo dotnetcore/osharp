@@ -7,7 +7,7 @@
 //  <last-date>2020-12-15 2:58</last-date>
 // -----------------------------------------------------------------------
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 using System;
 using System.Threading.Tasks;
 
@@ -32,7 +32,7 @@ namespace OSharp.Authorization
         /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext" />.</param>
         /// <param name="policy">The <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationPolicy" /> for the resource.</param>
         /// <param name="authorizeResult">The result of authorization.</param>
-        public async Task HandleAsync(RequestDelegate next,
+        public Task HandleAsync(RequestDelegate next,
             HttpContext context,
             AuthorizationPolicy policy,
             PolicyAuthorizationResult authorizeResult)

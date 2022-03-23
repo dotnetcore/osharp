@@ -1,0 +1,25 @@
+<Application
+  x:Class="OSharp.CodeGenerator.App"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator"
+  xmlns:views="clr-namespace:OSharp.CodeGenerator.Views">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.flatbutton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/OSharp.CodeGenerator;component/Resources/SomeStyles.xaml" />
+        <s:ApplicationLoader>
+          <s:ApplicationLoader.Bootstrapper>
+            <local:Bootstrapper/>
+          </s:ApplicationLoader.Bootstrapper>
+        </s:ApplicationLoader>
+      </ResourceDictionary.MergedDictionaries>
+      <views:ViewModelLocator x:Key="Locator"/>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

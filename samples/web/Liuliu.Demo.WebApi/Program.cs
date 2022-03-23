@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Program.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -7,6 +7,22 @@
 //  <last-date>2020-06-02 11:32</last-date>
 // -----------------------------------------------------------------------
 
+#if NET6_0_OR_GREATER
+
+using Liuliu.Demo.Web;
+
+var builder = WebApplication.CreateBuilder(args);
+
+Startup startup = new Startup();
+startup.ConfigureServices(builder.Services);
+
+var app = builder.Build();
+startup.Configure(app);
+app.Run();
+
+#else
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -28,3 +44,4 @@ namespace Liuliu.Demo.Web
                 });
     }
 }
+#endif

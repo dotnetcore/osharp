@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
-    <PackageId>OSharpNS.Core</PackageId>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <PackageId>OSharp.Core</PackageId>
     <Description>OSharp核心组件，封装着框架核心及数据存储，缓存，辅助操作等功能</Description>
     <Summary>OSharp核心组件</Summary>
     <RootNamespace>OSharp</RootNamespace>
@@ -18,39 +18,25 @@
     <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.ComponentModel" Version=" 4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.DirectoryServices.Protocols" Version="5.0.1" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[3.1.21,4.0.0)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="[5.0.2, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="[5.0.0, 6.0.0)" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="[5.0.0, 6.0.0)" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>

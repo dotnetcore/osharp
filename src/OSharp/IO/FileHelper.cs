@@ -101,7 +101,7 @@ namespace OSharp.IO
             {
                 const int bufferSize = 1024 * 1024;
                 byte[] buffer = new byte[bufferSize];
-                using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+                using (MD5 md5 = MD5.Create())
                 {
                     md5.Initialize();
                     long offset = 0;
@@ -125,6 +125,12 @@ namespace OSharp.IO
                     }
                     fs.Close();
                     byte[] result = md5.Hash;
+#if NET5_0_OR_GREATER
+                    if (result == null)
+                    {
+                        return null;
+                    }
+#endif
                     md5.Clear();
                     StringBuilder sb = new StringBuilder(32);
                     foreach (byte b in result)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using OSharp.UnitTest.Infrastructure;
 
@@ -12,7 +12,7 @@ namespace OSharp.Data.Tests
     public class SerializeHelperTests
     {
         private readonly TestEntity _entity = new TestEntity() { Id = 1, Name = "test", IsDeleted = false, AddDate = DateTime.Now };
-
+#if NETSTANDARD2_0
         [Fact]
         public void Binary_Test()
         {
@@ -30,7 +30,7 @@ namespace OSharp.Data.Tests
             TestEntity newEntity = SerializeHelper.FromBinaryFile<TestEntity>(file);
             newEntity.Name.ShouldBe(_entity.Name);
         }
-
+#endif
         [Fact]
         public void Xml_Test()
         {

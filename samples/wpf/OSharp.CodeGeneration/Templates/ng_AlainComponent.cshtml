@@ -1,0 +1,172 @@
+@inherits MiniRazor.TemplateBase<CodeEntity>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeEntity entity = Model;
+  string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+  string urlEntity = entity.Name.UpperToLowerAndSplit();
+  string lowerEntity = entity.Name.ToLowerCase();
+}// ------------------------------------------------------------------------------
+// <once-generated>
+//    这个文件只生成一次，再次生成不会被覆盖。
+// </once-generated>
+//
+// <copyright file="@(entity.Name.UpperToLowerAndSplit()).module.ts" company="@entity.Module.Project.Company">
+//    @entity.Module.Project.Copyright
+// </copyright>
+// <site>@entity.Module.Project.SiteUrl</site>
+// <last-editor>@entity.Module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+import { Component, OnInit, Injector } from '@@angular/core';
+import { SFUISchema, SFSchema } from '@@delon/form';
+import { OsharpSTColumn } from '@@shared/osharp/services/alain.types';
+import { STComponentBase } from '@@shared/osharp/components/st-component-base';
+
+@@Component({
+  selector: 'app-@(urlEntity)',
+  templateUrl: './@(lowerEntity).component.html',
+  styles: []
+})
+export class @(entity.Name)Component extends STComponentBase implements OnInit {
+
+  constructor(injector: Injector) {
+    super(injector);
+    this.moduleName = '@(entity.Name.ToLowerCase())';
+  }
+
+  ngOnInit() {
+    super.InitBase();
+  }
+
+  protected GetSTColumns(): OsharpSTColumn[] {
+    let columns: OsharpSTColumn[] = [
+      {
+        title: '操作', fixed: 'left', width: 65, buttons: [{
+          text: '操作', children: [
+@if (entity.Updatable)
+{
+  string line = string.Empty;
+  if (entity.IsDataAuth)
+  {
+    line += "iif: row => row.Updatable, ";
+  }
+    <text>            { text: '编辑', icon: 'edit', acl: 'Root.Admin.@(entity.Module.Name).@(entity.Name).Update', @(line)click: row => this.edit(row) },
+</text>
+}
+@if (entity.Deletable)
+{
+  string line = string.Empty;
+  if (entity.IsDataAuth)
+  {
+    line += "iif: row => row.Deletable, ";
+  }
+    <text>            { text: '删除', icon: 'delete', type: 'del', acl: 'Root.Admin.@(entity.Module.Name).@(entity.Name).Delete', @(line)click: row => this.delete(row) },
+</text>
+}
+          ]
+        }]
+      },
+      @GetIdColumn(entity)
+@foreach (var prop in entity.Properties.Where(m => m.Listable))
+{
+    <text>      { @(GetColumnProps(prop)) },
+</text>
+}
+    ];
+    return columns;
+  }
+@{
+  CodeProperty[] requiredProps = entity.Properties.Where(m => m.IsRequired.GetValueOrDefault(false)).ToArray();
+  if (requiredProps.Length > 0)
+  {<text>
+  protected GetSFSchema(): SFSchema {
+    let schema: SFSchema = {
+      properties: this.ColumnsToSchemas(this.columns),
+      required: [@(requiredProps.Select(m => string.Format("'{0}'", m.Name)).ExpandAndToString(", "))]
+    };
+    return schema;
+  }
+
+</text>
+  }
+}
+  protected GetSFUISchema(): SFUISchema {
+    let ui: SFUISchema = {
+      @(GetSFUISchemas(entity.Properties.ToArray()))
+    };
+    return ui;
+  }
+}
+
+@functions
+{
+
+    static string GetIdColumn(CodeEntity entity)
+    {
+      string ftype = new[] { typeof(string).FullName, typeof(Guid).FullName }.Contains(entity.PrimaryKeyTypeFullName) ? "string" : "number";
+      string line = "{ title: '编号', index: 'Id', sort: true, readOnly: true, editable: true, filterable: true, ftype: '" + ftype + "' },";
+      return line;
+    }
+
+    static string GetColumnProps(CodeProperty prop)
+    {
+      List<string>list = new List<string>();
+      list.Add($"title: '{prop.Display}'");
+      list.Add($"index: '{prop.Name}'");
+      list.AddIf("readOnly: true", prop.IsReadonly);
+      list.AddIf("sort: true", prop.Sortable);
+      list.AddIf("editable: true", prop.Updatable);
+      list.AddIf("filterable: true", prop.Filterable);
+      list.AddRange(GetColumnType(prop));
+
+      return list.ExpandAndToString(", ");
+    }
+
+    static string[] GetColumnType(CodeProperty prop)
+    {
+      List<string>list = new List<string>();
+      switch (prop.TypeName)
+      {
+        case "System.String":
+        case "System.Guid":
+          list.Add("ftype: 'string'");
+          break;
+        case "System.Int32":
+        case "System.Int64":
+        case "System.Double":
+          list.Add("type: 'number'");
+          break;
+        case "System.Boolean":
+          list.Add("type: 'yn'");
+          break;
+        case "System.DateTime":
+          list.Add("type: 'date'");
+          break;
+        default:
+          list.Add("ftype: 'string'");
+          break;
+      }
+
+      return list.ToArray();
+    }
+
+    static string GetSFUISchemas(CodeProperty[] props)
+    {
+      List<string>list = new List<string>();
+      list.Add("'*': { spanLabelFixed: 100, grid: { span: 12 } }");
+      foreach (CodeProperty prop in props.Where(m => m.TypeName == "System.String"))
+      {
+        list.Add($"${prop.Name}: {{ grid: {{ span: 24 }} }}");
+      }
+
+      return list.ExpandAndToString(",\r\n      ");
+    }
+}

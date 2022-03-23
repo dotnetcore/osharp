@@ -1,0 +1,75 @@
+@inherits MiniRazor.TemplateBase<CodeProject>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeProject project = Model;
+}// -----------------------------------------------------------------------
+//  <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//  </once-generated>
+//
+//  <copyright file="src/router/routes/modules/osharp.ts" company="@project.Company">
+//      @project.Copyright
+//  </copyright>
+//  <site>@project.SiteUrl</site>
+//  <last-editor>@project.Creator</last-editor>
+// -----------------------------------------------------------------------
+import type { AppRouteModule } from '/@@/router/types';
+import { LAYOUT, getParentLayout } from '/@@/router/constant';
+import { t } from '/@@/hooks/web/useI18n';
+
+const osharp: AppRouteModule = {
+  path: '/system',
+  name: 'OSharp',
+  component: LAYOUT,
+  redirect: '/system',
+  meta: {
+    orderNo: 1000,
+    icon: 'ion:settings-outline',
+    title: t('routes.osharp.system'),
+    acl: ['Root.Admin'],
+  },
+  children: [
+@foreach (var module in project.Modules)
+{
+  string lowerModule = module.Name.ToLowerCase();
+  string urlModule = module.Name.UpperToLowerAndSplit();
+<text>    {
+      path: '@urlModule',
+      name: '@module.Name',
+      component: getParentLayout('@(module.Name)'),
+      redirect: '/system/@(urlModule)/@(module.Entities.FirstOrDefault()?.Name.UpperToLowerAndSplit() ?? "index")',
+      meta: {
+        title: t('routes.osharp.@(lowerModule).@(lowerModule)'),
+        acl: ['Root.Admin.@(module.Name)'],
+      },
+      children: [
+@foreach (var entity in module.Entities)
+{
+  string lowerEntity = entity.Name.ToLowerCase();
+  string urlEntity = entity.Name.UpperToLowerAndSplit();
+<text>        {
+          path: '@(urlEntity)',
+          name: '@(entity.Name)',
+          component: () => import('/@@/views/osharp/@(lowerModule)/@(lowerEntity).vue'),
+          meta: {
+            title: t('routes.osharp.@(lowerModule).@(lowerEntity)'),
+            acl: ['Root.Admin.@(module.Name).@(entity.Name)'],
+          },
+        },
+</text>
+}
+      ],
+    },
+</text>
+}
+  ],
+};
+
+export default osharp;

@@ -1,0 +1,73 @@
+<mah:MetroWindow
+  x:Class="OSharp.CodeGenerator.Views.MainView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:views="clr-namespace:OSharp.CodeGenerator.Views"
+  xmlns:viewsProjects="clr-namespace:OSharp.CodeGenerator.Views.Projects"
+  xmlns:viewsModules="clr-namespace:OSharp.CodeGenerator.Views.Modules"
+  xmlns:viewsEntities="clr-namespace:OSharp.CodeGenerator.Views.Entities"
+  xmlns:viewsProperties="clr-namespace:OSharp.CodeGenerator.Views.Properties"
+  xmlns:viewsTemplates="clr-namespace:OSharp.CodeGenerator.Views.Templates"
+  xmlns:viewsHelps="clr-namespace:OSharp.CodeGenerator.Views.Helps"
+  xmlns:viewsLoadFromEntities="clr-namespace:OSharp.CodeGenerator.Views.LoadFromEntities"
+  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:notify="clr-namespace:Notifications.Wpf.Core.Controls;assembly=Notifications.Wpf.Core"
+  mc:Ignorable="d"
+  d:DataContext="{d:DesignInstance views:MainViewModel}"
+  WindowStartupLocation="Manual" Icon="../Resources/osharp128-2.ico"
+  Title="{Binding DisplayName}" Height="800" Width="1280" MinHeight="450" MinWidth="720"
+  ResizeMode="CanResizeWithGrip" GlowBrush="{DynamicResource AccentColorBrush}">
+  <mah:MetroWindow.RightWindowCommands>
+    <mah:WindowCommands>
+      <views:MainMenuView DataContext="{Binding MainMenu}"/>
+    </mah:WindowCommands>
+  </mah:MetroWindow.RightWindowCommands>
+  <mah:MetroContentControl DataContext="{Binding}">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="30"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0" Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="250" MinWidth="200" MaxWidth="400"/>
+          <ColumnDefinition Width="*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
+        <views:MenuView Grid.Column="0" DataContext="{Binding Menu}" Margin="4"/>
+        <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="4" Background="White"/>
+        <viewsModules:ModuleListView DataContext="{Binding ModuleList}" Visibility="{Binding IsShow, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Margin="0 4 4 4"/>
+        <viewsEntities:EntityListView DataContext="{Binding EntityList}" Visibility="{Binding IsShow, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Margin="0 4 4 4"/>
+        <viewsProperties:PropertyListView DataContext="{Binding PropertyList}" Visibility="{Binding IsShow, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Margin="0 4 4 4"/>
+      </Grid>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding ProjectList}" Title="项目管理" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsProjects:ProjectListView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding ProjectList}" Title="{Binding EditTitle}" IsOpen="{Binding IsShowEdit}" AllowMove="True" ShowCloseButton="True">
+        <viewsProjects:ProjectEditView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding ProjectTemplateList}" Title="{Binding Title}" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsProjects:ProjectTemplateListView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding ForeignList}" Title="{Binding Title}" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsEntities:ForeignListView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding TemplateList}" Title="全局模板管理" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsTemplates:TemplateListView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding About}" Title="关于" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsHelps:AboutView Margin="5"/>
+      </mahwin:ChildWindow>
+      <mahwin:ChildWindow Grid.Row="0" DataContext="{Binding LoadFromEntities}" Title="从实体类加载" IsOpen="{Binding IsShow}" AllowMove="True" ShowCloseButton="True">
+        <viewsLoadFromEntities:LoadFromEntitiesView Margin="5"/>
+      </mahwin:ChildWindow>
+      <notify:NotificationArea Grid.Row="0" x:Name="MainNotifyArea" Position="BottomRight" MaxItems="3"/>
+      <views:StatusBarView Grid.Row="1" DataContext="{Binding StatusBar}" Background="DimGray"/>
+    </Grid>
+
+  </mah:MetroContentControl>
+</mah:MetroWindow>

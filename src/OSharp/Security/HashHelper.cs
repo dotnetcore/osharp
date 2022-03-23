@@ -40,7 +40,7 @@ namespace OSharp.Security
         {
             bytes.CheckNotNullOrEmpty("bytes");
             StringBuilder sb = new StringBuilder();
-            MD5 hash = new MD5CryptoServiceProvider();
+            MD5 hash = MD5.Create();
             bytes = hash.ComputeHash(bytes);
             foreach (byte b in bytes)
             {
@@ -57,7 +57,7 @@ namespace OSharp.Security
             value.CheckNotNullOrEmpty("value");
 
             StringBuilder sb = new StringBuilder();
-            SHA1Managed hash = new SHA1Managed();
+            SHA1 hash = SHA1.Create();
             if (encoding == null)
             {
                 encoding = Encoding.UTF8;
@@ -78,7 +78,7 @@ namespace OSharp.Security
             value.CheckNotNullOrEmpty("value");
 
             StringBuilder sb = new StringBuilder();
-            SHA256Managed hash = new SHA256Managed();
+            SHA256 hash = SHA256.Create();
             if (encoding == null)
             {
                 encoding = Encoding.UTF8;
@@ -99,7 +99,7 @@ namespace OSharp.Security
             value.CheckNotNullOrEmpty("value");
 
             StringBuilder sb = new StringBuilder();
-            SHA512Managed hash = new SHA512Managed();
+            SHA512 hash = SHA512.Create();
             if (encoding == null)
             {
                 encoding = Encoding.UTF8;

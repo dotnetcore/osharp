@@ -1,0 +1,86 @@
+@inherits MiniRazor.TemplateBase<CodeProject>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Collections.Generic
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeProject project = Model;
+}
+/*
+各模块路由：
+@foreach (var module in project.Modules)
+{
+  string name = module.Name.UpperToLowerAndSplit();
+    <text>{ path: '@(name)', loadChildren: () => import('./@(name)/@(name).module').then(m => m.@(module.Name)Module), canActivateChild: [ACLGuard], data: { guard: 'Root.Admin.@(module.Name)' } },
+</text>
+}
+
+各模块组件路由：
+@foreach (var module in project.Modules)
+{
+<text>@module.Display 模块组件路由数据
+@GetComponentRouters(module)
+</text>
+}
+
+各模块菜单数据：
+@foreach (var module in project.Modules)
+{
+<text>@module.Display 模块菜单数据
+@GetMenu(module)
+</text>
+}
+*/
+@functions
+{
+
+  static string GetComponentRouters(CodeModule module)
+  {
+    List<string>list = new List<string>();
+    foreach (var entity in module.Entities.Where(m=>m.Listable))
+    {
+      list.Add($"{{ path: '{entity.Name.UpperToLowerAndSplit()}', component: {entity.Name}Component, canActivate: [ACLGuard], data: {{ title: '{entity.Display}管理', reuse: true, guard: 'Root.Admin.{module.Name}.{entity.Name}.Read' }} }},\r\n");
+    }
+    return list.ExpandAndToString("");
+  }
+
+  static string GetMenu(CodeModule module)
+  {
+    List<string>list = new List<string>();
+    list.Add("{\r\n");
+    list.Add($"  \"text\": \"{module.Display}模块\",\r\n");
+    list.Add(              "  \"group\": \"true\",\r\n");
+    list.Add(              "  \"icon\": \"anticon-border\",\r\n");
+    list.Add($"  \"acl\": \"Root.Admin.{module.Name}\",\r\n");
+    string children = "  \"children\": [";
+    List<string>childList = new List<string>();
+    foreach (var entity in module.Entities.Where(m => m.Listable))
+    {
+      childList.Add(GetMenu(entity));
+    }
+    if (childList.Count > 0)
+    {
+      children += childList.ExpandAndToString(", ");
+    }
+    children += "]\r\n";
+    list.Add(children);
+    list.Add("}");
+    return list.ExpandAndToString("");
+  }
+
+  static string GetMenu(CodeEntity entity)
+  {
+    List<string>list = new List<string>();
+    list.Add("{\r\n");
+    list.Add($"    \"text\": \"{entity.Display}管理\",\r\n");
+    list.Add($"    \"link\": \"/{entity.Module.Name.UpperToLowerAndSplit()}/{entity.Name.UpperToLowerAndSplit()}\",\r\n");
+    list.Add($"    \"acl\": \"Root.Admin.{entity.Module.Name}.{entity.Name}\"\r\n");
+    list.Add("  }");
+    return list.ExpandAndToString("");
+  }
+}

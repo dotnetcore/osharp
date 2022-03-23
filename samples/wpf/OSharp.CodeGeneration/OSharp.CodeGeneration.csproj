@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../../build/public.props" />
+  <Import Project="../../../build/version.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MiniRazor" Version="2.2.0" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore.Sqlite\OSharp.EntityFrameworkCore.Sqlite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Services/DataService.*.cs">
+      <DependentUpon>DataService.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Templates/*.cshtml" IsRazorTemplate="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\cs_AdminController.cshtml" />
+    <None Remove="Templates\cs_AdminControllerBase.cshtml" />
+    <None Remove="Templates\cs_EntityConfiguration.cshtml" />
+    <None Remove="Templates\cs_InputDto.cshtml" />
+    <None Remove="Templates\cs_OutputDto.cshtml" />
+    <None Remove="Templates\cs_ServiceContract.cshtml" />
+    <None Remove="Templates\cs_ServiceEntityImplBase.cshtml" />
+    <None Remove="Templates\cs_ServiceMainImpl.cshtml" />
+    <None Remove="Templates\cs_ServiceMainImplBase.cshtml" />
+    <None Remove="Templates\cs_ServicePack.cshtml" />
+    <None Remove="Templates\ng_AlainComponentHtml.cshtml" />
+    <None Remove="Templates\ng_AlainModule.cshtml" />
+    <None Remove="Templates\ng_AlainOther.cshtml" />
+    <None Remove="Templates\ng_AlainRouting.cshtml" />
+    <None Remove="Templates\vue_VbenLocalesLangEn.cshtml" />
+    <None Remove="Templates\vue_VbenLocalesLangZhCN.cshtml" />
+    <None Remove="Templates\vue_VbenRouterRoutes.cshtml" />
+    <None Remove="Templates\vue_VbenViewsVue.cshtml" />
+  </ItemGroup>
+
+</Project>

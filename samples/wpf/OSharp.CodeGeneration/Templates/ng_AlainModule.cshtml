@@ -1,0 +1,45 @@
+@inherits MiniRazor.TemplateBase<CodeModule>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+    CodeModule module = Model;
+}// -----------------------------------------------------------------------
+//  <once-generated>
+//     这个文件只生成一次，再次生成不会被覆盖。
+//  </once-generated>
+//
+//  <copyright file="@(module.Name.UpperToLowerAndSplit()).module.ts" company="@module.Project.Company">
+//      @module.Project.Copyright
+//  </copyright>
+//  <site>@module.Project.SiteUrl</site>
+//  <last-editor>@module.Project.Creator</last-editor>
+// -----------------------------------------------------------------------
+
+import { NgModule } from '@@angular/core';
+import { CommonModule } from '@@angular/common';
+import { SharedModule } from '@@shared';
+import { @(module.Name)RoutingModule } from './@(module.Name.UpperToLowerAndSplit()).routing';
+@foreach (CodeEntity entity in module.Entities.Where(m => m.Listable))
+{
+    var lowerName = entity.Name.UpperToLowerAndSplit();
+<text>import { @(entity.Name)Component } from './@(lowerName)/@(lowerName).component';
+</text>
+}
+
+@@NgModule({
+  imports: [CommonModule, SharedModule, @(module.Name)RoutingModule],
+  declarations: [
+@foreach (var entity in module.Entities.Where(m => m.Listable))
+{
+    <text>    @(entity.Name)Component,
+</text>
+}
+  ]
+})
+export class @(module.Name)Module { }

@@ -117,7 +117,7 @@ namespace OSharp.Security
                 aes.Key = CheckKey(key);
                 aes.Padding = PaddingMode.PKCS7;
                 aes.Mode = CipherMode.ECB;
-                byte[] ivBytes = { };
+                byte[] ivBytes = Array.Empty<byte>();
                 if (needIV)
                 {
                     aes.Mode = CipherMode.CBC;
@@ -234,7 +234,7 @@ namespace OSharp.Security
         /// </summary>
         public static string GetRandomKey()
         {
-            using (AesCryptoServiceProvider provider = new AesCryptoServiceProvider())
+            using (Aes provider = Aes.Create())
             {
                 provider.GenerateKey();
                 Console.WriteLine(provider.Key.Length);

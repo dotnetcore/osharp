@@ -24,7 +24,7 @@ namespace OSharp.Data
         /// <summary>
         /// 为GUID的创建提供加密强随机数据。
         /// </summary>
-        private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
         /// <summary>
         /// 生成指定类型的GUID
@@ -32,7 +32,7 @@ namespace OSharp.Data
         public static Guid Create(SequentialGuidType guidType)
         {
             byte[] randomBytes = new byte[10];
-            Rng.GetBytes(randomBytes);
+            _rng.GetBytes(randomBytes);
 
             long timestamp = DateTime.UtcNow.Ticks / 10000L;
             byte[] timestampBytes = BitConverter.GetBytes(timestamp);

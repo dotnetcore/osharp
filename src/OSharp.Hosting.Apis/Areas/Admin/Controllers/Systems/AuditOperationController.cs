@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditOperationController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Modules;
 using OSharp.Entity;
 using OSharp.Filter;
@@ -46,12 +47,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpPost]
         [ModuleInfo]
         [Description("读取")]
-        public PageData<AuditOperationOutputDto> Read(PageRequest request)
+        public AjaxResult Read(PageRequest request)
         {
             Expression<Func<AuditOperation, bool>> predicate = FilterService.GetExpression<AuditOperation>(request.FilterGroup);
             request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
             var page = AuditContract.AuditOperations.ToPage<AuditOperation, AuditOperationOutputDto>(predicate, request.PageCondition);
-            return page.ToPageData();
+            return new AjaxResult(page.ToPageData());
         }
     }
 }

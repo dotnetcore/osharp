@@ -123,7 +123,11 @@ namespace OSharp.Swagger
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
+#if NET6_0_OR_GREATER
+        public override void UsePack(WebApplication app)
+#else
         public override void UsePack(IApplicationBuilder app)
+#endif
         {
             if (_osharpOptions?.Swagger?.Enabled != true)
             {

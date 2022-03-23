@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -11,6 +11,8 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Lazy.Captcha.Core;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +54,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
         private SignInManager<User> SignInManager => _provider.GetRequiredService<SignInManager<User>>();
 
-        private IVerifyCodeService VerifyCodeService => _provider.GetRequiredService<IVerifyCodeService>();
+        //private IVerifyCodeService VerifyCodeService => _provider.GetRequiredService<IVerifyCodeService>();
 
         /// <summary>
         /// 用户名是否存在
@@ -120,13 +122,14 @@ namespace OSharp.Hosting.Apis.Controllers
             {
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
-            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            if (!captcha.Validate(dto.CaptchaId, dto.Captcha))
             {
                 return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
             }
 
-            dto.UserName = dto.Email;
-            dto.NickName = $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
+            dto.UserName ??= dto.Email;
+            dto.NickName ??= $"User_{Random.NextLetterAndNumberString(8)}"; //随机用户昵称
             dto.RegisterIp = HttpContext.GetClientIp();
 
             OperationResult<User> result = await IdentityContract.Register(dto);
@@ -178,7 +181,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
                 IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
-#if NET5_0
+#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
@@ -221,7 +224,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await IdentityContract.Login(dto);
-#if NET5_0
+#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
             unitOfWork.Commit();
@@ -247,7 +250,7 @@ namespace OSharp.Hosting.Apis.Controllers
         [Description("用户登出")]
         public async Task<AjaxResult> Logout()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return new AjaxResult("用户登出成功");
             }
@@ -264,11 +267,12 @@ namespace OSharp.Hosting.Apis.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [LoggedIn]
         [ModuleInfo]
         [Description("用户信息")]
         public async Task<OnlineUser> Profile()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return null;
             }
@@ -333,10 +337,10 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("提交信息验证失败", AjaxResultType.Error);
             }
 
-            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
-            {
-                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
-            }
+            //if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            //{
+            //    return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            //}
 
             User user = await UserManager.FindByEmailAsync(dto.Email);
             if (user == null)
@@ -405,10 +409,10 @@ namespace OSharp.Hosting.Apis.Controllers
                 return new AjaxResult("提交数据验证失败", AjaxResultType.Error);
             }
 
-            if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
-            {
-                return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
-            }
+            //if (!VerifyCodeService.CheckCode(dto.VerifyCode, dto.VerifyCodeId))
+            //{
+            //    return new AjaxResult("验证码错误，请刷新重试", AjaxResultType.Error);
+            //}
 
             User user = await UserManager.FindByEmailAsync(dto.Email);
             if (user == null)

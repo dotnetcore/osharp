@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -81,7 +81,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [HttpGet]
         [ModuleInfo]
         [Description("读取节点")]
-        public RoleNode[] ReadNode()
+        public AjaxResult ReadNode()
         {
             IFunction function = this.GetExecuteFunction();
             Expression<Func<Role, bool>> exp = m => !m.IsLocked;
@@ -91,7 +91,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 RoleId = m.Id,
                 RoleName = m.Name
             }, function);
-            return nodes;
+            return new AjaxResult(nodes);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         /// <returns>角色[用户]树数据</returns>
         [HttpGet]
         [Description("读取角色[用户]树数据")]
-        public List<UserRoleNode> ReadUserRoles(int userId)
+        public AjaxResult ReadUserRoles(int userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
 
@@ -109,7 +109,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             List<UserRoleNode> nodes = IdentityContract.Roles.Where(m => !m.IsLocked)
                 .OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<Role, UserRoleNode>().ToList();
             nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
-            return nodes;
+            return new AjaxResult(nodes);
         }
 
         /// <summary>

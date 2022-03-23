@@ -106,7 +106,7 @@ namespace OSharp.Entity
             {
                 throw new OsharpException("数据访问模块未初始化，请确认数据上下文配置节点 OSharp:DbContexts 与要使用的数据库类型是否匹配");
             }
-            return _entityRegistersDict.ContainsKey(dbContextType) ? _entityRegistersDict[dbContextType] : new IEntityRegister[0];
+            return _entityRegistersDict.ContainsKey(dbContextType) ? _entityRegistersDict[dbContextType] : Array.Empty<IEntityRegister>();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace OSharp.Entity
                 throw new OsharpException("数据访问模块未初始化，请确认数据上下文配置节点 OSharp:DbContexts 与要使用的数据库类型是否匹配");
             }
             var dict = _entityRegistersDict;
-            if (dict.Count == 0)
+            if (dict.IsEmpty)
             {
                 throw new OsharpException("未发现任何数据上下文实体映射配置，请通过对各个实体继承基类“EntityTypeConfigurationBase<TEntity, TKey>”以使实体加载到上下文中");
             }
@@ -147,7 +147,11 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<EntityInfo> builder)
             {
+#if NET5_0_OR_GREATER
+                builder.HasIndex(m => m.TypeName).HasDatabaseName("ClassFullNameIndex").IsUnique();
+#else
                 builder.HasIndex(m => m.TypeName).HasName("ClassFullNameIndex").IsUnique();
+#endif
             }
         }
 
@@ -160,7 +164,11 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<Function> builder)
             {
+#if NET5_0_OR_GREATER
+                builder.HasIndex(m => new { m.Area, m.Controller, m.Action }).HasDatabaseName("AreaControllerActionIndex").IsUnique();
+#else
                 builder.HasIndex(m => new { m.Area, m.Controller, m.Action }).HasName("AreaControllerActionIndex").IsUnique();
+#endif
             }
         }
 
@@ -174,7 +182,11 @@ namespace OSharp.Entity
             public override void Configure(EntityTypeBuilder<KeyValue> builder)
             {
                 builder.Property(m => m.ValueJson).HasColumnType("text");
+#if NET5_0_OR_GREATER
+                builder.HasIndex(m => m.Key).HasDatabaseName("KeyIndex").IsUnique();
+#else
                 builder.HasIndex(m => m.Key).HasName("KeyIndex").IsUnique();
+#endif
             }
         }
     }

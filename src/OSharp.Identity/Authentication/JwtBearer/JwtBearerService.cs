@@ -109,7 +109,7 @@ namespace OSharp.Authentication.JwtBearer
                         var result = await userManager.RemoveRefreshToken(userId, clientId);
                         if (result.Succeeded)
                         {
-#if NET5_0
+#if NET5_0_OR_GREATER
                             await unitOfWork.CommitAsync();
 #else
                             unitOfWork.Commit();
@@ -158,12 +158,12 @@ namespace OSharp.Authentication.JwtBearer
                 IdentityResult result = await userManager.SetRefreshToken(userId, refreshToken);
                 if (result.Succeeded)
                 {
-#if NET5_0
+#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
 #else
                     unitOfWork.Commit();
 #endif
-                    IEventBus eventBus = _provider.GetService<IEventBus>();
+                    IEventBus eventBus = _provider.GetRequiredService<IEventBus>();
                     OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { userName } };
                     await eventBus.PublishAsync(eventData);
                 }

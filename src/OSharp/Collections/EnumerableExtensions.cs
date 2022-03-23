@@ -72,25 +72,27 @@ namespace OSharp.Collections
             if (second == null) throw new ArgumentNullException(nameof(second));
 
             comparer = comparer ?? EqualityComparer<T>.Default;
-            
-            int? secondCount = second.TryGetCollectionCount();
+
+            var secondArray = second as T[] ?? second.ToArray();
+            int? secondCount = secondArray.TryGetCollectionCount();
+            var firstArray = first as T[] ?? first.ToArray();
             if (secondCount != null)
             {
-                int? firstCount = first.TryGetCollectionCount();
+                int? firstCount = firstArray.TryGetCollectionCount();
                 if (firstCount != null && secondCount > firstCount)
                 {
                     return false;
                 }
 
-                return Impl(second, secondCount.Value);
+                return Impl(secondArray, secondCount.Value);
             }
 
             List<T> secondList;
-            return Impl(secondList = second.ToList(), secondList.Count);
+            return Impl(secondList = secondArray.ToList(), secondList.Count);
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.Reverse().Take(count).Reverse().GetEnumerator())
+                using (var firstIter = firstArray.Reverse().Take(count).Reverse().GetEnumerator())
                 {
                     return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
                 }
@@ -203,6 +205,7 @@ namespace OSharp.Collections
             return result;
         }
 
+#if !NET6_0_OR_GREATER
         /// <summary>
         /// 根据指定条件返回集合中不重复的元素
         /// </summary>
@@ -218,6 +221,7 @@ namespace OSharp.Collections
 
             return source.GroupBy(keySelector).Select(group => group.First());
         }
+#endif
 
         /// <summary>
         /// 把<see cref="IEnumerable{T}"/>集合按指定字段与排序方式进行排序
@@ -292,7 +296,7 @@ namespace OSharp.Collections
             return source.ThenBy(sortCondition.SortField, sortCondition.ListSortDirection);
         }
 
-        #region Internal
+#region Internal
 
         internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
         {
@@ -327,6 +331,6 @@ namespace OSharp.Collections
             return count;
         }
 
-        #endregion
+#endregion
     }
 }

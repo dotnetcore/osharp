@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Text;
 
 using OSharp.Collections;
@@ -126,6 +127,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 获取指定字符串的验证码图片
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public Bitmap CreateImage(string code, ValidateCodeType codeType)
         {
             code.CheckNotNullOrEmpty("code");
@@ -234,6 +238,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 获取指定长度的验证码图片
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public Bitmap CreateImage(int length, out string code, ValidateCodeType codeType = ValidateCodeType.NumberAndLetter)
         {
             length.CheckGreaterThan("length", 0);

@@ -1,11 +1,11 @@
 ﻿$version = Read-Host "请输入要删除的版本号"
 $props = @(
-"OSharpNS.Core", "OSharpNS.AspNetCore", "OSharpNS.Authorization.Datas", "OSharpNS.Authorization.Functions", "OSharpNS.AutoMapper",
-"OSharpNS.EntityFrameworkCore", "OSharpNS.EntityFrameworkCore.MySql", "OSharpNS.EntityFrameworkCore.Oracle", 
-"OSharpNS.EntityFrameworkCore.PostgreSql", "OSharpNS.EntityFrameworkCore.Sqlite", "OSharpNS.EntityFrameworkCore.SqlServer",
-"OSharpNS.Exceptionless", "OSharpNS.Hangfire", "OSharpNS.Hosting.Apis", "OSharpNS.Hosting.Core", "OSharpNS.Hosting.EntityConfiguration",
-"OSharpNS.Identity", "OSharpNS.Log4Net", "OSharpNS.MiniProfiler", "OSharpNS.Redis", "OSharpNS.Swagger", "OSharpNS", 
-"OSharpNS.Template.Mvc_Angular", "OSharpNS.CodeGeneration"
+"OSharp.Core", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", "OSharp.AutoMapper",
+"OSharp.EntityFrameworkCore", "OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
+"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite", "OSharp.EntityFrameworkCore.SqlServer",
+"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration",
+"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf", "OSharp", 
+"OSharp.Template.Mvc_Angular", "OSharp.CodeGeneration"
 )
 foreach($prop in $props)
 {

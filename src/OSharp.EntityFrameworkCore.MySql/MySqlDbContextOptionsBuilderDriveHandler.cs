@@ -24,7 +24,7 @@ namespace OSharp.Entity.MySql
     public class MySqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
-#if NET5_0
+#if NET5_0_OR_GREATER
         private readonly ServerVersion _serverVersion;
 #endif
 
@@ -34,7 +34,7 @@ namespace OSharp.Entity.MySql
         public MySqlDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
-#if NET5_0
+#if NET5_0_OR_GREATER
             _serverVersion = provider.GetService<MySqlServerVersion>()?? MySqlServerVersion.LatestSupportedServerVersion;
 #endif
         }
@@ -67,7 +67,7 @@ namespace OSharp.Entity.MySql
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
-#if NET5_0
+#if NET5_0_OR_GREATER
                 builder.UseMySql(connectionString, _serverVersion, action);
 #else
                 builder.UseMySql(connectionString, action);
@@ -76,7 +76,7 @@ namespace OSharp.Entity.MySql
             else
             {
                 _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
-#if NET5_0
+#if NET5_0_OR_GREATER
                 builder.UseMySql(existingConnection, _serverVersion, action);
 #else
                 builder.UseMySql(existingConnection, action);

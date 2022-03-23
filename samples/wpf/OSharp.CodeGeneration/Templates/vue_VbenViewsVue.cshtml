@@ -1,0 +1,207 @@
+@inherits MiniRazor.TemplateBase<CodeEntity>
+@namespace OSharp.CodeGeneration.Templates
+@using System;
+@using System.Collections.Generic;
+@using System.Drawing.Drawing2D
+@using System.Linq;
+@using OSharp.CodeGeneration.Services.Entities
+@using OSharp.CodeGeneration.Utils
+@using OSharp.Collections;
+@using OSharp.Exceptions;
+@using OSharp.Extensions;
+@{
+  CodeEntity entity = Model;
+  string moduleName = entity.Module.Name;
+  string urlModule = entity.Module.Name.UpperToLowerAndSplit();
+  string lowerModule = entity.Module.Name.ToLowerCase();
+  string keyType = TypeHelper.ToSingleTypeName(entity.PrimaryKeyTypeFullName);
+  string entityName = entity.Name;
+  string urlEntity = entity.Name.UpperToLowerAndSplit("");
+  string lowerEntity = entity.Name.ToLowerCase();
+  List<CodeProperty> properties = entity.Properties.ToList();
+  properties.AddIf(CodeProperty.GetProperty("IsLocked", "是否锁定", typeof(bool), true), entity.HasLocked);
+  properties.AddIf(CodeProperty.GetProperty("CreatedTime", "创建时间", typeof(DateTime), false, true, true, true, false), entity.HasCreatedTime || entity.HasCreationAudited);
+}
+<!--
+ <once-generated>
+    这个文件只生成一次，再次生成不会被覆盖。
+ </once-generated>
+ <copyright file="src/views/osharp/@(lowerModule)/@(lowerEntity).vue" company="@(entity.Module.Project.Company)">
+    @(entity.Module.Project.Copyright)
+ </copyright>
+ <site>@(entity.Module.Project.SiteUrl)</site>
+ <last-editor>@(entity.Module.Project.Creator)</last-editor> -->
+
+<template>
+  <div>
+    <OSharpAdminTable v-bind="tableProps" />
+  </div>
+</template>
+
+<script lang="ts" setup>
+  import { ActionItem, BasicColumn, BasicTableProps, FormSchema, FormProps } from '/@@/components/Table';
+  import { useMessage } from '/@@/hooks/web/useMessage';
+  import { ModuleInfo } from '/@@/utils/osharp/types';
+  import { CheckboxRender, TagRender, defaultModuleInfo, transTagToOptions } from '/@@/utils/osharp';
+  import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable';
+  import OSharpAdminTable from '/@@/components/osharp/OSharpTable/src/OSharpAdminTable.vue';
+  
+  const module: ModuleInfo = {
+    ...defaultModuleInfo,
+    moduleName: '@(moduleName)',
+    moduleDisplay: '@(entity.Module.Display)',
+    entityName: '@(entityName)',
+    entityDisplay: '@(entity.Display)',
+  };
+
+  const { createMessage } = useMessage();
+
+  const columns: BasicColumn[] = [
+    { @GetIdColumn(entity) },
+@foreach (var prop in properties.Where(m => m.Listable))
+{
+<text>    { @GetPropColumn(prop) },
+</text>
+}
+  ];
+
+  const schemas: FormSchema[] = [
+    { @GetIdSchema(entity) },
+@foreach (var prop in properties.Where(m => m.IsInputDto || m.Updatable))
+{
+<text>    { @GetPropSchema(prop) },
+</text>
+}
+  ];
+
+  const tableProps: OSharpAdminTableProps = {
+    module: module,
+    tablePropsFn: tablePropsFn,
+    tableActionsFn: tableActionsFn,
+    tableDropDownActionsFn: tableDropDownActionsFn,
+    editFormPropsFn: editFormPropsFn,
+  };
+
+  function tablePropsFn(p: BasicTableProps): BasicTableProps {
+    p.title = `${module.entityDisplay}管理`;
+    p.columns = columns;
+    return p;
+  }
+
+  function tableActionsFn(items: ActionItem[], record: Recordable) {
+    return items;
+  }
+
+  function tableDropDownActionsFn(items: ActionItem[], record: Recordable) {
+    return items;
+  }
+
+  function editFormPropsFn(p: FormProps): FormProps {
+    p.schemas = schemas;
+    return p;
+  }
+</script>
+@functions
+{
+  static string GetIdColumn(CodeEntity entity)
+  {
+    string line = $"title: '编号', dataIndex: 'id', width: {(entity.PrimaryKeyTypeFullName == typeof(int).FullName ? 50 : 300)}";
+    return line;
+  }
+
+  static string GetPropColumn(CodeProperty prop)
+  {
+    List<string> list = new List<string>();
+    list.Add($"title: '{prop.Display}', dataIndex: '{prop.Name.ToLowerCase()}'");
+    list.AddIf("align: 'left'", IsPropertyType(prop, typeof(Guid), typeof(string)));
+    list.AddIf("sorter: true", prop.Sortable);
+    list.Add($"width: {(IsPropertyType(prop, typeof(bool), typeof(int), typeof(long)) ? 100 : IsPropertyType(prop, typeof(DateTime)) ? 130 : 150)}");
+    list.AddIf("defaultHidden: true", prop.IsHide);
+    list.AddIf($"customRender: ({{ text }}) => CheckboxRender(text)", IsPropertyType(prop, typeof(bool)));
+    list.AddIf($"customRender: ({{ text }}) => TagRender(text, {prop.Name.ToLowerCase()}Tags)", prop.IsEnum);
+    list.AddIf($"format: 'date|YYYY/MM/DD HH:mm'", IsPropertyType(prop, typeof(DateTime)));
+
+    return list.ExpandAndToString(", ");
+  }
+  
+  static string GetIdSchema(CodeEntity entity)
+  {
+    string line = $"label: '编号', field: 'id', component: 'Input', render: ({{ values }}) => values?.id || '自动生成'";
+    return line;
+  }
+
+  static string GetPropSchema(CodeProperty prop)
+  {
+    List<string> list = new List<string>();
+    list.Add($"label: '{prop.Display}', field: '{prop.Name.ToLowerCase()}', component: '{GetPropComponent(prop)}'");
+    list.AddIf("required: true", prop.IsString() && prop.IsRequired == true);
+    list.AddIf($"componentProps: {{ options: transTagToOptions({prop.Name.ToLowerCase()}Tags) }}", prop.IsEnum );
+    list.AddIf("colProps: { span: 12 }", prop.IsValueType());
+
+    return list.ExpandAndToString(", ");
+  }
+
+  static bool IsPropertyType(CodeProperty prop, params Type[] types)
+  {
+    return types.Any(m => m.FullName == prop.TypeName);
+  }
+
+  static string GetPropComponent(CodeProperty prop)
+  {
+    if (prop.IsEnum)
+    {
+      return "Select";
+    }
+    switch (prop.TypeName)
+    {
+      case "System.String":
+      case "System.Guid":
+        return "Input";
+      case "System.Int32":
+      case "System.Int64":
+      case "System.Double":
+        return "InputNumber";
+      case "System.Boolean":
+        return "Switch";
+      case "System.DateTime":
+        return "DatePicker";
+      default:
+        return "Input";
+    }
+  }
+
+  /*
+   *   | 'Input'
+  | 'InputGroup'
+  | 'InputPassword'
+  | 'InputSearch'
+  | 'InputTextArea'
+  | 'InputNumber'
+  | 'InputCountDown'
+  | 'Select'
+  | 'ApiSelect'
+  | 'TreeSelect'
+  | 'ApiTreeSelect'
+  | 'ApiRadioGroup'
+  | 'RadioButtonGroup'
+  | 'RadioGroup'
+  | 'Checkbox'
+  | 'CheckboxGroup'
+  | 'AutoComplete'
+  | 'ApiCascader'
+  | 'Cascader'
+  | 'DatePicker'
+  | 'MonthPicker'
+  | 'RangePicker'
+  | 'WeekPicker'
+  | 'TimePicker'
+  | 'Switch'
+  | 'StrengthMeter'
+  | 'Upload'
+  | 'IconPicker'
+  | 'Render'
+  | 'Slider'
+  | 'Rate'
+  | 'Divider';
+   */
+}

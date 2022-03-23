@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="LoginLogController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -62,7 +62,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
                 NickName = m.User.NickName
             }).ToArray());
 
-            return new AjaxResult("ok", AjaxResultType.Success, page.ToPageData());
+            return new AjaxResult(page.ToPageData());
         }
     }   
 }

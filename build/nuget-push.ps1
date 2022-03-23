@@ -33,18 +33,18 @@ Write-Host ("当前目录：{0}" -f $rootPath)
 $version = GetVersion
 Write-Host ("当前版本：{0}" -f $version)
 
-$nupkgs = ("{0}\nupkgs" -f $rootPath)
-Write-Host $nupkgs
-if(!(Test-Path $nupkgs))
+$output = ("{0}\output" -f $rootPath)
+Write-Host $output
+if(!(Test-Path $output))
 {
-    Write-Host ("输出文件夹 {0} 不存在" -f $nupkgs)
+    Write-Host ("输出文件夹 {0} 不存在" -f $output)
     exit
 }
 
-Set-Location $nupkgs
+Set-Location $output
 Write-Host ("`n正在查找nupkg发布包，当前目录：$(Get-Location)")
 
-$files = [System.IO.Directory]::GetFiles($nupkgs, ("*.{0}*nupkg" -f $version))
+$files = [System.IO.Directory]::GetFiles($output, ("*.{0}*nupkg" -f $version))
 Write-Host ("共找到 {0} 个版本号为 {1} 的nupkg文件" -f $files.Length, $version)
 if($files.Length -eq 0){
     exit

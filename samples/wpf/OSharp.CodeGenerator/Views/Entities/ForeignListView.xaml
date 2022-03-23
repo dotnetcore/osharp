@@ -1,0 +1,128 @@
+<UserControl
+  x:Class="OSharp.CodeGenerator.Views.Entities.ForeignListView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator.Views.Entities"
+  mc:Ignorable="d"
+  d:DesignHeight="450" d:DesignWidth="800"
+  d:DataContext="{d:DesignInstance local:ForeignListViewModel}">
+  <GroupBox>
+    <GroupBox.Header>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Foreground="White" FontSize="14">
+            <icons:PackIconMaterial Kind="FormatListCheckbox" Width="14" Height="14" Margin="0 -2" /> 实体外键列表
+        </TextBlock>
+        <Button Command="{s:Action Init}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}"
+                  Margin="20 0 0 0" Padding="2 2" ToolTip="刷新实体外键列表">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="Refresh" Width="14" Height="14" />
+            <TextBlock Text="刷新" FontSize="12" Margin="2 0" />
+          </StackPanel>
+        </Button>
+        <Button Command="{s:Action New}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}"
+                  Margin="5 0 0 0" Padding="2 2" ToolTip="新增一个实体外键">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="Plus" Width="14" Height="14" />
+            <TextBlock Text="新增" FontSize="12" Margin="2 0" />
+          </StackPanel>
+        </Button>
+        <Button Command="{s:Action Save}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}"
+                  Margin="5 0 0 0" Padding="2 2" ToolTip="保存实体外键列表">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="ContentSaveOutline" Width="14" Height="14" />
+            <TextBlock Text="保存" FontSize="12" Margin="2 0" />
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </GroupBox.Header>
+    <DataGrid x:Name="ForeignGrid" ItemsSource="{Binding Foreigns}" AutoGenerateColumns="False"
+                GridLinesVisibility="All" ColumnWidth="*" CanUserSortColumns="False"
+                SelectionMode="Single" RowDetailsVisibilityMode="Collapsed" CanUserAddRows="False"
+                CanUserDeleteRows="False">
+      <DataGrid.Columns>
+        <DataGridTemplateColumn Header="己方导航属性" Width="120">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding SelfNavigation}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox Text="{Binding SelfNavigation}" ItemsSource="{Binding ElementName=ForeignGrid, Path=DataContext.SelfNavigations}"
+                          IsEditable="True" SelectionChanged="{s:Action SelfNavigationChanged}" s:View.ActionTarget="{Binding}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn Header="己方外键属性" Width="120">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding SelfForeignKey}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox Text="{Binding SelfForeignKey}" ItemsSource="{Binding ElementName=ForeignGrid, Path=DataContext.SelfForeignKeys}"
+                          IsEditable="True" SelectionChanged="{s:Action SelfForeignKeyChanged}" s:View.ActionTarget="{Binding}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn Header="对方实体" Width="250">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding OtherEntity}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox Text="{Binding OtherEntity}" ItemsSource="{Binding Entities, Source={StaticResource Locator}}" IsEditable="True" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTextColumn Header="对方导航属性" Binding="{Binding OtherNavigation}" Width="120"/>
+        <DataGridTemplateColumn Header="外键关系" Width="80">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding ForeignRelation}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox Text="{Binding ForeignRelation}" SelectedValue="{Binding ForeignRelation}" ItemsSource="{Binding ElementName=ForeignGrid, Path=DataContext.ForeignRelations}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTemplateColumn Header="删除行为" Width="80">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding DeleteBehavior}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox Text="{Binding DeleteBehavior}" SelectedValue="{Binding DeleteBehavior}" ItemsSource="{Binding ElementName=ForeignGrid, Path=DataContext.DeleteBehaviors}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridCheckBoxColumn Header="必须" Width="50" Binding="{Binding IsRequired}" />
+        <DataGridTemplateColumn Header="操作" Width="50">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Button Command="{s:Action Method=Delete}" s:View.ActionTarget="{Binding}"
+                          Style="{StaticResource IconButtonB}" Margin="5" ToolTip="删除实体外键">
+                  <icons:PackIconMaterial Kind="DeleteOutline" />
+                </Button>
+              </StackPanel>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </GroupBox>
+</UserControl>

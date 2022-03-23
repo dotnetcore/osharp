@@ -1,0 +1,78 @@
+<UserControl
+  x:Class="OSharp.CodeGenerator.Views.Projects.ProjectTemplateListView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator.Views.Projects"
+  mc:Ignorable="d"
+  d:DesignHeight="450" d:DesignWidth="800"
+  d:DataContext="{d:DesignInstance local:ProjectTemplateListViewModel}">
+  <GroupBox Width="500">
+    <GroupBox.Header>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Foreground="White" FontSize="14">
+            <icons:PackIconMaterial Kind="FormatListCheckbox" Width="14" Height="14"/> 项目模板列表
+        </TextBlock>
+        <Button Command="{s:Action Method=Init}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}" Margin="20 0 0 0" Padding="2 2" ToolTip="刷新项目模块列表">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="Refresh" Width="14" Height="14"/>
+            <TextBlock Text="刷新" FontSize="12" Margin="2 0"/>
+          </StackPanel>
+        </Button>
+        <Button Command="{s:Action Method=New}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}" Margin="5 0 0 0" Padding="2 2" ToolTip="新增一个项目模块">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="Plus" Width="14" Height="14"/>
+            <TextBlock Text="新增" FontSize="12" Margin="2 0"/>
+          </StackPanel>
+        </Button>
+        <Button Command="{s:Action Method=Save}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonW}" Margin="5 0 0 0" Padding="2 2" ToolTip="保存项目模块列表">
+          <StackPanel Orientation="Horizontal">
+            <icons:PackIconMaterial Kind="ContentSaveOutline" Width="14" Height="14"/>
+            <TextBlock Text="保存" FontSize="12" Margin="2 0"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </GroupBox.Header>
+    <DataGrid ItemsSource="{Binding ProjectTemplates}" AutoGenerateColumns="False" GridLinesVisibility="All" ColumnWidth="*" CanUserSortColumns="False"
+              SelectionMode="Single" RowDetailsVisibilityMode="Collapsed" CanUserAddRows="False" CanUserDeleteRows="False" BeginningEdit="{s:Action BeginningEdit}" s:View.ActionTarget="{Binding}">
+      <DataGrid.Columns>
+        <DataGridTemplateColumn Header="模板">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding TemplateName}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+          <DataGridTemplateColumn.CellEditingTemplate>
+            <DataTemplate>
+              <ComboBox ItemsSource="{Binding TemplateSource}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedItem="{Binding Template}" Text="{Binding TemplateName}" SelectionChanged="{s:Action TemplateChange}" s:View.ActionTarget="{Binding}"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellEditingTemplate>
+        </DataGridTemplateColumn>
+        <DataGridCheckBoxColumn Binding="{Binding IsLocked}" Width="80">
+          <DataGridCheckBoxColumn.Header>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="锁定 "/>
+              <CheckBox Checked="Locked_CheckAll" Unchecked="Locked_CheckAll"/>
+            </StackPanel>
+          </DataGridCheckBoxColumn.Header>
+        </DataGridCheckBoxColumn>
+        <DataGridTemplateColumn Header="操作" Width="50">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Button Command="{s:Action Method=Delete}" s:View.ActionTarget="{Binding}" Style="{StaticResource IconButtonB}" Margin="5" ToolTip="删除实体">
+                  <icons:PackIconMaterial Kind="DeleteOutline"/>
+                </Button>
+              </StackPanel>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </GroupBox>
+</UserControl>

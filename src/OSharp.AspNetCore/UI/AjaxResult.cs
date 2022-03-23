@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AjaxResult.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Data;
+using OSharp.Extensions;
 
 
 namespace OSharp.AspNetCore.UI
@@ -40,6 +41,13 @@ namespace OSharp.AspNetCore.UI
             Content = content;
             Data = data;
         }
+
+        /// <summary>
+        /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+        /// </summary>
+        public AjaxResult(object data, AjaxResultType type = AjaxResultType.Success, string content = null)
+            : this(content ?? type.ToDescription(), data, type)
+        { }
 
         /// <summary>
         /// 获取或设置 Ajax操作结果类型

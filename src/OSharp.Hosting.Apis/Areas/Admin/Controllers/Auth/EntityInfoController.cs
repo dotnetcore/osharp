@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityInfoController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -58,7 +58,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             }
             Expression<Func<EntityInfo, bool>> predicate = FilterService.GetExpression<EntityInfo>(request.FilterGroup);
             var page = _dataAuthManager.EntityInfos.ToPage<EntityInfo, EntityInfoOutputDto>(predicate, request.PageCondition);
-            return new AjaxResult("成功", AjaxResultType.Success, page.ToPageData());
+            return new AjaxResult(page.ToPageData());
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
             string[] filterTokens = { "Normalized", "Stamp", "Password" };
             EntityProperty[] properties = json.FromJsonString<EntityProperty[]>().Where(m => !filterTokens.Any(n => m.Name.Contains(n)))
                 .OrderByDescending(m => m.Name == "Id").ToArray();
-            return new AjaxResult("获取成功", AjaxResultType.Success, properties);
+            return new AjaxResult(properties);
         }
 
         /// <summary>

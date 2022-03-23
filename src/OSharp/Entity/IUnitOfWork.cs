@@ -74,7 +74,7 @@ namespace OSharp.Entity
         /// </summary>
         void Rollback();
 
-#if NET5_0
+#if NET5_0_OR_GREATER
 
         /// <summary>
         /// 对数据库连接开启事务

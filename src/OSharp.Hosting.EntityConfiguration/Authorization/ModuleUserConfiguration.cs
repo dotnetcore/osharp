@@ -31,7 +31,11 @@ namespace OSharp.Hosting.EntityConfiguration.Authorization
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<ModuleUser> builder)
         {
+#if NET5_0_OR_GREATER
+            builder.HasIndex(m => new { m.ModuleId, m.UserId }).HasDatabaseName("ModuleUserIndex").IsUnique();
+#else
             builder.HasIndex(m => new { m.ModuleId, m.UserId }).HasName("ModuleUserIndex").IsUnique();
+#endif
 
             builder.HasOne<Module>(mu => mu.Module).WithMany().HasForeignKey(m => m.ModuleId);
             builder.HasOne<User>(mu => mu.User).WithMany().HasForeignKey(m => m.UserId);

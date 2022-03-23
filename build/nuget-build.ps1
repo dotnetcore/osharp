@@ -42,16 +42,16 @@ Write-Host ("当前版本：{0}" -f $version)
 SetOsharpNSVersion
 
 
-$nupkgs = ".\nupkgs"
-if(Test-Path $nupkgs)
+$output = ".\output"
+if(Test-Path $output)
 {
-    Remove-Item ("{0}\*.*" -f $nupkgs)
-    Write-Host ("清空 {0} 文件夹" -f $nupkgs)
+    Remove-Item ("{0}\*.*" -f $output)
+    Write-Host ("清空 {0} 文件夹" -f $output)
 }
 else
 {
-    New-Item -Path . -Name $nupkgs -ItemType "directory" -Force
-    Write-Host ("创建 {0} 文件夹" -f $nupkgs)
+    New-Item -Path . -Name $output -ItemType "directory" -Force
+    Write-Host ("创建 {0} 文件夹" -f $output)
 }
 $props = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
 "OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
@@ -62,9 +62,9 @@ foreach($prop in $props)
 {
     $path = ("../src/{0}/{0}.csproj" -f $prop)
     dotnet build $path -c Release
-    dotnet pack $path -c Release --output $nupkgs
+    dotnet pack $path -c Release --output $output
 }
 
-nuget pack .\OSharpNS.nuspec -OutputDirectory $nupkgs
-Invoke-Item $nupkgs
+nuget pack .\OSharp.nuspec -OutputDirectory $output
+Invoke-Item $output
 pause

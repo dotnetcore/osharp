@@ -42,7 +42,7 @@ namespace OSharp.Entity.DynamicProxy
                 await next(context);
                 if (!RequiredCheckReturnValue)
                 {
-#if NET5_0
+#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
 #else
                     unitOfWork.Commit();
@@ -50,15 +50,14 @@ namespace OSharp.Entity.DynamicProxy
                     return;
                 }
                 Type returnType = context.ProxyMethod.ReturnType;
-                ITransactionDecision decision = provider.GetServices<ITransactionDecision>()
-                    .FirstOrDefault(m => m.IsFit(returnType));
+                ITransactionDecision decision = provider.GetServices<ITransactionDecision>().FirstOrDefault(m => m.IsFit(returnType));
                 if (decision == null)
                 {
                     throw new OsharpException($"无法找到与结果类型 {returnType} 匹配的 {typeof(ITransactionDecision)} 事务裁决器，请继承接口实现一个");
                 }
                 if (decision.CanCommit(context.ReturnValue))
                 {
-#if NET5_0
+#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
 #else
                     unitOfWork.Commit();
@@ -67,8 +66,8 @@ namespace OSharp.Entity.DynamicProxy
             }
             catch (Exception)
             {
-#if NET5_0
-                    await unitOfWork.CommitAsync();
+#if NET5_0_OR_GREATER
+                await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
 #endif

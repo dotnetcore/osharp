@@ -58,7 +58,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>统计数据</returns>
         [HttpGet]
         [ModuleInfo]
-        [LoggedIn]
         [Description("统计数据")]
         public object SummaryData(DateTime start, DateTime end)
         {
@@ -112,7 +111,6 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [ModuleInfo]
-        [LoggedIn]
         [Description("曲线数据")]
         public object LineData(DateTime start, DateTime end)
         {

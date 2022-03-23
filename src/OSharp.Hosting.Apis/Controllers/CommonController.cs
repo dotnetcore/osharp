@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="CommonController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -9,10 +9,12 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+
+using Lazy.Captcha.Core;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +22,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.AspNetCore;
 using OSharp.Authorization.Modules;
-using OSharp.Drawing;
 using OSharp.Reflection;
 
 using AssemblyExtensions = OSharp.Reflection.AssemblyExtensions;
@@ -46,39 +47,30 @@ namespace OSharp.Hosting.Apis.Controllers
         }
 
         /// <summary>
-        /// 获取验证码图片
+        /// 生成验证码
         /// </summary>
-        /// <returns>验证码图片文件</returns>
         [HttpGet]
         [ModuleInfo]
-        [Description("验证码")]
-        public string VerifyCode()
+        [Description("生成验证码")]
+        public IActionResult Captcha(string id)
         {
-            ValidateCoder coder = new ValidateCoder()
-            {
-                RandomColor = true,
-                RandomItalic = true,
-                RandomLineCount = 7,
-                RandomPointPercent = 10,
-                RandomPosition = true
-            };
-            Bitmap bitmap = coder.CreateImage(4, out string code);
-            string id = VerifyCodeService.SetCode(code);
-            return VerifyCodeService.GetImageString(bitmap, id);
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            CaptchaData data = captcha.Generate(id);
+            MemoryStream ms = new MemoryStream(data.Bytes);
+            return File(ms, "image/gif");
         }
 
         /// <summary>
-        /// 验证验证码的有效性，只作为前端Ajax验证，验证成功不移除验证码，验证码仍需传到后端进行再次验证
+        /// 检查验证码
         /// </summary>
-        /// <param name="code">验证码字符串</param>
-        /// <param name="id">验证码编号</param>
-        /// <returns>是否无效</returns>
         [HttpGet]
         [ModuleInfo]
-        [Description("验证验证码的有效性")]
-        public bool CheckVerifyCode(string code, string id)
+        [Description("检查验证码")]
+        public IActionResult CheckCaptcha(string id, string code)
         {
-            return VerifyCodeService.CheckCode(code, id, false);
+            ICaptcha captcha = _provider.GetRequiredService<ICaptcha>();
+            bool flag = captcha.Validate(id, code, false);
+            return new JsonResult(flag);
         }
 
         /// <summary>

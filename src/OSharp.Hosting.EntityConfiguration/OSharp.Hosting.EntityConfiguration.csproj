@@ -4,8 +4,8 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
-    <PackageId>OSharpNS.Hosting.EntityConfiguration</PackageId>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <PackageId>OSharp.Hosting.EntityConfiguration</PackageId>
     <Summary>OSharp框架非业务实体映射</Summary>
     <Description>OSharp框架非业务实体映射，封装框架非业务如认证，权限，系统，消息等模块的EFCore实体映射</Description>
   </PropertyGroup>

@@ -16,6 +16,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 using OSharp.Collections;
 using OSharp.Extensions;
@@ -33,6 +34,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 将图像转换为 Color[,]颜色值二维数组
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Color[,] ToPixelArray2D(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -40,6 +44,10 @@ namespace OSharp.Drawing
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
+                if (ptr == null)
+                {
+                    return new Color[0, 0];
+                }
                 Color[,] pixels = new Color[width, height];
                 int offset = data.Stride - width * 3;
                 for (int y = 0; y < height; y++)
@@ -58,6 +66,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 将图像转换为 Byte[,]灰度值二维数组，后续所有操作都将以二维数组作为中间变量
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static byte[,] ToGrayArray2D(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -65,6 +76,10 @@ namespace OSharp.Drawing
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
+                if (ptr == null)
+                {
+                    return new byte[0, 0];
+                }
                 byte[,] grayBytes = new byte[width, height];
                 int offset = data.Stride - width * 3;
                 for (int y = 0; y < height; y++)
@@ -101,6 +116,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 将二维颜色数组转换为图像
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ToBitmap(this Color[,] pixels)
         {
             int width = pixels.GetLength(0), height = pixels.GetLength(1);
@@ -109,6 +127,10 @@ namespace OSharp.Drawing
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
+                if (ptr == null)
+                {
+                    return bmp;
+                }
                 int offset = data.Stride - width * 3;
                 for (int y = 0; y < height; y++)
                 {
@@ -130,6 +152,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 将二维灰度数组转换为图像
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ToBitmap(this byte[,] grayBytes)
         {
             int width = grayBytes.GetLength(0), height = grayBytes.GetLength(1);
@@ -138,6 +163,10 @@ namespace OSharp.Drawing
             unsafe
             {
                 byte* ptr = (byte*)data.Scan0;
+                if (ptr == null)
+                {
+                    return bmp;
+                }
                 int offset = data.Stride - width * 3;
                 for (int y = 0; y < height; y++)
                 {
@@ -583,6 +612,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static byte[] ToBytes(this Bitmap bmp)
         {
             using (Bitmap newBmp = new Bitmap(bmp))
@@ -606,6 +638,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="angle">旋转的角度，正值为逆时针方向</param>
         /// <returns> 旋转后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Rotate(this Bitmap bmp, int angle)
         {
             angle = angle % 360;
@@ -676,6 +711,9 @@ namespace OSharp.Drawing
         /// <param name="height">缩放后的高度</param>
         /// <param name="model">图像质量模式</param>
         /// <returns> 缩放后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Zoom(this Bitmap bmp, int width, int height, InterpolationMode model = InterpolationMode.Default)
         {
             Bitmap newBmp = new Bitmap(width, height);
@@ -694,6 +732,9 @@ namespace OSharp.Drawing
         /// <param name="percent">缩放百分比（小数）</param>
         /// <param name="model">图像质量模式</param>
         /// <returns> 缩放后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Zoom(this Bitmap bmp, double percent, InterpolationMode model = InterpolationMode.Default)
         {
             int width = (int)(bmp.Width * percent);
@@ -706,6 +747,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 灰度化后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap GrayByPixels(this Bitmap bmp)
         {
             Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
@@ -724,6 +768,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 图像灰度化，逐行扫描方式
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap GrayByLine(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -753,6 +800,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="gray">指定灰度阈值，灰度小于该值，则设置为黑色</param>
         /// <returns> 深化后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap DeepFore(this Bitmap bmp, byte gray = 200)
         {
             Bitmap newBmp = new Bitmap(bmp.Width, bmp.Height);
@@ -777,6 +827,9 @@ namespace OSharp.Drawing
         /// <param name="gray">临界灰度值，大于此值的点将视为无效点</param>
         /// <param name="maxNearPoints">周边最大有效点数，有效点数小于此值，当前点视为杂点，取值范围[0,4]</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ClearNoise(this Bitmap bmp, byte gray, int maxNearPoints)
         {
             maxNearPoints.CheckBetween("maxNearPoints", 1, 4, true, true);
@@ -816,6 +869,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="value">调整的亮度值，取值为[-255, 255]</param>
         /// <returns> 调整亮度后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Brightness(this Bitmap bmp, int value)
         {
             value = value < -255 ? -255 : value;
@@ -861,6 +917,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="value">调整的对比度，取值为[-100, 100]</param>
         /// <returns> 调整对比度后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Contrast(this Bitmap bmp, int value)
         {
             value = value < -100 ? -100 : value;
@@ -902,6 +961,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="value">Gamma值</param>
         /// <returns> Gamma校正后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Gamma(this Bitmap bmp, float value)
         {
             if (Equals(value, 1.0000f))
@@ -928,6 +990,9 @@ namespace OSharp.Drawing
         /// <param name="x">文字位置横坐标</param>
         /// <param name="y">文字位置纵坐标</param>
         /// <returns> 打印文字后的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap SetText(this Bitmap bmp, string text, Font font, Color color, int x, int y)
         {
             Bitmap newBmp = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), bmp.PixelFormat);
@@ -946,6 +1011,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图像</param>
         /// <param name="border">边框宽度</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ClearBorder(this Bitmap bmp, int border)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -970,6 +1038,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 底片效果的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Plate(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -993,6 +1064,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 浮雕效果的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Emboss(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1023,6 +1097,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 柔化效果的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Soften(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1067,6 +1144,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 锐化效果的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Sharpen(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1111,6 +1191,9 @@ namespace OSharp.Drawing
         /// </summary>
         /// <param name="bmp">待处理的图像</param>
         /// <returns> 雾化效果的图像 </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Atomizing(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1142,6 +1225,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// 二值化效果
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Binaryzation(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1170,6 +1256,9 @@ namespace OSharp.Drawing
         /// <param name="bmp"></param>
         /// <param name="threshold"></param>
         /// <returns> </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Binaryzation(this Bitmap bmp, byte threshold)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1212,6 +1301,9 @@ namespace OSharp.Drawing
         /// <summary>
         /// OTSU自动阈值法二值化
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap OtsuThreshold(this Bitmap bmp)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1272,6 +1364,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图片</param>
         /// <param name="threshold">灰度阈值</param>
         /// <returns> </returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap Threshoding(this Bitmap bmp, byte threshold)
         {
             int width = bmp.Width, height = bmp.Height;
@@ -1310,6 +1405,9 @@ namespace OSharp.Drawing
         /// <param name="gray">灰度阈值</param>
         /// <param name="charCount">字符数量</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ToValid(this Bitmap bmp, byte gray, int charCount)
         {
             int posx1 = bmp.Width;
@@ -1369,6 +1467,9 @@ namespace OSharp.Drawing
         /// <param name="bmp">待处理的图片</param>
         /// <param name="gray">灰度阈值</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap ToValid(this Bitmap bmp, byte gray)
         {
             int posx1 = bmp.Width;
@@ -1414,6 +1515,9 @@ namespace OSharp.Drawing
         /// <param name="rowNum">水平上分割数</param>
         /// <param name="colNum">垂直上分割数</param>
         /// <returns>分割好的图片数组</returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static Bitmap[] SplitAverage(this Bitmap bmp, int rowNum, int colNum)
         {
             if (rowNum == 0 || colNum == 0)
@@ -1442,6 +1546,9 @@ namespace OSharp.Drawing
         /// <param name="gray">灰度临界值</param>
         /// <param name="lineBreak">是否换行，默认false</param>
         /// <returns></returns>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static string ToCodeString(this Bitmap bmp, byte gray, bool lineBreak = false)
         {
             string code = string.Empty;

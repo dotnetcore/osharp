@@ -1,0 +1,64 @@
+<UserControl
+  x:Class="OSharp.CodeGenerator.Views.Projects.ProjectEditView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:s="https://github.com/canton7/Stylet"
+  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+  xmlns:mahwin="http://metro.mahapps.com/winfx/xaml/simplechildwindow"
+  xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+  xmlns:local="clr-namespace:OSharp.CodeGenerator.Views.Projects"
+  mc:Ignorable="d"
+  d:DesignHeight="450" d:DesignWidth="450"
+  d:DataContext="{d:DesignInstance local:ProjectListViewModel}">
+  <StackPanel DataContext="{Binding EditingModel}">
+    <StackPanel Margin="20 10 20 0">
+      <StackPanel Orientation="Horizontal" Margin="0">
+        <TextBlock Text="项目名称：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.Watermark="项目名称需符合标识符命名规则" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+        <TextBlock Text="*" Padding="5" Foreground="Red"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0 20">
+        <TextBlock Text="命名空间前缀：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding NamespacePrefix, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.Watermark="《公司.项目》的格式，形如: Liuliu.Demo" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+        <TextBlock Text="*" Padding="5" Foreground="Red"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0">
+        <TextBlock Text="公司：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding Company}" mah:TextBoxHelper.Watermark="项目所在公司" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0 20">
+        <TextBlock Text="站点：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding SiteUrl, UpdateSourceTrigger=PropertyChanged}" mah:TextBoxHelper.Watermark="项目的网站域名" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0">
+        <TextBlock Text="创建者：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding Creator}" mah:TextBoxHelper.Watermark="项目创建者" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0 20">
+        <TextBlock Text="版权信息：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding Copyright}" mah:TextBoxHelper.Watermark="项目的版权信息声明" mah:TextBoxHelper.ClearTextButton="True" mah:TextBoxHelper.SelectAllOnFocus="True" Width="300"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="0">
+        <TextBlock Text="输出目录：" Width="80" TextAlignment="Right" Margin="0 8 10 0"/>
+        <TextBox Text="{Binding RootPath}" mah:TextBoxHelper.Watermark="代码输出目录" mah:TextBoxHelper.ClearTextButton="True" Width="250"/>
+        <Button Command="{s:Action Browser}" s:View.ActionTarget="{Binding}" Content="浏览"/>
+      </StackPanel>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Margin="270 20 0 10">
+      <Button Command="{s:Action Method=EditSave}" s:View.ActionTarget="{Binding}" IsDefault="True">
+        <StackPanel Orientation="Horizontal">
+          <icons:Material Kind="ContentSave"/>
+          <TextBlock Text="保存"/>
+        </StackPanel>
+      </Button>
+      <Button Command="{s:Action Method=EditCancel}" s:View.ActionTarget="{Binding}">
+        <StackPanel Orientation="Horizontal">
+          <icons:Material Kind="Redo"/>
+          <TextBlock Text="取消"/>
+        </StackPanel>
+      </Button>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

@@ -69,13 +69,13 @@ namespace Liuliu.Demo.Web.Hangfire
         public async Task<string> LockUser2()
         {
             List<string> list = new List<string>();
-            UserManager<User> userManager = _provider.GetService<UserManager<User>>();
+            UserManager<User> userManager = _provider.GetRequiredService<UserManager<User>>();
             User user2 = await userManager.FindByIdAsync("2");
             list.Add($"user2.IsLocked: {user2.IsLocked}");
             user2.IsLocked = !user2.IsLocked;
             await userManager.UpdateAsync(user2);
             IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
-#if NET5_0
+#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync();
 #else
             unitOfWork.Commit();

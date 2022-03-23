@@ -49,69 +49,6 @@ namespace OSharp.Hosting.Apis.Controllers
         private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
 
         private IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
-
-        private ISystemsContract SystemsContract => _provider.GetRequiredService<ISystemsContract>();
-
-        [HttpGet]
-        [Description("测试")]
-        public async Task<string> Test()
-        {
-            var thread = new Thread(testMongoDB);
-            thread.Start();
-            var thread1 = new Thread(testMongoDB);
-            //var thread2 = new Thread(testMongoDB);
-            //var thread3 = new Thread(testMongoDB);
-            thread1.Start();
-            //thread2.Start();
-            //thread3.Start();
-
-            return "OK";
-        }
-
-        [HttpGet]
-        [Description("测试线程")]
-        public static async void testMongoDB()
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    try
-                    {
-                        string html = await client.GetStringAsync("http://localhost:7001/api/Test/CreateMenu");
-                    }
-                    catch (Exception)
-                    {
-                        
-                    }
-                }
-            }
-        }
-
-        [HttpGet]
-        [UnitOfWork]
-        [Description("创建菜单")]
-        public async Task<string> CreateMenu()
-        {
-            var list = new List<MenuInputDto>();
-            var dto = new MenuInputDto()
-            {
-                Acl = "Acl",
-                Data = "Data",
-                Icon = "Icon",
-                IsEnabled = true,
-                IsSystem = true,
-                Name = Guid.NewGuid().ToString(),
-                OrderCode = 0.00,
-                Target = "http://www.baidu.com",
-                Text = "Text",
-                TreePathString = "TreePathString",
-                Url = "http://www.baidu.com"
-            };
-            list.Add(dto);
-            await SystemsContract.CreateMenuInfos(list.ToArray());
-            return "OK";
-        }
         
         [HttpGet]
         [UnitOfWork]
@@ -201,7 +138,7 @@ namespace OSharp.Hosting.Apis.Controllers
         /// <param name="context">The <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext" />.</param>
         public void OnException(ExceptionContext context)
         {
-            var ex = context.Exception.Message;
+            _ = context.Exception.Message;
             _logger.LogInformation("ClassFilter - OnException");
         }
     }

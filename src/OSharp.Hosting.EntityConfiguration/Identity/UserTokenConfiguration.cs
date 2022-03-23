@@ -27,7 +27,11 @@ namespace OSharp.Hosting.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<UserToken> builder)
         {
+#if NET5_0_OR_GREATER
+            builder.HasIndex(m => new { m.UserId, m.LoginProvider, m.Name }).HasDatabaseName("UserTokenIndex").IsUnique();
+#else
             builder.HasIndex(m => new { m.UserId, m.LoginProvider, m.Name }).HasName("UserTokenIndex").IsUnique();
+#endif
             builder.HasOne(ut => ut.User).WithMany(u => u.UserTokens).HasForeignKey(ut => ut.UserId).IsRequired();
 
             EntityConfigurationAppend(builder);

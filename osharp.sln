@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{611006C4-BCE9-4EDC-8473-A85530C7FADE}"
 EndProject
@@ -35,8 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Swagger", "src\OShar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C-85E0-456E-BE7D-A68E4A2B3D6C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\github2gitee.yml = .github\workflows\github2gitee.yml
 		build\nuget-build.ps1 = build\nuget-build.ps1
 		build\nuget-delete.ps1 = build\nuget-delete.ps1
+		build\nuget-push.ps1 = build\nuget-push.ps1
+		build\nuget.build.ps1 = build\nuget.build.ps1
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
 		build\public.props = build\public.props
 		README.md = README.md
@@ -86,7 +91,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Exceptionless", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webapi", "webapi", "{DBDD134B-7B37-48A4-855E-7D24E798FF63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSharp.AutoMapper.Tests", "tests\OSharp.AutoMapper.Tests\OSharp.AutoMapper.Tests.csproj", "{2CB2A657-9660-458B-809F-B812A218CE14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.AutoMapper.Tests", "tests\OSharp.AutoMapper.Tests\OSharp.AutoMapper.Tests.csproj", "{2CB2A657-9660-458B-809F-B812A218CE14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wpf", "wpf", "{97B4E7FF-7596-4115-BA85-40A28AD1D6E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGeneration", "samples\wpf\OSharp.CodeGeneration\OSharp.CodeGeneration.csproj", "{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGenerator", "samples\wpf\OSharp.CodeGenerator\OSharp.CodeGenerator.csproj", "{29A89671-7559-42E0-A31B-E60C74E34DFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -222,6 +233,14 @@ Global
 		{2CB2A657-9660-458B-809F-B812A218CE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB2A657-9660-458B-809F-B812A218CE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB2A657-9660-458B-809F-B812A218CE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +280,9 @@ Global
 		{DF42EE5B-627F-408D-8E7F-675FACD5A318} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 		{DBDD134B-7B37-48A4-855E-7D24E798FF63} = {D06C79AC-DB5A-4379-BA2B-5208CF3FBC23}
 		{2CB2A657-9660-458B-809F-B812A218CE14} = {076AC484-B515-4590-BA3E-59D0CCBA3E3A}
+		{97B4E7FF-7596-4115-BA85-40A28AD1D6E3} = {D06C79AC-DB5A-4379-BA2B-5208CF3FBC23}
+		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F} = {97B4E7FF-7596-4115-BA85-40A28AD1D6E3}
+		{29A89671-7559-42E0-A31B-E60C74E34DFD} = {97B4E7FF-7596-4115-BA85-40A28AD1D6E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}

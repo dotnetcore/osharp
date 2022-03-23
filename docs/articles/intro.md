@@ -156,7 +156,7 @@ OSharpNS当前版本（0.2.1-beta05）使用了 `dotnetcore` 当前最新版本 
 * 安装最新版本 NodeJS：angular6需要最新版本(node 8.x 和 npm 5.x 以上的版本)的 NodeJS，请到 [NodeJS官方网站](https://nodejs.org/en/) 下载最新版本的NodeJS进行安装。
 * 设置npm的淘宝镜像仓库：由于npm的国外仓储会很慢，所以最好把npm仓库地址指定国内镜像，推荐淘宝镜像：
 
-  > `npm config set registry https://registry.npm.taobao.org`
+  > `npm config set registry https://registry.npmmirror.com`
 
 * 安装全局Angular/Cli：如果Angular/Cli没有安装，执行如下命令全局安装Angular
     Angular的快速启动，请参考[Angular官方文档](https://angular.cn/guide/quickstart)

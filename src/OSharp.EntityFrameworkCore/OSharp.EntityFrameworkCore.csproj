@@ -1,30 +1,36 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
-    <PackageId>OSharpNS.EntityFrameworkCore</PackageId>
+    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <PackageId>OSharp.EntityFrameworkCore</PackageId>
     <Description>OSharp数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.78" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.21,4.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.2.13,5.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[3.1.23,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.23,4.0.0)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[3.13.14,5.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[5.0.12, 6.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[5.0.12, 6.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[5.2.13, 6.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[5.0.15, 6.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[5.0.15, 6.0.0)" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[5.13.14, 6.0.0)" />
   </ItemGroup>
-
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.3" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.13.14" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>

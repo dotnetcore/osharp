@@ -130,7 +130,7 @@ namespace OSharp.Entity
             }
 
             //开启或使用现有事务
-#if NET5_0
+#if NET5_0_OR_GREATER
             await BeginOrUseTransactionAsync(cancellationToken);
 #else
             BeginOrUseTransaction();
@@ -174,7 +174,7 @@ namespace OSharp.Entity
             unitOfWork?.BeginOrUseTransaction(this);
         }
 
-#if NET5_0
+#if NET5_0_OR_GREATER
         
         /// <summary>
         /// 异步开启或使用现有事务

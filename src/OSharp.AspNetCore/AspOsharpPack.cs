@@ -7,6 +7,8 @@
 //  <last-date>2018-08-09 22:20</last-date>
 // -----------------------------------------------------------------------
 
+using System;
+
 using Microsoft.AspNetCore.Builder;
 
 using OSharp.Core.Packs;
@@ -19,13 +21,26 @@ namespace OSharp.AspNetCore
     /// </summary>
     public abstract class AspOsharpPack : OsharpPack
     {
+#if NET6_0_OR_GREATER
         /// <summary>
         /// 应用AspNetCore的服务业务
         /// </summary>
-        /// <param name="app">Asp应用程序构建器</param>
+        /// <param name="app">Web应用程序</param>
+        public virtual void UsePack(WebApplication app)
+#else
+        /// <summary>
+        /// 应用AspNetCore的服务业务
+        /// </summary>
+        /// <param name="app">Web应用程序构建器</param>
         public virtual void UsePack(IApplicationBuilder app)
+#endif
         {
-            base.UsePack(app.ApplicationServices);
+#if NET6_0_OR_GREATER
+            IServiceProvider provider = app.Services;
+#else
+            IServiceProvider provider = app.ApplicationServices;
+#endif
+            base.UsePack(provider);
         }
     }
 }

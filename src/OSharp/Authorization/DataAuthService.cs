@@ -38,12 +38,24 @@ namespace OSharp.Authorization
             _provider = provider;
         }
         
+        /// <summary>
+        /// 获取 数据权限过滤服务
+        /// </summary>
         protected IFilterService FilterService => _provider.GetRequiredService<IFilterService>();
 
+        /// <summary>
+        /// 获取 当前用户
+        /// </summary>
         protected ClaimsPrincipal CurrentUser => _provider.GetCurrentUser();
 
+        /// <summary>
+        /// 获取 数据权限缓存
+        /// </summary>
         protected IDataAuthCache DataAuthCache => _provider.GetService<IDataAuthCache>();
 
+        /// <summary>
+        /// 获取 数据字典
+        /// </summary>
         protected ScopedDictionary ScopedDictionary => _provider.GetService<ScopedDictionary>();
 
         /// <summary>

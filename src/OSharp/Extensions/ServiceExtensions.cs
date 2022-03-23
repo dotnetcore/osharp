@@ -447,7 +447,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
                 await actionAsync(scopeProvider);
-#if NET5_0
+#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
