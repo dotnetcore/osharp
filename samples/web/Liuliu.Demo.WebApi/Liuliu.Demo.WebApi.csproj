@@ -27,8 +27,8 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
     <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[3.1.23,4.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[3.1.23,4.0.0)">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[3.1.24,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[3.1.24,4.0.0)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -36,17 +36,17 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
     <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.16" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.15">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
