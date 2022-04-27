@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ServiceExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -272,7 +272,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>日志对象</returns>
         public static ILogger<T> GetLogger<T>(this IServiceProvider provider)
         {
-            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
             return factory.CreateLogger<T>();
         }
 
@@ -285,7 +285,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static ILogger GetLogger(this IServiceProvider provider, Type type)
         {
             Check.NotNull(type, nameof(type));
-            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
             return factory.CreateLogger(type);
         }
 
@@ -297,7 +297,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static ILogger GetLogger(this IServiceProvider provider, object instance)
         {
             Check.NotNull(instance, nameof(instance));
-            ILoggerFactory factory = provider.GetService<ILoggerFactory>();
+            ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
             return factory.CreateLogger(instance.GetType());
         }
 
@@ -369,9 +369,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
         /// </summary>
-        public static void ExecuteScopedWork(this IServiceProvider provider, Action<IServiceProvider> action)
+        public static void ExecuteScopedWork(this IServiceProvider rootProvider, Action<IServiceProvider> action)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 action(scope.ServiceProvider);
             }
@@ -380,9 +380,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 异步执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑
         /// </summary>
-        public static async Task ExecuteScopedWorkAsync(this IServiceProvider provider, Func<IServiceProvider, Task> action)
+        public static async Task ExecuteScopedWorkAsync(this IServiceProvider rootProvider, Func<IServiceProvider, Task> action)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 await action(scope.ServiceProvider);
             }
@@ -391,9 +391,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
         /// </summary>
-        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider provider, Func<IServiceProvider, TResult> func)
+        public static TResult ExecuteScopedWork<TResult>(this IServiceProvider rootProvider, Func<IServiceProvider, TResult> func)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 return func(scope.ServiceProvider);
             }
@@ -402,9 +402,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
         /// </summary>
-        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider provider, Func<IServiceProvider, Task<TResult>> func)
+        public static async Task<TResult> ExecuteScopedWorkAsync<TResult>(this IServiceProvider rootProvider, Func<IServiceProvider, Task<TResult>> func)
         {
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 return await func(scope.ServiceProvider);
             }
@@ -414,14 +414,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 开启一个事务处理
         /// </summary>
-        /// <param name="provider">信赖注入服务提供程序</param>
+        /// <param name="rootProvider">根依赖注入服务提供程序</param>
         /// <param name="action">要执行的业务委托</param>
-        public static void BeginUnitOfWorkTransaction(this IServiceProvider provider, Action<IServiceProvider> action)
+        public static void BeginUnitOfWorkTransaction(this IServiceProvider rootProvider, Action<IServiceProvider> action)
         {
-            Check.NotNull(provider, nameof(provider));
+            Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(action, nameof(action));
 
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 IServiceProvider scopeProvider = scope.ServiceProvider;
                 IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
@@ -433,15 +433,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 开启一个事务处理
         /// </summary>
-        /// <param name="provider">信赖注入服务提供程序</param>
+        /// <param name="rootProvider">根依赖注入服务提供程序</param>
         /// <param name="actionAsync">要执行的业务委托</param>
-        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider provider,
+        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider rootProvider,
             Func<IServiceProvider, Task> actionAsync)
         {
-            Check.NotNull(provider, nameof(provider));
+            Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(actionAsync, nameof(actionAsync));
 
-            using (IServiceScope scope = provider.CreateScope())
+            using (IServiceScope scope = rootProvider.CreateScope())
             {
                 IServiceProvider scopeProvider = scope.ServiceProvider;
 

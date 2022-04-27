@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="JwtBearerService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -102,22 +102,17 @@ namespace OSharp.Authentication.JwtBearer
                 if (existRefreshToken != null && existRefreshToken.EndUtcTime <= DateTime.UtcNow)
                 {
                     //删除过期的Token
-                    await _provider.ExecuteScopedWorkAsync(async provider =>
+                    IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
+                    userManager = _provider.GetRequiredService<UserManager<TUser>>();
+                    var result = await userManager.RemoveRefreshToken(userId, clientId);
+                    if (result.Succeeded)
                     {
-                        IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
-                        userManager = provider.GetService<UserManager<TUser>>();
-                        var result = await userManager.RemoveRefreshToken(userId, clientId);
-                        if (result.Succeeded)
-                        {
 #if NET5_0_OR_GREATER
-                            await unitOfWork.CommitAsync();
+                        await unitOfWork.CommitAsync();
 #else
-                            unitOfWork.Commit();
+                        unitOfWork.Commit();
 #endif
-                        }
-
-                        return result;
-                    });
+                    }
                 }
                 throw new OsharpException("RefreshToken 不存在或已过期");
             }
@@ -150,25 +145,21 @@ namespace OSharp.Authentication.JwtBearer
             };
             var (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.RefreshToken, refreshToken);
             string refreshTokenStr = token;
-            await _provider.ExecuteScopedWorkAsync(async provider =>
+            IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
+            UserManager<TUser> userManager = _provider.GetService<UserManager<TUser>>();
+            refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
+            IdentityResult result = await userManager.SetRefreshToken(userId, refreshToken);
+            if (result.Succeeded)
             {
-                IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
-                UserManager<TUser> userManager = provider.GetService<UserManager<TUser>>();
-                refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
-                IdentityResult result = await userManager.SetRefreshToken(userId, refreshToken);
-                if (result.Succeeded)
-                {
 #if NET5_0_OR_GREATER
-                    await unitOfWork.CommitAsync();
+                await unitOfWork.CommitAsync();
 #else
-                    unitOfWork.Commit();
+                unitOfWork.Commit();
 #endif
-                    IEventBus eventBus = _provider.GetRequiredService<IEventBus>();
-                    OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { userName } };
-                    await eventBus.PublishAsync(eventData);
-                }
-                return result;
-            });
+                IEventBus eventBus = _provider.GetRequiredService<IEventBus>();
+                OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = new[] { userName } };
+                await eventBus.PublishAsync(eventData);
+            }
 
             // New AccessToken
             IUserClaimsProvider claimsProvider = _provider.GetRequiredService<IUserClaimsProvider>();
