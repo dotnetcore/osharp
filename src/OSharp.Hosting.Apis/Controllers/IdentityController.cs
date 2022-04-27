@@ -181,11 +181,6 @@ namespace OSharp.Hosting.Apis.Controllers
 
                 IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
-#if NET5_0_OR_GREATER
-                await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
                 if (!result.Succeeded)
                 {
                     return result.ToAjaxResult();
@@ -193,6 +188,11 @@ namespace OSharp.Hosting.Apis.Controllers
 
                 User user = result.Data;
                 JsonWebToken token = await CreateJwtToken(user, dto.ClientType);
+#if NET5_0_OR_GREATER
+                await unitOfWork.CommitAsync();
+#else
+                unitOfWork.Commit();
+#endif
                 return new AjaxResult("登录成功", AjaxResultType.Success, token);
             }
 
@@ -224,11 +224,6 @@ namespace OSharp.Hosting.Apis.Controllers
 
             IUnitOfWork unitOfWork = HttpContext.RequestServices.GetUnitOfWork(true);
             OperationResult<User> result = await IdentityContract.Login(dto);
-#if NET5_0_OR_GREATER
-                await unitOfWork.CommitAsync();
-#else
-            unitOfWork.Commit();
-#endif
 
             if (!result.Succeeded)
             {
@@ -237,6 +232,11 @@ namespace OSharp.Hosting.Apis.Controllers
 
             User user = result.Data;
             await SignInManager.SignInAsync(user, dto.Remember);
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync();
+#else
+            unitOfWork.Commit();
+#endif
             return new AjaxResult("登录成功");
         }
 
@@ -463,7 +463,7 @@ namespace OSharp.Hosting.Apis.Controllers
         private async Task<JsonWebToken> CreateJwtToken(User user, RequestClientType clientType = RequestClientType.Browser)
         {
             IServiceProvider provider = HttpContext.RequestServices;
-            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            IJwtBearerService jwtBearerService = provider.GetRequiredService<IJwtBearerService>();
             JsonWebToken token = await jwtBearerService.CreateToken(user.Id.ToString(), user.UserName, clientType);
 
             return token;
@@ -472,14 +472,14 @@ namespace OSharp.Hosting.Apis.Controllers
         private async Task<JsonWebToken> CreateJwtToken(string refreshToken)
         {
             IServiceProvider provider = HttpContext.RequestServices;
-            IJwtBearerService jwtBearerService = provider.GetService<IJwtBearerService>();
+            IJwtBearerService jwtBearerService = provider.GetRequiredService<IJwtBearerService>();
             JsonWebToken token = await jwtBearerService.RefreshToken(refreshToken);
             return token;
         }
 
         private async Task SendMailAsync(string email, string subject, string body)
         {
-            IEmailSender sender = HttpContext.RequestServices.GetService<IEmailSender>();
+            IEmailSender sender = HttpContext.RequestServices.GetRequiredService<IEmailSender>();
             await sender.SendEmailAsync(email, subject, body);
         }
 
