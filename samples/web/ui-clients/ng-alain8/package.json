@@ -69,7 +69,7 @@
     "heartbeats": "^5.0.1",
     "jquery": "^3.4.1",
     "linqts": "^1.12.6",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng-alain": "8.9.3",
     "ng-zorro-antd": "^8.5.2",
     "rxjs": "~6.4.0",
