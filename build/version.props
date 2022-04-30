@@ -1,12 +1,12 @@
 <Project>
   <PropertyGroup>
     <VersionMain>6.0</VersionMain>
-    <VersionPrefix>3</VersionPrefix>
+    <VersionPrefix>4</VersionPrefix>
     <VersionSuffix>-preview.</VersionSuffix>
     <VersionSuffixVersion>428</VersionSuffixVersion>
-    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
-    <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
-    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>
-    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>-->
+    <!--<Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
+    <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>-->
+    <Version>$(VersionMain).$(VersionPrefix)</Version>
+    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>
   </PropertyGroup>
 </Project>
