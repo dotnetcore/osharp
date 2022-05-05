@@ -109,16 +109,9 @@ namespace OSharp.Hosting.Apis.Controllers
         {
             IServiceProvider provider = HttpContext.RequestServices;
             string token = Guid.NewGuid().ToString("N").Substring(0, 5);
-            await provider.BeginUnitOfWorkTransactionAsync(async scopedProvider =>
-            {
-                RoleManager<Role> manager = scopedProvider.GetRequiredService<RoleManager<Role>>();
-                await manager.CreateAsync(new Role() { Name = "测试角色3" + token, Remark = "测试角色001描述" });
-            });
-            await provider.BeginUnitOfWorkTransactionAsync(async scopedProvider =>
-            {
-                RoleManager<Role> manager = scopedProvider.GetRequiredService<RoleManager<Role>>();
-                await manager.CreateAsync(new Role() { Name = "测试角色4" + token, Remark = "测试角色002描述" });
-            });
+            RoleManager<Role> manager = provider.GetRequiredService<RoleManager<Role>>();
+            await manager.CreateAsync(new Role() { Name = "测试角色3" + token, Remark = "测试角色001描述" });
+            await manager.CreateAsync(new Role() { Name = "测试角色4" + token, Remark = "测试角色002描述" });
 
             return provider.GetRequiredService<RoleManager<Role>>().Roles.Count();
         }

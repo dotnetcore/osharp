@@ -188,11 +188,11 @@ namespace OSharp.Entity
                     connection.Open();
                 }
 
-                if (!_transDict.TryGetValue(connection, out DbTransaction transaction))
+                if (!_transDict.TryGetValue(connection, out DbTransaction transaction) || transaction.Connection == null)
                 {
                     transaction = connection.BeginTransaction();
-                    _transDict.TryAdd(connection, transaction);
-                    _logger.LogDebug($"在上下文 {context.GetType()} 创建事务，事务标识：{transaction.GetHashCode()}");
+                    _transDict[connection] = transaction;
+                    _logger.LogDebug($"在上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 创建事务，事务标识：{transaction.GetHashCode()}");
                 }
 
                 if (dbContext.Database.CurrentTransaction != null && dbContext.Database.CurrentTransaction.GetDbTransaction() == transaction)
@@ -203,7 +203,7 @@ namespace OSharp.Entity
                 if (dbContext.IsRelationalTransaction())
                 {
                     dbContext.Database.UseTransaction(transaction);
-                    _logger.LogDebug($"在上下文 {context.GetType()} 应用现有事务，事务标识：{transaction.GetHashCode()}");
+                    _logger.LogDebug($"在上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 应用现有事务，事务标识：{transaction.GetHashCode()}");
                 }
                 else
                 {
@@ -234,16 +234,26 @@ namespace OSharp.Entity
                 return;
             }
 
-            if(!IsEnabledTransaction)
+            if (!IsEnabledTransaction)
             {
                 throw new OsharpException("执行 IUnitOfWork.Commit() 之前，需要在事务开始时调用 IUnitOfWork.EnableTransaction()");
             }
 
             token = _transactionStack.Pop();
-            foreach (DbTransaction transaction in _transDict.Values)
+            foreach (KeyValuePair<DbConnection, DbTransaction> pair in _transDict)
             {
+                DbConnection connection = pair.Key;
+                DbTransaction transaction = pair.Value;
                 transaction.Commit();
                 _logger.LogDebug($"提交事务，标识：{token}，事务标识：{transaction.GetHashCode()}");
+                if (_contextDict.TryGetValue(connection, out List<DbContextBase> contexts))
+                {
+                    foreach (var context in contexts)
+                    {
+                        context.Database.UseTransaction(null);
+                        _logger.LogDebug($"上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 释放事务，事务标识：{transaction.GetHashCode()}");
+                    }
+                }
             }
 
             HasCommitted = true;
@@ -268,7 +278,7 @@ namespace OSharp.Entity
 
             HasCommitted = true;
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             _contextDict.SelectMany(m => m.Value).ToList().ForEach(m => m.Dispose());
@@ -306,10 +316,11 @@ namespace OSharp.Entity
                     await connection.OpenAsync(cancellationToken);
                 }
 
-                if (!_transDict.TryGetValue(connection, out DbTransaction transaction))
+                if (!_transDict.TryGetValue(connection, out DbTransaction transaction) || transaction.Connection == null)
                 {
                     transaction = await connection.BeginTransactionAsync(cancellationToken);
-                    _transDict.TryAdd(connection, transaction);
+                    _transDict[connection] = transaction;
+                    _logger.LogDebug($"在上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 创建事务，事务标识：{transaction.GetHashCode()}");
                 }
 
                 if (dbContext.Database.CurrentTransaction != null && dbContext.Database.CurrentTransaction.GetDbTransaction() == transaction)
@@ -320,7 +331,7 @@ namespace OSharp.Entity
                 if (dbContext.IsRelationalTransaction())
                 {
                     await dbContext.Database.UseTransactionAsync(transaction, cancellationToken: cancellationToken);
-                    _logger.LogDebug($"在上下文 {context.GetType()} 上应用现有事务，事务标识：{transaction.GetHashCode()}");
+                    _logger.LogDebug($"在上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 上应用现有事务，事务标识：{transaction.GetHashCode()}");
                 }
                 else
                 {
@@ -358,10 +369,18 @@ namespace OSharp.Entity
             }
 
             token = _transactionStack.Pop();
-            foreach (DbTransaction transaction in _transDict.Values)
+            foreach (var (connection, transaction) in _transDict)
             {
                 await transaction.CommitAsync(cancellationToken);
                 _logger.LogDebug($"提交事务，标识：{token}，事务标识：{transaction.GetHashCode()}");
+                if (_contextDict.TryGetValue(connection, out List<DbContextBase> contexts))
+                {
+                    foreach (var context in contexts)
+                    {
+                        await context.Database.UseTransactionAsync(null, cancellationToken);
+                        _logger.LogDebug($"上下文 {context.GetType()}[标识：[{context.GetHashCode()}] 释放事务，事务标识：{transaction.GetHashCode()}");
+                    }
+                }
             }
 
             HasCommitted = true;
