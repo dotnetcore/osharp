@@ -398,7 +398,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 return func(scope.ServiceProvider);
             }
         }
-
+        
         /// <summary>
         /// 执行<see cref="ServiceLifetime.Scoped"/>生命周期的业务逻辑，并获取返回值
         /// </summary>
@@ -408,7 +408,6 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 return await func(scope.ServiceProvider);
             }
-
         }
 
         /// <summary>
@@ -434,24 +433,70 @@ namespace Microsoft.Extensions.DependencyInjection
         /// 开启一个事务处理
         /// </summary>
         /// <param name="rootProvider">根依赖注入服务提供程序</param>
-        /// <param name="actionAsync">要执行的业务委托</param>
-        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider rootProvider,
-            Func<IServiceProvider, Task> actionAsync)
+        /// <param name="func">要执行的业务委托</param>
+        public static TResult BeginUnitOfWorkTransaction<TResult>(this IServiceProvider rootProvider, Func<IServiceProvider, TResult> func)
         {
             Check.NotNull(rootProvider, nameof(rootProvider));
-            Check.NotNull(actionAsync, nameof(actionAsync));
+            Check.NotNull(func, nameof(func));
+
+            using (IServiceScope scope = rootProvider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+                TResult result = func(scopeProvider);
+                unitOfWork.Commit();
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 开启一个事务处理
+        /// </summary>
+        /// <param name="rootProvider">根依赖注入服务提供程序</param>
+        /// <param name="funcAsync">要执行的业务委托</param>
+        public static async Task BeginUnitOfWorkTransactionAsync(this IServiceProvider rootProvider,
+            Func<IServiceProvider, Task> funcAsync)
+        {
+            Check.NotNull(rootProvider, nameof(rootProvider));
+            Check.NotNull(funcAsync, nameof(funcAsync));
 
             using (IServiceScope scope = rootProvider.CreateScope())
             {
                 IServiceProvider scopeProvider = scope.ServiceProvider;
 
                 IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
-                await actionAsync(scopeProvider);
+                await funcAsync(scopeProvider);
 #if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
 #else
                 unitOfWork.Commit();
 #endif
+            }
+        }
+
+        /// <summary>
+        /// 开启一个事务处理
+        /// </summary>
+        /// <param name="rootProvider">根依赖注入服务提供程序</param>
+        /// <param name="funcAsync">要执行的业务委托</param>
+        public static async Task<TResult> BeginUnitOfWorkTransactionAsync<TResult>(this IServiceProvider rootProvider,
+            Func<IServiceProvider, Task<TResult>> funcAsync)
+        {
+            Check.NotNull(rootProvider, nameof(rootProvider));
+            Check.NotNull(funcAsync, nameof(funcAsync));
+
+            using (IServiceScope scope = rootProvider.CreateScope())
+            {
+                IServiceProvider scopeProvider = scope.ServiceProvider;
+
+                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+                TResult result = await funcAsync(scopeProvider);
+#if NET5_0_OR_GREATER
+                await unitOfWork.CommitAsync();
+#else
+                unitOfWork.Commit();
+#endif
+                return result;
             }
         }
         #endregion
