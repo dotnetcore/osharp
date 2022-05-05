@@ -60,7 +60,7 @@ namespace OSharp.Entity
             _dbContext = serviceProvider.GetDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
-            _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
+            _cancellationTokenProvider = serviceProvider.GetRequiredService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
             _dataAuthService = serviceProvider.GetService<IDataAuthService>();
         }
@@ -948,14 +948,14 @@ namespace OSharp.Entity
             //自增int
             if (keyType == typeof(int))
             {
-                IKeyGenerator<int> generator = _serviceProvider.GetService<IKeyGenerator<int>>();
+                IKeyGenerator<int> generator = _serviceProvider.GetRequiredService<IKeyGenerator<int>>();
                 entity.Id = generator.Create().CastTo<TKey>();
                 return;
             }
             //雪花long
             if (keyType == typeof(long) && entity.Id.Equals(default(long)))
             {
-                IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
+                IKeyGenerator<long> generator = _serviceProvider.GetRequiredService<IKeyGenerator<long>>();
                 entity.Id = generator.Create().CastTo<TKey>();
             }
             //顺序guid

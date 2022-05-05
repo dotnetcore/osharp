@@ -14,7 +14,7 @@ namespace Liuliu.Demo.Web.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_EntityInfo",
+                name: "Auth_Auth_EntityInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -28,12 +28,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_EntityInfo", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_EntityInfo", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_Function",
+                name: "Auth_Auth_Function",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -58,12 +58,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_Function", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_Function", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_Module",
+                name: "Auth_Auth_Module",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -81,17 +81,17 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_Module", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_Module", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_Module_Auth_Module_ParentId",
+                        name: "FK_Auth_Auth_Module_Auth_Auth_Module_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Auth_Module",
+                        principalTable: "Auth_Auth_Module",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_Organization",
+                name: "Identity_Identity_Organization",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -104,17 +104,17 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_Organization", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_Organization", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_Organization_Identity_Organization_ParentId",
+                        name: "FK_Identity_Identity_Organization_Identity_Identity_Organizatio~",
                         column: x => x.ParentId,
-                        principalTable: "Identity_Organization",
+                        principalTable: "Identity_Identity_Organization",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Systems_AuditOperation",
+                name: "Systems_Systems_AuditOperation",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -142,12 +142,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_AuditOperation", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Systems_AuditOperation", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Systems_KeyValue",
+                name: "Systems_Systems_KeyValue",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -166,12 +166,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_KeyValue", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Systems_KeyValue", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Systems_Menu",
+                name: "Systems_Systems_Menu",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -199,17 +199,17 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_Menu", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Systems_Menu", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Systems_Menu_Systems_Menu_ParentId",
+                        name: "FK_Systems_Systems_Menu_Systems_Systems_Menu_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Systems_Menu",
+                        principalTable: "Systems_Systems_Menu",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_ModuleFunction",
+                name: "Auth_Auth_ModuleFunction",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -218,24 +218,24 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_ModuleFunction", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_ModuleFunction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_ModuleFunction_Auth_Function_FunctionId",
+                        name: "FK_Auth_Auth_ModuleFunction_Auth_Auth_Function_FunctionId",
                         column: x => x.FunctionId,
-                        principalTable: "Auth_Function",
+                        principalTable: "Auth_Auth_Function",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Auth_ModuleFunction_Auth_Module_ModuleId",
+                        name: "FK_Auth_Auth_ModuleFunction_Auth_Auth_Module_ModuleId",
                         column: x => x.ModuleId,
-                        principalTable: "Auth_Module",
+                        principalTable: "Auth_Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Systems_AuditEntity",
+                name: "Systems_Systems_AuditEntity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -250,18 +250,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_AuditEntity", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Systems_AuditEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Systems_AuditEntity_Systems_AuditOperation_OperationId",
+                        name: "FK_Systems_Systems_AuditEntity_Systems_Systems_AuditOperation_O~",
                         column: x => x.OperationId,
-                        principalTable: "Systems_AuditOperation",
+                        principalTable: "Systems_Systems_AuditOperation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Systems_AuditProperty",
+                name: "Systems_Systems_AuditProperty",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -279,18 +279,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems_AuditProperty", x => x.Id);
+                    table.PrimaryKey("PK_Systems_Systems_AuditProperty", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Systems_AuditProperty_Systems_AuditEntity_AuditEntityId",
+                        name: "FK_Systems_Systems_AuditProperty_Systems_Systems_AuditEntity_Au~",
                         column: x => x.AuditEntityId,
-                        principalTable: "Systems_AuditEntity",
+                        principalTable: "Systems_Systems_AuditEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_EntityRole",
+                name: "Auth_Auth_EntityRole",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -304,18 +304,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_EntityRole", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_EntityRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_EntityRole_Auth_EntityInfo_EntityId",
+                        name: "FK_Auth_Auth_EntityRole_Auth_Auth_EntityInfo_EntityId",
                         column: x => x.EntityId,
-                        principalTable: "Auth_EntityInfo",
+                        principalTable: "Auth_Auth_EntityInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_EntityUser",
+                name: "Auth_Auth_EntityUser",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -328,18 +328,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_EntityUser", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_EntityUser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_EntityUser_Auth_EntityInfo_EntityId",
+                        name: "FK_Auth_Auth_EntityUser_Auth_Auth_EntityInfo_EntityId",
                         column: x => x.EntityId,
-                        principalTable: "Auth_EntityInfo",
+                        principalTable: "Auth_Auth_EntityInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_ModuleRole",
+                name: "Auth_Auth_ModuleRole",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -348,18 +348,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_ModuleRole", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_ModuleRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_ModuleRole_Auth_Module_ModuleId",
+                        name: "FK_Auth_Auth_ModuleRole_Auth_Auth_Module_ModuleId",
                         column: x => x.ModuleId,
-                        principalTable: "Auth_Module",
+                        principalTable: "Auth_Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Auth_ModuleUser",
+                name: "Auth_Auth_ModuleUser",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -369,18 +369,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auth_ModuleUser", x => x.Id);
+                    table.PrimaryKey("PK_Auth_Auth_ModuleUser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auth_ModuleUser_Auth_Module_ModuleId",
+                        name: "FK_Auth_Auth_ModuleUser_Auth_Auth_Module_ModuleId",
                         column: x => x.ModuleId,
-                        principalTable: "Auth_Module",
+                        principalTable: "Auth_Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_LoginLog",
+                name: "Identity_Identity_LoginLog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -394,12 +394,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_LoginLog", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_LoginLog", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_Role",
+                name: "Identity_Identity_Role",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -422,12 +422,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_Role", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_Role", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_RoleClaim",
+                name: "Identity_Identity_RoleClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -440,18 +440,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_RoleClaim", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_RoleClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_RoleClaim_Identity_Role_RoleId",
+                        name: "FK_Identity_Identity_RoleClaim_Identity_Identity_Role_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Identity_Role",
+                        principalTable: "Identity_Identity_Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_User",
+                name: "Identity_Identity_User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -492,12 +492,12 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_User", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_User", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_UserClaim",
+                name: "Identity_Identity_UserClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -510,18 +510,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_UserClaim", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_UserClaim_Identity_User_UserId",
+                        name: "FK_Identity_Identity_UserClaim_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_UserDetail",
+                name: "Identity_Identity_UserDetail",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -532,18 +532,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_UserDetail", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_UserDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_UserDetail_Identity_User_UserId",
+                        name: "FK_Identity_Identity_UserDetail_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_UserLogin",
+                name: "Identity_Identity_UserLogin",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -560,18 +560,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_UserLogin", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_UserLogin", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_UserLogin_Identity_User_UserId",
+                        name: "FK_Identity_Identity_UserLogin_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_UserRole",
+                name: "Identity_Identity_UserRole",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -583,24 +583,24 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_UserRole", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_UserRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_UserRole_Identity_Role_RoleId",
+                        name: "FK_Identity_Identity_UserRole_Identity_Identity_Role_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Identity_Role",
+                        principalTable: "Identity_Identity_Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Identity_UserRole_Identity_User_UserId",
+                        name: "FK_Identity_Identity_UserRole_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Identity_UserToken",
+                name: "Identity_Identity_UserToken",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -614,18 +614,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Identity_UserToken", x => x.Id);
+                    table.PrimaryKey("PK_Identity_Identity_UserToken", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Identity_UserToken_Identity_User_UserId",
+                        name: "FK_Identity_Identity_UserToken_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Infos_Message",
+                name: "Infos_Infos_Message",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -646,18 +646,18 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Infos_Message", x => x.Id);
+                    table.PrimaryKey("PK_Infos_Infos_Message", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Infos_Message_Identity_User_SenderId",
+                        name: "FK_Infos_Infos_Message_Identity_Identity_User_SenderId",
                         column: x => x.SenderId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Infos_MessageReceive",
+                name: "Infos_Infos_MessageReceive",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -669,24 +669,24 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Infos_MessageReceive", x => x.Id);
+                    table.PrimaryKey("PK_Infos_Infos_MessageReceive", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReceive_Identity_User_UserId",
+                        name: "FK_Infos_Infos_MessageReceive_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReceive_Infos_Message_MessageId",
+                        name: "FK_Infos_Infos_MessageReceive_Infos_Infos_Message_MessageId",
                         column: x => x.MessageId,
-                        principalTable: "Infos_Message",
+                        principalTable: "Infos_Infos_Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Infos_MessageReply",
+                name: "Infos_Infos_MessageReply",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -703,29 +703,29 @@ namespace Liuliu.Demo.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Infos_MessageReply", x => x.Id);
+                    table.PrimaryKey("PK_Infos_Infos_MessageReply", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Identity_User_UserId",
+                        name: "FK_Infos_Infos_MessageReply_Identity_Identity_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Identity_User",
+                        principalTable: "Identity_Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Infos_Message_BelongMessageId",
+                        name: "FK_Infos_Infos_MessageReply_Infos_Infos_Message_BelongMessageId",
                         column: x => x.BelongMessageId,
-                        principalTable: "Infos_Message",
+                        principalTable: "Infos_Infos_Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Infos_Message_ParentMessageId",
+                        name: "FK_Infos_Infos_MessageReply_Infos_Infos_Message_ParentMessageId",
                         column: x => x.ParentMessageId,
-                        principalTable: "Infos_Message",
+                        principalTable: "Infos_Infos_Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Infos_MessageReply_ParentReplyId",
+                        name: "FK_Infos_Infos_MessageReply_Infos_Infos_MessageReply_ParentRepl~",
                         column: x => x.ParentReplyId,
-                        principalTable: "Infos_MessageReply",
+                        principalTable: "Infos_Infos_MessageReply",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -733,350 +733,350 @@ namespace Liuliu.Demo.Web.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
-                table: "Auth_EntityInfo",
+                table: "Auth_Auth_EntityInfo",
                 column: "TypeName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "EntityRoleIndex",
-                table: "Auth_EntityRole",
+                table: "Auth_Auth_EntityRole",
                 columns: new[] { "EntityId", "RoleId", "Operation" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_EntityRole_RoleId",
-                table: "Auth_EntityRole",
+                name: "IX_Auth_Auth_EntityRole_RoleId",
+                table: "Auth_Auth_EntityRole",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EntityUserIndex",
-                table: "Auth_EntityUser",
+                table: "Auth_Auth_EntityUser",
                 columns: new[] { "EntityId", "UserId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_EntityUser_UserId",
-                table: "Auth_EntityUser",
+                name: "IX_Auth_Auth_EntityUser_UserId",
+                table: "Auth_Auth_EntityUser",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "AreaControllerActionIndex",
-                table: "Auth_Function",
+                table: "Auth_Auth_Function",
                 columns: new[] { "Area", "Controller", "Action" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_Module_ParentId",
-                table: "Auth_Module",
+                name: "IX_Auth_Auth_Module_ParentId",
+                table: "Auth_Auth_Module",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_ModuleFunction_FunctionId",
-                table: "Auth_ModuleFunction",
+                name: "IX_Auth_Auth_ModuleFunction_FunctionId",
+                table: "Auth_Auth_ModuleFunction",
                 column: "FunctionId");
 
             migrationBuilder.CreateIndex(
                 name: "ModuleFunctionIndex",
-                table: "Auth_ModuleFunction",
+                table: "Auth_Auth_ModuleFunction",
                 columns: new[] { "ModuleId", "FunctionId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_ModuleRole_RoleId",
-                table: "Auth_ModuleRole",
+                name: "IX_Auth_Auth_ModuleRole_RoleId",
+                table: "Auth_Auth_ModuleRole",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "ModuleRoleIndex",
-                table: "Auth_ModuleRole",
+                table: "Auth_Auth_ModuleRole",
                 columns: new[] { "ModuleId", "RoleId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auth_ModuleUser_UserId",
-                table: "Auth_ModuleUser",
+                name: "IX_Auth_Auth_ModuleUser_UserId",
+                table: "Auth_Auth_ModuleUser",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "ModuleUserIndex",
-                table: "Auth_ModuleUser",
+                table: "Auth_Auth_ModuleUser",
                 columns: new[] { "ModuleId", "UserId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_LoginLog_UserId",
-                table: "Identity_LoginLog",
+                name: "IX_Identity_Identity_LoginLog_UserId",
+                table: "Identity_Identity_LoginLog",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_Organization_ParentId",
-                table: "Identity_Organization",
+                name: "IX_Identity_Identity_Organization_ParentId",
+                table: "Identity_Identity_Organization",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_Role_MessageId",
-                table: "Identity_Role",
+                name: "IX_Identity_Identity_Role_MessageId",
+                table: "Identity_Identity_Role",
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "Identity_Role",
+                table: "Identity_Identity_Role",
                 columns: new[] { "NormalizedName", "DeletedTime" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_RoleClaim_RoleId",
-                table: "Identity_RoleClaim",
+                name: "IX_Identity_Identity_RoleClaim_RoleId",
+                table: "Identity_Identity_RoleClaim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "Identity_User",
+                table: "Identity_Identity_User",
                 columns: new[] { "NormalizeEmail", "DeletedTime" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_User_MessageId",
-                table: "Identity_User",
+                name: "IX_Identity_Identity_User_MessageId",
+                table: "Identity_Identity_User",
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "Identity_User",
+                table: "Identity_Identity_User",
                 columns: new[] { "NormalizedUserName", "DeletedTime" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_UserClaim_UserId",
-                table: "Identity_UserClaim",
+                name: "IX_Identity_Identity_UserClaim_UserId",
+                table: "Identity_Identity_UserClaim",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_UserDetail_UserId",
-                table: "Identity_UserDetail",
+                name: "IX_Identity_Identity_UserDetail_UserId",
+                table: "Identity_Identity_UserDetail",
                 column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_UserLogin_UserId",
-                table: "Identity_UserLogin",
+                name: "IX_Identity_Identity_UserLogin_UserId",
+                table: "Identity_Identity_UserLogin",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "UserLoginIndex",
-                table: "Identity_UserLogin",
+                table: "Identity_Identity_UserLogin",
                 columns: new[] { "LoginProvider", "ProviderKey" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Identity_UserRole_RoleId",
-                table: "Identity_UserRole",
+                name: "IX_Identity_Identity_UserRole_RoleId",
+                table: "Identity_Identity_UserRole",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "UserRoleIndex",
-                table: "Identity_UserRole",
+                table: "Identity_Identity_UserRole",
                 columns: new[] { "UserId", "RoleId", "DeletedTime" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserTokenIndex",
-                table: "Identity_UserToken",
+                table: "Identity_Identity_UserToken",
                 columns: new[] { "UserId", "LoginProvider", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_Message_SenderId",
-                table: "Infos_Message",
+                name: "IX_Infos_Infos_Message_SenderId",
+                table: "Infos_Infos_Message",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReceive_MessageId",
-                table: "Infos_MessageReceive",
+                name: "IX_Infos_Infos_MessageReceive_MessageId",
+                table: "Infos_Infos_MessageReceive",
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReceive_UserId",
-                table: "Infos_MessageReceive",
+                name: "IX_Infos_Infos_MessageReceive_UserId",
+                table: "Infos_Infos_MessageReceive",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReply_BelongMessageId",
-                table: "Infos_MessageReply",
+                name: "IX_Infos_Infos_MessageReply_BelongMessageId",
+                table: "Infos_Infos_MessageReply",
                 column: "BelongMessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReply_ParentMessageId",
-                table: "Infos_MessageReply",
+                name: "IX_Infos_Infos_MessageReply_ParentMessageId",
+                table: "Infos_Infos_MessageReply",
                 column: "ParentMessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReply_ParentReplyId",
-                table: "Infos_MessageReply",
+                name: "IX_Infos_Infos_MessageReply_ParentReplyId",
+                table: "Infos_Infos_MessageReply",
                 column: "ParentReplyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Infos_MessageReply_UserId",
-                table: "Infos_MessageReply",
+                name: "IX_Infos_Infos_MessageReply_UserId",
+                table: "Infos_Infos_MessageReply",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Systems_AuditEntity_OperationId",
-                table: "Systems_AuditEntity",
+                name: "IX_Systems_Systems_AuditEntity_OperationId",
+                table: "Systems_Systems_AuditEntity",
                 column: "OperationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Systems_AuditProperty_AuditEntityId",
-                table: "Systems_AuditProperty",
+                name: "IX_Systems_Systems_AuditProperty_AuditEntityId",
+                table: "Systems_Systems_AuditProperty",
                 column: "AuditEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "KeyIndex",
-                table: "Systems_KeyValue",
+                table: "Systems_Systems_KeyValue",
                 column: "Key",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Systems_Menu_ParentId",
-                table: "Systems_Menu",
+                name: "IX_Systems_Systems_Menu_ParentId",
+                table: "Systems_Systems_Menu",
                 column: "ParentId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Auth_EntityRole_Identity_Role_RoleId",
-                table: "Auth_EntityRole",
+                name: "FK_Auth_Auth_EntityRole_Identity_Identity_Role_RoleId",
+                table: "Auth_Auth_EntityRole",
                 column: "RoleId",
-                principalTable: "Identity_Role",
+                principalTable: "Identity_Identity_Role",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Auth_EntityUser_Identity_User_UserId",
-                table: "Auth_EntityUser",
+                name: "FK_Auth_Auth_EntityUser_Identity_Identity_User_UserId",
+                table: "Auth_Auth_EntityUser",
                 column: "UserId",
-                principalTable: "Identity_User",
+                principalTable: "Identity_Identity_User",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Auth_ModuleRole_Identity_Role_RoleId",
-                table: "Auth_ModuleRole",
+                name: "FK_Auth_Auth_ModuleRole_Identity_Identity_Role_RoleId",
+                table: "Auth_Auth_ModuleRole",
                 column: "RoleId",
-                principalTable: "Identity_Role",
+                principalTable: "Identity_Identity_Role",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Auth_ModuleUser_Identity_User_UserId",
-                table: "Auth_ModuleUser",
+                name: "FK_Auth_Auth_ModuleUser_Identity_Identity_User_UserId",
+                table: "Auth_Auth_ModuleUser",
                 column: "UserId",
-                principalTable: "Identity_User",
+                principalTable: "Identity_Identity_User",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Identity_LoginLog_Identity_User_UserId",
-                table: "Identity_LoginLog",
+                name: "FK_Identity_Identity_LoginLog_Identity_Identity_User_UserId",
+                table: "Identity_Identity_LoginLog",
                 column: "UserId",
-                principalTable: "Identity_User",
+                principalTable: "Identity_Identity_User",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Identity_Role_Infos_Message_MessageId",
-                table: "Identity_Role",
+                name: "FK_Identity_Identity_Role_Infos_Infos_Message_MessageId",
+                table: "Identity_Identity_Role",
                 column: "MessageId",
-                principalTable: "Infos_Message",
+                principalTable: "Infos_Infos_Message",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Identity_User_Infos_Message_MessageId",
-                table: "Identity_User",
+                name: "FK_Identity_Identity_User_Infos_Infos_Message_MessageId",
+                table: "Identity_Identity_User",
                 column: "MessageId",
-                principalTable: "Infos_Message",
+                principalTable: "Infos_Infos_Message",
                 principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Infos_Message_Identity_User_SenderId",
-                table: "Infos_Message");
+                name: "FK_Infos_Infos_Message_Identity_Identity_User_SenderId",
+                table: "Infos_Infos_Message");
 
             migrationBuilder.DropTable(
-                name: "Auth_EntityRole");
+                name: "Auth_Auth_EntityRole");
 
             migrationBuilder.DropTable(
-                name: "Auth_EntityUser");
+                name: "Auth_Auth_EntityUser");
 
             migrationBuilder.DropTable(
-                name: "Auth_ModuleFunction");
+                name: "Auth_Auth_ModuleFunction");
 
             migrationBuilder.DropTable(
-                name: "Auth_ModuleRole");
+                name: "Auth_Auth_ModuleRole");
 
             migrationBuilder.DropTable(
-                name: "Auth_ModuleUser");
+                name: "Auth_Auth_ModuleUser");
 
             migrationBuilder.DropTable(
-                name: "Identity_LoginLog");
+                name: "Identity_Identity_LoginLog");
 
             migrationBuilder.DropTable(
-                name: "Identity_Organization");
+                name: "Identity_Identity_Organization");
 
             migrationBuilder.DropTable(
-                name: "Identity_RoleClaim");
+                name: "Identity_Identity_RoleClaim");
 
             migrationBuilder.DropTable(
-                name: "Identity_UserClaim");
+                name: "Identity_Identity_UserClaim");
 
             migrationBuilder.DropTable(
-                name: "Identity_UserDetail");
+                name: "Identity_Identity_UserDetail");
 
             migrationBuilder.DropTable(
-                name: "Identity_UserLogin");
+                name: "Identity_Identity_UserLogin");
 
             migrationBuilder.DropTable(
-                name: "Identity_UserRole");
+                name: "Identity_Identity_UserRole");
 
             migrationBuilder.DropTable(
-                name: "Identity_UserToken");
+                name: "Identity_Identity_UserToken");
 
             migrationBuilder.DropTable(
-                name: "Infos_MessageReceive");
+                name: "Infos_Infos_MessageReceive");
 
             migrationBuilder.DropTable(
-                name: "Infos_MessageReply");
+                name: "Infos_Infos_MessageReply");
 
             migrationBuilder.DropTable(
-                name: "Systems_AuditProperty");
+                name: "Systems_Systems_AuditProperty");
 
             migrationBuilder.DropTable(
-                name: "Systems_KeyValue");
+                name: "Systems_Systems_KeyValue");
 
             migrationBuilder.DropTable(
-                name: "Systems_Menu");
+                name: "Systems_Systems_Menu");
 
             migrationBuilder.DropTable(
-                name: "Auth_EntityInfo");
+                name: "Auth_Auth_EntityInfo");
 
             migrationBuilder.DropTable(
-                name: "Auth_Function");
+                name: "Auth_Auth_Function");
 
             migrationBuilder.DropTable(
-                name: "Auth_Module");
+                name: "Auth_Auth_Module");
 
             migrationBuilder.DropTable(
-                name: "Identity_Role");
+                name: "Identity_Identity_Role");
 
             migrationBuilder.DropTable(
-                name: "Systems_AuditEntity");
+                name: "Systems_Systems_AuditEntity");
 
             migrationBuilder.DropTable(
-                name: "Systems_AuditOperation");
+                name: "Systems_Systems_AuditOperation");
 
             migrationBuilder.DropTable(
-                name: "Identity_User");
+                name: "Identity_Identity_User");
 
             migrationBuilder.DropTable(
-                name: "Infos_Message");
+                name: "Infos_Infos_Message");
         }
     }
 }

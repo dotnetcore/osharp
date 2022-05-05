@@ -76,7 +76,7 @@ namespace OSharp.Entity
             }
 
             //初始化种子数据，只初始化当前上下文的种子数据
-            IEntityManager entityManager = provider.GetService<IEntityManager>();
+            IEntityManager entityManager = provider.GetRequiredService<IEntityManager>();
             Type[] entityTypes = entityManager.GetEntityRegisters(typeof(TDbContext)).Select(m => m.EntityType).Distinct().ToArray();
             IEnumerable<ISeedDataInitializer> seedDataInitializers = provider.GetServices<ISeedDataInitializer>()
                 .Where(m => entityTypes.Contains(m.EntityType)).OrderBy(m => m.Order);

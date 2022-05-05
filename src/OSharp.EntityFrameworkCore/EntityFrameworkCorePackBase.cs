@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityFrameworkCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -11,11 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using OSharp.Authorization.EntityInfos;
 using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
