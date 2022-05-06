@@ -11,7 +11,7 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20220505104049_Init")]
+    [Migration("20220506034852_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("ClassFullNameIndex");
 
-                    b.ToTable("Auth_Auth_EntityInfo", (string)null);
+                    b.ToTable("Auth_EntityInfo", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Authorization.Functions.Function", b =>
@@ -112,7 +112,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("AreaControllerActionIndex");
 
-                    b.ToTable("Auth_Auth_Function", (string)null);
+                    b.ToTable("Auth_Function", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Core.Systems.KeyValue", b =>
@@ -153,7 +153,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("KeyIndex");
 
-                    b.ToTable("Systems_Systems_KeyValue", (string)null);
+                    b.ToTable("Systems_KeyValue", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityRole", b =>
@@ -189,7 +189,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("EntityRoleIndex");
 
-                    b.ToTable("Auth_Auth_EntityRole", (string)null);
+                    b.ToTable("Auth_EntityRole", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityUser", b =>
@@ -221,7 +221,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("EntityId", "UserId")
                         .HasDatabaseName("EntityUserIndex");
 
-                    b.ToTable("Auth_Auth_EntityUser", (string)null);
+                    b.ToTable("Auth_EntityUser", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.Module", b =>
@@ -258,7 +258,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Auth_Auth_Module", (string)null);
+                    b.ToTable("Auth_Module", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleFunction", b =>
@@ -281,7 +281,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("ModuleFunctionIndex");
 
-                    b.ToTable("Auth_Auth_ModuleFunction", (string)null);
+                    b.ToTable("Auth_ModuleFunction", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleRole", b =>
@@ -304,7 +304,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("ModuleRoleIndex");
 
-                    b.ToTable("Auth_Auth_ModuleRole", (string)null);
+                    b.ToTable("Auth_ModuleRole", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleUser", b =>
@@ -330,7 +330,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("ModuleUserIndex");
 
-                    b.ToTable("Auth_Auth_ModuleUser", (string)null);
+                    b.ToTable("Auth_ModuleUser", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.LoginLog", b =>
@@ -360,7 +360,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Identity_Identity_LoginLog", (string)null);
+                    b.ToTable("Identity_LoginLog", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.Organization", b =>
@@ -385,7 +385,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Identity_Identity_Organization", (string)null);
+                    b.ToTable("Identity_Organization", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.Role", b =>
@@ -442,7 +442,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("Identity_Identity_Role", (string)null);
+                    b.ToTable("Identity_Role", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.RoleClaim", b =>
@@ -466,7 +466,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Identity_Identity_RoleClaim", (string)null);
+                    b.ToTable("Identity_RoleClaim", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.User", b =>
@@ -566,7 +566,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("Identity_Identity_User", (string)null);
+                    b.ToTable("Identity_User", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserClaim", b =>
@@ -591,7 +591,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Identity_Identity_UserClaim", (string)null);
+                    b.ToTable("Identity_UserClaim", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserDetail", b =>
@@ -612,7 +612,7 @@ namespace Liuliu.Demo.Web.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Identity_Identity_UserDetail", (string)null);
+                    b.ToTable("Identity_UserDetail", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserLogin", b =>
@@ -651,7 +651,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserLoginIndex");
 
-                    b.ToTable("Identity_Identity_UserLogin", (string)null);
+                    b.ToTable("Identity_UserLogin", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserRole", b =>
@@ -683,7 +683,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserRoleIndex");
 
-                    b.ToTable("Identity_Identity_UserRole", (string)null);
+                    b.ToTable("Identity_UserRole", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserToken", b =>
@@ -713,7 +713,7 @@ namespace Liuliu.Demo.Web.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserTokenIndex");
 
-                    b.ToTable("Identity_Identity_UserToken", (string)null);
+                    b.ToTable("Identity_UserToken", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.Message", b =>
@@ -764,7 +764,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Infos_Infos_Message", (string)null);
+                    b.ToTable("Infos_Message", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReceive", b =>
@@ -794,7 +794,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Infos_Infos_MessageReceive", (string)null);
+                    b.ToTable("Infos_MessageReceive", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReply", b =>
@@ -841,7 +841,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Infos_Infos_MessageReply", (string)null);
+                    b.ToTable("Infos_MessageReply", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditEntity", b =>
@@ -874,7 +874,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("OperationId");
 
-                    b.ToTable("Systems_Systems_AuditEntity", (string)null);
+                    b.ToTable("Systems_AuditEntity", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditOperation", b =>
@@ -931,7 +931,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Systems_Systems_AuditOperation", (string)null);
+                    b.ToTable("Systems_AuditOperation", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditProperty", b =>
@@ -967,7 +967,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("AuditEntityId");
 
-                    b.ToTable("Systems_Systems_AuditProperty", (string)null);
+                    b.ToTable("Systems_AuditProperty", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
@@ -1026,7 +1026,7 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Systems_Systems_Menu", (string)null);
+                    b.ToTable("Systems_Menu", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.EntityRole", b =>
