@@ -68,7 +68,7 @@ namespace OSharp.Identity
                 return await _cache.GetAsync<OnlineUser>(key,
                     async () =>
                     {
-                        UserManager<TUser> userManager = _serviceProvider.GetService<UserManager<TUser>>();
+                        UserManager<TUser> userManager = _serviceProvider.GetRequiredService<UserManager<TUser>>();
                         TUser user = await userManager.FindByNameAsync(userName);
                         if (user == null)
                         {
@@ -76,7 +76,7 @@ namespace OSharp.Identity
                         }
 
                         IList<string> roles = await userManager.GetRolesAsync(user);
-                        RoleManager<TRole> roleManager = _serviceProvider.GetService<RoleManager<TRole>>();
+                        RoleManager<TRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<TRole>>();
                         bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
                         RefreshToken[] refreshTokens = await GetRefreshTokens(user);
                         OnlineUser onlineUser = new OnlineUser()
@@ -129,13 +129,13 @@ namespace OSharp.Identity
                 _serviceProvider.GetService<IUserStore<TUser>>() as IOsharpUserAuthenticationTokenStore<TUser>;
             if (store == null)
             {
-                return new RefreshToken[0];
+                return Array.Empty<RefreshToken>();
             }
             const string loginProvider = "JwtBearer";
             string[] jsons = await store.GetTokensAsync(user, loginProvider, CancellationToken.None);
             if (jsons.Length == 0)
             {
-                return new RefreshToken[0];
+                return Array.Empty<RefreshToken>();
             }
 
             RefreshToken[] tokens = jsons.Select(m => m.FromJsonString<RefreshToken>()).ToArray();
@@ -146,22 +146,17 @@ namespace OSharp.Identity
             }
 
             //删除过期的Token
-            using (var scope = _serviceProvider.CreateScope())
+            UserManager<TUser> userManager = _serviceProvider.GetRequiredService<UserManager<TUser>>();
+            IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+            foreach (RefreshToken token in expiredTokens)
             {
-                IServiceProvider scopedProvider = scope.ServiceProvider;
-                UserManager<TUser> userManager = scopedProvider.GetService<UserManager<TUser>>();
-                IUnitOfWork unitOfWork = scopedProvider.GetUnitOfWork(true);
-                foreach (RefreshToken expiredToken in expiredTokens)
-                {
-                    await userManager.RemoveRefreshToken(user, expiredToken.ClientId);
-                }
-
-#if NET5_0_OR_GREATER
-                await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
+                await userManager.RemoveRefreshToken(user, token.ClientId);
             }
+#if NET5_0_OR_GREATER
+            await unitOfWork.CommitAsync();
+#else
+            unitOfWork.Commit();
+#endif
 
             return tokens.Except(expiredTokens).ToArray();
         }

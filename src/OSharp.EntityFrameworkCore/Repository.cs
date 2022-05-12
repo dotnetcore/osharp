@@ -60,7 +60,7 @@ namespace OSharp.Entity
             _dbContext = serviceProvider.GetDbContext<TEntity, TKey>();
             _dbSet = ((DbContext)_dbContext).Set<TEntity>();
             _logger = serviceProvider.GetLogger<Repository<TEntity, TKey>>();
-            _cancellationTokenProvider = serviceProvider.GetService<ICancellationTokenProvider>();
+            _cancellationTokenProvider = serviceProvider.GetRequiredService<ICancellationTokenProvider>();
             _principal = serviceProvider.GetService<IPrincipal>();
             _dataAuthService = serviceProvider.GetService<IDataAuthService>();
         }
@@ -130,7 +130,7 @@ namespace OSharp.Entity
         /// <returns>业务操作结果</returns>
         public virtual OperationResult Insert<TInputDto>(ICollection<TInputDto> dtos,
             Action<TInputDto> checkAction = null,
-            Func<TInputDto, TEntity, TEntity> updateFunc = null) where TInputDto : IInputDto<TKey>
+            Func<TInputDto, TEntity, TEntity> updateFunc = null) where TInputDto : class, IInputDto<TKey>
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
@@ -150,6 +150,7 @@ namespace OSharp.Entity
                     }
                     entity = CheckInsert(entity)[0];
                     _dbSet.Add(entity);
+                    dto.Id = entity.Id;
                 }
                 catch (OsharpException e)
                 {
@@ -599,7 +600,7 @@ namespace OSharp.Entity
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> InsertAsync<TInputDto>(ICollection<TInputDto> dtos,
             Func<TInputDto, Task> checkAction = null,
-            Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null) where TInputDto : IInputDto<TKey>
+            Func<TInputDto, TEntity, Task<TEntity>> updateFunc = null) where TInputDto : class, IInputDto<TKey>
         {
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
@@ -619,6 +620,7 @@ namespace OSharp.Entity
                     }
                     entity = CheckInsert(entity)[0];
                     await _dbSet.AddAsync(entity, _cancellationTokenProvider.Token);
+                    dto.Id = entity.Id;
                 }
                 catch (OsharpException e)
                 {
@@ -946,14 +948,14 @@ namespace OSharp.Entity
             //自增int
             if (keyType == typeof(int))
             {
-                IKeyGenerator<int> generator = _serviceProvider.GetService<IKeyGenerator<int>>();
+                IKeyGenerator<int> generator = _serviceProvider.GetRequiredService<IKeyGenerator<int>>();
                 entity.Id = generator.Create().CastTo<TKey>();
                 return;
             }
             //雪花long
             if (keyType == typeof(long) && entity.Id.Equals(default(long)))
             {
-                IKeyGenerator<long> generator = _serviceProvider.GetService<IKeyGenerator<long>>();
+                IKeyGenerator<long> generator = _serviceProvider.GetRequiredService<IKeyGenerator<long>>();
                 entity.Id = generator.Create().CastTo<TKey>();
             }
             //顺序guid

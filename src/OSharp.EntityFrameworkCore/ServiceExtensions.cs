@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ServiceCollectionExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -85,7 +85,7 @@ namespace OSharp.Entity
             IConnectionStringProvider connectionStringProvider = provider.GetRequiredService<IConnectionStringProvider>();
             string connectionString = connectionStringProvider.GetConnectionString(typeof(TDbContext));
 
-            ScopedDictionary scopedDictionary = provider.GetService<ScopedDictionary>();
+            ScopedDictionary scopedDictionary = provider.GetRequiredService<ScopedDictionary>();
             string key = $"DbConnection_{connectionString}";
             DbConnection existingDbConnection = scopedDictionary.GetValue<DbConnection>(key);
             builder = driveHandler.Handle(builder, connectionString, existingDbConnection);

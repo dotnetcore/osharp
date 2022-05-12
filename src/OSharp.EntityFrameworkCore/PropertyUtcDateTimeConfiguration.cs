@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityUtcDateTimeConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -26,19 +26,14 @@ namespace OSharp.Entity
     /// </summary>
     public class PropertyUtcDateTimeConfiguration : IEntityBatchConfiguration
     {
-        private readonly IEntityManager _entityManager;
-        private readonly OsharpOptions _osharpOptions;
         private readonly ValueConverter<DateTime, DateTime> _dateTimeConverter;
         private readonly ValueConverter<DateTime?, DateTime?> _nullableDateTimeConverter;
 
         /// <summary>
         /// 初始化一个<see cref="PropertyUtcDateTimeConfiguration"/>类型的新实例
         /// </summary>
-        public PropertyUtcDateTimeConfiguration(IServiceProvider provider)
+        public PropertyUtcDateTimeConfiguration()
         {
-            _entityManager = provider.GetService<IEntityManager>();
-            _osharpOptions = provider.GetOSharpOptions();
-
             _dateTimeConverter = new ValueConverter<DateTime, DateTime>(
                 local => local.ToUniversalTime(),
                 utc => utc.ToLocalTime());

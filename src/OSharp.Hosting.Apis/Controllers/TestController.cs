@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TestController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -25,6 +25,7 @@ using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Collections;
 using OSharp.Data;
+using OSharp.Entity;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Identity.Dtos;
 using OSharp.Hosting.Identity.Entities;
@@ -49,7 +50,7 @@ namespace OSharp.Hosting.Apis.Controllers
         private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
 
         private IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
-        
+
         [HttpGet]
         [UnitOfWork]
         [MethodFilter]
@@ -100,9 +101,23 @@ namespace OSharp.Hosting.Apis.Controllers
             return list.ExpandAndToString("\r\n");
         }
 
+#if NET6_0_OR_GREATER
+
+        [HttpPost]
+        [Description("测试2")]
+        public async Task<int> Test02()
+        {
+            IServiceProvider provider = HttpContext.RequestServices;
+            string token = Guid.NewGuid().ToString("N").Substring(0, 5);
+            RoleManager<Role> manager = provider.GetRequiredService<RoleManager<Role>>();
+            await manager.CreateAsync(new Role() { Name = "测试角色3" + token, Remark = "测试角色001描述" });
+            await manager.CreateAsync(new Role() { Name = "测试角色4" + token, Remark = "测试角色002描述" });
+
+            return provider.GetRequiredService<RoleManager<Role>>().Roles.Count();
+        }
+#endif
+
     }
-
-
     public class ClassFilter : ActionFilterAttribute, IExceptionFilter
     {
         private ILogger _logger;

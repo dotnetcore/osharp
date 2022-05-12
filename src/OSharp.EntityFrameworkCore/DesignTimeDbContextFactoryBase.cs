@@ -46,7 +46,7 @@ namespace OSharp.Entity
 
             ServiceProvider = ServiceProvider ?? CreateDesignTimeServiceProvider();
 
-            IEntityManager entityManager = ServiceProvider.GetService<IEntityManager>();
+            IEntityManager entityManager = ServiceProvider.GetRequiredService<IEntityManager>();
             entityManager.Initialize();
 
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder<TDbContext>();

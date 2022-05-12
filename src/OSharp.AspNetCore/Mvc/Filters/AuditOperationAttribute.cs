@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditOperationAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -39,9 +39,9 @@ namespace OSharp.AspNetCore.Mvc.Filters
             {
                 return;
             }
-            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
+            ScopedDictionary dict = provider.GetRequiredService<ScopedDictionary>();
             // 数据权限有效角色，即有当前功能权限的角色
-            IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
+            IFunctionAuthorization functionAuthorization = provider.GetRequiredService<IFunctionAuthorization>();
             string[] roleName = functionAuthorization.GetOkRoles(function, context.HttpContext.User);
             dict.DataAuthValidRoleNames = roleName;
 
@@ -70,7 +70,7 @@ namespace OSharp.AspNetCore.Mvc.Filters
         public override void OnResultExecuted(ResultExecutedContext context)
         {
             IServiceProvider provider = context.HttpContext.RequestServices;
-            ScopedDictionary dict = provider.GetService<ScopedDictionary>();
+            ScopedDictionary dict = provider.GetRequiredService<ScopedDictionary>();
             if (dict.AuditOperation?.FunctionName == null)
             {
                 return;
