@@ -183,6 +183,11 @@ namespace OSharp.Hosting.Apis.Controllers
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
                 if (!result.Succeeded)
                 {
+#if NET5_0_OR_GREATER
+                    await unitOfWork.CommitAsync();
+#else
+                    unitOfWork.Commit();
+#endif
                     return result.ToAjaxResult();
                 }
 
