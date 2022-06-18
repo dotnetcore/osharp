@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.17" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
