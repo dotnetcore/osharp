@@ -76,8 +76,8 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
 
             FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
             int[] moduleIds = functionAuthManager.GetRoleModuleIds(roleId);
-            Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
-                .ToArray();
+            Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+                .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
                 return new AjaxResult(empty);
