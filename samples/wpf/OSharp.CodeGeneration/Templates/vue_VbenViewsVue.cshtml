@@ -26,7 +26,7 @@
  <once-generated>
     这个文件只生成一次，再次生成不会被覆盖。
  </once-generated>
- <copyright file="src/views/osharp/@(lowerModule)/@(lowerEntity).vue" company="@(entity.Module.Project.Company)">
+ <copyright file="src/views/osharp/@(lowerModule)/@(entityName).vue" company="@(entity.Module.Project.Company)">
     @(entity.Module.Project.Copyright)
  </copyright>
  <site>@(entity.Module.Project.SiteUrl)</site>
@@ -34,18 +34,17 @@
 
 <template>
   <div>
-    <OSharpAdminTable v-bind="tableProps" />
+    <AdminTable v-bind="tableProps" />
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue';
+  import { AdminTable, AdminTableProps } from '/@@/components/Osharp';
   import { ActionItem, BasicColumn, BasicTableProps, FormSchema, FormProps } from '/@@/components/Table';
   import { useMessage } from '/@@/hooks/web/useMessage';
-  import { ModuleInfo } from '/@@/utils/osharp/types';
-  import { CheckboxRender, TagRender, defaultModuleInfo, transTagToOptions } from '/@@/utils/osharp';
-  import { OSharpAdminTableProps } from '/@@/components/osharp/OSharpTable';
-  import OSharpAdminTable from '/@@/components/osharp/OSharpTable/src/OSharpAdminTable.vue';
-  
+  import { CheckboxRender, TagRender, defaultModuleInfo, ModuleInfo, FilterOperate, transTagToOptions } from '/@@/utils/osharp';
+
   const module: ModuleInfo = {
     ...defaultModuleInfo,
     moduleName: '@(moduleName)',
@@ -53,38 +52,57 @@
     entityName: '@(entityName)',
     entityDisplay: '@(entity.Display)',
   };
-
+  const authPath = computed(() => `Root.${module.areaName}.${module.moduleName}.${module.entityName}`).value;
   const { createMessage } = useMessage();
 
   const columns: BasicColumn[] = [
     { @GetIdColumn(entity) },
-@foreach (var prop in properties.Where(m => m.Listable))
+    @foreach (var prop in properties.Where(m => m.Listable))
 {
 <text>    { @GetPropColumn(prop) },
 </text>
 }
   ];
-
-  const schemas: FormSchema[] = [
+  @if (entity.Addable || entity.Updatable)
+  {
+<text>
+  const editSchemas: FormSchema[] = [
     { @GetIdSchema(entity) },
-@foreach (var prop in properties.Where(m => m.IsInputDto || m.Updatable))
+    @foreach (var prop in properties.Where(m => m.IsInputDto || m.Updatable))
 {
-<text>    { @GetPropSchema(prop) },
+<text>    { @GetPropEditSchema(prop) },
 </text>
 }
   ];
+</text>
+  }
 
-  const tableProps: OSharpAdminTableProps = {
+  const filterSchemas: FormSchema[] = [
+    @foreach (var prop in properties.Where(m => m.Filterable))
+    {
+<text>    { @GetPropFilterSchema(prop) },
+</text>
+    }
+  ];
+
+  const tableProps: AdminTableProps = {
     module: module,
     tablePropsFn: tablePropsFn,
     tableActionsFn: tableActionsFn,
     tableDropDownActionsFn: tableDropDownActionsFn,
-    editFormPropsFn: editFormPropsFn,
+    filterFormPropsFn: filterFormPropsFn,
+    @if (entity.Addable || entity.Updatable)
+    {
+<text>    editFormPropsFn: editFormPropsFn,
+    editModalFn: (m, r) => m.setModalProps({ title: `更新${module.entityDisplay} - ${r.name}` }),
+</text>
+    }
   };
 
   function tablePropsFn(p: BasicTableProps): BasicTableProps {
     p.title = `${module.entityDisplay}管理`;
     p.columns = columns;
+    p.useSearchForm = true;
     return p;
   }
 
@@ -96,9 +114,17 @@
     return items;
   }
 
-  function editFormPropsFn(p: FormProps): FormProps {
-    p.schemas = schemas;
+  function filterFormPropsFn(p: FormProps): FormProps {
+    p.schemas = filterSchemas;
     return p;
+  }
+  @if (entity.Addable || entity.Updatable)
+  {
+<text>  function editFormPropsFn(p: FormProps): FormProps {
+    p.schemas = editSchemas;
+    return p;
+  }
+</text>
   }
 </script>
 @functions
@@ -130,7 +156,7 @@
     return line;
   }
 
-  static string GetPropSchema(CodeProperty prop)
+  static string GetPropEditSchema(CodeProperty prop)
   {
     List<string> list = new List<string>();
     list.Add($"label: '{prop.Display}', field: '{prop.Name.ToLowerCase()}', component: '{GetPropComponent(prop)}'");
@@ -138,6 +164,17 @@
     list.AddIf($"componentProps: {{ options: transTagToOptions({prop.Name.ToLowerCase()}Tags) }}", prop.IsEnum );
     list.AddIf("colProps: { span: 12 }", prop.IsValueType());
 
+    return list.ExpandAndToString(", ");
+  }
+
+  static string GetPropFilterSchema(CodeProperty prop)
+  {
+    List<string> list = new List<string>();
+    string component = GetPropComponent(prop);
+    list.Add($"label: '{prop.Display}', field: '{prop.Name.ToLowerCase()}', component: '{component}'");
+    list.Add($"componentProps: {{ {GetPropFilterComponentProps(prop, component)} }}");
+    string[] comps = { "Input", "InputTextArea" };
+    list.Add($"colProps: {{ span: {(comps.Contains(component) ? 12 : 8)} }}");
     return list.ExpandAndToString(", ");
   }
 
@@ -170,8 +207,17 @@
     }
   }
 
+  static string GetPropFilterComponentProps(CodeProperty prop, string component)
+  {
+    List<string> list = new List<string>();
+    string[] comps = { "Input", "InputTextArea" };
+    list.Add($"operate: FilterOperate.{(comps.Contains(component) ? "Contains" : "Equal")}");
+    list.AddIf($"options: transTagToOptions({prop.Name.ToLowerCase()}Tags)", prop.IsEnum);
+    return list.ExpandAndToString(", ");
+  }
+
   /*
-   *   | 'Input'
+  | 'Input'
   | 'InputGroup'
   | 'InputPassword'
   | 'InputSearch'

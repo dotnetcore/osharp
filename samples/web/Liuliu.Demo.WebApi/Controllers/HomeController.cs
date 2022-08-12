@@ -1,20 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Authorization.Modules;
-using OSharp.Core.Systems;
 using OSharp.Hosting.Apis.Controllers;
-using OSharp.Json;
 
 
 namespace Liuliu.Demo.Web.Controllers
 {
+    [Description("网站-主页")]
     public class HomeController : SiteApiControllerBase
     {
         /// <summary>
