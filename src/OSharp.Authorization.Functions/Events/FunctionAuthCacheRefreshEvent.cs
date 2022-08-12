@@ -69,7 +69,7 @@ namespace OSharp.Authorization.Events
                 return;
             }
 
-            IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
+            IFunctionAuthCache cache = _provider.GetRequiredService<IFunctionAuthCache>();
             if (eventData.FunctionIds.Length > 0)
             {
                 cache.RemoveFunctionCaches(eventData.FunctionIds);

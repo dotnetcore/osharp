@@ -64,7 +64,7 @@ namespace OSharp.Authorization
         {
             if (!principal.Identity.IsAuthenticated)
             {
-                return new string[0];
+                return Array.Empty<string>();
             }
 
             string[] userRoles = principal.Identity.GetRoles();

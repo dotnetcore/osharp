@@ -7,6 +7,7 @@
 //  <last-date>2019-06-02 0:01</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 using OSharp.Identity.JwtBearer;
@@ -57,7 +58,7 @@ namespace OSharp.Identity
         /// <summary>
         /// 获取或设置 用户角色
         /// </summary>
-        public string[] Roles { get; set; } = new string[0];
+        public string[] Roles { get; set; } = Array.Empty<string>();
 
         /// <summary>
         /// 获取或设置 客户端刷新Token

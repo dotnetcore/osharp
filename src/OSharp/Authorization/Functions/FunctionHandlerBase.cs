@@ -371,7 +371,7 @@ namespace OSharp.Authorization.Functions
             IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
             if (repository == null)
             {
-                return new TFunction[0];
+                return Array.Empty<TFunction>();
             }
 
             TFunction[] functions = repository.QueryAsNoTracking(null, false).ToArray();

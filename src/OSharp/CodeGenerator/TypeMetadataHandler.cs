@@ -1,9 +1,9 @@
 // -----------------------------------------------------------------------
-//  <copyright file="TypeMetadataHandler.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="TypeMetadataHandler.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-06 13:44</last-date>
 // -----------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ using OSharp.Reflection;
 namespace OSharp.CodeGenerator
 {
     /// <summary>
-    /// ÀàĞÍÔªÊı¾İ´¦ÀíÆ÷
+    /// ç±»å‹å…ƒæ•°æ®å¤„ç†å™¨
     /// </summary>
     public class TypeMetadataHandler : ITypeMetadataHandler
     {
         /// <summary>
-        /// »ñÈ¡ÊµÌåÀàµÄÔªÊı¾İ
+        /// è·å–å®ä½“ç±»çš„å…ƒæ•°æ®
         /// </summary>
-        /// <returns>ÔªÊı¾İ¼¯ºÏ</returns>
+        /// <returns>å…ƒæ•°æ®é›†åˆ</returns>
         public TypeMetadata[] GetEntityTypeMetadatas()
         {
             Type[] entityTypes = AssemblyManager.FindTypesByBase(typeof(IEntity<>)).Where(m => !m.HasAttribute<IgnoreGenTypeAttribute>()).ToArray();
@@ -32,9 +32,9 @@ namespace OSharp.CodeGenerator
         }
 
         /// <summary>
-        /// »ñÈ¡ÊäÈëDTOÀàĞÍµÄÔªÊı¾İ
+        /// è·å–è¾“å…¥DTOç±»å‹çš„å…ƒæ•°æ®
         /// </summary>
-        /// <returns>ÔªÊı¾İ¼¯ºÏ</returns>
+        /// <returns>å…ƒæ•°æ®é›†åˆ</returns>
         public TypeMetadata[] GetInputDtoMetadatas()
         {
             Type[] inputDtoTypes = AssemblyManager.FindTypesByBase(typeof(IInputDto<>)).Where(m => !m.HasAttribute<IgnoreGenTypeAttribute>())
@@ -43,9 +43,9 @@ namespace OSharp.CodeGenerator
         }
 
         /// <summary>
-        /// »ñÈ¡Êä³öDTOÀàĞÍµÄÔªÊı¾İ
+        /// è·å–è¾“å‡ºDTOç±»å‹çš„å…ƒæ•°æ®
         /// </summary>
-        /// <returns>ÔªÊı¾İ¼¯ºÏ</returns>
+        /// <returns>å…ƒæ•°æ®é›†åˆ</returns>
         public TypeMetadata[] GetOutputDtoMetadata()
         {
             Type[] outDtoTypes = AssemblyManager.FindTypesByBase(typeof(IOutputDto)).Where(m => !m.HasAttribute<IgnoreGenTypeAttribute>()).ToArray();
@@ -53,10 +53,10 @@ namespace OSharp.CodeGenerator
         }
 
         /// <summary>
-        /// »ñÈ¡Ö¸¶¨ÀàĞÍµÄÔªÊı¾İ
+        /// è·å–æŒ‡å®šç±»å‹çš„å…ƒæ•°æ®
         /// </summary>
-        /// <param name="type">ÀàĞÍ</param>
-        /// <returns>ÔªÊı¾İ</returns>
+        /// <param name="type">ç±»å‹</param>
+        /// <returns>å…ƒæ•°æ®</returns>
         public TypeMetadata GetTypeMetadata(Type type)
         {
             if (type == null)

@@ -67,7 +67,7 @@ namespace OSharp.Hosting.Apis.Controllers
         public string[] GetAuthInfo()
         {
             IModuleHandler moduleHandler = _provider.GetRequiredService<IModuleHandler>();
-            IFunctionAuthorization functionAuthorization = _provider.GetService<IFunctionAuthorization>();
+            IFunctionAuthorization functionAuthorization = _provider.GetRequiredService<IFunctionAuthorization>();
             ModuleInfo[] moduleInfos = moduleHandler.ModuleInfos;
             
             //先查找出所有有权限的模块

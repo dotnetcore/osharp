@@ -7,6 +7,7 @@
 //  <last-date>2017-09-03 12:32</last-date>
 // -----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -162,7 +163,7 @@ namespace OSharp.Core.Options
                     DbContextTypeName = "OSharp.Entity.DefaultDbContext,OSharp.EntityFrameworkCore",
                     ConnectionString = connectionString,
                     DatabaseType = DatabaseType.SqlServer,
-                    Slaves = new SlaveDatabaseOptions[0]
+                    Slaves = Array.Empty<SlaveDatabaseOptions>()
                 };
                 options.DbContexts.Add("DefaultDbContext", dbContextOptions);
                 return;
