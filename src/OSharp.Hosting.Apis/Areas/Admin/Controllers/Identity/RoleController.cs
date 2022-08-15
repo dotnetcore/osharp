@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="RoleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -23,7 +23,6 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.AspNetCore.UI;
 using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
-using OSharp.Caching;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Entity;

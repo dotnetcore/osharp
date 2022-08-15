@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <PackageId>OSharp.EntityFrameworkCore.Sqlite</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的Sqlite数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件Sqlite</Summary>
@@ -12,13 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[3.1.26,4.0.0)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[5.0.17,6.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[3.1.28,4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>

@@ -51,7 +51,7 @@ namespace OSharp.Authorization.Events
                 return;
             }
             IFunctionHandler functionHandler = _provider.GetService<IFunctionHandler>();
-            functionHandler.RefreshCache();
+            functionHandler?.RefreshCache();
         }
     }
 }

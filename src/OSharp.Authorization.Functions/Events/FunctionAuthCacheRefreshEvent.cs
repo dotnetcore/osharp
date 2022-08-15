@@ -27,8 +27,8 @@ namespace OSharp.Authorization.Events
         /// </summary>
         public FunctionAuthCacheRefreshEventData()
         {
-            FunctionIds = new Guid[0];
-            UserNames = new string[0];
+            FunctionIds = Array.Empty<Guid>();
+            UserNames = Array.Empty<string>();
         }
 
         /// <summary>
@@ -69,7 +69,11 @@ namespace OSharp.Authorization.Events
                 return;
             }
 
-            IFunctionAuthCache cache = _provider.GetRequiredService<IFunctionAuthCache>();
+            IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
+            if (cache == null)
+            {
+                return;
+            }
             if (eventData.FunctionIds.Length > 0)
             {
                 cache.RemoveFunctionCaches(eventData.FunctionIds);
