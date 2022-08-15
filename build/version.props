@@ -3,7 +3,7 @@
     <VersionMain>6.0</VersionMain>
     <VersionPrefix>6</VersionPrefix>
     <VersionSuffix>-preview.</VersionSuffix>
-    <VersionSuffixVersion>703</VersionSuffixVersion>
+    <VersionSuffixVersion>816</VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>
