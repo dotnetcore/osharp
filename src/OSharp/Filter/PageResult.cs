@@ -21,7 +21,7 @@ namespace OSharp.Filter
         /// 初始化一个<see cref="PageResult{T}"/>类型的新实例
         /// </summary>
         public PageResult()
-            : this(new T[0], 0)
+            : this(Array.Empty<T>(), 0)
         { }
 
         /// <summary>

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="SecurityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -67,7 +67,7 @@ namespace Liuliu.Demo.Web.Controllers
         {
             IServiceProvider provider = HttpContext.RequestServices;
             IModuleHandler moduleHandler = provider.GetRequiredService<IModuleHandler>();
-            IFunctionAuthorization functionAuthorization = provider.GetService<IFunctionAuthorization>();
+            IFunctionAuthorization functionAuthorization = provider.GetRequiredService<IFunctionAuthorization>();
             ModuleInfo[] moduleInfos = moduleHandler.ModuleInfos;
 
             //先查找出所有有权限的模块

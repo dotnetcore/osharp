@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <PackageId>OSharp.Core</PackageId>
     <Description>OSharp核心组件，封装着框架核心及数据存储，缓存，辅助操作等功能</Description>
     <Summary>OSharp核心组件</Summary>
@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

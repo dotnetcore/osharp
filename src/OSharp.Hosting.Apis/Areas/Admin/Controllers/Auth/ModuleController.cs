@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="ModuleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -25,6 +25,7 @@ using OSharp.Filter;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Authorization.Dtos;
 using OSharp.Hosting.Authorization.Entities;
+using OSharp.Linq;
 
 
 namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
@@ -141,28 +142,32 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction(nameof(Read))]
         [Description("读取模块功能")]
-        public AjaxResult ReadFunctions(PageRequest request)
+        public AjaxResult ReadFunctions(int moduleId, [FromBody] PageRequest request)
         {
-            var emptyPage = new PageData<FunctionOutputDto2>();
-            if (request.FilterGroup.Rules.Count == 0)
+            var empty = new PageData<FunctionOutputDto2>();
+            if (moduleId == 0)
             {
-                return new AjaxResult(emptyPage);
+                return new AjaxResult(empty);
             }
-            Expression<Func<Module, bool>> moduleExp = FilterService.GetExpression<Module>(request.FilterGroup);
+
+            string token = $"${moduleId}$";
+            Expression<Func<Module, bool>> moduleExp = m => m.TreePathString != null && m.TreePathString.Contains(token);
             int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
             Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
-                return new AjaxResult(emptyPage);
+                return new AjaxResult(empty);
             }
+
+            Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
+            funcExp = funcExp.And(m => functionIds.Contains(m.Id));
             if (request.PageCondition.SortConditions.Length == 0)
             {
                 request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
             }
-            var page = _functionAuthManager.Functions.ToPage(m => functionIds.Contains(m.Id),
-                request.PageCondition,
-                m => new FunctionOutputDto2() { Id = m.Id, Name = m.Name, AccessType = m.AccessType, Area = m.Area, Controller = m.Controller });
+
+            var page = _functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
             return new AjaxResult(page.ToPageData());
         }
 

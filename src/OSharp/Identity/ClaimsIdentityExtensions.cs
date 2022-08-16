@@ -145,7 +145,7 @@ namespace OSharp.Identity
             Check.NotNull(identity, nameof(identity));
             if (!(identity is ClaimsIdentity claimsIdentity))
             {
-                return new string[0];
+                return Array.Empty<string>();
             }
             return claimsIdentity.FindAll(ClaimTypes.Role).SelectMany(m =>
             {

@@ -17,20 +17,12 @@
     <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[3.1.24,4.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[3.1.24,4.0.0)">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[3.1.28,4.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[3.1.28,4.0.0)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[3.1.5,4.0.0)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.16" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.16">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

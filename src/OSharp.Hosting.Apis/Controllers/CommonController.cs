@@ -101,7 +101,7 @@ namespace OSharp.Hosting.Apis.Controllers
             {
                 Message = "WebApi 数据服务已启动",
                 CliVersion = cliVersion,
-                OSharpVersion = osharpVersion
+                OsharpVersion = osharpVersion
             };
 
             return info;

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -183,6 +183,11 @@ namespace OSharp.Hosting.Apis.Controllers
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
                 if (!result.Succeeded)
                 {
+#if NET5_0_OR_GREATER
+                    await unitOfWork.CommitAsync();
+#else
+                    unitOfWork.Commit();
+#endif
                     return result.ToAjaxResult();
                 }
 
@@ -267,20 +272,19 @@ namespace OSharp.Hosting.Apis.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [LoggedIn]
         [ModuleInfo]
         [Description("用户信息")]
         public async Task<OnlineUser> Profile()
         {
             if (User.Identity?.IsAuthenticated != true)
             {
-                return null;
+                return new OnlineUser();
             }
 
             IOnlineUserProvider onlineUserProvider = HttpContext.RequestServices.GetService<IOnlineUserProvider>();
             if (onlineUserProvider == null)
             {
-                return null;
+                return new OnlineUser();
             }
 
             OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(User.Identity.Name);

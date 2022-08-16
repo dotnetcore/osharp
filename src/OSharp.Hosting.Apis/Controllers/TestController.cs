@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Data;
 using OSharp.Entity;
@@ -105,6 +106,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
         [HttpPost]
         [Description("测试2")]
+        [RoleLimit]
         public async Task<int> Test02()
         {
             IServiceProvider provider = HttpContext.RequestServices;

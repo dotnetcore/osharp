@@ -361,7 +361,7 @@ namespace OSharp.Authorization
             if (result.Succeeded)
             {
                 //功能权限缓存刷新事件
-                Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.Id.Equals(id)).Select(m => m.FunctionId).ToArray();
+                Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(id)).Select(m => m.FunctionId).ToArray();
                 FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
                 await EventBus.PublishAsync(removeEventData);
             }

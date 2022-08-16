@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="JsonExceptionHandlerMiddleware.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;

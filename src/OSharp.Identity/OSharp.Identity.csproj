@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <PackageId>OSharp.Identity</PackageId>
     <Summary>OSharp 身份认证组件</Summary>
     <Description>OSharp 身份认证组件，基于AspNetCore.Identity和Osharp仓储系统的身份认证实现</Description>
@@ -21,16 +21,12 @@
     <PackageReference Include="Authentication.GitHub.Core" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.1.24,4.0.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="[3.1.23,4.0.0)" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[5.0.16, 6.0.0)" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="[5.0.15, 6.0.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[3.1.28,4.0.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="[3.1.28,4.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>

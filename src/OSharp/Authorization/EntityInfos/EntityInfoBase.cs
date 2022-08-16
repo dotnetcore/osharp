@@ -64,7 +64,7 @@ namespace OSharp.Authorization.EntityInfos
             {
                 if (string.IsNullOrEmpty(PropertyJson) || !PropertyJson.StartsWith("["))
                 {
-                    return new EntityProperty[0];
+                    return Array.Empty<EntityProperty>();
                 }
 
                 return PropertyJson.FromJsonString<EntityProperty[]>();

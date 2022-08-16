@@ -38,7 +38,7 @@ namespace OSharp.Filter
         /// <param name="sortDirection">排序方向</param>
         public static IOrderedEnumerable<T> OrderBy(IEnumerable<T> source, string propertyName, ListSortDirection sortDirection)
         {
-            propertyName.CheckNotNullOrEmpty("propertyName" );
+            propertyName.CheckNotNullOrEmpty("propertyName");
             dynamic expression = GetKeySelector(propertyName);
             dynamic keySelector = expression.Compile();
             return sortDirection == ListSortDirection.Ascending
@@ -54,7 +54,7 @@ namespace OSharp.Filter
         /// <param name="sortDirection">排序方向</param>
         public static IOrderedEnumerable<T> ThenBy(IOrderedEnumerable<T> source, string propertyName, ListSortDirection sortDirection)
         {
-            propertyName.CheckNotNullOrEmpty("propertyName" );
+            propertyName.CheckNotNullOrEmpty("propertyName");
             dynamic expression = GetKeySelector(propertyName);
             dynamic keySelector = expression.Compile();
             return sortDirection == ListSortDirection.Ascending
@@ -71,7 +71,7 @@ namespace OSharp.Filter
         /// <returns></returns>
         public static IOrderedQueryable<T> OrderBy(IQueryable<T> source, string propertyName, ListSortDirection sortDirection)
         {
-            propertyName.CheckNotNullOrEmpty("propertyName" );
+            propertyName.CheckNotNullOrEmpty("propertyName");
             dynamic keySelector = GetKeySelector(propertyName);
             return sortDirection == ListSortDirection.Ascending
                 ? Queryable.OrderBy(source, keySelector)
@@ -87,7 +87,7 @@ namespace OSharp.Filter
         /// <returns></returns>
         public static IOrderedQueryable<T> ThenBy(IOrderedQueryable<T> source, string propertyName, ListSortDirection sortDirection)
         {
-            propertyName.CheckNotNullOrEmpty("propertyName" );
+            propertyName.CheckNotNullOrEmpty("propertyName");
             dynamic keySelector = GetKeySelector(propertyName);
             return sortDirection == ListSortDirection.Ascending
                 ? Queryable.ThenBy(source, keySelector)
@@ -110,7 +110,12 @@ namespace OSharp.Filter
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
                 {
-                    throw new OsharpException(string.Format(Resources.ObjectExtensions_PropertyNameNotExistsInType, propertyName));
+                    string propertyName2 = propertyName.ToUpperCase();
+                    property = type.GetProperty(propertyName2);
+                    if (property == null)
+                    {
+                        throw new OsharpException(string.Format(Resources.ObjectExtensions_PropertyNameNotExistsInType, propertyName));
+                    }
                 }
                 type = property.PropertyType;
                 propertyAccess = Expression.MakeMemberAccess(propertyAccess, property);

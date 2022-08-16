@@ -1,6 +1,16 @@
-﻿function GetVersion()
+﻿#Requires -Version 6
+
+function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
 {
-    $file = "version.props"
+    $encoding = New-Object System.Text.UTF8Encoding($true)
+    $writer = New-Object System.IO.StreamWriter($file, $false, $encoding)
+    $xml.Save($writer)
+    $writer.Close()
+}
+
+function GetVersion()
+{
+    $file = "$($rootPath)\build\version.props"
     $xml = New-Object -TypeName XML
     $xml.Load($file)
     $version = $xml.Project.PropertyGroup.Version
@@ -17,54 +27,106 @@
 
 function SetOsharpNSVersion()
 {
-    $file = "OSharpNS.nuspec"
+    $file = "$($rootPath)\build\OSharpNS.nuspec"
+    Write-Host ("正在更新文件 $($file) 的版本号：$($version)")
     $xml = New-Object -TypeName XML
     $xml.Load($file)
     $xml.package.metadata.version = $version
-    #$nodes = $xml.SelectNodes("/package/metadata/dependencies/group")
     $nodes = $xml.package.metadata.dependencies.group.dependency
     foreach($node in $nodes)
     {
         $node.version = $version
     }
-    # Utf-8 with BOM 保存
-    $encoding = New-Object System.Text.UTF8Encoding($true)
-    $writer = New-Object System.IO.StreamWriter($file, $false, $encoding)
-    $xml.Save($writer)
-    $writer.Close()
-    Write-Host ("{0} 更新成功，新版本：{1}`n" -f $file,$version)
+    WriteXml $xml $file
+    Write-Host "OSharp.nuspec 版本号更新成功"
 }
 
-$rootPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
-Write-Host ("当前目录：{0}" -f $rootPath)
-$version = GetVersion
-Write-Host ("当前版本：{0}" -f $version)
-SetOsharpNSVersion
-
-
-$output = ".\output"
-if(Test-Path $output)
+function BuildNugetPackages()
 {
-    Remove-Item ("{0}\*.*" -f $output)
-    Write-Host ("清空 {0} 文件夹" -f $output)
-}
-else
-{
-    New-Item -Path . -Name $output -ItemType "directory" -Force
-    Write-Host ("创建 {0} 文件夹" -f $output)
-}
-$props = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
+    $output = "$($rootPath)\build\output"
+    if(Test-Path $output)
+    {
+        Remove-Item ("$($output)\*.*")
+        Write-Host ("清空文件夹：$($output)")
+    }
+    else
+    {
+        New-Item -ItemType directory -Path $output
+        Write-Host "创建文件夹：$($output)"
+    }
+
+    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
 "OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
 "OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
 "OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
 "OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
-foreach($prop in $props)
-{
-    $path = ("../src/{0}/{0}.csproj" -f $prop)
-    dotnet build $path -c Release
-    dotnet pack $path -c Release --output $output
+    foreach($proj in $projs)
+    {
+        $path = "$($rootPath)/src/$($proj)/$($proj).csproj"
+        dotnet build $path -c Release
+        dotnet pack $path -c Release --output $output
+    }
+
+    $file = "$($rootPath)\build\OSharpNS.nuspec"
+    $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
+    & $nuget pack $file -OutputDirectory $output
+    if($ENV:WORKSPACE -eq $null)
+    {
+        Invoke-Item $output
+    }
 }
 
-nuget pack .\OSharp.nuspec -OutputDirectory $output
-Invoke-Item $output
-pause
+function PushNugetPackages()
+{
+    $output = "$($rootPath)\build\output"
+    if(!(Test-Path $output))
+    {
+        Write-Host "输出文件夹 $($output) 不存在"
+        exit    
+    }
+    Write-Host "正在查找 nupkg 发布包"
+    $files = [System.IO.Directory]::GetFiles($output, "*.$($version)*nupkg")
+    Write-Host "共找到 $($files.Length) 个版本号为 $($version) 的nuget文件"
+    if($files.Length -eq 0)
+    {
+        exit
+    }
+    
+    $key = "D:\GreenSoft\Envs\nuget\nuget.org-apikey.txt"
+    $key = [System.IO.File]::ReadAllText($key)
+    $server = "https://api.nuget.org/v3/index.json"
+    Write-Host "nuget服务器：$($server)，密钥：$($key)"
+    $items=@()
+    foreach($file in $files)
+    {
+        $obj = New-Object PSObject -Property @{
+            Server = $server
+            File = $file
+            Key = $key
+        }
+        $items += @($obj)
+    }
+
+    $items | ForEach-Object -Parallel {
+        $nuget = "D:\GreenSoft\Envs\nuget\nuget.exe"
+        $item = $_
+        $name = [System.IO.Path]::GetFileName($item.File)
+        Write-Host ("正在 {0} 向发布{1}" -f $item.Server, $name)
+        $server = @("push", $item.File, "-Source", $item.Server, "-ApiKey", $item.Key, "-SkipDuplicate")
+        & $nuget $server
+    } -ThrottleLimit 5
+}
+
+$now = [DateTime]::Now
+$rootPath = ($ENV:WORKSPACE)
+if($rootPath -eq $null)
+{
+    $rootPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+    $rootPath = Split-Path -Parent $rootPath
+}
+Write-Host ("当前目录：$($rootPath)")
+$version = GetVersion
+Write-Host ("当前版本：$($version)")
+SetOsharpNSVersion
+BuildNugetPackages
+#PushNugetPackages

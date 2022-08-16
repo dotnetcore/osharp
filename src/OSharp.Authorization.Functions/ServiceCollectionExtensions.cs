@@ -30,7 +30,7 @@ namespace OSharp.Authorization
         /// </summary>
         public static IServiceCollection AddFunctionAuthorizationHandler(this IServiceCollection services)
         {
-            OsharpOptions options = services.GetOsharpOptions();
+            //OsharpOptions options = services.GetOsharpOptions();
 
             //services.AddAuthorization();
             services.AddAuthorization(opts =>
@@ -56,13 +56,13 @@ namespace OSharp.Authorization
 
             IServiceProvider provider = app.ApplicationServices;
 
-            IModuleHandler moduleHandler = provider.GetService<IModuleHandler>();
+            IModuleHandler moduleHandler = provider.GetRequiredService<IModuleHandler>();
             moduleHandler.Initialize();
 
-            IFunctionHandler functionHandler = provider.GetService<IFunctionHandler>();
+            IFunctionHandler functionHandler = provider.GetRequiredService<IFunctionHandler>();
             functionHandler.RefreshCache();
 
-            IFunctionAuthCache functionAuthCache = provider.GetService<IFunctionAuthCache>();
+            IFunctionAuthCache functionAuthCache = provider.GetRequiredService<IFunctionAuthCache>();
             functionAuthCache.BuildRoleCaches();
 
             return app;

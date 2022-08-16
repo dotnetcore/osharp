@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AutoMapperPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -57,7 +57,7 @@ namespace OSharp.AutoMapper
         public override void UsePack(IServiceProvider provider)
         {
             ILogger logger = provider.GetLogger<AutoMapperPack>();
-            MapperConfigurationExpression cfg = provider.GetService<MapperConfigurationExpression>();
+            MapperConfigurationExpression cfg = provider.GetRequiredService<MapperConfigurationExpression>();
             
             //获取已注册到IoC的所有Profile
             IMapTuple[] tuples = provider.GetServices<IMapTuple>().OrderBy(m => m.Order).ToArray();

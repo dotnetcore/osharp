@@ -235,7 +235,7 @@ namespace OSharp.Authorization.EntityInfos
             IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
             if (repository == null)
             {
-                return new TEntityInfo[0];
+                return Array.Empty<TEntityInfo>();
             }
 
             TEntityInfo[] entityInfos = repository.QueryAsNoTracking(null, false).ToArray();

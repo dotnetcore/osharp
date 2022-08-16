@@ -80,7 +80,7 @@ namespace Liuliu.Demo.Web
                 app.UseHttpsRedirection();
             }
 
-            app.UseMiddleware<JsonExceptionHandlerMiddleware>()
+            app//.UseMiddleware<JsonExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles();
             app.UseOSharp();

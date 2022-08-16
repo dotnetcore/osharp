@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <PackageId>OSharp.NLog</PackageId>
     <Description>OSharp NLog组件，封装使用nlog组件来实现框架的日志输出功能</Description>
     <Summary>OSharp NLog组件</Summary>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="NLog" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

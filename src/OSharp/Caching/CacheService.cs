@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="CacheService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -41,7 +41,7 @@ namespace OSharp.Caching
         /// </summary>
         public CacheService(IServiceProvider provider)
         {
-            _cache = provider.GetService<IDistributedCache>();
+            _cache = provider.GetRequiredService<IDistributedCache>();
             _logger = provider.GetLogger<CacheService>();
         }
 

@@ -63,7 +63,7 @@ namespace OSharp.Authorization
             //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
             _serviceProvider.ExecuteScopedWork(provider =>
             {
-                IRepository<TFunction, Guid> functionRepository = provider.GetService<IRepository<TFunction, Guid>>();
+                IRepository<TFunction, Guid> functionRepository = provider.GetRequiredService<IRepository<TFunction, Guid>>();
                 Guid[] functionIds = functionRepository.QueryAsNoTracking(null, false).Select(m => m.Id).ToArray();
 
                 foreach (Guid functionId in functionIds)
@@ -131,21 +131,21 @@ namespace OSharp.Authorization
                 provider = serviceScope.ServiceProvider;
             }
 
-            IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
+            IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, Guid>>();
             TModuleKey[] moduleIds = moduleFunctionRepository.QueryAsNoTracking(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
                 .ToArray();
             if (moduleIds.Length == 0)
             {
                 serviceScope?.Dispose();
-                return new string[0];
+                return Array.Empty<string>();
             }
 
-            roleNames = new string[0];
-            IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetService<IRepository<TModuleRole, Guid>>();
+            roleNames = Array.Empty<string>();
+            IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetRequiredService<IRepository<TModuleRole, Guid>>();
             TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
             if (roleIds.Length > 0)
             {
-                IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
+                IRepository<TRole, TRoleKey> roleRepository = provider.GetRequiredService<IRepository<TRole, TRoleKey>>();
                 roleNames = roleRepository.QueryAsNoTracking(m => roleIds.Contains(m.Id)).Select(m => m.Name).Distinct().ToArray();
             }
 
@@ -174,18 +174,18 @@ namespace OSharp.Authorization
             }
             functionIds = _serviceProvider.ExecuteScopedWork(provider =>
             {
-                IRepository<TUser, TUserKey> userRepository = provider.GetService<IRepository<TUser, TUserKey>>();
+                IRepository<TUser, TUserKey> userRepository = provider.GetRequiredService<IRepository<TUser, TUserKey>>();
                 TUserKey userId = userRepository.QueryAsNoTracking(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
                 if (Equals(userId, default(TUserKey)))
                 {
-                    return new Guid[0];
+                    return Array.Empty<Guid>();
                 }
-                IRepository<TModuleUser, Guid> moduleUserRepository = provider.GetService<IRepository<TModuleUser, Guid>>();
+                IRepository<TModuleUser, Guid> moduleUserRepository = provider.GetRequiredService<IRepository<TModuleUser, Guid>>();
                 TModuleKey[] moduleIds = moduleUserRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
-                IRepository<TModule, TModuleKey> moduleRepository = provider.GetService<IRepository<TModule, TModuleKey>>();
+                IRepository<TModule, TModuleKey> moduleRepository = provider.GetRequiredService<IRepository<TModule, TModuleKey>>();
                 moduleIds = moduleIds.Select(m => moduleRepository.QueryAsNoTracking(n => n.TreePathString.Contains("$" + m + "$"))
                     .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
-                IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetService<IRepository<TModuleFunction, Guid>>();
+                IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, Guid>>();
                 return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
             });
 
