@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
     <PackageId>OSharp.MiniProfiler</PackageId>
     <Summary>OSharp MiniProfiler 性能监测组件</Summary>
     <Description>OSharp MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
