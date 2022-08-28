@@ -1,0 +1,156 @@
+# project information
+site_name: OSharp文档中心
+site_description: OSharp快速开发框架文档中心, .NetCore 快速开发框架
+site_author: osharp.org
+site_url: https://docs.osharp.org
+repo_name: dotnetcore/osharp
+repo_url: https://github.com/dotnetcore/osharp
+edit_uri: "https://github.com/i66soft/osharp-docs/edit/master/docs"
+dev_addr: 127.0.0.1:4205
+copyright: Copyright &copy; 2014 - 2022 OSHARP.ORG
+# active material-theme
+theme:
+  name: material
+  language: zh
+  favicon: assets/favicon.ico
+  logo: assets/logo.svg
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - announce.dismiss
+    - header.autohide
+  font:
+    text: Roboto
+    code: Roboto Mono
+# customization
+extra:
+  social:
+    - icon: fontawesome/brands/houzz
+      link: https://www.osharp.org
+    - icon: fontawesome/brands/github
+      link: https://github.com/i66soft/osharp-docs
+    - icon: fontawesome/brands/chromecast
+      link: https://www.cnblogs.com/guomingfeng
+# css, js
+extra_css:
+  - "assets/css/custom.css"
+extra_javascript:
+  - "assets/js/jquery.min.js"
+  - "assets/js/custom.js"
+# plugins
+plugins:
+  - search
+  - glightbox
+  - git-revision-date-localized:
+      enable_creation_date: true
+      enable_last_commit_date: true
+# extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - meta
+  - toc:
+      permalink: true
+  - codehilite:
+      guess_lang: false
+      linenums: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      auto_title: true
+      linenums: true
+      linenums_style: pymdownx-inline
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: false
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# page tree
+nav:
+  - 快速上手:
+      - OSharp简介: quick/intro.md
+      - 快速开始: quick/start.md
+      - 步步为营:
+          - 业务模块设计: quick/steps/index.md
+          - 添加业务数据层: quick/steps/entity.md
+          - 添加业务服务层: quick/steps/service.md
+          - 添加业务对外API: quick/steps/controller.md
+          - 添加前端Angular模块: quick/steps/ng-module.md
+      - 权限系统:
+          - 权限系统概述: quick/permiss/index.md
+          - 功能，实体，模块管理: quick/permiss/function-entityinfo-module.md
+          - 角色管理: quick/permiss/role.md
+          - 用户管理: quick/permiss/user.md
+          - 给角色分配数据权限: quick/permiss/role-entityinfo.md
+      - 代码生成器: quick/generator.md
+  - 设计详解:
+      - 设计详解概述: explain/index.md
+      - OSharp总体设计: explain/overall-design.md
+      - OSharp启动流程: explain/startup.md
+      - 功能模块剖析:
+          - 模块系统设计: explain/packs/index.md
+          - 核心模块: explain/packs/core.md
+          - 依赖注入模块: explain/packs/dependency.md
+          - 事件总线模块: explain/packs/eventbus.md
+          - AspNetCore模块: explain/packs/aspnetcore.md
+          - AutoMapper模块: explain/packs/automapper.md
+          - EFCore模块:
+              - EFCore模块概述: explain/packs/efcore/index.md
+              - 实体/仓储设计: explain/packs/efcore/entity-repository.md
+              - 数据上下文设计: explain/packs/efcore/dbcontext.md
+              - 工作单元/事务设计: explain/packs/efcore/unitofwork-transaction.md
+              - 数据迁移: explain/packs/efcore/migration.md
+              - 各数据驱动应用: explain/packs/efcore/database-provider.md
+          - Redis模块: explain/packs/redis.md
+          - 数据实体模块: explain/packs/entityinfo.md
+          - MVC功能点模块: explain/packs/mvc-function.md
+          - 身份认证模块: explain/packs/identity.md
+          - Mvc模块: explain/packs/aspnetcore-mvc.md
+          - SignalR模块: explain/packs/signalr.md
+          - Hangfire模块: explain/packs/hangfire.md
+          - 权限安全模块:
+              - 权限安全概述: explain/packs/security/index.md
+              - 功能权限设计: explain/packs/security/function-auth.md
+              - 数据权限设计: explain/packs/security/data-auth.md
+      - 功能服务剖析:
+          - 缓存服务: explain/services/caching.md
+          - 查询服务: explain/services/filter.md
+  - 视频教程:
+      - 视频教程概述: videos/index.md
+  - API文档:
+      - API文档概述: api
+  - 常见问题:
+      - 常见问题概述: faq/index.md
+  - 关于:
+      - 关于OSharp: about/index.md
+      - 更新日志: about/update-logs.md
+      - 许可证: about/licence.md
