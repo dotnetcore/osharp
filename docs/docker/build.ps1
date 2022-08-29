@@ -2,6 +2,7 @@
 docker build -t mkdocs-material:$($version) .
 docker tag mkdocs-material:$($version) gmf520/mkdocs-material:$($version)
 docker tag mkdocs-material:$($version) gmf520/mkdocs-material:latest
+Write-Host "构建完成: gmf520/mkdocs-material:$version"
 Write-Host "即将发布到dockerhub，请输入账号密码"
 $username = Read-Host "请输入账号"
 $password = Read-Host "请输入密码"

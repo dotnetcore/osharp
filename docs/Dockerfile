@@ -1,11 +1,8 @@
-FROM squidfunk/mkdocs-material
+FROM gmf520/mkdocs-material as build
+COPY . /docs
+RUN mkdocs build
 
-RUN pip install mkdocs-minify-plugin \
-    mkdocs-glightbox \
-    mkdocs-awesome-pages-plugin
-
-WORKDIR /docs
-EXPOSE 8000
-
-ENTRYPOINT ["mkdocs"]
-CMD ["serve", "--dev-addr=0.0.0.0:8000"]
+FROM nginx as final
+WORKDIR /usr/share/nginx/html
+COPY --from=build /docs/site .
+EXPOSE 80

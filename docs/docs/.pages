@@ -1,4 +1,5 @@
 nav:
+  - 首页: index.md
   - 快速上手: quick
   - 设计详解: explain
   - 视频教程: video
