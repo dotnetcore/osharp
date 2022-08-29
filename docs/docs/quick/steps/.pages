@@ -1,0 +1,6 @@
+nav:
+  - index.md
+  - entity.md
+  - service.md
+  - controller.md
+  - ng-module.md

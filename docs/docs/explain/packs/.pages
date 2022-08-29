@@ -1,0 +1,16 @@
+nav:
+  - index.md
+  - core.md
+  - dependency.md
+  - eventbus.md
+  - aspnetcore.md
+  - automapper.md
+  - EFCore模块: efcore
+  - redis.md
+  - entityinfo.md
+  - mvc-function.md
+  - identity.md
+  - aspnetcore-mvc.md
+  - signalr.md
+  - hangfire.md
+  - 权限安全模块: auth
