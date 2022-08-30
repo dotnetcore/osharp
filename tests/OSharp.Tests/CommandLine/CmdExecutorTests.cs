@@ -19,7 +19,7 @@ namespace OSharp.CommandLine.Tests
         public void ExecuteCommandTest()
         {
             string output = CmdExecutor.ExecuteCmd("dotnet --info");
-            output.ShouldContain("5.0");
+            output.ShouldContain("6.0");
         }
 
         [Fact()]
