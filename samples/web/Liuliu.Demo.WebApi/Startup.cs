@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Startup.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -19,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using OSharp.AspNetCore;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Hangfire;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Infos;
@@ -53,6 +54,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<MySqlDefaultDbContextMigrationPack>()
+                .AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
         }

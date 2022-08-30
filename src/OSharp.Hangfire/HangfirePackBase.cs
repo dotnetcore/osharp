@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="HangfirePackCore.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -11,6 +11,7 @@ using System;
 
 using Hangfire;
 using Hangfire.AspNetCore;
+using Hangfire.MemoryStorage;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -50,6 +51,9 @@ namespace OSharp.Hangfire
         {
             Action<IGlobalConfiguration> hangfireAction = GetHangfireAction(services);
             services.AddHangfire(hangfireAction);
+            IConfiguration configuration = services.GetConfiguration();
+            var optionsAction = GetBackgroundJobServerOptionsAction(configuration);
+            services.AddHangfireServer(optionsAction);
             return services;
         }
 
@@ -66,14 +70,11 @@ namespace OSharp.Hangfire
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
 #endif
-            IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
+            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             IGlobalConfiguration globalConfiguration = serviceProvider.GetService<IGlobalConfiguration>();
             globalConfiguration.UseLogProvider(new AspNetCoreLogProvider(serviceProvider.GetService<ILoggerFactory>()));
-
-            BackgroundJobServerOptions serverOptions = GetBackgroundJobServerOptions(configuration);
-            app.UseHangfireServer(serverOptions);
-
+            
             string url = configuration["OSharp:Hangfire:DashboardUrl"].CastTo("/hangfire");
             DashboardOptions dashboardOptions = GetDashboardOptions(configuration);
             app.UseHangfireDashboard(url, dashboardOptions);
@@ -98,7 +99,7 @@ namespace OSharp.Hangfire
                 return config => config.UseSqlServerStorage(storageConnectionString);
             }
 
-            return config => { };
+            return config => config.UseMemoryStorage();
         }
 
         /// <summary>
@@ -106,15 +107,16 @@ namespace OSharp.Hangfire
         /// </summary>
         /// <param name="configuration">系统配置信息</param>
         /// <returns></returns>
-        protected virtual BackgroundJobServerOptions GetBackgroundJobServerOptions(IConfiguration configuration)
+        protected virtual Action<IServiceProvider, BackgroundJobServerOptions> GetBackgroundJobServerOptionsAction(IConfiguration configuration)
         {
-            BackgroundJobServerOptions serverOptions = new BackgroundJobServerOptions();
             int workerCount = configuration["OSharp:Hangfire:WorkerCount"].CastTo(0);
-            if (workerCount > 0)
+            return (provider, options) =>
             {
-                serverOptions.WorkerCount = workerCount;
-            }
-            return serverOptions;
+                if (workerCount > 0)
+                {
+                    options.WorkerCount = workerCount;
+                }
+            };
         }
 
         /// <summary>
