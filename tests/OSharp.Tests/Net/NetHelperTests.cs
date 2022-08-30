@@ -1,10 +1,10 @@
-﻿using System.Runtime.Versioning;
+﻿
+using System;
 
 using Xunit;
 
 namespace OSharp.Net.Tests
 {
-    [SupportedOSPlatform("windows")]
     public class NetHelperTests
     {
         [Fact()]
@@ -17,6 +17,11 @@ namespace OSharp.Net.Tests
         [Fact()]
         public void IsInternetConnectedTest()
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
+
             bool flag = NetHelper.IsInternetConnected();
             Assert.True(flag);
         }

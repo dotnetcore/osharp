@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Versioning;
 
 using Shouldly;
 
@@ -8,12 +7,15 @@ using Xunit;
 
 namespace OSharp.Develop.Tests
 {
-    [SupportedOSPlatform("windows")]
     public class CodeRamerTests
     {
         [Fact]
         public void Ram_Test()
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
             CodeRamer.Initialize();
             string output = CodeRamer.Ram("name",
                 () =>

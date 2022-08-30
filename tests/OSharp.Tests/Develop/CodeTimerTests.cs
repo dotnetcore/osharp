@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Versioning;
 
 using Shouldly;
 
@@ -7,12 +6,15 @@ using Xunit;
 
 namespace OSharp.Develop.Tests
 {
-    [SupportedOSPlatform("windows")]
     public class CodeTimerTests
     {
         [Fact]
         public void Time_Test()
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                return;
+            }
             CodeTimer.Initialize();
             string output = CodeTimer.Time("name", 10000, () =>
             {
