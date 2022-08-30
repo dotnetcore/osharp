@@ -47,11 +47,6 @@ jobs:
           dotnet build ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
           dotnet build ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
           dotnet build ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
-      - name: Linux Test
-        run: |
-          dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj
-          dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj
-          dotnet test ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj
   build-on-desktop:
     runs-on: windows-latest
     steps:
@@ -73,13 +68,14 @@ jobs:
         run: |
           dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj --verbosity normal
           dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj --verbosity normal
+          dotnet test ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj --verbosity normal
           dotnet test ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj --verbosity normal
   mirror_to_gitee:
     needs: [build-on-dotnetcore, build-on-desktop]
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - name: "Mirror to gitee"
         uses: pixta-dev/repository-mirroring-action@v1
         with:
