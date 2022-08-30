@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="NetHelper.cs" company="柳柳软件">
 //      Copyright (c) 2016 66SOFT. All rights reserved.
 //  </copyright>
@@ -9,6 +9,7 @@
 
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 
 
@@ -43,6 +44,9 @@ namespace OSharp.Net
         /// <summary>
         /// 网络是否畅通
         /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         public static bool IsInternetConnected()
         {
             int i;
@@ -51,6 +55,9 @@ namespace OSharp.Net
         }
 
         [DllImport("wininet.dll")]
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
         private static extern bool InternetGetConnectedState(out int connectionDescription, int reservedValue);
 
     }

@@ -1,10 +1,11 @@
-﻿using Xunit;
+using Xunit;
 using OSharp.CommandLine;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ using Shouldly;
 
 namespace OSharp.CommandLine.Tests
 {
+    [SupportedOSPlatform("windows")]
     public class CmdExecutorTests
     {
         [Fact()]

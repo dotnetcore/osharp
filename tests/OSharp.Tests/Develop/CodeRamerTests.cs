@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.Versioning;
 
 using Shouldly;
 
@@ -7,6 +8,7 @@ using Xunit;
 
 namespace OSharp.Develop.Tests
 {
+    [SupportedOSPlatform("windows")]
     public class CodeRamerTests
     {
         [Fact]

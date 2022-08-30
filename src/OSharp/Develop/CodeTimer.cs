@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,6 +10,9 @@ namespace OSharp.Develop
     /// <summary>
     /// 代码性能测试计时器（来自博客园-老赵）
     /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
     public static class CodeTimer
     {
         #region 私有方法
@@ -105,7 +108,9 @@ namespace OSharp.Develop
         #endregion
     }
 
-
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
     internal static class NativeMethods
     {
         [DllImport("kernel32.dll")]

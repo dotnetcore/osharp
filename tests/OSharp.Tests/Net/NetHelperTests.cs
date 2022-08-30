@@ -1,7 +1,10 @@
-﻿using Xunit;
+using System.Runtime.Versioning;
+
+using Xunit;
 
 namespace OSharp.Net.Tests
 {
+    [SupportedOSPlatform("windows")]
     public class NetHelperTests
     {
         [Fact()]

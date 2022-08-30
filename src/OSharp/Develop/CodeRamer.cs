@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
@@ -9,6 +9,9 @@ namespace OSharp.Develop
     /// <summary>
     /// 代码性能测试内存计算工具
     /// </summary>
+#if NET5_0_OR_GREATER
+        [SupportedOSPlatform("windows")]
+#endif
     public static class CodeRamer
     {
         /// <summary>
