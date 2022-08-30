@@ -52,8 +52,6 @@ jobs:
           dotnet test ./tests/OSharp.Tests/OSharp.Tests.csproj
           dotnet test ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj
           dotnet test ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj
-          dotnet test ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj
-          dotnet test ./tests/OSharp.Permissions.Tests/OSharp.Permissions.Tests.csproj
   build-on-desktop:
     runs-on: windows-latest
     steps:
