@@ -1,6 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+#if NET5_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 using System.Text;
 using System.Threading;
 

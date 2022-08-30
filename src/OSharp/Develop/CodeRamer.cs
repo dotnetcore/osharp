@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+#if NET5_0_OR_GREATER
+using System.Runtime.Versioning;
+#endif
 
 
 namespace OSharp.Develop
