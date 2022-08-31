@@ -58,20 +58,17 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
-      - name: Windows Restore
-        run: |
-          dotnet restore
       - name: Windows Build
         run: |
-          dotnet build --no-restore ./src/OSharp.Wpf/OSharp.Wpf.csproj
-          dotnet build --no-restore ./samples/wpf/OSharp.CodeGeneration/OSharp.CodeGeneration.csproj
-          dotnet build --no-restore ./samples/wpf/OSharp.CodeGenerator/OSharp.CodeGenerator.csproj
+          dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
+          dotnet build ./samples/wpf/OSharp.CodeGeneration/OSharp.CodeGeneration.csproj
+          dotnet build ./samples/wpf/OSharp.CodeGenerator/OSharp.CodeGenerator.csproj
       - name: Windows Test
         run: |
-          dotnet test --no-restore --verbosity normal ./tests/OSharp.Tests/OSharp.Tests.csproj
-          dotnet test --no-restore --verbosity normal ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj
-          dotnet test --no-restore --verbosity normal ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj
-          dotnet test --no-restore --verbosity normal ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj
+          dotnet test --verbosity normal ./tests/OSharp.Tests/OSharp.Tests.csproj
+          dotnet test --verbosity normal ./tests/OSharp.AspNetCore.Tests/OSharp.AspNetCore.Tests.csproj
+          dotnet test --verbosity normal ./tests/OSharp.AutoMapper.Tests/OSharp.AutoMapper.Tests.csproj
+          dotnet test --verbosity normal ./tests/Liuliu.Demo.Core.Tests/Liuliu.Demo.Core.Tests.csproj
   mirror_to_gitee:
     needs: [build-on-dotnetcore, build-on-desktop]
     runs-on: ubuntu-latest
