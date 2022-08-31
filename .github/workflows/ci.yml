@@ -2,7 +2,7 @@ name: Build/Test/MirrorToGitee
 
 on:
   push:
-    branches: [dev/develop]
+    branches: [master, dev/develop]
   pull_request:
     branches: [master]
 
