@@ -36,4 +36,4 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request'}}
           file: ./docs/Dockerfile
-          tags: ${{ env.IMAGE_NAME }}:${{ github.ref_name }},${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_NAME }}:latest
