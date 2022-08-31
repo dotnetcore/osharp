@@ -20,9 +20,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v2.0.0
         with:
-          docker-login:
-            username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_LOGIN_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_LOGIN_TOKEN }}
       - name: Publish Docs
         run: |
           cd ./docs
