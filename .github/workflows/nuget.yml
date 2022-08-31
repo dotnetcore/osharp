@@ -44,7 +44,7 @@ jobs:
           dotnet pack -c Release --no-restore -o ./output ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
           dotnet pack -c Release --no-restore -o ./output ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
       - name: Publish Nupkg
-        uses: uses: dansiegel/publish-nuget@v1.2
+        uses: dansiegel/publish-nuget@v1.2
         with:
           filename: "./output/*.*nupkg"
           apiKey: ${{ secrets.NUGET_LIULIUSOFT_API_KEY }}
