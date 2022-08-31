@@ -18,7 +18,7 @@ jobs:
         with:
           dotnet-version: 3.1.x
       - name: Restore
-        run: dotnet Restore
+        run: dotnet restore
       - name: Build and Pack
         run: |
           dotnet pack -c Release --no-restore ./src/OSharp/OSharp.csproj
