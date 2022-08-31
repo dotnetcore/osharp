@@ -7,8 +7,6 @@ jobs:
       - name: Dump GitHub context
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
-      - name: Dump jobs context
-        run: echo '${{ toJSON(jobs) }}'
       - name: Dump job context
         run: echo '${{ toJSON(job) }}'
       - name: Dump steps context
@@ -19,7 +17,3 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
         run: echo '${{ toJSON(matrix) }}'
-      - name: Dump needs context
-        run: echo '${{ toJSON(needs) }}'
-      - name: Dump inputs context
-        run: echo '${{ toJSON(inputs) }}'
