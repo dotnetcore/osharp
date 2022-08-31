@@ -3,6 +3,8 @@ name: Publish Nuget Packages
 on:
   push:
     branches: [master]
+    tags:
+      - "6.0.*"
 
 jobs:
   publish_nuget_packages:
