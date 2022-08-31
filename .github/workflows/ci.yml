@@ -81,11 +81,3 @@ jobs:
         with:
           target_repo_url: git@gitee.com:i66soft/osharp.git
           ssh_private_key: ${{ secrets.OSHARP_GITHUB2GITEE }}
-  # publish_osharp_docs:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: "Build Docker Image"
-  #       run: |
-  #         cd ./docs
-  #         docker build -t osharpdocs .
