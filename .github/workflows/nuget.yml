@@ -1,0 +1,46 @@
+name: Publish Nuget Packages
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Setup dotnet3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: Restore
+        run: dotnet Restore
+      - name: Build and Pack
+        run: |
+          dotnet pack -c Release --no-restore ./src/OSharp/OSharp.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Authorization.Functions/OSharp.Authorization.Functions.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.AutoMapper/OSharp.AutoMapper.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore/OSharp.EntityFrameworkCore.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore.MySql/OSharp.EntityFrameworkCore.MySql.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore.Oracle/OSharp.EntityFrameworkCore.Oracle.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore.PostgreSql/OSharp.EntityFrameworkCore.PostgreSql.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore.Sqlite/OSharp.EntityFrameworkCore.Sqlite.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.EntityFrameworkCore.SqlServer/OSharp.EntityFrameworkCore.SqlServer.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Exceptionless/OSharp.Exceptionless.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Hangfire/OSharp.Hangfire.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Identity/OSharp.Identity.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Log4Net/OSharp.Log4Net.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.MiniProfiler/OSharp.MiniProfiler.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Redis/OSharp.Redis.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Swagger/OSharp.Swagger.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Wpf/OSharp.Wpf.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
+          dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
+      # - name: Publish
