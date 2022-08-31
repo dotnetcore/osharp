@@ -1,8 +1,8 @@
 name: Publish Nuget Packages
 
 on:
-  pull_request:
-    branches: [master]
+  push:
+    branches: [dev/develop]
 
 jobs:
   build:
@@ -43,4 +43,8 @@ jobs:
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
-      # - name: Publish
+      - name: Publish
+        uses: myci-actions/publish-nuget@5
+        with:
+          filename: "*nupkg"
+          api-key: ${{ secrets.NUGET_LIULIUSOFT_API_KEY }}
