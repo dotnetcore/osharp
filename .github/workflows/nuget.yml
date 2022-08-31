@@ -2,7 +2,7 @@ name: Publish Nuget Packages
 
 on:
   push:
-    branches: [dev/develop]
+    branches: [master]
 
 jobs:
   publish_nuget_packages:
