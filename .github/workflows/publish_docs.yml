@@ -25,7 +25,7 @@ jobs:
       - name: Publish Docs
         run: |
           cd ./docs
-          docker build -t gmf520/osharp-docs:${{steps.get_version.VERSION}} .
-          docker tag gmf520/osharp-docs:${{steps.get_version.VERSION}} gmf520/osharp-docs:latest
-          docker push gmf520/osharp-docs:${{steps.get_version.VERSION}}
-          docker push gmf520/osharp-docs:latest
+          docker build -t ${{github.actor}}/osharp-docs:${{steps.get_version.VERSION}} .
+          docker tag ${{github.actor}}/osharp-docs:${{steps.get_version.VERSION}} ${{github.actor}}/osharp-docs:latest
+          docker push ${{github.actor}}/osharp-docs:${{steps.get_version.VERSION}}
+          docker push ${{github.actor}}/osharp-docs:latest
