@@ -43,8 +43,13 @@ jobs:
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
           dotnet pack -c Release --no-restore ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
-      - name: Publish
+      - name: Publish Nupkg
         uses: myci-actions/publish-nuget@5
         with:
-          filename: "*nupkg"
+          filename: "*.nupkg"
+          api-key: ${{ secrets.NUGET_LIULIUSOFT_API_KEY }}
+      - name: Publish Snupkg
+        uses: myci-actions/publish-nuget@5
+        with:
+          filename: "*.snupkg"
           api-key: ${{ secrets.NUGET_LIULIUSOFT_API_KEY }}

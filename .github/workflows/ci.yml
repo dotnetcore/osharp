@@ -22,33 +22,30 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
-      - name: Linux Restore
-        run: |
-          dotnet restore
       - name: Linux Build
         run: |
-          dotnet build --no-restore ./src/OSharp/OSharp.csproj
-          dotnet build --no-restore ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
-          dotnet build --no-restore ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj
-          dotnet build --no-restore ./src/OSharp.Authorization.Functions/OSharp.Authorization.Functions.csproj
-          dotnet build --no-restore ./src/OSharp.AutoMapper/OSharp.AutoMapper.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore/OSharp.EntityFrameworkCore.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore.MySql/OSharp.EntityFrameworkCore.MySql.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore.Oracle/OSharp.EntityFrameworkCore.Oracle.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore.PostgreSql/OSharp.EntityFrameworkCore.PostgreSql.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore.Sqlite/OSharp.EntityFrameworkCore.Sqlite.csproj
-          dotnet build --no-restore ./src/OSharp.EntityFrameworkCore.SqlServer/OSharp.EntityFrameworkCore.SqlServer.csproj
-          dotnet build --no-restore ./src/OSharp.Exceptionless/OSharp.Exceptionless.csproj
-          dotnet build --no-restore ./src/OSharp.Hangfire/OSharp.Hangfire.csproj
-          dotnet build --no-restore ./src/OSharp.Identity/OSharp.Identity.csproj
-          dotnet build --no-restore ./src/OSharp.Log4Net/OSharp.Log4Net.csproj
-          dotnet build --no-restore ./src/OSharp.MiniProfiler/OSharp.MiniProfiler.csproj
-          dotnet build --no-restore ./src/OSharp.NLog/OSharp.NLog.csproj
-          dotnet build --no-restore ./src/OSharp.Redis/OSharp.Redis.csproj
-          dotnet build --no-restore ./src/OSharp.Swagger/OSharp.Swagger.csproj
-          dotnet build --no-restore ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
-          dotnet build --no-restore ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
-          dotnet build --no-restore ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
+          dotnet build ./src/OSharp/OSharp.csproj
+          dotnet build ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
+          dotnet build ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj
+          dotnet build ./src/OSharp.Authorization.Functions/OSharp.Authorization.Functions.csproj
+          dotnet build ./src/OSharp.AutoMapper/OSharp.AutoMapper.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore/OSharp.EntityFrameworkCore.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore.MySql/OSharp.EntityFrameworkCore.MySql.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore.Oracle/OSharp.EntityFrameworkCore.Oracle.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore.PostgreSql/OSharp.EntityFrameworkCore.PostgreSql.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore.Sqlite/OSharp.EntityFrameworkCore.Sqlite.csproj
+          dotnet build ./src/OSharp.EntityFrameworkCore.SqlServer/OSharp.EntityFrameworkCore.SqlServer.csproj
+          dotnet build ./src/OSharp.Exceptionless/OSharp.Exceptionless.csproj
+          dotnet build ./src/OSharp.Hangfire/OSharp.Hangfire.csproj
+          dotnet build ./src/OSharp.Identity/OSharp.Identity.csproj
+          dotnet build ./src/OSharp.Log4Net/OSharp.Log4Net.csproj
+          dotnet build ./src/OSharp.MiniProfiler/OSharp.MiniProfiler.csproj
+          dotnet build ./src/OSharp.NLog/OSharp.NLog.csproj
+          dotnet build ./src/OSharp.Redis/OSharp.Redis.csproj
+          dotnet build ./src/OSharp.Swagger/OSharp.Swagger.csproj
+          dotnet build ./src/OSharp.Hosting.Core/OSharp.Hosting.Core.csproj
+          dotnet build ./src/OSharp.Hosting.EntityConfiguration/OSharp.Hosting.EntityConfiguration.csproj
+          dotnet build ./src/OSharp.Hosting.Apis/OSharp.Hosting.Apis.csproj
   build-on-desktop:
     runs-on: windows-latest
     steps:
