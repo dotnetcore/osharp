@@ -1,7 +1,10 @@
 name: Publish Osharp Docs
 on:
   push:
-    branches: [master, dev/develop]
+    branches: [master]
+  paths:
+    - "docs/**"
+    - ".github/workflows/osharp_docs.yml"
 
 env:
   REGISTRY: docker.io
@@ -15,16 +18,38 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: Build Docker Image
-      #   run: |
-      #     cd ./docs
-      #     docker build -t ${{env.IMAGE_NAME}}::latest .
-      #     docker push $REGISTRY/$IMAGE_NAME:$GITHUB_SHA
-      #     docker push $REGISTRY/$IMAGE_NAME:latest
-
+      # 由于docs.osharp的发布可能会比较频繁，使用当前时间的"月日时分"作为子版本token
+      - name: Get Time Version Token
+        id: current_time
+        run: echo "::set-output name=time::$(date +'%m%d%H%M')"
+      # 取最后一个git tag 并拆分出主版本号作为主版本
+      - name: Get Last Tag
+        id: last_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+      - name: Split Tag
+        id: split_tag
+        uses: jungwinter/split@v2
+        with:
+          msg: ${{ steps.last_tag.outputs.tag }}
+          separator: "-"
+      - name: Build Docker Image
+        env:
+          VERSION: "${{ steps.split_tag.outputs._0 }}.${{ steps.current_time.outputs.time }}"
+        run: |
+          cd ./docs
+          echo "Build docker image, tag: ${{env.IMAGE_NAME}}:${{env.VERSION}}"
+          docker build -t ${{env.IMAGE_NAME}}:${{env.VERSION}} .
+          docker tag ${{env.IMAGE_NAME}}:${{env.VERSION}} ${{env.IMAGE_NAME}}:latest
       - name: Docker Login
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_LOGIN_TOKEN }}
+      - name: Push Docker Image
+        env:
+          VERSION: "${{ steps.split_tag.outputs._0 }}.${{ steps.current_time.outputs.time }}"
+        run: |
+          echo "Push docker image, tag: ${{env.IMAGE_NAME}}:${{env.VERSION}}"
+          docker push ${{env.IMAGE_NAME}}:${{env.VERSION}}
+          docker push ${{env.IMAGE_NAME}}:latest
