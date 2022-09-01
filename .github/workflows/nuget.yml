@@ -5,6 +5,9 @@ on:
     branches: [master]
     tags:
       - "6.0.*"
+    paths:
+      - "src/**"
+      - ".github/workflows/nuget.yml"
 
 jobs:
   publish_nuget_packages:
