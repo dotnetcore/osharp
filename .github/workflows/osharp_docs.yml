@@ -2,9 +2,9 @@ name: Publish Osharp Docs
 on:
   push:
     branches: [master]
-  paths:
-    - "docs/**"
-    - ".github/workflows/osharp_docs.yml"
+    paths:
+      - "docs/**"
+      - ".github/workflows/osharp_docs.yml"
 
 env:
   REGISTRY: docker.io
