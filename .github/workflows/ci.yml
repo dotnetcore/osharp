@@ -1,6 +1,7 @@
 name: Build/Test/MirrorToGitee
 
 on:
+  workflow_dispatch:
   push:
     branches: [master, dev/develop]
   pull_request:
