@@ -1,7 +1,7 @@
 # OSharp Framework
 
 [![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
-[![depoly action](https://github.com/dotnetcore/OSharp/workflows/CI/badge.svg)](https://github.com/dotnetcore/OSharp/actions?query=workflow%3A%22CI%22)
+[![depoly action](https://github.com/dotnetcore/osharp/workflows/Build/Test/MirrorToGitee/badge.svg)](https://github.com/dotnetcore/osharp/actions/workflows/ci.yml)
 [![NuGet Badge](https://buildstats.info/nuget/osharp.core)](https://www.nuget.org/packages/osharpns/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/i66soft/osharp-ns20/master/LICENSE)
 
@@ -21,11 +21,18 @@
 
 OSharp 全称 OSharp Framework with .NetStandard2.x，是一个基于.NetStandard2.x 开发的一个.NetCore 快速开发框架。这个框架使用最新稳定版的.NetCore SDK（当前是.NET Core 3.1），对 AspNetCore 的配置、依赖注入、日志、缓存、实体框架、Mvc(WebApi)、身份认证、权限授权等模块进行更高一级的自动化封装，并规范了一套业务实现的代码结构与操作流程，使 .Net Core 框架更易于应用到实际项目开发中。
 
-相关示例项目：
+### 项目地址
+-   Github: [https://github.com/dotnetcore/osharp](https://github.com/dotnetcore/osharp)
+-   Gitee(镜像): [https://gitee.com/i66soft/osharp](https://gitee.com/i66soft/osharp)
 
--   Vue 版本(vben): [https://github.com/zionLZH/osharp-vben-admin](https://github.com/zionLZH/osharp-vben-admin)
+
+### 相关示例项目：
+
+-   Vue 版本(vben): 
+    -   [https://github.com/zionLZH/osharp-vben-admin](https://github.com/zionLZH/osharp-vben-admin)
+    -   [https://github.com/gmf520/osharp-vben-template](https://github.com/gmf520/osharp-vben-template)
 -   Mvc 版本(layui): [https://github.com/gmf520/osharp-layui](https://github.com/gmf520/osharp-layui)
--   Angular 版本(ng-alain): [https://github.com/dotnetcore/osharp/tree/master/samples/web/ui-clients/ng-alain8](https://github.com/dotnetcore/osharp/tree/master/samples/web/ui-clients/ng-alain8)
+-   Angular 版本(ng-alain): [https://github.com/dotnetcore/osharp/tree/releases/net6/samples/web/ui-clients/ng-alain8](https://github.com/dotnetcore/osharp/tree/releases/net6/samples/web/ui-clients/ng-alain8)
 
 ### 框架组件组织
 
@@ -318,3 +325,7 @@ OSharp 当前版本（6.0.0）使用了 `.net` 当前最新版本 `6.0.0`，所�
     -   [x] OSharp.Authorization.Datas
         -   [x] 实现`角色-实体`，`用户-实体`的数据权限配置
         -   [x] 实现`角色-实体`，`用户-实体`的数据权限过滤
+
+## 感谢
+[![](https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31)](https://dotnet.microsoft.com/zh-cn/)
+[![JetBrains Resharper](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/resharper/)
