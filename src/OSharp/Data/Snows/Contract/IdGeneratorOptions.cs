@@ -25,7 +25,7 @@ namespace OSharp.Data.Snows
         /// 开始时间（UTC格式）
         /// 不能超过当前系统时间
         /// </summary>
-        public virtual DateTime BaseTime { get; set; } = new DateTime(2020, 2, 20, 2, 20, 2, 20, DateTimeKind.Utc);
+        public virtual DateTime BaseTime { get; set; } = new DateTime(2022, 10, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// 机器码
@@ -74,6 +74,7 @@ namespace OSharp.Data.Snows
 
         public IdGeneratorOptions(ushort workerId)
         {
+            // ReSharper disable once VirtualMemberCallInConstructor
             WorkerId = workerId;
         }
     }

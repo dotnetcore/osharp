@@ -14,9 +14,9 @@ namespace OSharp.Data.Snows
     /// </summary>
     public class IdHelper
     {
-        private static IIdGenerator _IdGenInstance = null;
+        private static IIdGenerator _idGenInstance = null;
 
-        public static IIdGenerator IdGenInstance => _IdGenInstance;
+        public static IIdGenerator IdGenInstance => _idGenInstance;
 
         /// <summary>
         /// 设置参数，建议程序初始化时执行一次
@@ -24,7 +24,7 @@ namespace OSharp.Data.Snows
         /// <param name="options"></param>
         public static void SetIdGenerator(IdGeneratorOptions options)
         {
-            _IdGenInstance = new DefaultIdGenerator(options);
+            _idGenInstance = new DefaultIdGenerator(options);
         }
 
         /// <summary>
@@ -35,14 +35,14 @@ namespace OSharp.Data.Snows
         /// <returns></returns>
         public static long NextId()
         {
-            if (_IdGenInstance == null)
+            if (_idGenInstance == null)
             {
-                _IdGenInstance = new DefaultIdGenerator(
+                _idGenInstance = new DefaultIdGenerator(
                     new IdGeneratorOptions() { WorkerId = 1 }
                     );
             }
 
-            return _IdGenInstance.NewLong();
+            return _idGenInstance.NewLong();
         }
 
     }
