@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IUpdateAudited.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -15,12 +15,12 @@ namespace OSharp.Entity
     /// <summary>
     /// 定义更新审计的信息
     /// </summary>
-    public interface IUpdateAudited<TUserKey> where TUserKey : struct
+    public interface IUpdateAudited<TUserKey>
     {
         /// <summary>
         /// 获取或设置 更新者编号
         /// </summary>
-        TUserKey? LastUpdaterId { get; set; }
+        TUserKey LastUpdaterId { get; set; }
 
         /// <summary>
         /// 获取或设置 最后更新时间

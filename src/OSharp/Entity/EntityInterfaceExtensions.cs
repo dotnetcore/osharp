@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -71,7 +71,7 @@ namespace OSharp.Entity
         public static TEntity CheckICreationAudited<TEntity, TKey, TUserKey>(this TEntity entity, IPrincipal user)
             where TEntity : IEntity<TKey>
             where TKey : IEquatable<TKey>
-            where TUserKey : struct, IEquatable<TUserKey>
+            where TUserKey : IEquatable<TUserKey>
         {
             if (!(entity is ICreationAudited<TUserKey>))
             {
@@ -79,7 +79,7 @@ namespace OSharp.Entity
             }
 
             ICreationAudited<TUserKey> entity1 = (ICreationAudited<TUserKey>)entity;
-            entity1.CreatorId = user.Identity.IsAuthenticated ? (TUserKey?)user.Identity.GetUserId<TUserKey>() : null;
+            entity1.CreatorId = user.Identity.IsAuthenticated ? (TUserKey)user.Identity.GetUserId<TUserKey>() : default;
             if (entity1.CreatedTime == default(DateTime))
             {
                 entity1.CreatedTime = DateTime.Now;
@@ -93,7 +93,7 @@ namespace OSharp.Entity
         public static TEntity CheckIUpdateAudited<TEntity, TKey, TUserKey>(this TEntity entity, IPrincipal user)
             where TEntity : IEntity<TKey>
             where TKey : IEquatable<TKey>
-            where TUserKey : struct, IEquatable<TUserKey>
+            where TUserKey : IEquatable<TUserKey>
         {
             if (!(entity is IUpdateAudited<TUserKey>))
             {
@@ -101,7 +101,7 @@ namespace OSharp.Entity
             }
 
             IUpdateAudited<TUserKey> entity1 = (IUpdateAudited<TUserKey>)entity;
-            entity1.LastUpdaterId = user.Identity.IsAuthenticated ? (TUserKey?)user.Identity.GetUserId<TUserKey>() : null;
+            entity1.LastUpdaterId = user.Identity.IsAuthenticated ? (TUserKey)user.Identity.GetUserId<TUserKey>() : default;
             entity1.LastUpdatedTime = DateTime.Now;
             return (TEntity)entity1;
         }

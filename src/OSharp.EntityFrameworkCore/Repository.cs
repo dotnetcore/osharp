@@ -920,7 +920,7 @@ namespace OSharp.Entity
 
 #endregion
 
-#region 私有方法
+        #region 私有方法
 
         private static void CheckEntityKey(object key, string keyName)
         {
@@ -1022,9 +1022,13 @@ namespace OSharp.Entity
                 {
                     entities[i] = entity.CheckICreationAudited<TEntity, TKey, Guid>(_principal);
                 }
-                else
+                else if(userIdTypeName == typeof(long).FullName)
                 {
                     entities[i] = entity.CheckICreationAudited<TEntity, TKey, long>(_principal);
+                }
+                else
+                {
+                    entities[i] = entity.CheckICreationAudited<TEntity, TKey, string>(_principal);
                 }
             }
 
@@ -1079,6 +1083,6 @@ namespace OSharp.Entity
             }
         }
 
-#endregion
+        #endregion
     }
 }
