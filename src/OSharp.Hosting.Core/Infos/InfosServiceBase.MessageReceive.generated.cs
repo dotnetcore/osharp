@@ -59,7 +59,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessageReceives(params MessageReceiveInputDto[] dtos)
         {
-            Check.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
             return MessageReceiveRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessageReceives(params MessageReceiveInputDto[] dtos)
         {
-            Check.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
             return MessageReceiveRepository.UpdateAsync(dtos);
         }
         

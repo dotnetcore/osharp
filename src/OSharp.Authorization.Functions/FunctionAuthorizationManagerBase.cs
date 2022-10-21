@@ -155,7 +155,7 @@ namespace OSharp.Authorization
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateFunctions(params TFunctionInputDto[] dtos)
         {
-            Check.Validate<TFunctionInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<TFunctionInputDto, Guid>(dtos, nameof(dtos));
 
             OperationResult result = await FunctionRepository.UpdateAsync(dtos,
                 (dto, entity) =>

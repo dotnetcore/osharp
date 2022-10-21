@@ -54,7 +54,7 @@ namespace Liuliu.Demo.Identity
         /// <returns>业务操作结果</returns>
         public async Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
         {
-            Check.Validate<UserRoleInputDto,Guid>(dtos, nameof(dtos));
+            Check2.Validate<UserRoleInputDto,Guid>(dtos, nameof(dtos));
 
             List<string> userNames = new List<string>();
             OperationResult result = await _userRoleRepository.UpdateAsync(dtos,

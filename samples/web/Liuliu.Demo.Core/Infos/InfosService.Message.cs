@@ -33,7 +33,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public override async Task<OperationResult> CreateMessages(params MessageInputDto[] dtos)
         {
-            Check.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
             List<Message> messages = new List<Message>();
 
             OperationResult result = await MessageRepository.InsertAsync(dtos,

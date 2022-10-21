@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DataAuthorizationManagerBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -95,7 +95,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateEntityInfos(params TEntityInfoInputDto[] dtos)
         {
-            Check.Validate<TEntityInfoInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<TEntityInfoInputDto, Guid>(dtos, nameof(dtos));
             return EntityInfoRepository.UpdateAsync(dtos);
         }
 
@@ -139,7 +139,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> CreateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
 
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await EntityRoleRepository.InsertAsync(dtos,
@@ -194,7 +194,7 @@ namespace OSharp.Authorization.DataAuthorization
         /// <returns>业务操作结果</returns>
         public virtual async Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos)
         {
-            Check.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
 
             DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
             OperationResult result = await EntityRoleRepository.UpdateAsync(dtos,

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SystemsService.MenuInfo.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -46,7 +46,7 @@ namespace OSharp.Hosting.Systems
         public Task<OperationResult> CreateMenuInfos(params MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInputDto, int>(dtos, nameof(dtos));
+            Check2.Validate<MenuInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.InsertAsync(dtos,
                 async dto =>
@@ -84,7 +84,7 @@ namespace OSharp.Hosting.Systems
         public Task<OperationResult> UpdateMenuInfos(params MenuInputDto[] dtos)
         {
             Check.NotNull(dtos, nameof(dtos));
-            Check.Validate<MenuInputDto, int>(dtos, nameof(dtos));
+            Check2.Validate<MenuInputDto, int>(dtos, nameof(dtos));
 
             return MenuInfoRepository.UpdateAsync(dtos,
                 async (dto, entity) =>

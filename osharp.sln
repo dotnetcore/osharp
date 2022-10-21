@@ -37,15 +37,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E0B758C
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.github\workflows\ci.yml = .github\workflows\ci.yml
-		.github\workflows\nuget.yml = .github\workflows\nuget.yml
-		.github\workflows\osharp_docs.yml = .github\workflows\osharp_docs.yml
 		build\nuget-build.ps1 = build\nuget-build.ps1
 		build\nuget-delete.ps1 = build\nuget-delete.ps1
 		build\nuget-push.ps1 = build\nuget-push.ps1
+		.github\workflows\nuget.yml = .github\workflows\nuget.yml
 		build\OSharpNS.nuspec = build\OSharpNS.nuspec
+		.github\workflows\osharp_docs.yml = .github\workflows\osharp_docs.yml
 		build\public.props = build\public.props
 		README.md = README.md
-		docs\articles\updatelogs.md = docs\articles\updatelogs.md
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
@@ -100,6 +99,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.CodeGenerator", "samples\wpf\OSharp.CodeGenerator\OSharp.CodeGenerator.csproj", "{29A89671-7559-42E0-A31B-E60C74E34DFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EAB58D71-D589-4C22-A198-F7AE358B37D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSharp.Utils", "src\OSharp.Utils\OSharp.Utils.csproj", "{AC6C304E-F644-4FCB-8C52-12CE7E182CA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -243,6 +244,10 @@ Global
 		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29A89671-7559-42E0-A31B-E60C74E34DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC6C304E-F644-4FCB-8C52-12CE7E182CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6C304E-F644-4FCB-8C52-12CE7E182CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6C304E-F644-4FCB-8C52-12CE7E182CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6C304E-F644-4FCB-8C52-12CE7E182CA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,6 +290,7 @@ Global
 		{97B4E7FF-7596-4115-BA85-40A28AD1D6E3} = {D06C79AC-DB5A-4379-BA2B-5208CF3FBC23}
 		{4D9690CA-6FF2-4506-9DC2-3BA79D30B34F} = {97B4E7FF-7596-4115-BA85-40A28AD1D6E3}
 		{29A89671-7559-42E0-A31B-E60C74E34DFD} = {97B4E7FF-7596-4115-BA85-40A28AD1D6E3}
+		{AC6C304E-F644-4FCB-8C52-12CE7E182CA5} = {611006C4-BCE9-4EDC-8473-A85530C7FADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A8840B-B7DE-410D-9FA7-BA36515D2E11}

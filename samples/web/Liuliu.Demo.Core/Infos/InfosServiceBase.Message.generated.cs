@@ -59,7 +59,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessages(params MessageInputDto[] dtos)
         {
-            Check.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
             return MessageRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessages(params MessageInputDto[] dtos)
         {
-            Check.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
             return MessageRepository.UpdateAsync(dtos);
         }
         

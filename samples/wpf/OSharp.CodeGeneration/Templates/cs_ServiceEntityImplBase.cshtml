@@ -72,7 +72,7 @@ namespace @(entity.Module.Namespace)
         /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
         public virtual Task&lt;OperationResult&gt; Create@(entity.Name.ToPlural())(params @(entity.Name)InputDto[] dtos)
         {
-            Check.Validate&lt;@(entity.Name)InputDto, @(keyType)&gt;(dtos, nameof(dtos));
+            Check2.Validate&lt;@(entity.Name)InputDto, @(keyType)&gt;(dtos, nameof(dtos));
             return @(entity.Name)Repository.InsertAsync(dtos);
         }
 </text>
@@ -87,7 +87,7 @@ namespace @(entity.Module.Namespace)
         /// &lt;returns&gt;业务操作结果&lt;/returns&gt;
         public virtual Task&lt;OperationResult&gt; Update@(entity.Name.ToPlural())(params @(entity.Name)InputDto[] dtos)
         {
-            Check.Validate&lt;@(entity.Name)InputDto, @(keyType)&gt;(dtos, nameof(dtos));
+            Check2.Validate&lt;@(entity.Name)InputDto, @(keyType)&gt;(dtos, nameof(dtos));
             return @(entity.Name)Repository.UpdateAsync(dtos);
         }
 </text>

@@ -59,7 +59,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessageReplies(params MessageReplyInputDto[] dtos)
         {
-            Check.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
             return MessageReplyRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessageReplies(params MessageReplyInputDto[] dtos)
         {
-            Check.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
             return MessageReplyRepository.UpdateAsync(dtos);
         }
         

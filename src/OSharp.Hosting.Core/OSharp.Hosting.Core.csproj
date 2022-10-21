@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.3.0" />
+    <PackageReference Include="MailKit" Version="3.4.1" />
     <PackageReference Include="Lazy.Captcha.Core" Version="1.1.6" />
   </ItemGroup>
 
