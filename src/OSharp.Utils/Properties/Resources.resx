@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnyRadixConvert_CharacterIsNotValid" xml:space="preserve">
+    <value>参数中的字符\"{0}\"不是 {1} 进制数的有效字符。</value>
+  </data>
+  <data name="AnyRadixConvert_Overflow" xml:space="preserve">
+    <value>进制转换溢出。</value>
+  </data>
+  <data name="Caching_CacheNotInitialized" xml:space="preserve">
+    <value>缓存功能尚未初始化，未找到可用的 ICacheProvider 实现。</value>
+  </data>
+  <data name="ConfigFile_ItemKeyDefineRepeated" xml:space="preserve">
+    <value>标识为“{0}”的项重复定义</value>
+  </data>
+  <data name="ConfigFile_NameToTypeIsNull" xml:space="preserve">
+    <value>名称为“{0}”的类型不存在</value>
+  </data>
+  <data name="Context_BuildServicesFirst" xml:space="preserve">
+    <value>请先初始化依赖注入服务，再使用OSharpContext.IocRegisterServices属性</value>
+  </data>
+  <data name="DbContextInitializerConfig_InitializerNotExists" xml:space="preserve">
+    <value>上下文初始化类型“{0}”不存在</value>
+  </data>
+  <data name="Filter_GroupOperateError" xml:space="preserve">
+    <value>查询条件组中的操作类型错误，只能为And或者Or。</value>
+  </data>
+  <data name="Filter_RuleFieldInTypeNotFound" xml:space="preserve">
+    <value>指定的属性“{0}”在类型“{1}”中不存在。</value>
+  </data>
+  <data name="Http_Seciruty_Client_DecryptResponse_Failt" xml:space="preserve">
+    <value>返回数据处理错误，请重试操作。</value>
+  </data>
+  <data name="Http_Security_Client_EncryptRequest_Failt" xml:space="preserve">
+    <value>客户端对发送数据进行加密处理时发生异常。</value>
+  </data>
+  <data name="Http_Security_Client_VerifyResponse_Failt" xml:space="preserve">
+    <value>客户端对返回数据签名验证未通过。</value>
+  </data>
+  <data name="Http_Security_Host_DecryptRequest_Failt" xml:space="preserve">
+    <value>服务器对请求数据进行解密处理时发生异常。</value>
+  </data>
+  <data name="Http_Security_Host_EncryptResponse_Failt" xml:space="preserve">
+    <value>服务器对返回数据进行加密处理时发生异常。</value>
+  </data>
+  <data name="IocInitializerBase_TypeNotIRepositoryType" xml:space="preserve">
+    <value>类型“{0}”不是仓储接口“IRepository&lt;,&gt;”的派生类。</value>
+  </data>
+  <data name="IocInitializerBase_TypeNotIUnitOfWorkType" xml:space="preserve">
+    <value>类型“{0}”不是操作单元“IUnitOfWork”的派生类。</value>
+  </data>
+  <data name="Ioc_CannotResolveService" xml:space="preserve">
+    <value>无法解析类型“{0}”的构造函数中类型为“{1}”的参数</value>
+  </data>
+  <data name="Ioc_FrameworkNotInitialized" xml:space="preserve">
+    <value>OSharp框架尚未初始化，请先初始化</value>
+  </data>
+  <data name="Ioc_ImplementationTypeNotFound" xml:space="preserve">
+    <value>类型“{0}”的实现类型无法找到</value>
+    <comment>{0}=service type</comment>
+  </data>
+  <data name="Ioc_NoConstructorMatch" xml:space="preserve">
+    <value>类型“{0}”中找不到合适参数的构造函数</value>
+  </data>
+  <data name="Ioc_TryAddIndistinguishableTypeToEnumerable" xml:space="preserve">
+    <value>实现类型不能为“{0}”，因为该类型与注册为“{1}”的其他类型无法区分</value>
+  </data>
+  <data name="Logging_CreateLogInstanceReturnNull" xml:space="preserve">
+    <value>创建名称为“{0}”的日志实例时“{1}”返回空实例。</value>
+  </data>
+  <data name="Map_MapperIsNull" xml:space="preserve">
+    <value>MapperExtensions.Mapper不能为空，请先设置值</value>
+  </data>
+  <data name="Mef_HttpContextItems_NotFoundRequestContainer" xml:space="preserve">
+    <value>当前Http上下文中不存在Request有效范围的Mef部件容器。</value>
+  </data>
+  <data name="ObjectExtensions_PropertyNameNotExistsInType" xml:space="preserve">
+    <value>指定对象中不存在名称为“{0}”的属性。</value>
+  </data>
+  <data name="ObjectExtensions_PropertyNameNotFixedType" xml:space="preserve">
+    <value>指定名称“{0}”的属性类型不是“{1}”。</value>
+  </data>
+  <data name="ParameterCheck_Between" xml:space="preserve">
+    <value>参数“{0}”的值必须在“{1}”与“{2}”之间。</value>
+  </data>
+  <data name="ParameterCheck_BetweenNotEqual" xml:space="preserve">
+    <value>参数“{0}”的值必须在“{1}”与“{2}”之间，且不能等于“{3}”。</value>
+  </data>
+  <data name="ParameterCheck_DirectoryNotExists" xml:space="preserve">
+    <value>指定的目录路径“{0}”不存在。</value>
+  </data>
+  <data name="ParameterCheck_FileNotExists" xml:space="preserve">
+    <value>指定的文件路径“{0}”不存在。</value>
+  </data>
+  <data name="ParameterCheck_NotContainsNull_Collection" xml:space="preserve">
+    <value>集合“{0}”中不能包含null的项</value>
+  </data>
+  <data name="ParameterCheck_NotEmpty_Guid" xml:space="preserve">
+    <value>参数“{0}”的值不能为Guid.Empty</value>
+  </data>
+  <data name="ParameterCheck_NotGreaterThan" xml:space="preserve">
+    <value>参数“{0}”的值必须大于“{1}”。</value>
+  </data>
+  <data name="ParameterCheck_NotGreaterThanOrEqual" xml:space="preserve">
+    <value>参数“{0}”的值必须大于或等于“{1}”。</value>
+  </data>
+  <data name="ParameterCheck_NotLessThan" xml:space="preserve">
+    <value>参数“{0}”的值必须小于“{1}”。</value>
+  </data>
+  <data name="ParameterCheck_NotLessThanOrEqual" xml:space="preserve">
+    <value>参数“{0}”的值必须小于或等于“{1}”。</value>
+  </data>
+  <data name="ParameterCheck_NotNull" xml:space="preserve">
+    <value>参数“{0}”不能为空引用。</value>
+  </data>
+  <data name="ParameterCheck_NotNullOrEmpty_Collection" xml:space="preserve">
+    <value>参数“{0}”不能为空引用或空集合。</value>
+  </data>
+  <data name="ParameterCheck_NotNullOrEmpty_String" xml:space="preserve">
+    <value>参数“{0}”不能为空引用或空字符串。</value>
+  </data>
+  <data name="QueryCacheExtensions_TypeNotEntityType" xml:space="preserve">
+    <value>类型“{0}”不是实体类型</value>
+  </data>
+</root>
