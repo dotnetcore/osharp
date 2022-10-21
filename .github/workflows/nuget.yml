@@ -27,6 +27,7 @@ jobs:
         run: dotnet restore
       - name: Build and Pack
         run: |
+          dotnet pack -c Release --no-restore -o ./output ./src/OSharp.Utils/OSharp.Utils.csproj
           dotnet pack -c Release --no-restore -o ./output ./src/OSharp/OSharp.csproj
           dotnet pack -c Release --no-restore -o ./output ./src/OSharp.AspNetCore/OSharp.AspNetCore.csproj
           dotnet pack -c Release --no-restore -o ./output ./src/OSharp.Authorization.Datas/OSharp.Authorization.Datas.csproj

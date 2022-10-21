@@ -1,4 +1,4 @@
-﻿#Requires -Version 6
+#Requires -Version 6
 
 function WriteXml([System.Xml.XmlDocument]$xml, [string]$file)
 {
@@ -55,15 +55,37 @@ function BuildNugetPackages()
         Write-Host "创建文件夹：$($output)"
     }
 
-    $projs = @("OSharp", "OSharp.AspNetCore", "OSharp.Authorization.Datas", "OSharp.Authorization.Functions", 
-"OSharp.AutoMapper", "OSharp.EntityFrameworkCore","OSharp.EntityFrameworkCore.MySql", "OSharp.EntityFrameworkCore.Oracle", 
-"OSharp.EntityFrameworkCore.PostgreSql", "OSharp.EntityFrameworkCore.Sqlite","OSharp.EntityFrameworkCore.SqlServer", 
-"OSharp.Exceptionless", "OSharp.Hangfire", "OSharp.Hosting.Apis", "OSharp.Hosting.Core", "OSharp.Hosting.EntityConfiguration", 
-"OSharp.Identity", "OSharp.Log4Net", "OSharp.MiniProfiler", "OSharp.Redis", "OSharp.Swagger", "OSharp.Wpf")
+    $projs = @(
+    "OSharp.Utils",
+    "OSharp",
+    "OSharp.AspNetCore",
+    "OSharp.AutoMapper",
+    "OSharp.Exceptionless",
+    "OSharp.Hangfire",
+    "OSharp.Log4Net",
+    "OSharp.MiniProfiler",
+    "OSharp.Redis",
+    "OSharp.Swagger",
+    "OSharp.Wpf",
+    "OSharp.EntityFrameworkCore",
+    "OSharp.EntityFrameworkCore.MySql",
+    "OSharp.EntityFrameworkCore.Oracle", 
+    "OSharp.EntityFrameworkCore.PostgreSql",
+    "OSharp.EntityFrameworkCore.Sqlite",
+    "OSharp.EntityFrameworkCore.SqlServer", 
+    "OSharp.Identity",
+    "OSharp.Authorization.Datas",
+    "OSharp.Authorization.Functions",
+    "OSharp.Hosting.Core",
+    "OSharp.Hosting.EntityConfiguration", 
+    "OSharp.Hosting.Apis"
+    )
     foreach($proj in $projs)
     {
         $path = "$($rootPath)/src/$($proj)/$($proj).csproj"
+        Write-Host "`n正在编译：$($proj)"
         dotnet build $path -c Release
+        Write-Host "`n正在打包：$($proj)"
         dotnet pack $path -c Release --output $output
     }
 
