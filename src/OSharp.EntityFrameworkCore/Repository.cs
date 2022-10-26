@@ -135,6 +135,7 @@ namespace OSharp.Entity
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+            Dictionary<TInputDto, TEntity> dict = new Dictionary<TInputDto, TEntity>();
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -150,7 +151,7 @@ namespace OSharp.Entity
                     }
                     entity = CheckInsert(entity)[0];
                     _dbSet.Add(entity);
-                    dto.Id = entity.Id;
+                    dict.Add(dto, entity);
                 }
                 catch (OsharpException e)
                 {
@@ -164,6 +165,11 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = _dbContext.SaveChanges();
+            foreach (var item in dict)
+            {
+                item.Key.Id = item.Value.Id;
+            }
+
             unitOfWork.Commit();
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
@@ -605,6 +611,7 @@ namespace OSharp.Entity
             Check.NotNull(dtos, nameof(dtos));
             List<string> names = new List<string>();
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+            Dictionary<TInputDto, TEntity> dict = new Dictionary<TInputDto, TEntity>();
             foreach (TInputDto dto in dtos)
             {
                 try
@@ -620,7 +627,7 @@ namespace OSharp.Entity
                     }
                     entity = CheckInsert(entity)[0];
                     await _dbSet.AddAsync(entity, _cancellationTokenProvider.Token);
-                    dto.Id = entity.Id;
+                    dict.Add(dto, entity);
                 }
                 catch (OsharpException e)
                 {
@@ -634,6 +641,10 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
+            foreach (var item in dict)
+            {
+                item.Key.Id = item.Value.Id;
+            }
 #if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
 #else
