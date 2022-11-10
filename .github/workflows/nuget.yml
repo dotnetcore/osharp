@@ -19,10 +19,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
-      - name: Setup dotnet3.1
+      - name: Setup dotnet7.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.x
+          dotnet-version: 7.0.x
       - name: Restore
         run: dotnet restore
       - name: Build and Pack
