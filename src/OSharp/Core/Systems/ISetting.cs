@@ -7,11 +7,10 @@
 //  <last-date>2018-08-24 11:56</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Systems
-{
-    /// <summary>
-    /// 定义设置信息
-    /// </summary>
-    public interface ISetting
-    { }
-}
+namespace OSharp.Core.Systems;
+
+/// <summary>
+/// 定义设置信息
+/// </summary>
+public interface ISetting
+{ }

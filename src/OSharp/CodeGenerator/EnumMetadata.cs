@@ -7,46 +7,45 @@
 //  <last-date>2018-08-06 12:44</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.CodeGenerator
+namespace OSharp.CodeGenerator;
+
+/// <summary>
+/// 枚举类型元数据
+/// </summary>
+public class EnumMetadata
 {
     /// <summary>
-    /// 枚举类型元数据
+    /// 初始化一个<see cref="EnumMetadata"/>类型的新实例
     /// </summary>
-    public class EnumMetadata
+    public EnumMetadata()
+    { }
+
+    /// <summary>
+    /// 初始化一个<see cref="EnumMetadata"/>类型的新实例
+    /// </summary>
+    public EnumMetadata(Enum enumItem)
     {
-        /// <summary>
-        /// 初始化一个<see cref="EnumMetadata"/>类型的新实例
-        /// </summary>
-        public EnumMetadata()
-        { }
-
-        /// <summary>
-        /// 初始化一个<see cref="EnumMetadata"/>类型的新实例
-        /// </summary>
-        public EnumMetadata(Enum enumItem)
+        if (enumItem == null)
         {
-            if (enumItem == null)
-            {
-                return;
-            }
-            Value = enumItem.CastTo<int>();
-            Name = enumItem.ToString();
-            Display = enumItem.ToDescription();
+            return;
         }
-
-        /// <summary>
-        /// 获取或设置 枚举值
-        /// </summary>
-        public int Value { get; set; }
-
-        /// <summary>
-        /// 获取或设置 枚举名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 获取或设置 显示名称
-        /// </summary>
-        public string Display { get; set; }
+        Value = enumItem.CastTo<int>();
+        Name = enumItem.ToString();
+        Display = enumItem.ToDescription();
     }
+
+    /// <summary>
+    /// 获取或设置 枚举值
+    /// </summary>
+    public int Value { get; set; }
+
+    /// <summary>
+    /// 获取或设置 枚举名
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// 获取或设置 显示名称
+    /// </summary>
+    public string Display { get; set; }
 }

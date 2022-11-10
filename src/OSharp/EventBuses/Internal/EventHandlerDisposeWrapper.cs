@@ -7,36 +7,35 @@
 //  <last-date>2018-12-21 1:12</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBuses.Internal
+namespace OSharp.EventBuses.Internal;
+
+/// <summary>
+/// <see cref="IEventHandler"/>事件处理器的可释放包装
+/// </summary>
+public class EventHandlerDisposeWrapper : Disposable
 {
+    private readonly Action _disposeAction;
+
     /// <summary>
-    /// <see cref="IEventHandler"/>事件处理器的可释放包装
+    /// 初始化一个<see cref="EventHandlerDisposeWrapper"/>类型的新实例
     /// </summary>
-    public class EventHandlerDisposeWrapper : Disposable
+    public EventHandlerDisposeWrapper(IEventHandler eventHandler, Action disposeAction = null)
     {
-        private readonly Action _disposeAction;
+        _disposeAction = disposeAction;
+        EventHandler = eventHandler;
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="EventHandlerDisposeWrapper"/>类型的新实例
-        /// </summary>
-        public EventHandlerDisposeWrapper(IEventHandler eventHandler, Action disposeAction = null)
+    /// <summary>
+    /// 获取或设置 事件处理器对象
+    /// </summary>
+    public IEventHandler EventHandler { get; set; }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!Disposed)
         {
-            _disposeAction = disposeAction;
-            EventHandler = eventHandler;
+            _disposeAction?.Invoke();
         }
-
-        /// <summary>
-        /// 获取或设置 事件处理器对象
-        /// </summary>
-        public IEventHandler EventHandler { get; set; }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!Disposed)
-            {
-                _disposeAction?.Invoke();
-            }
-            base.Dispose(disposing);
-        }
+        base.Dispose(disposing);
     }
 }

@@ -7,26 +7,25 @@
 //  <last-date>2019-11-09 15:12</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Identity
+namespace OSharp.Identity;
+
+/// <summary>
+/// 请求的客户端类型
+/// </summary>
+public enum RequestClientType
 {
     /// <summary>
-    /// 请求的客户端类型
+    /// 浏览器类型
     /// </summary>
-    public enum RequestClientType
-    {
-        /// <summary>
-        /// 浏览器类型
-        /// </summary>
-        Browser,
+    Browser,
 
-        /// <summary>
-        /// 桌面客户端
-        /// </summary>
-        Desktop,
+    /// <summary>
+    /// 桌面客户端
+    /// </summary>
+    Desktop,
 
-        /// <summary>
-        /// 手机客户端
-        /// </summary>
-        Mobile
-    }
+    /// <summary>
+    /// 手机客户端
+    /// </summary>
+    Mobile
 }

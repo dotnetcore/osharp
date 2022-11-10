@@ -7,10 +7,9 @@
 //  <last-date>2019-10-31 1:27</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Http
+namespace OSharp.Http;
+
+public class HttpHeaderNames
 {
-    public class HttpHeaderNames
-    {
-        public const string ClientPublicKey = "ClientPublicKey";
-    }
+    public const string ClientPublicKey = "ClientPublicKey";
 }

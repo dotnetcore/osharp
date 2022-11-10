@@ -7,30 +7,29 @@
 //  <last-date>2020-05-28 14:54</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Identity
+namespace OSharp.Identity;
+
+public static class ServiceProviderExtensions
 {
-    public static class ServiceProviderExtensions
+    /// <summary>
+    /// 获取在<see cref="OnlineUser"/>线用户信息
+    /// </summary>
+    public static async Task<OnlineUser> GetOnlineUser(this IServiceProvider provider)
     {
-        /// <summary>
-        /// 获取在<see cref="OnlineUser"/>线用户信息
-        /// </summary>
-        public static async Task<OnlineUser> GetOnlineUser(this IServiceProvider provider)
+        ClaimsPrincipal principal = provider.GetService<IPrincipal>() as ClaimsPrincipal;
+        if (principal == null || !principal.Identity.IsAuthenticated)
         {
-            ClaimsPrincipal principal = provider.GetService<IPrincipal>() as ClaimsPrincipal;
-            if (principal == null || !principal.Identity.IsAuthenticated)
-            {
-                return null;
-            }
-
-            string userName = principal.Identity.Name;
-            IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
-            if (onlineUserProvider == null)
-            {
-                return null;
-            }
-
-            OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(userName);
-            return onlineUser;
+            return null;
         }
+
+        string userName = principal.Identity.Name;
+        IOnlineUserProvider onlineUserProvider = provider.GetService<IOnlineUserProvider>();
+        if (onlineUserProvider == null)
+        {
+            return null;
+        }
+
+        OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(userName);
+        return onlineUser;
     }
 }

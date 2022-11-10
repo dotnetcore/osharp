@@ -7,16 +7,15 @@
 //  <last-date>2017-08-19 2:31</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 定义可锁定功能
+/// </summary>
+public interface ILockable
 {
     /// <summary>
-    /// 定义可锁定功能
+    /// 获取或设置 是否锁定当前信息
     /// </summary>
-    public interface ILockable
-    {
-        /// <summary>
-        /// 获取或设置 是否锁定当前信息
-        /// </summary>
-        bool IsLocked { get; set; }
-    }
+    bool IsLocked { get; set; }
 }

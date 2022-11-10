@@ -8,120 +8,119 @@
 // -----------------------------------------------------------------------
 
 
-namespace OSharp.Core.Systems
+namespace OSharp.Core.Systems;
+
+/// <summary>
+/// 实体类：数据键值对
+/// </summary>
+[Description("键值对信息")]
+[TableNamePrefix("Systems")]
+public class KeyValue : EntityBase<Guid>, ILockable, IKeyValue
 {
     /// <summary>
-    /// 实体类：数据键值对
+    /// 初始化一个<see cref="KeyValue"/>类型的新实例
     /// </summary>
-    [Description("键值对信息")]
-    [TableNamePrefix("Systems")]
-    public class KeyValue : EntityBase<Guid>, ILockable, IKeyValue
+    public KeyValue()
+    { }
+
+    /// <summary>
+    /// 初始化一个<see cref="KeyValue"/>类型的新实例
+    /// </summary>
+    public KeyValue(string key, object value)
     {
-        /// <summary>
-        /// 初始化一个<see cref="KeyValue"/>类型的新实例
-        /// </summary>
-        public KeyValue()
-        { }
+        Key = key;
+        Value = value;
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="KeyValue"/>类型的新实例
-        /// </summary>
-        public KeyValue(string key, object value)
+    /// <summary>
+    /// 获取或设置 数据键名
+    /// </summary>
+    [Required, DisplayName("数据键名"), StringLength(512)]
+    public string Key { get; set; }
+
+    /// <summary>
+    /// 获取或设置 数据值JSON字符串
+    /// </summary>
+    [DisplayName("数据值JSON")]
+    public string ValueJson { get; set; }
+
+    /// <summary>
+    /// 获取或设置 数据值类型
+    /// </summary>
+    [DisplayName("数据值类型名"), StringLength(1000)]
+    public string ValueType { get; set; }
+
+    /// <summary>
+    /// 获取或设置 数据值
+    /// </summary>
+    [NotMapped]
+    [DisplayName("数据值")]
+    public object Value
+    {
+        get
         {
-            Key = key;
-            Value = value;
+            if (ValueJson == null || ValueType == null)
+            {
+                return null;
+            }
+            Type type = Type.GetType(ValueType);
+            if (type == null)
+            {
+                throw new OsharpException($"获取Key为“{Key}”的字典值时类型“{ValueType}”无法获取");
+            }
+            return ValueJson.FromJsonString(type);
         }
-
-        /// <summary>
-        /// 获取或设置 数据键名
-        /// </summary>
-        [Required, DisplayName("数据键名"), StringLength(512)]
-        public string Key { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据值JSON字符串
-        /// </summary>
-        [DisplayName("数据值JSON")]
-        public string ValueJson { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据值类型
-        /// </summary>
-        [DisplayName("数据值类型名"), StringLength(1000)]
-        public string ValueType { get; set; }
-
-        /// <summary>
-        /// 获取或设置 数据值
-        /// </summary>
-        [NotMapped]
-        [DisplayName("数据值")]
-        public object Value
+        set
         {
-            get
-            {
-                if (ValueJson == null || ValueType == null)
-                {
-                    return null;
-                }
-                Type type = Type.GetType(ValueType);
-                if (type == null)
-                {
-                    throw new OsharpException($"获取Key为“{Key}”的字典值时类型“{ValueType}”无法获取");
-                }
-                return ValueJson.FromJsonString(type);
-            }
-            set
-            {
-                ValueType = value?.GetType().GetFullNameWithModule();
-                ValueJson = value?.ToJsonString();
-            }
+            ValueType = value?.GetType().GetFullNameWithModule();
+            ValueJson = value?.ToJsonString();
         }
+    }
 
-        /// <summary>
-        /// 获取 显示名称
-        /// </summary>
-        [DisplayName("显示名称"), StringLength(100)]
-        public string Display { get; set; }
+    /// <summary>
+    /// 获取 显示名称
+    /// </summary>
+    [DisplayName("显示名称"), StringLength(100)]
+    public string Display { get; set; }
 
-        /// <summary>
-        /// 获取或设置 备注
-        /// </summary>
-        [DisplayName("显示名称"), StringLength(1000)]
-        public string Remark { get; set; }
+    /// <summary>
+    /// 获取或设置 备注
+    /// </summary>
+    [DisplayName("显示名称"), StringLength(1000)]
+    public string Remark { get; set; }
 
-        /// <summary>
-        /// 获取或设置 顺序号
-        /// </summary>
-        public int Order { get; set; }
+    /// <summary>
+    /// 获取或设置 顺序号
+    /// </summary>
+    public int Order { get; set; }
 
-        /// <summary>
-        /// 获取或设置 是否锁定
-        /// </summary>
-        [DisplayName("是否锁定")]
-        public bool IsLocked { get; set; }
+    /// <summary>
+    /// 获取或设置 是否锁定
+    /// </summary>
+    [DisplayName("是否锁定")]
+    public bool IsLocked { get; set; }
 
-        /// <summary>
-        /// 获取强类型数据值
-        /// </summary>
-        public T GetValue<T>()
+    /// <summary>
+    /// 获取强类型数据值
+    /// </summary>
+    public T GetValue<T>()
+    {
+        object value = Value;
+        if (Equals(value, default(T)))
         {
-            object value = Value;
-            if (Equals(value, default(T)))
-            {
-                return default(T);
-            }
-            if (value is T val)
-            {
-                return val;
-            }
-            try
-            {
-                return value.CastTo<T>();
-            }
-            catch (Exception)
-            {
-                throw new OsharpException($"获取强类型字典值时传入类型“{typeof(T)}”与实际数据类型“{ValueType}”不匹配");
-            }
+            return default(T);
+        }
+        if (value is T val)
+        {
+            return val;
+        }
+        try
+        {
+            return value.CastTo<T>();
+        }
+        catch (Exception)
+        {
+            throw new OsharpException($"获取强类型字典值时传入类型“{typeof(T)}”与实际数据类型“{ValueType}”不匹配");
         }
     }
 }

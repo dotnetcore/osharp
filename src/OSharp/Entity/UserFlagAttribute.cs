@@ -7,17 +7,16 @@
 //  <last-date>2018-07-20 0:17</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 用户标记，用于标示用户属性/字段
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class UserFlagAttribute : Attribute
 {
     /// <summary>
-    /// 用户标记，用于标示用户属性/字段
+    /// 当前用户标识
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class UserFlagAttribute : Attribute
-    {
-        /// <summary>
-        /// 当前用户标识
-        /// </summary>
-        public const string Token = "@CurrentUserId";
-    }
+    public const string Token = "@CurrentUserId";
 }

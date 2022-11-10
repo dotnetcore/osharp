@@ -7,34 +7,33 @@
 //  <last-date>2017-09-18 18:29</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBuses.Internal
+namespace OSharp.EventBuses.Internal;
+
+/// <summary>
+/// EventBus初始化
+/// </summary>
+internal class EventBusBuilder : IEventBusBuilder
 {
+    private readonly IEventBus _eventBus;
+
     /// <summary>
-    /// EventBus初始化
+    /// 初始化一个<see cref="EventBusBuilder"/>类型的新实例
     /// </summary>
-    internal class EventBusBuilder : IEventBusBuilder
+    public EventBusBuilder(IEventBus eventBus)
     {
-        private readonly IEventBus _eventBus;
+        _eventBus = eventBus;
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="EventBusBuilder"/>类型的新实例
-        /// </summary>
-        public EventBusBuilder(IEventBus eventBus)
+    /// <summary>
+    /// 初始化EventBus
+    /// </summary>
+    public void Build()
+    {
+        Type[] types = AssemblyManager.FindTypesByBase(typeof(IEventHandler<>));
+        if (types.Length == 0)
         {
-            _eventBus = eventBus;
+            return;
         }
-
-        /// <summary>
-        /// 初始化EventBus
-        /// </summary>
-        public void Build()
-        {
-            Type[] types = AssemblyManager.FindTypesByBase(typeof(IEventHandler<>));
-            if (types.Length == 0)
-            {
-                return;
-            }
-            _eventBus.SubscribeAll(types);
-        }
+        _eventBus.SubscribeAll(types);
     }
 }

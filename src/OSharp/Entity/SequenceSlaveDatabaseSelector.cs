@@ -7,50 +7,49 @@
 //  <last-date>2021-03-21 0:35</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 顺序轮询从数据库选择器
+/// </summary>
+public sealed class SequenceSlaveDatabaseSelector : ISlaveDatabaseSelector
 {
+    private static readonly object LockObj = new object();
+    private int _sequenceIndex;
+    private readonly ILogger _logger;
+
     /// <summary>
-    /// 顺序轮询从数据库选择器
+    /// 初始化一个<see cref="SequenceSlaveDatabaseSelector"/>类型的新实例
     /// </summary>
-    public sealed class SequenceSlaveDatabaseSelector : ISlaveDatabaseSelector
+    public SequenceSlaveDatabaseSelector(IServiceProvider provider)
     {
-        private static readonly object LockObj = new object();
-        private int _sequenceIndex;
-        private readonly ILogger _logger;
+        _logger = provider.GetLogger(GetType());
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="SequenceSlaveDatabaseSelector"/>类型的新实例
-        /// </summary>
-        public SequenceSlaveDatabaseSelector(IServiceProvider provider)
+    /// <summary>
+    /// 获取 名称
+    /// </summary>
+    public string Name => "Sequence";
+
+    /// <summary>
+    /// 从所有从数据库中返回一个
+    /// </summary>
+    /// <param name="slaves">所有从数据库</param>
+    /// <returns></returns>
+    public SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves)
+    {
+        lock (LockObj)
         {
-            _logger = provider.GetLogger(GetType());
-        }
-
-        /// <summary>
-        /// 获取 名称
-        /// </summary>
-        public string Name => "Sequence";
-
-        /// <summary>
-        /// 从所有从数据库中返回一个
-        /// </summary>
-        /// <param name="slaves">所有从数据库</param>
-        /// <returns></returns>
-        public SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves)
-        {
-            lock (LockObj)
+            if (_sequenceIndex > slaves.Length - 1)
             {
-                if (_sequenceIndex > slaves.Length - 1)
-                {
-                    _sequenceIndex = 0;
-                }
-
-                SlaveDatabaseOptions slave = slaves[_sequenceIndex];
-                _logger.LogDebug($"顺序选取了“{slave.Name}”的从数据库，顺序号：{_sequenceIndex}");
-                _sequenceIndex++;
-
-                return slave;
+                _sequenceIndex = 0;
             }
+
+            SlaveDatabaseOptions slave = slaves[_sequenceIndex];
+            _logger.LogDebug($"顺序选取了“{slave.Name}”的从数据库，顺序号：{_sequenceIndex}");
+            _sequenceIndex++;
+
+            return slave;
         }
     }
 }

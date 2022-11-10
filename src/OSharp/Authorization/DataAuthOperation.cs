@@ -7,29 +7,28 @@
 //  <last-date>2018-07-14 11:18</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization
+namespace OSharp.Authorization;
+
+/// <summary>
+/// 数据权限操作
+/// </summary>
+public enum DataAuthOperation
 {
     /// <summary>
-    /// 数据权限操作
+    /// 读取
     /// </summary>
-    public enum DataAuthOperation
-    {
-        /// <summary>
-        /// 读取
-        /// </summary>
-        [Description("读取")]
-        Read,
+    [Description("读取")]
+    Read,
 
-        /// <summary>
-        /// 更新
-        /// </summary>
-        [Description("更新")]
-        Update,
+    /// <summary>
+    /// 更新
+    /// </summary>
+    [Description("更新")]
+    Update,
 
-        /// <summary>
-        /// 删除
-        /// </summary>
-        [Description("删除")]
-        Delete
-    }
+    /// <summary>
+    /// 删除
+    /// </summary>
+    [Description("删除")]
+    Delete
 }

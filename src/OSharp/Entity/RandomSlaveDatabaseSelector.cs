@@ -7,39 +7,38 @@
 //  <last-date>2021-03-21 0:20</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 随机从数据库选择器
+/// </summary>
+public sealed class RandomSlaveDatabaseSelector : ISlaveDatabaseSelector
 {
+    private static readonly Random Random = new Random();
+    private readonly ILogger _logger;
+
     /// <summary>
-    /// 随机从数据库选择器
+    /// 初始化一个<see cref="RandomSlaveDatabaseSelector"/>类型的新实例
     /// </summary>
-    public sealed class RandomSlaveDatabaseSelector : ISlaveDatabaseSelector
+    public RandomSlaveDatabaseSelector(IServiceProvider provider)
     {
-        private static readonly Random Random = new Random();
-        private readonly ILogger _logger;
+        _logger = provider.GetLogger(GetType());
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="RandomSlaveDatabaseSelector"/>类型的新实例
-        /// </summary>
-        public RandomSlaveDatabaseSelector(IServiceProvider provider)
-        {
-            _logger = provider.GetLogger(GetType());
-        }
+    /// <summary>
+    /// 获取 名称
+    /// </summary>
+    public string Name => "Random";
 
-        /// <summary>
-        /// 获取 名称
-        /// </summary>
-        public string Name => "Random";
-
-        /// <summary>
-        /// 从所有从数据库中返回一个
-        /// </summary>
-        /// <param name="slaves">所有从数据库</param>
-        /// <returns></returns>
-        public SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves)
-        {
-            SlaveDatabaseOptions slave = Random.NextItem(slaves);
-            _logger.LogDebug($"随机选取了“{slave.Name}”的从数据库");
-            return slave;
-        }
+    /// <summary>
+    /// 从所有从数据库中返回一个
+    /// </summary>
+    /// <param name="slaves">所有从数据库</param>
+    /// <returns></returns>
+    public SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves)
+    {
+        SlaveDatabaseOptions slave = Random.NextItem(slaves);
+        _logger.LogDebug($"随机选取了“{slave.Name}”的从数据库");
+        return slave;
     }
 }

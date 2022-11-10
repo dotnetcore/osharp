@@ -7,18 +7,17 @@
 //  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization.EntityInfos
+namespace OSharp.Authorization.EntityInfos;
+
+/// <summary>
+/// 实体信息处理器
+/// </summary>
+public class EntityInfoHandler : EntityInfoHandlerBase<EntityInfo, EntityInfoHandler>
 {
     /// <summary>
-    /// 实体信息处理器
+    /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
     /// </summary>
-    public class EntityInfoHandler : EntityInfoHandlerBase<EntityInfo, EntityInfoHandler>
-    {
-        /// <summary>
-        /// 初始化一个<see cref="EntityInfoHandlerBase{TEntityInfo,TEntityInfoProvider}"/>类型的新实例
-        /// </summary>
-        public EntityInfoHandler(IServiceProvider serviceProvider)
-            : base(serviceProvider)
-        { }
-    }
+    public EntityInfoHandler(IServiceProvider serviceProvider)
+        : base(serviceProvider)
+    { }
 }

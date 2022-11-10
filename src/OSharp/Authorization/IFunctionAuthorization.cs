@@ -7,27 +7,26 @@
 //  <last-date>2018-05-10 19:56</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization
+namespace OSharp.Authorization;
+
+/// <summary>
+/// 定义功能权限验证
+/// </summary>
+public interface IFunctionAuthorization
 {
     /// <summary>
-    /// 定义功能权限验证
+    /// 检查指定用户是否有执行指定功能的权限
     /// </summary>
-    public interface IFunctionAuthorization
-    {
-        /// <summary>
-        /// 检查指定用户是否有执行指定功能的权限
-        /// </summary>
-        /// <param name="function">要检查的功能</param>
-        /// <param name="principal">在线用户信息</param>
-        /// <returns>功能权限检查结果</returns>
-        AuthorizationResult Authorize(IFunction function, IPrincipal principal);
+    /// <param name="function">要检查的功能</param>
+    /// <param name="principal">在线用户信息</param>
+    /// <returns>功能权限检查结果</returns>
+    AuthorizationResult Authorize(IFunction function, IPrincipal principal);
 
-        /// <summary>
-        /// 获取功能权限检查通过的角色
-        /// </summary>
-        /// <param name="function">要检查的功能</param>
-        /// <param name="principal">在线用户信息</param>
-        /// <returns>通过的角色</returns>
-        string[] GetOkRoles(IFunction function, IPrincipal principal);
-    }
+    /// <summary>
+    /// 获取功能权限检查通过的角色
+    /// </summary>
+    /// <param name="function">要检查的功能</param>
+    /// <param name="principal">在线用户信息</param>
+    /// <returns>通过的角色</returns>
+    string[] GetOkRoles(IFunction function, IPrincipal principal);
 }

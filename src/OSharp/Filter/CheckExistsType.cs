@@ -7,21 +7,20 @@
 //  <last-date>2017-08-15 23:33</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Filter
+namespace OSharp.Filter;
+
+/// <summary>
+/// 指定可用于表数据存在性检查类型的值
+/// </summary>
+public enum CheckExistsType
 {
     /// <summary>
-    /// 指定可用于表数据存在性检查类型的值
+    ///   插入数据时重复性检查
     /// </summary>
-    public enum CheckExistsType
-    {
-        /// <summary>
-        ///   插入数据时重复性检查
-        /// </summary>
-        Insert,
+    Insert,
 
-        /// <summary>
-        ///   编辑数据时重复性检查
-        /// </summary>
-        Update
-    }
+    /// <summary>
+    ///   编辑数据时重复性检查
+    /// </summary>
+    Update
 }

@@ -7,17 +7,16 @@
 //  <last-date>2017-08-18 14:11</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 定义创建时间
+/// </summary>
+public interface ICreatedTime
 {
     /// <summary>
-    /// 定义创建时间
+    /// 获取或设置 创建时间
     /// </summary>
-    public interface ICreatedTime
-    {
-        /// <summary>
-        /// 获取或设置 创建时间
-        /// </summary>
-        [DisplayName("创建时间")]
-        DateTime CreatedTime { get; set; }
-    }
+    [DisplayName("创建时间")]
+    DateTime CreatedTime { get; set; }
 }

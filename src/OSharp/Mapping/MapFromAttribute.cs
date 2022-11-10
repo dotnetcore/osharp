@@ -7,26 +7,25 @@
 //  <last-date>2017-09-14 0:25</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Mapping
+namespace OSharp.Mapping;
+
+/// <summary>
+/// 标注当前类型从源类型的Mapping映射关系
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class MapFromAttribute : Attribute
 {
     /// <summary>
-    /// 标注当前类型从源类型的Mapping映射关系
+    /// 初始化一个<see cref="MapFromAttribute"/>类型的新实例
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class MapFromAttribute : Attribute
+    public MapFromAttribute(params Type[] sourceTypes)
     {
-        /// <summary>
-        /// 初始化一个<see cref="MapFromAttribute"/>类型的新实例
-        /// </summary>
-        public MapFromAttribute(params Type[] sourceTypes)
-        {
-            Check.NotNull(sourceTypes, nameof(sourceTypes));
-            SourceTypes = sourceTypes;
-        }
-
-        /// <summary>
-        /// 源类型
-        /// </summary>
-        public Type[] SourceTypes { get; }
+        Check.NotNull(sourceTypes, nameof(sourceTypes));
+        SourceTypes = sourceTypes;
     }
+
+    /// <summary>
+    /// 源类型
+    /// </summary>
+    public Type[] SourceTypes { get; }
 }

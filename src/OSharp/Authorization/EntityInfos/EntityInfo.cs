@@ -7,13 +7,12 @@
 //  <last-date>2020-02-10 20:14</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization.EntityInfos
-{
-    /// <summary>
-    /// 实体类：实体信息类
-    /// </summary>
-    [Description("实体信息类")]
-    [TableNamePrefix("Auth")]
-    public class EntityInfo : EntityInfoBase
-    { }
-}
+namespace OSharp.Authorization.EntityInfos;
+
+/// <summary>
+/// 实体类：实体信息类
+/// </summary>
+[Description("实体信息类")]
+[TableNamePrefix("Auth")]
+public class EntityInfo : EntityInfoBase
+{ }

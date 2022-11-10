@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../build/public.props" />
   <Import Project="../../build/version.props" />
@@ -10,7 +10,6 @@
     <Summary>OSharp核心组件</Summary>
     <RootNamespace>OSharp</RootNamespace>
     <AssemblyName>OSharp</AssemblyName>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

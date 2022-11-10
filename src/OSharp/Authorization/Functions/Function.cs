@@ -7,13 +7,12 @@
 //  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization.Functions
-{
-    /// <summary>
-    /// 实体类：功能信息
-    /// </summary>
-    [Description("功能信息")]
-    [TableNamePrefix("Auth")]
-    public class Function : FunctionBase
-    { }
-}
+namespace OSharp.Authorization.Functions;
+
+/// <summary>
+/// 实体类：功能信息
+/// </summary>
+[Description("功能信息")]
+[TableNamePrefix("Auth")]
+public class Function : FunctionBase
+{ }

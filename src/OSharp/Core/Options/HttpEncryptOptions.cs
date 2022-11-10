@@ -7,26 +7,25 @@
 //  <last-date>2019-10-31 0:06</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Options
+namespace OSharp.Core.Options;
+
+/// <summary>
+/// Http通信加密选项
+/// </summary>
+public class HttpEncryptOptions
 {
     /// <summary>
-    /// Http通信加密选项
+    /// 获取或设置 服务端私钥，服务端生成并自己拥有的私钥
     /// </summary>
-    public class HttpEncryptOptions
-    {
-        /// <summary>
-        /// 获取或设置 服务端私钥，服务端生成并自己拥有的私钥
-        /// </summary>
-        public string HostPrivateKey { get; set; }
+    public string HostPrivateKey { get; set; }
 
-        /// <summary>
-        /// 获取或设置 服务端公钥，服务端生成并分配给客户端的公钥
-        /// </summary>
-        public string HostPublicKey { get; set; }
+    /// <summary>
+    /// 获取或设置 服务端公钥，服务端生成并分配给客户端的公钥
+    /// </summary>
+    public string HostPublicKey { get; set; }
 
-        /// <summary>
-        /// 获取或设置 是否启用
-        /// </summary>
-        public bool Enabled { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 是否启用
+    /// </summary>
+    public bool Enabled { get; set; }
 }

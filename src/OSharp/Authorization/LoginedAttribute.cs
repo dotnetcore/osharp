@@ -7,11 +7,10 @@
 //  <last-date>2017-09-15 2:44</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization
-{
-    /// <summary>
-    /// 指定功能需要登录才能访问
-    /// </summary>
-    public class LoggedInAttribute : Attribute
-    { }
-}
+namespace OSharp.Authorization;
+
+/// <summary>
+/// 指定功能需要登录才能访问
+/// </summary>
+public class LoggedInAttribute : Attribute
+{ }

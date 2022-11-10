@@ -7,22 +7,21 @@
 //  <last-date>2019-10-05 19:44</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Mapping
+namespace OSharp.Mapping;
+
+/// <summary>
+/// 定义对象映射源与目标配对
+/// </summary>
+[MultipleDependency]
+public interface IMapTuple
 {
     /// <summary>
-    /// 定义对象映射源与目标配对
+    /// 获取 排序
     /// </summary>
-    [MultipleDependency]
-    public interface IMapTuple
-    {
-        /// <summary>
-        /// 获取 排序
-        /// </summary>
-        int Order { get; }
+    int Order { get; }
 
-        /// <summary>
-        /// 执行对象映射构造
-        /// </summary>
-        void CreateMap();
-    }
+    /// <summary>
+    /// 执行对象映射构造
+    /// </summary>
+    void CreateMap();
 }

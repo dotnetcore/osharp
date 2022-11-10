@@ -7,24 +7,23 @@
 //  <last-date>2021-03-21 0:14</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 定义从数据库选择功能
+/// </summary>
+[MultipleDependency]
+public interface ISlaveDatabaseSelector
 {
     /// <summary>
-    /// 定义从数据库选择功能
+    /// 获取 名称
     /// </summary>
-    [MultipleDependency]
-    public interface ISlaveDatabaseSelector
-    {
-        /// <summary>
-        /// 获取 名称
-        /// </summary>
-        string Name { get; }
+    string Name { get; }
 
-        /// <summary>
-        /// 从所有从数据库中返回一个
-        /// </summary>
-        /// <param name="slaves">所有从数据库</param>
-        /// <returns></returns>
-        SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves);
-    }
+    /// <summary>
+    /// 从所有从数据库中返回一个
+    /// </summary>
+    /// <param name="slaves">所有从数据库</param>
+    /// <returns></returns>
+    SlaveDatabaseOptions Select(SlaveDatabaseOptions[] slaves);
 }

@@ -7,18 +7,17 @@
 //  <last-date>2021-03-20 21:30</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity
+namespace OSharp.Entity;
+
+/// <summary>
+/// 数据库连接字符串提供器
+/// </summary>
+public interface IConnectionStringProvider
 {
     /// <summary>
-    /// 数据库连接字符串提供器
+    /// 获取指定数据上下文类型的数据库连接字符串
     /// </summary>
-    public interface IConnectionStringProvider
-    {
-        /// <summary>
-        /// 获取指定数据上下文类型的数据库连接字符串
-        /// </summary>
-        /// <param name="dbContextType">数据上下文类型</param>
-        /// <returns></returns>
-        string GetConnectionString(Type dbContextType);
-    }
+    /// <param name="dbContextType">数据上下文类型</param>
+    /// <returns></returns>
+    string GetConnectionString(Type dbContextType);
 }

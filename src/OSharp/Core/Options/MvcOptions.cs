@@ -7,21 +7,20 @@
 //  <last-date>2021-04-20 15:15</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Options
+namespace OSharp.Core.Options;
+
+/// <summary>
+/// Mvc选项
+/// </summary>
+public class MvcOptions
 {
     /// <summary>
-    /// Mvc选项
+    /// 获取或设置 Json属性小写，默认：true
     /// </summary>
-    public class MvcOptions
-    {
-        /// <summary>
-        /// 获取或设置 Json属性小写，默认：true
-        /// </summary>
-        public bool IsLowercaseJsonProperty { get; set; } = true;
+    public bool IsLowercaseJsonProperty { get; set; } = true;
 
-        /// <summary>
-        /// 获取或设置 是否URL小写，默认：false
-        /// </summary>
-        public bool IsLowercaseUrls { get; set; } = false;
-    }
+    /// <summary>
+    /// 获取或设置 是否URL小写，默认：false
+    /// </summary>
+    public bool IsLowercaseUrls { get; set; } = false;
 }

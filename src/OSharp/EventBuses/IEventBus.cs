@@ -7,13 +7,12 @@
 //  <last-date>2018-01-12 14:12</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.EventBuses
+namespace OSharp.EventBuses;
+
+/// <summary>
+/// 定义线程总线
+/// </summary>
+public interface IEventBus : IEventSubscriber, IEventPublisher
 {
-    /// <summary>
-    /// 定义线程总线
-    /// </summary>
-    public interface IEventBus : IEventSubscriber, IEventPublisher
-    {
         
-    }
 }

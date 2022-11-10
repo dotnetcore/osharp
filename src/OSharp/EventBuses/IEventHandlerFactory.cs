@@ -10,17 +10,16 @@
 using OSharp.EventBuses.Internal;
 
 
-namespace OSharp.EventBuses
+namespace OSharp.EventBuses;
+
+/// <summary>
+/// 定义获取<see cref="IEventHandler"/>实例的方式
+/// </summary>
+public interface IEventHandlerFactory
 {
     /// <summary>
-    /// 定义获取<see cref="IEventHandler"/>实例的方式
+    /// 获取事件处理器实例
     /// </summary>
-    public interface IEventHandlerFactory
-    {
-        /// <summary>
-        /// 获取事件处理器实例
-        /// </summary>
-        /// <returns></returns>
-        EventHandlerDisposeWrapper GetHandler();
-    }
+    /// <returns></returns>
+    EventHandlerDisposeWrapper GetHandler();
 }

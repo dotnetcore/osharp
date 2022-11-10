@@ -7,17 +7,16 @@
 //  <last-date>2018-12-20 23:19</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Dependency
+namespace OSharp.Dependency;
+
+/// <summary>
+/// <see cref="IServiceScope"/>工厂包装一下
+/// </summary>
+public interface IHybridServiceScopeFactory
 {
     /// <summary>
-    /// <see cref="IServiceScope"/>工厂包装一下
+    /// 创建依赖注入服务的作用域，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
     /// </summary>
-    public interface IHybridServiceScopeFactory
-    {
-        /// <summary>
-        /// 创建依赖注入服务的作用域，如果当前操作处于HttpRequest作用域中，直接使用HttpRequest的作用域，否则创建新的作用域
-        /// </summary>
-        /// <returns></returns>
-        IServiceScope CreateScope();
-    }
+    /// <returns></returns>
+    IServiceScope CreateScope();
 }

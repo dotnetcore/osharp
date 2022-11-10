@@ -7,21 +7,20 @@
 //  <last-date>2019-10-05 19:30</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Core.Options
+namespace OSharp.Core.Options;
+
+/// <summary>
+/// <see cref="IConfiguration"/>扩展方法
+/// </summary>
+public static class ConfigurationExtensions
 {
     /// <summary>
-    /// <see cref="IConfiguration"/>扩展方法
+    /// 从<see cref="IConfiguration"/>创建<see cref="OsharpOptions"/>
     /// </summary>
-    public static class ConfigurationExtensions
+    public static OsharpOptions GetOsharpOptions(this IConfiguration configuration)
     {
-        /// <summary>
-        /// 从<see cref="IConfiguration"/>创建<see cref="OsharpOptions"/>
-        /// </summary>
-        public static OsharpOptions GetOsharpOptions(this IConfiguration configuration)
-        {
-            OsharpOptions options = new OsharpOptions();
-            new OsharpOptionsSetup(configuration).Configure(options);
-            return options;
-        }
+        OsharpOptions options = new OsharpOptions();
+        new OsharpOptionsSetup(configuration).Configure(options);
+        return options;
     }
 }

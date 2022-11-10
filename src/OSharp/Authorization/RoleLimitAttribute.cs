@@ -7,11 +7,10 @@
 //  <last-date>2017-09-15 2:45</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Authorization
-{
-    /// <summary>
-    /// 指定功能只允许特定角色可以访问
-    /// </summary>
-    public class RoleLimitAttribute : Attribute
-    { }
-}
+namespace OSharp.Authorization;
+
+/// <summary>
+/// 指定功能只允许特定角色可以访问
+/// </summary>
+public class RoleLimitAttribute : Attribute
+{ }

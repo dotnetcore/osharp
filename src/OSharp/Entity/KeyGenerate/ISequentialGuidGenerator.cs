@@ -7,16 +7,15 @@
 //  <last-date>2021-03-14 13:48</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Entity.KeyGenerate
+namespace OSharp.Entity.KeyGenerate;
+
+/// <summary>
+/// 定义有顺序的Guid主键生成器
+/// </summary>
+public interface ISequentialGuidGenerator : IKeyGenerator<Guid>
 {
     /// <summary>
-    /// 定义有顺序的Guid主键生成器
+    /// 获取 顺序Guid数据库类型
     /// </summary>
-    public interface ISequentialGuidGenerator : IKeyGenerator<Guid>
-    {
-        /// <summary>
-        /// 获取 顺序Guid数据库类型
-        /// </summary>
-        DatabaseType DatabaseType { get; }
-    }
+    DatabaseType DatabaseType { get; }
 }

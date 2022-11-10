@@ -7,11 +7,10 @@
 //  <last-date>2018-08-06 13:07</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.CodeGenerator
-{
-    /// <summary>
-    /// 标记要在CodeGenerator生成代码时忽略的类型
-    /// </summary>
-    public class IgnoreGenTypeAttribute : Attribute
-    { }
-}
+namespace OSharp.CodeGenerator;
+
+/// <summary>
+/// 标记要在CodeGenerator生成代码时忽略的类型
+/// </summary>
+public class IgnoreGenTypeAttribute : Attribute
+{ }
