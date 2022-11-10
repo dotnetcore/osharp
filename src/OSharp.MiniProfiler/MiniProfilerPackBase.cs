@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MiniProfilerPackBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2019 OSharp. All rights reserved.
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-01-04 23:54</last-date>
+//  <last-date>2022-11-10 19:13</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -45,7 +45,6 @@ namespace OSharp.MiniProfiler
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             Action<MiniProfilerOptions> miniProfilerAction = GetMiniProfilerAction(services);
-
             services.AddMiniProfiler(miniProfilerAction).AddEntityFramework();
 
             return services;
@@ -55,11 +54,7 @@ namespace OSharp.MiniProfiler
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序</param>
-#if NET6_0_OR_GREATER
         public override void UsePack(WebApplication app)
-#else
-        public override void UsePack(IApplicationBuilder app)
-#endif
         {
             app.UseMiniProfiler();
             IsEnabled = true;

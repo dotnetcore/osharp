@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -25,13 +25,8 @@ namespace OSharp.Hosting.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<User> builder)
         {
-#if NET5_0_OR_GREATER
             builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasDatabaseName("UserNameIndex").IsUnique();
             builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasDatabaseName("EmailIndex");
-#else
-            builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasName("UserNameIndex").IsUnique();
-            builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasName("EmailIndex");
-#endif
 
             builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 

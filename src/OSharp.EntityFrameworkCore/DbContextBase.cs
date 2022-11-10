@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DbContextBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -130,11 +130,7 @@ namespace OSharp.Entity
             }
 
             //开启或使用现有事务
-#if NET5_0_OR_GREATER
             await BeginOrUseTransactionAsync(cancellationToken);
-#else
-            BeginOrUseTransaction();
-#endif
 
             int count;
             try
@@ -173,8 +169,6 @@ namespace OSharp.Entity
             IUnitOfWork unitOfWork = _serviceProvider.GetService<IUnitOfWork>();
             unitOfWork?.BeginOrUseTransaction(this);
         }
-
-#if NET5_0_OR_GREATER
         
         /// <summary>
         /// 异步开启或使用现有事务
@@ -188,7 +182,6 @@ namespace OSharp.Entity
             }
         }
         
-#endif
         /// <summary>
         /// 创建上下文数据模型时，对各个实体类的数据库映射细节进行配置
         /// </summary>

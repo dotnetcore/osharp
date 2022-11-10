@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MapToAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -17,6 +17,7 @@ namespace OSharp.Mapping
     /// <summary>
     /// 标注当前类型映射到目标类型的Mapping映射关系
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class MapToAttribute : Attribute
     {
         /// <summary>

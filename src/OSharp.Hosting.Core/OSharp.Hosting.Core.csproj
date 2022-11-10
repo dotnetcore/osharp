@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <PackageId>OSharp.Hosting.Core</PackageId>
     <Summary>OSharp框架非业务核心</Summary>
     <Description>OSharp框架业务核心，封装框架非业务如认证，权限，系统，消息等模块的接口与业务实现</Description>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.4.1" />
+    <PackageReference Include="MailKit" Version="3.4.2" />
     <PackageReference Include="Lazy.Captcha.Core" Version="1.1.6" />
   </ItemGroup>
 

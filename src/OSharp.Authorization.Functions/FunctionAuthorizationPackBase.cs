@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionAuthorizationPackBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2020-02-26 23:37</last-date>
+//  <last-date>2022-11-10 19:10</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -109,11 +109,7 @@ namespace OSharp.Authorization
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
-#if NET6_0_OR_GREATER
         public override void UsePack(WebApplication app)
-#else
-        public override void UsePack(IApplicationBuilder app)
-#endif
         {
             app.UseCookiePolicy();
             app.UseFunctionAuthorization();

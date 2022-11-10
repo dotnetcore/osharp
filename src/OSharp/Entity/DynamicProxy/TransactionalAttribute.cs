@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TransactionAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -42,11 +42,7 @@ namespace OSharp.Entity.DynamicProxy
                 await next(context);
                 if (!RequiredCheckReturnValue)
                 {
-#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
-#else
-                    unitOfWork.Commit();
-#endif
                     return;
                 }
                 Type returnType = context.ProxyMethod.ReturnType;
@@ -57,20 +53,12 @@ namespace OSharp.Entity.DynamicProxy
                 }
                 if (decision.CanCommit(context.ReturnValue))
                 {
-#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
-#else
-                    unitOfWork.Commit();
-#endif
                 }
             }
             catch (Exception)
             {
-#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
                 throw;
             }
         }

@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SwaggerPackBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2019 OSharp. All rights reserved.
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2019-04-15 16:26</last-date>
+//  <last-date>2022-11-10 19:14</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,13 +16,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Microsoft.OpenApi.Models;
 
 using OSharp.AspNetCore;
 using OSharp.Core.Options;
 using OSharp.Core.Packs;
-using OSharp.Exceptions;
 using OSharp.Reflection;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -82,7 +80,7 @@ namespace OSharp.Swagger
                         }
 
                         string[] versions = method.DeclaringType.GetAttributes<ApiExplorerSettingsAttribute>().Select(m => m.GroupName).ToArray();
-                        if (version.ToLower()== "v1" && versions.Length == 0)
+                        if (version.ToLower() == "v1" && versions.Length == 0)
                         {
                             return true;
                         }
@@ -96,13 +94,14 @@ namespace OSharp.Swagger
                     options.IncludeXmlComments(file);
                 });
                 //权限Token
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
-                {
-                    Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                });
+                options.AddSecurityDefinition("oauth2",
+                    new OpenApiSecurityScheme()
+                    {
+                        Description = "请输入带有Bearer的Token，形如 “Bearer {Token}” ",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey
+                    });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -123,11 +122,7 @@ namespace OSharp.Swagger
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">Asp应用程序构建器</param>
-#if NET6_0_OR_GREATER
         public override void UsePack(WebApplication app)
-#else
-        public override void UsePack(IApplicationBuilder app)
-#endif
         {
             if (_osharpOptions?.Swagger?.Enabled != true)
             {
@@ -139,8 +134,9 @@ namespace OSharp.Swagger
             {
                 if (swagger.IsHideSchemas)
                 {
-                    options.DefaultModelsExpandDepth(-1); 
+                    options.DefaultModelsExpandDepth(-1);
                 }
+
                 if (swagger.Endpoints?.Count > 0)
                 {
                     foreach (SwaggerEndpoint endpoint in swagger.Endpoints)

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IUnitOfWork2.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -73,9 +73,7 @@ namespace OSharp.Entity
         /// 回滚所有事务
         /// </summary>
         void Rollback();
-
-#if NET5_0_OR_GREATER
-
+        
         /// <summary>
         /// 对数据库连接开启事务
         /// </summary>
@@ -95,6 +93,5 @@ namespace OSharp.Entity
         /// </summary>
         /// <returns></returns>
         Task RollbackAsync(CancellationToken cancellationToken = default);
-#endif
     }
 }

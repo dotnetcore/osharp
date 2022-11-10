@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MvcPackBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-07-29 12:10</last-date>
+//  <last-date>2022-11-10 19:08</last-date>
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Builder;
@@ -64,7 +64,7 @@ namespace OSharp.AspNetCore.Mvc
                 });
 
             services.AddRouting(opts => opts.LowercaseUrls = osharp.Mvc?.IsLowercaseUrls ?? false);
-            
+
             services.AddHttpsRedirection(opts => opts.HttpsPort = 443);
 
             services.AddScoped<UnitOfWorkImpl>();
@@ -77,22 +77,12 @@ namespace OSharp.AspNetCore.Mvc
             return services;
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// 应用模块服务
         /// </summary>
         /// <param name="app">应用程序</param>
         public override void UsePack(WebApplication app)
         {
-#else
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
-        {
-            app.UseRouting();
-#endif
             _corsInitializer.UseCors(app);
 
             IsEnabled = true;

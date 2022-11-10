@@ -4,17 +4,17 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <PackageId>OSharp.Redis</PackageId>
     <Summary>OSharp Redis 缓存组件</Summary>
     <Description>OSharp Redis 缓存组件，封装基于Redis客户端的缓存实现</Description>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="[3.1.30,4.0.0)" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="[6.0.11, 7.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="[7.0.0, 8.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

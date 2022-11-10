@@ -552,11 +552,7 @@ namespace OSharp.Entity
             entities = CheckInsert(entities);
             await _dbSet.AddRangeAsync(entities, _cancellationTokenProvider.Token);
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 
@@ -588,11 +584,7 @@ namespace OSharp.Entity
             }
 
             int count = await _dbContext.SaveChangesAsync();
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 
@@ -645,11 +637,7 @@ namespace OSharp.Entity
             {
                 item.Key.Id = item.Value.Id;
             }
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -670,11 +658,7 @@ namespace OSharp.Entity
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             DeleteInternal(entities);
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 
@@ -736,11 +720,7 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(entity));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -762,11 +742,7 @@ namespace OSharp.Entity
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
 
             //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
-#if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
-#else
-            ((DbContextBase)_dbContext).BeginOrUseTransaction();
-#endif
             int count;
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(TEntity)))
             {
@@ -780,12 +756,8 @@ namespace OSharp.Entity
                 // 物理删除
                 count = await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
             }
-
-#if NET5_0_OR_GREATER
+            
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 
@@ -802,11 +774,7 @@ namespace OSharp.Entity
             entities = CheckUpdate(entities);
             ((DbContext)_dbContext).Update<TEntity, TKey>(entities);
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 
@@ -857,11 +825,7 @@ namespace OSharp.Entity
                 names.AddIfNotNull(GetNameValue(dto));
             }
             int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count > 0
                 ? new OperationResult(OperationResultType.Success,
                     names.Count > 0
@@ -884,18 +848,10 @@ namespace OSharp.Entity
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
 
             //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
-#if NET5_0_OR_GREATER
             await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
-#else
-            ((DbContextBase)_dbContext).BeginOrUseTransaction();
-#endif
             int count = await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
-
-#if NET5_0_OR_GREATER
+            
             await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
-#else
-            unitOfWork.Commit();
-#endif
             return count;
         }
 

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -183,21 +183,13 @@ namespace OSharp.Hosting.Apis.Controllers
                 OperationResult<User> result = await IdentityContract.Login(loginDto);
                 if (!result.Succeeded)
                 {
-#if NET5_0_OR_GREATER
                     await unitOfWork.CommitAsync();
-#else
-                    unitOfWork.Commit();
-#endif
                     return result.ToAjaxResult();
                 }
 
                 User user = result.Data;
                 JsonWebToken token = await CreateJwtToken(user, dto.ClientType);
-#if NET5_0_OR_GREATER
                 await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
                 return new AjaxResult("登录成功", AjaxResultType.Success, token);
             }
 
@@ -237,11 +229,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             User user = result.Data;
             await SignInManager.SignInAsync(user, dto.Remember);
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync();
-#else
-            unitOfWork.Commit();
-#endif
             return new AjaxResult("登录成功");
         }
 

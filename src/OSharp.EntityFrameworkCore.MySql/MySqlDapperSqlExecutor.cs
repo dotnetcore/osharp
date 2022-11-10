@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MySqlDapperSqlExecutor.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -10,11 +10,7 @@
 using System;
 using System.Data;
 
-#if NET5_0_OR_GREATER
 using MySqlConnector;
-#else
-using MySql.Data.MySqlClient;
-#endif
 
 namespace OSharp.Entity.MySql
 {

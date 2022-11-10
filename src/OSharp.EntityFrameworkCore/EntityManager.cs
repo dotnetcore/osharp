@@ -147,11 +147,7 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<EntityInfo> builder)
             {
-#if NET5_0_OR_GREATER
                 builder.HasIndex(m => m.TypeName).HasDatabaseName("ClassFullNameIndex").IsUnique();
-#else
-                builder.HasIndex(m => m.TypeName).HasName("ClassFullNameIndex").IsUnique();
-#endif
             }
         }
 
@@ -164,11 +160,7 @@ namespace OSharp.Entity
             /// <param name="builder">实体类型创建器</param>
             public override void Configure(EntityTypeBuilder<Function> builder)
             {
-#if NET5_0_OR_GREATER
                 builder.HasIndex(m => new { m.Area, m.Controller, m.Action }).HasDatabaseName("AreaControllerActionIndex").IsUnique();
-#else
-                builder.HasIndex(m => new { m.Area, m.Controller, m.Action }).HasName("AreaControllerActionIndex").IsUnique();
-#endif
             }
         }
 
@@ -182,11 +174,7 @@ namespace OSharp.Entity
             public override void Configure(EntityTypeBuilder<KeyValue> builder)
             {
                 builder.Property(m => m.ValueJson).HasColumnType("text");
-#if NET5_0_OR_GREATER
                 builder.HasIndex(m => m.Key).HasDatabaseName("KeyIndex").IsUnique();
-#else
-                builder.HasIndex(m => m.Key).HasName("KeyIndex").IsUnique();
-#endif
             }
         }
     }

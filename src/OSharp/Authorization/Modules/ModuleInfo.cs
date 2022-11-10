@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleInfo.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -84,16 +84,7 @@ namespace OSharp.Authorization.Modules
         public override int GetHashCode()
         {
             // ReSharper disable NonReadonlyMemberInGetHashCode
-#if NET5_0_OR_GREATER
             return HashCode.Combine(Position, Code);
-#else
-#pragma warning disable CS0618 // 类型或成员已过时
-            var combiner = new HashCodeCombiner();
-#pragma warning restore CS0618 // 类型或成员已过时
-            combiner.Add(Position);
-            combiner.Add(Code);
-            return combiner.CombinedHash;
-#endif
         }
 
         #endregion

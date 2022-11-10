@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 using AutoMapper;
 using AutoMapper.Configuration;
@@ -69,9 +70,10 @@ namespace OSharp.AutoMapper
             }
 
             var configuration = new MapperConfiguration(cfg);
+            configuration.CompileMappings();
             IMapper mapper = new AutoMapperMapper(configuration);
             MapperExtensions.SetMapper(mapper);
-            logger.LogInformation($"初始化对象映射对象到 MapperExtensions：{mapper.GetType()}，共包含 {configuration.GetMappers().Count()} 个映射配对");
+            logger.LogInformation($"初始化对象映射对象到 MapperExtensions：{mapper.GetType()}");
             
             IsEnabled = true;
         }

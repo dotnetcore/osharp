@@ -11,8 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
@@ -26,12 +24,9 @@ using OSharp.AspNetCore.Mvc.Filters;
 using OSharp.Authorization;
 using OSharp.Collections;
 using OSharp.Data;
-using OSharp.Entity;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Identity.Dtos;
 using OSharp.Hosting.Identity.Entities;
-using OSharp.Hosting.Systems;
-using OSharp.Hosting.Systems.Dtos;
 
 
 namespace OSharp.Hosting.Apis.Controllers
@@ -101,9 +96,7 @@ namespace OSharp.Hosting.Apis.Controllers
 
             return list.ExpandAndToString("\r\n");
         }
-
-#if NET6_0_OR_GREATER
-
+        
         [HttpPost]
         [Description("测试2")]
         [RoleLimit]
@@ -117,9 +110,8 @@ namespace OSharp.Hosting.Apis.Controllers
 
             return provider.GetRequiredService<RoleManager<Role>>().Roles.Count();
         }
-#endif
-
     }
+
     public class ClassFilter : ActionFilterAttribute, IExceptionFilter
     {
         private ILogger _logger;

@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MvcFunctionPack.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-06-23 15:26</last-date>
+//  <last-date>2022-11-10 19:08</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -47,7 +47,6 @@ namespace OSharp.AspNetCore.Mvc
             return services;
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// 应用模块服务
         /// </summary>
@@ -55,20 +54,13 @@ namespace OSharp.AspNetCore.Mvc
         public override void UsePack(WebApplication app)
         {
             IServiceProvider provider = app.Services;
-#else
-        /// <summary>
-        /// 应用模块服务
-        /// </summary>
-        /// <param name="app">Web应用程序构建器</param>
-        public override void UsePack(IApplicationBuilder app)
-        {
-            IServiceProvider provider = app.ApplicationServices;
-#endif
-            IFunctionHandler functionHandler = provider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
+            IFunctionHandler functionHandler =
+                provider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
             if (functionHandler == null)
             {
                 return;
             }
+
             functionHandler.Initialize();
 
             IsEnabled = true;

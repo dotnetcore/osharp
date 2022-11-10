@@ -1,10 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuthenticationPackBase.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2020 OSharp. All rights reserved.
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2020-03-02 22:23</last-date>
+//  <last-date>2022-11-10 19:12</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -69,6 +68,7 @@ namespace OSharp.Authentication
             {
                 defaultSchema = JwtBearerDefaults.AuthenticationScheme;
             }
+
             AuthenticationBuilder builder = services.AddAuthentication(opts =>
             {
                 opts.DefaultScheme = defaultSchema;
@@ -85,11 +85,7 @@ namespace OSharp.Authentication
         /// 应用模块服务
         /// </summary>
         /// <param name="app">应用程序</param>
-#if NET6_0_OR_GREATER
         public override void UsePack(WebApplication app)
-#else
-        public override void UsePack(IApplicationBuilder app)
-#endif
         {
             app.UseAuthentication();
 
