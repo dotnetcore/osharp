@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="JsonWebToken.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2019-06-12 15:31</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
-using OSharp.Extensions;
-using OSharp.Timing;
 
 
 namespace OSharp.Identity.JwtBearer

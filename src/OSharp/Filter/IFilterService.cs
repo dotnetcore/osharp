@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IFilterService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,13 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-12-20 0:15</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq.Expressions;
-
-using OSharp.Authorization;
-using OSharp.Data;
-
 
 namespace OSharp.Filter
 {

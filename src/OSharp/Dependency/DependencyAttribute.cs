@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DependencyAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-12-31 18:48</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
-using Microsoft.Extensions.DependencyInjection;
-
 
 namespace OSharp.Dependency
 {

@@ -7,9 +7,6 @@
 //  <last-date>2019-06-13 11:59</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
-
 namespace OSharp.Identity.JwtBearer
 {
     /// <summary>

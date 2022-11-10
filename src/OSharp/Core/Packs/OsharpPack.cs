@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OsharpPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,15 +6,6 @@
 //  <last-editor></last-editor>
 //  <last-date>2018-07-25 12:03</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Reflection;
-
 
 namespace OSharp.Core.Packs
 {

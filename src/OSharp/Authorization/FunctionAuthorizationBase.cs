@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionAuthorizationBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,16 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-05-10 20:50</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-
-using OSharp.Authorization.Functions;
-using OSharp.Data;
-using OSharp.Identity;
-
 
 namespace OSharp.Authorization
 {

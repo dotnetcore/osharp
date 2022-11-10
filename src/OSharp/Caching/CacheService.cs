@@ -7,25 +7,6 @@
 //  <last-date>2018-12-19 19:10</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Authorization.Functions;
-using OSharp.Collections;
-using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Filter;
-using OSharp.Reflection;
-
-
 namespace OSharp.Caching
 {
     /// <summary>

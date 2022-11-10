@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DependencyPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,21 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-07-29 1:24</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-using JetBrains.Annotations;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
-using OSharp.Collections;
-using OSharp.Core.Packs;
-using OSharp.Extensions;
-using OSharp.Reflection;
 
 
 namespace OSharp.Dependency

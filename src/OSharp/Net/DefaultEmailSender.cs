@@ -7,19 +7,6 @@
 //  <last-date>2018-05-08 2:47</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Collections;
-using OSharp.Core.Options;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-
 
 namespace OSharp.Net
 {

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IKeyValueCoupleStore.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,14 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-06-25 21:00</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-using OSharp.Core.Data;
-using OSharp.Data;
 
 
 namespace OSharp.Core.Systems

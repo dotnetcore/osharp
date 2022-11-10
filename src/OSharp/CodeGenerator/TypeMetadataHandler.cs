@@ -7,13 +7,6 @@
 //  <last-date>2018-08-06 13:44</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
-
-using OSharp.Entity;
-using OSharp.Reflection;
-
-
 namespace OSharp.CodeGenerator
 {
     /// <summary>

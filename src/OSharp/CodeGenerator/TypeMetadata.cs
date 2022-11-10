@@ -1,34 +1,27 @@
 // -----------------------------------------------------------------------
-//  <copyright file="EntityMetadata.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="EntityMetadata.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-06 12:25</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
-using OSharp.Reflection;
-
 
 namespace OSharp.CodeGenerator
 {
     /// <summary>
-    /// ÀàĞÍÔªÊı¾İ
+    /// ç±»å‹å…ƒæ•°æ®
     /// </summary>
     public class TypeMetadata
     {
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="TypeMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="TypeMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public TypeMetadata()
         { }
 
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="TypeMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="TypeMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public TypeMetadata(Type type)
         {
@@ -40,7 +33,7 @@ namespace OSharp.CodeGenerator
             Name = type.Name;
             FullName = type.FullName;
             Namespace = type.Namespace;
-            Display = type.GetDescription().Replace("ĞÅÏ¢", "");
+            Display = type.GetDescription().Replace("ä¿¡æ¯", "");
             PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo property in properties)
             {
@@ -61,27 +54,27 @@ namespace OSharp.CodeGenerator
         }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÀàĞÍÃû
+        /// è·å–æˆ–è®¾ç½® ç±»å‹å
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÀàĞÍÈ«Ãû
+        /// è·å–æˆ–è®¾ç½® ç±»å‹å…¨å
         /// </summary>
         public string FullName { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÃüÃû¿Õ¼ä
+        /// è·å–æˆ–è®¾ç½® å‘½åç©ºé—´
         /// </summary>
         public string Namespace { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÀàĞÍÏÔÊ¾Ãû
+        /// è·å–æˆ–è®¾ç½® ç±»å‹æ˜¾ç¤ºå
         /// </summary>
         public string Display { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊôĞÔÔªÊı¾İ¼¯ºÏ
+        /// è·å–æˆ–è®¾ç½® å±æ€§å…ƒæ•°æ®é›†åˆ
         /// </summary>
         public IList<PropertyMetadata> PropertyMetadatas { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FilterService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,27 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-12-20 0:15</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Security.Claims;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Authorization;
-using OSharp.Data;
-using OSharp.Dependency;
-using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Identity;
-using OSharp.Linq;
-using OSharp.Properties;
-using OSharp.Reflection;
 
 
 namespace OSharp.Filter

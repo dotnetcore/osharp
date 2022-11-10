@@ -7,19 +7,6 @@
 //  <last-date>2019-10-30 23:38</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Core.Options;
-using OSharp.Exceptions;
-using OSharp.Properties;
-using OSharp.Security;
-
 
 namespace OSharp.Http
 {

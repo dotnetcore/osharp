@@ -1,35 +1,27 @@
-// -----------------------------------------------------------------------
-//  <copyright file="PropertyMetadata.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+ï»¿// -----------------------------------------------------------------------
+//  <copyright file="PropertyMetadata.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-06 12:31</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-
-using OSharp.Reflection;
-
 
 namespace OSharp.CodeGenerator
 {
     /// <summary>
-    /// ÊôĞÔÔªÊı¾İ
+    /// å±æ€§å…ƒæ•°æ®
     /// </summary>
     public class PropertyMetadata
     {
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="PropertyMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="PropertyMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public PropertyMetadata()
         { }
 
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="PropertyMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="PropertyMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public PropertyMetadata(PropertyInfo property)
         {
@@ -69,7 +61,7 @@ namespace OSharp.CodeGenerator
             {
                 TypeName = property.PropertyType.GetUnNullableType().FullName;
             }
-            //Ã¶¾ÙÀàĞÍ£¬×÷ÎªÊıÖµÀàĞÍ·µ»Ø
+            //æšä¸¾ç±»å‹ï¼Œä½œä¸ºæ•°å€¼ç±»å‹è¿”å›
             if (property.PropertyType.IsEnum)
             {
                 Type enumType = property.PropertyType;
@@ -83,62 +75,62 @@ namespace OSharp.CodeGenerator
         }
         
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊôĞÔÃû³Æ
+        /// è·å–æˆ–è®¾ç½® å±æ€§åç§°
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊôĞÔÀàĞÍÃû³Æ
+        /// è·å–æˆ–è®¾ç½® å±æ€§ç±»å‹åç§°
         /// </summary>
         public string TypeName { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÏÔÊ¾Ãû³Æ
+        /// è·å–æˆ–è®¾ç½® æ˜¾ç¤ºåç§°
         /// </summary>
         public string Display { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñ±ØĞë
+        /// è·å–æˆ–è®¾ç½® æ˜¯å¦å¿…é¡»
         /// </summary>
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ×î´ó³¤¶È
+        /// è·å–æˆ–è®¾ç½® æœ€å¤§é•¿åº¦
         /// </summary>
         public int? MaxLength { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ×îĞ¡³¤¶È
+        /// è·å–æˆ–è®¾ç½® æœ€å°é•¿åº¦
         /// </summary>
         public int? MinLength { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ È¡Öµ·¶Î§
+        /// è·å–æˆ–è®¾ç½® å–å€¼èŒƒå›´
         /// </summary>
         public object[] Range { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ×î´óÖµ
+        /// è·å–æˆ–è®¾ç½® æœ€å¤§å€¼
         /// </summary>
         public object Max { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ×îĞ¡Öµ
+        /// è·å–æˆ–è®¾ç½® æœ€å°å€¼
         /// </summary>
         public object Min { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñÖµÀàĞÍ¿É¿Õ
+        /// è·å–æˆ–è®¾ç½® æ˜¯å¦å€¼ç±»å‹å¯ç©º
         /// </summary>
         public bool IsNullable { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ã¶¾ÙÔªÊı¾İ
+        /// è·å–æˆ–è®¾ç½® æšä¸¾å…ƒæ•°æ®
         /// </summary>
         public EnumMetadata[] EnumMetadatas { get; set; }
 
         /// <summary>
-        /// ÊÇ·ñÓĞÑéÖ¤ÊôĞÔ 
+        /// æ˜¯å¦æœ‰éªŒè¯å±æ€§ 
         /// </summary>
         public bool HasValidateAttribute()
         {

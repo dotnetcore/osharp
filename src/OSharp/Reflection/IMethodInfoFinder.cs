@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,12 +6,6 @@
 //  <last-editor></last-editor>
 //  <last-date>2017-09-15 2:37</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Reflection;
-
-using OSharp.Dependency;
-
 
 namespace OSharp.Reflection
 {

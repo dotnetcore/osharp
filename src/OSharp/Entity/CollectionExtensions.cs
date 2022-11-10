@@ -1,25 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="CollectionExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2014-08-04 0:06</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using OSharp.Authorization;
-using OSharp.Collections;
-using OSharp.Dependency;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Filter;
-using OSharp.Mapping;
-using OSharp.Reflection;
-
 
 namespace OSharp.Entity
 {

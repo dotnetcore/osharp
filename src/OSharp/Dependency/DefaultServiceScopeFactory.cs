@@ -1,5 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
+// -----------------------------------------------------------------------
+//  <copyright file="DefaultServiceScopeFactory.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2022-11-11 0:19</last-date>
+// -----------------------------------------------------------------------
 
 namespace OSharp.Dependency
 {
@@ -15,7 +21,7 @@ namespace OSharp.Dependency
         {
             ServiceScopeFactory = serviceScopeFactory;
         }
-        
+
         /// <summary>
         /// 获取 <see cref="IServiceScope"/>工厂
         /// </summary>

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IEventSubscriber.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,9 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-01-12 14:14</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
 
 namespace OSharp.EventBuses
 {

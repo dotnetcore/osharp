@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="PublicInstanceMethodInfoFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor></last-editor>
 //  <last-date>2017-09-15 2:38</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Reflection;
-
 
 namespace OSharp.Reflection
 {

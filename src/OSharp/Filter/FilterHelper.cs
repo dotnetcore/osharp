@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FilterHelper.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,25 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-07-15 10:22</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Security.Claims;
-
-using OSharp.Authorization;
-using OSharp.Data;
-using OSharp.Dependency;
-using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Identity;
-using OSharp.Linq;
-using OSharp.Properties;
-using OSharp.Reflection;
-
 
 namespace OSharp.Filter
 {

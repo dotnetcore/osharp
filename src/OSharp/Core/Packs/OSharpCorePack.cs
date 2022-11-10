@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OsharpCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,22 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-06-23 15:19</last-date>
 // -----------------------------------------------------------------------
-
-using System.ComponentModel;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-
-using OSharp.Caching;
-using OSharp.Core.Options;
-using OSharp.Core.Systems;
-using OSharp.Entity;
-using OSharp.Filter;
-using OSharp.Http;
-using OSharp.Logging;
-using OSharp.Net;
-using OSharp.Threading;
 
 
 namespace OSharp.Core.Packs

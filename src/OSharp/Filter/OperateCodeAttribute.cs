@@ -1,13 +1,10 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2014:07:04 18:08</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
 
 namespace OSharp.Filter
 {

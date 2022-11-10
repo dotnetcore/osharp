@@ -1,70 +1,64 @@
 // -----------------------------------------------------------------------
-//  <copyright file="KeyValueOutputDto.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="KeyValueOutputDto.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-25 21:35</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-
-using OSharp.Entity;
-using OSharp.Mapping;
 
 
 namespace OSharp.Core.Systems
 {
     /// <summary>
-    /// Êä³öDTO:¼üÖµÊı¾İ
+    /// è¾“å‡ºDTO:é”®å€¼æ•°æ®
     /// </summary>
     [MapFrom(typeof(KeyValue))]
     public class KeyValueOutputDto : IOutputDto, IDataAuthEnabled
     {
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ±àºÅ
+        /// è·å–æˆ–è®¾ç½® ç¼–å·
         /// </summary>
-        [DisplayName("±àºÅ")]
+        [DisplayName("ç¼–å·")]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Êı¾İÖµJSON
+        /// è·å–æˆ–è®¾ç½® æ•°æ®å€¼JSON
         /// </summary>
-        [DisplayName("Êı¾İÖµJSON")]
+        [DisplayName("æ•°æ®å€¼JSON")]
         public string ValueJson { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Êı¾İÖµÀàĞÍÃû
+        /// è·å–æˆ–è®¾ç½® æ•°æ®å€¼ç±»å‹å
         /// </summary>
-        [DisplayName("Êı¾İÖµÀàĞÍÃû")]
+        [DisplayName("æ•°æ®å€¼ç±»å‹å")]
         public string ValueType { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Êı¾İ¼üÃû
+        /// è·å–æˆ–è®¾ç½® æ•°æ®é”®å
         /// </summary>
-        [DisplayName("Êı¾İ¼üÃû")]
+        [DisplayName("æ•°æ®é”®å")]
         public string Key { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Êı¾İÖµ
+        /// è·å–æˆ–è®¾ç½® æ•°æ®å€¼
         /// </summary>
-        [DisplayName("Êı¾İÖµ")]
+        [DisplayName("æ•°æ®å€¼")]
         public object Value { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñËø¶¨
+        /// è·å–æˆ–è®¾ç½® æ˜¯å¦é”å®š
         /// </summary>
-        [DisplayName("ÊÇ·ñËø¶¨")]
+        [DisplayName("æ˜¯å¦é”å®š")]
         public bool IsLocked { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñ¿É¸üĞÂµÄÊı¾İÈ¨ÏŞ×´Ì¬
+        /// è·å–æˆ–è®¾ç½® æ˜¯å¦å¯æ›´æ–°çš„æ•°æ®æƒé™çŠ¶æ€
         /// </summary>
         public bool Updatable { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñ¿ÉÉ¾³ıµÄÊı¾İÈ¨ÏŞ×´Ì¬
+        /// è·å–æˆ–è®¾ç½® æ˜¯å¦å¯åˆ é™¤çš„æ•°æ®æƒé™çŠ¶æ€
         /// </summary>
         public bool Deletable { get; set; }
     }

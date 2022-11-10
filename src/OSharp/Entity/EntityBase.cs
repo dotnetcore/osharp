@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,12 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2017-08-18 11:27</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-
-using OSharp.Reflection;
-
 
 namespace OSharp.Entity
 {

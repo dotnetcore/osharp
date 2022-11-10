@@ -1,19 +1,16 @@
 // -----------------------------------------------------------------------
-//  <copyright file="IgnoreGenType.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="IgnoreGenType.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-06 13:07</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
 
 namespace OSharp.CodeGenerator
 {
     /// <summary>
-    /// ±ê¼ÇÒªÔÚCodeGeneratorÉú³É´úÂëÊ±ºöÂÔµÄÀàĞÍ
+    /// æ ‡è®°è¦åœ¨CodeGeneratorç”Ÿæˆä»£ç æ—¶å¿½ç•¥çš„ç±»å‹
     /// </summary>
     public class IgnoreGenTypeAttribute : Attribute
     { }

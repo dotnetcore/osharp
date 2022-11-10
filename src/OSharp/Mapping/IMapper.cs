@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IMapper.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2017-08-25 1:03</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-
 
 namespace OSharp.Mapping
 {

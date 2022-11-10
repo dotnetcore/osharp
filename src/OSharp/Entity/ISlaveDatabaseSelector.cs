@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ISlaveDatabaseSelector.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,10 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-03-21 0:14</last-date>
 // -----------------------------------------------------------------------
-
-using OSharp.Core.Options;
-using OSharp.Dependency;
-
 
 namespace OSharp.Entity
 {

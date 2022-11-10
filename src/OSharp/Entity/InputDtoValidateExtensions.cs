@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="InputDtoValidateExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -6,17 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2019-04-30 14:31</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-
-using OSharp.Data;
-using OSharp.Extensions;
-
 
 namespace OSharp.Entity
 {

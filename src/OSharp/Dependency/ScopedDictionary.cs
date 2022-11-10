@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ScopedDictionary.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,15 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-08-01 21:17</last-date>
 // -----------------------------------------------------------------------
-
-using OSharp.Audits;
-
-using System;
-using System.Collections.Concurrent;
-using System.Security.Claims;
-
-using OSharp.Authorization.Functions;
-
 
 namespace OSharp.Dependency
 {

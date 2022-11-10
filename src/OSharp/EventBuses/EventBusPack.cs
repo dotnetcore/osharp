@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EventBusPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,13 +7,6 @@
 //  <last-date>2018-06-23 15:25</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
-using OSharp.Core.Packs;
 using OSharp.EventBuses.Internal;
 
 

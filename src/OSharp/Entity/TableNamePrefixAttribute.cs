@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TableNamePrefixAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -6,9 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-02-17 14:36</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
 
 namespace OSharp.Entity
 {

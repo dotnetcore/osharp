@@ -7,11 +7,6 @@
 //  <last-date>2017-09-14 0:24</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using OSharp.Data;
-
-
 namespace OSharp.Mapping
 {
     /// <summary>

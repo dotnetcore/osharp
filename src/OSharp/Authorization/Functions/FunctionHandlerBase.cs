@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionHandlerBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -6,21 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Collections;
-using OSharp.Data;
-using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Reflection;
-
 
 namespace OSharp.Authorization.Functions
 {

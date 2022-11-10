@@ -7,13 +7,6 @@
 //  <last-date>2021-03-18 18:51</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
-
-
 namespace OSharp.Entity
 {
     /// <summary>

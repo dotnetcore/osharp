@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="KeyValue.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,18 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-08-12 16:00</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-using OSharp.Core.Data;
-using OSharp.Entity;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-using OSharp.Json;
-using OSharp.Reflection;
 
 
 namespace OSharp.Core.Systems

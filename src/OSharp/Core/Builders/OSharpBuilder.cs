@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OsharpBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,22 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-06-23 15:40</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Collections;
-using OSharp.Core.Options;
-using OSharp.Core.Packs;
-using OSharp.Data;
-using OSharp.Exceptions;
-using OSharp.Reflection;
 
 
 namespace OSharp.Core.Builders

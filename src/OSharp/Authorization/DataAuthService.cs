@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DataAuthService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,19 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-04-17 12:46</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Claims;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Dependency;
-using OSharp.Filter;
-using OSharp.Identity;
-using OSharp.Linq;
-using OSharp.Reflection;
 
 
 namespace OSharp.Authorization

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SystemManager.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,22 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-06-25 21:00</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Caching;
-using OSharp.Collections;
-using OSharp.Core.Data;
-using OSharp.Data;
-using OSharp.Entity;
 
 
 namespace OSharp.Core.Systems

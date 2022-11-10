@@ -7,17 +7,6 @@
 //  <last-date>2017-09-17 16:45</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Caching.Distributed;
-
-using OSharp.Authorization.Functions;
-using OSharp.Data;
-using OSharp.Extensions;
-using OSharp.Json;
-
-
 namespace OSharp.Caching
 {
     /// <summary>

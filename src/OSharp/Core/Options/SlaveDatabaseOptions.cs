@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SlaveDatabaseOptions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,13 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-03-20 10:22</last-date>
 // -----------------------------------------------------------------------
-
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-
-using OSharp.Data;
-using OSharp.Reflection;
-
 
 namespace OSharp.Core.Options
 {

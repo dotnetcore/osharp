@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OnlineUser.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2019-06-02 0:01</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-
-using OSharp.Identity.JwtBearer;
 
 
 namespace OSharp.Identity

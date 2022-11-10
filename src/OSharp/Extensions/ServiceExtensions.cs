@@ -7,29 +7,6 @@
 //  <last-date>2020-03-25 1:53</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
-using OSharp.Core.Builders;
-using OSharp.Core.Options;
-using OSharp.Core.Packs;
-using OSharp.Data;
-using OSharp.Dependency;
-using OSharp.Entity;
-using OSharp.EventBuses;
-using OSharp.Logging;
-using OSharp.Reflection;
-
 
 namespace Microsoft.Extensions.DependencyInjection
 {

@@ -1,38 +1,24 @@
 // -----------------------------------------------------------------------
-//  <copyright file="EntityHashExtensions.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="EntityHashExtensions.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-12 10:09</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Collections;
-using OSharp.Core.Data;
-using OSharp.Core.Systems;
-using OSharp.Extensions;
 
 
 namespace OSharp.Entity
 {
     /// <summary>
-    /// ÊµÌåHashÀ©Õ¹·½·¨
+    /// å®ä½“Hashæ‰©å±•æ–¹æ³•
     /// </summary>
     public static class EntityHashExtensions
     {
         /// <summary>
-        /// ¼ì²éÖ¸¶¨ÊµÌåµÄHashÖµ£¬¾ö¶¨ÊÇ·ñĞèÒª½øĞĞÊı¾İ¿âÍ¬²½
+        /// æ£€æŸ¥æŒ‡å®šå®ä½“çš„Hashå€¼ï¼Œå†³å®šæ˜¯å¦éœ€è¦è¿›è¡Œæ•°æ®åº“åŒæ­¥
         /// </summary>
-        /// <returns>Í¬²½·µ»Øtrue£¬²»Í¬²½·µ»Øfalse</returns>
+        /// <returns>åŒæ­¥è¿”å›trueï¼Œä¸åŒæ­¥è¿”å›false</returns>
         public static bool CheckSyncByHash(this IEnumerable<IEntityHash> entityHashes, IServiceProvider provider, ILogger logger)
         {
             IEntityHash[] hashes = entityHashes as IEntityHash[] ?? entityHashes.ToArray();
@@ -47,19 +33,19 @@ namespace OSharp.Entity
             IKeyValue keyValue = store.GetByKey(key);
             if (keyValue != null && keyValue.Value?.ToString() == hash)
             {
-                logger.LogInformation($"{hashes.Length}Ìõ»ù´¡Êı¾İ¡°{entityType}¡±µÄÄÚÈİÇ©Ãû {hash} ÓëÉÏ´ÎÏàÍ¬£¬È¡ÏûÊı¾İ¿âÍ¬²½");
+                logger.LogInformation($"{hashes.Length}æ¡åŸºç¡€æ•°æ®â€œ{entityType}â€çš„å†…å®¹ç­¾å {hash} ä¸ä¸Šæ¬¡ç›¸åŒï¼Œå–æ¶ˆæ•°æ®åº“åŒæ­¥");
                 return false;
             }
 
             store.CreateOrUpdate(key, hash).GetAwaiter().GetResult();
-            logger.LogInformation($"{hashes.Length}Ìõ»ù´¡Êı¾İ¡°{entityType}¡±µÄÄÚÈİÇ©Ãû {hash} ÓëÉÏ´Î {keyValue?.Value} ²»Í¬£¬½«½øĞĞÊı¾İ¿âÍ¬²½");
+            logger.LogInformation($"{hashes.Length}æ¡åŸºç¡€æ•°æ®â€œ{entityType}â€çš„å†…å®¹ç­¾å {hash} ä¸ä¸Šæ¬¡ {keyValue?.Value} ä¸åŒï¼Œå°†è¿›è¡Œæ•°æ®åº“åŒæ­¥");
             return true;
         }
 
         /// <summary>
-        /// »ñÈ¡Ö¸¶¨ÊµÌåµÄHashÖµ
+        /// è·å–æŒ‡å®šå®ä½“çš„Hashå€¼
         /// </summary>
-        /// <param name="entity">ÊµÌå¶ÔÏó</param>
+        /// <param name="entity">å®ä½“å¯¹è±¡</param>
         public static string GetHash(this IEntityHash entity)
         {
             Type type = entity.GetType();

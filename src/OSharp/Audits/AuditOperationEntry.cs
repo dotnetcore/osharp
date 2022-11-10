@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditOperationEntry.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,12 +6,6 @@
 //  <last-editor></last-editor>
 //  <last-date>2017-09-17 11:44</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-
-using OSharp.Data;
-
 
 namespace OSharp.Audits
 {

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IDbContext.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,10 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2017-08-21 14:52</last-date>
 // -----------------------------------------------------------------------
-
-using System.Threading;
-using System.Threading.Tasks;
-
 
 namespace OSharp.Entity
 {

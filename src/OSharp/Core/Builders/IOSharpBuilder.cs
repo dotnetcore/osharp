@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IOsharpBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,14 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-03-09 12:22</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Core.Options;
-using OSharp.Core.Packs;
 
 
 namespace OSharp.Core.Builders

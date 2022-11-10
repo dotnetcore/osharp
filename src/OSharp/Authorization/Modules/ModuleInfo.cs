@@ -7,15 +7,6 @@
 //  <last-date>2020-02-10 20:13</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-
-using Microsoft.DotNet.PlatformAbstractions;
-
-using OSharp.Authorization.Functions;
-using OSharp.Entity;
-
-
 namespace OSharp.Authorization.Modules
 {
     /// <summary>

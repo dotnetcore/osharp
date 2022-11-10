@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DbContextConfig.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,15 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2017-09-03 0:54</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-using OSharp.Data;
-using OSharp.Entity;
-using OSharp.Exceptions;
-
 
 namespace OSharp.Core.Options
 {

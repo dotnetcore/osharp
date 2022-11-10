@@ -1,32 +1,27 @@
 // -----------------------------------------------------------------------
-//  <copyright file="EnumMetadata.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="EnumMetadata.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-06 12:44</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
-using OSharp.Extensions;
-
 
 namespace OSharp.CodeGenerator
 {
     /// <summary>
-    /// Ã¶¾ÙÀàĞÍÔªÊı¾İ
+    /// æšä¸¾ç±»å‹å…ƒæ•°æ®
     /// </summary>
     public class EnumMetadata
     {
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="EnumMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="EnumMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public EnumMetadata()
         { }
 
         /// <summary>
-        /// ³õÊ¼»¯Ò»¸ö<see cref="EnumMetadata"/>ÀàĞÍµÄĞÂÊµÀı
+        /// åˆå§‹åŒ–ä¸€ä¸ª<see cref="EnumMetadata"/>ç±»å‹çš„æ–°å®ä¾‹
         /// </summary>
         public EnumMetadata(Enum enumItem)
         {
@@ -40,17 +35,17 @@ namespace OSharp.CodeGenerator
         }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ã¶¾ÙÖµ
+        /// è·å–æˆ–è®¾ç½® æšä¸¾å€¼
         /// </summary>
         public int Value { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ã¶¾ÙÃû
+        /// è·å–æˆ–è®¾ç½® æšä¸¾å
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÏÔÊ¾Ãû³Æ
+        /// è·å–æˆ–è®¾ç½® æ˜¾ç¤ºåç§°
         /// </summary>
         public string Display { get; set; }
     }

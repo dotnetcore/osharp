@@ -7,9 +7,6 @@
 //  <last-date>2018-07-21 21:40</last-date>
 // -----------------------------------------------------------------------
 
-using OSharp.Data;
-
-
 namespace OSharp.Filter
 {
     /// <summary>

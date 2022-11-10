@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ISoftDeletable.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -6,10 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2019-02-14 22:44</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-
 
 namespace OSharp.Entity
 {

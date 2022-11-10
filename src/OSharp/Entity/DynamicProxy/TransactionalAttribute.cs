@@ -7,15 +7,7 @@
 //  <last-date>2020-09-07 22:01</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 using AspectCore.DynamicProxy;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Exceptions;
 
 
 namespace OSharp.Entity.DynamicProxy

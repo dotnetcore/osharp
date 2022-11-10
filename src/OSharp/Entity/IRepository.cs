@@ -7,15 +7,6 @@
 //  <last-date>2017-08-16 22:49</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-using OSharp.Data;
-
-
 namespace OSharp.Entity
 {
     /// <summary>

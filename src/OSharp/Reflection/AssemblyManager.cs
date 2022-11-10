@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AssemblyManager.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,14 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-03-17 11:22</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Linq;
-using System.Reflection;
-
-using Microsoft.Extensions.DependencyModel;
-
-using OSharp.Exceptions;
 
 
 namespace OSharp.Reflection

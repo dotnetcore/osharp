@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IFinder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -6,11 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2017-08-15 23:23</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
-using OSharp.Dependency;
-
 
 namespace OSharp.Finders
 {
