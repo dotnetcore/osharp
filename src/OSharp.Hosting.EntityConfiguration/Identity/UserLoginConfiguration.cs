@@ -7,35 +7,27 @@
 //  <last-date>2018-06-27 4:48</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
 using OSharp.Hosting.Identity.Entities;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Entity;
+namespace OSharp.Hosting.EntityConfiguration.Identity;
 
-
-namespace OSharp.Hosting.EntityConfiguration.Identity
+public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, Guid>
 {
-    public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, Guid>
+    /// <summary>
+    /// 重写以实现实体类型各个属性的数据库配置
+    /// </summary>
+    /// <param name="builder">实体类型创建器</param>
+    public override void Configure(EntityTypeBuilder<UserLogin> builder)
     {
-        /// <summary>
-        /// 重写以实现实体类型各个属性的数据库配置
-        /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<UserLogin> builder)
-        {
-            builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasDatabaseName("UserLoginIndex").IsUnique();
-            builder.HasOne(ul => ul.User).WithMany(u => u.UserLogins).HasForeignKey(ul => ul.UserId).IsRequired();
+        builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasDatabaseName("UserLoginIndex").IsUnique();
+        builder.HasOne(ul => ul.User).WithMany(u => u.UserLogins).HasForeignKey(ul => ul.UserId).IsRequired();
 
-            EntityConfigurationAppend(builder);
-        }
-
-        /// <summary>
-        /// 额外的数据映射
-        /// </summary>
-        partial void EntityConfigurationAppend(EntityTypeBuilder<UserLogin> builder);
+        EntityConfigurationAppend(builder);
     }
+
+    /// <summary>
+    /// 额外的数据映射
+    /// </summary>
+    partial void EntityConfigurationAppend(EntityTypeBuilder<UserLogin> builder);
 }

@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>LiuliuSoft nnc</Authors>

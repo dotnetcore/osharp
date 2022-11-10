@@ -1,110 +1,114 @@
-﻿using System;
+// -----------------------------------------------------------------------
+//  <copyright file="Log4NetLogger.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2022-11-11 1:45</last-date>
+// -----------------------------------------------------------------------
 
 using log4net;
 
-using Microsoft.Extensions.Logging;
 
-using OSharp.Data;
+namespace OSharp.Log4Net;
 
-
-namespace OSharp.Log4Net
+/// <summary>
+/// log4net日志记录
+/// </summary>
+public class Log4NetLogger : ILogger
 {
+    private readonly ILog _log;
+
     /// <summary>
-    /// log4net日志记录
+    /// 初始化一个<see cref="Log4NetLogger"/>类型的新实例
     /// </summary>
-    public class Log4NetLogger : ILogger
+    public Log4NetLogger(string loggerRepository, string name)
     {
-        private readonly ILog _log;
+        _log = LogManager.GetLogger(loggerRepository, name);
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="Log4NetLogger"/>类型的新实例
-        /// </summary>
-        public Log4NetLogger(string loggerRepository, string name)
+    /// <summary>Writes a log entry.</summary>
+    /// <param name="logLevel">日志级别，将按这个级别写不同的日志</param>
+    /// <param name="eventId">事件编号.</param>
+    /// <param name="state">The entry to be written. Can be also an object.</param>
+    /// <param name="exception">The exception related to this entry.</param>
+    /// <param name="formatter">Function to create a <c>string</c> message of the <paramref name="state" /> and <paramref name="exception" />.</param>
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    {
+        if (!IsEnabled(logLevel))
         {
-            _log = LogManager.GetLogger(loggerRepository, name);
+            return;
         }
 
-        /// <summary>Writes a log entry.</summary>
-        /// <param name="logLevel">日志级别，将按这个级别写不同的日志</param>
-        /// <param name="eventId">事件编号.</param>
-        /// <param name="state">The entry to be written. Can be also an object.</param>
-        /// <param name="exception">The exception related to this entry.</param>
-        /// <param name="formatter">Function to create a <c>string</c> message of the <paramref name="state" /> and <paramref name="exception" />.</param>
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        Check.NotNull(formatter, nameof(formatter));
+        string message = null;
+        if (formatter != null)
         {
-            if (!IsEnabled(logLevel))
-            {
-                return;
-            }
-            Check.NotNull(formatter, nameof(formatter));
-            string message = null;
-            if (formatter != null)
-            {
-                message = formatter(state, exception);
-            }
-            if (!string.IsNullOrEmpty(message) || exception != null)
-            {
-                switch (logLevel)
-                {
-                    case LogLevel.Trace:
-                    case LogLevel.Debug:
-                        _log.Debug(message);
-                        break;
-                    case LogLevel.Information:
-                        _log.Info(message);
-                        break;
-                    case LogLevel.Warning:
-                        _log.Warn(message);
-                        break;
-                    case LogLevel.Error:
-                        _log.Error(message, exception);
-                        break;
-                    case LogLevel.Critical:
-                        _log.Fatal(message, exception);
-                        break;
-                    case LogLevel.None:
-                        break;
-                    default:
-                        _log.Warn($"遇到未知的日志级别 {logLevel}, 使用Info级别写入日志。");
-                        _log.Info(message, exception);
-                        break;
-                }
-            }
+            message = formatter(state, exception);
         }
 
-        /// <summary>
-        /// Checks if the given <paramref name="logLevel" /> is enabled.
-        /// </summary>
-        /// <param name="logLevel">level to be checked.</param>
-        /// <returns><c>true</c> if enabled.</returns>
-        public bool IsEnabled(LogLevel logLevel)
+        if (!string.IsNullOrEmpty(message) || exception != null)
         {
             switch (logLevel)
             {
                 case LogLevel.Trace:
                 case LogLevel.Debug:
-                    return _log.IsDebugEnabled;
+                    _log.Debug(message);
+                    break;
                 case LogLevel.Information:
-                    return _log.IsInfoEnabled;
+                    _log.Info(message);
+                    break;
                 case LogLevel.Warning:
-                    return _log.IsWarnEnabled;
+                    _log.Warn(message);
+                    break;
                 case LogLevel.Error:
-                    return _log.IsErrorEnabled;
+                    _log.Error(message, exception);
+                    break;
                 case LogLevel.Critical:
-                    return _log.IsFatalEnabled;
+                    _log.Fatal(message, exception);
+                    break;
                 case LogLevel.None:
-                    return false;
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
+                    _log.Warn($"遇到未知的日志级别 {logLevel}, 使用Info级别写入日志。");
+                    _log.Info(message, exception);
+                    break;
             }
         }
+    }
 
-        /// <summary>Begins a logical operation scope.</summary>
-        /// <param name="state">The identifier for the scope.</param>
-        /// <returns>An IDisposable that ends the logical operation scope on dispose.</returns>
-        public IDisposable BeginScope<TState>(TState state)
+    /// <summary>
+    /// Checks if the given <paramref name="logLevel" /> is enabled.
+    /// </summary>
+    /// <param name="logLevel">level to be checked.</param>
+    /// <returns><c>true</c> if enabled.</returns>
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        switch (logLevel)
         {
-            return null;
+            case LogLevel.Trace:
+            case LogLevel.Debug:
+                return _log.IsDebugEnabled;
+            case LogLevel.Information:
+                return _log.IsInfoEnabled;
+            case LogLevel.Warning:
+                return _log.IsWarnEnabled;
+            case LogLevel.Error:
+                return _log.IsErrorEnabled;
+            case LogLevel.Critical:
+                return _log.IsFatalEnabled;
+            case LogLevel.None:
+                return false;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
         }
+    }
+
+    /// <summary>Begins a logical operation scope.</summary>
+    /// <param name="state">The identifier for the scope.</param>
+    /// <returns>An IDisposable that ends the logical operation scope on dispose.</returns>
+    public IDisposable BeginScope<TState>(TState state)
+    {
+        return null;
     }
 }

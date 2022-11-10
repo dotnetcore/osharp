@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ProfileBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,10 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-04-07 18:29</last-date>
 // -----------------------------------------------------------------------
-
-using AutoMapper;
-
-using OSharp.Mapping;
 
 
 namespace OSharp.AutoMapper

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="NLogLoggerProvider.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -7,14 +7,7 @@
 //  <last-date>2019-08-27 16:08</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Reflection;
-
 using NLog;
-using Microsoft.Extensions.Logging;
-using System.Text;
 
 using NLog.Config;
 using NLog.Targets;

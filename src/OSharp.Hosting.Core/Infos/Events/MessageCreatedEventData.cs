@@ -12,16 +12,15 @@ using OSharp.Hosting.Infos.Entities;
 using OSharp.EventBuses;
 
 
-namespace OSharp.Hosting.Infos.Events
+namespace OSharp.Hosting.Infos.Events;
+
+/// <summary>
+/// 事件数据：发送消息
+/// </summary>
+public class MessageCreatedEventData : EventDataBase
 {
     /// <summary>
-    /// 事件数据：发送消息
+    /// 获取或设置 新增的消息
     /// </summary>
-    public class MessageCreatedEventData : EventDataBase
-    {
-        /// <summary>
-        /// 获取或设置 新增的消息
-        /// </summary>
-        public Message[] Messages { get; set; }
-    }
+    public Message[] Messages { get; set; }
 }

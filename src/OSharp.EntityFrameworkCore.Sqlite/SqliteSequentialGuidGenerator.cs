@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SqliteSequentialGuidGenerator.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -6,12 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2021-03-14 21:16</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-
-using OSharp.Data;
-using OSharp.Entity.KeyGenerate;
-
 
 namespace OSharp.Entity.Sqlite
 {

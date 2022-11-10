@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="HangfirePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,15 +7,11 @@
 //  <last-date>2018-12-20 12:53</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
+namespace OSharp.Hangfire;
 
-
-namespace OSharp.Hangfire
-{
-    /// <summary>
-    /// Hangfire 后台任务模块
-    /// </summary>
-    [Description("Hangfire后台任务模块")]
-    public class HangfirePack : HangfirePackBase
-    { }
-}
+/// <summary>
+/// Hangfire 后台任务模块
+/// </summary>
+[Description("Hangfire后台任务模块")]
+public class HangfirePack : HangfirePackBase
+{ }

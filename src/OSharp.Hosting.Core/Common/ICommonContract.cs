@@ -7,16 +7,15 @@
 //  <last-date>2018-07-03 12:59</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Hosting.Common
+namespace OSharp.Hosting.Common;
+
+/// <summary>
+/// 业务契约：通用业务
+/// </summary>
+public interface ICommonContract
 {
     /// <summary>
-    /// 业务契约：通用业务
+    /// 测试测试
     /// </summary>
-    public interface ICommonContract
-    {
-        /// <summary>
-        /// 测试测试
-        /// </summary>
-        string Test();
-    }
+    string Test();
 }

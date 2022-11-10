@@ -7,21 +7,20 @@
 //  <last-date>2019-10-28 19:27</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Wpf.Data
+namespace OSharp.Wpf.Data;
+
+/// <summary>
+/// 常量
+/// </summary>
+public static class WpfConstants
 {
     /// <summary>
-    /// 常量
+    /// 浏览器客户端组名称
     /// </summary>
-    public static class WpfConstants
-    {
-        /// <summary>
-        /// 浏览器客户端组名称
-        /// </summary>
-        public const string GroupNameBrowser = "BrowserClientGroup";
+    public const string GroupNameBrowser = "BrowserClientGroup";
 
-        /// <summary>
-        /// WPF客户端组名称
-        /// </summary>
-        public const string GroupNameWpf = "WpfClientGroup";
-    }
+    /// <summary>
+    /// WPF客户端组名称
+    /// </summary>
+    public const string GroupNameWpf = "WpfClientGroup";
 }

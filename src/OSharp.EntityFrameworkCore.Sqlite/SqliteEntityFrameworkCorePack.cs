@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SqliteEntityFrameworkCorePack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -6,16 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-11-05 16:29</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-using System.Linq;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Core.Packs;
-using OSharp.Entity.KeyGenerate;
-
 
 namespace OSharp.Entity.Sqlite
 {

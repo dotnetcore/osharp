@@ -7,11 +7,10 @@
 //  <last-date>2019-01-06 22:37</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Hosting.Systems.Dtos
-{
-    /// <summary>
-    /// 代码生成输入DTO
-    /// </summary>
-    public class GenerateCodeInputDto
-    { }
-}
+namespace OSharp.Hosting.Systems.Dtos;
+
+/// <summary>
+/// 代码生成输入DTO
+/// </summary>
+public class GenerateCodeInputDto
+{ }

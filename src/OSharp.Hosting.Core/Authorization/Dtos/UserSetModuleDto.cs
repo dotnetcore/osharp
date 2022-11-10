@@ -7,21 +7,20 @@
 //  <last-date>2018-07-08 12:21</last-date>
 // -----------------------------------------------------------------------
 
-namespace OSharp.Hosting.Authorization.Dtos
+namespace OSharp.Hosting.Authorization.Dtos;
+
+/// <summary>
+/// 用户设置模块DTO
+/// </summary>
+public class UserSetModuleDto
 {
     /// <summary>
-    /// 用户设置模块DTO
+    /// 获取或设置 用户编号
     /// </summary>
-    public class UserSetModuleDto
-    {
-        /// <summary>
-        /// 获取或设置 用户编号
-        /// </summary>
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
-        /// <summary>
-        /// 获取或设置 要设置的模块编号
-        /// </summary>
-        public int[] ModuleIds { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 要设置的模块编号
+    /// </summary>
+    public int[] ModuleIds { get; set; }
 }

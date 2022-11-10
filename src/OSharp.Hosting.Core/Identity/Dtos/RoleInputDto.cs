@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -8,17 +8,14 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Hosting.Identity.Entities;
-
 using OSharp.Identity.Dtos;
-using OSharp.Mapping;
 
 
-namespace OSharp.Hosting.Identity.Dtos
-{
-    /// <summary>
-    /// 输入DTO：角色信息
-    /// </summary>
-    [MapTo(typeof(Role))]
-    public class RoleInputDto : RoleInputDtoBase<int>
-    { }
-}
+namespace OSharp.Hosting.Identity.Dtos;
+
+/// <summary>
+/// 输入DTO：角色信息
+/// </summary>
+[MapTo(typeof(Role))]
+public class RoleInputDto : RoleInputDtoBase<int>
+{ }

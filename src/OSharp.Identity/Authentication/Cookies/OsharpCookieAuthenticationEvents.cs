@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OsharpCookieAuthenticationEvents.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -7,32 +7,24 @@
 //  <last-date>2021-04-02 19:15</last-date>
 // -----------------------------------------------------------------------
 
-using System.Security.Claims;
-using System.Threading.Tasks;
+namespace OSharp.Authentication.Cookies;
 
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
-
-
-namespace OSharp.Authentication.Cookies
+/// <summary>
+/// 自定义 CookieAuthenticationEvents
+/// </summary>
+public class OsharpCookieAuthenticationEvents : CookieAuthenticationEvents
 {
     /// <summary>
-    /// 自定义 CookieAuthenticationEvents
+    /// Cookie验证通过时，从OnlineUser缓存或数据库查找用户的最新信息附加到有效的 ClaimIdentity 上
     /// </summary>
-    public class OsharpCookieAuthenticationEvents : CookieAuthenticationEvents
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public override Task ValidatePrincipal(CookieValidatePrincipalContext context)
     {
-        /// <summary>
-        /// Cookie验证通过时，从OnlineUser缓存或数据库查找用户的最新信息附加到有效的 ClaimIdentity 上
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public override Task ValidatePrincipal(CookieValidatePrincipalContext context)
-        {
-            ClaimsPrincipal user = context.Principal;
-            ClaimsIdentity identity = user.Identity as ClaimsIdentity;
+        ClaimsPrincipal user = context.Principal;
+        ClaimsIdentity identity = user.Identity as ClaimsIdentity;
 
-            IUserClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IUserClaimsProvider>();
-            return accessClaimsProvider.RefreshIdentity(identity);
-        }
+        IUserClaimsProvider accessClaimsProvider = context.HttpContext.RequestServices.GetService<IUserClaimsProvider>();
+        return accessClaimsProvider.RefreshIdentity(identity);
     }
 }

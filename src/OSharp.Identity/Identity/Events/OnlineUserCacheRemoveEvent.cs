@@ -14,43 +14,42 @@ using Microsoft.Extensions.DependencyInjection;
 using OSharp.EventBuses;
 
 
-namespace OSharp.Identity.Events
+namespace OSharp.Identity.Events;
+
+/// <summary>
+/// 在线用户信息缓存移除事件数据
+/// </summary>
+public class OnlineUserCacheRemoveEventData : EventDataBase
 {
     /// <summary>
-    /// 在线用户信息缓存移除事件数据
+    /// 获取或设置 用户名
     /// </summary>
-    public class OnlineUserCacheRemoveEventData : EventDataBase
-    {
-        /// <summary>
-        /// 获取或设置 用户名
-        /// </summary>
-        public string[] UserNames { get; set; } = new string[0];
-    }
+    public string[] UserNames { get; set; } = new string[0];
+}
 
+
+/// <summary>
+/// 在线用户信息缓存移除事件处理器
+/// </summary>
+public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>
+{
+    private readonly IServiceProvider _provider;
 
     /// <summary>
-    /// 在线用户信息缓存移除事件处理器
+    /// 初始化一个<see cref="OnlineUserCacheRemoveEventHandler"/>类型的新实例
     /// </summary>
-    public class OnlineUserCacheRemoveEventHandler : EventHandlerBase<OnlineUserCacheRemoveEventData>
+    public OnlineUserCacheRemoveEventHandler(IServiceProvider provider)
     {
-        private readonly IServiceProvider _provider;
+        _provider = provider;
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="OnlineUserCacheRemoveEventHandler"/>类型的新实例
-        /// </summary>
-        public OnlineUserCacheRemoveEventHandler(IServiceProvider provider)
-        {
-            _provider = provider;
-        }
-
-        /// <summary>
-        /// 事件处理
-        /// </summary>
-        /// <param name="eventData">事件源数据</param>
-        public override void Handle(OnlineUserCacheRemoveEventData eventData)
-        {
-            IOnlineUserProvider onlineUserProvider = _provider.GetService<IOnlineUserProvider>();
-            onlineUserProvider.Remove(eventData.UserNames);
-        }
+    /// <summary>
+    /// 事件处理
+    /// </summary>
+    /// <param name="eventData">事件源数据</param>
+    public override void Handle(OnlineUserCacheRemoveEventData eventData)
+    {
+        IOnlineUserProvider onlineUserProvider = _provider.GetService<IOnlineUserProvider>();
+        onlineUserProvider.Remove(eventData.UserNames);
     }
 }

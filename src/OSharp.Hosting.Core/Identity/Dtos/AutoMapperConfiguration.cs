@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AutoMapperConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,27 +7,22 @@
 //  <last-date>2018-07-04 0:24</last-date>
 // -----------------------------------------------------------------------
 
-using AutoMapper.Configuration;
-
 using OSharp.Hosting.Identity.Entities;
 
-using OSharp.AutoMapper;
 
+namespace OSharp.Hosting.Identity.Dtos;
 
-namespace OSharp.Hosting.Identity.Dtos
+/// <summary>
+/// DTO对象映射配置
+/// </summary>
+public class AutoMapperConfiguration : AutoMapperTupleBase
 {
     /// <summary>
-    /// DTO对象映射配置
+    /// 创建对象映射
     /// </summary>
-    public class AutoMapperConfiguration : AutoMapperTupleBase
+    public override void CreateMap()
     {
-        /// <summary>
-        /// 创建对象映射
-        /// </summary>
-        public override void CreateMap()
-        {
-            CreateMap<Role, RoleNode>().ForMember(rn => rn.RoleId, opt => opt.MapFrom(r => r.Id))
-                .ForMember(rn => rn.RoleName, opt => opt.MapFrom(r => r.Name));
-        }
+        CreateMap<Role, RoleNode>().ForMember(rn => rn.RoleId, opt => opt.MapFrom(r => r.Id))
+            .ForMember(rn => rn.RoleName, opt => opt.MapFrom(r => r.Name));
     }
 }

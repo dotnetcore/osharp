@@ -7,21 +7,6 @@
 //  <last-date>2022-11-10 19:10</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Exceptionless;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using OSharp.AspNetCore;
-using OSharp.Core.Packs;
-using OSharp.Exceptions;
-using OSharp.Extensions;
-
-
 namespace OSharp.Exceptionless
 {
     /// <summary>

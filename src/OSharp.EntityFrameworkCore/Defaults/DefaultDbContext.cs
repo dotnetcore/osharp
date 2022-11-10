@@ -7,23 +7,17 @@
 //  <last-date>2019-03-08 4:44</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+namespace OSharp.Entity;
 
-using Microsoft.EntityFrameworkCore;
-
-
-namespace OSharp.Entity
+/// <summary>
+/// 默认EntityFramework数据上下文
+/// </summary>
+public class DefaultDbContext : DbContextBase
 {
     /// <summary>
-    /// 默认EntityFramework数据上下文
+    /// 初始化一个<see cref="DefaultDbContext"/>类型的新实例
     /// </summary>
-    public class DefaultDbContext : DbContextBase
-    {
-        /// <summary>
-        /// 初始化一个<see cref="DefaultDbContext"/>类型的新实例
-        /// </summary>
-        public DefaultDbContext(DbContextOptions<DefaultDbContext> options, IServiceProvider serviceProvider)
-            : base(options, serviceProvider)
-        { }
-    }
+    public DefaultDbContext(DbContextOptions<DefaultDbContext> options, IServiceProvider serviceProvider)
+        : base(options, serviceProvider)
+    { }
 }

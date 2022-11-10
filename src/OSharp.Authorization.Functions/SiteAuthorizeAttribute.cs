@@ -12,20 +12,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 
 
-namespace OSharp.Authorization
+namespace OSharp.Authorization;
+
+/// <summary>
+/// OSharp站点授权，应用<see cref="FunctionRequirement.OsharpPolicy"/>授权策略和<see cref="IdentityConstants.ApplicationScheme"/>+<see cref="JwtBearerDefaults.AuthenticationScheme"/>授权计划
+/// </summary>
+public class SiteAuthorizeAttribute : AuthorizeAttribute
 {
     /// <summary>
-    /// OSharp站点授权，应用<see cref="FunctionRequirement.OsharpPolicy"/>授权策略和<see cref="IdentityConstants.ApplicationScheme"/>+<see cref="JwtBearerDefaults.AuthenticationScheme"/>授权计划
+    /// 初始化一个<see cref="SiteAuthorizeAttribute"/>类型的新实例
     /// </summary>
-    public class SiteAuthorizeAttribute : AuthorizeAttribute
+    public SiteAuthorizeAttribute()
     {
-        /// <summary>
-        /// 初始化一个<see cref="SiteAuthorizeAttribute"/>类型的新实例
-        /// </summary>
-        public SiteAuthorizeAttribute()
-        {
-            Policy = FunctionRequirement.OsharpPolicy;
-            AuthenticationSchemes = $"{IdentityConstants.ApplicationScheme},{JwtBearerDefaults.AuthenticationScheme}";
-        }
+        Policy = FunctionRequirement.OsharpPolicy;
+        AuthenticationSchemes = $"{IdentityConstants.ApplicationScheme},{JwtBearerDefaults.AuthenticationScheme}";
     }
 }

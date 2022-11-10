@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OrganizationConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -9,29 +9,24 @@
 
 using OSharp.Hosting.Identity.Entities;
 
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Entity;
+namespace OSharp.Hosting.EntityConfiguration.Identity;
 
-
-namespace OSharp.Hosting.EntityConfiguration.Identity
+public partial class OrganizationConfiguration : EntityTypeConfigurationBase<Organization, int>
 {
-    public partial class OrganizationConfiguration : EntityTypeConfigurationBase<Organization, int>
+    /// <summary>
+    /// 重写以实现实体类型各个属性的数据库配置
+    /// </summary>
+    /// <param name="builder">实体类型创建器</param>
+    public override void Configure(EntityTypeBuilder<Organization> builder)
     {
-        /// <summary>
-        /// 重写以实现实体类型各个属性的数据库配置
-        /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<Organization> builder)
-        {
-            builder.HasOne<Organization>().WithMany().HasForeignKey(m => m.ParentId).IsRequired(false);
+        builder.HasOne<Organization>().WithMany().HasForeignKey(m => m.ParentId).IsRequired(false);
 
-            EntityConfigurationAppend(builder);
-        }
-
-        /// <summary>
-        /// 额外的数据映射
-        /// </summary>
-        partial void EntityConfigurationAppend(EntityTypeBuilder<Organization> builder);
+        EntityConfigurationAppend(builder);
     }
+
+    /// <summary>
+    /// 额外的数据映射
+    /// </summary>
+    partial void EntityConfigurationAppend(EntityTypeBuilder<Organization> builder);
 }

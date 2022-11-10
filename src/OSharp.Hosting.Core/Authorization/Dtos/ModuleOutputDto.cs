@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleOutputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -9,46 +9,42 @@
 
 using OSharp.Hosting.Authorization.Entities;
 
-using OSharp.Entity;
-using OSharp.Mapping;
 
+namespace OSharp.Hosting.Authorization.Dtos;
 
-namespace OSharp.Hosting.Authorization.Dtos
+/// <summary>
+/// 输入DTO:模块信息
+/// </summary>
+[MapFrom(typeof(Module))]
+public class ModuleOutputDto : IOutputDto
 {
     /// <summary>
-    /// 输入DTO:模块信息
+    /// 获取或设置 模块编号
     /// </summary>
-    [MapFrom(typeof(Module))]
-    public class ModuleOutputDto : IOutputDto
-    {
-        /// <summary>
-        /// 获取或设置 模块编号
-        /// </summary>
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        /// <summary>
-        /// 获取或设置 模块名称
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// 获取或设置 模块名称
+    /// </summary>
+    public string Name { get; set; }
 
-        /// <summary>
-        /// 获取或设置 备注
-        /// </summary>
-        public string Remark { get; set; }
+    /// <summary>
+    /// 获取或设置 备注
+    /// </summary>
+    public string Remark { get; set; }
 
-        /// <summary>
-        /// 获取或设置 模块代码
-        /// </summary>
-        public string Code { get; set; }
+    /// <summary>
+    /// 获取或设置 模块代码
+    /// </summary>
+    public string Code { get; set; }
 
-        /// <summary>
-        /// 获取或设置 节点内排序码
-        /// </summary>
-        public double OrderCode { get; set; }
+    /// <summary>
+    /// 获取或设置 节点内排序码
+    /// </summary>
+    public double OrderCode { get; set; }
 
-        /// <summary>
-        /// 获取或设置 父模块编号
-        /// </summary>
-        public int? ParentId { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 父模块编号
+    /// </summary>
+    public int? ParentId { get; set; }
 }

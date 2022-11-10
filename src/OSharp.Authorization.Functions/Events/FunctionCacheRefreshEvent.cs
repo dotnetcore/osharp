@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionCacheRefreshEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,51 +7,42 @@
 //  <last-date>2018-06-12 22:23</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 
-using Microsoft.Extensions.DependencyInjection;
+namespace OSharp.Authorization.Events;
 
-using OSharp.AspNetCore;
-using OSharp.Authorization.Functions;
-using OSharp.EventBuses;
+/// <summary>
+/// 功能信息缓存刷新事件源
+/// </summary>
+public class FunctionCacheRefreshEventData : EventDataBase
+{ }
 
 
-namespace OSharp.Authorization.Events
+/// <summary>
+/// 功能信息缓存刷新事件处理器
+/// </summary>
+public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>
 {
-    /// <summary>
-    /// 功能信息缓存刷新事件源
-    /// </summary>
-    public class FunctionCacheRefreshEventData : EventDataBase
-    { }
-
+    private readonly IServiceProvider _provider;
 
     /// <summary>
-    /// 功能信息缓存刷新事件处理器
+    /// 初始化一个<see cref="FunctionCacheRefreshEventHandler"/>类型的新实例
     /// </summary>
-    public class FunctionCacheRefreshEventHandler : EventHandlerBase<FunctionCacheRefreshEventData>
+    public FunctionCacheRefreshEventHandler(IServiceProvider provider)
     {
-        private readonly IServiceProvider _provider;
+        _provider = provider;
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="FunctionCacheRefreshEventHandler"/>类型的新实例
-        /// </summary>
-        public FunctionCacheRefreshEventHandler(IServiceProvider provider)
+    /// <summary>
+    /// 事件处理
+    /// </summary>
+    /// <param name="eventData">事件源数据</param>
+    public override void Handle(FunctionCacheRefreshEventData eventData)
+    {
+        if (!_provider.InHttpRequest())
         {
-            _provider = provider;
+            return;
         }
-
-        /// <summary>
-        /// 事件处理
-        /// </summary>
-        /// <param name="eventData">事件源数据</param>
-        public override void Handle(FunctionCacheRefreshEventData eventData)
-        {
-            if (!_provider.InHttpRequest())
-            {
-                return;
-            }
-            IFunctionHandler functionHandler = _provider.GetService<IFunctionHandler>();
-            functionHandler?.RefreshCache();
-        }
+        IFunctionHandler functionHandler = _provider.GetService<IFunctionHandler>();
+        functionHandler?.RefreshCache();
     }
 }

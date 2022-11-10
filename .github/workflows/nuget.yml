@@ -5,7 +5,7 @@ on:
   push:
     branches: [master]
     tags:
-      - "6.0.*"
+      - "7.0.*"
     paths:
       - "src/**"
       - ".github/workflows/nuget.yml"

@@ -7,31 +7,25 @@
 //  <last-date>2021-02-28 23:55</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.Entity;
 using OSharp.Hosting.Systems.Entities;
 
 
-namespace OSharp.Hosting.Systems
+namespace OSharp.Hosting.Systems;
+
+/// <summary>
+/// 业务实现：系统模块
+/// </summary>
+public partial class SystemsService : ISystemsContract
 {
+    private readonly IServiceProvider _provider;
+
     /// <summary>
-    /// 业务实现：系统模块
+    /// 初始化一个<see cref="SystemsService"/>类型的新实例
     /// </summary>
-    public partial class SystemsService : ISystemsContract
+    public SystemsService(IServiceProvider provider)
     {
-        private readonly IServiceProvider _provider;
-
-        /// <summary>
-        /// 初始化一个<see cref="SystemsService"/>类型的新实例
-        /// </summary>
-        public SystemsService(IServiceProvider provider)
-        {
-            _provider = provider;
-        }
-
-        protected IRepository<Menu, int> MenuInfoRepository => _provider.GetService<IRepository<Menu, int>>();
+        _provider = provider;
     }
+
+    protected IRepository<Menu, int> MenuInfoRepository => _provider.GetService<IRepository<Menu, int>>();
 }

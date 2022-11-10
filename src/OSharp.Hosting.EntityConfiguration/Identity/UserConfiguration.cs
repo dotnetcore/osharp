@@ -9,33 +9,27 @@
 
 using OSharp.Hosting.Identity.Entities;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using OSharp.Entity;
+namespace OSharp.Hosting.EntityConfiguration.Identity;
 
-
-namespace OSharp.Hosting.EntityConfiguration.Identity
+public partial class UserConfiguration : EntityTypeConfigurationBase<User, int>
 {
-    public partial class UserConfiguration : EntityTypeConfigurationBase<User, int>
+    /// <summary>
+    /// 重写以实现实体类型各个属性的数据库配置
+    /// </summary>
+    /// <param name="builder">实体类型创建器</param>
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
-        /// <summary>
-        /// 重写以实现实体类型各个属性的数据库配置
-        /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasDatabaseName("UserNameIndex").IsUnique();
-            builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasDatabaseName("EmailIndex");
+        builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasDatabaseName("UserNameIndex").IsUnique();
+        builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasDatabaseName("EmailIndex");
 
-            builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
+        builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 
-            EntityConfigurationAppend(builder);
-        }
-
-        /// <summary>
-        /// 额外的数据映射
-        /// </summary>
-        partial void EntityConfigurationAppend(EntityTypeBuilder<User> builder);
+        EntityConfigurationAppend(builder);
     }
+
+    /// <summary>
+    /// 额外的数据映射
+    /// </summary>
+    partial void EntityConfigurationAppend(EntityTypeBuilder<User> builder);
 }

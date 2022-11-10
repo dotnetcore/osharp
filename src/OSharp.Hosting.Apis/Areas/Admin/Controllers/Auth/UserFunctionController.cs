@@ -7,90 +7,74 @@
 //  <last-date>2018-06-27 4:49</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.AspNetCore.UI;
-using OSharp.Authorization.Functions;
-using OSharp.Authorization.Modules;
-using OSharp.Entity;
-using OSharp.Filter;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Authorization.Dtos;
 using OSharp.Hosting.Identity.Dtos;
 using OSharp.Hosting.Identity.Entities;
-using OSharp.Linq;
 
 
-namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
+namespace OSharp.Hosting.Apis.Areas.Admin.Controllers;
+
+[ModuleInfo(Order = 4, Position = "Auth", PositionName = "权限授权模块")]
+[Description("管理-用户功能")]
+public class UserFunctionController : AdminApiControllerBase
 {
-    [ModuleInfo(Order = 4, Position = "Auth", PositionName = "权限授权模块")]
-    [Description("管理-用户功能")]
-    public class UserFunctionController : AdminApiControllerBase
+    private readonly IServiceProvider _provider;
+
+    public UserFunctionController(IServiceProvider provider) : base(provider)
     {
-        private readonly IServiceProvider _provider;
+        _provider = provider;
+    }
 
-        public UserFunctionController(IServiceProvider provider) : base(provider)
+    /// <summary>
+    /// 读取用户信息
+    /// </summary>
+    /// <returns>用户信息</returns>
+    [HttpPost]
+    [ModuleInfo]
+    [Description("读取")]
+    public AjaxResult Read(PageRequest request)
+    {
+        request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
+        Expression<Func<User, bool>> predicate = FilterService.GetExpression<User>(request.FilterGroup);
+        UserManager<User> userManager = _provider.GetRequiredService<UserManager<User>>();
+        var page = userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
+        return new AjaxResult(page.ToPageData());
+    }
+
+    /// <summary>
+    /// 读取用户功能信息
+    /// </summary>
+    /// <returns>用户功能信息</returns>
+    [HttpPost]
+    [ModuleInfo]
+    [DependOnFunction(nameof(Read))]
+    [Description("读取功能")]
+    public AjaxResult ReadFunctions(int userId, [FromBody] PageRequest request)
+    {
+        var empty = new PageData<FunctionOutputDto2>();
+        if (userId == 0)
         {
-            _provider = provider;
+            return new AjaxResult(empty);
         }
 
-        /// <summary>
-        /// 读取用户信息
-        /// </summary>
-        /// <returns>用户信息</returns>
-        [HttpPost]
-        [ModuleInfo]
-        [Description("读取")]
-        public AjaxResult Read(PageRequest request)
+        FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
+        int[] moduleIds = functionAuthManager.GetUserWithRoleModuleIds(userId);
+        Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+            .Select(m => m.FunctionId).Distinct().ToArray();
+        if (functionIds.Length == 0)
         {
-            request.FilterGroup.Rules.Add(new FilterRule("IsLocked", false, FilterOperate.Equal));
-            Expression<Func<User, bool>> predicate = FilterService.GetExpression<User>(request.FilterGroup);
-            UserManager<User> userManager = _provider.GetRequiredService<UserManager<User>>();
-            var page = userManager.Users.ToPage<User, UserOutputDto2>(predicate, request.PageCondition);
-            return new AjaxResult(page.ToPageData());
+            return new AjaxResult(empty);
         }
 
-        /// <summary>
-        /// 读取用户功能信息
-        /// </summary>
-        /// <returns>用户功能信息</returns>
-        [HttpPost]
-        [ModuleInfo]
-        [DependOnFunction(nameof(Read))]
-        [Description("读取功能")]
-        public AjaxResult ReadFunctions(int userId, [FromBody] PageRequest request)
+        Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
+        funcExp = funcExp.And(m => functionIds.Contains(m.Id));
+        if (request.PageCondition.SortConditions.Length == 0)
         {
-            var empty = new PageData<FunctionOutputDto2>();
-            if (userId == 0)
-            {
-                return new AjaxResult(empty);
-            }
-
-            FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
-            int[] moduleIds = functionAuthManager.GetUserWithRoleModuleIds(userId);
-            Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
-                .Select(m => m.FunctionId).Distinct().ToArray();
-            if (functionIds.Length == 0)
-            {
-                return new AjaxResult(empty);
-            }
-
-            Expression<Func<Function, bool>> funcExp = FilterService.GetExpression<Function>(request.FilterGroup);
-            funcExp = funcExp.And(m => functionIds.Contains(m.Id));
-            if (request.PageCondition.SortConditions.Length == 0)
-            {
-                request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
-            }
-
-            PageResult<FunctionOutputDto2> page = functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
-            return new AjaxResult(page.ToPageData());
+            request.PageCondition.SortConditions = new[] { new SortCondition("Area"), new SortCondition("Controller") };
         }
+
+        PageResult<FunctionOutputDto2> page = functionAuthManager.Functions.ToPage<Function, FunctionOutputDto2>(funcExp, request.PageCondition);
+        return new AjaxResult(page.ToPageData());
     }
 }

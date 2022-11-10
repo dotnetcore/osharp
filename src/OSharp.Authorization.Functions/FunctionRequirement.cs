@@ -10,16 +10,15 @@
 using Microsoft.AspNetCore.Authorization;
 
 
-namespace OSharp.Authorization
+namespace OSharp.Authorization;
+
+/// <summary>
+/// 功能点授权需求
+/// </summary>
+public class FunctionRequirement : IAuthorizationRequirement
 {
     /// <summary>
-    /// 功能点授权需求
+    /// Osharp授权策略名称
     /// </summary>
-    public class FunctionRequirement : IAuthorizationRequirement
-    {
-        /// <summary>
-        /// Osharp授权策略名称
-        /// </summary>
-        public const string OsharpPolicy = "OsharpPolicy";
-    }
+    public const string OsharpPolicy = "OsharpPolicy";
 }

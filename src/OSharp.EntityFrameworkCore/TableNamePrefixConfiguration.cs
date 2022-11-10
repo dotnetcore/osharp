@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TableNamePrefixConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -7,49 +7,39 @@
 //  <last-date>2021-03-17 23:41</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
+namespace OSharp.Entity;
 
-using OSharp.Extensions;
-using OSharp.Reflection;
-
-
-namespace OSharp.Entity
+/// <summary>
+/// 表名前缀配置
+/// </summary>
+public class TableNamePrefixConfiguration : IEntityBatchConfiguration
 {
     /// <summary>
-    /// 表名前缀配置
+    /// 配置指定的<see cref="IMutableEntityType"/>
     /// </summary>
-    public class TableNamePrefixConfiguration : IEntityBatchConfiguration
+    /// <param name="modelBuilder">模型构建器</param>
+    /// <param name="mutableEntityType">实体的<see cref="IMutableEntityType"/>类型</param>
+    public void Configure(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
     {
-        /// <summary>
-        /// 配置指定的<see cref="IMutableEntityType"/>
-        /// </summary>
-        /// <param name="modelBuilder">模型构建器</param>
-        /// <param name="mutableEntityType">实体的<see cref="IMutableEntityType"/>类型</param>
-        public void Configure(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
+        string prefix = GetTableNamePrefix(mutableEntityType.ClrType);
+        if (prefix.IsNullOrEmpty())
         {
-            string prefix = GetTableNamePrefix(mutableEntityType.ClrType);
-            if (prefix.IsNullOrEmpty())
-            {
-                return;
-            }
+            return;
+        }
             
-            string tableName = $"{prefix}_{mutableEntityType.GetTableName()}";
-            modelBuilder.Entity(mutableEntityType.ClrType).ToTable(tableName);
-        }
+        string tableName = $"{prefix}_{mutableEntityType.GetTableName()}";
+        modelBuilder.Entity(mutableEntityType.ClrType).ToTable(tableName);
+    }
 
-        /// <summary>
-        /// 从实体类型获取表名前缀
-        /// </summary>
-        /// <param name="entityType">实体类型</param>
-        /// <returns></returns>
-        protected virtual string GetTableNamePrefix(Type entityType)
-        {
-            TableNamePrefixAttribute attribute = entityType.GetAttribute<TableNamePrefixAttribute>();
-            return attribute?.Prefix;
-        }
+    /// <summary>
+    /// 从实体类型获取表名前缀
+    /// </summary>
+    /// <param name="entityType">实体类型</param>
+    /// <returns></returns>
+    protected virtual string GetTableNamePrefix(Type entityType)
+    {
+        TableNamePrefixAttribute attribute = entityType.GetAttribute<TableNamePrefixAttribute>();
+        return attribute?.Prefix;
     }
 }

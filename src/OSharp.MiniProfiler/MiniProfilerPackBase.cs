@@ -7,70 +7,60 @@
 //  <last-date>2022-11-10 19:13</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-
-using OSharp.AspNetCore;
-using OSharp.Core.Packs;
-
 using StackExchange.Profiling;
 
+namespace OSharp.MiniProfiler;
 
-namespace OSharp.MiniProfiler
+/// <summary>
+/// MiniProfiler模块基类
+/// </summary>
+[DependsOnPacks(typeof(AspNetCorePack))]
+public abstract class MiniProfilerPackBase : AspOsharpPack
 {
     /// <summary>
-    /// MiniProfiler模块基类
+    /// 获取 模块级别，级别越小越先启动
     /// </summary>
-    [DependsOnPacks(typeof(AspNetCorePack))]
-    public abstract class MiniProfilerPackBase : AspOsharpPack
+    public override PackLevel Level => PackLevel.Application;
+
+    /// <summary>
+    /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
+    /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
+    /// </summary>
+    public override int Order => 0;
+
+    /// <summary>
+    /// 将模块服务添加到依赖注入服务容器中
+    /// </summary>
+    /// <param name="services">依赖注入服务容器</param>
+    /// <returns></returns>
+    public override IServiceCollection AddServices(IServiceCollection services)
     {
-        /// <summary>
-        /// 获取 模块级别，级别越小越先启动
-        /// </summary>
-        public override PackLevel Level => PackLevel.Application;
+        Action<MiniProfilerOptions> miniProfilerAction = GetMiniProfilerAction(services);
+        services.AddMiniProfiler(miniProfilerAction).AddEntityFramework();
 
-        /// <summary>
-        /// 获取 模块启动顺序，模块启动的顺序先按级别启动，同一级别内部再按此顺序启动，
-        /// 级别默认为0，表示无依赖，需要在同级别有依赖顺序的时候，再重写为>0的顺序值
-        /// </summary>
-        public override int Order => 0;
+        return services;
+    }
 
-        /// <summary>
-        /// 将模块服务添加到依赖注入服务容器中
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        public override IServiceCollection AddServices(IServiceCollection services)
+    /// <summary>
+    /// 应用AspNetCore的服务业务
+    /// </summary>
+    /// <param name="app">Asp应用程序</param>
+    public override void UsePack(WebApplication app)
+    {
+        app.UseMiniProfiler();
+        IsEnabled = true;
+    }
+
+    /// <summary>
+    /// 重写以获取MiniProfiler的选项
+    /// </summary>
+    /// <param name="services">依赖注入服务容器</param>
+    /// <returns></returns>
+    protected virtual Action<MiniProfilerOptions> GetMiniProfilerAction(IServiceCollection services)
+    {
+        return options =>
         {
-            Action<MiniProfilerOptions> miniProfilerAction = GetMiniProfilerAction(services);
-            services.AddMiniProfiler(miniProfilerAction).AddEntityFramework();
-
-            return services;
-        }
-
-        /// <summary>
-        /// 应用AspNetCore的服务业务
-        /// </summary>
-        /// <param name="app">Asp应用程序</param>
-        public override void UsePack(WebApplication app)
-        {
-            app.UseMiniProfiler();
-            IsEnabled = true;
-        }
-
-        /// <summary>
-        /// 重写以获取MiniProfiler的选项
-        /// </summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        protected virtual Action<MiniProfilerOptions> GetMiniProfilerAction(IServiceCollection services)
-        {
-            return options =>
-            {
-                options.RouteBasePath = "/profiler";
-            };
-        }
+            options.RouteBasePath = "/profiler";
+        };
     }
 }

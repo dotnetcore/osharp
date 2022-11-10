@@ -1,10 +1,16 @@
-﻿using System;
+// -----------------------------------------------------------------------
+//  <copyright file="NLogLogger.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
+//  </copyright>
+//  <site>http://www.osharp.org</site>
+//  <last-editor>郭明锋</last-editor>
+//  <last-date>2022-11-11 1:49</last-date>
+// -----------------------------------------------------------------------
 
 using NLog;
 
-using Microsoft.Extensions.Logging;
-
-using OSharp.Data;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 
 namespace OSharp.NLog
@@ -12,10 +18,10 @@ namespace OSharp.NLog
     /// <summary>
     /// NLog日志记录
     /// </summary>
-    public class NLogLogger : Microsoft.Extensions.Logging.ILogger
+    public class NLogLogger : ILogger
     {
         private readonly Logger _log;
-        
+
         /// <summary>
         /// 初始化一个<see cref="NLogLogger"/>类型的新实例
         /// </summary>
@@ -31,41 +37,43 @@ namespace OSharp.NLog
         /// <param name="exception">The exception related to this entry.</param>
         /// <param name="formatter">Function to create a <c>string</c> message of the <paramref name="state" /> and <paramref name="exception" />.</param>
         [Obsolete]
-        public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel))
             {
                 return;
             }
+
             Check.NotNull(formatter, nameof(formatter));
             string message = null;
             if (formatter != null)
             {
                 message = formatter(state, exception);
             }
+
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
                 switch (logLevel)
                 {
-                    case Microsoft.Extensions.Logging.LogLevel.Trace:
+                    case LogLevel.Trace:
                         _log.Trace(message);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.Debug:
+                    case LogLevel.Debug:
                         _log.Debug(message);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.Information:
+                    case LogLevel.Information:
                         _log.Info(message);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.Warning:
+                    case LogLevel.Warning:
                         _log.Warn(message);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.Error:
+                    case LogLevel.Error:
                         _log.Error(message, exception);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.Critical:
+                    case LogLevel.Critical:
                         _log.Fatal(message, exception);
                         break;
-                    case Microsoft.Extensions.Logging.LogLevel.None:
+                    case LogLevel.None:
                         break;
                     default:
                         _log.Warn($"遇到未知的日志级别 {logLevel}, 使用Info级别写入日志。");
@@ -80,24 +88,24 @@ namespace OSharp.NLog
         /// </summary>
         /// <param name="logLevel">level to be checked.</param>
         /// <returns><c>true</c> if enabled.</returns>
-        public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel)
+        public bool IsEnabled(LogLevel logLevel)
         {
             switch (logLevel)
             {
-                case Microsoft.Extensions.Logging.LogLevel.Trace:
+                case LogLevel.Trace:
                     return _log.IsTraceEnabled;
-                case Microsoft.Extensions.Logging.LogLevel.Debug:
+                case LogLevel.Debug:
                     return _log.IsDebugEnabled;
-                case Microsoft.Extensions.Logging.LogLevel.Information:
+                case LogLevel.Information:
                     return _log.IsInfoEnabled;
-                case Microsoft.Extensions.Logging.LogLevel.Warning:
+                case LogLevel.Warning:
                     return _log.IsWarnEnabled;
-                case Microsoft.Extensions.Logging.LogLevel.Error:
+                case LogLevel.Error:
                     return _log.IsErrorEnabled;
-                case Microsoft.Extensions.Logging.LogLevel.Critical:
+                case LogLevel.Critical:
                     return _log.IsFatalEnabled;
 
-                case Microsoft.Extensions.Logging.LogLevel.None:
+                case LogLevel.None:
                     return false;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);

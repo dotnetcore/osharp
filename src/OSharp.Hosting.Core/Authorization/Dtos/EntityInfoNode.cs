@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityInfoNode.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,33 +7,26 @@
 //  <last-date>2018-07-08 3:03</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+namespace OSharp.Hosting.Authorization.Dtos;
 
-using OSharp.Authorization.EntityInfos;
-using OSharp.Mapping;
-
-
-namespace OSharp.Hosting.Authorization.Dtos
+/// <summary>
+/// 实体信息节点
+/// </summary>
+[MapFrom(typeof(EntityInfo))]
+public class EntityInfoNode
 {
     /// <summary>
-    /// 实体信息节点
+    /// 获取或设置 编号
     /// </summary>
-    [MapFrom(typeof(EntityInfo))]
-    public class EntityInfoNode
-    {
-        /// <summary>
-        /// 获取或设置 编号
-        /// </summary>
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        /// <summary>
-        /// 获取或设置 实体名称
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// 获取或设置 实体名称
+    /// </summary>
+    public string Name { get; set; }
 
-        /// <summary>
-        /// 获取或设置 实体类型名称
-        /// </summary>
-        public string TypeName { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 实体类型名称
+    /// </summary>
+    public string TypeName { get; set; }
 }

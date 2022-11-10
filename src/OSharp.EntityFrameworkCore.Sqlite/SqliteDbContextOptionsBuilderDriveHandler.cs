@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DbContextOptionsBuilderDriveHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -6,14 +6,6 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2020-08-21 13:37</last-date>
 // -----------------------------------------------------------------------
-
-using System;
-using System.Data.Common;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 
 namespace OSharp.Entity.Sqlite

@@ -7,21 +7,6 @@
 //  <last-date>2018-06-23 15:23</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
-
-using AutoMapper;
-using AutoMapper.Configuration;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-
-using OSharp.Core.Packs;
-using OSharp.Mapping;
-
 using IMapper = OSharp.Mapping.IMapper;
 
 

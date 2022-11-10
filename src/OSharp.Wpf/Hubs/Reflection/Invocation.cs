@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Invocation.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -7,29 +7,25 @@
 //  <last-date>2019-10-29 19:45</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+namespace OSharp.Wpf.Hubs.Reflection;
 
-
-namespace OSharp.Wpf.Hubs.Reflection
+/// <summary>
+/// 方法名称和参数值的容器
+/// </summary>
+public class Invocation
 {
     /// <summary>
-    /// 方法名称和参数值的容器
+    /// 获取或设置 要调用的方法名
     /// </summary>
-    public class Invocation
-    {
-        /// <summary>
-        /// 获取或设置 要调用的方法名
-        /// </summary>
-        public string MethodName { get; set; }
+    public string MethodName { get; set; }
 
-        /// <summary>
-        /// 获取或设置 调用参数
-        /// </summary>
-        public object[] Parameters { get; set; }
+    /// <summary>
+    /// 获取或设置 调用参数
+    /// </summary>
+    public object[] Parameters { get; set; }
 
-        /// <summary>
-        /// 获取或设置 返回类型，void时为null
-        /// </summary>
-        public Type ReturnType { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 返回类型，void时为null
+    /// </summary>
+    public Type ReturnType { get; set; }
 }

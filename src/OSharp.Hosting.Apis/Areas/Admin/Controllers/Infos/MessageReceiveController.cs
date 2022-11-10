@@ -11,24 +11,16 @@
 //  <last-editor>郭明锋</last-editor>
 // -----------------------------------------------------------------------
 
-using System;
+namespace OSharp.Hosting.Apis.Areas.Admin.Controllers;
 
-using OSharp.Filter;
-
-using OSharp.Hosting.Infos;
-
-
-namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
+/// <summary>
+/// 管理控制器: 站内信接收记录信息
+/// </summary>
+public class MessageReceiveController : MessageReceiveControllerBase
 {
     /// <summary>
-    /// 管理控制器: 站内信接收记录信息
+    /// 初始化一个<see cref="MessageReceiveController"/>类型的新实例
     /// </summary>
-    public class MessageReceiveController : MessageReceiveControllerBase
-    {
-        /// <summary>
-        /// 初始化一个<see cref="MessageReceiveController"/>类型的新实例
-        /// </summary>
-        public MessageReceiveController(IServiceProvider provider) : base(provider)
-        { }
-    }
+    public MessageReceiveController(IServiceProvider provider) : base(provider)
+    { }
 }

@@ -7,38 +7,30 @@
 //  <last-date>2019-01-06 15:16</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using OSharp.Authorization.EntityInfos;
-using OSharp.Entity;
 using OSharp.Hosting.Authorization.Entities;
 using OSharp.Hosting.Identity.Entities;
 
 
-namespace OSharp.Hosting.EntityConfiguration.Authorization
+namespace OSharp.Hosting.EntityConfiguration.Authorization;
+
+public partial class EntityRoleConfiguration : EntityTypeConfigurationBase<EntityRole, Guid>
 {
-    public partial class EntityRoleConfiguration : EntityTypeConfigurationBase<EntityRole, Guid>
+    /// <summary>
+    /// 重写以实现实体类型各个属性的数据库配置
+    /// </summary>
+    /// <param name="builder">实体类型创建器</param>
+    public override void Configure(EntityTypeBuilder<EntityRole> builder)
     {
-        /// <summary>
-        /// 重写以实现实体类型各个属性的数据库配置
-        /// </summary>
-        /// <param name="builder">实体类型创建器</param>
-        public override void Configure(EntityTypeBuilder<EntityRole> builder)
-        {
-            builder.HasIndex(m => new { m.EntityId, m.RoleId, m.Operation }).HasDatabaseName("EntityRoleIndex").IsUnique();
+        builder.HasIndex(m => new { m.EntityId, m.RoleId, m.Operation }).HasDatabaseName("EntityRoleIndex").IsUnique();
 
-            builder.HasOne<EntityInfo>(er => er.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
-            builder.HasOne<Role>(er => er.Role).WithMany().HasForeignKey(m => m.RoleId);
+        builder.HasOne<EntityInfo>(er => er.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
+        builder.HasOne<Role>(er => er.Role).WithMany().HasForeignKey(m => m.RoleId);
 
-            EntityConfigurationAppend(builder);
-        }
-
-        /// <summary>
-        /// 额外的数据映射
-        /// </summary>
-        partial void EntityConfigurationAppend(EntityTypeBuilder<EntityRole> builder);
+        EntityConfigurationAppend(builder);
     }
+
+    /// <summary>
+    /// 额外的数据映射
+    /// </summary>
+    partial void EntityConfigurationAppend(EntityTypeBuilder<EntityRole> builder);
 }

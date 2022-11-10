@@ -15,29 +15,27 @@ using System.ComponentModel;
 
 using OSharp.Hosting.Infos.Events;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using OSharp.Core.Packs;
 
 
-namespace OSharp.Hosting.Infos
-{
-    /// <summary>
-    /// 信息模块
-    /// </summary>
-    [Description("信息模块")]
-    public class InfosPack : OsharpPack
-    {
-        /// <summary>将模块服务添加到依赖注入服务容器中</summary>
-        /// <param name="services">依赖注入服务容器</param>
-        /// <returns></returns>
-        public override IServiceCollection AddServices(IServiceCollection services)
-        {
-            services.TryAddScoped<IInfosContract, InfosService>();
-            services.AddEventHandler<MessageCreatedEventHandler>();
+namespace OSharp.Hosting.Infos;
 
-            return services;
-        }
+/// <summary>
+/// 信息模块
+/// </summary>
+[Description("信息模块")]
+public class InfosPack : OsharpPack
+{
+    /// <summary>将模块服务添加到依赖注入服务容器中</summary>
+    /// <param name="services">依赖注入服务容器</param>
+    /// <returns></returns>
+    public override IServiceCollection AddServices(IServiceCollection services)
+    {
+        services.TryAddScoped<IInfosContract, InfosService>();
+        services.AddEventHandler<MessageCreatedEventHandler>();
+
+        return services;
     }
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SendMailDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,30 +7,26 @@
 //  <last-date>2018-06-27 4:44</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
+namespace OSharp.Hosting.Identity.Dtos;
 
-
-namespace OSharp.Hosting.Identity.Dtos
+/// <summary>
+/// 发送邮件DTO
+/// </summary>
+public class SendMailDto
 {
     /// <summary>
-    /// 发送邮件DTO
+    /// 获取或设置 Email
     /// </summary>
-    public class SendMailDto
-    {
-        /// <summary>
-        /// 获取或设置 Email
-        /// </summary>
-        [Required]
-        public string Email { get; set; }
+    [Required]
+    public string Email { get; set; }
 
-        /// <summary>
-        /// 获取或设置 验证码
-        /// </summary>
-        public string VerifyCode { get; set; }
+    /// <summary>
+    /// 获取或设置 验证码
+    /// </summary>
+    public string VerifyCode { get; set; }
 
-        /// <summary>
-        /// 获取或设置 验证码编号
-        /// </summary>
-        public string VerifyCodeId { get; set; }
-    }
+    /// <summary>
+    /// 获取或设置 验证码编号
+    /// </summary>
+    public string VerifyCodeId { get; set; }
 }

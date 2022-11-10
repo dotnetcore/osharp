@@ -1,0 +1,33 @@
+global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using System.Linq.Expressions;
+global using System.Security.Claims;
+
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Routing;
+global using Microsoft.Extensions.Caching.Distributed;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
+
+global using OSharp.AspNetCore;
+global using OSharp.AspNetCore.Mvc;
+global using OSharp.Authorization.Dtos;
+global using OSharp.Authorization.Entities;
+global using OSharp.Authorization.Events;
+global using OSharp.Authorization.Functions;
+global using OSharp.Authorization.Modules;
+global using OSharp.Caching;
+global using OSharp.Collections;
+global using OSharp.Core.Packs;
+global using OSharp.Data;
+global using OSharp.Dependency;
+global using OSharp.Entity;
+global using OSharp.EventBuses;
+global using OSharp.Exceptions;
+global using OSharp.Extensions;
+global using OSharp.Identity.Entities;
+global using OSharp.Mapping;

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SingletonAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -7,15 +7,11 @@
 //  <last-date>2020-05-28 15:00</last-date>
 // -----------------------------------------------------------------------
 
-using System;
+namespace OSharp.Wpf.Stylet;
 
-
-namespace OSharp.Wpf.Stylet
-{
-    /// <summary>
-    /// 标注Stylet的单例视图模型
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class SingletonAttribute : Attribute
-    { }
-}
+/// <summary>
+/// 标注Stylet的单例视图模型
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class SingletonAttribute : Attribute
+{ }

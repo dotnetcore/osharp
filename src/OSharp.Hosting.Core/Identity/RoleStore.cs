@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="RoleStore.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -9,22 +9,18 @@
 
 using OSharp.Hosting.Identity.Entities;
 
-using OSharp.Entity;
-using OSharp.Identity;
 
+namespace OSharp.Hosting.Identity;
 
-namespace OSharp.Hosting.Identity
+/// <summary>
+/// 角色仓储
+/// </summary>
+public class RoleStore : OSharp.Identity.RoleStoreBase<Role, int, RoleClaim, int>
 {
     /// <summary>
-    /// 角色仓储
+    /// 初始化一个<see cref="OSharp.Identity.RoleStoreBase{TRole,TRoleKey,TRoleClaim,TRoleClaimKey}"/>类型的新实例
     /// </summary>
-    public class RoleStore : RoleStoreBase<Role, int, RoleClaim, int>
-    {
-        /// <summary>
-        /// 初始化一个<see cref="RoleStoreBase{TRole,TRoleKey,TRoleClaim, TRoleClaimKey}"/>类型的新实例
-        /// </summary>
-        public RoleStore(IRepository<Role, int> roleRepository, IRepository<RoleClaim, int> roleClaimRepository)
-            : base(roleRepository, roleClaimRepository)
-        { }
-    }
+    public RoleStore(IRepository<Role, int> roleRepository, IRepository<RoleClaim, int> roleClaimRepository)
+        : base(roleRepository, roleClaimRepository)
+    { }
 }

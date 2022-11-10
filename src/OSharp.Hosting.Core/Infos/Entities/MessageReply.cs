@@ -1,10 +1,6 @@
-﻿using OSharp.Entity;
+﻿namespace OSharp.Hosting.Infos.Entities;
 
-
-namespace OSharp.Hosting.Infos.Entities
+[TableNamePrefix("Infos")]
+public partial class MessageReply
 {
-    [TableNamePrefix("Infos")]
-    public partial class MessageReply
-    {
-    }
 }

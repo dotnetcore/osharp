@@ -1,59 +1,52 @@
 // -----------------------------------------------------------------------
-//  <copyright file="PackOutputDto.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="PackOutputDto.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-13 14:59</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
+namespace OSharp.Hosting.Systems.Dtos;
 
-using OSharp.Core.Packs;
-using OSharp.Entity;
-
-
-namespace OSharp.Hosting.Systems.Dtos
+/// <summary>
+/// è¾“å‡ºDTOï¼šæ¨¡å—åŒ…ä¿¡æ¯
+/// </summary>
+public class PackOutputDto : IOutputDto
 {
     /// <summary>
-    /// Êä³öDTO£ºÄ£¿é°üĞÅÏ¢
+    /// è·å–æˆ–è®¾ç½® åç§°
     /// </summary>
-    public class PackOutputDto : IOutputDto
-    {
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ãû³Æ
-        /// </summary>
-        [DisplayName("Ãû³Æ")]
-        public string Name { get; set; }
+    [DisplayName("åç§°")]
+    public string Name { get; set; }
 
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÏÔÊ¾Ãû³Æ
-        /// </summary>
-        [DisplayName("ÏÔÊ¾Ãû³Æ")]
-        public string Display { get; set; }
+    /// <summary>
+    /// è·å–æˆ–è®¾ç½® æ˜¾ç¤ºåç§°
+    /// </summary>
+    [DisplayName("æ˜¾ç¤ºåç§°")]
+    public string Display { get; set; }
 
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÀàĞÍÂ·¾¶
-        /// </summary>
-        [DisplayName("ÀàĞÍÂ·¾¶")]
-        public string Class { get; set; }
+    /// <summary>
+    /// è·å–æˆ–è®¾ç½® ç±»å‹è·¯å¾„
+    /// </summary>
+    [DisplayName("ç±»å‹è·¯å¾„")]
+    public string Class { get; set; }
 
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ä£¿é¼¶±ğ
-        /// </summary>
-        [DisplayName("¼¶±ğ")]
-        public PackLevel Level { get; set; }
+    /// <summary>
+    /// è·å–æˆ–è®¾ç½® æ¨¡å—çº§åˆ«
+    /// </summary>
+    [DisplayName("çº§åˆ«")]
+    public PackLevel Level { get; set; }
 
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Æô¶¯Ë³Ğò
-        /// </summary>
-        [DisplayName("Æô¶¯Ë³Ğò")]
-        public int Order { get; set; }
+    /// <summary>
+    /// è·å–æˆ–è®¾ç½® å¯åŠ¨é¡ºåº
+    /// </summary>
+    [DisplayName("å¯åŠ¨é¡ºåº")]
+    public int Order { get; set; }
 
-        /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ÊÇ·ñÆôÓÃ
-        /// </summary>
-        [DisplayName("ÊÇ·ñÆôÓÃ")]
-        public bool IsEnabled { get; set; }
-    }
+    /// <summary>
+    /// è·å–æˆ–è®¾ç½® æ˜¯å¦å¯ç”¨
+    /// </summary>
+    [DisplayName("æ˜¯å¦å¯ç”¨")]
+    public bool IsEnabled { get; set; }
 }

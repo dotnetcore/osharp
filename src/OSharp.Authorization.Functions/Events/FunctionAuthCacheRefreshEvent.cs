@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionAuthCacheRefreshEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,88 +7,80 @@
 //  <last-date>2018-06-12 22:29</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 
-using Microsoft.Extensions.DependencyInjection;
+namespace OSharp.Authorization.Events;
 
-using OSharp.AspNetCore;
-using OSharp.EventBuses;
-
-
-namespace OSharp.Authorization.Events
+/// <summary>
+/// 功能权限缓存刷新事件源
+/// </summary>
+public class FunctionAuthCacheRefreshEventData : EventDataBase
 {
     /// <summary>
-    /// 功能权限缓存刷新事件源
+    /// 初始化一个<see cref="FunctionAuthCacheRefreshEventData"/>类型的新实例
     /// </summary>
-    public class FunctionAuthCacheRefreshEventData : EventDataBase
+    public FunctionAuthCacheRefreshEventData()
     {
-        /// <summary>
-        /// 初始化一个<see cref="FunctionAuthCacheRefreshEventData"/>类型的新实例
-        /// </summary>
-        public FunctionAuthCacheRefreshEventData()
-        {
-            FunctionIds = Array.Empty<Guid>();
-            UserNames = Array.Empty<string>();
-        }
-
-        /// <summary>
-        /// 获取或设置 功能编号
-        /// </summary>
-        public Guid[] FunctionIds { get; set; }
-
-        /// <summary>
-        /// 获取或设置 用户名集合
-        /// </summary>
-        public string[] UserNames { get; set; }
+        FunctionIds = Array.Empty<Guid>();
+        UserNames = Array.Empty<string>();
     }
 
+    /// <summary>
+    /// 获取或设置 功能编号
+    /// </summary>
+    public Guid[] FunctionIds { get; set; }
 
     /// <summary>
-    /// 功能权限缓存刷新事件处理器
+    /// 获取或设置 用户名集合
     /// </summary>
-    public class FunctionAuthCacheRefreshEventHandler : EventHandlerBase<FunctionAuthCacheRefreshEventData>
-    {
-        private readonly IServiceProvider _provider;
+    public string[] UserNames { get; set; }
+}
 
-        /// <summary>
-        /// 初始化一个<see cref="FunctionAuthCacheRefreshEventHandler"/>类型的新实例
-        /// </summary>
-        public FunctionAuthCacheRefreshEventHandler(IServiceProvider provider)
+
+/// <summary>
+/// 功能权限缓存刷新事件处理器
+/// </summary>
+public class FunctionAuthCacheRefreshEventHandler : EventHandlerBase<FunctionAuthCacheRefreshEventData>
+{
+    private readonly IServiceProvider _provider;
+
+    /// <summary>
+    /// 初始化一个<see cref="FunctionAuthCacheRefreshEventHandler"/>类型的新实例
+    /// </summary>
+    public FunctionAuthCacheRefreshEventHandler(IServiceProvider provider)
+    {
+        _provider = provider;
+    }
+
+    /// <summary>
+    /// 事件处理
+    /// </summary>
+    /// <param name="eventData">事件源数据</param>
+    public override void Handle(FunctionAuthCacheRefreshEventData eventData)
+    {
+        if (!_provider.InHttpRequest())
         {
-            _provider = provider;
+            return;
         }
 
-        /// <summary>
-        /// 事件处理
-        /// </summary>
-        /// <param name="eventData">事件源数据</param>
-        public override void Handle(FunctionAuthCacheRefreshEventData eventData)
+        IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
+        if (cache == null)
         {
-            if (!_provider.InHttpRequest())
+            return;
+        }
+        if (eventData.FunctionIds.Length > 0)
+        {
+            cache.RemoveFunctionCaches(eventData.FunctionIds);
+            foreach (Guid functionId in eventData.FunctionIds)
             {
-                return;
+                cache.GetFunctionRoles(functionId, _provider);
             }
-
-            IFunctionAuthCache cache = _provider.GetService<IFunctionAuthCache>();
-            if (cache == null)
+        }
+        if (eventData.UserNames.Length > 0)
+        {
+            cache.RemoveUserCaches(eventData.UserNames);
+            foreach (string userName in eventData.UserNames)
             {
-                return;
-            }
-            if (eventData.FunctionIds.Length > 0)
-            {
-                cache.RemoveFunctionCaches(eventData.FunctionIds);
-                foreach (Guid functionId in eventData.FunctionIds)
-                {
-                    cache.GetFunctionRoles(functionId, _provider);
-                }
-            }
-            if (eventData.UserNames.Length > 0)
-            {
-                cache.RemoveUserCaches(eventData.UserNames);
-                foreach (string userName in eventData.UserNames)
-                {
-                    cache.GetUserFunctions(userName);
-                }
+                cache.GetUserFunctions(userName);
             }
         }
     }

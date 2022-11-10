@@ -15,54 +15,53 @@ using System.Security.Claims;
 using OSharp.Entity;
 
 
-namespace OSharp.Identity.Entities
+namespace OSharp.Identity.Entities;
+
+/// <summary>
+/// 用户声明基类
+/// </summary>
+/// <typeparam name="TKey">用户声明编号类型</typeparam>
+/// <typeparam name="TUserKey">用户编号类型</typeparam>
+[TableNamePrefix("Identity")]
+public abstract class UserClaimBase<TKey, TUserKey> : EntityBase<TKey>
+    where TUserKey : IEquatable<TUserKey>
+    where TKey : IEquatable<TKey>
 {
     /// <summary>
-    /// 用户声明基类
+    /// 获取或设置 用户编号
     /// </summary>
-    /// <typeparam name="TKey">用户声明编号类型</typeparam>
-    /// <typeparam name="TUserKey">用户编号类型</typeparam>
-    [TableNamePrefix("Identity")]
-    public abstract class UserClaimBase<TKey, TUserKey> : EntityBase<TKey>
-        where TUserKey : IEquatable<TUserKey>
-        where TKey : IEquatable<TKey>
+    [DisplayName("用户编号")]
+    public TUserKey UserId { get; set; }
+
+    /// <summary>
+    /// 获取或设置 声明类型
+    /// </summary>
+    [Required]
+    [DisplayName("声明类型"), StringLength(500)]
+    public string ClaimType { get; set; }
+
+    /// <summary>
+    /// 获取或设置 声明值
+    /// </summary>
+    [DisplayName("声明值"), StringLength(1000)]
+    public string ClaimValue { get; set; }
+
+    /// <summary>
+    /// 使用类型和值创建一个声明对象
+    /// </summary>
+    /// <returns></returns>
+    public virtual Claim ToClaim()
     {
-        /// <summary>
-        /// 获取或设置 用户编号
-        /// </summary>
-        [DisplayName("用户编号")]
-        public TUserKey UserId { get; set; }
+        return new Claim(ClaimType, ClaimValue);
+    }
 
-        /// <summary>
-        /// 获取或设置 声明类型
-        /// </summary>
-        [Required]
-        [DisplayName("声明类型"), StringLength(500)]
-        public string ClaimType { get; set; }
-
-        /// <summary>
-        /// 获取或设置 声明值
-        /// </summary>
-        [DisplayName("声明值"), StringLength(1000)]
-        public string ClaimValue { get; set; }
-
-        /// <summary>
-        /// 使用类型和值创建一个声明对象
-        /// </summary>
-        /// <returns></returns>
-        public virtual Claim ToClaim()
-        {
-            return new Claim(ClaimType, ClaimValue);
-        }
-
-        /// <summary>
-        /// 使用一个声明对象初始化
-        /// </summary>
-        /// <param name="other">声明对象</param>
-        public virtual void InitializeFromClaim(Claim other)
-        {
-            ClaimType = other?.Type;
-            ClaimValue = other?.Value;
-        }
+    /// <summary>
+    /// 使用一个声明对象初始化
+    /// </summary>
+    /// <param name="other">声明对象</param>
+    public virtual void InitializeFromClaim(Claim other)
+    {
+        ClaimType = other?.Type;
+        ClaimValue = other?.Value;
     }
 }
