@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UnitOfWork2.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -14,10 +14,8 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-#if NET5_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
-#endif
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -286,9 +284,7 @@ namespace OSharp.Entity
 
             base.Dispose(disposing);
         }
-
-#if NET5_0_OR_GREATER
-
+        
         /// <summary>
         /// 对数据库连接开启事务
         /// </summary>
@@ -406,7 +402,5 @@ namespace OSharp.Entity
 
             HasCommitted = true;
         }
-
-#endif
     }
 }

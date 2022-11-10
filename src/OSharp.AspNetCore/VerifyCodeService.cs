@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="VerifyCodeService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -75,9 +75,7 @@ namespace OSharp.AspNetCore
         /// <summary>
         /// 将图片序列化成字符串
         /// </summary>
-#if NET5_0_OR_GREATER
         [SupportedOSPlatform("windows")]
-#endif
         public string GetImageString(Image image, string id)
         {
             Check.NotNull(image, nameof(image));

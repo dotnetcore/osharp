@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FilterRule.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
@@ -7,10 +7,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-
-#if NETSTANDARD2_0
-using Microsoft.DotNet.PlatformAbstractions;
-#endif
 
 
 namespace OSharp.Filter
@@ -106,17 +102,7 @@ namespace OSharp.Filter
         public override int GetHashCode()
         {
             // ReSharper disable NonReadonlyMemberInGetHashCode
-#if NET5_0_OR_GREATER
             return HashCode.Combine(Field, Value, Operate);
-#else
-#pragma warning disable CS0618 // 类型或成员已过时
-            var combiner = new HashCodeCombiner();
-#pragma warning restore CS0618 // 类型或成员已过时
-            combiner.Add(Field);
-            combiner.Add(Value);
-            combiner.Add(Operate);
-            return combiner.CombinedHash;
-#endif
         }
 
         #endregion

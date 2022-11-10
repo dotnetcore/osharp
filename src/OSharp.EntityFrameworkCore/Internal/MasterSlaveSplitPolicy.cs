@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MasterSlaveSplitPolicy.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -9,11 +9,10 @@
 
 using System;
 
-using Castle.Core.Internal;
-
 using Microsoft.Extensions.DependencyInjection;
 
 using OSharp.Authorization.Functions;
+using OSharp.Collections;
 using OSharp.Core.Options;
 using OSharp.Dependency;
 

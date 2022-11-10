@@ -4,18 +4,18 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <PackageId>OSharp.EntityFrameworkCore.SqlServer</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的SqlServer数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件SqlServer</Summary>
     <RootNamespace>OSharp.Entity.SqlServer</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.30,4.0.0)" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[6.0.11, 7.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.0, 8.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

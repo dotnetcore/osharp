@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
-//  <copyright file="AspOsharpPack.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="AspOsharpPack.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
-//  <last-date>2018-08-09 22:20</last-date>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
+//  <last-date>2022-11-10 19:07</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -17,29 +17,17 @@ using OSharp.Core.Packs;
 namespace OSharp.AspNetCore
 {
     /// <summary>
-    ///  »ùÓÚAspNetCore»·¾³µÄPackÄ£¿é»ùÀà
+    ///  åŸºäºAspNetCoreç¯å¢ƒçš„Packæ¨¡å—åŸºç±»
     /// </summary>
     public abstract class AspOsharpPack : OsharpPack
     {
-#if NET6_0_OR_GREATER
         /// <summary>
-        /// Ó¦ÓÃAspNetCoreµÄ·şÎñÒµÎñ
+        /// åº”ç”¨AspNetCoreçš„æœåŠ¡ä¸šåŠ¡
         /// </summary>
-        /// <param name="app">WebÓ¦ÓÃ³ÌĞò</param>
+        /// <param name="app">Webåº”ç”¨ç¨‹åº</param>
         public virtual void UsePack(WebApplication app)
-#else
-        /// <summary>
-        /// Ó¦ÓÃAspNetCoreµÄ·şÎñÒµÎñ
-        /// </summary>
-        /// <param name="app">WebÓ¦ÓÃ³ÌĞò¹¹½¨Æ÷</param>
-        public virtual void UsePack(IApplicationBuilder app)
-#endif
         {
-#if NET6_0_OR_GREATER
             IServiceProvider provider = app.Services;
-#else
-            IServiceProvider provider = app.ApplicationServices;
-#endif
             base.UsePack(provider);
         }
     }

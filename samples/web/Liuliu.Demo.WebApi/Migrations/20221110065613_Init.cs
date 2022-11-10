@@ -1,82 +1,67 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Liuliu.Demo.Web.Migrations
 {
+    /// <inheritdoc />
     public partial class Init : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "Auth_EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TypeName = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AuditEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PropertyJson = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    AuditEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    PropertyJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_EntityInfo", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_Function",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Area = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Controller = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Action = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsController = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsAjax = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Area = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Controller = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    IsController = table.Column<bool>(type: "bit", nullable: false),
+                    IsAjax = table.Column<bool>(type: "bit", nullable: false),
                     AccessType = table.Column<int>(type: "int", nullable: false),
-                    IsAccessTypeChanged = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AuditOperationEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AuditEntityEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsAccessTypeChanged = table.Column<bool>(type: "bit", nullable: false),
+                    AuditOperationEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AuditEntityEnabled = table.Column<bool>(type: "bit", nullable: false),
                     CacheExpirationSeconds = table.Column<int>(type: "int", nullable: false),
-                    IsCacheSliding = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsSlaveDatabase = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsCacheSliding = table.Column<bool>(type: "bit", nullable: false),
+                    IsSlaveDatabase = table.Column<bool>(type: "bit", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Auth_Function", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_Module",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Remark = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Code = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OrderCode = table.Column<double>(type: "double", nullable: false),
-                    TreePathString = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    OrderCode = table.Column<double>(type: "float", nullable: false),
+                    TreePathString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -87,19 +72,16 @@ namespace Liuliu.Demo.Web.Migrations
                         column: x => x.ParentId,
                         principalTable: "Auth_Module",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_Organization",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Remark = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -110,91 +92,66 @@ namespace Liuliu.Demo.Web.Migrations
                         column: x => x.ParentId,
                         principalTable: "Identity_Organization",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Systems_AuditOperation",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    FunctionName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserName = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NickName = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ip = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OperationSystem = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Browser = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserAgent = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    NickName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    OperationSystem = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Browser = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ResultType = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Elapsed = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Systems_AuditOperation", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Systems_KeyValue",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Key = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ValueJson = table.Column<string>(type: "text", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ValueType = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Display = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Remark = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    ValueJson = table.Column<string>(type: "text", nullable: true),
+                    ValueType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Display = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Order = table.Column<int>(type: "int", nullable: false),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Systems_KeyValue", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Systems_Menu",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Text = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Icon = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Url = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Target = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Acl = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OrderCode = table.Column<double>(type: "double", nullable: false),
-                    Data = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TreePathString = table.Column<string>(type: "varchar(3000)", maxLength: 3000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsSystem = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Target = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Acl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    OrderCode = table.Column<double>(type: "float", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    TreePathString = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -205,16 +162,15 @@ namespace Liuliu.Demo.Web.Migrations
                         column: x => x.ParentId,
                         principalTable: "Systems_Menu",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_ModuleFunction",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
-                    FunctionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    FunctionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,22 +187,18 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Systems_AuditEntity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TypeName = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EntityKey = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OperateType = table.Column<int>(type: "int", nullable: false),
-                    OperationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    OperationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,25 +209,19 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Systems_AuditOperation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Systems_AuditProperty",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    DisplayName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FieldName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OriginalValue = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NewValue = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataType = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AuditEntityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    AuditEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -286,21 +232,19 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Systems_AuditEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_EntityRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Operation = table.Column<int>(type: "int", nullable: false),
-                    FilterGroupJson = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -311,20 +255,18 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Auth_EntityInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_EntityUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    FilterGroupJson = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -335,14 +277,13 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Auth_EntityInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_ModuleRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -355,17 +296,16 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Auth_ModuleUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Disabled = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Disabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -376,67 +316,56 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Auth_Module",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_LoginLog",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Ip = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserAgent = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LogoutTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Identity_LoginLog", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_Role",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizedName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConcurrencyStamp = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Remark = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsDefault = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsSystem = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NormalizedName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Identity_Role", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_RoleClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClaimValue = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -447,66 +376,51 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Remark = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    UserName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizedUserName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NickName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizeEmail = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    HeadImg = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SecurityStamp = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConcurrencyStamp = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    NickName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    NormalizeEmail = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    HeadImg = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    IsSystem = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Identity_User", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_UserClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ClaimType = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ClaimValue = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -517,17 +431,15 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_UserDetail",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RegisterIp = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -539,24 +451,19 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LoginProvider = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProviderKey = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProviderDisplayName = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Avatar = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -567,19 +474,18 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -596,21 +502,17 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Identity_UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Value = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -621,27 +523,24 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Infos_Message",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Title = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Content = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MessageType = table.Column<int>(type: "int", nullable: false),
                     NewReplyCount = table.Column<int>(type: "int", nullable: false),
-                    IsSended = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CanReply = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    BeginDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsSended = table.Column<bool>(type: "bit", nullable: false),
+                    CanReply = table.Column<bool>(type: "bit", nullable: false),
+                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SenderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -653,18 +552,17 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Identity_User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Infos_MessageReceive",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ReadDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NewReplyCount = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    MessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -682,24 +580,22 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Infos_Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Infos_MessageReply",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Content = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsRead = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ParentMessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ParentReplyId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    IsLocked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    ParentMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentReplyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    BelongMessageId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    BelongMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -708,6 +604,12 @@ namespace Liuliu.Demo.Web.Migrations
                         name: "FK_Infos_MessageReply_Identity_User_UserId",
                         column: x => x.UserId,
                         principalTable: "Identity_User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Infos_MessageReply_Infos_MessageReply_ParentReplyId",
+                        column: x => x.ParentReplyId,
+                        principalTable: "Infos_MessageReply",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -722,14 +624,7 @@ namespace Liuliu.Demo.Web.Migrations
                         principalTable: "Infos_Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Infos_MessageReply_Infos_MessageReply_ParentReplyId",
-                        column: x => x.ParentReplyId,
-                        principalTable: "Infos_MessageReply",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "ClassFullNameIndex",
@@ -762,7 +657,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "AreaControllerActionIndex",
                 table: "Auth_Function",
                 columns: new[] { "Area", "Controller", "Action" },
-                unique: true);
+                unique: true,
+                filter: "[Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Auth_Module_ParentId",
@@ -821,7 +717,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "RoleNameIndex",
                 table: "Identity_Role",
                 columns: new[] { "NormalizedName", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_RoleClaim_RoleId",
@@ -842,7 +739,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserNameIndex",
                 table: "Identity_User",
                 columns: new[] { "NormalizedUserName", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_UserClaim_UserId",
@@ -864,7 +762,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserLoginIndex",
                 table: "Identity_UserLogin",
                 columns: new[] { "LoginProvider", "ProviderKey" },
-                unique: true);
+                unique: true,
+                filter: "[LoginProvider] IS NOT NULL AND [ProviderKey] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Identity_UserRole_RoleId",
@@ -875,13 +774,15 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "UserRoleIndex",
                 table: "Identity_UserRole",
                 columns: new[] { "UserId", "RoleId", "DeletedTime" },
-                unique: true);
+                unique: true,
+                filter: "[DeletedTime] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserTokenIndex",
                 table: "Identity_UserToken",
                 columns: new[] { "UserId", "LoginProvider", "Name" },
-                unique: true);
+                unique: true,
+                filter: "[LoginProvider] IS NOT NULL AND [Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Infos_Message_SenderId",
@@ -994,6 +895,7 @@ namespace Liuliu.Demo.Web.Migrations
                 principalColumn: "Id");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

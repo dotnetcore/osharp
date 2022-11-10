@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OnlineUserProvider.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -152,11 +152,7 @@ namespace OSharp.Identity
             {
                 await userManager.RemoveRefreshToken(user, token.ClientId);
             }
-#if NET5_0_OR_GREATER
             await unitOfWork.CommitAsync();
-#else
-            unitOfWork.Commit();
-#endif
 
             return tokens.Except(expiredTokens).ToArray();
         }

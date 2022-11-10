@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ApplicationBuilderExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -30,47 +30,47 @@ namespace Microsoft.AspNetCore.Builder
         /// <summary>
         /// OSharp框架初始化，适用于AspNetCore环境
         /// </summary>
-#if NET6_0_OR_GREATER
         public static WebApplication UseOSharp(this WebApplication app)
-#else
-        public static IApplicationBuilder UseOSharp(this IApplicationBuilder app)
-#endif
         {
-#if NET6_0_OR_GREATER
             IServiceProvider provider = app.Services;
-#else
-            IServiceProvider provider = app.ApplicationServices;
-#endif
             ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
-            logger.LogInformation(0, "OSharp框架初始化开始");
-
-            // 输出注入服务的日志
-            StartupLogger startupLogger = provider.GetService<StartupLogger>();
-            startupLogger?.Output(provider);
-
-            Stopwatch watch = Stopwatch.StartNew();
-            OsharpPack[] packs = provider.GetAllPacks();
-            logger.LogInformation($"共有 {packs.Length} 个Pack模块需要初始化");
-            foreach (OsharpPack pack in packs)
+            try
             {
-                Type packType = pack.GetType();
-                string packName = packType.GetDescription();
-                logger.LogInformation($"正在初始化模块 “{packName} ({packType.Name})”");
-                if (pack is AspOsharpPack aspPack)
+                logger.LogInformation(0, "OSharp框架初始化开始");
+
+                // 输出注入服务的日志
+                StartupLogger startupLogger = provider.GetService<StartupLogger>();
+                startupLogger?.Output(provider);
+
+                Stopwatch watch = Stopwatch.StartNew();
+                OsharpPack[] packs = provider.GetAllPacks();
+                logger.LogInformation($"共有 {packs.Length} 个Pack模块需要初始化");
+                foreach (OsharpPack pack in packs)
                 {
-                    aspPack.UsePack(app);
+                    Type packType = pack.GetType();
+                    string packName = packType.GetDescription();
+                    logger.LogInformation($"正在初始化模块 “{packName} ({packType.Name})”");
+                    if (pack is AspOsharpPack aspPack)
+                    {
+                        aspPack.UsePack(app);
+                    }
+                    else
+                    {
+                        pack.UsePack(provider);
+                    }
+                    logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
                 }
-                else
-                {
-                    pack.UsePack(provider);
-                }
-                logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
+
+                watch.Stop();
+                logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
+
+                return app;
             }
-
-            watch.Stop();
-            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
-
-            return app;
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
         }
 
         /// <summary>

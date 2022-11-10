@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MapFromAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -17,6 +17,7 @@ namespace OSharp.Mapping
     /// <summary>
     /// 标注当前类型从源类型的Mapping映射关系
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class MapFromAttribute : Attribute
     {
         /// <summary>

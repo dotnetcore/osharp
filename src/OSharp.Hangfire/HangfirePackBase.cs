@@ -1,10 +1,10 @@
 // -----------------------------------------------------------------------
-//  <copyright file="HangfirePackCore.cs" company="OSharp开源团队">
-//      Copyright (c) 2014-2018 OSharp. All rights reserved.
+//  <copyright file="HangfirePackBase.cs" company="OSharp开源团队">
+//      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
 //  <last-editor>郭明锋</last-editor>
-//  <last-date>2018-12-20 13:01</last-date>
+//  <last-date>2022-11-10 19:11</last-date>
 // -----------------------------------------------------------------------
 
 using System;
@@ -61,20 +61,14 @@ namespace OSharp.Hangfire
         /// 应用AspNetCore的服务业务
         /// </summary>
         /// <param name="app">应用程序</param>
-#if NET6_0_OR_GREATER
         public override void UsePack(WebApplication app)
         {
             IServiceProvider serviceProvider = app.Services;
-#else
-        public override void UsePack(IApplicationBuilder app)
-        {
-            IServiceProvider serviceProvider = app.ApplicationServices;
-#endif
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             IGlobalConfiguration globalConfiguration = serviceProvider.GetService<IGlobalConfiguration>();
             globalConfiguration.UseLogProvider(new AspNetCoreLogProvider(serviceProvider.GetService<ILoggerFactory>()));
-            
+
             string url = configuration["OSharp:Hangfire:DashboardUrl"].CastTo("/hangfire");
             DashboardOptions dashboardOptions = GetDashboardOptions(configuration);
             app.UseHangfireDashboard(url, dashboardOptions);
@@ -133,6 +127,7 @@ namespace OSharp.Hangfire
             {
                 dashboardOptions.Authorization = new[] { new RoleDashboardAuthorizationFilter(roles) };
             }
+
             return dashboardOptions;
         }
     }

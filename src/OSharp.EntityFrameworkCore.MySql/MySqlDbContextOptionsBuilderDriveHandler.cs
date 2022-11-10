@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DbContextOptionsBuilderDriveHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -24,9 +24,7 @@ namespace OSharp.Entity.MySql
     public class MySqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
     {
         private readonly ILogger _logger;
-#if NET5_0_OR_GREATER
         private readonly ServerVersion _serverVersion;
-#endif
 
         /// <summary>
         /// 初始化一个<see cref="MySqlDbContextOptionsBuilderDriveHandler"/>类型的新实例
@@ -34,9 +32,7 @@ namespace OSharp.Entity.MySql
         public MySqlDbContextOptionsBuilderDriveHandler(IServiceProvider provider)
         {
             _logger = provider.GetLogger(this);
-#if NET5_0_OR_GREATER
             _serverVersion = provider.GetService<MySqlServerVersion>()?? MySqlServerVersion.LatestSupportedServerVersion;
-#endif
         }
 
         /// <summary>
@@ -67,20 +63,12 @@ namespace OSharp.Entity.MySql
             if (existingConnection == null)
             {
                 _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
-#if NET5_0_OR_GREATER
                 builder.UseMySql(connectionString, _serverVersion, action);
-#else
-                builder.UseMySql(connectionString, action);
-#endif
             }
             else
             {
                 _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
-#if NET5_0_OR_GREATER
                 builder.UseMySql(existingConnection, _serverVersion, action);
-#else
-                builder.UseMySql(existingConnection, action);
-#endif
             }
 
             ServiceExtensions.MigrationAssemblyName = null;

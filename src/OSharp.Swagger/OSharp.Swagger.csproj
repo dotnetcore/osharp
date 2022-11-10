@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <PackageId>OSharp.Swagger</PackageId>
     <Summary>OSharp Swagger 客户端组件</Summary>
     <Description>OSharp Swagger 客户端组件，封装基于Redis客户端实现</Description>

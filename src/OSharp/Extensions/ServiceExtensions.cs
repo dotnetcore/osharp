@@ -71,7 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
             IConfiguration configuration = services.GetConfiguration();
             return configuration.GetOsharpOptions();
         }
-        
+
         /// <summary>
         /// 如果指定服务不存在，创建实例并添加
         /// </summary>
@@ -86,7 +86,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             return item;
         }
-        
+
         /// <summary>
         /// 添加服务调试日志
         /// </summary>
@@ -197,7 +197,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return unitOfWork;
         }
-        
+
         /// <summary>
         /// 获取指定实体类型的上下文对象
         /// </summary>
@@ -253,7 +253,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return provider;
         }
-        
+
         /// <summary>
         /// 开启一个事务处理
         /// </summary>
@@ -264,13 +264,11 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(action, nameof(action));
 
-            using (IServiceScope scope = rootProvider.CreateScope())
-            {
-                IServiceProvider scopeProvider = scope.ServiceProvider;
-                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
-                action(scopeProvider);
-                unitOfWork.Commit();
-            }
+            using IServiceScope scope = rootProvider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
+            IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+            action(scopeProvider);
+            unitOfWork.Commit();
         }
 
         /// <summary>
@@ -283,14 +281,12 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(func, nameof(func));
 
-            using (IServiceScope scope = rootProvider.CreateScope())
-            {
-                IServiceProvider scopeProvider = scope.ServiceProvider;
-                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
-                TResult result = func(scopeProvider);
-                unitOfWork.Commit();
-                return result;
-            }
+            using IServiceScope scope = rootProvider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
+            IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+            TResult result = func(scopeProvider);
+            unitOfWork.Commit();
+            return result;
         }
 
         /// <summary>
@@ -304,18 +300,12 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(funcAsync, nameof(funcAsync));
 
-            using (IServiceScope scope = rootProvider.CreateScope())
-            {
-                IServiceProvider scopeProvider = scope.ServiceProvider;
+            using IServiceScope scope = rootProvider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
 
-                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
-                await funcAsync(scopeProvider);
-#if NET5_0_OR_GREATER
-                await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
-            }
+            IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+            await funcAsync(scopeProvider);
+            await unitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -329,19 +319,13 @@ namespace Microsoft.Extensions.DependencyInjection
             Check.NotNull(rootProvider, nameof(rootProvider));
             Check.NotNull(funcAsync, nameof(funcAsync));
 
-            using (IServiceScope scope = rootProvider.CreateScope())
-            {
-                IServiceProvider scopeProvider = scope.ServiceProvider;
+            using IServiceScope scope = rootProvider.CreateScope();
+            IServiceProvider scopeProvider = scope.ServiceProvider;
 
-                IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
-                TResult result = await funcAsync(scopeProvider);
-#if NET5_0_OR_GREATER
-                await unitOfWork.CommitAsync();
-#else
-                unitOfWork.Commit();
-#endif
-                return result;
-            }
+            IUnitOfWork unitOfWork = scopeProvider.GetUnitOfWork(true);
+            TResult result = await funcAsync(scopeProvider);
+            await unitOfWork.CommitAsync();
+            return result;
         }
         #endregion
 

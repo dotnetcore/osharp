@@ -33,9 +33,7 @@ namespace Liuliu.Demo.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if NET5_0_OR_GREATER
             services.AddDatabaseDeveloperPageExceptionFilter();
-#endif
             services.AddOSharp()
                 .AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
@@ -52,16 +50,12 @@ namespace Liuliu.Demo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(WebApplication app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-#if NET5_0_OR_GREATER
                 app.UseMigrationsEndPoint();
-#else
-                app.UseDatabaseErrorPage();
-#endif
             }
             else
             {
