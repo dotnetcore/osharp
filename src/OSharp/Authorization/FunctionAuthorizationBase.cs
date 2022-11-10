@@ -52,7 +52,7 @@ public abstract class FunctionAuthorizationBase : IFunctionAuthorization
     /// <returns>通过的角色</returns>
     public virtual string[] GetOkRoles(IFunction function, IPrincipal principal)
     {
-        if (!principal.Identity.IsAuthenticated)
+        if (principal?.Identity?.IsAuthenticated != true)
         {
             return Array.Empty<string>();
         }
@@ -89,7 +89,7 @@ public abstract class FunctionAuthorizationBase : IFunctionAuthorization
             return AuthorizationResult.OK;
         }
         //未登录
-        if (principal == null || !principal.Identity.IsAuthenticated)
+        if (principal?.Identity?.IsAuthenticated != true)
         {
             return new AuthorizationResult(AuthorizationStatus.Unauthorized);
         }

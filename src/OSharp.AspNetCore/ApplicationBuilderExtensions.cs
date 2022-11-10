@@ -7,104 +7,91 @@
 //  <last-date>2017-09-19 1:56</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
 
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+namespace Microsoft.AspNetCore.Builder;
 
-using OSharp.AspNetCore;
-using OSharp.Core.Packs;
-using OSharp.Logging;
-using OSharp.Reflection;
-
-
-namespace Microsoft.AspNetCore.Builder
+/// <summary>
+/// <see cref="IApplicationBuilder"/>辅助扩展方法
+/// </summary>
+public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// <see cref="IApplicationBuilder"/>辅助扩展方法
+    /// OSharp框架初始化，适用于AspNetCore环境
     /// </summary>
-    public static class ApplicationBuilderExtensions
+    public static WebApplication UseOSharp(this WebApplication app)
     {
-        /// <summary>
-        /// OSharp框架初始化，适用于AspNetCore环境
-        /// </summary>
-        public static WebApplication UseOSharp(this WebApplication app)
+        IServiceProvider provider = app.Services;
+        ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
+        try
         {
-            IServiceProvider provider = app.Services;
-            ILogger logger = provider.GetLogger("ApplicationBuilderExtensions");
-            try
+            logger.LogInformation(0, "OSharp框架初始化开始");
+
+            // 输出注入服务的日志
+            StartupLogger startupLogger = provider.GetService<StartupLogger>();
+            startupLogger?.Output(provider);
+
+            Stopwatch watch = Stopwatch.StartNew();
+            OsharpPack[] packs = provider.GetAllPacks();
+            logger.LogInformation($"共有 {packs.Length} 个Pack模块需要初始化");
+            foreach (OsharpPack pack in packs)
             {
-                logger.LogInformation(0, "OSharp框架初始化开始");
-
-                // 输出注入服务的日志
-                StartupLogger startupLogger = provider.GetService<StartupLogger>();
-                startupLogger?.Output(provider);
-
-                Stopwatch watch = Stopwatch.StartNew();
-                OsharpPack[] packs = provider.GetAllPacks();
-                logger.LogInformation($"共有 {packs.Length} 个Pack模块需要初始化");
-                foreach (OsharpPack pack in packs)
+                Type packType = pack.GetType();
+                string packName = packType.GetDescription();
+                logger.LogInformation($"正在初始化模块 “{packName} ({packType.Name})”");
+                if (pack is AspOsharpPack aspPack)
                 {
-                    Type packType = pack.GetType();
-                    string packName = packType.GetDescription();
-                    logger.LogInformation($"正在初始化模块 “{packName} ({packType.Name})”");
-                    if (pack is AspOsharpPack aspPack)
-                    {
-                        aspPack.UsePack(app);
-                    }
-                    else
-                    {
-                        pack.UsePack(provider);
-                    }
-                    logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
+                    aspPack.UsePack(app);
                 }
-
-                watch.Stop();
-                logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
-
-                return app;
+                else
+                {
+                    pack.UsePack(provider);
+                }
+                logger.LogInformation($"模块 “{packName} ({packType.Name})” 初始化完成\n");
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, ex.Message);
-                throw;
-            }
+
+            watch.Stop();
+            logger.LogInformation(0, $"OSharp框架初始化完成，耗时：{watch.Elapsed}\r\n");
+
+            return app;
         }
-
-        /// <summary>
-        /// 添加MVC并Area路由支持
-        /// </summary>
-        public static IApplicationBuilder UseMvcWithAreaRoute(this IApplicationBuilder app, bool area = true)
+        catch (Exception ex)
         {
-            return app.UseMvc(builder =>
-            {
-                if (area)
-                {
-                    builder.MapRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                }
-                builder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });
+            logger.LogError(ex, ex.Message);
+            throw;
         }
+    }
 
-        /// <summary>
-        /// 添加Endpoint并Area路由支持
-        /// </summary>
-        public static IEndpointRouteBuilder MapControllersWithAreaRoute(this IEndpointRouteBuilder endpoints, bool area = true)
+    /// <summary>
+    /// 添加MVC并Area路由支持
+    /// </summary>
+    public static IApplicationBuilder UseMvcWithAreaRoute(this IApplicationBuilder app, bool area = true)
+    {
+        return app.UseMvc(builder =>
         {
             if (area)
             {
-                endpoints.MapControllerRoute(
-                    name: "areas-router",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                builder.MapRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             }
+            builder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+        });
+    }
 
+    /// <summary>
+    /// 添加Endpoint并Area路由支持
+    /// </summary>
+    public static IEndpointRouteBuilder MapControllersWithAreaRoute(this IEndpointRouteBuilder endpoints, bool area = true)
+    {
+        if (area)
+        {
             endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            return endpoints;
+                name: "areas-router",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
         }
+
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        return endpoints;
     }
 }

@@ -8,23 +8,20 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using OSharp.AspNetCore.Mvc.Filters;
 
 
-namespace OSharp.AspNetCore.Mvc
+namespace OSharp.AspNetCore.Mvc;
+
+/// <summary>
+/// Mvc控制器基类，配置了操作审计
+/// </summary>
+[AuditOperation]
+public abstract class BaseController : Controller
 {
     /// <summary>
-    /// Mvc控制器基类，配置了操作审计
+    /// 获取或设置 日志对象
     /// </summary>
-    [AuditOperation]
-    public abstract class BaseController : Controller
-    {
-        /// <summary>
-        /// 获取或设置 日志对象
-        /// </summary>
-        protected ILogger Logger => HttpContext.RequestServices.GetLogger(GetType());
-    }
+    protected ILogger Logger => HttpContext.RequestServices.GetLogger(GetType());
 }

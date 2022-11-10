@@ -7,15 +7,11 @@
 //  <last-date>2020-02-08 20:12</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
+namespace OSharp.AspNetCore.SignalR;
 
-
-namespace OSharp.AspNetCore.SignalR
-{
-    /// <summary>
-    /// SignalR模块
-    /// </summary>
-    [Description("SignalR模块")]
-    public class SignalRPack : SignalRPackBase
-    { }
-}
+/// <summary>
+/// SignalR模块
+/// </summary>
+[Description("SignalR模块")]
+public class SignalRPack : SignalRPackBase
+{ }

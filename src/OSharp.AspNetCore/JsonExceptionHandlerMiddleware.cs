@@ -7,66 +7,53 @@
 //  <last-date>2018-05-12 17:51</last-date>
 // -----------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+namespace OSharp.AspNetCore;
 
-using OSharp.AspNetCore.UI;
-using OSharp.Data;
-using OSharp.Json;
-
-
-namespace OSharp.AspNetCore
+/// <summary>
+/// Json技术异常处理中间件
+/// </summary>
+public class JsonExceptionHandlerMiddleware : IMiddleware
 {
+    private readonly RequestDelegate _next;
+    private readonly ILogger<JsonExceptionHandlerMiddleware> _logger;
+
     /// <summary>
-    /// Json技术异常处理中间件
+    /// 初始化一个<see cref="JsonExceptionHandlerMiddleware"/>类型的新实例
     /// </summary>
-    public class JsonExceptionHandlerMiddleware : IMiddleware
+    public JsonExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<JsonExceptionHandlerMiddleware> _logger;
+        _next = next;
+        _logger = loggerFactory.CreateLogger<JsonExceptionHandlerMiddleware>();
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="JsonExceptionHandlerMiddleware"/>类型的新实例
-        /// </summary>
-        public JsonExceptionHandlerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+    /// <summary>
+    /// 执行中间件拦截逻辑
+    /// </summary>
+    /// <param name="context">Http上下文</param>
+    /// <returns></returns>
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
         {
-            _next = next;
-            _logger = loggerFactory.CreateLogger<JsonExceptionHandlerMiddleware>();
+            await _next(context);
         }
-
-        /// <summary>
-        /// 执行中间件拦截逻辑
-        /// </summary>
-        /// <param name="context">Http上下文</param>
-        /// <returns></returns>
-        public async Task InvokeAsync(HttpContext context)
+        catch (Exception ex)
         {
-            try
+            _logger.LogError(new EventId(), ex, ex.Message);
+            if (context.Request.IsAjaxRequest() || context.Request.IsJsonContextType())
             {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId(), ex, ex.Message);
-                if (context.Request.IsAjaxRequest() || context.Request.IsJsonContextType())
+                if (context.Response.HasStarted)
                 {
-                    if (context.Response.HasStarted)
-                    {
-                        return;
-                    }
-                    context.Response.Clear();
-                    context.Response.StatusCode = 200;
-                    context.Response.ContentType = "application/json; charset=utf-8";
-                    await context.Response.WriteAsync(new AjaxResult(ex.Message, AjaxResultType.Error).ToJsonString());
                     return;
                 }
-                throw;
+                context.Response.Clear();
+                context.Response.StatusCode = 200;
+                context.Response.ContentType = "application/json; charset=utf-8";
+                await context.Response.WriteAsync(new AjaxResult(ex.Message, AjaxResultType.Error).ToJsonString());
+                return;
             }
+            throw;
         }
     }
 }

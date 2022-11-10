@@ -7,15 +7,11 @@
 //  <last-date>2020-02-01 2:33</last-date>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
+namespace OSharp.AspNetCore.Mvc;
 
-
-namespace OSharp.AspNetCore.Mvc
-{
-    /// <summary>
-    /// MVC模块
-    /// </summary>
-    [Description("MVC模块")]
-    public class MvcPack : MvcPackBase
-    { }
-}
+/// <summary>
+/// MVC模块
+/// </summary>
+[Description("MVC模块")]
+public class MvcPack : MvcPackBase
+{ }

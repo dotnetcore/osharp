@@ -7,25 +7,20 @@
 //  <last-date>2020-12-13 13:15</last-date>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+namespace OSharp.AspNetCore.Cors;
 
-
-namespace OSharp.AspNetCore.Cors
+/// <summary>
+/// 定义Cors初始化器
+/// </summary>
+public interface ICorsInitializer
 {
     /// <summary>
-    /// 定义Cors初始化器
+    /// 添加Cors
     /// </summary>
-    public interface ICorsInitializer
-    {
-        /// <summary>
-        /// 添加Cors
-        /// </summary>
-        IServiceCollection AddCors(IServiceCollection services);
+    IServiceCollection AddCors(IServiceCollection services);
 
-        /// <summary>
-        /// 应用Cors
-        /// </summary>
-        IApplicationBuilder UseCors(IApplicationBuilder app);
-    }
+    /// <summary>
+    /// 应用Cors
+    /// </summary>
+    IApplicationBuilder UseCors(IApplicationBuilder app);
 }

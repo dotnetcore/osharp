@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UnitOfWorkAttribute.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -7,24 +7,19 @@
 //  <last-date>2021-12-03 14:12</last-date>
 // -----------------------------------------------------------------------
 
-using System;
 
-using Microsoft.AspNetCore.Mvc;
+namespace OSharp.AspNetCore.Mvc.Filters;
 
-
-namespace OSharp.AspNetCore.Mvc.Filters
+/// <summary>
+/// 自动提交工作单元事务
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public class UnitOfWorkAttribute : ServiceFilterAttribute
 {
     /// <summary>
     /// 自动提交工作单元事务
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class UnitOfWorkAttribute : ServiceFilterAttribute
-    {
-        /// <summary>
-        /// 自动提交工作单元事务
-        /// </summary>
-        public UnitOfWorkAttribute()
-            : base(typeof(UnitOfWorkImpl))
-        { }
-    }
+    public UnitOfWorkAttribute()
+        : base(typeof(UnitOfWorkImpl))
+    { }
 }
