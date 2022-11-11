@@ -46,7 +46,7 @@ public class UserOutputDto : IOutputDto, IDataAuthEnabled
     /// <summary>
     /// 获取或设置 用户编号
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 用户名
@@ -91,7 +91,7 @@ public class UserOutputDto : IOutputDto, IDataAuthEnabled
     /// <summary>
     /// 获取或设置 当前用户失败的登录尝试次数。
     /// </summary>
-    public int AccessFailedCount { get; set; }
+    public long AccessFailedCount { get; set; }
 
     /// <summary>
     /// 获取或设置 是否锁定当前信息

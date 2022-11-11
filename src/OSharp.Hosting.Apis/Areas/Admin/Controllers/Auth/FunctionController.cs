@@ -7,6 +7,7 @@
 //  <last-date>2018-06-27 4:49</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Data.Snows;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Authorization.Dtos;
 using OSharp.Hosting.Common.Dtos;
@@ -24,7 +25,7 @@ public class FunctionController : AdminApiControllerBase
         _functionAuthManager = provider.GetRequiredService<FunctionAuthManager>();
     }
 
-    /// <summary>
+    /// <summary> 
     /// 读取功能信息
     /// </summary>
     /// <returns>功能信息集合</returns>
@@ -51,11 +52,10 @@ public class FunctionController : AdminApiControllerBase
     /// <returns>功能[模块]树数据</returns>
     [HttpGet]
     [Description("读取功能[模块]树数据")]
-    public AjaxResult ReadTreeNode(int moduleId)
+    public AjaxResult ReadTreeNode(long moduleId)
     {
         Check.GreaterThan(moduleId, nameof(moduleId), 0);
-        Guid[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
-
+        long[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
         var groups = _functionAuthManager.Functions.Unlocked()
             .Where(m => m.Area == null || m.Area == "Admin")
             .Select(m => new
@@ -69,10 +69,10 @@ public class FunctionController : AdminApiControllerBase
                 m.AccessType
             }).ToList().GroupBy(m => m.Area).OrderBy(m => m.Key).ToList();
 
-        TreeNode root = new TreeNode { Id = Guid.NewGuid().ToString("N"), Name = "系统", HasChildren = true };
+        TreeNode root = new TreeNode { Id = "0      ", Name = "系统", HasChildren = true };
         foreach (var group1 in groups)
         {
-            TreeNode areaNode = new TreeNode { Id = null, Name = group1.Key == null ? "网站" : group1.Key == "Admin" ? "管理" : "未知模块" };
+            TreeNode areaNode = new TreeNode { Id = IdHelper.NextId().ToString(), Name = group1.Key == null ? "网站" : group1.Key == "Admin" ? "管理" : "未知模块" };
             root.Items.Add(areaNode);
             var group2S = group1.GroupBy(m => m.Controller).OrderBy(m => m.Key).ToList();
             foreach (var group2 in group2S)
@@ -80,7 +80,7 @@ public class FunctionController : AdminApiControllerBase
                 areaNode.HasChildren = true;
                 var controller = group2.First(m => m.Action == null);
                 TreeNode controllerNode =
-                    new TreeNode() { Id = Guid.NewGuid().ToString("N"), Name = $"{controller.Name}[{controller.Controller}]" };
+                    new TreeNode() { Id = "0", Name = $"{controller.Name}[{controller.Controller}]" };
                 areaNode.Items.Add(controllerNode);
                 foreach (var action in group2.Where(m => m.Action != null).OrderBy(m => m.Action))
                 {

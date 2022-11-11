@@ -164,7 +164,7 @@ public abstract class FunctionAuthorizationBase : IFunctionAuthorization
             return AuthorizationResult.OK;
         }
 
-        Guid[] functionIds = FunctionAuthCache.GetUserFunctions(userName);
+        long[] functionIds = FunctionAuthCache.GetUserFunctions(userName);
         if (functionIds.Contains(function.Id))
         {
             return AuthorizationResult.OK;

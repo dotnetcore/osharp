@@ -17,7 +17,6 @@ public class FunctionAuthorizationHandler : AuthorizationHandler<FunctionRequire
 {
     private readonly IFunctionAuthorization _functionAuthorization;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IServiceProvider _provider;
 
     /// <summary>
     /// 初始化一个<see cref="FunctionAuthorizationHandler"/>类型的新实例
@@ -26,7 +25,6 @@ public class FunctionAuthorizationHandler : AuthorizationHandler<FunctionRequire
     {
         _functionAuthorization = functionAuthorization;
         _httpContextAccessor = httpContextAccessor;
-        _provider = provider;
     }
 
     /// <summary>

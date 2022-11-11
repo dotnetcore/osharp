@@ -17,7 +17,7 @@ namespace OSharp.Hosting.Identity;
 /// 身份认证模块
 /// </summary>
 [DependsOnPacks(typeof(IdentityPack))]
-public class AuthenticationPack : AuthenticationPackBase<User, int>
+public class AuthenticationPack : AuthenticationPackBase<User, long>
 {
     /// <summary>
     /// 将模块服务添加到依赖注入服务容器中

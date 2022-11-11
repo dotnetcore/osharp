@@ -19,7 +19,7 @@ namespace OSharp.Hosting.Authorization;
 /// 数据权限管理器
 /// </summary>
 //[Dependency(ServiceLifetime.Scoped, AddSelf = true)]
-public class DataAuthManager : DataAuthorizationManagerBase<EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, Role, int>
+public class DataAuthManager : DataAuthorizationManagerBase<EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, Role, long>
 {
     /// <summary>
     /// 初始化一个 SecurityManager 类型的新实例

@@ -12,7 +12,7 @@ namespace OSharp.Authorization.EntityInfos;
 /// <summary>
 /// 定义数据实体信息
 /// </summary>
-public interface IEntityInfo : IEntity<Guid>, IEntityHash
+public interface IEntityInfo : IEntity<long>, IEntityHash
 {
     /// <summary>
     /// 获取或设置 实体名称

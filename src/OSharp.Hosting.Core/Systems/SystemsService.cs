@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SystemsService.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -27,5 +27,5 @@ public partial class SystemsService : ISystemsContract
         _provider = provider;
     }
 
-    protected IRepository<Menu, int> MenuInfoRepository => _provider.GetService<IRepository<Menu, int>>();
+    protected IRepository<Menu, long> MenuInfoRepository => _provider.GetService<IRepository<Menu, long>>();
 }

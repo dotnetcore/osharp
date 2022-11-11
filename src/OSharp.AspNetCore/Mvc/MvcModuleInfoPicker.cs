@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MvcModuleInfoPicker.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -7,13 +7,7 @@
 //  <last-date>2018-06-23 17:23</last-date>
 // -----------------------------------------------------------------------
 
-using System.Reflection;
-
-using Microsoft.AspNetCore.Mvc;
-
-using OSharp.Authorization.Functions;
 using OSharp.Authorization.Modules;
-using OSharp.Exceptions;
 
 
 namespace OSharp.AspNetCore.Mvc;
@@ -41,7 +35,7 @@ public class MvcModuleInfoPicker : ModuleInfoPickerBase<Function>
         ModuleInfoAttribute infoAttr = type.GetAttribute<ModuleInfoAttribute>();
         if (infoAttr == null)
         {
-            return new ModuleInfo[0];
+            return Array.Empty<ModuleInfo>();
         }
         ModuleInfo info = new ModuleInfo()
         {

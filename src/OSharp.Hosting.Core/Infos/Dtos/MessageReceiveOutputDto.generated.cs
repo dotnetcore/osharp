@@ -57,7 +57,7 @@ namespace OSharp.Hosting.Infos.Dtos
         /// 获取或设置 编号
         /// </summary>
         [DisplayName("编号")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 接收时间
@@ -69,19 +69,19 @@ namespace OSharp.Hosting.Infos.Dtos
         /// 获取或设置 新回复数，接收者使用
         /// </summary>
         [DisplayName("新回复数，接收者使用")]
-        public int NewReplyCount { get; set; }
+        public long NewReplyCount { get; set; }
 
         /// <summary>
         /// 获取或设置 接收的主消息编号
         /// </summary>
         [DisplayName("接收的主消息编号")]
-        public Guid MessageId { get; set; }
+        public long MessageId { get; set; }
 
         /// <summary>
         /// 获取或设置 消息接收人编号
         /// </summary>
         [DisplayName("消息接收人编号")]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 创建时间

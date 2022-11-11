@@ -16,12 +16,12 @@ namespace OSharp.Hosting.Identity.Dtos;
 /// 输入DTO：用户资料编辑
 /// </summary>
 [MapTo(typeof(User))]
-public class ProfileEditDto : IInputDto<int>
+public class ProfileEditDto : IInputDto<long>
 {
     /// <summary>
     /// 获取或设置 主键，唯一标识
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 用户名

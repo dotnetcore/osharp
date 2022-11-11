@@ -15,7 +15,7 @@ namespace OSharp.Core.Systems;
 /// </summary>
 [Description("键值对信息")]
 [TableNamePrefix("Systems")]
-public class KeyValue : EntityBase<Guid>, ILockable, IKeyValue
+public class KeyValue : EntityBase<long>, ILockable, IKeyValue
 {
     /// <summary>
     /// 初始化一个<see cref="KeyValue"/>类型的新实例

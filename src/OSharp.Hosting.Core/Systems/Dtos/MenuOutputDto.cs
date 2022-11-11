@@ -21,7 +21,7 @@ public class MenuOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 编号
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 菜单名称
@@ -76,7 +76,7 @@ public class MenuOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 父菜单编号
     /// </summary>
-    public int? ParentId { get; set; }
+    public long? ParentId { get; set; }
         
     /// <summary>
     /// 获取或设置 子菜单集合

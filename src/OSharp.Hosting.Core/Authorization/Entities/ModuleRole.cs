@@ -16,7 +16,7 @@ namespace OSharp.Hosting.Authorization.Entities;
 /// 实体类：模块角色信息
 /// </summary>
 [Description("角色模块信息")]
-public class ModuleRole : ModuleRoleBase<int, int>
+public class ModuleRole : ModuleRoleBase<long, long>
 {
     /// <summary>
     /// 获取或设置 模块信息

@@ -13,7 +13,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// 实体类：用户的身份认证令牌
 /// </summary>
 [Description("用户的身份认证令牌")]
-public class UserToken : UserTokenBase<Guid, int>
+public class UserToken : UserTokenBase<long, long>
 {
     /// <summary>
     /// 获取或设置 所属用户信息

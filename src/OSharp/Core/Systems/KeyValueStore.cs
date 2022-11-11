@@ -26,7 +26,7 @@ public class KeyValueStore : IKeyValueStore
         _provider = provider;
     }
 
-    private IRepository<KeyValue, Guid> KeyValueRepository => _provider.GetRequiredService<IRepository<KeyValue, Guid>>();
+    private IRepository<KeyValue, long> KeyValueRepository => _provider.GetRequiredService<IRepository<KeyValue, long>>();
 
     private IDistributedCache Cache => _provider.GetRequiredService<IDistributedCache>();
 
@@ -46,7 +46,11 @@ public class KeyValueStore : IKeyValueStore
         Type type = typeof(TSetting);
         foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(IKeyValue)))
         {
-            string key = ((KeyValue)property.GetValue(setting)).Key;
+            string key = ((KeyValue)property.GetValue(setting))?.Key;
+            if (key == null)
+            {
+                continue;
+            }
             IKeyValue keyValue = GetByKey(key);
             if (keyValue != null)
             {
@@ -103,7 +107,7 @@ public class KeyValueStore : IKeyValueStore
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的键值对信息编号</param>
     /// <returns>键值对信息是否存在</returns>
-    public Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid))
+    public Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, long id = default(long))
     {
         return KeyValueRepository.CheckExistsAsync(predicate, id);
     }
@@ -171,7 +175,7 @@ public class KeyValueStore : IKeyValueStore
     /// </summary>
     /// <param name="ids">要删除的键值对信息编号</param>
     /// <returns>业务操作结果</returns>
-    public async Task<OperationResult> Delete(params Guid[] ids)
+    public async Task<OperationResult> Delete(params long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
 
@@ -209,7 +213,7 @@ public class KeyValueStore : IKeyValueStore
     /// <returns>业务操作结果</returns>
     public async Task<OperationResult> DeleteByRootKey(string rootKey)
     {
-        Guid[] ids = KeyValueRepository.QueryAsNoTracking(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
+        long[] ids = KeyValueRepository.QueryAsNoTracking(m => m.Key.StartsWith(rootKey)).Select(m => m.Id).ToArray();
         return await Delete(ids);
     }
 

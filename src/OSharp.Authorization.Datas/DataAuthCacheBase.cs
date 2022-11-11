@@ -29,7 +29,7 @@ public abstract class DataAuthCacheBase<TEntityRole, TRole, TEntityInfo, TRoleKe
     protected DataAuthCacheBase(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _cache = serviceProvider.GetService<IDistributedCache>();
+        _cache = serviceProvider.GetRequiredService<IDistributedCache>();
         _logger = serviceProvider.GetLogger(GetType());
     }
 
@@ -40,9 +40,9 @@ public abstract class DataAuthCacheBase<TEntityRole, TRole, TEntityInfo, TRoleKe
     {
         var entityRoles = _serviceProvider.ExecuteScopedWork(provider =>
         {
-            IRepository<TEntityRole, Guid> entityRoleRepository = provider.GetService<IRepository<TEntityRole, Guid>>();
-            IRepository<TRole, TRoleKey> roleRepository = provider.GetService<IRepository<TRole, TRoleKey>>();
-            IRepository<TEntityInfo, Guid> entityInfoRepository = provider.GetService<IRepository<TEntityInfo, Guid>>();
+            IRepository<TEntityRole, long> entityRoleRepository = provider.GetRequiredService<IRepository<TEntityRole, long>>();
+            IRepository<TRole, TRoleKey> roleRepository = provider.GetRequiredService<IRepository<TRole, TRoleKey>>();
+            IRepository<TEntityInfo, long> entityInfoRepository = provider.GetRequiredService<IRepository<TEntityInfo, long>>();
             return entityRoleRepository.QueryAsNoTracking(m => !m.IsLocked).Select(m => new
             {
                 m.FilterGroupJson,

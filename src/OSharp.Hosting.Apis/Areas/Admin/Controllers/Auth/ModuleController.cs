@@ -46,12 +46,12 @@ public class ModuleController : AdminApiControllerBase
     /// <returns>模块[用户]树数据</returns>
     [HttpGet]
     [Description("读取模块[用户]树数据")]
-    public AjaxResult ReadUserModules(int userId)
+    public AjaxResult ReadUserModules(long userId)
     {
         Check.GreaterThan(userId, nameof(userId), 0);
-        int[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
+        long[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
 
-        int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+        long[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
         var result = GetModulesWithChecked(rootIds, checkedModuleIds);
         return new AjaxResult(result);
     }
@@ -63,17 +63,17 @@ public class ModuleController : AdminApiControllerBase
     /// <returns>模块[角色]树数据</returns>
     [HttpGet]
     [Description("读取模块[角色]树数据")]
-    public AjaxResult ReadRoleModules(int roleId)
+    public AjaxResult ReadRoleModules(long roleId)
     {
         Check.GreaterThan(roleId, nameof(roleId), 0);
-        int[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
+        long[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
 
-        int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+        long[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
         var result = GetModulesWithChecked(rootIds, checkedModuleIds);
         return new AjaxResult(result);
     }
 
-    private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
+    private List<object> GetModulesWithChecked(long[] rootIds, long[] checkedModuleIds)
     {
         var modules = _functionAuthManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
         {
@@ -111,7 +111,7 @@ public class ModuleController : AdminApiControllerBase
         return nodes;
     }
 
-    private bool IsRoleLimit(int moduleId)
+    private bool IsRoleLimit(long moduleId)
     {
         return _functionAuthManager.Functions
             .Where(m => _functionAuthManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
@@ -126,7 +126,7 @@ public class ModuleController : AdminApiControllerBase
     [ModuleInfo]
     [DependOnFunction(nameof(Read))]
     [Description("读取模块功能")]
-    public AjaxResult ReadFunctions(int moduleId, [FromBody] PageRequest request)
+    public AjaxResult ReadFunctions(long moduleId, [FromBody] PageRequest request)
     {
         var empty = new PageData<FunctionOutputDto2>();
         if (moduleId == 0)
@@ -136,8 +136,8 @@ public class ModuleController : AdminApiControllerBase
 
         string token = $"${moduleId}$";
         Expression<Func<Module, bool>> moduleExp = m => m.TreePathString != null && m.TreePathString.Contains(token);
-        int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
-        Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+        long[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
+        long[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
             .Select(m => m.FunctionId).Distinct().ToArray();
         if (functionIds.Length == 0)
         {
@@ -207,7 +207,7 @@ public class ModuleController : AdminApiControllerBase
     [DependOnFunction(nameof(Read))]
     [UnitOfWork]
     [Description("删除")]
-    public async Task<AjaxResult> Delete([FromForm] int id)
+    public async Task<AjaxResult> Delete([FromForm] long id)
     {
         Check.NotNull(id, nameof(id));
         Check.GreaterThan(id, nameof(id), 0);

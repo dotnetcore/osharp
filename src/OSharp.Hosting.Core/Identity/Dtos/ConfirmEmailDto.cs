@@ -19,7 +19,7 @@ public class ConfirmEmailDto
     /// 获取或设置 用户编号
     /// </summary>
     [Required]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 获取或设置 邮件码

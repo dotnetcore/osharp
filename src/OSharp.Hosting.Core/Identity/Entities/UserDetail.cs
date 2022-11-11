@@ -14,7 +14,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// </summary>
 [Description("用户详细信息")]
 [TableNamePrefix("Identity")]
-public class UserDetail : EntityBase<int>
+public class UserDetail : EntityBase<long>
 {
     /// <summary>
     /// 获取或设置 注册IP
@@ -26,7 +26,7 @@ public class UserDetail : EntityBase<int>
     /// 获取或设置 用户编号
     /// </summary>
     [DisplayName("用户编号")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 获取或设置 所属用户信息

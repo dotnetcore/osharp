@@ -27,7 +27,7 @@ public interface IModuleRoleStore<TModuleRole, in TRoleKey, TModuleKey>
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的模块角色信息编号</param>
     /// <returns>模块角色信息是否存在</returns>
-    Task<bool> CheckModuleRoleExists(Expression<Func<TModuleRole, bool>> predicate, Guid id = default(Guid));
+    Task<bool> CheckModuleRoleExists(Expression<Func<TModuleRole, bool>> predicate, long id = default(long));
 
     /// <summary>
     /// 设置角色的可访问模块

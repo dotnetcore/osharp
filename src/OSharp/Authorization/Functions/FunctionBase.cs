@@ -13,7 +13,7 @@ namespace OSharp.Authorization.Functions;
 /// 功能信息基类
 /// </summary>
 [DebuggerDisplay("{ToString()}")]
-public abstract class FunctionBase : EntityBase<Guid>, IFunction
+public abstract class FunctionBase : EntityBase<long>, IFunction
 {
     /// <summary>
     /// 获取或设置 功能名称

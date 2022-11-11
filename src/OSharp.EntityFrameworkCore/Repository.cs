@@ -398,7 +398,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     /// <returns>符合条件的实体，不存在时返回null</returns>
     public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate)
     {
-        predicate.CheckNotNull("predicate");
+        predicate.CheckNotNull(nameof(predicate));
         return GetFirst(predicate, true);
     }
 
@@ -735,7 +735,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
             // 物理删除
             count = await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
         }
-            
+
         await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return count;
     }
@@ -829,7 +829,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
         await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
         int count = await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
-            
+
         await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return count;
     }
@@ -870,8 +870,8 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
 
     private static void CheckEntityKey(object key, string keyName)
     {
-        key.CheckNotNull("key");
-        keyName.CheckNotNull("keyName");
+        key.CheckNotNull(nameof(key));
+        keyName.CheckNotNull(nameof(keyName));
 
         Type type = key.GetType();
         if (type == typeof(int))
@@ -888,7 +888,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         }
     }
 
-    private void SetEmptyGuidKey(TEntity entity)
+    private void SetEmptyKey(TEntity entity)
     {
         Type keyType = typeof(TKey);
         //自增int
@@ -938,20 +938,20 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         {
             return;
         }
-            
-        bool flag = _dataAuthService.CheckDataAuth<TEntity>(operation, entities);
+
+        bool flag = _dataAuthService.CheckDataAuth(operation, entities);
         if (!flag)
         {
             throw new OsharpException($"实体 {typeof(TEntity)} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
         }
     }
-        
+
     private TEntity[] CheckInsert(params TEntity[] entities)
     {
         for (int i = 0; i < entities.Length; i++)
         {
             TEntity entity = entities[i];
-            SetEmptyGuidKey(entity);
+            SetEmptyKey(entity);
             entities[i] = entity.CheckICreatedTime<TEntity, TKey>();
 
             string userIdTypeName = _principal?.Identity.GetClaimValueFirstOrDefault(OsharpConstants.UserIdTypeName);

@@ -164,7 +164,7 @@ public abstract class ModuleHandlerBase<TModule, TModuleInputDto, TModuleKey, TM
             }
             if (info.DependOnFunctions.Length > 0)
             {
-                Guid[] functionIds = info.DependOnFunctions.Select(m => m.Id).ToArray();
+                long[] functionIds = info.DependOnFunctions.Select(m => m.Id).ToArray();
                 OperationResult result = moduleFunctionStore.SetModuleFunctions(module.Id, functionIds).GetAwaiter().GetResult();
                 if (result.Error)
                 {

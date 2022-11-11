@@ -17,7 +17,7 @@ public class UserLoginOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 编号
     /// </summary>
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 提供商
@@ -42,5 +42,5 @@ public class UserLoginOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 所属用户编号
     /// </summary>
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 }

@@ -13,11 +13,9 @@ using Liuliu.Demo.Authorization.Dtos;
 using Liuliu.Demo.Authorization.Entities;
 using Liuliu.Demo.Identity.Entities;
 
-using OSharp.Authorization.DataAuthorization;
+using OSharp.Authorization;
 using OSharp.Authorization.Dtos;
 using OSharp.Authorization.EntityInfos;
-using OSharp.Entity;
-using OSharp.EventBuses;
 
 
 namespace Liuliu.Demo.Authorization

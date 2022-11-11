@@ -75,7 +75,7 @@ public abstract class SeedDataInitializerBase<TEntity, TKey> : ISeedDataInitiali
         }
 
         IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
-        IRepository<TEntity, TKey> repository = provider.GetService<IRepository<TEntity, TKey>>();
+        IRepository<TEntity, TKey> repository = provider.GetRequiredService<IRepository<TEntity, TKey>>();
         foreach (TEntity entity in entities)
         {
             if (repository.CheckExists(ExistingExpression(entity)))

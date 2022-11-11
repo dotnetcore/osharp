@@ -15,7 +15,7 @@ namespace OSharp.Hosting.Systems.Entities;
 [MapFrom(typeof(AuditOperationEntry))]
 [TableNamePrefix("Systems")]
 [Description("审计操作信息")]
-public class AuditOperation : EntityBase<Guid>
+public class AuditOperation : EntityBase<long>
 {
     /// <summary>
     /// 获取或设置 执行的功能名
@@ -79,7 +79,7 @@ public class AuditOperation : EntityBase<Guid>
     /// <summary>
     /// 获取或设置 执行耗时，单位毫秒
     /// </summary>
-    public int Elapsed { get; set; }
+    public long Elapsed { get; set; }
 
     /// <summary>
     /// 获取或设置 信息添加时间

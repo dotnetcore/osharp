@@ -17,5 +17,5 @@ public class LogoutEventData : EventDataBase
     /// <summary>
     /// 获取或设置 用户编号
     /// </summary>
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 }

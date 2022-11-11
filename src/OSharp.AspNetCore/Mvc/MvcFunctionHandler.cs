@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MvcFunctionHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2017 OSharp. All rights reserved.
 //  </copyright>
@@ -7,16 +7,9 @@
 //  <last-date>2017-09-15 3:08</last-date>
 // -----------------------------------------------------------------------
 
-using System.Reflection;
-
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 using OSharp.AspNetCore.Mvc.Filters;
-using OSharp.Authorization;
-using OSharp.Authorization.Functions;
-using OSharp.Collections;
-using OSharp.Exceptions;
 
 
 namespace OSharp.AspNetCore.Mvc;

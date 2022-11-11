@@ -27,7 +27,7 @@ public partial class InfosService
     /// <returns>业务操作结果</returns>
     public override async Task<OperationResult> CreateMessages(params MessageInputDto[] dtos)
     {
-        Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+        Check2.Validate<MessageInputDto, long>(dtos, nameof(dtos));
         List<Message> messages = new List<Message>();
 
         OperationResult result = await MessageRepository.InsertAsync(dtos,

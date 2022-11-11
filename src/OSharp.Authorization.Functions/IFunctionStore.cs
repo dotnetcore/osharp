@@ -31,7 +31,7 @@ public interface IFunctionStore<TFunction, in TFunctionInputDto>
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的功能信息编号</param>
     /// <returns>功能信息是否存在</returns>
-    Task<bool> CheckFunctionExists(Expression<Func<TFunction, bool>> predicate, Guid id = default(Guid));
+    Task<bool> CheckFunctionExists(Expression<Func<TFunction, bool>> predicate, long id = default(long));
 
     /// <summary>
     /// 更新功能信息

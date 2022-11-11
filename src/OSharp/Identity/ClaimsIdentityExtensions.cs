@@ -46,7 +46,7 @@ public static class ClaimsIdentityExtensions
     public static T GetUserId<T>(this IIdentity identity)
     {
         Check.NotNull(identity, nameof(identity));
-        if (!(identity is ClaimsIdentity claimsIdentity))
+        if (identity is not ClaimsIdentity claimsIdentity)
         {
             return default(T);
         }

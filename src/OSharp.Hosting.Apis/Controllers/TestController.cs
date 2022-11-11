@@ -90,7 +90,7 @@ public class TestController : SiteApiControllerBase
         RoleManager<Role> manager = provider.GetRequiredService<RoleManager<Role>>();
         await manager.CreateAsync(new Role() { Name = "测试角色3" + token, Remark = "测试角色001描述" });
         await manager.CreateAsync(new Role() { Name = "测试角色4" + token, Remark = "测试角色002描述" });
-
+         
         return provider.GetRequiredService<RoleManager<Role>>().Roles.Count();
     }
 }

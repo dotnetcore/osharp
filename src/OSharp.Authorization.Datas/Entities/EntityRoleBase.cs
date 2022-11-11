@@ -14,7 +14,7 @@ namespace OSharp.Authorization.Entities;
 /// 数据角色实体基类
 /// </summary>
 [TableNamePrefix("Auth")]
-public abstract class EntityRoleBase<TRoleKey> : EntityBase<Guid>, ILockable, ICreatedTime
+public abstract class EntityRoleBase<TRoleKey> : EntityBase<long>, ILockable, ICreatedTime
 {
     /// <summary>
     /// 获取或设置 角色编号
@@ -26,7 +26,7 @@ public abstract class EntityRoleBase<TRoleKey> : EntityBase<Guid>, ILockable, IC
     /// 获取或设置 数据实体编号
     /// </summary>
     [DisplayName("数据编号")]
-    public Guid EntityId { get; set; }
+    public long EntityId { get; set; }
 
     /// <summary>
     /// 获取或设置 数据权限操作

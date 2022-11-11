@@ -18,7 +18,7 @@ namespace OSharp.Hosting.Authorization;
 [DependsOnPacks(typeof(IdentityPack), typeof(MvcFunctionPack))]
 public class FunctionAuthorizationPack
     : FunctionAuthorizationPackBase<FunctionAuthManager, FunctionAuthorization, FunctionAuthCache, ModuleHandler, Function,
-        FunctionInputDto, Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, int, int>
+        FunctionInputDto, Module, ModuleInputDto, long, ModuleFunction, ModuleRole, ModuleUser, long, long>
 {
     /// <summary>
     /// 将模块服务添加到依赖注入服务容器中

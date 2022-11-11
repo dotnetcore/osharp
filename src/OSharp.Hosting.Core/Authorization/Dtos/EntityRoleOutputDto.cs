@@ -41,12 +41,12 @@ public class EntityRoleOutputDto : IOutputDto, IDataAuthEnabled
     /// <summary>
     /// 获取或设置 编号
     /// </summary>
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 角色编号
     /// </summary>
-    public int RoleId { get; set; }
+    public long RoleId { get; set; }
 
     /// <summary>
     /// 获取或设置 角色名称
@@ -56,7 +56,7 @@ public class EntityRoleOutputDto : IOutputDto, IDataAuthEnabled
     /// <summary>
     /// 获取或设置 数据编号
     /// </summary>
-    public Guid EntityId { get; set; }
+    public long EntityId { get; set; }
 
     /// <summary>
     /// 获取或设置 业务实体名称

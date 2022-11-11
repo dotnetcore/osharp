@@ -53,7 +53,7 @@ public interface IKeyValueStore
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的键值对信息编号</param>
     /// <returns>键值对信息是否存在</returns>
-    Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid));
+    Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, long id = default(long));
 
     /// <summary>
     /// 添加或更新键值对信息信息
@@ -75,7 +75,7 @@ public interface IKeyValueStore
     /// </summary>
     /// <param name="ids">要删除的键值对信息编号</param>
     /// <returns>业务操作结果</returns>
-    Task<OperationResult> Delete(params Guid[] ids);
+    Task<OperationResult> Delete(params long[] ids);
 
     /// <summary>
     /// 删除以根键路径为起始的所有字典项，如输入“System.User.”，所有键以此开头的项都会被删除

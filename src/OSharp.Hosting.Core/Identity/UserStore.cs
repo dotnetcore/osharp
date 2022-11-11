@@ -15,7 +15,7 @@ namespace OSharp.Hosting.Identity;
 /// <summary>
 /// 用户仓储
 /// </summary>
-public class UserStore : UserStoreBase<User, int, UserClaim, int, UserLogin, Guid, UserToken, Guid, Role, int, UserRole, Guid>
+public class UserStore : UserStoreBase<User, long, UserClaim, long, UserLogin, long, UserToken, long, Role, long, UserRole, long>
 {
     /// <summary>
     /// 初始化一个<see cref="UserStoreBase{TUser, TUserKey, TUserClaim, TUserClaimKey, TUserLogin, TUserLoginKey, TUserToken, TUserTokenKey, TRole, TRoleKey, TUserRole, TUserRoleKey}"/>类型的新实例
@@ -27,12 +27,12 @@ public class UserStore : UserStoreBase<User, int, UserClaim, int, UserLogin, Gui
     /// <param name="roleRepository">角色仓储</param>
     /// <param name="userRoleRepository">用户角色仓储</param>
     /// <param name="eventBus">事件总线</param>
-    public UserStore(IRepository<User, int> userRepository,
-        IRepository<UserLogin, Guid> userLoginRepository,
-        IRepository<UserClaim, int> userClaimRepository,
-        IRepository<UserToken, Guid> userTokenRepository,
-        IRepository<Role, int> roleRepository,
-        IRepository<UserRole, Guid> userRoleRepository,
+    public UserStore(IRepository<User, long> userRepository,
+        IRepository<UserLogin, long> userLoginRepository,
+        IRepository<UserClaim, long> userClaimRepository,
+        IRepository<UserToken, long> userTokenRepository,
+        IRepository<Role, long> roleRepository,
+        IRepository<UserRole, long> userRoleRepository,
         IEventBus eventBus)
         : base(userRepository, userLoginRepository, userClaimRepository, userTokenRepository, roleRepository, userRoleRepository, eventBus)
     { }

@@ -118,7 +118,7 @@ public class RoleEntityController : AdminApiControllerBase
     [DependOnFunction(nameof(Read))]
     [UnitOfWork]
     [Description("删除")]
-    public async Task<AjaxResult> Delete(params Guid[] ids)
+    public async Task<AjaxResult> Delete(params long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
 

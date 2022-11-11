@@ -20,7 +20,7 @@ public class AuditOperationOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 数据编号
     /// </summary>
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 执行的功能名
@@ -70,7 +70,7 @@ public class AuditOperationOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 执行耗时，单位毫秒
     /// </summary>
-    public int Elapsed { get; set; }
+    public long Elapsed { get; set; }
 
     /// <summary>
     /// 获取或设置 信息添加时间

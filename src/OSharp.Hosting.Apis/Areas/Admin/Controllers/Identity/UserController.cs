@@ -161,11 +161,11 @@ public class UserController : AdminApiControllerBase
     [DependOnFunction(nameof(Read))]
     [UnitOfWork]
     [Description("删除")]
-    public async Task<AjaxResult> Delete(int[] ids)
+    public async Task<AjaxResult> Delete(long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
         List<string> names = new List<string>();
-        foreach (int id in ids)
+        foreach (var id in ids)
         {
             User user = await UserManager.FindByIdAsync(id.ToString());
             IdentityResult result = await UserManager.DeleteAsync(user);

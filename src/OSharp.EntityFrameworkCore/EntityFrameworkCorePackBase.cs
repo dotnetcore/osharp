@@ -41,10 +41,11 @@ public abstract class EntityFrameworkCorePackBase : OsharpPack
         services.TryAddScoped<IMasterSlaveSplitPolicy, MasterSlaveSplitPolicy>();
 
         services.TryAddSingleton<IKeyGenerator<int>, AutoIncreaseKeyGenerator>();
-        services.TryAddSingleton<IKeyGenerator<long>>(new SnowKeyGenerator(new DefaultIdGenerator(new IdGeneratorOptions(1))));
+        services.TryAddSingleton<IKeyGenerator<long>, SnowKeyGenerator>();
         services.TryAddSingleton<IEntityManager, EntityManager>();
         services.AddSingleton<DbContextModelCache>();
         services.AddSingleton<IEntityBatchConfiguration, TableNamePrefixConfiguration>();
+        services.AddSingleton<IEntityBatchConfiguration, LongPrimaryKeyRemoveAutoIncreaseConfiguration>();
         services.AddSingleton<ISlaveDatabaseSelector, RandomSlaveDatabaseSelector>();
         services.AddSingleton<ISlaveDatabaseSelector, SequenceSlaveDatabaseSelector>();
         services.AddSingleton<ISlaveDatabaseSelector, WeightSlaveDatabaseSelector>();

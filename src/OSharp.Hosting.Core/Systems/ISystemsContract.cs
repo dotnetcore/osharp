@@ -31,7 +31,7 @@ public interface ISystemsContract
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的菜单信息编号</param>
     /// <returns>菜单信息是否存在</returns>
-    Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, int id = default);
+    Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, long id = default);
 
     /// <summary>
     /// 添加菜单信息信息
@@ -52,7 +52,7 @@ public interface ISystemsContract
     /// </summary>
     /// <param name="ids">要删除的菜单信息编号</param>
     /// <returns>业务操作结果</returns>
-    Task<OperationResult> DeleteMenuInfos(params int[] ids);
+    Task<OperationResult> DeleteMenuInfos(params long[] ids);
 
     #endregion
 

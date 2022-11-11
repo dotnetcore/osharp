@@ -15,7 +15,7 @@ using OSharp.Hosting.Authorization.Entities;
 namespace OSharp.Hosting.Authorization;
 
 public class DataAuthorizationPack
-    : DataAuthorizationPackBase<DataAuthManager, DataAuthCache, EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, int>
+    : DataAuthorizationPackBase<DataAuthManager, DataAuthCache, EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, long>
 {
     /// <summary>
     /// 将模块服务添加到依赖注入服务容器中

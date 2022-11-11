@@ -120,7 +120,7 @@ public class EntityManager : IEntityManager
     }
 
 
-    private class EntityInfoConfiguration : EntityTypeConfigurationBase<EntityInfo, Guid>
+    private class EntityInfoConfiguration : EntityTypeConfigurationBase<EntityInfo, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -133,7 +133,7 @@ public class EntityManager : IEntityManager
     }
 
 
-    private class FunctionConfiguration : EntityTypeConfigurationBase<Function, Guid>
+    private class FunctionConfiguration : EntityTypeConfigurationBase<Function, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
@@ -146,7 +146,7 @@ public class EntityManager : IEntityManager
     }
 
 
-    private class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, Guid>
+    private class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

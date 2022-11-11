@@ -12,13 +12,13 @@ namespace OSharp.Authorization.Dtos;
 /// <summary>
 /// 输入Dto基类：功能信息
 /// </summary>
-public class FunctionInputDtoBase : IInputDto<Guid>
+public class FunctionInputDtoBase : IInputDto<long>
 {
     /// <summary>
     /// 获取或设置 主键，唯一标识
     /// </summary>
     [DisplayName("编号")]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 访问类型

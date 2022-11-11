@@ -18,7 +18,7 @@ public class ResetPasswordDto
     /// 获取或设置 用户编号
     /// </summary>
     [Required]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 获取或设置 重置密码校验标识，由邮箱、手机等发送

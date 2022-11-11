@@ -68,7 +68,7 @@ public static class EndpointExtensions
     /// </summary>
     public static string GetControllerName(this RouteEndpoint endpoint)
     {
-        return endpoint.RoutePattern.RequiredValues["controller"].ToString();
+        return endpoint.RoutePattern.RequiredValues["controller"]?.ToString();
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public static class EndpointExtensions
     /// </summary>
     public static string GetActionName(this RouteEndpoint endpoint)
     {
-        return endpoint.RoutePattern.RequiredValues["action"].ToString();
+        return endpoint.RoutePattern.RequiredValues["action"]?.ToString();
     }
 
 }

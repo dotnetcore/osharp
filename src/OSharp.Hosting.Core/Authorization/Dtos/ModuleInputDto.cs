@@ -17,5 +17,5 @@ namespace OSharp.Hosting.Authorization.Dtos;
 /// 输入DTO：模块信息
 /// </summary>
 [MapTo(typeof(Module))]
-public class ModuleInputDto : ModuleInputDtoBase<int>
+public class ModuleInputDto : ModuleInputDtoBase<long>
 { }

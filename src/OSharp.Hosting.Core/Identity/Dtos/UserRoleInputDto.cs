@@ -17,5 +17,5 @@ namespace OSharp.Hosting.Identity.Dtos;
 /// 输入DTO：用户角色信息
 /// </summary>
 [MapTo(typeof(UserRole))]
-public class UserRoleInputDto : UserRoleInputDtoBase<Guid, int, int>
+public class UserRoleInputDto : UserRoleInputDtoBase<long, long, long>
 { }

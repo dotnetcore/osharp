@@ -12,7 +12,7 @@ using OSharp.Hosting.Identity.Entities;
 
 namespace OSharp.Hosting.Identity;
 
-public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, int>
+public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, long>
 {
     private readonly IServiceProvider _rootProvider;
 
@@ -58,7 +58,7 @@ public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, int>
         }
 
         IUnitOfWork unitOfWork = provider.GetUnitOfWork(true);
-        RoleManager<Role> roleManager = provider.GetService<RoleManager<Role>>();
+        RoleManager<Role> roleManager = provider.GetRequiredService<RoleManager<Role>>();
         foreach (Role role in entities)
         {
             if (roleManager.Roles.Any(ExistingExpression(role)))

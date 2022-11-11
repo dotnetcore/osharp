@@ -15,12 +15,12 @@ namespace OSharp.Hosting.Identity;
 /// <summary>
 /// 角色仓储
 /// </summary>
-public class RoleStore : OSharp.Identity.RoleStoreBase<Role, int, RoleClaim, int>
+public class RoleStore : OSharp.Identity.RoleStoreBase<Role, long, RoleClaim, long>
 {
     /// <summary>
     /// 初始化一个<see cref="OSharp.Identity.RoleStoreBase{TRole,TRoleKey,TRoleClaim,TRoleClaimKey}"/>类型的新实例
     /// </summary>
-    public RoleStore(IRepository<Role, int> roleRepository, IRepository<RoleClaim, int> roleClaimRepository)
+    public RoleStore(IRepository<Role, long> roleRepository, IRepository<RoleClaim, long> roleClaimRepository)
         : base(roleRepository, roleClaimRepository)
     { }
 }

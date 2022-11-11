@@ -19,7 +19,7 @@ public class EntityInfoOutputDto : IOutputDto, IDataAuthEnabled
     /// <summary>
     /// 获取或设置 编号
     /// </summary>
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 实体名称

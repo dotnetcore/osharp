@@ -27,11 +27,7 @@ public abstract class EntityBase<TKey> : IEntity<TKey> where TKey : IEquatable<T
     /// <returns></returns>
     public override bool Equals(object obj)
     {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (!(obj is EntityBase<TKey> entity))
+        if (obj is not EntityBase<TKey> entity)
         {
             return false;
         }

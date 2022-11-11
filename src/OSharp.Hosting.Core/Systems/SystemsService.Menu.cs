@@ -26,7 +26,7 @@ public partial class SystemsService
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的菜单信息编号</param>
     /// <returns>菜单信息是否存在</returns>
-    public Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, int id = default)
+    public Task<bool> CheckMenuInfoExists(Expression<Func<Menu, bool>> predicate, long id = default)
     {
         return MenuInfoRepository.CheckExistsAsync(predicate, id);
     }
@@ -39,7 +39,7 @@ public partial class SystemsService
     public Task<OperationResult> CreateMenuInfos(params MenuInputDto[] dtos)
     {
         Check.NotNull(dtos, nameof(dtos));
-        Check2.Validate<MenuInputDto, int>(dtos, nameof(dtos));
+        Check2.Validate<MenuInputDto, long>(dtos, nameof(dtos));
 
         return MenuInfoRepository.InsertAsync(dtos,
             async dto =>
@@ -77,7 +77,7 @@ public partial class SystemsService
     public Task<OperationResult> UpdateMenuInfos(params MenuInputDto[] dtos)
     {
         Check.NotNull(dtos, nameof(dtos));
-        Check2.Validate<MenuInputDto, int>(dtos, nameof(dtos));
+        Check2.Validate<MenuInputDto, long>(dtos, nameof(dtos));
 
         return MenuInfoRepository.UpdateAsync(dtos,
             async (dto, entity) =>
@@ -112,7 +112,7 @@ public partial class SystemsService
     /// </summary>
     /// <param name="ids">要删除的菜单信息编号</param>
     /// <returns>业务操作结果</returns>
-    public Task<OperationResult> DeleteMenuInfos(params int[] ids)
+    public Task<OperationResult> DeleteMenuInfos(params long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
         return MenuInfoRepository.DeleteAsync(ids,

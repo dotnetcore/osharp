@@ -14,7 +14,7 @@ namespace OSharp.Hosting.Systems.Entities;
 /// </summary>
 [TableNamePrefix("Systems")]
 [Description("菜单信息")]
-public class Menu : EntityBase<int>
+public class Menu : EntityBase<long>
 {
     /// <summary>
     /// 获取或设置 菜单名称
@@ -86,7 +86,7 @@ public class Menu : EntityBase<int>
     /// 获取或设置 父菜单编号
     /// </summary>
     [DisplayName("父菜单编号")]
-    public int? ParentId { get; set; }
+    public long? ParentId { get; set; }
 
     /// <summary>
     /// 获取或设置 父级菜单

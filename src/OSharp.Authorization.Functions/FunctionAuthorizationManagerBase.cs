@@ -70,7 +70,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <summary>
     /// 获取 功能仓储
     /// </summary>
-    protected IRepository<TFunction, Guid> FunctionRepository => _provider.GetService<IRepository<TFunction, Guid>>();
+    protected IRepository<TFunction, long> FunctionRepository => _provider.GetService<IRepository<TFunction, long>>();
 
     /// <summary>
     /// 获取 模块仓储
@@ -80,17 +80,17 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <summary>
     /// 获取 模块功能仓储
     /// </summary>
-    protected IRepository<TModuleFunction, Guid> ModuleFunctionRepository => _provider.GetService<IRepository<TModuleFunction, Guid>>();
+    protected IRepository<TModuleFunction, long> ModuleFunctionRepository => _provider.GetService<IRepository<TModuleFunction, long>>();
 
     /// <summary>
     /// 获取 模块角色仓储
     /// </summary>
-    protected IRepository<TModuleRole, Guid> ModuleRoleRepository => _provider.GetService<IRepository<TModuleRole, Guid>>();
+    protected IRepository<TModuleRole, long> ModuleRoleRepository => _provider.GetService<IRepository<TModuleRole, long>>();
 
     /// <summary>
     /// 获取 模块用户仓储
     /// </summary>
-    protected IRepository<TModuleUser, Guid> ModuleUserRepository => _provider.GetService<IRepository<TModuleUser, Guid>>();
+    protected IRepository<TModuleUser, long> ModuleUserRepository => _provider.GetService<IRepository<TModuleUser, long>>();
 
     /// <summary>
     /// 获取 用户角色仓储
@@ -122,7 +122,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的功能信息编号</param>
     /// <returns>功能信息是否存在</returns>
-    public virtual Task<bool> CheckFunctionExists(Expression<Func<TFunction, bool>> predicate, Guid id = default(Guid))
+    public virtual Task<bool> CheckFunctionExists(Expression<Func<TFunction, bool>> predicate, long id = default(long))
     {
         return FunctionRepository.CheckExistsAsync(predicate, id);
     }
@@ -134,7 +134,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <returns>业务操作结果</returns>
     public virtual async Task<OperationResult> UpdateFunctions(params TFunctionInputDto[] dtos)
     {
-        Check2.Validate<TFunctionInputDto, Guid>(dtos, nameof(dtos));
+        Check2.Validate<TFunctionInputDto, long>(dtos, nameof(dtos));
 
         OperationResult result = await FunctionRepository.UpdateAsync(dtos,
             (dto, entity) =>
@@ -340,7 +340,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
         if (result.Succeeded)
         {
             //功能权限缓存刷新事件
-            Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(id)).Select(m => m.FunctionId).ToArray();
+            long[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(id)).Select(m => m.FunctionId).ToArray();
             FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
             await EventBus.PublishAsync(removeEventData);
         }
@@ -378,7 +378,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的模块功能信息编号</param>
     /// <returns>模块功能信息是否存在</returns>
-    public virtual Task<bool> CheckModuleFunctionExists(Expression<Func<TModuleFunction, bool>> predicate, Guid id = default(Guid))
+    public virtual Task<bool> CheckModuleFunctionExists(Expression<Func<TModuleFunction, bool>> predicate, long id = default(long))
     {
         return ModuleFunctionRepository.CheckExistsAsync(predicate, id);
     }
@@ -389,7 +389,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <param name="moduleId">模块编号</param>
     /// <param name="functionIds">要设置的功能编号</param>
     /// <returns>业务操作结果</returns>
-    public virtual async Task<OperationResult> SetModuleFunctions(TModuleKey moduleId, Guid[] functionIds)
+    public virtual async Task<OperationResult> SetModuleFunctions(TModuleKey moduleId, long[] functionIds)
     {
         TModule module = await ModuleRepository.GetAsync(moduleId);
         if (module == null)
@@ -397,13 +397,13 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
             return new OperationResult(OperationResultType.QueryNull, $"编号为“{moduleId}”的模块信息不存在");
         }
 
-        Guid[] existFunctionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
-        Guid[] addFunctionIds = functionIds.Except(existFunctionIds).ToArray();
-        Guid[] removeFunctionIds = existFunctionIds.Except(functionIds).ToArray();
+        long[] existFunctionIds = ModuleFunctionRepository.QueryAsNoTracking(m => m.ModuleId.Equals(moduleId)).Select(m => m.FunctionId).ToArray();
+        long[] addFunctionIds = functionIds.Except(existFunctionIds).ToArray();
+        long[] removeFunctionIds = existFunctionIds.Except(functionIds).ToArray();
         List<string> addNames = new List<string>(), removeNames = new List<string>();
         int count = 0;
 
-        foreach (Guid functionId in addFunctionIds)
+        foreach (long functionId in addFunctionIds)
         {
             TFunction function = await FunctionRepository.GetAsync(functionId);
             if (function == null)
@@ -414,7 +414,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
             count = count + await ModuleFunctionRepository.InsertAsync(moduleFunction);
             addNames.Add(function.Name);
         }
-        foreach (Guid functionId in removeFunctionIds)
+        foreach (long functionId in removeFunctionIds)
         {
             TFunction function = await FunctionRepository.GetAsync(functionId);
             if (function == null)
@@ -461,7 +461,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的模块角色信息编号</param>
     /// <returns>模块角色信息是否存在</returns>
-    public virtual Task<bool> CheckModuleRoleExists(Expression<Func<TModuleRole, bool>> predicate, Guid id = default(Guid))
+    public virtual Task<bool> CheckModuleRoleExists(Expression<Func<TModuleRole, bool>> predicate, long id = default(long))
     {
         return ModuleRoleRepository.CheckExistsAsync(predicate, id);
     }
@@ -517,7 +517,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
         {
             //功能权限缓存刷新事件
             moduleIds = addModuleIds.Union(removeModuleIds).Distinct().ToArray();
-            Guid[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId))
+            long[] functionIds = ModuleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
             FunctionAuthCacheRefreshEventData removeEventData = new FunctionAuthCacheRefreshEventData() { FunctionIds = functionIds };
             await EventBus.PublishAsync(removeEventData);
@@ -562,7 +562,7 @@ public abstract class FunctionAuthorizationManagerBase<TFunction, TFunctionInput
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的模块用户信息编号</param>
     /// <returns>模块用户信息是否存在</returns>
-    public virtual Task<bool> CheckModuleUserExists(Expression<Func<TModuleUser, bool>> predicate, Guid id = default(Guid))
+    public virtual Task<bool> CheckModuleUserExists(Expression<Func<TModuleUser, bool>> predicate, long id = default(long))
     {
         return ModuleUserRepository.CheckExistsAsync(predicate, id);
     }

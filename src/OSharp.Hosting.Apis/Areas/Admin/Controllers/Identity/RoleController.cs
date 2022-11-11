@@ -78,11 +78,11 @@ public class RoleController : AdminApiControllerBase
     /// <returns>角色[用户]树数据</returns>
     [HttpGet]
     [Description("读取角色[用户]树数据")]
-    public AjaxResult ReadUserRoles(int userId)
+    public AjaxResult ReadUserRoles(long userId)
     {
         Check.GreaterThan(userId, nameof(userId), 0);
 
-        int[] checkRoleIds = IdentityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
+        long[] checkRoleIds = IdentityContract.UserRoles.Where(m => m.UserId == userId).Select(m => m.RoleId).Distinct().ToArray();
         List<UserRoleNode> nodes = IdentityContract.Roles.Where(m => !m.IsLocked)
             .OrderByDescending(m => m.IsAdmin).ThenBy(m => m.Id).ToOutput<Role, UserRoleNode>().ToList();
         nodes.ForEach(m => m.IsChecked = checkRoleIds.Contains(m.Id));
@@ -154,11 +154,11 @@ public class RoleController : AdminApiControllerBase
     [DependOnFunction(nameof(Read))]
     [UnitOfWork]
     [Description("删除")]
-    public async Task<AjaxResult> Delete(int[] ids)
+    public async Task<AjaxResult> Delete(long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
         List<string> names = new List<string>();
-        foreach (int id in ids)
+        foreach (long id in ids)
         {
             Role role = await RoleManager.FindByIdAsync(id.ToString());
             IdentityResult result = await RoleManager.DeleteAsync(role);

@@ -22,7 +22,7 @@ public class RoleOutputDto : IOutputDto, IDataAuthEnabled
     /// 获取或设置 角色编号
     /// </summary>
     [Description("编号")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 角色名称

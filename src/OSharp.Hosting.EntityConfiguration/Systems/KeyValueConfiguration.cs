@@ -12,7 +12,7 @@ using OSharp.Core.Systems;
 
 namespace OSharp.Hosting.EntityConfiguration.Systems;
 
-public partial class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, Guid>
+public partial class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValue, long>
 {
     /// <summary>
     /// 重写以实现实体类型各个属性的数据库配置

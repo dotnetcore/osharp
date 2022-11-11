@@ -15,7 +15,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     AuditEnabled = table.Column<bool>(type: "bit", nullable: false),
@@ -30,7 +30,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Function",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Area = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Controller = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
@@ -55,14 +55,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Module",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     OrderCode = table.Column<double>(type: "float", nullable: false),
                     TreePathString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,11 +77,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Organization",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,7 +96,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditOperation",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
@@ -109,7 +107,7 @@ namespace Liuliu.Demo.Web.Migrations
                     UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ResultType = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Elapsed = table.Column<int>(type: "int", nullable: false),
+                    Elapsed = table.Column<long>(type: "bigint", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -121,7 +119,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_KeyValue",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     ValueJson = table.Column<string>(type: "text", nullable: true),
                     ValueType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -139,8 +137,7 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_Menu",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -152,7 +149,7 @@ namespace Liuliu.Demo.Web.Migrations
                     TreePathString = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -168,9 +165,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleFunction",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModuleId = table.Column<int>(type: "int", nullable: false),
-                    FunctionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
+                    FunctionId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,12 +190,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditEntity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OperateType = table.Column<int>(type: "int", nullable: false),
-                    OperationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OperationId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -215,13 +212,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditProperty",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    AuditEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AuditEntityId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,9 +235,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false),
                     Operation = table.Column<int>(type: "int", nullable: false),
                     FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
@@ -261,9 +258,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false),
                     FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -283,9 +280,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModuleId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,9 +299,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleUser",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModuleId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     Disabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -322,12 +319,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_LoginLog",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -338,9 +335,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Role",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    MessageId = table.Column<long>(type: "bigint", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NormalizedName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
@@ -361,9 +357,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_RoleClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
@@ -382,10 +377,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MessageId = table.Column<long>(type: "bigint", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NickName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
@@ -416,9 +410,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
@@ -437,10 +430,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -457,12 +449,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -480,9 +472,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -508,8 +500,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
@@ -529,11 +521,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_Message",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MessageType = table.Column<int>(type: "int", nullable: false),
-                    NewReplyCount = table.Column<int>(type: "int", nullable: false),
+                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false),
                     IsSended = table.Column<bool>(type: "bit", nullable: false),
                     CanReply = table.Column<bool>(type: "bit", nullable: false),
                     BeginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -541,7 +533,7 @@ namespace Liuliu.Demo.Web.Migrations
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SenderId = table.Column<int>(type: "int", nullable: false)
+                    SenderId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -558,12 +550,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReceive",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     ReadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NewReplyCount = table.Column<int>(type: "int", nullable: false),
+                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    MessageId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -586,16 +578,16 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReply",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    ParentMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ParentReplyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentMessageId = table.Column<long>(type: "bigint", nullable: false),
+                    ParentReplyId = table.Column<long>(type: "bigint", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BelongMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    BelongMessageId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

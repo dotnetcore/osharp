@@ -13,7 +13,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// 实体类：用户声明信息
 /// </summary>
 [Description("用户声明信息")]
-public class UserClaim : UserClaimBase<int, int>
+public class UserClaim : UserClaimBase<long, long>
 {
     /// <summary>
     /// 获取或设置 所属用户

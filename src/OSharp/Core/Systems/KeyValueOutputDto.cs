@@ -20,7 +20,7 @@ public class KeyValueOutputDto : IOutputDto, IDataAuthEnabled
     /// 获取或设置 编号
     /// </summary>
     [DisplayName("编号")]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 数据值JSON

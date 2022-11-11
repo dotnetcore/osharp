@@ -17,16 +17,16 @@ namespace OSharp.Hosting.Systems;
 /// </summary>
 public class AuditService : IAuditContract
 {
-    private readonly IRepository<AuditOperation, Guid> _operationRepository;
-    private readonly IRepository<AuditEntity, Guid> _entityRepository;
-    private readonly IRepository<AuditProperty, Guid> _propertyRepository;
+    private readonly IRepository<AuditOperation, long> _operationRepository;
+    private readonly IRepository<AuditEntity, long> _entityRepository;
+    private readonly IRepository<AuditProperty, long> _propertyRepository;
 
     /// <summary>
     /// 初始化一个<see cref="AuditService"/>类型的新实例
     /// </summary>
-    public AuditService(IRepository<AuditOperation, Guid> operationRepository,
-        IRepository<AuditEntity, Guid> entityRepository,
-        IRepository<AuditProperty, Guid> propertyRepository)
+    public AuditService(IRepository<AuditOperation, long> operationRepository,
+        IRepository<AuditEntity, long> entityRepository,
+        IRepository<AuditProperty, long> propertyRepository)
     {
         _operationRepository = operationRepository;
         _entityRepository = entityRepository;
@@ -45,7 +45,7 @@ public class AuditService : IAuditContract
     /// </summary>
     /// <param name="ids">要删除的操作审计信息编号</param>
     /// <returns>业务操作结果</returns>
-    public Task<OperationResult> DeleteAuditOperations(params Guid[] ids)
+    public Task<OperationResult> DeleteAuditOperations(params long[] ids)
     {
         return _operationRepository.DeleteAsync(ids);
     }
@@ -65,7 +65,7 @@ public class AuditService : IAuditContract
     /// </summary>
     /// <param name="ids">要删除的数据审计信息编号</param>
     /// <returns>业务操作结果</returns>
-    public Task<OperationResult> DeleteAuditEntities(params Guid[] ids)
+    public Task<OperationResult> DeleteAuditEntities(params long[] ids)
     {
         return _entityRepository.DeleteAsync(ids);
     }

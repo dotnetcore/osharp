@@ -16,7 +16,7 @@ namespace OSharp.Hosting.Authorization;
 /// <summary>
 /// 数据权限缓存
 /// </summary>
-public class DataAuthCache : DataAuthCacheBase<EntityRole, Role, EntityInfo, int>
+public class DataAuthCache : DataAuthCacheBase<EntityRole, Role, EntityInfo, long>
 {
     /// <summary>
     /// 初始化一个<see cref="DataAuthCacheBase{TEntityRole, TRole, TEntityInfo, TRoleKey}"/>类型的新实例

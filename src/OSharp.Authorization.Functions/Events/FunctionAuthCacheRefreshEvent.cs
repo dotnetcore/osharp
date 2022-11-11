@@ -20,14 +20,14 @@ public class FunctionAuthCacheRefreshEventData : EventDataBase
     /// </summary>
     public FunctionAuthCacheRefreshEventData()
     {
-        FunctionIds = Array.Empty<Guid>();
+        FunctionIds = Array.Empty<long>();
         UserNames = Array.Empty<string>();
     }
 
     /// <summary>
     /// 获取或设置 功能编号
     /// </summary>
-    public Guid[] FunctionIds { get; set; }
+    public long[] FunctionIds { get; set; }
 
     /// <summary>
     /// 获取或设置 用户名集合
@@ -70,7 +70,7 @@ public class FunctionAuthCacheRefreshEventHandler : EventHandlerBase<FunctionAut
         if (eventData.FunctionIds.Length > 0)
         {
             cache.RemoveFunctionCaches(eventData.FunctionIds);
-            foreach (Guid functionId in eventData.FunctionIds)
+            foreach (long functionId in eventData.FunctionIds)
             {
                 cache.GetFunctionRoles(functionId, _provider);
             }

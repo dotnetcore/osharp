@@ -16,7 +16,7 @@ namespace OSharp.Hosting.EntityConfiguration.Authorization;
 /// <summary>
 /// 模块角色信息映射配置类
 /// </summary>
-public partial class ModuleRoleConfiguration : EntityTypeConfigurationBase<ModuleRole, Guid>
+public partial class ModuleRoleConfiguration : EntityTypeConfigurationBase<ModuleRole, long>
 {
     /// <summary>
     /// 重写以实现实体类型各个属性的数据库配置

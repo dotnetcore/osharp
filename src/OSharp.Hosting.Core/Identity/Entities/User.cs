@@ -13,7 +13,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// 实体类：用户信息
 /// </summary>
 [Description("用户信息")]
-public class User : UserBase<int>
+public class User : UserBase<long>
 {
     /// <summary>
     /// 获取或设置 备注

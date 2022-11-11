@@ -42,7 +42,7 @@ public class PackOutputDto : IOutputDto
     /// 获取或设置 启动顺序
     /// </summary>
     [DisplayName("启动顺序")]
-    public int Order { get; set; }
+    public long Order { get; set; }
 
     /// <summary>
     /// 获取或设置 是否启用

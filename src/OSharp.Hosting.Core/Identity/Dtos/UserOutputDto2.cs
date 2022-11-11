@@ -21,7 +21,7 @@ public class UserOutputDto2 : IOutputDto
     /// <summary>
     /// 获取或设置 用户编号
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 用户名

@@ -51,7 +51,7 @@ public class RoleFunctionController : AdminApiControllerBase
     [ModuleInfo]
     [DependOnFunction(nameof(Read))]
     [Description("读取功能")]
-    public AjaxResult ReadFunctions(int roleId, [FromBody] PageRequest request)
+    public AjaxResult ReadFunctions(long roleId, [FromBody] PageRequest request)
     {
         var empty = new PageData<FunctionOutputDto2>();
         if (roleId == 0)
@@ -60,8 +60,8 @@ public class RoleFunctionController : AdminApiControllerBase
         }
 
         FunctionAuthManager functionAuthManager = _provider.GetRequiredService<FunctionAuthManager>();
-        int[] moduleIds = functionAuthManager.GetRoleModuleIds(roleId);
-        Guid[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+        long[] moduleIds = functionAuthManager.GetRoleModuleIds(roleId);
+        long[] functionIds = functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
             .Select(m => m.FunctionId).Distinct().ToArray();
         if (functionIds.Length == 0)
         {

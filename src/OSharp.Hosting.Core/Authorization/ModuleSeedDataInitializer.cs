@@ -7,12 +7,13 @@
 //  <last-date>2020-03-07 1:01</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Data.Snows;
 using OSharp.Hosting.Authorization.Entities;
 
 
 namespace OSharp.Hosting.Authorization;
 
-public class ModuleSeedDataInitializer : SeedDataInitializerBase<Module, int>
+public class ModuleSeedDataInitializer : SeedDataInitializerBase<Module, long>
 {
     /// <summary>
     /// 初始化一个<see cref="SeedDataInitializerBase{TEntity, TKey}"/>类型的新实例
@@ -27,9 +28,10 @@ public class ModuleSeedDataInitializer : SeedDataInitializerBase<Module, int>
     /// <returns></returns>
     protected override Module[] SeedData(IServiceProvider provider)
     {
+        long id = IdHelper.NextId();
         return new[]
         {
-            new Module() { Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = "$1$" },
+            new Module() {Id = id, Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = $"${id}$" },
         };
     }
 

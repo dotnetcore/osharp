@@ -15,7 +15,7 @@ namespace OSharp.Hosting.Systems.Entities;
 [MapFrom(typeof(AuditPropertyEntry))]
 [TableNamePrefix("Systems")]
 [Description("审计实体属性信息")]
-public class AuditProperty : EntityBase<Guid>
+public class AuditProperty : EntityBase<long>
 {
     /// <summary>
     /// 获取或设置 名称
@@ -50,7 +50,7 @@ public class AuditProperty : EntityBase<Guid>
     /// <summary>
     /// 获取或设置 所属审计实体编号
     /// </summary>
-    public Guid AuditEntityId { get; set; }
+    public long AuditEntityId { get; set; }
 
     /// <summary>
     /// 获取或设置 所属审计实体

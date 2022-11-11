@@ -13,7 +13,7 @@ namespace OSharp.Authorization.Entities;
 /// 模块功能信息基类
 /// </summary>
 [TableNamePrefix("Auth")]
-public abstract class ModuleFunctionBase<TModuleKey> : EntityBase<Guid>
+public abstract class ModuleFunctionBase<TModuleKey> : EntityBase<long>
 {
     /// <summary>
     /// 获取或设置 模块编号
@@ -25,5 +25,5 @@ public abstract class ModuleFunctionBase<TModuleKey> : EntityBase<Guid>
     /// 获取或设置 功能编号
     /// </summary>
     [DisplayName("功能编号")]
-    public Guid FunctionId { get; set; }
+    public long FunctionId { get; set; }
 }

@@ -35,9 +35,9 @@ public class CommonService : ICommonContract, IScopeDependency
         ClaimsPrincipal user = _serviceProvider.GetCurrentUser();
         list.Add(user == null);
         list.Add(user?.GetType());
-        list.Add(user?.Identity.Name);
-        list.Add(user?.Identity.GetType());
-        list.Add(user?.Identity.AuthenticationType);
+        list.Add(user?.Identity?.Name);
+        list.Add(user?.Identity?.GetType());
+        list.Add(user?.Identity?.AuthenticationType);
 
         return list.ExpandAndToString("\r\n");
     }

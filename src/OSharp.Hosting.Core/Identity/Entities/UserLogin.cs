@@ -13,7 +13,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// 实体类：用户登录及其提供程序
 /// </summary>
 [Description("用户登录及其提供程序")]
-public class UserLogin : UserLoginBase<Guid, int>
+public class UserLogin : UserLoginBase<long, long>
 {
     /// <summary>
     /// 获取或设置 所属用户信息

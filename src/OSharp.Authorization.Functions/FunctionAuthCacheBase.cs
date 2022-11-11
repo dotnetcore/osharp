@@ -50,10 +50,10 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
         //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
         _serviceProvider.ExecuteScopedWork(provider =>
         {
-            IRepository<TFunction, Guid> functionRepository = provider.GetRequiredService<IRepository<TFunction, Guid>>();
-            Guid[] functionIds = functionRepository.QueryAsNoTracking(null, false).Select(m => m.Id).ToArray();
+            IRepository<TFunction, long> functionRepository = provider.GetRequiredService<IRepository<TFunction, long>>();
+            long[] functionIds = functionRepository.QueryAsNoTracking(null, false).Select(m => m.Id).ToArray();
 
-            foreach (Guid functionId in functionIds)
+            foreach (long functionId in functionIds)
             {
                 GetFunctionRoles(functionId, provider, true);
             }
@@ -65,9 +65,9 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     /// 移除指定功能的缓存
     /// </summary>
     /// <param name="functionIds">功能编号集合</param>
-    public virtual void RemoveFunctionCaches(params Guid[] functionIds)
+    public virtual void RemoveFunctionCaches(params long[] functionIds)
     {
-        foreach (Guid functionId in functionIds)
+        foreach (long functionId in functionIds)
         {
             string key = GetFunctionRolesKey(functionId);
             _cache.Remove(key);
@@ -96,7 +96,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     /// <param name="scopeProvider">局部服务提供者</param>
     /// <param name="forceRefresh">是否强制刷新</param>
     /// <returns>能执行功能的角色名称集合</returns>
-    public string[] GetFunctionRoles(Guid functionId, IServiceProvider scopeProvider = null, bool forceRefresh = false)
+    public string[] GetFunctionRoles(long functionId, IServiceProvider scopeProvider = null, bool forceRefresh = false)
     {
         string key = GetFunctionRolesKey(functionId);
         string[] roleNames;
@@ -118,7 +118,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
             provider = serviceScope.ServiceProvider;
         }
 
-        IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, Guid>>();
+        IRepository<TModuleFunction, long> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, long>>();
         TModuleKey[] moduleIds = moduleFunctionRepository.QueryAsNoTracking(m => m.FunctionId.Equals(functionId)).Select(m => m.ModuleId).Distinct()
             .ToArray();
         if (moduleIds.Length == 0)
@@ -128,7 +128,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
         }
 
         roleNames = Array.Empty<string>();
-        IRepository<TModuleRole, Guid> moduleRoleRepository = provider.GetRequiredService<IRepository<TModuleRole, Guid>>();
+        IRepository<TModuleRole, long> moduleRoleRepository = provider.GetRequiredService<IRepository<TModuleRole, long>>();
         TRoleKey[] roleIds = moduleRoleRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.RoleId).Distinct().ToArray();
         if (roleIds.Length > 0)
         {
@@ -150,10 +150,10 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     /// </summary>
     /// <param name="userName">用户名</param>
     /// <returns>用户的所有特权功能</returns>
-    public virtual Guid[] GetUserFunctions(string userName)
+    public virtual long[] GetUserFunctions(string userName)
     {
         string key = GetUserFunctionsKey(userName);
-        Guid[] functionIds = _cache.Get<Guid[]>(key);
+        long[] functionIds = _cache.Get<long[]>(key);
         if (functionIds != null)
         {
             _logger.LogDebug($"从缓存中获取到用户“{userName}”的“User-Function[]”缓存");
@@ -165,14 +165,14 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
             TUserKey userId = userRepository.QueryAsNoTracking(m => m.UserName == userName).Select(m => m.Id).FirstOrDefault();
             if (Equals(userId, default(TUserKey)))
             {
-                return Array.Empty<Guid>();
+                return Array.Empty<long>();
             }
-            IRepository<TModuleUser, Guid> moduleUserRepository = provider.GetRequiredService<IRepository<TModuleUser, Guid>>();
+            IRepository<TModuleUser, long> moduleUserRepository = provider.GetRequiredService<IRepository<TModuleUser, long>>();
             TModuleKey[] moduleIds = moduleUserRepository.QueryAsNoTracking(m => m.UserId.Equals(userId)).Select(m => m.ModuleId).Distinct().ToArray();
             IRepository<TModule, TModuleKey> moduleRepository = provider.GetRequiredService<IRepository<TModule, TModuleKey>>();
             moduleIds = moduleIds.Select(m => moduleRepository.QueryAsNoTracking(n => n.TreePathString.Contains("$" + m + "$"))
                 .Select(n => n.Id)).SelectMany(m => m).Distinct().ToArray();
-            IRepository<TModuleFunction, Guid> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, Guid>>();
+            IRepository<TModuleFunction, long> moduleFunctionRepository = provider.GetRequiredService<IRepository<TModuleFunction, long>>();
             return moduleFunctionRepository.QueryAsNoTracking(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct().ToArray();
         });
 
@@ -184,7 +184,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
         return functionIds;
     }
 
-    private static string GetFunctionRolesKey(Guid functionId)
+    private static string GetFunctionRolesKey(long functionId)
     {
         return $"Auth:Function:FunctionRoles:{functionId}";
     }

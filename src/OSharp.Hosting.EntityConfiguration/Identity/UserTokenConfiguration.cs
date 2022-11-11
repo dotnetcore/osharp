@@ -12,7 +12,7 @@ using OSharp.Hosting.Identity.Entities;
 
 namespace OSharp.Hosting.EntityConfiguration.Identity;
 
-public partial class UserTokenConfiguration : EntityTypeConfigurationBase<UserToken, Guid>
+public partial class UserTokenConfiguration : EntityTypeConfigurationBase<UserToken, long>
 {
     /// <summary>
     /// 重写以实现实体类型各个属性的数据库配置

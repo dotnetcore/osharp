@@ -13,7 +13,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// 实体类：用户角色信息
 /// </summary>
 [Description("用户角色信息")]
-public class UserRole : UserRoleBase<Guid, int, int>
+public class UserRole : UserRoleBase<long, long, long>
 {
     /// <summary>
     /// 获取或设置 关联用户信息

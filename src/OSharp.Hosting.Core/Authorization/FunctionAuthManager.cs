@@ -19,8 +19,8 @@ namespace OSharp.Hosting.Authorization;
 /// 功能权限管理器
 /// </summary>
 public class FunctionAuthManager
-    : FunctionAuthorizationManagerBase<Function, FunctionInputDto, Module, ModuleInputDto, int, ModuleFunction, ModuleRole, ModuleUser, UserRole,
-        Guid, Role, int, User, int>
+    : FunctionAuthorizationManagerBase<Function, FunctionInputDto, Module, ModuleInputDto, long, ModuleFunction, ModuleRole, ModuleUser, UserRole,
+        long, Role, long, User, long>
 {
     /// <summary>
     /// 初始化一个 SecurityManager 类型的新实例

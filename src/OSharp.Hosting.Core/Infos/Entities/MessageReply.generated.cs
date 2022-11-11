@@ -29,7 +29,7 @@ namespace OSharp.Hosting.Infos.Entities
     /// 实体类：站内信回复信息
     /// </summary>
     [Description("站内信回复信息")]
-    public partial class MessageReply : EntityBase<Guid>, ILockable, ISoftDeletable, ICreatedTime
+    public partial class MessageReply : EntityBase<long>, ILockable, ISoftDeletable, ICreatedTime
     {
         /// <summary>
         /// 获取或设置 消息内容
@@ -47,13 +47,13 @@ namespace OSharp.Hosting.Infos.Entities
         /// 获取或设置 回复的主消息，当回复主消息时有效
         /// </summary>
         [DisplayName("回复的主消息，当回复主消息时有效")]
-        public Guid ParentMessageId { get; set; }
+        public long ParentMessageId { get; set; }
 
         /// <summary>
         /// 获取或设置 回复的回复消息，当回复回复消息时有效
         /// </summary>
         [DisplayName("回复的回复消息，当回复回复消息时有效")]
-        public Guid ParentReplyId { get; set; }
+        public long ParentReplyId { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定
@@ -77,7 +77,7 @@ namespace OSharp.Hosting.Infos.Entities
         /// 获取或设置  消息回复人编号
         /// </summary>
         [DisplayName(" 消息回复人编号")]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 获取或设置  消息回复人
@@ -89,7 +89,7 @@ namespace OSharp.Hosting.Infos.Entities
         /// 获取或设置 回复所属主消息，用于避免递归查询
         /// </summary>
         [DisplayName("回复所属主消息，用于避免递归查询")]
-        public Guid BelongMessageId { get; set; }
+        public long BelongMessageId { get; set; }
 
         /// <summary>
         /// 获取或设置 回复所属主消息，用于避免递归查询

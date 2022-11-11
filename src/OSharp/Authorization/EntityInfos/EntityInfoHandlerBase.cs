@@ -122,7 +122,7 @@ public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : I
     /// </summary>
     protected virtual void SyncToDatabase(IServiceProvider scopedProvider, List<TEntityInfo> entityInfos)
     {
-        IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
+        IRepository<TEntityInfo, long> repository = scopedProvider.GetService<IRepository<TEntityInfo, long>>();
         if (repository == null)
         {
             _logger.LogWarning("初始化实体数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCorePack 模块");
@@ -219,7 +219,7 @@ public abstract class EntityInfoHandlerBase<TEntityInfo, TEntityInfoHandler> : I
     /// <returns></returns>
     protected virtual TEntityInfo[] GetFromDatabase(IServiceProvider scopedProvider)
     {
-        IRepository<TEntityInfo, Guid> repository = scopedProvider.GetService<IRepository<TEntityInfo, Guid>>();
+        IRepository<TEntityInfo, long> repository = scopedProvider.GetService<IRepository<TEntityInfo, long>>();
         if (repository == null)
         {
             return Array.Empty<TEntityInfo>();

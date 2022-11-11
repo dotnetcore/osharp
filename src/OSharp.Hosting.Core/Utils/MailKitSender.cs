@@ -48,7 +48,7 @@ public class MailKitSender : IEmailSender
             userName = mailSender.UserName,
             password = mailSender.Password;
         bool enableSsl = mailSender.EnableSsl;
-        int port = mailSender.Port;
+        var port = mailSender.Port;
         if (port == 0)
         {
             port = enableSsl ? 465 : 25;

@@ -14,7 +14,7 @@ namespace OSharp.Authorization.Modules;
 /// 模块信息提取器基类
 /// </summary>
 public abstract class ModuleInfoPickerBase<TFunction> : IModuleInfoPicker
-    where TFunction : class, IEntity<Guid>, IFunction, new()
+    where TFunction : class, IEntity<long>, IFunction, new()
 {
     /// <summary>
     /// 初始化一个<see cref="ModuleInfoPickerBase{TFunction}"/>类型的新实例

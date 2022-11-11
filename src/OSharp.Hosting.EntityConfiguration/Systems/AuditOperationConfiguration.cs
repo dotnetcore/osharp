@@ -12,7 +12,7 @@ using OSharp.Hosting.Systems.Entities;
 
 namespace OSharp.Hosting.EntityConfiguration.Systems;
 
-public partial class AuditOperationConfiguration : EntityTypeConfigurationBase<AuditOperation, Guid>
+public partial class AuditOperationConfiguration : EntityTypeConfigurationBase<AuditOperation, long>
 {
     /// <summary>
     /// 重写以实现实体类型各个属性的数据库配置

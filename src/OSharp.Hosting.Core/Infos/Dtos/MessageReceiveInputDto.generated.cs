@@ -32,13 +32,13 @@ namespace OSharp.Hosting.Infos.Dtos
     /// </summary>
     [MapTo(typeof(MessageReceive))]
     [Description("站内信接收记录信息")]
-    public partial class MessageReceiveInputDto : IInputDto<Guid>
+    public partial class MessageReceiveInputDto : IInputDto<long>
     {
         /// <summary>
         /// 获取或设置 编号
         /// </summary>
         [DisplayName("编号")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
     }
 }

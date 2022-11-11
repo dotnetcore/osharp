@@ -12,7 +12,7 @@ using OSharp.Hosting.Identity.Entities;
 
 namespace OSharp.Hosting.EntityConfiguration.Identity;
 
-public partial class RoleConfiguration : EntityTypeConfigurationBase<Role, int>
+public partial class RoleConfiguration : EntityTypeConfigurationBase<Role, long>
 {
     /// <summary>
     /// 重写以实现实体类型各个属性的数据库配置

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleSetFunctionDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -17,10 +17,10 @@ public class ModuleSetFunctionDto
     /// <summary>
     /// 获取或设置 模块编号
     /// </summary>
-    public int ModuleId { get; set; }
+    public long ModuleId { get; set; }
 
     /// <summary>
     /// 获取或设置 功能编号集合
     /// </summary>
-    public Guid[] FunctionIds { get; set; }
+    public long[] FunctionIds { get; set; }
 }

@@ -13,13 +13,13 @@ namespace OSharp.Authorization.Dtos;
 /// <summary>
 /// 输入Dto基类：实体信息
 /// </summary>
-public abstract class EntityInfoInputDtoBase : IInputDto<Guid>
+public abstract class EntityInfoInputDtoBase : IInputDto<long>
 {
     /// <summary>
     /// 获取或设置 主键，唯一标识
     /// </summary>
     [DisplayName("编号")]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 是否启用数据审计

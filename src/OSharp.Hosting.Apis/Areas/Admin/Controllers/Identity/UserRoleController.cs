@@ -83,7 +83,7 @@ public class UserRoleController : AdminApiControllerBase
     [DependOnFunction(nameof(Read))]
     [UnitOfWork]
     [Description("删除")]
-    public async Task<AjaxResult> Delete(Guid[] ids)
+    public async Task<AjaxResult> Delete(long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
 

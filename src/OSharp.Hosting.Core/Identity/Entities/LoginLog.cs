@@ -14,7 +14,7 @@ namespace OSharp.Hosting.Identity.Entities;
 /// </summary>
 [Description("用户登录日志")]
 [TableNamePrefix("Identity")]
-public class LoginLog : EntityBase<Guid>, ICreatedTime
+public class LoginLog : EntityBase<long>, ICreatedTime
 {
     /// <summary>
     /// 获取或设置 登录IP
@@ -44,7 +44,7 @@ public class LoginLog : EntityBase<Guid>, ICreatedTime
     /// 获取或设置 用户编号
     /// </summary>
     [DisplayName("用户编号")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 获取或设置 所属用户

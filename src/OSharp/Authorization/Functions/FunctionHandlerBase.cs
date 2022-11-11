@@ -13,7 +13,7 @@ namespace OSharp.Authorization.Functions;
 /// 功能信息处理基类
 /// </summary>
 public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
-    where TFunction : class, IEntity<Guid>, IFunction, new()
+    where TFunction : class, IEntity<long>, IFunction, new()
 {
     private readonly List<TFunction> _functions = new List<TFunction>();
     private readonly IServiceProvider _serviceProvider;
@@ -237,7 +237,7 @@ public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
             return;
         }
 
-        IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
+        IRepository<TFunction, long> repository = scopedProvider.GetService<IRepository<TFunction, long>>();
         if (repository == null)
         {
             Logger.LogWarning("初始化功能数据时，IRepository<,>的服务未找到，请初始化 EntityFrameworkCoreModule 模块");
@@ -353,7 +353,7 @@ public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
     /// <returns></returns>
     protected virtual TFunction[] GetFromDatabase(IServiceProvider scopedProvider)
     {
-        IRepository<TFunction, Guid> repository = scopedProvider.GetService<IRepository<TFunction, Guid>>();
+        IRepository<TFunction, long> repository = scopedProvider.GetService<IRepository<TFunction, long>>();
         if (repository == null)
         {
             return Array.Empty<TFunction>();

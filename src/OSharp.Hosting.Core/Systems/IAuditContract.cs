@@ -29,7 +29,7 @@ public interface IAuditContract
     /// </summary>
     /// <param name="ids">要删除的操作审计信息编号</param>
     /// <returns>业务操作结果</returns>
-    Task<OperationResult> DeleteAuditOperations(params Guid[] ids);
+    Task<OperationResult> DeleteAuditOperations(params long[] ids);
 
     #endregion
 
@@ -50,7 +50,7 @@ public interface IAuditContract
     /// </summary>
     /// <param name="ids">要删除的数据审计信息编号</param>
     /// <returns>业务操作结果</returns>
-    Task<OperationResult> DeleteAuditEntities(params Guid[] ids);
+    Task<OperationResult> DeleteAuditEntities(params long[] ids);
 
     #endregion
 }

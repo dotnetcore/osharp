@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityRole.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -21,7 +21,7 @@ namespace Liuliu.Demo.Authorization.Entities
     /// 实体：数据角色信息
     /// </summary>
     [Description("数据角色信息")]
-    public class EntityRole : EntityRoleBase<int>
+    public class EntityRole : EntityRoleBase<long>
     {
         /// <summary>
         /// 获取或设置 所属角色信息

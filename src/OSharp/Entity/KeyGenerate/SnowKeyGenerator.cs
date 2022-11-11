@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="SnowKeyGenerator.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -19,6 +19,11 @@ public class SnowKeyGenerator : IKeyGenerator<long>
 {
     private readonly IIdGenerator _idGenerator;
 
+    public SnowKeyGenerator()
+    {
+        _idGenerator = null;
+    }
+
     /// <summary>
     /// 初始化一个<see cref="SnowKeyGenerator"/>类型的新实例
     /// </summary>
@@ -33,6 +38,10 @@ public class SnowKeyGenerator : IKeyGenerator<long>
     /// <returns></returns>
     public long Create()
     {
+        if (_idGenerator == null)
+        {
+            return IdHelper.NextId();
+        }
         return _idGenerator.NewLong();
     }
 }

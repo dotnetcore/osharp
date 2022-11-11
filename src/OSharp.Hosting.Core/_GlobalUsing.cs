@@ -10,7 +10,6 @@ global using Microsoft.Extensions.Logging;
 global using OSharp.AspNetCore.Mvc;
 global using OSharp.Authentication;
 global using OSharp.Authorization;
-global using OSharp.Authorization.DataAuthorization;
 global using OSharp.Authorization.Entities;
 global using OSharp.Authorization.EntityInfos;
 global using OSharp.Authorization.Functions;

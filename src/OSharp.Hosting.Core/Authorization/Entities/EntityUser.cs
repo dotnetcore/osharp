@@ -16,7 +16,7 @@ namespace OSharp.Hosting.Authorization.Entities;
 /// 实体：数据用户信息
 /// </summary>
 [Description("数据用户信息")]
-public class EntityUser : EntityUserBase<int>
+public class EntityUser : EntityUserBase<long>
 {
     /// <summary>
     /// 获取或设置 所属用户信息

@@ -13,12 +13,12 @@ using OSharp.Hosting.Systems.Entities;
 namespace OSharp.Hosting.Systems.Dtos;
 
 [MapTo(typeof(Menu))]
-public class MenuInputDto : IInputDto<int>
+public class MenuInputDto : IInputDto<long>
 {
     /// <summary>
     /// 获取或设置 主键，唯一标识
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 菜单名称
@@ -84,5 +84,5 @@ public class MenuInputDto : IInputDto<int>
     /// <summary>
     /// 获取或设置 父级菜单编号
     /// </summary>
-    public int? ParentId { get; set; }
+    public long? ParentId { get; set; }
 }

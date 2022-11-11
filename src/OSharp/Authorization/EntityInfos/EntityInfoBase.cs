@@ -13,7 +13,7 @@ namespace OSharp.Authorization.EntityInfos;
 /// 实体信息基类
 /// </summary>
 [DebuggerDisplay("{ToString()}")]
-public abstract class EntityInfoBase : EntityBase<Guid>, IEntityInfo
+public abstract class EntityInfoBase : EntityBase<long>, IEntityInfo
 {
     /// <summary>
     /// 获取或设置 实体名称

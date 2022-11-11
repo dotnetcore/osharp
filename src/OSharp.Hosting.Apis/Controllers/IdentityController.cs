@@ -72,7 +72,7 @@ public class IdentityController : SiteApiControllerBase
     public async Task<bool> CheckNickNameExists(string nickName)
     {
         IUserValidator<User> nickNameValidator =
-            UserManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, int>));
+            UserManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, long>));
         if (nickNameValidator == null)
         {
             return false;
@@ -228,7 +228,7 @@ public class IdentityController : SiteApiControllerBase
             return new AjaxResult("用户登出成功");
         }
 
-        int userId = User.Identity.GetUserId<int>();
+        long userId = User.Identity.GetUserId<long>();
         bool isToken = Request.Headers["Authorization"].Any(m => m.StartsWith("Bearer"));
 
         OperationResult result = await IdentityContract.Logout(userId, isToken);
@@ -352,7 +352,7 @@ public class IdentityController : SiteApiControllerBase
     {
         Check.NotNull(dto, nameof(dto));
 
-        int userId = User.Identity.GetUserId<int>();
+        long userId = User.Identity.GetUserId<long>();
         User user = await UserManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {

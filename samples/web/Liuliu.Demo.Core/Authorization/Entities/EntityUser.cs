@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityUser.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -21,7 +21,7 @@ namespace Liuliu.Demo.Authorization.Entities
     /// 实体：数据用户信息
     /// </summary>
     [Description("数据用户信息")]
-    public class EntityUser : EntityUserBase<int>
+    public class EntityUser : EntityUserBase<long>
     {
         /// <summary>
         /// 获取或设置 所属用户信息

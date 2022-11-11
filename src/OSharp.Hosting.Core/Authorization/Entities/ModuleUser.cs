@@ -15,7 +15,7 @@ namespace OSharp.Hosting.Authorization.Entities;
 /// 实体类：模块用户信息
 /// </summary>
 [Description("用户模块信息")]
-public class ModuleUser : ModuleUserBase<int, int>
+public class ModuleUser : ModuleUserBase<long, long>
 {
     /// <summary>
     /// 获取或设置 模块信息

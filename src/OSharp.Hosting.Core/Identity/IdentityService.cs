@@ -33,15 +33,15 @@ public partial class IdentityService : IIdentityContract
 
     protected IEventBus EventBus => _provider.GetService<IEventBus>();
     protected RoleManager<Role> RoleManager => _provider.GetService<RoleManager<Role>>();
-    protected IRepository<UserDetail, int> UserDetailRepository => _provider.GetService<IRepository<UserDetail, int>>();
-    protected IRepository<UserLogin, Guid> UserLoginRepository => _provider.GetService<IRepository<UserLogin, Guid>>();
-    protected IRepository<LoginLog, Guid> LoginLogReqRepository => _provider.GetService<IRepository<LoginLog, Guid>>();
+    protected IRepository<UserDetail, long> UserDetailRepository => _provider.GetService<IRepository<UserDetail, long>>();
+    protected IRepository<UserLogin, long> UserLoginRepository => _provider.GetService<IRepository<UserLogin, long>>();
+    protected IRepository<LoginLog, long> LoginLogReqRepository => _provider.GetService<IRepository<LoginLog, long>>();
     protected IDistributedCache Cache => _provider.GetService<IDistributedCache>();
     protected IPrincipal CurrentUser => _provider.GetService<IPrincipal>();
     protected IHttpContextAccessor HttpContextAccessor => _provider.GetService<IHttpContextAccessor>();
     protected UserManager<User> UserManager => _provider.GetService<UserManager<User>>();
     protected SignInManager<User> SignInManager => _provider.GetService<SignInManager<User>>();
-    protected IRepository<UserRole, Guid> UserRoleRepository => _provider.GetService<IRepository<UserRole, Guid>>();
+    protected IRepository<UserRole, long> UserRoleRepository => _provider.GetService<IRepository<UserRole, long>>();
     protected ILogger<IdentityService> Logger => _provider.GetService<ILogger<IdentityService>>();
 
     #endregion
@@ -72,7 +72,7 @@ public partial class IdentityService : IIdentityContract
             return result.ToOperationResult(user);
         }
         UserDetail detail = new UserDetail() { RegisterIp = dto.RegisterIp, UserId = user.Id };
-        int count = await UserDetailRepository.InsertAsync(detail);
+        long count = await UserDetailRepository.InsertAsync(detail);
 
         //触发注册成功事件
         if (count > 0)
@@ -196,7 +196,7 @@ public partial class IdentityService : IIdentityContract
                 return result.ToOperationResult(user);
             }
             UserDetail detail = new UserDetail() { RegisterIp = loginInfoEx.RegisterIp, UserId = user.Id };
-            int count = await UserDetailRepository.InsertAsync(detail);
+            long count = await UserDetailRepository.InsertAsync(detail);
             if (count == 0)
             {
                 return new OperationResult<User>(OperationResultType.NoChanged);
@@ -245,7 +245,7 @@ public partial class IdentityService : IIdentityContract
     /// <param name="userId">用户编号</param>
     /// <param name="isToken">是否token认证</param>
     /// <returns>业务操作结果</returns>
-    public async Task<OperationResult> Logout(int userId, bool isToken = true)
+    public async Task<OperationResult> Logout(long userId, bool isToken = true)
     {
         if (!isToken)
         {

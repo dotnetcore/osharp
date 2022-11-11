@@ -17,5 +17,5 @@ namespace OSharp.Hosting.Authorization.Dtos;
 /// 输入DTO：实体角色信息
 /// </summary>
 [MapTo(typeof(EntityRole))]
-public class EntityRoleInputDto : EntityRoleInputDtoBase<int>
+public class EntityRoleInputDto : EntityRoleInputDtoBase<long>
 { }

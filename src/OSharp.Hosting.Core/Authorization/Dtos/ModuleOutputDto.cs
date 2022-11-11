@@ -21,7 +21,7 @@ public class ModuleOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 模块编号
     /// </summary>
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 模块名称
@@ -46,5 +46,5 @@ public class ModuleOutputDto : IOutputDto
     /// <summary>
     /// 获取或设置 父模块编号
     /// </summary>
-    public int? ParentId { get; set; }
+    public long? ParentId { get; set; }
 }

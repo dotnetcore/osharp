@@ -28,7 +28,7 @@ public interface IModuleUserStore<TModuleUser, in TUserKey, TModuleKey>
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的模块用户信息编号</param>
     /// <returns>模块用户信息是否存在</returns>
-    Task<bool> CheckModuleUserExists(Expression<Func<TModuleUser, bool>> predicate, Guid id = default(Guid));
+    Task<bool> CheckModuleUserExists(Expression<Func<TModuleUser, bool>> predicate, long id = default(long));
 
     /// <summary>
     /// 设置用户的可访问模块

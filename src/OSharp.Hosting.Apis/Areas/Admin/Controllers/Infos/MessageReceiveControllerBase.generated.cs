@@ -120,7 +120,7 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers
         [DependOnFunction(nameof(Read))]
         [ServiceFilter(typeof(UnitOfWorkAttribute))]
         [Description("删除")]
-        public virtual async Task<AjaxResult> Delete(Guid[] ids)
+        public virtual async Task<AjaxResult> Delete(long[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             OperationResult result = await InfosContract.DeleteMessageReceives(ids);

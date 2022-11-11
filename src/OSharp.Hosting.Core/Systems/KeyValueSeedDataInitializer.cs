@@ -10,7 +10,7 @@
 namespace OSharp.Hosting.Systems;
 
 [Dependency(ServiceLifetime.Singleton)]
-public class KeyValueSeedDataInitializer : SeedDataInitializerBase<KeyValue, Guid>
+public class KeyValueSeedDataInitializer : SeedDataInitializerBase<KeyValue, long>
 {
     /// <summary>
     /// 初始化一个<see cref="SeedDataInitializerBase{TEntity, TKey}"/>类型的新实例

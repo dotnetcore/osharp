@@ -23,7 +23,7 @@ public partial class IdentityService
     /// </summary>
     /// <param name="ids">要删除的登录日志信息编号</param>
     /// <returns>业务操作结果</returns>
-    public Task<OperationResult> DeleteLoginLogs(params Guid[] ids)
+    public Task<OperationResult> DeleteLoginLogs(params long[] ids)
     {
         Check.NotNull(ids, nameof(ids));
             

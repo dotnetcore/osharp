@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityService.UserRole.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -38,7 +38,7 @@ public partial class IdentityService
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的用户角色信息编号</param>
     /// <returns>用户角色信息是否存在</returns>
-    public Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid))
+    public Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, long id = default(long))
     {
         return UserRoleRepository.CheckExistsAsync(predicate, id);
     }
@@ -50,7 +50,7 @@ public partial class IdentityService
     /// <returns>业务操作结果</returns>
     public async Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
     {
-        Check2.Validate<UserRoleInputDto,Guid>(dtos, nameof(dtos));
+        Check2.Validate<UserRoleInputDto, long>(dtos, nameof(dtos));
 
         List<string> userNames = new List<string>();
         OperationResult result = await UserRoleRepository.UpdateAsync(dtos,
@@ -73,9 +73,9 @@ public partial class IdentityService
     /// </summary>
     /// <param name="ids">用户角色信息编号</param>
     /// <returns>业务操作结果</returns>
-    public async Task<OperationResult> DeleteUserRoles(Guid[] ids)
+    public async Task<OperationResult> DeleteUserRoles(long[] ids)
     {
-        List<string>userNames = new List<string>();
+        List<string> userNames = new List<string>();
         OperationResult result = await UserRoleRepository.DeleteAsync(ids,
             (entity) =>
             {
@@ -85,7 +85,7 @@ public partial class IdentityService
             });
         if (result.Succeeded && userNames.Count > 0)
         {
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = userNames.ToArray()};
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = userNames.ToArray() };
             await EventBus.PublishAsync(eventData);
         }
 
@@ -98,7 +98,7 @@ public partial class IdentityService
     /// <param name="userId">用户编号</param>
     /// <param name="roleIds">角色编号集合</param>
     /// <returns>业务操作结果</returns>
-    public async Task<OperationResult> SetUserRoles(int userId, int[] roleIds)
+    public async Task<OperationResult> SetUserRoles(long userId, long[] roleIds)
     {
         User user = await UserManager.FindByIdAsync(userId.ToString());
         if (user == null)

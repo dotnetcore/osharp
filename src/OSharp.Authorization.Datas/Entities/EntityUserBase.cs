@@ -13,7 +13,7 @@ namespace OSharp.Authorization.Entities;
 /// 数据用户实体基类
 /// </summary>
 [TableNamePrefix("Auth")]
-public abstract class EntityUserBase<TUserKey> : EntityBase<Guid>, ILockable, ICreatedTime
+public abstract class EntityUserBase<TUserKey> : EntityBase<long>, ILockable, ICreatedTime
 {
     /// <summary>
     /// 获取或设置 用户编号
@@ -25,7 +25,7 @@ public abstract class EntityUserBase<TUserKey> : EntityBase<Guid>, ILockable, IC
     /// 获取或设置 数据编号
     /// </summary>
     [DisplayName("数据编号")]
-    public Guid EntityId { get; set; }
+    public long EntityId { get; set; }
 
     /// <summary>
     /// 获取或设置 过滤条件组Json字符串

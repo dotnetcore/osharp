@@ -47,7 +47,7 @@ namespace OSharp.Hosting.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信接收记录信息编号</param>
         /// <returns>站内信接收记录信息是否存在</returns>
-        public virtual Task<bool> CheckMessageReceiveExists(Expression<Func<MessageReceive, bool>> predicate, Guid id = default(Guid))
+        public virtual Task<bool> CheckMessageReceiveExists(Expression<Func<MessageReceive, bool>> predicate, long id = default(long))
         {
             return MessageReceiveRepository.CheckExistsAsync(predicate, id);
         }
@@ -59,7 +59,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessageReceives(params MessageReceiveInputDto[] dtos)
         {
-            Check2.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReceiveInputDto, long>(dtos, nameof(dtos));
             return MessageReceiveRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessageReceives(params MessageReceiveInputDto[] dtos)
         {
-            Check2.Validate<MessageReceiveInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReceiveInputDto, long>(dtos, nameof(dtos));
             return MessageReceiveRepository.UpdateAsync(dtos);
         }
         
@@ -79,7 +79,7 @@ namespace OSharp.Hosting.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信接收记录信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> DeleteMessageReceives(params Guid[] ids)
+        public virtual Task<OperationResult> DeleteMessageReceives(params long[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             return MessageReceiveRepository.DeleteAsync(ids);

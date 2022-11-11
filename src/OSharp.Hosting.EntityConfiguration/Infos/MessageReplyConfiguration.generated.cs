@@ -31,7 +31,7 @@ namespace OSharp.Hosting.EntityConfiguration.Infos
     /// <summary>
     /// 实体配置类：站内信回复信息
     /// </summary>
-    public partial class MessageReplyConfiguration : EntityTypeConfigurationBase<MessageReply, Guid>
+    public partial class MessageReplyConfiguration : EntityTypeConfigurationBase<MessageReply, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

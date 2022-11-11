@@ -47,7 +47,7 @@ namespace OSharp.Hosting.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信回复信息编号</param>
         /// <returns>站内信回复信息是否存在</returns>
-        public virtual Task<bool> CheckMessageReplyExists(Expression<Func<MessageReply, bool>> predicate, Guid id = default(Guid))
+        public virtual Task<bool> CheckMessageReplyExists(Expression<Func<MessageReply, bool>> predicate, long id = default(long))
         {
             return MessageReplyRepository.CheckExistsAsync(predicate, id);
         }
@@ -59,7 +59,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessageReplies(params MessageReplyInputDto[] dtos)
         {
-            Check2.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReplyInputDto, long>(dtos, nameof(dtos));
             return MessageReplyRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace OSharp.Hosting.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessageReplies(params MessageReplyInputDto[] dtos)
         {
-            Check2.Validate<MessageReplyInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageReplyInputDto, long>(dtos, nameof(dtos));
             return MessageReplyRepository.UpdateAsync(dtos);
         }
         
@@ -79,7 +79,7 @@ namespace OSharp.Hosting.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信回复信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> DeleteMessageReplies(params Guid[] ids)
+        public virtual Task<OperationResult> DeleteMessageReplies(params long[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             return MessageReplyRepository.DeleteAsync(ids);

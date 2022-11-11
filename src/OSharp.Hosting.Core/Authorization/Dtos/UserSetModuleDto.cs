@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserSetModuleDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -17,10 +17,10 @@ public class UserSetModuleDto
     /// <summary>
     /// 获取或设置 用户编号
     /// </summary>
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 获取或设置 要设置的模块编号
     /// </summary>
-    public int[] ModuleIds { get; set; }
+    public long[] ModuleIds { get; set; }
 }
