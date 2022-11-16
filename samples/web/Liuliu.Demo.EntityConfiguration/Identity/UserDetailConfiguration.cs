@@ -16,7 +16,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public partial class UserDetailConfiguration : EntityTypeConfigurationBase<UserDetail, int>
+    public partial class UserDetailConfiguration : EntityTypeConfigurationBase<UserDetail, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

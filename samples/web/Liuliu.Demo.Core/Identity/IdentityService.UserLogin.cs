@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityService.UserLogin.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -35,7 +35,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="ids">要删除的实体信息编号</param>
         /// <returns>业务操作结果</returns>
-        public Task<OperationResult> DeleteUserLogins(params Guid[] ids)
+        public Task<OperationResult> DeleteUserLogins(params long[] ids)
         {
             return _userLoginRepository.DeleteAsync(ids,
                 entity =>

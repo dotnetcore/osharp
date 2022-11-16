@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleRole.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -20,7 +20,7 @@ namespace Liuliu.Demo.Authorization.Entities
     /// 实体类：模块角色信息
     /// </summary>
     [Description("角色模块信息")]
-    public class ModuleRole : ModuleRoleBase<int, int>
+    public class ModuleRole : ModuleRoleBase<long, long>
     {
         /// <summary>
         /// 获取或设置 模块信息

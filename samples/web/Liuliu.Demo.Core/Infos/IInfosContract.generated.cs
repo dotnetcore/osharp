@@ -46,7 +46,7 @@ namespace Liuliu.Demo.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信信息编号</param>
         /// <returns>站内信信息是否存在</returns>
-        Task<bool> CheckMessageExists(Expression<Func<Message, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckMessageExists(Expression<Func<Message, bool>> predicate, long id = default(long));
         
         /// <summary>
         /// 添加站内信信息信息
@@ -67,7 +67,7 @@ namespace Liuliu.Demo.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteMessages(params Guid[] ids);
+        Task<OperationResult> DeleteMessages(params long[] ids);
         
 
         #endregion
@@ -85,7 +85,7 @@ namespace Liuliu.Demo.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信接收记录信息编号</param>
         /// <returns>站内信接收记录信息是否存在</returns>
-        Task<bool> CheckMessageReceiveExists(Expression<Func<MessageReceive, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckMessageReceiveExists(Expression<Func<MessageReceive, bool>> predicate, long id = default(long));
         
         /// <summary>
         /// 添加站内信接收记录信息信息
@@ -106,7 +106,7 @@ namespace Liuliu.Demo.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信接收记录信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteMessageReceives(params Guid[] ids);
+        Task<OperationResult> DeleteMessageReceives(params long[] ids);
         
 
         #endregion
@@ -124,7 +124,7 @@ namespace Liuliu.Demo.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信回复信息编号</param>
         /// <returns>站内信回复信息是否存在</returns>
-        Task<bool> CheckMessageReplyExists(Expression<Func<MessageReply, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckMessageReplyExists(Expression<Func<MessageReply, bool>> predicate, long id = default(long));
         
         /// <summary>
         /// 添加站内信回复信息信息
@@ -145,7 +145,7 @@ namespace Liuliu.Demo.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信回复信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteMessageReplies(params Guid[] ids);
+        Task<OperationResult> DeleteMessageReplies(params long[] ids);
         
 
         #endregion

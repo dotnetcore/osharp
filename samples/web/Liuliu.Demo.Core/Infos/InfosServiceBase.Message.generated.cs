@@ -47,7 +47,7 @@ namespace Liuliu.Demo.Infos
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的站内信信息编号</param>
         /// <returns>站内信信息是否存在</returns>
-        public virtual Task<bool> CheckMessageExists(Expression<Func<Message, bool>> predicate, Guid id = default(Guid))
+        public virtual Task<bool> CheckMessageExists(Expression<Func<Message, bool>> predicate, long id = default(long))
         {
             return MessageRepository.CheckExistsAsync(predicate, id);
         }
@@ -59,7 +59,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> CreateMessages(params MessageInputDto[] dtos)
         {
-            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, long>(dtos, nameof(dtos));
             return MessageRepository.InsertAsync(dtos);
         }
         
@@ -70,7 +70,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public virtual Task<OperationResult> UpdateMessages(params MessageInputDto[] dtos)
         {
-            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, long>(dtos, nameof(dtos));
             return MessageRepository.UpdateAsync(dtos);
         }
         
@@ -79,7 +79,7 @@ namespace Liuliu.Demo.Infos
         /// </summary>
         /// <param name="ids">要删除的站内信信息编号</param>
         /// <returns>业务操作结果</returns>
-        public virtual Task<OperationResult> DeleteMessages(params Guid[] ids)
+        public virtual Task<OperationResult> DeleteMessages(params long[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             return MessageRepository.DeleteAsync(ids);

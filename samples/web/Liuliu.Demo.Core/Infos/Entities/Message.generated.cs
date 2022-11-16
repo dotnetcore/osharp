@@ -29,7 +29,7 @@ namespace Liuliu.Demo.Infos.Entities
     /// 实体类：站内信信息
     /// </summary>
     [Description("站内信信息")]
-    public partial class Message : EntityBase<Guid>, ILockable, ISoftDeletable, ICreatedTime
+    public partial class Message : EntityBase<long>, ILockable, ISoftDeletable, ICreatedTime
     {
         /// <summary>
         /// 获取或设置 标题
@@ -101,7 +101,7 @@ namespace Liuliu.Demo.Infos.Entities
         /// 获取或设置 发送人编号
         /// </summary>
         [DisplayName("发送人编号"), UserFlag]
-        public int SenderId { get; set; }
+        public long SenderId { get; set; }
 
         /// <summary>
         /// 获取或设置 发送人

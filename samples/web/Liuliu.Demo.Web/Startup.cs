@@ -50,8 +50,9 @@ namespace Liuliu.Demo.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(WebApplication app, IWebHostEnvironment env)
+        public void Configure(WebApplication app)
         {
+            var env = app.Environment;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

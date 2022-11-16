@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="FunctionController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -77,10 +77,10 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>功能[模块]树数据</returns>
         [HttpGet]
         [Description("读取功能[模块]树数据")]
-        public TreeNode[] ReadTreeNode(int moduleId)
+        public TreeNode[] ReadTreeNode(long moduleId)
         {
             Check.GreaterThan(moduleId, nameof(moduleId), 0);
-            Guid[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
+            long[] checkFuncIds = _functionAuthManager.ModuleFunctions.Where(m => m.ModuleId == moduleId).Select(m => m.FunctionId).ToArray();
 
             var groups = _functionAuthManager.Functions.Unlocked()
                 .Where(m => m.Area == null || m.Area == "Admin")

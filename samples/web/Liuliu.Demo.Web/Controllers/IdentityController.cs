@@ -98,7 +98,7 @@ namespace Liuliu.Demo.Web.Controllers
         public async Task<bool> CheckNickNameExists(string nickName)
         {
             IUserValidator<User> nickNameValidator =
-                _userManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, int>));
+                _userManager.UserValidators.FirstOrDefault(m => m.GetType() == typeof(UserNickNameValidator<User, long>));
             if (nickNameValidator == null)
             {
                 return false;
@@ -311,7 +311,7 @@ namespace Liuliu.Demo.Web.Controllers
         [Description("读取OAuth2")]
         public PageData<UserLoginOutputDto> ReadOAuth2([FromServices] IFilterService filterService, PageRequest request)
         {
-            int userId = User.Identity.GetUserId<int>();
+            long userId = User.Identity.GetUserId<long>();
             request.FilterGroup.AddRule("UserId", userId);
             request.AddDefaultSortCondition(new SortCondition("LoginProvider"));
 
@@ -391,7 +391,7 @@ namespace Liuliu.Demo.Web.Controllers
         [ModuleInfo]
         [Description("解除第三方登录")]
         [UnitOfWork]
-        public async Task<AjaxResult> RemoveOAuth2(Guid[] ids)
+        public async Task<AjaxResult> RemoveOAuth2(long[] ids)
         {
             OperationResult result = await _identityContract.DeleteUserLogins(ids);
             return result.ToAjaxResult();
@@ -412,7 +412,7 @@ namespace Liuliu.Demo.Web.Controllers
                 return new AjaxResult("用户登出成功");
             }
 
-            int userId = User.Identity.GetUserId<int>();
+            long userId = User.Identity.GetUserId<long>();
             OperationResult result = await _identityContract.Logout(userId);
             return result.ToAjaxResult();
         }
@@ -453,7 +453,7 @@ namespace Liuliu.Demo.Web.Controllers
         [UnitOfWork]
         public async Task<AjaxResult> ProfileEdit(ProfileEditDto dto)
         {
-            int userId = User.Identity.GetUserId<int>();
+            long userId = User.Identity.GetUserId<long>();
             dto.Id = userId;
             User user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
@@ -557,7 +557,7 @@ namespace Liuliu.Demo.Web.Controllers
         {
             Check.NotNull(dto, nameof(dto));
 
-            int userId = User.Identity.GetUserId<int>();
+            long userId = User.Identity.GetUserId<long>();
             User user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {

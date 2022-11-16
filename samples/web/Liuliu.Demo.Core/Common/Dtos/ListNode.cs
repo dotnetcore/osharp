@@ -1,9 +1,9 @@
 // -----------------------------------------------------------------------
-//  <copyright file="ListNode.cs" company="ÁøÁøÈí¼ş">
+//  <copyright file="ListNode.cs" company="æŸ³æŸ³è½¯ä»¶">
 //      Copyright (c) 2016-2018 66SOFT. All rights reserved.
 //  </copyright>
 //  <site>http://www.66soft.net</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-08-10 12:38</last-date>
 // -----------------------------------------------------------------------
 
@@ -11,17 +11,17 @@
 namespace Liuliu.Demo.Common.Dtos
 {
     /// <summary>
-    /// ÁĞ±í½Úµã
+    /// åˆ—è¡¨èŠ‚ç‚¹
     /// </summary>
     public class ListNode
     {
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ ±àºÅ
+        /// è·å–æˆ–è®¾ç½® ç¼–å·
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// »ñÈ¡»òÉèÖÃ Ãû³Æ
+        /// è·å–æˆ–è®¾ç½® åç§°
         /// </summary>
         public string Name { get; set; }
     }

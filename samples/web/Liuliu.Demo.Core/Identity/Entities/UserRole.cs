@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserRole.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// 实体类：用户角色信息
     /// </summary>
     [Description("用户角色信息")]
-    public class UserRole : UserRoleBase<Guid, int, int>
+    public class UserRole : UserRoleBase<long, long, long>
     {
         /// <summary>
         /// 获取或设置 关联用户信息

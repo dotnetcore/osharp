@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Organization.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -20,7 +20,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("组织机构信息")]
     [TableNamePrefix("Identity")]
-    public class Organization : EntityBase<int>
+    public class Organization : EntityBase<long>
     {
         /// <summary>
         /// 获取或设置 名称
@@ -38,6 +38,6 @@ namespace Liuliu.Demo.Identity.Entities
         /// 获取或设置 父组织机构
         /// </summary>
         [DisplayName("父组织机构编号")]
-        public int? ParentId { get; set; }
+        public long? ParentId { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IAuditContract.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -35,7 +35,7 @@ namespace Liuliu.Demo.Systems
         /// </summary>
         /// <param name="ids">要删除的操作审计信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteAuditOperations(params Guid[] ids);
+        Task<OperationResult> DeleteAuditOperations(params long[] ids);
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace Liuliu.Demo.Systems
         /// </summary>
         /// <param name="ids">要删除的数据审计信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteAuditEntities(params Guid[] ids);
+        Task<OperationResult> DeleteAuditEntities(params long[] ids);
 
         #endregion
     }

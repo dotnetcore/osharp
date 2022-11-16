@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserDetail.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// </summary>
     [Description("用户详细信息")]
     [TableNamePrefix("Identity")]
-    public class UserDetail : EntityBase<int>
+    public class UserDetail : EntityBase<long>
     {
         /// <summary>
         /// 获取或设置 注册IP
@@ -31,7 +31,7 @@ namespace Liuliu.Demo.Identity.Entities
         /// 获取或设置 用户编号
         /// </summary>
         [DisplayName("用户编号")]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 所属用户信息

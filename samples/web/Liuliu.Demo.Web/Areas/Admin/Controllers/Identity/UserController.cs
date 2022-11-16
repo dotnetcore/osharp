@@ -190,11 +190,11 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [UnitOfWork]
         [Description("删除")]
-        public async Task<AjaxResult> Delete(int[] ids)
+        public async Task<AjaxResult> Delete(long[] ids)
         {
             Check.NotNull(ids, nameof(ids));
             List<string> names = new List<string>();
-            foreach (int id in ids)
+            foreach (long id in ids)
             {
                 User user = await _userManager.FindByIdAsync(id.ToString());
                 IdentityResult result = await _userManager.DeleteAsync(user);

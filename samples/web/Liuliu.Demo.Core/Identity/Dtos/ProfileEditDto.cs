@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ProfileEditInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -19,12 +19,12 @@ namespace Liuliu.Demo.Identity.Dtos
     /// 输入DTO：用户资料编辑
     /// </summary>
     [MapTo(typeof(User))]
-    public class ProfileEditDto : IInputDto<int>
+    public class ProfileEditDto : IInputDto<long>
     {
         /// <summary>
         /// 获取或设置 主键，唯一标识
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 用户名

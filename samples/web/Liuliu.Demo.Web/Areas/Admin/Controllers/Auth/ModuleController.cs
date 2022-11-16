@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleController.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -62,12 +62,12 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>模块[用户]树数据</returns>
         [HttpGet]
         [Description("读取模块[用户]树数据")]
-        public List<object> ReadUserModules(int userId)
+        public List<object> ReadUserModules(long userId)
         {
             Check.GreaterThan(userId, nameof(userId), 0);
-            int[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
+            long[] checkedModuleIds = _functionAuthManager.ModuleUsers.Where(m => m.UserId == userId).Select(m => m.ModuleId).ToArray();
 
-            int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            long[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
@@ -79,17 +79,17 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         /// <returns>模块[角色]树数据</returns>
         [HttpGet]
         [Description("读取模块[角色]树数据")]
-        public List<object> ReadRoleModules(int roleId)
+        public List<object> ReadRoleModules(long roleId)
         {
             Check.GreaterThan(roleId, nameof(roleId), 0);
-            int[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
+            long[] checkedModuleIds = _functionAuthManager.ModuleRoles.Where(m => m.RoleId == roleId).Select(m => m.ModuleId).ToArray();
 
-            int[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
+            long[] rootIds = _functionAuthManager.Modules.Where(m => m.ParentId == null).OrderBy(m => m.OrderCode).Select(m => m.Id).ToArray();
             var result = GetModulesWithChecked(rootIds, checkedModuleIds);
             return result;
         }
         
-        private List<object> GetModulesWithChecked(int[] rootIds, int[] checkedModuleIds)
+        private List<object> GetModulesWithChecked(long[] rootIds, long[] checkedModuleIds)
         {
             var modules = _functionAuthManager.Modules.Where(m => rootIds.Contains(m.Id)).OrderBy(m => m.OrderCode).Select(m => new
             {
@@ -127,7 +127,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
             return nodes;
         }
 
-        private bool IsRoleLimit(int moduleId)
+        private bool IsRoleLimit(long moduleId)
         {
             return _functionAuthManager.Functions
                 .Where(m => _functionAuthManager.ModuleFunctions.Where(n => n.ModuleId == moduleId).Select(n => n.FunctionId).Contains(m.Id))
@@ -149,8 +149,8 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
                 return new PageData<FunctionOutputDto2>();
             }
             Expression<Func<Module, bool>> moduleExp = _filterService.GetExpression<Module>(request.FilterGroup);
-            int[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
-            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
+            long[] moduleIds = _functionAuthManager.Modules.Where(moduleExp).Select(m => m.Id).ToArray();
+            long[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId))
                 .Select(m => m.FunctionId).Distinct().ToArray();
             if (functionIds.Length == 0)
             {
@@ -218,7 +218,7 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [DependOnFunction("Read")]
         [UnitOfWork]
         [Description("删除")]
-        public async Task<AjaxResult> Delete([FromForm] int id)
+        public async Task<AjaxResult> Delete([FromForm] long id)
         {
             Check.NotNull(id, nameof(id));
             Check.GreaterThan(id, nameof(id), 0);

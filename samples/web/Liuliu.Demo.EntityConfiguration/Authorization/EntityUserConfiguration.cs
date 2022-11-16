@@ -1,9 +1,9 @@
 // -----------------------------------------------------------------------
-//  <copyright file="EntityUserConfiguration.cs" company="OSharp¿ªÔ´ÍÅ¶Ó">
+//  <copyright file="EntityUserConfiguration.cs" company="OSharpå¼€æºå›¢é˜Ÿ">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
 //  <site>http://www.osharp.org</site>
-//  <last-editor>¹ùÃ÷·æ</last-editor>
+//  <last-editor>éƒ­æ˜é”‹</last-editor>
 //  <last-date>2018-06-27 4:48</last-date>
 // -----------------------------------------------------------------------
 
@@ -21,12 +21,12 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Authorization
 {
-    public partial class EntityUserConfiguration : EntityTypeConfigurationBase<EntityUser, Guid>
+    public partial class EntityUserConfiguration : EntityTypeConfigurationBase<EntityUser, long>
     {
         /// <summary>
-        /// ÖØĞ´ÒÔÊµÏÖÊµÌåÀàĞÍ¸÷¸öÊôĞÔµÄÊı¾İ¿âÅäÖÃ
+        /// é‡å†™ä»¥å®ç°å®ä½“ç±»å‹å„ä¸ªå±æ€§çš„æ•°æ®åº“é…ç½®
         /// </summary>
-        /// <param name="builder">ÊµÌåÀàĞÍ´´½¨Æ÷</param>
+        /// <param name="builder">å®ä½“ç±»å‹åˆ›å»ºå™¨</param>
         public override void Configure(EntityTypeBuilder<EntityUser> builder)
         {
             builder.HasIndex(m => new { m.EntityId, m.UserId }).HasName("EntityUserIndex");
@@ -38,7 +38,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         }
 
         /// <summary>
-        /// ¶îÍâµÄÊı¾İÓ³Éä
+        /// é¢å¤–çš„æ•°æ®æ˜ å°„
         /// </summary>
         partial void EntityConfigurationAppend(EntityTypeBuilder<EntityUser> builder);
     }

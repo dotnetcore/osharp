@@ -19,6 +19,6 @@ namespace Liuliu.Demo.Authorization.Dtos
     /// 输入DTO：实体角色信息
     /// </summary>
     [MapTo(typeof(EntityRole))]
-    public class EntityRoleInputDto : EntityRoleInputDtoBase<int>
+    public class EntityRoleInputDto : EntityRoleInputDtoBase<long>
     { }
 }

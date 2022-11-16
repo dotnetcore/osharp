@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Module.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ namespace Liuliu.Demo.Authorization.Entities
     /// 实体类：模块信息
     /// </summary>
     [Description("模块信息")]
-    public class Module : ModuleBase<int>
+    public class Module : ModuleBase<long>
     {
         /// <summary>
         /// 获取或设置 父模块信息

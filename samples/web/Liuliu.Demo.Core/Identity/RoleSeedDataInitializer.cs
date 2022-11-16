@@ -23,7 +23,7 @@ using OSharp.Identity;
 
 namespace Liuliu.Demo.Identity
 {
-    public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, int>
+    public class RoleSeedDataInitializer : SeedDataInitializerBase<Role, long>
     {
         private readonly IServiceProvider _rootProvider;
 

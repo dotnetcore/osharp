@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using OSharp.Data;
 using System;
 using System.Collections.Generic;

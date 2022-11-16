@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserRoleOutputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -38,17 +38,17 @@ namespace Liuliu.Demo.Identity.Dtos
         /// <summary>
         /// 获取或设置 编号
         /// </summary>
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
-        public int RoleId { get; set; }
+        public long RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定

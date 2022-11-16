@@ -9,7 +9,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Systems
 {
-    public partial class AuditPropertyConfiguration : EntityTypeConfigurationBase<AuditProperty, Guid>
+    public partial class AuditPropertyConfiguration : EntityTypeConfigurationBase<AuditProperty, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

@@ -63,7 +63,7 @@ namespace Liuliu.Demo.Infos.Dtos
         /// 获取或设置 编号
         /// </summary>
         [DisplayName("编号")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 标题
@@ -117,7 +117,7 @@ namespace Liuliu.Demo.Infos.Dtos
         /// 获取或设置 发送人编号
         /// </summary>
         [DisplayName("发送人编号")]
-        public int SenderId { get; set; }
+        public long SenderId { get; set; }
 
         /// <summary>
         /// 获取或设置 是否锁定

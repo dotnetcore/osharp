@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Role.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ namespace Liuliu.Demo.Identity.Entities
     /// 实体类：角色信息
     /// </summary>
     [Description("角色信息")]
-    public class Role : RoleBase<int>
+    public class Role : RoleBase<long>
     {
         /// <summary>
         /// 获取或设置 分配的用户角色信息集合

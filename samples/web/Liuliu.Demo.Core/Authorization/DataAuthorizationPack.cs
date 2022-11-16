@@ -22,7 +22,7 @@ using OSharp.Mapping;
 namespace Liuliu.Demo.Authorization
 {
     public class DataAuthorizationPack
-        : DataAuthorizationPackBase<DataAuthManager, DataAuthCache, EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, int>
+        : DataAuthorizationPackBase<DataAuthManager, DataAuthCache, EntityInfo, EntityInfoInputDto, EntityRole, EntityRoleInputDto, long>
     {
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中

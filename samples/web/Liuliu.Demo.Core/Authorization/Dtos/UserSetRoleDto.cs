@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserSetRoleDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -17,11 +17,11 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// 获取或设置 要设置的角色编号
         /// </summary>
-        public int[] RoleIds { get; set; }
+        public long[] RoleIds { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleOutputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -24,7 +24,7 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 模块编号
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 模块名称
@@ -49,6 +49,6 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 父模块编号
         /// </summary>
-        public int? ParentId { get; set; }
+        public long? ParentId { get; set; }
     }
 }

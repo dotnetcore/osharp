@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditEntity.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -24,7 +24,7 @@ namespace Liuliu.Demo.Systems.Entities
     [MapFrom(typeof(AuditEntityEntry))]
     [TableNamePrefix("Systems")]
     [Description("审计实体信息")]
-    public class AuditEntity : EntityBase<Guid>
+    public class AuditEntity : EntityBase<long>
     {
         /// <summary>
         /// 初始化一个<see cref="AuditEntityEntry"/>类型的新实例
@@ -66,7 +66,7 @@ namespace Liuliu.Demo.Systems.Entities
         /// <summary>
         /// 获取或设置 所属审计操作编号
         /// </summary>
-        public Guid OperationId { get; set; }
+        public long OperationId { get; set; }
 
         /// <summary>
         /// 获取或设置 所属审计操作

@@ -21,7 +21,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Authorization
 {
-    public partial class EntityRoleConfiguration : EntityTypeConfigurationBase<EntityRole, Guid>
+    public partial class EntityRoleConfiguration : EntityTypeConfigurationBase<EntityRole, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

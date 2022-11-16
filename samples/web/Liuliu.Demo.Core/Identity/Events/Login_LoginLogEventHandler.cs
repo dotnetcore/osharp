@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Login_LoginLogEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -24,12 +24,12 @@ namespace Liuliu.Demo.Identity.Events
     /// </summary>
     public class LoginLoginLogEventHandler : EventHandlerBase<LoginEventData>
     {
-        private readonly IRepository<LoginLog, Guid> _loginLogRepository;
+        private readonly IRepository<LoginLog, long> _loginLogRepository;
 
         /// <summary>
         /// 初始化一个<see cref="LoginLoginLogEventHandler"/>类型的新实例
         /// </summary>
-        public LoginLoginLogEventHandler(IRepository<LoginLog, Guid> loginLogRepository)
+        public LoginLoginLogEventHandler(IRepository<LoginLog, long> loginLogRepository)
         {
             _loginLogRepository = loginLogRepository;
         }

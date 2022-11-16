@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuthenticationPack.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -22,7 +22,7 @@ namespace Liuliu.Demo.Identity
     /// 身份认证模块
     /// </summary>
     [DependsOnPacks(typeof(IdentityPack))]
-    public class AuthenticationPack : AuthenticationPackBase<User, int>
+    public class AuthenticationPack : AuthenticationPackBase<User, long>
     {
         /// <summary>
         /// 将模块服务添加到依赖注入服务容器中

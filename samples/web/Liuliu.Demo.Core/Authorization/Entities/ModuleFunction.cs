@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleFunction.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ namespace Liuliu.Demo.Authorization.Entities
     /// 实体类：模块功能信息
     /// </summary>
     [Description("模块功能信息")]
-    public class ModuleFunction : ModuleFunctionBase<int>
+    public class ModuleFunction : ModuleFunctionBase<long>
     {
         /// <summary>
         /// 获取或设置 模块信息

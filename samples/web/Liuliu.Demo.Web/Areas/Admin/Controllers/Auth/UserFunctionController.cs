@@ -70,15 +70,15 @@ namespace Liuliu.Demo.Web.Areas.Admin.Controllers
         [ModuleInfo]
         [DependOnFunction("Read")]
         [Description("读取功能")]
-        public PageData<FunctionOutputDto2> ReadFunctions(int userId, [FromBody]PageRequest request)
+        public PageData<FunctionOutputDto2> ReadFunctions(long userId, [FromBody]PageRequest request)
         {
             if (userId == 0)
             {
                 return new PageData<FunctionOutputDto2>();
             }
 
-            int[] moduleIds = _functionAuthManager.GetUserWithRoleModuleIds(userId);
-            Guid[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
+            long[] moduleIds = _functionAuthManager.GetUserWithRoleModuleIds(userId);
+            long[] functionIds = _functionAuthManager.ModuleFunctions.Where(m => moduleIds.Contains(m.ModuleId)).Select(m => m.FunctionId).Distinct()
                 .ToArray();
             if (functionIds.Length == 0)
             {

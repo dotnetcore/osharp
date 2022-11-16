@@ -37,11 +37,11 @@ namespace Liuliu.Demo.Infos
         /// <summary>
         /// 获取 用户存储对象
         /// </summary>
-        protected IRepository<User, int> UserRepository => ServiceProvider.GetService<IRepository<User, int>>();
+        protected IRepository<User, long> UserRepository => ServiceProvider.GetService<IRepository<User, long>>();
 
         /// <summary>
         /// 获取 角色存储对象
         /// </summary>
-        protected IRepository<Role, int> RoleRepository => ServiceProvider.GetService<IRepository<Role, int>>();
+        protected IRepository<Role, long> RoleRepository => ServiceProvider.GetService<IRepository<Role, long>>();
     }
 }

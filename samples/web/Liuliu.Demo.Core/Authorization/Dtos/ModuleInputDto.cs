@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleInputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,6 +19,6 @@ namespace Liuliu.Demo.Authorization.Dtos
     /// 输入DTO：模块信息
     /// </summary>
     [MapTo(typeof(Module))]
-    public class ModuleInputDto : ModuleInputDtoBase<int>
+    public class ModuleInputDto : ModuleInputDtoBase<long>
     { }
 }

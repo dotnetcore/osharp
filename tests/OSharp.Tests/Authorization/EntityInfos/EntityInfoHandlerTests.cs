@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using OSharp.Authorization.EntityInfos;
 using System;
 using System.Collections.Generic;
@@ -57,8 +57,8 @@ namespace OSharp.Authorization.EntityInfos.Tests
             EntityInfoHandlerProtected handler = new EntityInfoHandlerProtected(rootProvider);
 
             IServiceProvider scopedProvider = Substitute.For<IServiceProvider>();
-            IRepository<EntityInfo, Guid> repository = Substitute.For<IRepository<EntityInfo, Guid>>();
-            scopedProvider.GetService<IRepository<EntityInfo, Guid>>().Returns(repository);
+            IRepository<EntityInfo, long> repository = Substitute.For<IRepository<EntityInfo, long>>();
+            scopedProvider.GetService<IRepository<EntityInfo, long>>().Returns(repository);
             IUnitOfWork unitOfWork = Substitute.For<IUnitOfWork>();
             scopedProvider.GetService(typeof(IUnitOfWork)).Returns(unitOfWork);
 
@@ -78,9 +78,9 @@ namespace OSharp.Authorization.EntityInfos.Tests
             EntityInfo[] entityInfos = handler.ExposedGetFromDatabase(scopedProvider);
             entityInfos.ShouldBeEmpty();
 
-            IRepository<EntityInfo, Guid> repository = Substitute.For<IRepository<EntityInfo, Guid>>();
+            IRepository<EntityInfo, long> repository = Substitute.For<IRepository<EntityInfo, long>>();
             repository.QueryAsNoTracking(null, false).Returns(new [] { new EntityInfo() }.AsQueryable());
-            scopedProvider.GetService<IRepository<EntityInfo, Guid>>().Returns(repository);
+            scopedProvider.GetService<IRepository<EntityInfo, long>>().Returns(repository);
             entityInfos = handler.ExposedGetFromDatabase(scopedProvider);
             entityInfos.ShouldNotBeEmpty();
             entityInfos.Length.ShouldBe(1);

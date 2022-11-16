@@ -41,13 +41,13 @@ namespace Liuliu.Demo.Identity
         private readonly IEventBus _eventBus;
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IRepository<UserDetail, int> _userDetailRepository;
-        private readonly IRepository<UserLogin, Guid> _userLoginRepository;
+        private readonly IRepository<UserDetail, long> _userDetailRepository;
+        private readonly IRepository<UserLogin, long> _userLoginRepository;
         private readonly IDistributedCache _cache;
         private readonly IPrincipal _currentUser;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
-        private readonly IRepository<UserRole, Guid> _userRoleRepository;
+        private readonly IRepository<UserRole, long> _userRoleRepository;
         private readonly ILogger<IdentityService> _logger;
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace Liuliu.Demo.Identity
             SignInManager<User> signInManager,
             IEventBus eventBus,
             ILoggerFactory loggerFactory,
-            IRepository<UserRole, Guid> userRoleRepository,
-            IRepository<UserDetail, int> userDetailRepository,
-            IRepository<UserLogin, Guid> userLoginRepository,
+            IRepository<UserRole, long> userRoleRepository,
+            IRepository<UserDetail, long> userDetailRepository,
+            IRepository<UserLogin, long> userLoginRepository,
             IDistributedCache cache,
             IPrincipal currentUser,
             IHttpContextAccessor httpContextAccessor)
@@ -278,7 +278,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns>业务操作结果</returns>
-        public async Task<OperationResult> Logout(int userId)
+        public async Task<OperationResult> Logout(long userId)
         {
             //await _signInManager.SignOutAsync();
             //todo: Site和API的授权与退出，分别处理

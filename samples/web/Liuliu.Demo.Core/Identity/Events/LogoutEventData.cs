@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="LogoutEventData.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -20,6 +20,6 @@ namespace Liuliu.Demo.Identity.Events
         /// <summary>
         /// 获取或设置 用户编号
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

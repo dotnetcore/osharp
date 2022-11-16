@@ -62,17 +62,17 @@ namespace Liuliu.Demo.Infos
         /// <summary>
         /// 获取或设置 站内信信息仓储对象
         /// </summary>
-        protected IRepository<Message, Guid> MessageRepository => ServiceProvider.GetService<IRepository<Message, Guid>>();
+        protected IRepository<Message, long> MessageRepository => ServiceProvider.GetService<IRepository<Message, long>>();
         
         /// <summary>
         /// 获取或设置 站内信接收记录信息仓储对象
         /// </summary>
-        protected IRepository<MessageReceive, Guid> MessageReceiveRepository => ServiceProvider.GetService<IRepository<MessageReceive, Guid>>();
+        protected IRepository<MessageReceive, long> MessageReceiveRepository => ServiceProvider.GetService<IRepository<MessageReceive, long>>();
         
         /// <summary>
         /// 获取或设置 站内信回复信息仓储对象
         /// </summary>
-        protected IRepository<MessageReply, Guid> MessageReplyRepository => ServiceProvider.GetService<IRepository<MessageReply, Guid>>();
+        protected IRepository<MessageReply, long> MessageReplyRepository => ServiceProvider.GetService<IRepository<MessageReply, long>>();
         
         /// <summary>
         /// 获取 事件总线

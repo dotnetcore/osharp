@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditDatabaseStore.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -27,12 +27,12 @@ namespace Liuliu.Demo.Systems
     /// </summary>
     public class AuditDatabaseStore : IAuditStore
     {
-        private readonly IRepository<AuditOperation, Guid> _operationRepository;
+        private readonly IRepository<AuditOperation, long> _operationRepository;
 
         /// <summary>
         /// 初始化一个<see cref="AuditDatabaseStore"/>类型的新实例
         /// </summary>
-        public AuditDatabaseStore(IRepository<AuditOperation, Guid> operationRepository)
+        public AuditDatabaseStore(IRepository<AuditOperation, long> operationRepository)
         {
             _operationRepository = operationRepository;
         }

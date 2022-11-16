@@ -31,7 +31,7 @@ namespace Liuliu.Demo.EntityConfiguration.Infos
     /// <summary>
     /// 实体配置类：站内信信息
     /// </summary>
-    public partial class MessageConfiguration : EntityTypeConfigurationBase<Message, Guid>
+    public partial class MessageConfiguration : EntityTypeConfigurationBase<Message, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置

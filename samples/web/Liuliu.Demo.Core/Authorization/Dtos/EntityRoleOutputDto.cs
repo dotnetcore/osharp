@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityRoleOutputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -49,12 +49,12 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 编号
         /// </summary>
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 获取或设置 角色编号
         /// </summary>
-        public int RoleId { get; set; }
+        public long RoleId { get; set; }
 
         /// <summary>
         /// 获取或设置 角色名称
@@ -64,7 +64,7 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 数据编号
         /// </summary>
-        public Guid EntityId { get; set; }
+        public long EntityId { get; set; }
 
         /// <summary>
         /// 获取或设置 业务实体名称

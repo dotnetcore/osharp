@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AuditOperation.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -25,7 +25,7 @@ namespace Liuliu.Demo.Systems.Entities
     [MapFrom(typeof(AuditOperationEntry))]
     [TableNamePrefix("Systems")]
     [Description("审计操作信息")]
-    public class AuditOperation : EntityBase<Guid>
+    public class AuditOperation : EntityBase<long>
     {
         /// <summary>
         /// 获取或设置 执行的功能名

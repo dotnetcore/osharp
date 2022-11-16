@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleSetFunctionDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -20,7 +20,7 @@ namespace Liuliu.Demo.Authorization.Dtos
         /// <summary>
         /// 获取或设置 模块编号
         /// </summary>
-        public int ModuleId { get; set; }
+        public long ModuleId { get; set; }
 
         /// <summary>
         /// 获取或设置 功能编号集合

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="InfosService.Message.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2019 OSharp. All rights reserved.
 //  </copyright>
@@ -33,7 +33,7 @@ namespace Liuliu.Demo.Infos
         /// <returns>业务操作结果</returns>
         public override async Task<OperationResult> CreateMessages(params MessageInputDto[] dtos)
         {
-            Check2.Validate<MessageInputDto, Guid>(dtos, nameof(dtos));
+            Check2.Validate<MessageInputDto, long>(dtos, nameof(dtos));
             List<Message> messages = new List<Message>();
 
             OperationResult result = await MessageRepository.InsertAsync(dtos,

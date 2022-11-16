@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IIdentityContract.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -57,7 +57,7 @@ namespace Liuliu.Demo.Identity
         /// <param name="predicate">检查谓语表达式</param>
         /// <param name="id">更新的用户角色信息编号</param>
         /// <returns>用户角色信息是否存在</returns>
-        Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, Guid id = default(Guid));
+        Task<bool> CheckUserRoleExists(Expression<Func<UserRole, bool>> predicate, long id = default(long));
 
         /// <summary>
         /// 更新用户角色信息
@@ -71,7 +71,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="ids">用户角色信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteUserRoles(Guid[] ids);
+        Task<OperationResult> DeleteUserRoles(long[] ids);
 
         /// <summary>
         /// 设置用户的角色
@@ -79,7 +79,7 @@ namespace Liuliu.Demo.Identity
         /// <param name="userId">用户编号</param>
         /// <param name="roleIds">角色编号集合</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> SetUserRoles(int userId, int[] roleIds);
+        Task<OperationResult> SetUserRoles(long userId, long[] roleIds);
 
         #endregion
 
@@ -95,7 +95,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="ids">要删除的实体信息编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> DeleteUserLogins(params Guid[] ids);
+        Task<OperationResult> DeleteUserLogins(params long[] ids);
 
         #endregion
 
@@ -141,7 +141,7 @@ namespace Liuliu.Demo.Identity
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns>业务操作结果</returns>
-        Task<OperationResult> Logout(int userId);
+        Task<OperationResult> Logout(long userId);
 
         #endregion
 

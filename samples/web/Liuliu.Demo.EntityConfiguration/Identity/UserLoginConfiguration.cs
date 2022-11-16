@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="UserLoginConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -19,7 +19,7 @@ using OSharp.Entity;
 
 namespace Liuliu.Demo.EntityConfiguration.Identity
 {
-    public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, Guid>
+    public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLogin, long>
     {
         /// <summary>
         /// 重写以实现实体类型各个属性的数据库配置
