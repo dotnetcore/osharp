@@ -7,6 +7,7 @@
 //  <last-date>2022-11-10 19:08</last-date>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore.Cors;
@@ -53,6 +54,11 @@ public abstract class MvcPackBase : AspOsharpPack
                 if (osharp.Mvc?.IsLowercaseJsonProperty == false)
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                }
+                if (osharp.Mvc?.IsLongToStringConvert == true)
+                {
+                    //处理雪花算法生成的Id在前端丢失精度的问题
+                    options.SerializerSettings.Converters.Add(new LongToStringConverter());
                 }
             });
 

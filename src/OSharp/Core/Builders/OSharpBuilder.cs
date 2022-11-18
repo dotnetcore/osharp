@@ -168,7 +168,7 @@ public class OsharpBuilder : IOsharpBuilder
         Type[] packTypes = types.Select(m => m.BaseType).Where(m => m != null && !m.IsAbstract).ToArray();
         packTypes = types.Except(packTypes).ToArray();
 
-        return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m))
+        return packTypes.Select(m => (OsharpPack)Activator.CreateInstance(m)!)
             .OrderBy(m => m.Level).ThenBy(m => m.Order).ThenBy(m => m.GetType().FullName).ToList();
     }
 

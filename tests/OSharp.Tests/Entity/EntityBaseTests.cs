@@ -13,7 +13,7 @@ namespace OSharp.Entity.Tests
         public void Ctor_Test()
         {
             GuidKeyEntity guidKeyEntity = new GuidKeyEntity();
-            guidKeyEntity.Id.ShouldBeOfType<long>();
+            guidKeyEntity.Id.ShouldBeOfType<Guid>();
             guidKeyEntity.Id.ShouldBe(Guid.Empty);
         }
 
