@@ -53,11 +53,13 @@ public class MySqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilder
 
         if (existingConnection == null)
         {
+            _serverVersion = ServerVersion.AutoDetect(connectionString);
             _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
             builder.UseMySql(connectionString, _serverVersion, action);
         }
         else
         {
+            _serverVersion = ServerVersion.AutoDetect(existingConnection.ConnectionString);
             _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
             builder.UseMySql(existingConnection, _serverVersion, action);
         }
