@@ -1,0 +1,55 @@
+kind: pipeline
+name: default
+
+steps:
+- name: clear
+  image: appleboy/drone-ssh
+  pull: true
+  settings:
+    host: 10.129.232.105
+    port: 22
+    username: root
+    password: wxy
+    command_timeout: 2m
+    script: 
+      - source /etc/profile
+      - ls -la
+      - docker info
+      - docker stop `docker ps -a| grep osharp | awk '{print $1}'`
+      - docker rm  $(docker ps -a | grep Exited | awk '{print $1}')
+      - docker rm  $(docker ps -a | grep Created | awk '{print $1}')
+      #- docker rmi $(docker images | grep "none" | awk '{print $3}')     
+      - echo 项目清理成功
+- name: build
+  image: docker:dind #选择docker:dind镜像
+  volumes:
+  - name: docker-sock
+    path: /var/run/docker.sock #映射宿主机Docker
+  commands:
+  - docker -v
+  - docker build -t osharp:v7 -f samples/web/Liuliu.Demo.WebApi/Dockerfile .
+  #- docker login --username=shiningrise@aliyun.com --password=你的仓库密码 registry.cn-shanghai.aliyuncs.com
+  #- docker tag osharp:v7 registry.cn-shanghai.aliyuncs.com/shiningrise/osharp:v7.0.1
+  #- docker push registry.cn-shanghai.aliyuncs.com/shiningrise/osharp:v7.0.1
+  - echo 项目构建成功
+
+- name: deploy
+  image: appleboy/drone-ssh
+  pull: true
+  settings:
+    host: 10.129.232.105
+    port: 22
+    username: root
+    password: wxy
+    command_timeout: 2m
+    script: 
+      - source /etc/profile
+      #- docker run -e VIRTUAL_HOST=class.wxy.work -e VIRTUAL_PORT=80 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d  osharp:v7
+      - cd /data/
+      - docker-compose up -d
+      - echo 项目部署成功
+      
+volumes:
+  - name: docker-sock
+    host:
+      path: /var/run/docker.sock
