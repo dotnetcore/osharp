@@ -24,6 +24,7 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="[7.0.0, 8.0.0)" />
     <PackageReference Include="System.Drawing.Common" Version="[7.0.0, 8.0.0)" />
+    <PackageReference Include="System.Management" Version="[7.0.0, 8.0.0)" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="[7.0.0, 8.0.0)" />
