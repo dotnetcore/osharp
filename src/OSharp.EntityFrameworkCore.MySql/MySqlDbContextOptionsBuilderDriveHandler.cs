@@ -15,7 +15,7 @@ namespace OSharp.Entity.MySql;
 public class MySqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilderDriveHandler
 {
     private readonly ILogger _logger;
-    private readonly ServerVersion _serverVersion;
+    private ServerVersion _serverVersion;
 
     /// <summary>
     /// 初始化一个<see cref="MySqlDbContextOptionsBuilderDriveHandler"/>类型的新实例
@@ -53,11 +53,13 @@ public class MySqlDbContextOptionsBuilderDriveHandler : IDbContextOptionsBuilder
 
         if (existingConnection == null)
         {
+            _serverVersion = ServerVersion.AutoDetect(connectionString);
             _logger.LogDebug($"使用新连接“{connectionString}”应用MySql数据库");
             builder.UseMySql(connectionString, _serverVersion, action);
         }
         else
         {
+            _serverVersion = ServerVersion.AutoDetect(existingConnection.ConnectionString);
             _logger.LogDebug($"使用已存在的连接“{existingConnection.ConnectionString}”应用MySql数据库");
             builder.UseMySql(existingConnection, _serverVersion, action);
         }
