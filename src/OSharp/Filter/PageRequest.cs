@@ -10,7 +10,7 @@
 namespace OSharp.Filter;
 
 /// <summary>
-/// 分布查询请求
+/// 分页查询请求
 /// </summary>
 public class PageRequest
 {
