@@ -23,4 +23,9 @@ public class GrantType
     /// 刷新Token类型
     /// </summary>
     public const string RefreshToken = "refresh_token";
+    
+    /// <summary>
+    /// 授权码类型
+    /// </summary>
+    public const string AuthorizationCode = "authorization_code";
 }
