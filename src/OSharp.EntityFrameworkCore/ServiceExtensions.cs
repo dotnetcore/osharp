@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------
 
 
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 namespace OSharp.Entity;
 
 /// <summary>
@@ -48,6 +50,15 @@ public static class ServiceExtensions
         {
             throw new OsharpException($"无法找到数据上下文 {dbContextType.DisplayName()} 的配置信息");
         }
+
+        builder.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning)); ////忽略AsNoTracking 报错
+
+#if DEBUG
+        builder.UseLoggerFactory((LoggerFactory.Create(options =>
+        {
+            options.AddConsole();//开启ef打印sql语句
+        })));
+#endif
 
         ILogger logger = provider.GetLogger(typeof(ServiceExtensions));
         //启用延迟加载
