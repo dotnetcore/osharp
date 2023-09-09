@@ -46,6 +46,36 @@ public class AjaxResult
     { }
 
     /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(AjaxResultType type, string content, object data)
+    {
+        Type = type;
+        Content = content;
+        Data = data;
+    }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(AjaxResultType type, string content)
+    {
+        Type = type;
+        Content = content;
+        Data = null;
+    }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(string content)
+    {
+        Type = AjaxResultType.Success;
+        Content = content;
+        Data = null;
+    }
+
+    /// <summary>
     /// 获取或设置 Ajax操作结果类型
     /// </summary>
     public AjaxResultType Type { get; set; }
@@ -80,6 +110,109 @@ public class AjaxResult
     /// 成功的AjaxResult
     /// </summary>
     public static AjaxResult Success(object data = null)
+    {
+        return new AjaxResult("操作执行成功", AjaxResultType.Success, data);
+    }
+}
+
+public class AjaxResult<T> where T : class
+{
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult()
+        : this(null)
+    { }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(string content, AjaxResultType type = AjaxResultType.Success, T data = null)
+        : this(content, data, type)
+    { }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(string content, T data, AjaxResultType type = AjaxResultType.Success)
+    {
+        Type = type;
+        Content = content;
+        Data = data;
+    }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(T data, AjaxResultType type = AjaxResultType.Success, string content = null)
+        : this(content ?? type.ToDescription(), data, type)
+    { }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(AjaxResultType type, string content, T data)
+    {
+        Type = type;
+        Content = content;
+        Data = data;
+    }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(AjaxResultType type, string content)
+    {
+        Type = type;
+        Content = content;
+        Data = null;
+    }
+
+    /// <summary>
+    /// 初始化一个<see cref="AjaxResult"/>类型的新实例
+    /// </summary>
+    public AjaxResult(string content)
+    {
+        Type = AjaxResultType.Success;
+        Content = content;
+        Data = null;
+    }
+
+    /// <summary>
+    /// 获取或设置 Ajax操作结果类型
+    /// </summary>
+    public AjaxResultType Type { get; set; }
+
+    /// <summary>
+    /// 获取或设置 消息内容
+    /// </summary>
+    public string Content { get; set; }
+
+    /// <summary>
+    /// 获取或设置 返回数据
+    /// </summary>
+    public T Data { get; set; }
+
+    /// <summary>
+    /// 是否成功
+    /// </summary>
+    public bool Succeeded()
+    {
+        return Type == AjaxResultType.Success;
+    }
+
+    /// <summary>
+    /// 是否错误
+    /// </summary>
+    public bool Error()
+    {
+        return Type == AjaxResultType.Error;
+    }
+
+    /// <summary>
+    /// 成功的AjaxResult
+    /// </summary>
+    public static AjaxResult Success(T data = null)
     {
         return new AjaxResult("操作执行成功", AjaxResultType.Success, data);
     }
