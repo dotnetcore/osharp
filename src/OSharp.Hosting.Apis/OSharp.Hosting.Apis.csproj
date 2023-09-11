@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.2.0" />
+    <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[6.0.10, 7.0.0)" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[6.0.16, 7.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[7.0.0, 8.0.0)" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[7.0.9, 8.0.0)" />
   </ItemGroup>
 
 </Project>
