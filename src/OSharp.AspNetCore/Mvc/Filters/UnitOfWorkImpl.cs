@@ -7,6 +7,8 @@
 //  <last-date>2019-05-14 17:37</last-date>
 // -----------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace OSharp.AspNetCore.Mvc.Filters;
 
 /// <summary>
@@ -55,6 +57,7 @@ internal class UnitOfWorkImpl : IActionFilter
                 context.ExceptionHandled = true;
             }
         }
+        var x = context.Result;
         if (context.Result is JsonResult result1)
         {
             if (result1.Value is AjaxResult ajax)
@@ -80,7 +83,20 @@ internal class UnitOfWorkImpl : IActionFilter
             }
             else
             {
-                _unitOfWork?.Commit();
+                try
+                {
+                    var ajax2 = JsonConvert.DeserializeObject<AjaxResult>(result2.Value.ToJsonString());
+                    type = ajax2.Type;
+                    message = ajax2.Content;
+                    if (ajax2.Succeeded())
+                    {
+                        _unitOfWork?.Commit();
+                    }
+                }
+                catch
+                {
+                    _unitOfWork?.Commit();
+                }
             }
         }
         //普通请求
