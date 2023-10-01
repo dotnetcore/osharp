@@ -17,9 +17,6 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="[7.21.11, 8.0.0)" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="[7.21.8, 8.0.0)" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>
