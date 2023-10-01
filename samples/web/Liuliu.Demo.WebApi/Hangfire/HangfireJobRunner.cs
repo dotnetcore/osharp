@@ -35,8 +35,8 @@ namespace Liuliu.Demo.Web.Hangfire
             BackgroundJob.Enqueue<UserManager<User>>(m => m.FindByIdAsync("1"));
             string jobId = BackgroundJob.Schedule<UserManager<User>>(m => m.FindByIdAsync("2"), TimeSpan.FromMinutes(2));
             BackgroundJob.ContinueJobWith<TestHangfireJob>(jobId, m => m.GetUserCount());
-            RecurringJob.AddOrUpdate<TestHangfireJob>(m => m.GetUserCount(), Cron.Minutely, TimeZoneInfo.Local);
-            RecurringJob.AddOrUpdate<TestHangfireJob>(m => m.LockUser2(), Cron.Minutely, TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate<TestHangfireJob>("TestHangfireJob.GetUserCount", m => m.GetUserCount(), Cron.Minutely);
+            RecurringJob.AddOrUpdate<TestHangfireJob>("TestHangfireJob.LockUser2", m => m.LockUser2(), Cron.Minutely);
         }
     }
 

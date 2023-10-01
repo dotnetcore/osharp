@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[6.0.11, 7.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[6.0.22, 7.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[7.0.0, 8.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[7.0.11, 8.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

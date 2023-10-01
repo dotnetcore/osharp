@@ -75,7 +75,7 @@ public abstract class SwaggerPackBase : AspOsharpPack
 
             Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
             {
-                options.IncludeXmlComments(file);
+                options.IncludeXmlComments(file, true);
             });
             //权限Token
             options.AddSecurityDefinition("oauth2",
