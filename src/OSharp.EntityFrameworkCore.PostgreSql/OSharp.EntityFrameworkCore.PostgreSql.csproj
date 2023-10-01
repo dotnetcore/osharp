@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[6.0.8, 7.0.0)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[6.0.22, 7.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[7.0.4, 8.0.0)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[7.0.11, 8.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,7 +18,7 @@ public static class ServiceExtensions
     #region IServiceCollection
 
     /// <summary>
-    /// 获取<see cref="IHostingEnvironment"/>环境信息
+    /// 获取<see cref="IWebHostEnvironment"/>环境信息
     /// </summary>
     public static IWebHostEnvironment GetWebHostEnvironment(this IServiceCollection services)
     {
