@@ -3,9 +3,9 @@ name: Build/Test/MirrorToGitee
 on:
   workflow_dispatch:
   push:
-    branches: [master/snow, dev/snow]
+    branches: [releases/snow, dev/snow]
   pull_request:
-    branches: [master/snow]
+    branches: [releases/snow]
 
 jobs:
   build-on-dotnetcore:
