@@ -17,12 +17,39 @@ public static class AjaxResultExtensions
     /// <summary>
     /// 将业务操作结果转ajax操作结果，并处理强类型的 OperationResult.Data
     /// </summary>
-    public static AjaxResult ToAjaxResult<T>(this OperationResult<T> result, Func<T, object> dataFunc = null)
+    public static AjaxResult<T> ToAjaxResult<T>(this OperationResult<T> result, Func<T, T> dataFunc = null)
     {
         string content = result.Message ?? result.ResultType.ToDescription();
         AjaxResultType type = result.ResultType.ToAjaxResultType();
-        object data = dataFunc == null ? result.Data : dataFunc(result.Data);
-        return new AjaxResult(content, type, data);
+        T data = dataFunc == null ? result.Data : dataFunc(result.Data);
+        return new AjaxResult<T>(content, type, data);
+    }
+
+    /// <summary>
+    /// 将业务操作结果转ajax操作结果，并处理强类型的 OperationResult.Data
+    /// </summary>
+    public static AjaxResult<TResult> ToAjaxResult<T, TResult>(this OperationResult<T> result, Func<T, TResult> dataFunc = null)
+    {
+        string content = result.Message ?? result.ResultType.ToDescription();
+        AjaxResultType type = result.ResultType.ToAjaxResultType();
+        TResult data;
+        if (dataFunc == null)
+        {
+            if (result.Data is TResult data2)
+            {
+                data = data2;
+            }
+            else
+            {
+                data = default;
+            }
+        }
+        else
+        {
+            data = dataFunc(result.Data);
+        }
+
+        return new AjaxResult<TResult>(content, type, data);
     }
 
     /// <summary>
@@ -41,11 +68,11 @@ public static class AjaxResultExtensions
     /// <summary>
     /// 将业务操作结果转ajax操作结果，会将 object 类型的 OperationResult.Data 转换为强类型 T，再通过 dataFunc 进行进一步处理
     /// </summary>
-    public static AjaxResult ToAjaxResult<T>(this OperationResult result, Func<T, object> dataFunc)
+    public static AjaxResult<T> ToAjaxResult<T>(this OperationResult result, Func<T, T> dataFunc)
     {
         string content = result.Message ?? result.ResultType.ToDescription();
         AjaxResultType type = result.ResultType.ToAjaxResultType();
-        object data = null;
+        T data = default;
         if (result.Data != null)
         {
             if (dataFunc != null && result.Data is T resultData)
@@ -53,7 +80,7 @@ public static class AjaxResultExtensions
                 data = dataFunc(resultData);
             }
         }
-        return new AjaxResult(content, type, data);
+        return new AjaxResult<T>(content, type, data);
     }
 
     /// <summary>

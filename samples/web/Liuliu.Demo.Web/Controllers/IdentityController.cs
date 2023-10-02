@@ -229,7 +229,7 @@ namespace Liuliu.Demo.Web.Controllers
                 User user = result.Data;
                 JsonWebToken token = await CreateJwtToken(user, dto.ClientType);
                 await unitOfWork.CommitAsync();
-                return new AjaxResult("登录成功", AjaxResultType.Success, token);
+                return new AjaxResult<JsonWebToken>("登录成功", AjaxResultType.Success, token);
             }
 
             if (grantType == GrantType.RefreshToken)
