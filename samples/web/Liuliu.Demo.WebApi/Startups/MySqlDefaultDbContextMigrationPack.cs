@@ -6,7 +6,7 @@
 //  <last-editor>郭明锋</last-editor>
 //  <last-date>2018-08-13 20:35</last-date>
 // -----------------------------------------------------------------------
-#if NET6_0
+
 using System;
 using System.ComponentModel;
 
@@ -46,4 +46,3 @@ namespace Liuliu.Demo.Web.Startups
         }
     }
 }
-#endif
