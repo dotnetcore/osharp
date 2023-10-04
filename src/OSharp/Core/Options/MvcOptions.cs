@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="MvcOptions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2021 OSharp. All rights reserved.
 //  </copyright>
@@ -23,4 +23,9 @@ public class MvcOptions
     /// 获取或设置 是否URL小写，默认：false
     /// </summary>
     public bool IsLowercaseUrls { get; set; } = false;
+
+    /// <summary>
+    /// 获取或设置 是否使用雪花Id模型绑定器，默认：false
+    /// </summary>
+    public bool IsLongIdModelBinder { get; set; } = false;
 }
