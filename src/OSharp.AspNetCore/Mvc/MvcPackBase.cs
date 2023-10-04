@@ -47,13 +47,7 @@ public abstract class MvcPackBase : AspOsharpPack
         _corsInitializer.AddCors(services);
 
         OsharpOptions osharp = services.GetOsharpOptions();
-        services.AddControllersWithViews(opts =>
-            {
-                if (osharp.Mvc?.IsLongIdModelBinder == true)
-                {
-                    opts.ModelBinderProviders.Insert(0, new LongIdModelBinderProvider());
-                }
-            })
+        services.AddControllersWithViews()
             .AddControllersAsServices()
             .AddNewtonsoftJson(options =>
             {
