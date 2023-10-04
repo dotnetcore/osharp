@@ -12,6 +12,7 @@ using Newtonsoft.Json.Serialization;
 
 using OSharp.AspNetCore.Cors;
 using OSharp.AspNetCore.Mvc.Filters;
+using OSharp.AspNetCore.Mvc.ModelBinding;
 using OSharp.Core.Options;
 
 
@@ -47,7 +48,13 @@ public abstract class MvcPackBase : AspOsharpPack
         _corsInitializer.AddCors(services);
 
         OsharpOptions osharp = services.GetOsharpOptions();
-        services.AddControllersWithViews()
+        services.AddControllersWithViews(opts =>
+            {
+                if (osharp.Mvc?.IsLongIdModelBinder == true)
+                {
+                    opts.ModelBinderProviders.Insert(0, new LongIdModelBinderProvider());
+                }
+            })
             .AddControllersAsServices()
             .AddNewtonsoftJson(options =>
             {

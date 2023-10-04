@@ -29,3 +29,9 @@ public class MvcOptions
     /// </summary>
     public bool IsLongToStringConvert { get; set; } = true;
 }
+
+    /// <summary>
+    /// 获取或设置 是否使用雪花Id模型绑定器，默认：false
+    /// </summary>
+    public bool IsLongIdModelBinder { get; set; } = false;
+}
