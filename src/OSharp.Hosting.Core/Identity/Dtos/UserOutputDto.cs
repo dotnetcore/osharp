@@ -40,6 +40,7 @@ public class UserOutputDto : IOutputDto, IDataAuthEnabled
         LockoutEnabled = u.LockoutEnabled;
         AccessFailedCount = u.AccessFailedCount;
         IsLocked = u.IsLocked;
+        IsSystem = u.IsSystem;
         CreatedTime = u.CreatedTime;
     }
 
@@ -97,6 +98,11 @@ public class UserOutputDto : IOutputDto, IDataAuthEnabled
     /// 获取或设置 是否锁定当前信息
     /// </summary>
     public bool IsLocked { get; set; }
+
+    /// <summary>
+    /// 获取或设置 是否系统用户
+    /// </summary>
+    public bool IsSystem { get; set; }
 
     /// <summary>
     /// 获取或设置 创建时间

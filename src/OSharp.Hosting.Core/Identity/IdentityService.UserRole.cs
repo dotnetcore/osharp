@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityService.UserRole.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -50,14 +50,21 @@ public partial class IdentityService
     /// <returns>业务操作结果</returns>
     public async Task<OperationResult> UpdateUserRoles(params UserRoleInputDto[] dtos)
     {
-        Check2.Validate<UserRoleInputDto,Guid>(dtos, nameof(dtos));
+        Check2.Validate<UserRoleInputDto, Guid>(dtos, nameof(dtos));
 
         List<string> userNames = new List<string>();
         OperationResult result = await UserRoleRepository.UpdateAsync(dtos,
             (dto, entity) =>
             {
-                string userName = UserRoleRepository.QueryAsNoTracking(m => m.UserId == entity.UserId).Select(m => m.User.UserName).FirstOrDefault();
-                userNames.AddIfNotNull(userName);
+                var user = UserRepository.QueryAsNoTracking(m => m.Id == entity.UserId).Select(m => new
+                {
+                    m.UserName, m.IsSystem
+                }).First();
+                if (user.IsSystem)
+                {
+                    throw new OsharpException($"系统用户“{user.UserName}”的角色分配不能更新");
+                }
+                userNames.AddIfNotNull(user.UserName);
                 return Task.FromResult(0);
             });
         if (result.Succeeded && userNames.Count > 0)
@@ -75,17 +82,25 @@ public partial class IdentityService
     /// <returns>业务操作结果</returns>
     public async Task<OperationResult> DeleteUserRoles(Guid[] ids)
     {
-        List<string>userNames = new List<string>();
+        List<string> userNames = new List<string>();
         OperationResult result = await UserRoleRepository.DeleteAsync(ids,
             (entity) =>
             {
-                string userName = UserRoleRepository.QueryAsNoTracking(m => m.UserId == entity.UserId).Select(m => m.User.UserName).FirstOrDefault();
-                userNames.AddIfNotNull(userName);
+                var user = UserRepository.QueryAsNoTracking(m => m.Id == entity.UserId).Select(m => new
+                {
+                    m.UserName,
+                    m.IsSystem
+                }).First();
+                if (user.IsSystem)
+                {
+                    throw new OsharpException($"系统用户“{user.UserName}”的角色不能删除");
+                }
+                userNames.AddIfNotNull(user.UserName);
                 return Task.FromResult(0);
             });
         if (result.Succeeded && userNames.Count > 0)
         {
-            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData(){UserNames = userNames.ToArray()};
+            OnlineUserCacheRemoveEventData eventData = new OnlineUserCacheRemoveEventData() { UserNames = userNames.ToArray() };
             await EventBus.PublishAsync(eventData);
         }
 
@@ -104,6 +119,11 @@ public partial class IdentityService
         if (user == null)
         {
             return new OperationResult(OperationResultType.QueryNull, $"编号为“{userId}”的用户不存在");
+        }
+
+        if (user.IsSystem)
+        {
+            return new OperationResult(OperationResultType.Error, $"系统用户“{user.UserName}”不能变更角色");
         }
         IList<string> roleNames = RoleManager.Roles.Where(m => roleIds.Contains(m.Id)).Select(m => m.Name).ToList();
         IList<string> existRoleNames = await UserManager.GetRolesAsync(user);

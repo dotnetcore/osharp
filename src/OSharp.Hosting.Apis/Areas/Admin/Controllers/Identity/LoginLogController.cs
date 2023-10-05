@@ -34,6 +34,7 @@ public class LoginLogController : AdminApiControllerBase
     {
         Check.NotNull(request, nameof(request));
 
+        request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
         Expression<Func<LoginLog, bool>> exp = FilterService.GetExpression<LoginLog>(request.FilterGroup);
         var page = IdentityContract.LoginLogs.ToPage(exp,
             request.PageCondition,
@@ -44,8 +45,8 @@ public class LoginLogController : AdminApiControllerBase
             }).ToPageResult(data => data.Select(m => new LoginLogOutputDto(m.D)
         {
             UserName = m.User.UserName,
-            NickName = m.User.NickName
-        }).ToArray());
+            NickName = m.User.NickName,
+}).ToArray());
 
         return new AjaxResult(page.ToPageData());
     }
