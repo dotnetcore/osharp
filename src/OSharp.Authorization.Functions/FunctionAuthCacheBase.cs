@@ -29,7 +29,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     where TUser : UserBase<TUserKey>
     where TUserKey : IEquatable<TUserKey>
 {
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
     private readonly IServiceProvider _serviceProvider;
     private readonly IDistributedCache _cache;
     private readonly ILogger _logger;
@@ -103,6 +103,10 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
         string key = GetFunctionRolesKey(functionId);
         IFunctionHandler functionHandler = _serviceProvider.GetRequiredService<IFunctionHandler>();
         var function = functionHandler.GetFunction(functionId);
+        if (function == null)
+        {
+            return Array.Empty<string>();
+        }
         string[] roleNames;
         if (!forceRefresh)
         {
