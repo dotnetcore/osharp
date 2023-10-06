@@ -47,6 +47,7 @@ const osharp: AppRouteModule = {
       redirect: '/system/@(urlModule)/@(module.Entities.FirstOrDefault()?.Name.UpperToLowerAndSplit() ?? "index")',
       meta: {
         title: t('routes.osharp.@(lowerModule).@(lowerModule)'),
+        icon: '@(module.Icon)',
         acl: ['Root.Admin.@(module.Name)'],
       },
       children: [
@@ -57,9 +58,10 @@ const osharp: AppRouteModule = {
 <text>        {
           path: '@(urlEntity)',
           name: '@(entity.Name)',
-          component: () => import('/@@/views/osharp/@(lowerModule)/@(lowerEntity).vue'),
+          component: () => import('/@@/views/osharp/@(lowerModule)/@(entity.Name).vue'),
           meta: {
             title: t('routes.osharp.@(lowerModule).@(lowerEntity)'),
+            icon: '@(entity.Icon)',
             acl: ['Root.Admin.@(module.Name).@(entity.Name)'],
           },
         },
