@@ -30,7 +30,7 @@ public abstract class ModuleHandlerBase<TModule, TModuleInputDto, TModuleKey, TM
         _serviceProvider = serviceProvider;
         _moduleInfoPicker = serviceProvider.GetService<IModuleInfoPicker>();
         Logger = serviceProvider.GetLogger(GetType());
-        ModuleInfos = new ModuleInfo[0];
+        ModuleInfos = Array.Empty<ModuleInfo>();
     }
 
     /// <summary>

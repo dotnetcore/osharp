@@ -42,7 +42,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<HangfirePack>()
+                //.AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
         }

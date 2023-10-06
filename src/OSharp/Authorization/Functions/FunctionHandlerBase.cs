@@ -63,6 +63,21 @@ public abstract class FunctionHandlerBase<TFunction> : IFunctionHandler
     public abstract MethodInfo[] GetMethodInfos(Type functionType);
 
     /// <summary>
+    /// 查找指定编号的功能信息
+    /// </summary>
+    /// <param name="functionId">功能编号</param>
+    /// <returns></returns>
+    public IFunction GetFunction(Guid functionId)
+    {
+        if (_functions.Count == 0)
+        {
+            RefreshCache();
+        }
+
+        return _functions.FirstOrDefault(m => m.Id.Equals(functionId));
+    }
+
+    /// <summary>
     /// 查找指定条件的功能信息
     /// </summary>
     /// <param name="area">区域</param>
