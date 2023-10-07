@@ -49,10 +49,17 @@ public class EntityInfoController : AdminApiControllerBase
     [HttpGet]
     [ModuleInfo]
     [Description("读取节点")]
-    public List<EntityInfoNode> ReadNode()
+    public AjaxResult ReadNode()
     {
-        List<EntityInfoNode> nodes = _dataAuthManager.EntityInfos.OrderBy(m => m.TypeName).ToOutput<EntityInfo, EntityInfoNode>().ToList();
-        return nodes;
+        IFunction function = this.GetExecuteFunction();
+        Expression<Func<EntityInfo, bool>> exp = m => true;
+        var nodes = CacheService.ToCacheArray(_dataAuthManager.EntityInfos.OrderBy(m => m.TypeName), exp, m => new EntityInfoNode()
+        {
+            Id = m.Id,
+            Name = m.Name,
+            TypeName = m.TypeName
+        }, function);
+        return new AjaxResult(nodes);
     }
 
     /// <summary>

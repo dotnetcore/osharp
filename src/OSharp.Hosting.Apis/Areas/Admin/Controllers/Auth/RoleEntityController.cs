@@ -38,15 +38,12 @@ public class RoleEntityController : AdminApiControllerBase
     public AjaxResult Read(PageRequest request)
     {
         Expression<Func<EntityRole, bool>> predicate = FilterService.GetExpression<EntityRole>(request.FilterGroup);
-        if (request.PageCondition.SortConditions.Length == 0)
+        request.AddDefaultSortCondition(new[]
         {
-            request.PageCondition.SortConditions = new[]
-            {
-                new SortCondition("RoleId"),
-                new SortCondition("EntityId"),
-                new SortCondition("Operation")
-            };
-        }
+            new SortCondition("RoleId"),
+            new SortCondition("EntityId"),
+            new SortCondition("Operation")
+        });
         RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
         Func<EntityRole, bool> updateFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
         Func<EntityRole, bool> deleteFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
