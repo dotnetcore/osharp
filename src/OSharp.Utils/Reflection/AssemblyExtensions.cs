@@ -28,7 +28,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetFileVersion(this Assembly assembly)
         {
-            assembly.CheckNotNull("assembly");
+            assembly.CheckNotNull(nameof(assembly));
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
             return info.FileVersion;
         }
@@ -38,10 +38,10 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetProductVersion(this Assembly assembly)
         {
-            assembly.CheckNotNull("assembly");
+            assembly.CheckNotNull(nameof(assembly));
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = info.ProductVersion;
-            if (version.Contains("+"))
+            if (version?.Contains("+") == true)
             {
                 version = version.ReplaceRegex(@"\+(\w+)?", "");
             }
@@ -64,7 +64,7 @@ namespace OSharp.Reflection
             CompilationLibrary lib = null;
             foreach (string dllName in dllNames)
             {
-                lib = DependencyContext.Default.CompileLibraries.FirstOrDefault(m => m.Name == dllName);
+                lib = DependencyContext.Default?.CompileLibraries.FirstOrDefault(m => m.Name == dllName);
                 if (lib != null)
                 {
                     break;
