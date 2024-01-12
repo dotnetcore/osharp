@@ -74,7 +74,7 @@ public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TUserKey, 
             {
                 IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
                 ClaimsPrincipal principal = accessor?.HttpContext?.User;
-                if (principal != null && principal.Identity is ClaimsIdentity identity)
+                if (principal is { Identity: ClaimsIdentity identity })
                 {
                     PropertyInfo property = typeof(TUser).GetProperty("Id");
                     if (property != null && !identity.HasClaim(m => m.Type == OsharpConstants.UserIdTypeName))

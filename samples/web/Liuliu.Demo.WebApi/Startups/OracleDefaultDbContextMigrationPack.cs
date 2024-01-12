@@ -7,7 +7,7 @@
 //  <last-date>2019-04-18 20:57</last-date>
 // -----------------------------------------------------------------------
 
-#if !NET8_0_OR_GREATER
+
 using System;
 using System.ComponentModel;
 
@@ -47,4 +47,3 @@ namespace Liuliu.Demo.Web.Startups
         }
     }
 }
-#endif
