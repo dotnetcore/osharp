@@ -17,14 +17,6 @@ namespace OSharp.Authorization.Dtos;
 public abstract class EntityRoleInputDtoBase<TRoleKey> : IInputDto<Guid>
 {
     /// <summary>
-    /// 初始化一个<see cref="EntityRoleInputDtoBase{TRoleKey}"/>类型的新实例
-    /// </summary>
-    protected EntityRoleInputDtoBase()
-    {
-        FilterGroup = new FilterGroup();
-    }
-
-    /// <summary>
     /// 获取或设置 主键，唯一标识
     /// </summary>
     [DisplayName("编号")]
@@ -47,12 +39,6 @@ public abstract class EntityRoleInputDtoBase<TRoleKey> : IInputDto<Guid>
     /// </summary>
     [DisplayName("数据权限操作")]
     public DataAuthOperation Operation { get; set; }
-
-    /// <summary>
-    /// 获取或设置 过滤条件组
-    /// </summary>
-    [DisplayName("数据筛选条件组")]
-    public FilterGroup FilterGroup { get; set; }
 
     /// <summary>
     /// 获取或设置 是否锁定

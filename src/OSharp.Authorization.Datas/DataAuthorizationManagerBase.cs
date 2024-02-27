@@ -7,6 +7,8 @@
 //  <last-date>2020-02-26 23:15</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Json;
+
 
 namespace OSharp.Authorization.DataAuthorization;
 
@@ -141,22 +143,23 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
                     throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                 }
 
-                OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
-                if (!checkResult.Succeeded)
-                {
-                    throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
-                }
-
+            },
+            async (dto, entity) =>
+            {
                 if (!dto.IsLocked)
                 {
+                    TRole role = await RoleRepository.GetAsync(dto.RoleId);
+                    TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(dto.EntityId);
                     eventData.SetItems.Add(new DataAuthCacheItem()
                     {
                         RoleName = role.Name,
                         EntityTypeFullName = entityInfo.TypeName,
-                        Operation = dto.Operation,
-                        FilterGroup = dto.FilterGroup
+                        Operation = entity.Operation,
+                        FilterGroup = entity.FilterGroup
                     });
                 }
+
+                return entity;
             });
         if (result.Succeeded && eventData.HasData())
         {
@@ -197,18 +200,12 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
                     throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                 }
 
-                OperationResult checkResult = CheckFilterGroup(dto.FilterGroup, entityInfo);
-                if (!checkResult.Succeeded)
-                {
-                    throw new OsharpException($"数据规则验证失败：{checkResult.Message}");
-                }
-
                 DataAuthCacheItem cacheItem = new DataAuthCacheItem()
                 {
                     RoleName = role.Name,
                     EntityTypeFullName = entityInfo.TypeName,
                     Operation = dto.Operation,
-                    FilterGroup = dto.FilterGroup
+                    FilterGroup = entity.FilterGroup
                 };
                 if (dto.IsLocked)
                 {
@@ -229,6 +226,63 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
     }
 
     /// <summary>
+    /// 设置角色数据权限的过滤条件组
+    /// </summary>
+    /// <param name="id">权限记录identity.api</param>
+    /// <param name="group">过滤条件组</param>
+    /// <returns>业务操作结果</returns>
+    public async Task<OperationResult> SetFilterGroup(Guid id, FilterGroup group)
+    {
+        TEntityRole entityRole = await EntityRoleRepository.GetAsync(id);
+        if (entityRole == null)
+        {
+            return new OperationResult(OperationResultType.QueryNull, $"编号为“{id}”的数据权限信息不存在");
+        }
+
+        TRole role = await RoleRepository.GetAsync(entityRole.RoleId);
+        if (role == null)
+        {
+            return new OperationResult(OperationResultType.QueryNull, $"编号为“{entityRole.RoleId}”的角色信息不存在");
+        }
+
+        TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(entityRole.EntityId);
+        if (entityInfo == null)
+        {
+            return new OperationResult(OperationResultType.QueryNull, $"编号为“{entityRole.EntityId}”的数据实体信息不存在");
+        }
+
+        OperationResult checkResult = CheckFilterGroup(group, entityInfo);
+        if (!checkResult.Succeeded)
+        {
+            return new OperationResult(OperationResultType.Error, $"数据规则验证失败：{checkResult.Message}");
+        }
+
+        IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
+        entityRole.FilterGroupJson = group.ToJsonString();
+        int count = await EntityRoleRepository.UpdateAsync(entityRole);
+        await unitOfWork.CommitAsync();
+        if (count > 0)
+        {
+            DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
+            eventData.SetItems.Add(new DataAuthCacheItem()
+            {
+                RoleName = role.Name,
+                EntityTypeFullName = entityInfo.TypeName,
+                Operation = entityRole.Operation,
+                FilterGroup = entityRole.FilterGroup
+            });
+            if (eventData.HasData())
+            {
+                await EventBus.PublishAsync(eventData);
+            }
+
+            return new OperationResult(OperationResultType.Success, $"{role.Name} - {entityInfo.Name} - {entityRole.Operation} 的过滤条件设置成功");
+        }
+
+        return OperationResult.NoChanged;
+    }
+
+    /// <summary>
     /// 删除实体角色信息
     /// </summary>
     /// <param name="ids">要删除的实体角色信息编号</param>
@@ -244,7 +298,7 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
                 if (role != null && entityInfo != null)
                 {
                     eventData.RemoveItems.Add(new DataAuthCacheItem()
-                        { RoleName = role.Name, EntityTypeFullName = entityInfo.TypeName, Operation = entity.Operation });
+                    { RoleName = role.Name, EntityTypeFullName = entityInfo.TypeName, Operation = entity.Operation });
                 }
             });
         if (result.Succeeded && eventData.HasData())
