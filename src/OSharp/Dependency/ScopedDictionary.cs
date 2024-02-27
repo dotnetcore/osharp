@@ -34,11 +34,6 @@ public sealed class ScopedDictionary : ConcurrentDictionary<string, object>, IDi
     /// </summary>
     public ClaimsIdentity Identity { get; set; }
 
-    /// <summary>
-    /// 获取或设置 是否忽略数据权限检查
-    /// </summary>
-    public bool IsIgnoreDataAuth { get; set; } = false;
-
     /// <summary>释放资源.</summary>
     public void Dispose()
     {
