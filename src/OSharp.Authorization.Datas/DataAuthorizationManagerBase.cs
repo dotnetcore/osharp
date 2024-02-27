@@ -122,7 +122,6 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
     {
         Check2.Validate<TEntityRoleInputDto, Guid>(dtos, nameof(dtos));
 
-        DataAuthCacheRefreshEventData eventData = new DataAuthCacheRefreshEventData();
         OperationResult result = await EntityRoleRepository.InsertAsync(dtos,
             async dto =>
             {
@@ -143,28 +142,7 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
                     throw new OsharpException($"角色“{role.Name}”和实体“{entityInfo.Name}”和操作“{dto.Operation}”的数据权限规则已存在，不能重复添加");
                 }
 
-            },
-            async (dto, entity) =>
-            {
-                if (!dto.IsLocked)
-                {
-                    TRole role = await RoleRepository.GetAsync(dto.RoleId);
-                    TEntityInfo entityInfo = await EntityInfoRepository.GetAsync(dto.EntityId);
-                    eventData.SetItems.Add(new DataAuthCacheItem()
-                    {
-                        RoleName = role.Name,
-                        EntityTypeFullName = entityInfo.TypeName,
-                        Operation = entity.Operation,
-                        FilterGroup = entity.FilterGroup
-                    });
-                }
-
-                return entity;
             });
-        if (result.Succeeded && eventData.HasData())
-        {
-            await EventBus.PublishAsync(eventData);
-        }
 
         return result;
     }
@@ -211,7 +189,7 @@ public abstract class DataAuthorizationManagerBase<TEntityInfo, TEntityInfoInput
                 {
                     eventData.RemoveItems.Add(cacheItem);
                 }
-                else
+                else if(entity.FilterGroup != null)
                 {
                     eventData.SetItems.Add(cacheItem);
                 }
