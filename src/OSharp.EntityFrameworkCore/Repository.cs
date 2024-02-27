@@ -735,7 +735,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
             // 物理删除
             count = await _dbSet.Where(predicate).DeleteAsync(_cancellationTokenProvider.Token);
         }
-            
+
         await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return count;
     }
@@ -829,7 +829,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         //走EF.Plus的时候，是不调用SaveChanges的，需要手动开启事务
         await ((DbContextBase)_dbContext).BeginOrUseTransactionAsync(_cancellationTokenProvider.Token);
         int count = await _dbSet.Where(predicate).UpdateAsync(updateExpression, _cancellationTokenProvider.Token);
-            
+
         await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return count;
     }
@@ -938,14 +938,15 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         {
             return;
         }
-            
+
         bool flag = _dataAuthService.CheckDataAuth<TEntity>(operation, entities);
         if (!flag)
         {
-            throw new OsharpException($"实体 {typeof(TEntity).Name} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
+            throw new OsharpException(
+                $"{operation.ToDescription()}编号为 {entities.ExpandAndToString(m => m.Id.ToString())} 的 {typeof(TEntity).GetDescription()} 时操作权限不足(403)");
         }
     }
-        
+
     private TEntity[] CheckInsert(params TEntity[] entities)
     {
         for (int i = 0; i < entities.Length; i++)
