@@ -116,6 +116,12 @@ public class DataAuthService : IDataAuthService
             return true;
         }
 
+        ScopedDictionary dict = _provider.GetService<ScopedDictionary>();
+        if (dict.IsIgnoreDataAuth)
+        {
+            return true;
+        }
+
         Expression<Func<TEntity, bool>> exp = GetDataFilter<TEntity>(operation);
         Func<TEntity, bool> func = exp.Compile();
         bool has = entities.All(func);

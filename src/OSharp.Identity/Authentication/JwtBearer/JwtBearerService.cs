@@ -116,6 +116,9 @@ public class JwtBearerService<TUser, TUserKey> : IJwtBearerService
         };
         var (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.RefreshToken, refreshToken);
         string refreshTokenStr = token;
+        //关闭数据权限检查
+        ScopedDictionary scopedDict = _provider.GetService<ScopedDictionary>();
+        scopedDict.IsIgnoreDataAuth = true;
         IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
         UserManager<TUser> userManager = _provider.GetService<UserManager<TUser>>();
         refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };
