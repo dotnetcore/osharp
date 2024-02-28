@@ -12,13 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[6.0.26, 7.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[6.0.27, 7.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.15, 8.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.16, 8.0.0)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.1, 9.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.2, 9.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
