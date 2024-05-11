@@ -741,7 +741,11 @@ namespace OSharp.Extensions
         /// <returns>十六进制字符串</returns>
         public static string ToHexString(this byte[] bytes)
         {
+#if NET
+            return Convert.ToHexString(bytes);
+#else
             return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+#endif
         }
 
         /// <summary>
@@ -753,12 +757,16 @@ namespace OSharp.Extensions
         {
             hexString = hexString ?? "";
             hexString = hexString.Replace(" ", "");
+#if NET
+            return Convert.FromHexString(hexString);
+#else
             byte[] bytes = new byte[hexString.Length / 2];
             for (int i = 0; i < bytes.Length; i++)
             {
                 bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
             }
             return bytes;
+#endif
         }
 
         /// <summary>
