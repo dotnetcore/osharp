@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="TypeExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2015 OSharp. All rights reserved.
 //  </copyright>
@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 
 using OSharp.Data;
 using OSharp.Extensions;
+using OSharp.Localized;
 
 
 namespace OSharp.Reflection
@@ -104,6 +105,11 @@ namespace OSharp.Reflection
         /// <returns>返回Description特性描述信息，如不存在则返回成员的名称</returns>
         public static string GetDescription(this MemberInfo member, bool inherit = true)
         {
+            LocalizedDescriptionAttribute localizedDesc = member.GetAttribute<LocalizedDescriptionAttribute>(inherit);
+            if (localizedDesc != null)
+            {
+                return localizedDesc.Description;
+            }
             DescriptionAttribute desc = member.GetAttribute<DescriptionAttribute>(inherit);
             if (desc != null)
             {
