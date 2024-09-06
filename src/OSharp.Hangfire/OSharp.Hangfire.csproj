@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.8.11" />
-    <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.0" />
+    <PackageReference Include="Hangfire" Version="1.8.*" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.*" />
   </ItemGroup>
 
   <ItemGroup>

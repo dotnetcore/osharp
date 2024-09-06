@@ -13,22 +13,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="Dapper" Version="2.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[6.0.27, 7.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[6.0.27, 7.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[6.102.1.1, 7.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[7.0.16, 8.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[7.0.16, 8.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[7.102.1.1, 8.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[8.0.2, 9.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[8.0.2, 9.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[8.102.1.1, 9.0.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.*" />
   </ItemGroup>
   
   <ItemGroup>

@@ -12,13 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[6.0.2, 7.0.0)" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[7.0.0, 8.0.0)" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="[8.0.0, 9.0.0)" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />

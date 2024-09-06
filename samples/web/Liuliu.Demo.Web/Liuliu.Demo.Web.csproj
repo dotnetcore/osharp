@@ -14,15 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.4.0" />
+    <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6'">
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="[6.0.27, 7.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[6.0.27, 7.0.0)">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="[6.0.16, 7.0.0)" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
