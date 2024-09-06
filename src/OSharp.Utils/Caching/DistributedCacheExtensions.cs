@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Distributed;
@@ -46,7 +47,7 @@ namespace OSharp.Caching
         /// <summary>
         /// 异步将对象存入缓存中
         /// </summary>
-        public static async Task SetAsync(this IDistributedCache cache, string key, object value, DistributedCacheEntryOptions options = null)
+        public static async Task SetAsync(this IDistributedCache cache, string key, object value, DistributedCacheEntryOptions options = null, CancellationToken token = default)
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
@@ -54,11 +55,11 @@ namespace OSharp.Caching
             string json = value.ToJsonString();
             if (options == null)
             {
-                await cache.SetStringAsync(key, json);
+                await cache.SetStringAsync(key, json, token);
             }
             else
             {
-                await cache.SetStringAsync(key, json, options);
+                await cache.SetStringAsync(key, json, options, token);
             }
         }
 
@@ -79,7 +80,7 @@ namespace OSharp.Caching
         /// <summary>
         /// 异步将对象存入缓存中，使用指定时长
         /// </summary>
-        public static Task SetAsync(this IDistributedCache cache, string key, object value, int cacheSeconds)
+        public static Task SetAsync(this IDistributedCache cache, string key, object value, int cacheSeconds, CancellationToken token = default)
         {
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
@@ -87,9 +88,9 @@ namespace OSharp.Caching
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            return cache.SetAsync(key, value, options);
+            return cache.SetAsync(key, value, options, token);
         }
-        
+
         /// <summary>
         /// 获取指定键的缓存项
         /// </summary>
@@ -106,9 +107,9 @@ namespace OSharp.Caching
         /// <summary>
         /// 异步获取指定键的缓存项
         /// </summary>
-        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key)
+        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, CancellationToken token = default)
         {
-            string json = await cache.GetStringAsync(key);
+            string json = await cache.GetStringAsync(key, token);
             if (json == null)
             {
                 return default(TResult);
@@ -138,9 +139,13 @@ namespace OSharp.Caching
         /// <summary>
         /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
         /// </summary>
-        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, DistributedCacheEntryOptions options = null)
+        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache,
+            string key,
+            Func<Task<TResult>> getAsyncFunc,
+            DistributedCacheEntryOptions options = null,
+            CancellationToken token = default)
         {
-            TResult result = await cache.GetAsync<TResult>(key);
+            TResult result = await cache.GetAsync<TResult>(key, token);
             if (!Equals(result, default(TResult)))
             {
                 return result;
@@ -150,7 +155,30 @@ namespace OSharp.Caching
             {
                 return default(TResult);
             }
-            await cache.SetAsync(key, result, options);
+            await cache.SetAsync(key, result, options, token);
+            return result;
+        }
+
+        /// <summary>
+        /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
+        /// </summary>
+        public static async Task<TResult> GetAsync<TResult>(this IDistributedCache cache,
+            string key,
+            Func<CancellationToken, Task<TResult>> getAsyncFunc,
+            DistributedCacheEntryOptions options = null,
+            CancellationToken token = default)
+        {
+            TResult result = await cache.GetAsync<TResult>(key, token);
+            if (!Equals(result, default(TResult)))
+            {
+                return result;
+            }
+            result = await getAsyncFunc(token);
+            if (Equals(result, default(TResult)))
+            {
+                return default(TResult);
+            }
+            await cache.SetAsync(key, result, options, token);
             return result;
         }
 
@@ -169,15 +197,35 @@ namespace OSharp.Caching
         /// <summary>
         /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
         /// </summary>
-        public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache, string key, Func<Task<TResult>> getAsyncFunc, int cacheSeconds)
+        public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache,
+            string key,
+            Func<Task<TResult>> getAsyncFunc,
+            int cacheSeconds,
+            CancellationToken token = default)
         {
             Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
 
             DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
             options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
-            return cache.GetAsync<TResult>(key, getAsyncFunc, options);
+            return cache.GetAsync<TResult>(key, getAsyncFunc, options, token);
         }
-        
+
+        /// <summary>
+        /// 异步获取指定键的缓存项，不存在则从指定委托获取，并回存到缓存中再返回
+        /// </summary>
+        public static Task<TResult> GetAsync<TResult>(this IDistributedCache cache,
+            string key,
+            Func<CancellationToken, Task<TResult>> getAsyncFunc,
+            int cacheSeconds,
+            CancellationToken token = default)
+        {
+            Check.GreaterThan(cacheSeconds, nameof(cacheSeconds), 0);
+
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+            options.SetAbsoluteExpiration(TimeSpan.FromSeconds(cacheSeconds));
+            return cache.GetAsync<TResult>(key, getAsyncFunc, options, token);
+        }
+
         /// <summary>
         /// 移除指定键的缓存项
         /// </summary>
@@ -193,14 +241,14 @@ namespace OSharp.Caching
         /// <summary>
         /// 移除指定键的缓存项
         /// </summary>
-        public static async Task RemoveAsync(this IDistributedCache cache, params string[] keys)
+        public static async Task RemoveAsync(this IDistributedCache cache, CancellationToken token = default, params string[] keys)
         {
             Check.NotNull(keys, nameof(keys));
             foreach (string key in keys)
             {
-                await cache.RemoveAsync(key);
+                await cache.RemoveAsync(key, token);
             }
         }
-        
+
     }
 }
