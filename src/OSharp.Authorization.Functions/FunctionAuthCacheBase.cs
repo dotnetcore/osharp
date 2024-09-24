@@ -7,6 +7,8 @@
 //  <last-date>2018-05-11 0:59</last-date>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+
 
 namespace OSharp.Authorization;
 
@@ -27,7 +29,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     where TUser : UserBase<TUserKey>
     where TUserKey : IEquatable<TUserKey>
 {
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
     private readonly IServiceProvider _serviceProvider;
     private readonly IDistributedCache _cache;
     private readonly ILogger _logger;
@@ -99,13 +101,19 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
     public string[] GetFunctionRoles(long functionId, IServiceProvider scopeProvider = null, bool forceRefresh = false)
     {
         string key = GetFunctionRolesKey(functionId);
+        IFunctionHandler functionHandler = _serviceProvider.GetRequiredService<IFunctionHandler>();
+        var function = functionHandler.GetFunction(functionId);
+        if (function == null)
+        {
+            return Array.Empty<string>();
+        }
         string[] roleNames;
         if (!forceRefresh)
         {
             roleNames = _cache.Get<string[]>(key);
             if (roleNames != null)
             {
-                _logger.LogDebug($"从缓存中获取到功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
+                _logger.LogDebug($"从缓存中获取到功能“{function.Name}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
                 return roleNames;
             }
         }
@@ -139,7 +147,7 @@ public abstract class FunctionAuthCacheBase<TModuleFunction, TModuleRole, TModul
         // 有效期为 7 ± 1 天
         int seconds = 7 * 24 * 3600 + _random.Next(-24 * 3600, 24 * 3600);
         _cache.Set(key, roleNames, seconds);
-        _logger.LogDebug($"添加功能“{functionId}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
+        _logger.LogDebug($"添加功能“{function.Name}”的“Function-Roles[]”缓存，角色数：{roleNames.Length}");
 
         serviceScope?.Dispose();
         return roleNames;

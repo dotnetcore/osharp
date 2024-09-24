@@ -29,12 +29,18 @@ public class LoginLogOutputDto : IOutputDto
     /// </summary>
     public LoginLogOutputDto(LoginLog e)
     {
+        Id = e.Id;
         Ip = e.Ip;
         UserAgent = e.UserAgent;
         LogoutTime = e.LogoutTime;
         CreatedTime = e.CreatedTime;
         UserId = e.UserId;
     }
+
+    /// <summary>
+    /// 获取或设置 编号
+    /// </summary>
+    public long Id { get; set; }
 
     /// <summary>
     /// 获取或设置 登录IP

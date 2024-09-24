@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="AbstractBuilder.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
@@ -7,7 +7,9 @@
 // -----------------------------------------------------------------------
 
 using System;
+#if !NET8_0_OR_GREATER
 using System.Runtime.Serialization;
+#endif
 
 
 namespace OSharp.Exceptions
@@ -41,6 +43,7 @@ namespace OSharp.Exceptions
             : base(message, inner)
         { }
 
+#if !NET8_0_OR_GREATER
         /// <summary>
         /// 使用可序列化数据实例化一个<see cref="OsharpException"/>类的新实例
         /// </summary>
@@ -49,5 +52,6 @@ namespace OSharp.Exceptions
         protected OsharpException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         { }
+#endif
     }
 }

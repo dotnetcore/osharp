@@ -1,12 +1,12 @@
 <Project>
   <PropertyGroup>
-    <VersionMain>7.0</VersionMain>
-    <VersionPrefix>11</VersionPrefix>
-    <VersionSuffix>-snow</VersionSuffix>
-    <VersionSuffixVersion>1001</VersionSuffixVersion>
-    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)</Version>
-    <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
-    <!--<Version>$(VersionMain).$(VersionPrefix)</Version>
-    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>-->
+    <VersionMain>8.0</VersionMain>
+    <VersionPrefix>9</VersionPrefix>
+    <VersionSuffix>-preview.</VersionSuffix>
+    <VersionSuffixVersion>529</VersionSuffixVersion>
+    <!--<Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
+    <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>-->
+    <Version>$(VersionMain).$(VersionPrefix)</Version>
+    <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>
   </PropertyGroup>
 </Project>

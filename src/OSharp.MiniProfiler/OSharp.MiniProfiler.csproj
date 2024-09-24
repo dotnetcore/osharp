@@ -4,15 +4,15 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <PackageId>OSharp.MiniProfiler</PackageId>
     <Summary>OSharp MiniProfiler 性能监测组件</Summary>
     <Description>OSharp MiniProfiler 性能监测组件，基于MiniProfiler实现的性能监测组件</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
-    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.3.8" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.*" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup>

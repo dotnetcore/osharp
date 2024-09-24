@@ -11,6 +11,7 @@ using Liuliu.Demo.Web.Startups;
 
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Entity;
 using OSharp.Hangfire;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Identity;
@@ -42,9 +43,12 @@ namespace Liuliu.Demo.Web
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<HangfirePack>()
+                //.AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
+            
+            services.AddSingleton<IEntityBatchConfiguration, PropertyCommentConfiguration>();
+            services.AddSingleton<IEntityBatchConfiguration, PropertyUtcDateTimeConfiguration>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

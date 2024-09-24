@@ -15,11 +15,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    AuditEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    PropertyJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "实体名称"),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "实体类型名称"),
+                    AuditEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "是否数据审计"),
+                    PropertyJson = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "实体属性信息Json字符串")
                 },
                 constraints: table =>
                 {
@@ -30,21 +30,21 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Function",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Area = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Controller = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Action = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    IsController = table.Column<bool>(type: "bit", nullable: false),
-                    IsAjax = table.Column<bool>(type: "bit", nullable: false),
-                    AccessType = table.Column<int>(type: "int", nullable: false),
-                    IsAccessTypeChanged = table.Column<bool>(type: "bit", nullable: false),
-                    AuditOperationEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AuditEntityEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    CacheExpirationSeconds = table.Column<int>(type: "int", nullable: false),
-                    IsCacheSliding = table.Column<bool>(type: "bit", nullable: false),
-                    IsSlaveDatabase = table.Column<bool>(type: "bit", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "名称"),
+                    Area = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "区域"),
+                    Controller = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "控制器"),
+                    Action = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "功能"),
+                    IsController = table.Column<bool>(type: "bit", nullable: false, comment: "是否控制器"),
+                    IsAjax = table.Column<bool>(type: "bit", nullable: false, comment: "是否Ajax功能"),
+                    AccessType = table.Column<int>(type: "int", nullable: false, comment: "访问类型"),
+                    IsAccessTypeChanged = table.Column<bool>(type: "bit", nullable: false, comment: "访问类型是否更改"),
+                    AuditOperationEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "是否操作审计"),
+                    AuditEntityEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "是否数据审计"),
+                    CacheExpirationSeconds = table.Column<int>(type: "int", nullable: false, comment: "数据缓存秒数"),
+                    IsCacheSliding = table.Column<bool>(type: "bit", nullable: false, comment: "是否相对过期时间"),
+                    IsSlaveDatabase = table.Column<bool>(type: "bit", nullable: false, comment: "是否从库"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定")
                 },
                 constraints: table =>
                 {
@@ -55,13 +55,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_Module",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    OrderCode = table.Column<double>(type: "float", nullable: false),
-                    TreePathString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "模块名称"),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "模块描述"),
+                    Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "模块代码"),
+                    OrderCode = table.Column<double>(type: "float", nullable: false, comment: "排序码"),
+                    TreePathString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true, comment: "父节点树形路径"),
+                    ParentId = table.Column<long>(type: "bigint", nullable: true, comment: "父模块编号")
                 },
                 constraints: table =>
                 {
@@ -77,10 +77,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Organization",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "名称"),
+                    Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "编码"),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "描述"),
+                    ParentId = table.Column<long>(type: "bigint", nullable: true, comment: "父组织机构编号"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间")
                 },
                 constraints: table =>
                 {
@@ -96,19 +99,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditOperation",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    NickName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    OperationSystem = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Browser = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ResultType = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Elapsed = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "执行的功能名"),
+                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, comment: "当前用户标识"),
+                    UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true, comment: "当前用户名"),
+                    NickName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true, comment: "当前用户昵称"),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "当前访问IP"),
+                    OperationSystem = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true, comment: "操作系统"),
+                    Browser = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "浏览器"),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "UserAgent"),
+                    ResultType = table.Column<int>(type: "int", nullable: false, comment: "ResultType"),
+                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "消息"),
+                    Elapsed = table.Column<long>(type: "bigint", nullable: false, comment: "Elapsed"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "CreatedTime")
                 },
                 constraints: table =>
                 {
@@ -119,14 +122,14 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_KeyValue",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    ValueJson = table.Column<string>(type: "text", nullable: true),
-                    ValueType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Display = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Key = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false, comment: "数据键名"),
+                    ValueJson = table.Column<string>(type: "text", nullable: true, comment: "数据值JSON"),
+                    ValueType = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "数据值类型名"),
+                    Display = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, comment: "显示名称"),
+                    Remark = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "显示名称"),
+                    Order = table.Column<int>(type: "int", nullable: false, comment: "Order"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定")
                 },
                 constraints: table =>
                 {
@@ -137,19 +140,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_Menu",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Url = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    Target = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Acl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    OrderCode = table.Column<double>(type: "float", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    TreePathString = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "名称"),
+                    Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "显示"),
+                    Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "图标"),
+                    Url = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true, comment: "链接"),
+                    Target = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "链接目标"),
+                    Acl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "访问控制列表"),
+                    OrderCode = table.Column<double>(type: "float", nullable: false, comment: "节点内排序"),
+                    Data = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true, comment: "菜单数据"),
+                    TreePathString = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true, comment: "父节点树形路径"),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "是否启用"),
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false, comment: "是否系统"),
+                    ParentId = table.Column<long>(type: "bigint", nullable: true, comment: "父菜单编号")
                 },
                 constraints: table =>
                 {
@@ -165,9 +168,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleFunction",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
-                    FunctionId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false, comment: "模块编号"),
+                    FunctionId = table.Column<long>(type: "bigint", nullable: false, comment: "功能编号")
                 },
                 constraints: table =>
                 {
@@ -190,12 +193,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditEntity",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    OperateType = table.Column<int>(type: "int", nullable: false),
-                    OperationId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "实体名称"),
+                    TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "类型名称"),
+                    EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "类型名称"),
+                    OperateType = table.Column<int>(type: "int", nullable: false, comment: "OperateType"),
+                    OperationId = table.Column<long>(type: "bigint", nullable: false, comment: "OperationId")
                 },
                 constraints: table =>
                 {
@@ -212,13 +215,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditProperty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
-                    NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
-                    DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    AuditEntityId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "名称"),
+                    FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "字段"),
+                    OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "旧值"),
+                    NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "新值"),
+                    DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "数据类型"),
+                    AuditEntityId = table.Column<long>(type: "bigint", nullable: false, comment: "AuditEntityId")
                 },
                 constraints: table =>
                 {
@@ -235,13 +238,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityRole",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    EntityId = table.Column<long>(type: "bigint", nullable: false),
-                    Operation = table.Column<int>(type: "int", nullable: false),
-                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号"),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false, comment: "数据编号"),
+                    Operation = table.Column<int>(type: "int", nullable: false, comment: "数据权限操作"),
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "过滤条件组Json字符串"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间")
                 },
                 constraints: table =>
                 {
@@ -258,12 +261,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_EntityUser",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    EntityId = table.Column<long>(type: "bigint", nullable: false),
-                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false, comment: "数据编号"),
+                    FilterGroupJson = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "过滤条件组Json字符串"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间")
                 },
                 constraints: table =>
                 {
@@ -280,9 +283,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleRole",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false, comment: "模块编号"),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号")
                 },
                 constraints: table =>
                 {
@@ -299,10 +302,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleUser",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    ModuleId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    Disabled = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    ModuleId = table.Column<long>(type: "bigint", nullable: false, comment: "模块编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    Disabled = table.Column<bool>(type: "bit", nullable: false, comment: "Disabled")
                 },
                 constraints: table =>
                 {
@@ -319,12 +322,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_LoginLog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "登录IP"),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "用户代理头"),
+                    LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "退出时间"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号")
                 },
                 constraints: table =>
                 {
@@ -335,18 +338,18 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Role",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
                     MessageId = table.Column<long>(type: "bigint", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    NormalizedName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
-                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "角色名称"),
+                    NormalizedName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "标准化角色名称"),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "版本标识"),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "角色描述"),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false, comment: "是否管理员角色"),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false, comment: "是否默认角色"),
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false, comment: "是否系统角色"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "DeletedTime")
                 },
                 constraints: table =>
                 {
@@ -357,10 +360,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_RoleClaim",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号"),
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "声明类型"),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "声明值")
                 },
                 constraints: table =>
                 {
@@ -377,29 +380,29 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_User",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "备注"),
                     MessageId = table.Column<long>(type: "bigint", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    NickName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    NormalizeEmail = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    HeadImg = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    IsSystem = table.Column<bool>(type: "bit", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "用户名"),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "标准化的用户名"),
+                    NickName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "用户昵称"),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "电子邮箱"),
+                    NormalizeEmail = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "标准化的电子邮箱"),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "电子邮箱确认"),
+                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "密码哈希值"),
+                    HeadImg = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "用户头像"),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "安全标识"),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "版本标识"),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "手机号码"),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "手机号码确定"),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "双因子身份验证"),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true, comment: "锁定时间"),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false, comment: "是否登录锁"),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false, comment: "登录失败次数"),
+                    IsSystem = table.Column<bool>(type: "bit", nullable: false, comment: "是否系统用户"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "DeletedTime")
                 },
                 constraints: table =>
                 {
@@ -410,10 +413,10 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserClaim",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "声明类型"),
+                    ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "声明值")
                 },
                 constraints: table =>
                 {
@@ -430,9 +433,9 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserDetail",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "注册IP"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号")
                 },
                 constraints: table =>
                 {
@@ -449,13 +452,13 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "登录的登录提供程序"),
+                    ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "第三方用户的唯一标识"),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "第三方用户昵称"),
+                    Avatar = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "第三方用户头像"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间")
                 },
                 constraints: table =>
                 {
@@ -472,12 +475,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "DeletedTime")
                 },
                 constraints: table =>
                 {
@@ -500,11 +503,11 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
+                    LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "登录提供者"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "令牌名称"),
+                    Value = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true, comment: "令牌值")
                 },
                 constraints: table =>
                 {
@@ -521,19 +524,19 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_Message",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MessageType = table.Column<int>(type: "int", nullable: false),
-                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false),
-                    IsSended = table.Column<bool>(type: "bit", nullable: false),
-                    CanReply = table.Column<bool>(type: "bit", nullable: false),
-                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SenderId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "标题"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "内容"),
+                    MessageType = table.Column<int>(type: "int", nullable: false, comment: "消息类型"),
+                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false, comment: "新回复数"),
+                    IsSended = table.Column<bool>(type: "bit", nullable: false, comment: "是否发送"),
+                    CanReply = table.Column<bool>(type: "bit", nullable: false, comment: "是否允许回复"),
+                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "生效时间"),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "过期时间"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "删除时间"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    SenderId = table.Column<long>(type: "bigint", nullable: false, comment: "发送人编号")
                 },
                 constraints: table =>
                 {
@@ -550,12 +553,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReceive",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    ReadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    ReadDate = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "接收时间"),
+                    NewReplyCount = table.Column<long>(type: "bigint", nullable: false, comment: "新回复数，接收者使用"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    MessageId = table.Column<long>(type: "bigint", nullable: false, comment: "接收的主消息编号"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: "消息接收人编号")
                 },
                 constraints: table =>
                 {
@@ -578,16 +581,16 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReply",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    ParentMessageId = table.Column<long>(type: "bigint", nullable: false),
-                    ParentReplyId = table.Column<long>(type: "bigint", nullable: false),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    BelongMessageId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "消息内容"),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false, comment: "是否已读"),
+                    ParentMessageId = table.Column<long>(type: "bigint", nullable: false, comment: "回复的主消息，当回复主消息时有效"),
+                    ParentReplyId = table.Column<long>(type: "bigint", nullable: false, comment: "回复的回复消息，当回复回复消息时有效"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false, comment: "是否锁定"),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "删除时间"),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false, comment: " 消息回复人编号"),
+                    BelongMessageId = table.Column<long>(type: "bigint", nullable: false, comment: "回复所属主消息，用于避免递归查询")
                 },
                 constraints: table =>
                 {

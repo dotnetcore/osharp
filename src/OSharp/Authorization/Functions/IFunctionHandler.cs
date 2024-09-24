@@ -33,6 +33,13 @@ public interface IFunctionHandler
     MethodInfo[] GetMethodInfos(Type functionType);
 
     /// <summary>
+    /// 查找指定编号的功能信息
+    /// </summary>
+    /// <param name="functionId">功能编号</param>
+    /// <returns></returns>
+    IFunction GetFunction(long functionId);
+
+    /// <summary>
     /// 查找指定条件的功能信息
     /// </summary>
     /// <param name="area">区域</param>

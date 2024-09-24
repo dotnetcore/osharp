@@ -45,6 +45,8 @@ public class DataAuthService : IDataAuthService
     /// </summary>
     protected ScopedDictionary ScopedDictionary => _provider.GetService<ScopedDictionary>();
 
+    protected IList<Type> IgnoreDataAuthTypes { get; } = new List<Type>();
+
     /// <summary>
     /// 获取指定实体的数据权限过滤表达式
     /// </summary>
@@ -111,7 +113,7 @@ public class DataAuthService : IDataAuthService
     /// <returns>是否有权限</returns>
     public bool CheckDataAuth<TEntity>(DataAuthOperation operation, params TEntity[] entities)
     {
-        if (entities.Length == 0)
+        if (entities.Length == 0 || IgnoreDataAuthTypes.Contains(typeof(TEntity)))
         {
             return true;
         }
@@ -120,5 +122,14 @@ public class DataAuthService : IDataAuthService
         Func<TEntity, bool> func = exp.Compile();
         bool has = entities.All(func);
         return has;
+    }
+
+    /// <summary>
+    /// 设置当前请求中忽略数据权限验证的实体类型
+    /// </summary>
+    /// <param name="entityType">实体类型</param>
+    public void SetIgnoreDataAuth(Type entityType)
+    {
+        IgnoreDataAuthTypes.AddIfNotExist(entityType);
     }
 }

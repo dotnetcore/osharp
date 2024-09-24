@@ -33,7 +33,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetFileVersion(this Assembly assembly)
         {
-            assembly.CheckNotNull("assembly");
+            assembly.CheckNotNull(nameof(assembly));
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
             return info.FileVersion;
         }
@@ -43,7 +43,7 @@ namespace OSharp.Reflection
         /// </summary>
         public static string GetProductVersion(this Assembly assembly)
         {
-            assembly.CheckNotNull("assembly");
+            assembly.CheckNotNull(nameof(assembly));
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = info.ProductVersion;
             if (version?.Contains("+") == true)

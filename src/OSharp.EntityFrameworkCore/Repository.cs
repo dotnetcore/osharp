@@ -942,7 +942,8 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         bool flag = _dataAuthService.CheckDataAuth(operation, entities);
         if (!flag)
         {
-            throw new OsharpException($"实体 {typeof(TEntity)} 的数据 {entities.ExpandAndToString(m => m.Id.ToString())} 进行 {operation.ToDescription()} 操作时权限不足");
+            throw new OsharpException(
+                $"{operation.ToDescription()}编号为 {entities.ExpandAndToString(m => m.Id.ToString())} 的 {typeof(TEntity).GetDescription()} 时操作权限不足(403)");
         }
     }
 

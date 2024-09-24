@@ -4,15 +4,15 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <PackageId>OSharp.Hangfire</PackageId>
     <Summary>OSharp Hangfire 后台任务组件</Summary>
     <Description>OSharp Hangfire 后台任务组件，封装基于Hangfire后台任务的服务端实现</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.8.5" />
-    <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.0" />
+    <PackageReference Include="Hangfire" Version="1.8.*" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.*" />
   </ItemGroup>
 
   <ItemGroup>

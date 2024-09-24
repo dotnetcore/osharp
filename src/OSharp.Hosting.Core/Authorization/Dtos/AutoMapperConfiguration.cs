@@ -22,9 +22,6 @@ public class AutoMapperConfiguration : AutoMapperTupleBase
     /// </summary>
     public override void CreateMap()
     {
-        CreateMap<EntityRoleInputDto, EntityRole>()
-            .ForMember(mr => mr.FilterGroupJson, opt => opt.MapFrom(dto => dto.FilterGroup.ToJsonString(false, false)));
-
         //mapper.CreateMap<EntityRole, EntityRoleOutputDto>()
         //    .ForMember(dto => dto.FilterGroup, opt => opt.ResolveUsing(mr => mr.FilterGroupJson?.FromJsonString<FilterGroup>()));
     }

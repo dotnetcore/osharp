@@ -17,7 +17,6 @@ public static class HttpContextExtensions
     /// <summary>
     /// 确定指定的 HTTP 请求是否为 AJAX 请求。
     /// </summary>
-    ///
     /// <returns>
     /// 如果指定的 HTTP 请求是 AJAX 请求，则为 true；否则为 false。
     /// </returns>
@@ -75,7 +74,7 @@ public static class HttpContextExtensions
         string ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
         if (string.IsNullOrEmpty(ip))
         {
-            ip = context.Connection.RemoteIpAddress.ToString();
+            ip = context.Connection.RemoteIpAddress?.ToString();
         }
         return ip;
     }

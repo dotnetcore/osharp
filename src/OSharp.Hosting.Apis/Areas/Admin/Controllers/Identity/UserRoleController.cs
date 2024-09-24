@@ -49,6 +49,7 @@ public class UserRoleController : AdminApiControllerBase
         {
             UserName = m.UserName,
             RoleName = m.RoleName,
+            IsLocked = m.D.IsLocked,
             Updatable = updateFunc(m.D),
             Deletable = deleteFunc(m.D)
         }).ToArray());

@@ -33,6 +33,7 @@ public partial class IdentityService : IIdentityContract
 
     protected IEventBus EventBus => _provider.GetService<IEventBus>();
     protected RoleManager<Role> RoleManager => _provider.GetService<RoleManager<Role>>();
+    protected IRepository<User, long> UserRepository => _provider.GetService<IRepository<User, long>>();
     protected IRepository<UserDetail, long> UserDetailRepository => _provider.GetService<IRepository<UserDetail, long>>();
     protected IRepository<UserLogin, long> UserLoginRepository => _provider.GetService<IRepository<UserLogin, long>>();
     protected IRepository<LoginLog, long> LoginLogReqRepository => _provider.GetService<IRepository<LoginLog, long>>();

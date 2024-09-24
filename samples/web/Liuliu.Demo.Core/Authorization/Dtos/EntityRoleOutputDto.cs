@@ -43,7 +43,7 @@ namespace Liuliu.Demo.Authorization.Dtos
             IsLocked = entityRole.IsLocked;
             Operation = entityRole.Operation;
             CreatedTime = entityRole.CreatedTime;
-            FilterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
+            FilterGroup = entityRole.FilterGroup;
         }
 
         /// <summary>

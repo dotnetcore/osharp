@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <PackageId>OSharp.Exceptionless</PackageId>
     <Summary>OSharp Exceptionless 分布式日志组件</Summary>
     <Description>OSharp Exceptionless 分布式日志组件，封装基于Exceptionless 分布式日志记录实现</Description>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.AspNetCore" Version="6.0.2" />
+    <PackageReference Include="Exceptionless.AspNetCore" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
