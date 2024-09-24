@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="EntityRoleOutputDto.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -43,7 +43,7 @@ namespace Liuliu.Demo.Authorization.Dtos
             IsLocked = entityRole.IsLocked;
             Operation = entityRole.Operation;
             CreatedTime = entityRole.CreatedTime;
-            FilterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
+            FilterGroup = entityRole.FilterGroup;
         }
 
         /// <summary>

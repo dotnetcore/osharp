@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="StringExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
@@ -327,7 +327,7 @@ namespace OSharp.Extensions
         /// <param name="isRestrict">是否按严格格式验证</param>
         public static bool IsMobileNumber(this string value, bool isRestrict = false)
         {
-            string pattern = isRestrict ? @"^[1][3-8]\d{9}$" : @"^[1]\d{10}$";
+            string pattern = isRestrict ? @"^1[3-9]\d{9}$" : @"^1\d{10}$";
             return value.IsMatch(pattern);
         }
 

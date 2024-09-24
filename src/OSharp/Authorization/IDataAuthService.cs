@@ -31,4 +31,10 @@ public interface IDataAuthService
     /// <param name="entities">待检测的实体数据</param>
     /// <returns>是否有权限</returns>
     bool CheckDataAuth<TEntity>(DataAuthOperation operation, params TEntity[] entities);
+
+    /// <summary>
+    /// 设置当前请求中忽略数据权限验证的实体类型
+    /// </summary>
+    /// <param name="entityType">实体类型</param>
+    void SetIgnoreDataAuth(Type entityType);
 }

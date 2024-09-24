@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniRazor" Version="2.2.2" />
-    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+    <PackageReference Include="MiniRazor" Version="2.*" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup>

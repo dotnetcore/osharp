@@ -7,6 +7,9 @@
 //  <last-date>2019-06-15 13:26</last-date>
 // -----------------------------------------------------------------------
 
+using OSharp.Authorization;
+
+
 namespace OSharp.Authentication.JwtBearer;
 
 /// <summary>
@@ -116,6 +119,10 @@ public class JwtBearerService<TUser, TUserKey> : IJwtBearerService
         };
         var (token, expires) = CreateToken(claims, _jwtOptions, JwtTokenType.RefreshToken, refreshToken);
         string refreshTokenStr = token;
+        //关闭数据权限检查
+        var dataAuthService = _provider.GetService<IDataAuthService>();
+        dataAuthService.SetIgnoreDataAuth(typeof(TUser));
+
         IUnitOfWork unitOfWork = _provider.GetUnitOfWork(true);
         UserManager<TUser> userManager = _provider.GetService<UserManager<TUser>>();
         refreshToken = new RefreshToken() { ClientId = clientId, Value = refreshTokenStr, EndUtcTime = expires };

@@ -106,6 +106,23 @@ public class RoleEntityController : AdminApiControllerBase
     }
 
     /// <summary>
+    /// 设置角色数据权限的过滤条件组
+    /// </summary>
+    /// <param name="id">权限记录identity.api</param>
+    /// <param name="group">过滤条件组</param>
+    /// <returns>JSON操作结果</returns>
+    [HttpPost]
+    [ModuleInfo]
+    [DependOnFunction(nameof(Read))]
+    [UnitOfWork]
+    [Description("设置过滤条件")]
+    public async Task<AjaxResult> SetFilterGroup(Guid id, [FromBody]FilterGroup group)
+    {
+        OperationResult result = await _dataAuthManager.SetFilterGroup(id, group);
+        return result.ToAjaxResult();
+    }
+
+    /// <summary>
     /// 删除角色数据权限信息
     /// </summary>
     /// <param name="ids">角色数据权限信息</param>

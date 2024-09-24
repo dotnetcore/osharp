@@ -46,7 +46,7 @@ public class KeyValueStore : IKeyValueStore
         Type type = typeof(TSetting);
         foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(m => m.PropertyType == typeof(IKeyValue)))
         {
-            string key = ((KeyValue)property.GetValue(setting)).Key;
+            string key = ((KeyValue)property.GetValue(setting))?.Key;
             IKeyValue keyValue = GetByKey(key);
             if (keyValue != null)
             {
@@ -78,7 +78,7 @@ public class KeyValueStore : IKeyValueStore
     public IKeyValue[] GetByRootKey(string rootKey)
     {
         string[] keys = GetKeys(rootKey);
-        return keys.Select(key => GetByKey(key)).Where(value => value != null).ToArray();
+        return keys.Select(GetByKey).Where(value => value != null).ToArray();
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class KeyValueStore : IKeyValueStore
     /// <param name="predicate">检查谓语表达式</param>
     /// <param name="id">更新的键值对信息编号</param>
     /// <returns>键值对信息是否存在</returns>
-    public Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default(Guid))
+    public Task<bool> CheckExists(Expression<Func<KeyValue, bool>> predicate, Guid id = default)
     {
         return KeyValueRepository.CheckExistsAsync(predicate, id);
     }
@@ -158,10 +158,10 @@ public class KeyValueStore : IKeyValueStore
             }
         }
 
-        unitOfWork.Commit();
+        await unitOfWork.CommitAsync();
 
-        string[] cacheKeys = removeKeys.Select(m => GetCacheKey(m)).ToArray();
-        await Cache.RemoveAsync(cacheKeys);
+        string[] cacheKeys = removeKeys.Select(GetCacheKey).ToArray();
+        await Cache.RemoveAsync(default, cacheKeys);
 
         return OperationResult.Success;
     }
@@ -194,10 +194,10 @@ public class KeyValueStore : IKeyValueStore
             removeKeys.AddIf(pair.Key, count > 0);
         }
 
-        unitOfWork.Commit();
+        await unitOfWork.CommitAsync();
 
-        string[] cacheKeys = removeKeys.Select(m => GetCacheKey(m)).ToArray();
-        await Cache.RemoveAsync(cacheKeys);
+        string[] cacheKeys = removeKeys.Select(GetCacheKey).ToArray();
+        await Cache.RemoveAsync(default, cacheKeys);
 
         return OperationResult.Success;
     }

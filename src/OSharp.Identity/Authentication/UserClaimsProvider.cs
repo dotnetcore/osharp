@@ -59,7 +59,7 @@ public class UserClaimsProvider<TUser, TUserKey> : IUserClaimsProvider
     /// <returns>刷新后的Identity</returns>
     public async Task<OperationResult<ClaimsIdentity>> RefreshIdentity(ClaimsIdentity identity)
     {
-        if (identity != null && identity.IsAuthenticated)
+        if (identity is { IsAuthenticated: true })
         {
             IOnlineUserProvider onlineUserProvider = _provider.GetService<IOnlineUserProvider>();
             OnlineUser onlineUser = await onlineUserProvider.GetOrCreate(identity.Name);

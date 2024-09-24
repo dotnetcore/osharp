@@ -54,7 +54,11 @@ public abstract class DataAuthCacheBase<TEntityRole, TRole, TEntityInfo, TRoleKe
 
         foreach (var entityRole in entityRoles)
         {
-            FilterGroup filterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
+            FilterGroup filterGroup = entityRole.FilterGroupJson?.FromJsonString<FilterGroup>();
+            if (filterGroup == null)
+            {
+                continue;
+            }
             string key = GetKey(entityRole.RoleName, entityRole.EntityTypeFullName, entityRole.Operation);
             string name = GetName(entityRole.RoleName, entityRole.EntityTypeFullName, entityRole.Operation);
 
