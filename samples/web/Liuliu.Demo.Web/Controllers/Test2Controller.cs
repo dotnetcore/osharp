@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,8 +18,7 @@ using OSharp.Entity;
 using OSharp.Entity.DynamicProxy;
 using OSharp.Identity;
 
-using StackExchange.Profiling.Internal;
-
+using OSharp.Json;
 
 namespace Liuliu.Demo.Web.Controllers
 {
@@ -55,7 +54,7 @@ namespace Liuliu.Demo.Web.Controllers
         public string Test02()
         {
             var val = AppSettingsReader.GetValue<string>("OSharp:DbContexts:SqlServer:DbContextTypeName");
-            return val.ToJson();
+            return JsonHelper.ToJson(val);
 
             return DependencyContext.Default.CompileLibraries.Select(m => $"{m.Name},{m.Version}").ExpandAndToString("\r\n");
         }
