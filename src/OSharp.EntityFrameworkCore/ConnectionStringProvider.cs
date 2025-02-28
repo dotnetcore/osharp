@@ -7,6 +7,9 @@
 //  <last-date>2021-03-20 21:42</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+using OSharp.Core;
+
 namespace OSharp.Entity;
 
 /// <summary>
@@ -17,12 +20,14 @@ public class ConnectionStringProvider : IConnectionStringProvider
     private readonly IDictionary<string, OsharpDbContextOptions> _dbContexts;
     private readonly ISlaveDatabaseSelector[] _slaveDatabaseSelectors;
     private readonly IMasterSlaveSplitPolicy _masterSlavePolicy;
+    private readonly Tenant _tenant;
 
     /// <summary>
     /// 初始化一个<see cref="ConnectionStringProvider"/>类型的新实例
     /// </summary>
     public ConnectionStringProvider(IServiceProvider provider)
     {
+        _tenant = provider.GetService<Tenant>();
         _dbContexts = provider.GetOSharpOptions().DbContexts;
         _masterSlavePolicy = provider.GetService<IMasterSlaveSplitPolicy>();
         _slaveDatabaseSelectors = provider.GetServices<ISlaveDatabaseSelector>().ToArray();
@@ -35,6 +40,8 @@ public class ConnectionStringProvider : IConnectionStringProvider
     /// <returns></returns>
     public virtual string GetConnectionString(Type dbContextType)
     {
+        return _tenant.ConnectionString;
+        /*
         OsharpDbContextOptions dbContextOptions = _dbContexts.Values.FirstOrDefault(m => m.DbContextType == dbContextType);
         if (dbContextOptions == null)
         {
@@ -52,5 +59,6 @@ public class ConnectionStringProvider : IConnectionStringProvider
             ?? _slaveDatabaseSelectors.First(m => m.Name == "Weight");
         SlaveDatabaseOptions slave = slaveDatabaseSelector.Select(slaves);
         return slave.ConnectionString;
+        */
     }
 }
