@@ -27,7 +27,7 @@ namespace Liuliu.Demo.EntityConfiguration.Identity
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasIndex(m => new { m.UserId, m.RoleId, m.DeletedTime }).HasName("UserRoleIndex").IsUnique();
+            builder.HasIndex(m => new { m.UserId, m.RoleId, m.DeletedTime }).HasDatabaseName("UserRoleIndex").IsUnique();
             builder.HasOne(ur => ur.Role).WithMany(r => r.UserRoles).HasForeignKey(m => m.RoleId);
             builder.HasOne(ur => ur.User).WithMany(u => u.UserRoles).HasForeignKey(m => m.UserId);
 

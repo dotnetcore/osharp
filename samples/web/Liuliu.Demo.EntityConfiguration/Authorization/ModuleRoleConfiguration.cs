@@ -31,7 +31,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<ModuleRole> builder)
         {
-            builder.HasIndex(m => new { m.ModuleId, m.RoleId }).HasName("ModuleRoleIndex").IsUnique();
+            builder.HasIndex(m => new { m.ModuleId, m.RoleId }).HasDatabaseName("ModuleRoleIndex").IsUnique();
 
             builder.HasOne<Module>(mr => mr.Module).WithMany().HasForeignKey(m => m.ModuleId);
             builder.HasOne<Role>(mr => mr.Role).WithMany().HasForeignKey(m => m.RoleId);

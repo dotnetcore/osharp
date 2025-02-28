@@ -29,7 +29,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<EntityUser> builder)
         {
-            builder.HasIndex(m => new { m.EntityId, m.UserId }).HasName("EntityUserIndex");
+            builder.HasIndex(m => new { m.EntityId, m.UserId }).HasDatabaseName("EntityUserIndex");
 
             builder.HasOne<EntityInfo>(eu => eu.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);
             builder.HasOne<User>(eu => eu.User).WithMany().HasForeignKey(m => m.UserId);
