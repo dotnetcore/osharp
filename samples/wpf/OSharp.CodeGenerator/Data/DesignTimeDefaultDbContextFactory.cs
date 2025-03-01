@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DesignTimeDefaultDbContextFactory.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -8,10 +8,20 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AutoMapper;
+using OSharp.CodeGeneration.Generates;
+using OSharp.CodeGeneration.Services;
+using OSharp.CodeGeneration.Services.Seeds;
+using OSharp.CodeGenerator.Views;
+using OSharp.Core.Packs;
 using OSharp.Entity;
+using OSharp.Entity.Sqlite;
+using OSharp.Log4Net;
+using OSharp.Reflection;
 
 
 namespace OSharp.CodeGenerator.Data
@@ -33,8 +43,28 @@ namespace OSharp.CodeGenerator.Data
         protected override IServiceProvider CreateDesignTimeServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
-            Startup startup = new Startup();
-            startup.ConfigureServices(services);
+            
+            // 配置过滤器，替代原 Startup 中的配置
+            string[] filters = { "dotnet-", "Microsoft.", "mscorlib", "netstandard", "System", "Windows", "PropertyChanged" };
+            AssemblyManager.AssemblyFilterFunc = name => name.Name != null && !filters.Any(m => name.Name.StartsWith(m));
+
+            // 添加 OSharp 框架服务
+            services.AddOSharp()
+                .AddPack<ViewModelPack>()
+                .AddPack<Log4NetPack>()
+                .AddPack<AutoMapperPack>()
+                .AddPack<SqliteEntityFrameworkCorePack>()
+                .AddPack<SqliteDefaultDbContextMigrationPack>()
+                .AddPack<GeneratePack>(); 
+
+            // 添加数据服务
+            services.AddScoped<IDataContract, DataService>();
+            services.AddSingleton<ISeedDataInitializer, CodeTemplateSeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeProjectSeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeModuleSeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodeEntitySeedDataInitializer>();
+            services.AddSingleton<ISeedDataInitializer, CodePropertySeedDataInitializer>();
+
             IServiceProvider provider = services.BuildServiceProvider();
             return provider;
         }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="Program.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -11,22 +11,72 @@ using AspectCore.Extensions.Hosting;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using OSharp.Core;
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Identity;
+using Liuliu.Demo.Infos;
+using Liuliu.Demo.Systems;
+using Liuliu.Demo.Web.Startups;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Liuliu.Demo.Web
+using OSharp.AspNetCore;
+using OSharp.AspNetCore.Routing;
+using OSharp.AutoMapper;
+using OSharp.Log4Net;
+using OSharp.MiniProfiler;
+using OSharp.Swagger;
+using Microsoft.AspNetCore.Http;
+using OSharp.Entity;
+using OSharp.MultiTenancy;
+using OSharp.Entity.SqlServer;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// 添加服务到容器
+// 注册租户访问器
+builder.Services.AddScoped<ITenantAccessor, TenantAccessor>();
+builder.Services.AddScoped<HttpTenantProvider>();
+
+// 注册租户存储
+builder.Services.AddSingleton<ITenantStore, ConfigurationTenantStore>();
+
+builder.Services.AddHttpContextAccessor(); // 注册 IHttpContextAccessor
+
+// 注册租户数据库迁移器
+builder.Services.AddSingleton<TenantDatabaseMigrator>();
+
+// 替换默认的连接字符串提供者
+builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
+builder.Services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
+
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddOSharp()
+    .AddPack<Log4NetPack>()
+    .AddPack<AutoMapperPack>()
+    .AddPack<EndpointsPack>()
+    .AddPack<MiniProfilerPack>()
+    .AddPack<SwaggerPack>()
+    //.AddPack<RedisPack>()
+    .AddPack<AuthenticationPack>()
+    .AddPack<FunctionAuthorizationPack>()
+    .AddPack<DataAuthorizationPack>()
+    .AddPack<SqlServerDefaultDbContextMigrationPack>()
+    .AddPack<AuditPack>()
+    .AddPack<InfosPack>();
+
+var app = builder.Build();
+
+// 使用 OSharp
+app.UseOSharp();
+
+using (var scope = app.Services.CreateScope())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                }).UseDynamicProxy();
-    }
+    var migrator = scope.ServiceProvider.GetRequiredService<TenantDatabaseMigrator>();
+    await migrator.MigrateAllTenantsAsync();
 }
+
+app.Run();

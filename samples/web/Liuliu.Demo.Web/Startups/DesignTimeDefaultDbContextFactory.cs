@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="DesignTimeDefaultDbContextFactory.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -8,10 +8,16 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OSharp.AutoMapper;
+using OSharp.Core.Packs;
 using OSharp.Entity;
+using OSharp.Entity.Sqlite;
+using OSharp.Log4Net;
+using OSharp.Reflection;
 
 
 namespace Liuliu.Demo.Web.Startups
@@ -33,8 +39,18 @@ namespace Liuliu.Demo.Web.Startups
         protected override IServiceProvider CreateDesignTimeServiceProvider()
         {
             IServiceCollection services = new ServiceCollection();
-            Startup startup = new Startup();
-            startup.ConfigureServices(services);
+
+            // 配置过滤器，替代原 Startup 中的配置
+            string[] filters = { "dotnet-", "Microsoft.", "mscorlib", "netstandard", "System", "Windows", "PropertyChanged" };
+            AssemblyManager.AssemblyFilterFunc = name => name.Name != null && !filters.Any(m => name.Name.StartsWith(m));
+
+            // 添加 OSharp 框架服务
+            services.AddOSharp()
+                .AddPack<Log4NetPack>()
+                .AddPack<AutoMapperPack>()
+                .AddPack<SqliteEntityFrameworkCorePack>()
+                .AddPack<SqliteDefaultDbContextMigrationPack>();
+
             IServiceProvider provider = services.BuildServiceProvider();
             return provider;
         }
