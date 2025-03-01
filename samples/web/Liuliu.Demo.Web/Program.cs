@@ -38,7 +38,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 添加服务到容器
 // 注册租户访问器
-builder.Services.AddScoped<ITenantAccessor, TenantAccessor>();
+builder.Services.AddScoped<ITenantAccessor, AsyncLocalTenantAccessor>();
+//builder.Services.AddScoped<ITenantAccessor, TenantAccessor>();
 builder.Services.AddScoped<HttpTenantProvider>();
 
 // 注册租户存储
@@ -50,7 +51,7 @@ builder.Services.AddHttpContextAccessor(); // 注册 IHttpContextAccessor
 builder.Services.AddSingleton<TenantDatabaseMigrator>();
 
 // 替换默认的连接字符串提供者
-builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
+//builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
 builder.Services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();

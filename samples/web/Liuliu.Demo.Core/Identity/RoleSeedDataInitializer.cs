@@ -44,7 +44,8 @@ namespace Liuliu.Demo.Identity
         {
             return new[]
             {
-                new Role() { Name = "系统管理员", Remark = "系统最高权限管理角色", IsAdmin = true, IsSystem = true }
+                new Role() { Name = "系统管理员", Remark = "系统最高权限管理角色", IsAdmin = true, IsSystem = true },
+                new Role() { Name = "租户管理员", Remark = "租户管理员", IsAdmin = true, IsSystem = true }
             };
         }
 
