@@ -6,6 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using OSharp.Entity;
 using Microsoft.EntityFrameworkCore;
+using OSharp.Authorization.Modules;
+using OSharp.Authorization.Functions;
+using OSharp.AspNetCore.Mvc;
+using OSharp.Authorization;
+using OSharp.Authorization.EntityInfos;
 
 namespace Liuliu.Demo.Web.Startups
 {
@@ -71,6 +76,8 @@ namespace Liuliu.Demo.Web.Startups
                 dbContext.CheckAndMigration(logger);
             }
             InitializeSeedDataAsync(tenant);
+
+            InitFrameWorkData(tenant);
         }
         /// <summary>
         /// 初始化种子数据
@@ -101,6 +108,32 @@ namespace Liuliu.Demo.Web.Startups
                 {
                     _logger.LogError(ex, "初始化种子数据时出错" + ex.Message);
                 }
+            }
+        }
+
+        private void InitFrameWorkData(TenantInfo tenant)
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                ITenantAccessor tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
+                tenantAccessor.CurrentTenant = tenant;
+
+                IFunctionHandler functionHandler = scope.ServiceProvider.GetServices<IFunctionHandler>().FirstOrDefault(m => m.GetType() == typeof(MvcFunctionHandler));
+                if (functionHandler != null)
+                {
+                    functionHandler.Initialize();
+                }
+
+                IModuleHandler moduleHandler = scope.ServiceProvider.GetRequiredService<IModuleHandler>();
+                moduleHandler.Initialize();
+
+                //IFunctionAuthCache functionAuthCache = scope.ServiceProvider.GetRequiredService<IFunctionAuthCache>();
+                //functionAuthCache.BuildRoleCaches();
+
+                IEntityInfoHandler entityInfoHandler = scope.ServiceProvider.GetRequiredService<IEntityInfoHandler>();
+                entityInfoHandler.Initialize();
+
+                
             }
         }
     }
