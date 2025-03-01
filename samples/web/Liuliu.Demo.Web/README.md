@@ -26,7 +26,7 @@
     "EnableCookie": true,
     "CookieName": "tenant",
     "EnableClaim": true,
-    "ClaimType": "tenant_id",
+    "ClaimType": "tenant",
     "EnableRoute": true,
     "RouteParamName": "tenant"
   }
