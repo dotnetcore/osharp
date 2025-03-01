@@ -52,7 +52,7 @@ builder.Services.AddSingleton<TenantDatabaseMigrator>();
 
 // 替换默认的连接字符串提供者
 //builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
-builder.Services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
+builder.Services.Replace<IConnectionStringProvider, OSharp.Entity.MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddOSharp()
@@ -70,6 +70,13 @@ builder.Services.AddOSharp()
     .AddPack<InfosPack>();
 
 var app = builder.Build();
+
+// 在请求管道中注册 TenantMiddleware
+// 注意：应该在 UseRouting 之后，但在 UseAuthentication 和 UseAuthorization 之前注册
+app.UseRouting();
+
+// 添加多租户中间件
+app.UseMiddleware<TenantMiddleware>();
 
 // 使用 OSharp
 app.UseOSharp();
