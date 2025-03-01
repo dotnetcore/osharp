@@ -28,6 +28,11 @@ namespace OSharp.Entity
             LoadTenantsFromConfiguration();
         }
 
+        public Task<bool> DeleteTenantAsync(string tenantId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<TenantInfo>> GetAllTenantsAsync()
         {
             return Task.FromResult(_tenants.Values.Where(t => t.IsEnabled).AsEnumerable());

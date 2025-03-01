@@ -1,0 +1,23 @@
+[
+  {
+    "tenantId": "tenant0",
+    "name": "租户0",
+    "host": "localhost",
+    "connectionString": "Server=(localdb)\\mssqllocaldb;Database=Tenant0Db;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "isEnabled": true
+  },
+  {
+    "tenantId": "tenant1",
+    "name": "租户1",
+    "host": "tenant1",
+    "connectionString": "Server=(localdb)\\mssqllocaldb;Database=Tenant1Db;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "isEnabled": true
+  },
+  {
+    "tenantId": "tenant2",
+    "name": "租户2",
+    "host": "tenant2",
+    "connectionString": "Server=(localdb)\\mssqllocaldb;Database=Tenant2Db;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "isEnabled": true
+  }
+]

@@ -36,6 +36,11 @@ using OSharp.Entity.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<FileTenantStoreOptions>(options =>
+{
+    options.FilePath = "App_Data/tenants.json";
+});
+
 // 添加服务到容器
 // 注册租户访问器
 builder.Services.AddScoped<ITenantAccessor, AsyncLocalTenantAccessor>();
@@ -43,7 +48,8 @@ builder.Services.AddScoped<ITenantAccessor, AsyncLocalTenantAccessor>();
 builder.Services.AddScoped<HttpTenantProvider>();
 
 // 注册租户存储
-builder.Services.AddSingleton<ITenantStore, ConfigurationTenantStore>();
+//builder.Services.AddSingleton<ITenantStore, ConfigurationTenantStore>();
+builder.Services.AddSingleton<ITenantStore, FileTenantStore>();
 
 builder.Services.AddHttpContextAccessor(); // 注册 IHttpContextAccessor
 
@@ -52,7 +58,7 @@ builder.Services.AddSingleton<TenantDatabaseMigrator>();
 
 // 替换默认的连接字符串提供者
 //builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
-builder.Services.Replace<IConnectionStringProvider, OSharp.Entity.MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
+builder.Services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddOSharp()
