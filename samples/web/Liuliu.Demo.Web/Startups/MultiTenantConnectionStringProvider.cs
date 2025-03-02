@@ -36,6 +36,10 @@ namespace Liuliu.Demo.Web.Startups
         /// </summary>
         public string GetConnectionString(Type dbContextType)
         {
+            if(dbContextType.Name == "TenantDbContext")
+            {
+                return _configuration.GetConnectionString("Tenant");
+            }
             // 获取当前租户
             TenantInfo tenant = _tenantAccessor.CurrentTenant;
             
