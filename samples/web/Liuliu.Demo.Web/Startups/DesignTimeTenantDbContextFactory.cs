@@ -16,6 +16,7 @@ using OSharp.AutoMapper;
 using OSharp.Core.Packs;
 using OSharp.Entity;
 using OSharp.Entity.Sqlite;
+using OSharp.Entity.SqlServer;
 using OSharp.Log4Net;
 using OSharp.Reflection;
 
@@ -48,8 +49,8 @@ namespace Liuliu.Demo.Web.Startups
             services.AddOSharp()
                 .AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
-                .AddPack<SqliteEntityFrameworkCorePack>()
-                .AddPack<SqliteDefaultDbContextMigrationPack>();
+                .AddPack<SqlServerEntityFrameworkCorePack>()
+                .AddPack<SqlServerDefaultDbContextMigrationPack>();
 
             IServiceProvider provider = services.BuildServiceProvider();
             return provider;
