@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OSharp.Entity
+namespace OSharp.MultiTenancy
 {
     /// <summary>
     /// 基于配置文件的租户存储实现

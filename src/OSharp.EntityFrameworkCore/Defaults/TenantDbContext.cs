@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using OSharp.Entity;
 using OSharp.MultiTenancy;
 
 namespace OSharp.Entity
@@ -17,4 +16,4 @@ namespace OSharp.Entity
         {
         }
     }
-} 
+}
