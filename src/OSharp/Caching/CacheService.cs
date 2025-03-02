@@ -7,6 +7,8 @@
 //  <last-date>2018-12-19 19:10</last-date>
 // -----------------------------------------------------------------------
 
+using System.Text.Json;
+
 namespace OSharp.Caching;
 
 /// <summary>
@@ -15,15 +17,25 @@ namespace OSharp.Caching;
 public class CacheService : ICacheService
 {
     private readonly IDistributedCache _cache;
+    private readonly ICacheKeyGenerator _keyGenerator;
+    private readonly IGlobalCacheKeyGenerator _globalKeyGenerator;
     private readonly ILogger<CacheService> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// 初始化一个<see cref="CacheService"/>类型的新实例
     /// </summary>
-    public CacheService(IServiceProvider provider)
+    public CacheService(
+        IDistributedCache cache,
+        ICacheKeyGenerator keyGenerator,
+        ILogger<CacheService> logger,
+        IServiceProvider serviceProvider)
     {
-        _cache = provider.GetRequiredService<IDistributedCache>();
-        _logger = provider.GetLogger<CacheService>();
+        _cache = cache;
+        _keyGenerator = keyGenerator;
+        _globalKeyGenerator = keyGenerator as IGlobalCacheKeyGenerator;
+        _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     #region Implementation of ICacheService
@@ -599,4 +611,201 @@ public class CacheService : ICacheService
     }
 
     #endregion
+
+    /// <summary>
+    /// 获取或添加全局缓存，不考虑租户
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="factory">缓存数据获取工厂</param>
+    /// <param name="expiration">过期时间</param>
+    /// <returns>缓存数据</returns>
+    public T GetOrAddGlobal<T>(string key, Func<T> factory, TimeSpan? expiration = null)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+        Check.NotNull(factory, nameof(factory));
+
+        if (_globalKeyGenerator == null)
+        {
+            throw new OsharpException("当前缓存键生成器不支持全局缓存键生成");
+        }
+
+        string cacheKey = _globalKeyGenerator.GetGlobalKey(key);
+        T result = Get<T>(cacheKey);
+        if (!Equals(result, default(T)))
+        {
+            return result;
+        }
+
+        result = factory();
+        if (Equals(result, default(T)))
+        {
+            return default;
+        }
+
+        Set(cacheKey, result, expiration);
+        return result;
+    }
+
+    /// <summary>
+    /// 异步获取或添加全局缓存，不考虑租户
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="factory">缓存数据获取工厂</param>
+    /// <param name="expiration">过期时间</param>
+    /// <returns>缓存数据</returns>
+    public async Task<T> GetOrAddGlobalAsync<T>(string key, Func<Task<T>> factory, TimeSpan? expiration = null)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+        Check.NotNull(factory, nameof(factory));
+
+        if (_globalKeyGenerator == null)
+        {
+            throw new OsharpException("当前缓存键生成器不支持全局缓存键生成");
+        }
+
+        string cacheKey = await _globalKeyGenerator.GetGlobalKeyAsync(key);
+        T result = await GetAsync<T>(cacheKey);
+        if (!Equals(result, default(T)))
+        {
+            return result;
+        }
+
+        result = await factory();
+        if (Equals(result, default(T)))
+        {
+            return default;
+        }
+
+        await SetAsync(cacheKey, result, expiration);
+        return result;
+    }
+
+    /// <summary>
+    /// 移除全局缓存，不考虑租户
+    /// </summary>
+    /// <param name="key">缓存键</param>
+    public void RemoveGlobal(string key)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        if (_globalKeyGenerator == null)
+        {
+            throw new OsharpException("当前缓存键生成器不支持全局缓存键生成");
+        }
+
+        string cacheKey = _globalKeyGenerator.GetGlobalKey(key);
+        _cache.Remove(cacheKey);
+    }
+
+    /// <summary>
+    /// 异步移除全局缓存，不考虑租户
+    /// </summary>
+    /// <param name="key">缓存键</param>
+    public async Task RemoveGlobalAsync(string key)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        if (_globalKeyGenerator == null)
+        {
+            throw new OsharpException("当前缓存键生成器不支持全局缓存键生成");
+        }
+
+        string cacheKey = await _globalKeyGenerator.GetGlobalKeyAsync(key);
+        await _cache.RemoveAsync(cacheKey);
+    }
+
+    // 在 CacheService 类中添加以下方法
+
+    /// <summary>
+    /// 设置缓存
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="value">缓存值</param>
+    /// <param name="expiration">过期时间</param>
+    public void Set<T>(string key, T value, TimeSpan? expiration = null)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        if (value == null)
+        {
+            return;
+        }
+
+        var options = new DistributedCacheEntryOptions();
+        if (expiration.HasValue)
+        {
+            options.AbsoluteExpirationRelativeToNow = expiration;
+        }
+
+        string json = JsonSerializer.Serialize(value);
+        _cache.SetString(key, json, options);
+    }
+
+    /// <summary>
+    /// 异步设置缓存
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="value">缓存值</param>
+    /// <param name="expiration">过期时间</param>
+    /// <returns>异步任务</returns>
+    public async Task SetAsync<T>(string key, T value, TimeSpan? expiration = null)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        if (value == null)
+        {
+            return;
+        }
+
+        var options = new DistributedCacheEntryOptions();
+        if (expiration.HasValue)
+        {
+            options.AbsoluteExpirationRelativeToNow = expiration;
+        }
+
+        string json = JsonSerializer.Serialize(value);
+        await _cache.SetStringAsync(key, json, options);
+    }
+
+    /// <summary>
+    /// 获取缓存
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <returns>缓存数据</returns>
+    public T Get<T>(string key)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        string json = _cache.GetString(key);
+        if (string.IsNullOrEmpty(json))
+        {
+            return default;
+        }
+
+        return JsonSerializer.Deserialize<T>(json);
+    }
+
+    /// <summary>
+    /// 异步获取缓存
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <returns>缓存数据</returns>
+    public async Task<T> GetAsync<T>(string key)
+    {
+        Check.NotNullOrEmpty(key, nameof(key));
+
+        string json = await _cache.GetStringAsync(key);
+        if (string.IsNullOrEmpty(json))
+        {
+            return default;
+        }
+
+        return JsonSerializer.Deserialize<T>(json);
+    }
 }
