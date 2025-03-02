@@ -12,7 +12,7 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20250228082111_init")]
+    [Migration("20250302022428_init")]
     partial class init
     {
         /// <inheritdoc />
