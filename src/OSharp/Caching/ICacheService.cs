@@ -371,4 +371,36 @@ public interface ICacheService
         params object[] keyParams);
 
     #endregion
+
+    /// <summary>
+    /// 获取或添加全局缓存，不考虑租户
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="factory">缓存数据获取工厂</param>
+    /// <param name="expiration">过期时间</param>
+    /// <returns>缓存数据</returns>
+    T GetOrAddGlobal<T>(string key, Func<T> factory, TimeSpan? expiration = null);
+
+    /// <summary>
+    /// 异步获取或添加全局缓存，不考虑租户
+    /// </summary>
+    /// <typeparam name="T">缓存数据类型</typeparam>
+    /// <param name="key">缓存键</param>
+    /// <param name="factory">缓存数据获取工厂</param>
+    /// <param name="expiration">过期时间</param>
+    /// <returns>缓存数据</returns>
+    Task<T> GetOrAddGlobalAsync<T>(string key, Func<Task<T>> factory, TimeSpan? expiration = null);
+
+    /// <summary>
+    /// 移除全局缓存，不考虑租户
+    /// </summary>
+    /// <param name="key">缓存键</param>
+    void RemoveGlobal(string key);
+
+    /// <summary>
+    /// 异步移除全局缓存，不考虑租户
+    /// </summary>
+    /// <param name="key">缓存键</param>
+    Task RemoveGlobalAsync(string key);
 }
