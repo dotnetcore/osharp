@@ -33,6 +33,7 @@ using Microsoft.AspNetCore.Http;
 using OSharp.Entity;
 using OSharp.MultiTenancy;
 using OSharp.Entity.SqlServer;
+using OSharp.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,10 @@ builder.Services.AddSingleton<TenantDatabaseMigrator>();
 // 替换默认的连接字符串提供者
 //builder.Services.AddScoped<IConnectionStringProvider, MultiTenantConnectionStringProvider>();
 builder.Services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
+
+builder.Services.AddSingleton<ICacheKeyGenerator, StringCacheKeyGenerator>();
+builder.Services.AddSingleton<IGlobalCacheKeyGenerator>(provider =>
+    provider.GetRequiredService<ICacheKeyGenerator>() as IGlobalCacheKeyGenerator);
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddOSharp()
