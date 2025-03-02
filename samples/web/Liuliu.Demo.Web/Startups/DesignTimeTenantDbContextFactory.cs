@@ -22,13 +22,13 @@ using OSharp.Reflection;
 
 namespace Liuliu.Demo.Web.Startups
 {
-    public class DesignTimeDefaultDbContextFactory : DesignTimeDbContextFactoryBase<DefaultDbContext>
+    public class DesignTimeTenantDbContextFactory : DesignTimeDbContextFactoryBase<TenantDbContext>
     {
-        public DesignTimeDefaultDbContextFactory()
+        public DesignTimeTenantDbContextFactory()
             : base(null)
         { }
 
-        public DesignTimeDefaultDbContextFactory(IServiceProvider serviceProvider)
+        public DesignTimeTenantDbContextFactory(IServiceProvider serviceProvider)
             : base(serviceProvider)
         { }
 
