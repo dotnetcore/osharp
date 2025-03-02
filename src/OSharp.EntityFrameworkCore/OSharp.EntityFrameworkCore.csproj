@@ -34,4 +34,8 @@
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Entity\" />
+  </ItemGroup>
 </Project>

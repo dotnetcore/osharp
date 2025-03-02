@@ -49,7 +49,8 @@ builder.Services.AddScoped<HttpTenantProvider>();
 
 // 注册租户存储
 //builder.Services.AddSingleton<ITenantStore, ConfigurationTenantStore>();
-builder.Services.AddSingleton<ITenantStore, FileTenantStore>();
+//builder.Services.AddSingleton<ITenantStore, FileTenantStore>();
+builder.Services.AddSingleton<ITenantStore, DatabaseTenantStore>();
 
 builder.Services.AddHttpContextAccessor(); // 注册 IHttpContextAccessor
 
@@ -72,6 +73,7 @@ builder.Services.AddOSharp()
     .AddPack<FunctionAuthorizationPack>()
     .AddPack<DataAuthorizationPack>()
     .AddPack<SqlServerDefaultDbContextMigrationPack>()
+    .AddPack<TenantDbContextMigrationPack>()
     .AddPack<AuditPack>()
     .AddPack<InfosPack>();
 
