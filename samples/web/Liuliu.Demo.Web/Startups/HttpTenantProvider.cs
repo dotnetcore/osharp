@@ -21,6 +21,7 @@ namespace Liuliu.Demo.Web.Startups
         private readonly ConcurrentDictionary<string, TenantInfo> _tenantCache = new ConcurrentDictionary<string, TenantInfo>();
         private readonly ILogger<HttpTenantProvider> _logger;
         private readonly ITenantAccessor _tenantAccessor; // 添加租户访问器
+        private readonly ITenantStore _tenantStore;  // 使用 ITenantStore
 
         // 租户识别方式配置
         private readonly TenantResolveOptions _resolveOptions;
@@ -29,25 +30,24 @@ namespace Liuliu.Demo.Web.Startups
             IHttpContextAccessor httpContextAccessor,
             IConfiguration configuration,
             ILogger<HttpTenantProvider> logger,
+            ITenantStore tenantStore,
             ITenantAccessor tenantAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _logger = logger;
             _tenantAccessor = tenantAccessor;
+            _tenantStore = tenantStore;
 
             // 初始化租户识别方式配置
             _resolveOptions = new TenantResolveOptions();
             ConfigureTenantResolveOptions();
-
-            // 初始化租户缓存
-            InitializeTenantCache();
         }
 
         /// <summary>
         /// 获取当前租户信息
         /// </summary>
-        public TenantInfo GetCurrentTenant()
+        public async Task<TenantInfo> GetCurrentTenantAsync()
         {
             // 首先检查租户访问器中是否已有租户信息
             if (_tenantAccessor.CurrentTenant != null)
@@ -67,7 +67,7 @@ namespace Liuliu.Demo.Web.Startups
             // 按照优先级顺序尝试不同的租户识别方式
             foreach (var resolver in _resolveOptions.Resolvers.OrderBy(r => r.Priority))
             {
-                tenant = resolver.ResolveTenant(httpContext, _tenantCache);
+                tenant = await resolver.ResolveTenantAsync(httpContext, _tenantStore);
                 if (tenant != null)
                 {
                     // 将解析到的租户设置到租户访问器中
@@ -77,14 +77,6 @@ namespace Liuliu.Demo.Web.Startups
             }
 
             return tenant;
-        }
-
-        /// <summary>
-        /// 异步获取当前租户信息
-        /// </summary>
-        public Task<TenantInfo> GetCurrentTenantAsync()
-        {
-            return Task.FromResult(GetCurrentTenant());
         }
 
         /// <summary>
@@ -112,55 +104,6 @@ namespace Liuliu.Demo.Web.Startups
         public Task<TenantInfo> GetTenantAsync(string identifier)
         {
             return Task.FromResult(GetTenant(identifier));
-        }
-
-        /// <summary>
-        /// 根据主机名获取租户
-        /// </summary>
-        private TenantInfo GetTenantByHost(string host)
-        {
-            if (string.IsNullOrEmpty(host))
-            {
-                return null;
-            }
-
-            // 查找匹配的租户
-            return _tenantCache.Values.FirstOrDefault(t =>
-                t.IsEnabled &&
-                (t.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
-                 host.EndsWith("." + t.Host, StringComparison.OrdinalIgnoreCase)));
-        }
-
-        /// <summary>
-        /// 初始化租户缓存
-        /// </summary>
-        private void InitializeTenantCache()
-        {
-            // 从配置中加载租户信息
-            var tenantsSection = _configuration.GetSection("Tenants");
-            if (!tenantsSection.Exists())
-            {
-                return;
-            }
-
-            foreach (var tenantSection in tenantsSection.GetChildren())
-            {
-                var tenant = new TenantInfo
-                {
-                    TenantId = tenantSection.Key,
-                    Name = tenantSection["Name"],
-                    Host = tenantSection["Host"],
-                    ConnectionString = tenantSection["ConnectionString"],
-                    IsEnabled = tenantSection.GetValue<bool>("IsEnabled", true)
-                };
-
-                if (!string.IsNullOrEmpty(tenant.TenantId) && !string.IsNullOrEmpty(tenant.Host))
-                {
-                    _tenantCache[tenant.TenantId] = tenant;
-                    _logger.LogInformation("已加载租户: {TenantId}, {Name}, {Host}", 
-                        tenant.TenantId, tenant.Name, tenant.Host);
-                }
-            }
         }
 
         /// <summary>
@@ -221,6 +164,11 @@ namespace Liuliu.Demo.Web.Startups
             _logger.LogInformation("已配置租户识别方式: Domain={0}, Header={1}, QueryString={2}, Cookie={3}, Claim={4}, Route={5}",
                 enableDomain, enableHeader, enableQueryString, enableCookie, enableClaim, enableRoute);
         }
+
+        public TenantInfo GetCurrentTenant()
+        {
+            return GetCurrentTenantAsync().Result;
+        }
     }
 
     /// <summary>
@@ -250,7 +198,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <summary>
         /// 解析租户
         /// </summary>
-        TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache);
+        Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore);
     }
 
     /// <summary>
@@ -260,7 +208,7 @@ namespace Liuliu.Demo.Web.Startups
     {
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             string host = context.Request.Host.Host.ToLower();
             if (string.IsNullOrEmpty(host))
@@ -268,8 +216,9 @@ namespace Liuliu.Demo.Web.Startups
                 return null;
             }
 
-            // 查找匹配的租户
-            return tenantCache.Values.FirstOrDefault(t =>
+            // 获取所有租户并查找匹配的租户
+            var tenants = await tenantStore.GetAllTenantsAsync();
+            return tenants.FirstOrDefault(t =>
                 t.IsEnabled &&
                 (t.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
                  host.EndsWith("." + t.Host, StringComparison.OrdinalIgnoreCase)));
@@ -290,7 +239,7 @@ namespace Liuliu.Demo.Web.Startups
 
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             if (!context.Request.Headers.TryGetValue(_headerName, out var values) || values.Count == 0)
             {
@@ -303,8 +252,7 @@ namespace Liuliu.Demo.Web.Startups
                 return null;
             }
 
-            tenantCache.TryGetValue(tenantId, out TenantInfo tenant);
-            return tenant?.IsEnabled == true ? tenant : null;
+            return await tenantStore.GetTenantAsync(tenantId);
         }
     }
 
@@ -322,7 +270,7 @@ namespace Liuliu.Demo.Web.Startups
 
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             if (!context.Request.Query.TryGetValue(_paramName, out var values) || values.Count == 0)
             {
@@ -335,8 +283,7 @@ namespace Liuliu.Demo.Web.Startups
                 return null;
             }
 
-            tenantCache.TryGetValue(tenantId, out TenantInfo tenant);
-            return tenant?.IsEnabled == true ? tenant : null;
+            return await tenantStore.GetTenantAsync(tenantId);
         }
     }
 
@@ -354,15 +301,14 @@ namespace Liuliu.Demo.Web.Startups
 
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             if (!context.Request.Cookies.TryGetValue(_cookieName, out string tenantId) || string.IsNullOrEmpty(tenantId))
             {
                 return null;
             }
 
-            tenantCache.TryGetValue(tenantId, out TenantInfo tenant);
-            return tenant?.IsEnabled == true ? tenant : null;
+            return await tenantStore.GetTenantAsync(tenantId);
         }
     }
 
@@ -380,7 +326,7 @@ namespace Liuliu.Demo.Web.Startups
 
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             if (!context.User.Identity.IsAuthenticated)
             {
@@ -392,9 +338,8 @@ namespace Liuliu.Demo.Web.Startups
             {
                 return null;
             }
-
-            tenantCache.TryGetValue(claim.Value, out TenantInfo tenant);
-            return tenant?.IsEnabled == true ? tenant : null;
+            var tenantId = claim.Value;
+            return await tenantStore.GetTenantAsync(tenantId);
         }
     }
 
@@ -412,7 +357,7 @@ namespace Liuliu.Demo.Web.Startups
 
         public int Priority { get; set; }
 
-        public TenantInfo ResolveTenant(HttpContext context, ConcurrentDictionary<string, TenantInfo> tenantCache)
+        public async Task<TenantInfo> ResolveTenantAsync(HttpContext context, ITenantStore tenantStore)
         {
             if (!context.Request.RouteValues.TryGetValue(_routeParamName, out var value) || value == null)
             {
@@ -425,8 +370,7 @@ namespace Liuliu.Demo.Web.Startups
                 return null;
             }
 
-            tenantCache.TryGetValue(tenantId, out TenantInfo tenant);
-            return tenant?.IsEnabled == true ? tenant : null;
+            return await tenantStore.GetTenantAsync(tenantId);
         }
     }
 }
