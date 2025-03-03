@@ -34,7 +34,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 .AddPack<RedisPack>()
-                .AddPack<MySqlDefaultDbContextMigrationPack>();
+                .AddPack<SqlServerDefaultDbContextMigrationPack>();
 
             services.AddSingleton<IEntityBatchConfiguration, PropertyCommentConfiguration>();
             services.AddSingleton<IEntityBatchConfiguration, PropertyUtcDateTimeConfiguration>();
