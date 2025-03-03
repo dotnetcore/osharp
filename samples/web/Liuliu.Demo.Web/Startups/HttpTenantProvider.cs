@@ -14,13 +14,13 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// 基于HTTP请求的租户提供者实现，支持多种方式识别租户
     /// </summary>
-    //[Dependency(ServiceLifetime.Singleton)]
     public class HttpTenantProvider : ITenantProvider
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
         private readonly ConcurrentDictionary<string, TenantInfo> _tenantCache = new ConcurrentDictionary<string, TenantInfo>();
         private readonly ILogger<HttpTenantProvider> _logger;
+        private readonly ITenantAccessor _tenantAccessor; // 添加租户访问器
 
         // 租户识别方式配置
         private readonly TenantResolveOptions _resolveOptions;
@@ -28,11 +28,13 @@ namespace Liuliu.Demo.Web.Startups
         public HttpTenantProvider(
             IHttpContextAccessor httpContextAccessor,
             IConfiguration configuration,
-            ILogger<HttpTenantProvider> logger)
+            ILogger<HttpTenantProvider> logger,
+            ITenantAccessor tenantAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _logger = logger;
+            _tenantAccessor = tenantAccessor;
 
             // 初始化租户识别方式配置
             _resolveOptions = new TenantResolveOptions();
@@ -47,6 +49,12 @@ namespace Liuliu.Demo.Web.Startups
         /// </summary>
         public TenantInfo GetCurrentTenant()
         {
+            // 首先检查租户访问器中是否已有租户信息
+            if (_tenantAccessor.CurrentTenant != null)
+            {
+                return _tenantAccessor.CurrentTenant;
+            }
+
             HttpContext httpContext = _httpContextAccessor.HttpContext;
             if (httpContext == null)
             {
@@ -62,9 +70,9 @@ namespace Liuliu.Demo.Web.Startups
                 tenant = resolver.ResolveTenant(httpContext, _tenantCache);
                 if (tenant != null)
                 {
-                    _logger.LogDebug("已通过 {ResolverName} 识别到租户: {TenantId}", 
-                        resolver.GetType().Name, tenant.TenantId);
-                    break;
+                    // 将解析到的租户设置到租户访问器中
+                    _tenantAccessor.CurrentTenant = tenant;
+                    return tenant;
                 }
             }
 
