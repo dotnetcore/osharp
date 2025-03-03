@@ -14,7 +14,7 @@ namespace Liuliu.Demo.Web.Startups
     /// <summary>
     /// 基于HTTP请求的租户提供者实现，支持多种方式识别租户
     /// </summary>
-    [Dependency(ServiceLifetime.Singleton)]
+    //[Dependency(ServiceLifetime.Singleton)]
     public class HttpTenantProvider : ITenantProvider
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

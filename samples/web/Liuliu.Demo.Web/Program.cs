@@ -45,8 +45,7 @@ builder.Services.Configure<FileTenantStoreOptions>(options =>
 // 添加服务到容器
 // 注册租户访问器
 builder.Services.AddScoped<ITenantAccessor, AsyncLocalTenantAccessor>();
-//builder.Services.AddScoped<ITenantAccessor, TenantAccessor>();
-builder.Services.AddScoped<HttpTenantProvider>();
+builder.Services.AddScoped<ITenantProvider, HttpTenantProvider>();
 
 // 注册租户存储
 //builder.Services.AddSingleton<ITenantStore, ConfigurationTenantStore>();
