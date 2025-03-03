@@ -12,10 +12,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.*" />
     <PackageReference Include="Lazy.Captcha.Core" Version="2.*" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <PackageReference Include="MailKit" Version="3.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <PackageReference Include="MailKit" Version="3.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="MailKit" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="MailKit" Version="4.*" />
+  </ItemGroup>
+
+  
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
