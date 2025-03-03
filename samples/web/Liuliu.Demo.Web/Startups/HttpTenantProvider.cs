@@ -18,7 +18,6 @@ namespace Liuliu.Demo.Web.Startups
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
-        private readonly ConcurrentDictionary<string, TenantInfo> _tenantCache = new ConcurrentDictionary<string, TenantInfo>();
         private readonly ILogger<HttpTenantProvider> _logger;
         private readonly ITenantAccessor _tenantAccessor; // 添加租户访问器
         private readonly ITenantStore _tenantStore;  // 使用 ITenantStore
@@ -89,21 +88,21 @@ namespace Liuliu.Demo.Web.Startups
                 return null;
             }
 
-            // 尝试从缓存中获取租户信息
-            if (_tenantCache.TryGetValue(identifier, out TenantInfo tenant))
-            {
-                return tenant.IsEnabled ? tenant : null;
-            }
-
-            return null;
+            return GetTenantAsync(identifier).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// 异步根据租户标识获取租户信息
         /// </summary>
-        public Task<TenantInfo> GetTenantAsync(string identifier)
+        public async Task<TenantInfo> GetTenantAsync(string identifier)
         {
-            return Task.FromResult(GetTenant(identifier));
+            if (string.IsNullOrEmpty(identifier))
+            {
+                return null;
+            }
+
+            TenantInfo tenant = await _tenantStore.GetTenantAsync(identifier);
+            return tenant?.IsEnabled == true ? tenant : null;
         }
 
         /// <summary>
