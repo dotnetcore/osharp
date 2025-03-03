@@ -36,7 +36,7 @@ public abstract class EntityInfoBase : EntityBase<Guid>, IEntityInfo
     /// <summary>
     /// 获取或设置 实体属性信息JSON字符串
     /// </summary>
-    [DisplayName("实体属性信息Json字符串"), Required, StringLength(5000)]
+    [DisplayName("实体属性信息Json字符串"), Required]
     public string PropertyJson { get; set; }
 
     /// <summary>
