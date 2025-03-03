@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Liuliu.Demo.Web.Startups
+namespace OSharp.Entity
 {
     /// <summary>
     /// 租户数据库选择器，实现IConnectionStringProvider接口
