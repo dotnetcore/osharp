@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>OSharp.AspNetCore</PackageId>
     <Summary>OSharp AspNetCore组件</Summary>
     <Description>OSharp AspNetCore组件，提供AspNetCore的服务端功能的封装</Description>
@@ -29,6 +29,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.*" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.*" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="8.*" />
+  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.*" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="9.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />

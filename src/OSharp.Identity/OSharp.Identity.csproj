@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>OSharp.Identity</PackageId>
     <Summary>OSharp 身份认证组件</Summary>
     <Description>OSharp 身份认证组件，基于AspNetCore.Identity和Osharp仓储系统的身份认证实现</Description>
@@ -29,7 +29,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.*" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.*" />
   </ItemGroup>
-
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.*" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OSharp.AspNetCore\OSharp.AspNetCore.csproj" />
   </ItemGroup>
