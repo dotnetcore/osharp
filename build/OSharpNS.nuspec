@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>OSharpNS</id>
-    <version>9.0.0</version>
+    <version>9.0.0-preview.304</version>
     <title>OSharpFramework(.NET6.0/.NETCoreApp3.1)</title>
     <authors>柳柳软件(66soft.net)</authors>
     <owners>LiuliuSoft nnc</owners>
@@ -16,18 +16,18 @@
     <tags>osharp</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="OSharp.Core" version="9.0.0" />
-        <dependency id="OSharp.EntityFrameworkCore" version="9.0.0" />
-        <dependency id="OSharp.AutoMapper" version="9.0.0" />
-        <dependency id="OSharp.AspNetCore" version="9.0.0" />
-        <dependency id="OSharp.Log4Net" version="9.0.0" />
+        <dependency id="OSharp.Core" version="9.0.0-preview.304" />
+        <dependency id="OSharp.EntityFrameworkCore" version="9.0.0-preview.304" />
+        <dependency id="OSharp.AutoMapper" version="9.0.0-preview.304" />
+        <dependency id="OSharp.AspNetCore" version="9.0.0-preview.304" />
+        <dependency id="OSharp.Log4Net" version="9.0.0-preview.304" />
       </group>
       <group targetFramework="net6.0">
-        <dependency id="OSharp.Core" version="9.0.0" />
-        <dependency id="OSharp.EntityFrameworkCore" version="9.0.0" />
-        <dependency id="OSharp.AutoMapper" version="9.0.0" />
-        <dependency id="OSharp.AspNetCore" version="9.0.0" />
-        <dependency id="OSharp.Log4Net" version="9.0.0" />
+        <dependency id="OSharp.Core" version="9.0.0-preview.304" />
+        <dependency id="OSharp.EntityFrameworkCore" version="9.0.0-preview.304" />
+        <dependency id="OSharp.AutoMapper" version="9.0.0-preview.304" />
+        <dependency id="OSharp.AspNetCore" version="9.0.0-preview.304" />
+        <dependency id="OSharp.Log4Net" version="9.0.0-preview.304" />
       </group>
     </dependencies>
   </metadata>

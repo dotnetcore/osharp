@@ -27,6 +27,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 8.0.x
+      - name: Setup dotnet9.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 9.0.x
       - name: Linux Build
         run: |
           dotnet build ./src/OSharp.Utils/OSharp.Utils.csproj
@@ -68,6 +72,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 8.0.x
+      - name: Setup dotnet9.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 9.0.x
       - name: Windows Build
         run: |
           dotnet build ./src/OSharp.Wpf/OSharp.Wpf.csproj
