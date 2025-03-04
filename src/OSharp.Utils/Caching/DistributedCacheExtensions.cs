@@ -29,6 +29,13 @@ namespace OSharp.Caching
         private static readonly ConcurrentDictionary<string, SemaphoreSlim> KeyLocks = new ConcurrentDictionary<string, SemaphoreSlim>();
 
         /// <summary>
+        /// 设置 将对象转换为JSON字符串的委托
+        /// </summary>
+        public static Func<object, string> ToJsonFunc = val => val.ToJsonString();
+
+        public static Func<string, Type, object> FromJsonFunc = (json, type) => json.FromJsonString(type);
+
+        /// <summary>
         /// 将对象存入缓存中
         /// </summary>
         public static void Set(this IDistributedCache cache, string key, object value, DistributedCacheEntryOptions options = null)
@@ -36,7 +43,7 @@ namespace OSharp.Caching
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
 
-            string json = value.ToJsonString();
+            string json = ToJsonFunc(value);
             if (options == null)
             {
                 cache.SetString(key, json);
@@ -55,7 +62,7 @@ namespace OSharp.Caching
             Check.NotNullOrEmpty(key, nameof(key));
             Check.NotNull(value, nameof(value));
 
-            string json = value.ToJsonString();
+            string json = ToJsonFunc(value);
             if (options == null)
             {
                 await cache.SetStringAsync(key, json, token);
@@ -104,7 +111,8 @@ namespace OSharp.Caching
             {
                 return default(TResult);
             }
-            return json.FromJsonString<TResult>();
+
+            return (TResult)FromJsonFunc(json, typeof(TResult));
         }
 
         /// <summary>
@@ -117,7 +125,7 @@ namespace OSharp.Caching
             {
                 return default(TResult);
             }
-            return json.FromJsonString<TResult>();
+            return (TResult)FromJsonFunc(json, typeof(TResult));
         }
 
         /// <summary>
