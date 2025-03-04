@@ -10,6 +10,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -25,6 +26,8 @@ namespace OSharp.Caching
     /// </summary>
     public static class DistributedCacheExtensions
     {
+        private static readonly ConcurrentDictionary<string, SemaphoreSlim> KeyLocks = new ConcurrentDictionary<string, SemaphoreSlim>();
+
         /// <summary>
         /// 将对象存入缓存中
         /// </summary>
@@ -127,13 +130,31 @@ namespace OSharp.Caching
             {
                 return result;
             }
-            result = getFunc();
-            if (Equals(result, default(TResult)))
+
+            var keyLock = KeyLocks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
+            try
             {
-                return default(TResult);
+                keyLock.Wait();
+
+                // 双重检查
+                result = cache.Get<TResult>(key);
+                if (!Equals(result, default(TResult)))
+                {
+                    return result;
+                }
+
+                result = getFunc();
+                if (Equals(result, default(TResult)))
+                {
+                    return default(TResult);
+                }
+                cache.Set(key, result, options);
+                return result;
             }
-            cache.Set(key, result, options);
-            return result;
+            finally
+            {
+                keyLock.Release();
+            }
         }
 
         /// <summary>
@@ -150,13 +171,31 @@ namespace OSharp.Caching
             {
                 return result;
             }
-            result = await getAsyncFunc();
-            if (Equals(result, default(TResult)))
+
+            var keyLock = KeyLocks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
+            try
             {
-                return default(TResult);
+                await keyLock.WaitAsync(token);
+
+                // 双重检查
+                result = await cache.GetAsync<TResult>(key, token);
+                if (!Equals(result, default(TResult)))
+                {
+                    return result;
+                }
+
+                result = await getAsyncFunc();
+                if (Equals(result, default(TResult)))
+                {
+                    return default(TResult);
+                }
+                await cache.SetAsync(key, result, options, token);
+                return result;
             }
-            await cache.SetAsync(key, result, options, token);
-            return result;
+            finally
+            {
+                keyLock.Release();
+            }
         }
 
         /// <summary>
@@ -173,13 +212,31 @@ namespace OSharp.Caching
             {
                 return result;
             }
-            result = await getAsyncFunc(token);
-            if (Equals(result, default(TResult)))
+
+            var keyLock = KeyLocks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
+            try
             {
-                return default(TResult);
+                await keyLock.WaitAsync(token);
+
+                // 双重检查
+                result = await cache.GetAsync<TResult>(key, token);
+                if (!Equals(result, default(TResult)))
+                {
+                    return result;
+                }
+
+                result = await getAsyncFunc(token);
+                if (Equals(result, default(TResult)))
+                {
+                    return default(TResult);
+                }
+                await cache.SetAsync(key, result, options, token);
+                return result;
             }
-            await cache.SetAsync(key, result, options, token);
-            return result;
+            finally
+            {
+                keyLock.Release();
+            }
         }
 
         /// <summary>
