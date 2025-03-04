@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>OSharp.EntityFrameworkCore.MySql</PackageId>
     <Description>OSharp 数据访问组件，封装EntityFrameworkCore的MySql数据访问功能的实现</Description>
     <Summary>OSharp 数据访问组件MySql</Summary>
@@ -20,6 +20,12 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.*" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.*" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>
