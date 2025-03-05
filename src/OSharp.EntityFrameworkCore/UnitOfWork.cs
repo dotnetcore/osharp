@@ -122,11 +122,14 @@ public class UnitOfWork : Disposable, IUnitOfWork
             throw new OsharpException($"数据上下文 {dbContext.GetType().FullName} 的数据库不存在，请通过 Migration 功能进行数据迁移创建数据库。");
         }
 
+        string connectionString = dbContext.Database.GetDbConnection().ConnectionString;
+        
         //将连接对象DbConnection缓存到ScopedDictionary，在再次构建DbContextOptionsBuilder的时候可以直接使用
-        OsharpDbContextOptions dbContextOptions = _provider.GetOSharpOptions().GetDbContextOptions(dbContextType);
+        //OsharpDbContextOptions dbContextOptions = _provider.GetOSharpOptions().GetDbContextOptions(dbContextType);
         ScopedDictionary scopedDictionary = _provider.GetRequiredService<ScopedDictionary>();
         DbConnection connection = dbContext.Database.GetDbConnection();
-        scopedDictionary.TryAdd($"DbConnection_{dbContextOptions.ConnectionString}", connection);
+        //scopedDictionary.TryAdd($"DbConnection_{dbContextOptions.ConnectionString}", connection);
+        scopedDictionary.TryAdd($"DbConnection_{connectionString}", connection);
 
         //缓存DbContext
         if (_contextDict.TryGetValue(connection, out List<DbContextBase> value))
