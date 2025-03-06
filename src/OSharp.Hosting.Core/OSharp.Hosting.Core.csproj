@@ -11,23 +11,22 @@
     <RootNamespace>OSharp.Hosting</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Lazy.Captcha.Core" Version="2.*" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="MailKit" Version="3.6.0" />
+    <PackageReference Include="Lazy.Captcha.Core" Version="2.0.9" />
+    <PackageReference Include="MailKit" Version="4.8.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="MailKit" Version="3.6.0" />
+    <PackageReference Include="Lazy.Captcha.Core" Version="2.0.9" />
+    <PackageReference Include="MailKit" Version="4.8.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="Lazy.Captcha.Core" Version="2.*" />
     <PackageReference Include="MailKit" Version="4.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Lazy.Captcha.Core" Version="2.*" />
     <PackageReference Include="MailKit" Version="4.*" />
   </ItemGroup>
-
   
   <ItemGroup>
     <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
