@@ -20,6 +20,7 @@ public partial class UserConfiguration : EntityTypeConfigurationBase<User, long>
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.NormalizedUserName, m.DeletedTime }).HasDatabaseName("UserNameIndex").IsUnique();
         builder.HasIndex(m => new { m.NormalizeEmail, m.DeletedTime }).HasDatabaseName("EmailIndex");
 

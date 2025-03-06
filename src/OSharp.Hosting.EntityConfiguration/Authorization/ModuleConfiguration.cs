@@ -23,6 +23,7 @@ public partial class ModuleConfiguration : EntityTypeConfigurationBase<Module, l
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<Module> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasOne(m => m.Parent).WithMany(m => m.Children).HasForeignKey(m => m.ParentId).IsRequired(false);
 
         EntityConfigurationAppend(builder);
