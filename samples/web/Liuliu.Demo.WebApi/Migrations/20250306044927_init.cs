@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Liuliu.Demo.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_Organization",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "名称"),
                     Code = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "编码"),
                     Remark = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "描述"),
@@ -99,7 +100,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditOperation",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FunctionName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "执行的功能名"),
                     UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, comment: "当前用户标识"),
                     UserName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true, comment: "当前用户名"),
@@ -140,7 +142,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_Menu",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "名称"),
                     Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "显示"),
                     Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "图标"),
@@ -193,7 +196,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditEntity",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "实体名称"),
                     TypeName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "类型名称"),
                     EntityKey = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "类型名称"),
@@ -215,11 +219,12 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Systems_AuditProperty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "名称"),
                     FieldName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "字段"),
-                    OriginalValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "旧值"),
-                    NewValue = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true, comment: "新值"),
+                    OriginalValue = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "旧值"),
+                    NewValue = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "新值"),
                     DataType = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "数据类型"),
                     AuditEntityId = table.Column<long>(type: "bigint", nullable: false, comment: "AuditEntityId")
                 },
@@ -283,7 +288,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleRole",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ModuleId = table.Column<long>(type: "bigint", nullable: false, comment: "模块编号"),
                     RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号")
                 },
@@ -302,7 +308,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Auth_ModuleUser",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ModuleId = table.Column<long>(type: "bigint", nullable: false, comment: "模块编号"),
                     UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
                     Disabled = table.Column<bool>(type: "bit", nullable: false, comment: "Disabled")
@@ -322,7 +329,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_LoginLog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Ip = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "登录IP"),
                     UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "用户代理头"),
                     LogoutTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "退出时间"),
@@ -413,7 +421,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserClaim",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
                     ClaimType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "声明类型"),
                     ClaimValue = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true, comment: "声明值")
@@ -433,7 +442,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserDetail",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterIp = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true, comment: "注册IP"),
                     UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号")
                 },
@@ -452,7 +462,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "登录的登录提供程序"),
                     ProviderKey = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "第三方用户的唯一标识"),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "第三方用户昵称"),
@@ -475,7 +486,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
                     RoleId = table.Column<long>(type: "bigint", nullable: false, comment: "角色编号"),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
@@ -503,7 +515,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Identity_UserToken",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false, comment: "用户编号"),
                     LoginProvider = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "登录提供者"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true, comment: "令牌名称"),
@@ -524,7 +537,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_Message",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "标题"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "内容"),
                     MessageType = table.Column<int>(type: "int", nullable: false, comment: "消息类型"),
@@ -553,7 +567,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReceive",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ReadDate = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "接收时间"),
                     NewReplyCount = table.Column<long>(type: "bigint", nullable: false, comment: "新回复数，接收者使用"),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "创建时间"),
@@ -581,7 +596,8 @@ namespace Liuliu.Demo.Web.Migrations
                 name: "Infos_MessageReply",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号"),
+                    Id = table.Column<long>(type: "bigint", nullable: false, comment: "编号")
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "消息内容"),
                     IsRead = table.Column<bool>(type: "bit", nullable: false, comment: "是否已读"),
                     ParentMessageId = table.Column<long>(type: "bigint", nullable: false, comment: "回复的主消息，当回复主消息时有效"),
