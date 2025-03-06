@@ -1,19 +1,23 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace OSharp.CodeGenerator.Migrations
 {
-    public partial class Init : Migration
+    /// <inheritdoc />
+    public partial class init : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Auth_EntityInfo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    TypeName = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    TypeName = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     AuditEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     PropertyJson = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -26,11 +30,11 @@ namespace OSharp.CodeGenerator.Migrations
                 name: "Auth_Function",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Area = table.Column<string>(type: "TEXT", nullable: true),
-                    Controller = table.Column<string>(type: "TEXT", nullable: true),
-                    Action = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    Area = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    Controller = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    Action = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     IsController = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsAjax = table.Column<bool>(type: "INTEGER", nullable: false),
                     AccessType = table.Column<int>(type: "INTEGER", nullable: false),
@@ -58,7 +62,8 @@ namespace OSharp.CodeGenerator.Migrations
                     SiteUrl = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     Creator = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     Copyright = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    RootPath = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,10 +94,13 @@ namespace OSharp.CodeGenerator.Migrations
                 name: "Systems_KeyValue",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ValueJson = table.Column<string>(type: "TEXT", nullable: true),
-                    ValueType = table.Column<string>(type: "TEXT", nullable: true),
-                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false),
+                    Key = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false),
+                    ValueJson = table.Column<string>(type: "text", nullable: true),
+                    ValueType = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    Display = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    Remark = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    Order = table.Column<int>(type: "INTEGER", nullable: false),
                     IsLocked = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -107,6 +115,7 @@ namespace OSharp.CodeGenerator.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     Display = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     Order = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IsLocked = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -146,7 +155,7 @@ namespace OSharp.CodeGenerator.Migrations
                         column: x => x.TemplateId,
                         principalTable: "CodeGen_CodeTemplate",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,6 +166,7 @@ namespace OSharp.CodeGenerator.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     Display = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     PrimaryKeyTypeFullName = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     Listable = table.Column<bool>(type: "INTEGER", nullable: false),
                     Addable = table.Column<bool>(type: "INTEGER", nullable: false),
                     Updatable = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -216,6 +226,7 @@ namespace OSharp.CodeGenerator.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     Display = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     TypeName = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Listable = table.Column<bool>(type: "INTEGER", nullable: false),
                     Updatable = table.Column<bool>(type: "INTEGER", nullable: false),
                     Sortable = table.Column<bool>(type: "INTEGER", nullable: false),
                     Filterable = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -223,7 +234,9 @@ namespace OSharp.CodeGenerator.Migrations
                     MinLength = table.Column<int>(type: "INTEGER", nullable: true),
                     MaxLength = table.Column<int>(type: "INTEGER", nullable: true),
                     IsNullable = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsEnum = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsReadonly = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsHide = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsVirtual = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsForeignKey = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsNavigation = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -297,6 +310,7 @@ namespace OSharp.CodeGenerator.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
