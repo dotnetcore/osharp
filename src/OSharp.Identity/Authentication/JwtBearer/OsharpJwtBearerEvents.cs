@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="OsharpJwtBearerEvents.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2020 OSharp. All rights reserved.
 //  </copyright>
@@ -53,7 +53,7 @@ public class OsharpJwtBearerEvents : JwtBearerEvents
     {
         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
         {
-            context.Response.Headers.Add("Token-Expired", "true");
+            context.Response.Headers.Append("Token-Expired", "true");
         }
 
         return Task.CompletedTask;
