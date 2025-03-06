@@ -12,25 +12,26 @@
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.*" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.*" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.*" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="Dapper" Version="2.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.*" />
   </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Dapper" Version="2.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.*" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="9.*" />

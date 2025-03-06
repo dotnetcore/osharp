@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="ModuleFunctionConfiguration.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -31,7 +31,7 @@ namespace Liuliu.Demo.EntityConfiguration.Authorization
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<ModuleFunction> builder)
         {
-            builder.HasIndex(m => new { m.ModuleId, m.FunctionId }).HasName("ModuleFunctionIndex").IsUnique();
+            builder.HasIndex(m => new { m.ModuleId, m.FunctionId }).HasDatabaseName("ModuleFunctionIndex").IsUnique();
 
             builder.HasOne<Module>(mf => mf.Module).WithMany().HasForeignKey(m => m.ModuleId);
             builder.HasOne<Function>(mf => mf.Function).WithMany().HasForeignKey(m => m.FunctionId);
