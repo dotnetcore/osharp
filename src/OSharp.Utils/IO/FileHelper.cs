@@ -112,7 +112,15 @@ namespace OSharp.IO
                         {
                             readSize = fs.Length - offset;
                         }
-                        fs.Read(buffer, 0, (int)readSize);
+                        int bytesRead = 0;
+                        int totalBytesRead = 0;
+                        while (totalBytesRead < readSize)
+                        {
+                            bytesRead = fs.Read(buffer, totalBytesRead, (int)readSize - totalBytesRead);
+                            if (bytesRead == 0)
+                                break; // 已到达文件末尾
+                            totalBytesRead += bytesRead;
+                        }
                         if (offset + readSize < fs.Length)
                         {
                             md5.TransformBlock(buffer, 0, (int)readSize, buffer, 0);
@@ -141,17 +149,17 @@ namespace OSharp.IO
                 }
             }
         }
-        
+
         /// <summary>
         /// 获取文本文件的编码方式
         /// </summary>
         /// <param name="fileName"> 文件名 例如：path = @"D:\test.txt"</param>
         /// <returns>返回编码方式</returns>
-        public static Encoding GetEncoding(string fileName )
+        public static Encoding GetEncoding(string fileName)
         {
             return GetEncoding(fileName, Encoding.Default);
         }
-        
+
         /// <summary>
         /// 获取文本流的编码方式
         /// </summary>
@@ -162,7 +170,7 @@ namespace OSharp.IO
             //Encoding.Default 系统默认的编码方式
             return GetEncoding(fs, Encoding.Default);
         }
-        
+
         /// <summary>
         /// 获取一个文本流的编码方式
         /// </summary>

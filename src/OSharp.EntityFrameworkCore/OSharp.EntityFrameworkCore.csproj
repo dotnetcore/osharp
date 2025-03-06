@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>OSharp.EntityFrameworkCore</PackageId>
     <Description>OSharp数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp数据访问组件</Summary>
@@ -29,8 +29,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.*" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="9.*" />
   </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    </ItemGroup>
 </Project>

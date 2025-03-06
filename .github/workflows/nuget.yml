@@ -5,7 +5,7 @@ on:
   push:
     branches: [releases/snow]
     tags:
-      - "8.0.*"
+      - "9.0.*"
     paths:
       - "src/**"
       - ".github/workflows/nuget.yml"
@@ -26,7 +26,11 @@ jobs:
       - name: Setup dotnet8.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.0.x      
+      - name: Setup dotnet9.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 9.0.x
       - name: Restore
         run: dotnet restore
       - name: Build and Pack
