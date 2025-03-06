@@ -21,6 +21,7 @@ public partial class EntityUserConfiguration : EntityTypeConfigurationBase<Entit
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<EntityUser> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.EntityId, m.UserId }).HasDatabaseName("EntityUserIndex");
 
         builder.HasOne<EntityInfo>(eu => eu.EntityInfo).WithMany().HasForeignKey(m => m.EntityId);

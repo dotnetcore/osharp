@@ -6,29 +6,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OSharp.Entity;
 
+#nullable disable
+
 namespace OSharp.CodeGenerator.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20210412033738_RootPath")]
-    partial class RootPath
+    [Migration("20250306051255_init")]
+    partial class init
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("OSharp.Authorization.EntityInfos.EntityInfo", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("AuditEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PropertyJson")
@@ -37,6 +43,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.Property<string>("TypeName")
                         .IsRequired()
+                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -45,22 +52,23 @@ namespace OSharp.CodeGenerator.Migrations
                         .IsUnique()
                         .HasDatabaseName("ClassFullNameIndex");
 
-                    b.ToTable("Auth_EntityInfo");
+                    b.ToTable("Auth_EntityInfo", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Authorization.Functions.Function", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AccessType")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Action")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Area")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("AuditEntityEnabled")
@@ -73,6 +81,7 @@ namespace OSharp.CodeGenerator.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Controller")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsAccessTypeChanged")
@@ -94,6 +103,7 @@ namespace OSharp.CodeGenerator.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -102,7 +112,7 @@ namespace OSharp.CodeGenerator.Migrations
                         .IsUnique()
                         .HasDatabaseName("AreaControllerActionIndex");
 
-                    b.ToTable("Auth_Function");
+                    b.ToTable("Auth_Function", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeEntity", b =>
@@ -140,6 +150,10 @@ namespace OSharp.CodeGenerator.Migrations
                     b.Property<bool>("HasUpdateAudited")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Icon")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsDataAuth")
                         .HasColumnType("INTEGER");
 
@@ -172,7 +186,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("CodeGen_CodeEntity");
+                    b.ToTable("CodeGen_CodeEntity", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeForeign", b =>
@@ -209,7 +223,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasIndex("EntityId");
 
-                    b.ToTable("CodeGen_CodeForeign");
+                    b.ToTable("CodeGen_CodeForeign", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeModule", b =>
@@ -223,6 +237,10 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.Property<string>("Display")
                         .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Icon")
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
@@ -244,7 +262,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("CodeGen_CodeModule");
+                    b.ToTable("CodeGen_CodeModule", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeProject", b =>
@@ -288,7 +306,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CodeGen_CodeProject");
+                    b.ToTable("CodeGen_CodeProject", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeProjectTemplate", b =>
@@ -312,7 +330,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("CodeGen_CodeProjectTemplate");
+                    b.ToTable("CodeGen_CodeProjectTemplate", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeProperty", b =>
@@ -340,7 +358,13 @@ namespace OSharp.CodeGenerator.Migrations
                     b.Property<bool>("Filterable")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsEnum")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsForeignKey")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsHide")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsInputDto")
@@ -365,6 +389,9 @@ namespace OSharp.CodeGenerator.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsVirtual")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Listable")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("MaxLength")
@@ -399,7 +426,7 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasIndex("EntityId");
 
-                    b.ToTable("CodeGen_CodeProperty");
+                    b.ToTable("CodeGen_CodeProperty", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeTemplate", b =>
@@ -443,13 +470,16 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CodeGen_CodeTemplate");
+                    b.ToTable("CodeGen_CodeTemplate", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.Core.Systems.KeyValue", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Display")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsLocked")
@@ -457,12 +487,21 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ValueJson")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("ValueType")
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -471,7 +510,7 @@ namespace OSharp.CodeGenerator.Migrations
                         .IsUnique()
                         .HasDatabaseName("KeyIndex");
 
-                    b.ToTable("Systems_KeyValue");
+                    b.ToTable("Systems_KeyValue", (string)null);
                 });
 
             modelBuilder.Entity("OSharp.CodeGeneration.Services.Entities.CodeEntity", b =>
@@ -518,7 +557,7 @@ namespace OSharp.CodeGenerator.Migrations
                     b.HasOne("OSharp.CodeGeneration.Services.Entities.CodeTemplate", "Template")
                         .WithMany("ProjectTemplates")
                         .HasForeignKey("TemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Project");

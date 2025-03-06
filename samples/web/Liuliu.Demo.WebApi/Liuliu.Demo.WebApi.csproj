@@ -71,10 +71,6 @@
     <ProjectReference Include="..\..\..\src\OSharp.Swagger\OSharp.Swagger.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

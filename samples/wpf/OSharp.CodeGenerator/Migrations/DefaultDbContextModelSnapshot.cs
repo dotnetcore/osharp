@@ -15,13 +15,16 @@ namespace OSharp.CodeGenerator.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("OSharp.Authorization.EntityInfos.EntityInfo", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("AuditEnabled")
                         .HasColumnType("INTEGER");
@@ -33,7 +36,6 @@ namespace OSharp.CodeGenerator.Migrations
 
                     b.Property<string>("PropertyJson")
                         .IsRequired()
-                        .HasMaxLength(5000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TypeName")
@@ -52,9 +54,8 @@ namespace OSharp.CodeGenerator.Migrations
 
             modelBuilder.Entity("OSharp.Authorization.Functions.Function", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AccessType")
                         .HasColumnType("INTEGER");
@@ -471,9 +472,8 @@ namespace OSharp.CodeGenerator.Migrations
 
             modelBuilder.Entity("OSharp.Core.Systems.KeyValue", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Display")
                         .HasMaxLength(100)
