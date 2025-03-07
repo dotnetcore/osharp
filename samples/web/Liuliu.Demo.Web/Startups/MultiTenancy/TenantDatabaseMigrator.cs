@@ -39,7 +39,7 @@ namespace Liuliu.Demo.Web.Startups
         /// <summary>
         /// 迁移所有租户数据库
         /// </summary>
-        public void MigrateAllTenants()
+        public OperationResult MigrateAllTenants()
         {
             // 获取所有租户
             var tenants = new List<TenantOutputDto>();
@@ -49,17 +49,18 @@ namespace Liuliu.Demo.Web.Startups
                 tenants = _multiTenancyContract.GetAllTenants().Where(p => p.TenantKey != "Default").ToList();
             }
 
+            var count = 0;
+            var errList = new List<string>();
             foreach (var tenant in tenants)
             {
-                try
-                {
-                    MigrateTenantDatabase(tenant);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "迁移租户 {TenantKey} 的数据库时出错", tenant.TenantKey);
-                }
+                 var result =  MigrateTenantDatabase(tenant);
+                if (result.Succeeded)
+                    count++;
+                else
+                    errList.Add(result.Message);
             }
+
+            return new OperationResult(OperationResultType.Success, "迁移完成" + count + "/" + tenants.Count, errList);
         }
 
         /// <summary>

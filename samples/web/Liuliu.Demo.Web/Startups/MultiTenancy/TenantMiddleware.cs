@@ -45,7 +45,7 @@ namespace Liuliu.Demo.Web.Startups
                     {
                         var keyParams = new string[] { "TenantRunTime", tenant.TenantKey };
                         var key = new StringCacheKeyGenerator().GetKey(keyParams);
-                        var tenantRunTime = cache.Get<DateTime?>(key, null);
+                        var tenantRunTime = cache.Get<DateTime?>(key);
                         if (tenantRunTime == null)
                         {
                             migrator.MigrateTenant(tenant);
@@ -54,12 +54,19 @@ namespace Liuliu.Demo.Web.Startups
                         {
                             keyParams = new string[] { "TenantRunTime", "Default" };
                             key = new StringCacheKeyGenerator().GetKey(keyParams);
-                            var defaultRunTime = cache.Get<DateTime?>(key, null);
+                            var defaultRunTime = cache.Get<DateTime?>(key);
                             if (tenantRunTime < defaultRunTime)
                             {
                                 migrator.MigrateTenant(tenant);
                             }
                         }
+                    }
+
+                    if (tenant.ExpireDate!=null && ((System.DateTime)tenant.ExpireDate).AddDays(1) < System.DateTime.Now)
+                    {
+                        context.Response.StatusCode = 500; // 直接报错
+                        await context.Response.WriteAsync("您的授权于["+((System.DateTime)tenant.ExpireDate).ToString("yyyy-MM-dd")+"到期]."); // 可以自定义错误信息
+                        return;
                     }
 
                     // 可以在这里添加租户相关的请求头或其他信息
@@ -68,11 +75,17 @@ namespace Liuliu.Demo.Web.Startups
                 else
                 {
                     _logger.LogDebug("未识别到租户信息");
+                    context.Response.StatusCode = 500; // 直接报错
+                    await context.Response.WriteAsync("未识别到租户信息."); // 可以自定义错误信息
+                    return;
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "处理租户信息时发生错误");
+                context.Response.StatusCode = 500; // 直接报错
+                await context.Response.WriteAsync("处理租户信息时发生错误."); // 可以自定义错误信息
+                return;
             }
 
             // 继续处理请求

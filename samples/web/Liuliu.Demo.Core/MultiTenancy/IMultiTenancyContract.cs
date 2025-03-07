@@ -45,6 +45,20 @@ namespace Liuliu.Demo.MultiTenancy
         Task<OperationResult> UpdateTenants(params TenantInputDto[] dtos);
 
         /// <summary>
+        /// 租户启用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> SetTenantEnable(long id);
+
+        /// <summary>
+        /// 租户禁用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>业务操作结果</returns>
+        Task<OperationResult> SetTenantDisable(long id);
+
+        /// <summary>
         /// 删除多租户信息信息
         /// </summary>
         /// <param name="ids">要删除的多租户信息编号</param>

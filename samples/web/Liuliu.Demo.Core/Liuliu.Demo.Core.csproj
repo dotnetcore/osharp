@@ -30,8 +30,4 @@
       <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MultiTenancy\Middleware\" />
-  </ItemGroup>
 </Project>

@@ -64,20 +64,7 @@ namespace Liuliu.Demo.MultiTenancy
                 ConnectionString = defaultConnectionString,
                 CustomJson = "",
                 ExpireDate = null,
-                Host = "http://localhost:7001",
-                IsEnabled = true,
-                Name = "杭州智密科技有限公司",
-                ShortName = "智密科技"
-            };
-            dtos.Add(dto);
-
-            dto = new TenantInputDto()
-            {
-                TenantKey = "01",
-                ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=Tenant_01;Trusted_Connection=True;MultipleActiveResultSets=true",
-                CustomJson = "",
-                ExpireDate = null,
-                Host = "http://localhost:7001",
+                Host = "localhost",
                 IsEnabled = true,
                 Name = "杭州智密科技有限公司",
                 ShortName = "智密科技"
@@ -103,6 +90,26 @@ namespace Liuliu.Demo.MultiTenancy
         }
 
         /// <summary>
+        /// 租户启用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> SetTenantEnable(long id)
+        {
+            return await SetTenantIsEnable(id, true);
+        }
+
+        /// <summary>
+        /// 租户禁用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>业务操作结果</returns>
+        public async Task<OperationResult> SetTenantDisable(long id)
+        {
+            return await SetTenantIsEnable(id, false);
+        }
+
+        /// <summary>
         /// 删除站内信信息
         /// </summary>
         /// <param name="ids">要删除的站内信信息编号</param>
@@ -113,6 +120,27 @@ namespace Liuliu.Demo.MultiTenancy
             var result = TenantRepository.DeleteAsync(ids);
             ClearAllTenants();
             return result;
+        }
+
+        /// <summary>
+        /// 设置租户启用状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="enable"></param>
+        /// <returns>业务操作结果</returns>
+        private async Task<OperationResult> SetTenantIsEnable(long id,bool enable)
+        {
+            Check.NotNull(id, nameof(id));
+            var tenantEntity = TenantRepository.Query().FirstOrDefault(x => x.Id == id);
+            if (tenantEntity==null)
+            {
+                return new OperationResult(OperationResultType.Error, "数据未找到");
+            }
+
+            tenantEntity.IsEnabled = enable;
+
+            var count = await TenantRepository.UpdateAsync(tenantEntity);
+            return count>0? new OperationResult(OperationResultType.Success) : new OperationResult(OperationResultType.NoChanged);
         }
     }
 }
