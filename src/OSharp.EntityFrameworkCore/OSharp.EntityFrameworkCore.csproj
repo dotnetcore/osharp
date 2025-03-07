@@ -10,9 +10,6 @@
     <Summary>OSharp数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.*" />
