@@ -30,7 +30,6 @@ namespace Liuliu.Demo.MultiTenancy
         private readonly Random _random = new();
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
-        private readonly ITenantAccessor _tenantAccessor;
         private readonly ILogger _logger;
        
 
@@ -42,7 +41,6 @@ namespace Liuliu.Demo.MultiTenancy
         {
             _serviceProvider = serviceProvider;
             _cache = serviceProvider.GetService<IDistributedCache>();
-            _tenantAccessor = serviceProvider.GetService<ITenantAccessor>();
             _logger = serviceProvider.GetLogger(GetType());
         }
 
@@ -196,20 +194,31 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetFunctionRolesKey(long functionId)
         {
-            var tenantKey = "Default:";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantKey = "Default";
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
+                var tenant = _tenantAccessor.CurrentTenant;
+                if (tenant != null)
+                    tenantKey = tenant.TenantKey;
+            }
 
             return $"{tenantKey}:Auth:Function:FunctionRoles:{functionId}";
         }
 
         private string GetUserFunctionsKey(string userName)
         {
-            var tenantKey = "Default:";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantKey = "Default";
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
+                var tenant = _tenantAccessor.CurrentTenant;
+                if (tenant != null)
+                    tenantKey = tenant.TenantKey;
+            }
+
             return $"{tenantKey}:Auth:Function:UserFunctions:{userName}";
         }
     }

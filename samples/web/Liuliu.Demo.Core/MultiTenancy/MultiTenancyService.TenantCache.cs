@@ -19,7 +19,7 @@ namespace Liuliu.Demo.MultiTenancy
     {
         private readonly int tenantCacheSeconds = 600; //10分钟
         private const string tenantCacheKeyPrefix = "Tenant_";
-        private const string allTenantsCacheKey = "AllTenants";
+        private const string allTenantsCacheKey = "Tenants_All";
         private object tenantLockObj = new object();
 
         /// <summary>

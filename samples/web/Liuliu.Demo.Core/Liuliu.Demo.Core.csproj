@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\src\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
     <ProjectReference Include="..\..\..\src\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\..\..\src\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,5 +29,9 @@
     <Compile Update="Infos/InfosServiceBase.*.generated.cs">
       <DependentUpon>InfosServiceBase.generated.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MultiTenancy\Middleware\" />
   </ItemGroup>
 </Project>

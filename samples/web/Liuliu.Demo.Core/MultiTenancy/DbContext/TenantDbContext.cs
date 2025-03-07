@@ -7,6 +7,8 @@
 //  <last-date>2019-03-08 4:44</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.EntityFrameworkCore;
+
 namespace OSharp.Entity;
 
 /// <summary>

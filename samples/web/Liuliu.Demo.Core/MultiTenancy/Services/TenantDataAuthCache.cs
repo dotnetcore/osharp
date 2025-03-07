@@ -31,17 +31,16 @@ namespace Liuliu.Demo.MultiTenancy
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
-        private readonly ITenantAccessor _tenantAccessor;
         private readonly ILogger _logger;
-        
+
         /// <summary>
         /// 初始化一个<see cref="TenantDataAuthCache"/>类型的新实例
         /// </summary>
-        protected TenantDataAuthCache(IServiceProvider serviceProvider)
+        public TenantDataAuthCache(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _cache = serviceProvider.GetRequiredService<IDistributedCache>();
-            _tenantAccessor = serviceProvider.GetService<ITenantAccessor>();
             _logger = serviceProvider.GetLogger(GetType());
         }
 
@@ -120,20 +119,30 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetKey(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            var tenantKey = "Default:";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantKey = "Default";
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
+                var tenant = _tenantAccessor.CurrentTenant;
+                if (tenant != null)
+                    tenantKey = tenant.TenantKey;
+            }
 
             return $"{tenantKey}:Auth:Data:EntityRole:{roleName}:{entityTypeFullName}:{operation}";
         }
 
         private string GetName(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            var tenantKey = "Default:";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantKey = "Default";
+
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
+                var tenant = _tenantAccessor.CurrentTenant;
+                if (tenant != null)
+                    tenantKey = tenant.TenantKey;
+            }
 
             return $"租户“{tenantKey}”角色“{roleName}”和实体“{entityTypeFullName}”和操作“{operation}”";
         }

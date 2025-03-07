@@ -13,9 +13,10 @@ using Liuliu.Demo.Infos;
 using Liuliu.Demo.MultiTenancy;
 using Liuliu.Demo.Systems;
 using Liuliu.Demo.Web.Startups;
-
+using Microsoft.Extensions.Caching.Distributed;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Caching;
 using OSharp.Entity;
 using OSharp.Hangfire;
 using OSharp.Log4Net;
@@ -38,7 +39,7 @@ namespace Liuliu.Demo.Web
                 .AddPack<EndpointsPack>()
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
-                //.AddPack<RedisPack>()
+                .AddPack<RedisPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
@@ -76,8 +77,10 @@ namespace Liuliu.Demo.Web
 
             using (var scope = app.Services.CreateScope())
             {
-                var migrator = scope.ServiceProvider.GetRequiredService<TenantDatabaseMigrator>();
-                migrator.MigrateAllTenants();
+                var keyParams = new string[] { "TenantRunTime", "Default" };
+                var key = new StringCacheKeyGenerator().GetKey(keyParams);
+                var _cache = scope.ServiceProvider.GetService<IDistributedCache>();
+                _cache.Set(key, System.DateTime.Now);
             }
         }
     }

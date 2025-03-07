@@ -609,13 +609,12 @@ public class TenantCacheService : ICacheService
             key = new StringCacheKeyGenerator().GetKey(keyParams);
         }
 
-        var tenantKey = "Default:";
+        var tenantKey = "Default";
         var tenant = _tenantAccessor.CurrentTenant;
         if (tenant != null)
             tenantKey = tenant.TenantKey;
-        key = tenantKey + ":" + key;
-
         key = $"Query:{key.ToMd5Hash()}";
+        key = tenantKey + ":" + key;
         _logger.LogDebug($"get cache key: {key}");
         return key;
     }
