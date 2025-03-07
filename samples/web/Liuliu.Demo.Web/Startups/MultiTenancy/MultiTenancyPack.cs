@@ -1,7 +1,10 @@
 using System.ComponentModel;
 using Liuliu.Demo.MultiTenancy;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OSharp.Authorization;
+using OSharp.Caching;
 using OSharp.Core.Packs;
+using OSharp.Core.Systems;
 using OSharp.Entity;
 
 namespace Liuliu.Demo.Web.Startups
@@ -29,6 +32,12 @@ namespace Liuliu.Demo.Web.Startups
 
             // 替换默认的连接字符串提供者
             services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
+
+            // 涉及到租户缓存的实现进行替换
+            services.Replace<IKeyValueStore, TenantKeyValueStore>(ServiceLifetime.Scoped);
+            services.Replace<ICacheService, TenantCacheService>(ServiceLifetime.Scoped);
+            services.Replace<IFunctionAuthCache, TenantFunctionAuthCache>(ServiceLifetime.Singleton);
+            services.Replace<IDataAuthCache, TenantDataAuthCache>(ServiceLifetime.Singleton);
 
             return services;
         }
