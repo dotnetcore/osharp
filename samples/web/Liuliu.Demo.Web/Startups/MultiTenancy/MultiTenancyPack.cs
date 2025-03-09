@@ -3,6 +3,7 @@ using Liuliu.Demo.Identity.Entities;
 using Liuliu.Demo.MultiTenancy;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OSharp.Authorization;
+using OSharp.Authorization.Modules;
 using OSharp.Caching;
 using OSharp.Core.Packs;
 using OSharp.Core.Systems;
@@ -37,11 +38,14 @@ namespace Liuliu.Demo.Web.Startups
             services.Replace<IConnectionStringProvider, MultiTenantConnectionStringProvider>(ServiceLifetime.Scoped);
 
             // 涉及到租户缓存的实现进行替换
-            services.Replace<IOnlineUserProvider, TenantOnlineUserProvider<User,long,UserClaim,long,Role,long>>(ServiceLifetime.Scoped);
+            services.Replace<IOnlineUserProvider, TenantOnlineUserProvider>(ServiceLifetime.Scoped);
             services.Replace<IKeyValueStore, TenantKeyValueStore>(ServiceLifetime.Scoped);
             services.Replace<ICacheService, TenantCacheService>(ServiceLifetime.Scoped);
             services.Replace<IFunctionAuthCache, TenantFunctionAuthCache>(ServiceLifetime.Singleton);
             services.Replace<IDataAuthCache, TenantDataAuthCache>(ServiceLifetime.Singleton);
+
+            //功能上进行调整
+            services.Replace<IModuleHandler, TenantModuleHandler>(ServiceLifetime.Singleton);
 
             return services;
         }

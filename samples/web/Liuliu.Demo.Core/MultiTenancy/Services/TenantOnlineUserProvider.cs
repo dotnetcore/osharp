@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Liuliu.Demo.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,13 +22,7 @@ namespace Liuliu.Demo.MultiTenancy
     /// <summary>
     /// 在线用户信息提供者
     /// </summary>
-    public class TenantOnlineUserProvider<TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey> : IOnlineUserProvider
-        where TUser : UserBase<TUserKey>
-        where TUserKey : IEquatable<TUserKey>
-        where TUserClaim : UserClaimBase<TUserClaimKey, TUserKey>
-        where TUserClaimKey : IEquatable<TUserClaimKey>
-        where TRole : RoleBase<TRoleKey>
-        where TRoleKey : IEquatable<TRoleKey>
+    public class TenantOnlineUserProvider : IOnlineUserProvider
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
@@ -35,7 +30,7 @@ namespace Liuliu.Demo.MultiTenancy
         private readonly AsyncLock _asyncLock = new AsyncLock();
 
         /// <summary>
-        /// 初始化一个<see cref="TenantOnlineUserProvider{TUser, TUserKey, TUserClaim, TUserClaimKey, TRole, TRoleKey}"/>类型的新实例
+        /// 初始化一个<see cref="TenantOnlineUserProvider"/>类型的新实例
         /// </summary>
         public TenantOnlineUserProvider(IServiceProvider serviceProvider)
         {
@@ -59,15 +54,15 @@ namespace Liuliu.Demo.MultiTenancy
                 return await _cache.GetAsync<OnlineUser>(key,
                     async () =>
                     {
-                        UserManager<TUser> userManager = _serviceProvider.GetRequiredService<UserManager<TUser>>();
-                        TUser user = await userManager.FindByNameAsync(userName);
+                        UserManager<User> userManager = _serviceProvider.GetRequiredService<UserManager<User>>();
+                        User user = await userManager.FindByNameAsync(userName);
                         if (user == null)
                         {
                             return null;
                         }
 
                         IList<string> roles = await userManager.GetRolesAsync(user);
-                        RoleManager<TRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<TRole>>();
+                        RoleManager<Role> roleManager = _serviceProvider.GetRequiredService<RoleManager<Role>>();
                         bool isAdmin = roleManager.Roles.ToList().Any(m => roles.Contains(m.Name) && m.IsAdmin);
                         RefreshToken[] refreshTokens = await GetRefreshTokens(user);
                         OnlineUser onlineUser = new OnlineUser()
@@ -114,10 +109,10 @@ namespace Liuliu.Demo.MultiTenancy
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        private async Task<RefreshToken[]> GetRefreshTokens(TUser user)
+        private async Task<RefreshToken[]> GetRefreshTokens(User user)
         {
-            IOsharpUserAuthenticationTokenStore<TUser> store =
-                _serviceProvider.GetService<IUserStore<TUser>>() as IOsharpUserAuthenticationTokenStore<TUser>;
+            IOsharpUserAuthenticationTokenStore<User> store =
+                _serviceProvider.GetService<IUserStore<User>>() as IOsharpUserAuthenticationTokenStore<User>;
             if (store == null)
             {
                 return Array.Empty<RefreshToken>();
@@ -137,7 +132,7 @@ namespace Liuliu.Demo.MultiTenancy
             }
 
             //删除过期的Token
-            UserManager<TUser> userManager = _serviceProvider.GetRequiredService<UserManager<TUser>>();
+            UserManager<User> userManager = _serviceProvider.GetRequiredService<UserManager<User>>();
             IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
             foreach (RefreshToken token in expiredTokens)
             {

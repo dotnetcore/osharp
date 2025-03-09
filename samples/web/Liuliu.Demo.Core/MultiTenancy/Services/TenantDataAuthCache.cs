@@ -27,7 +27,7 @@ namespace Liuliu.Demo.MultiTenancy
     /// <summary>
     /// 数据权限缓存
     /// </summary>
-    public class TenantDataAuthCache : DataAuthCacheBase<EntityRole, Role, EntityInfo, long>
+    public class TenantDataAuthCache : IDataAuthCache
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IDistributedCache _cache;
@@ -37,7 +37,6 @@ namespace Liuliu.Demo.MultiTenancy
         /// 初始化一个<see cref="TenantDataAuthCache"/>类型的新实例
         /// </summary>
         public TenantDataAuthCache(IServiceProvider serviceProvider)
-            : base(serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _cache = serviceProvider.GetRequiredService<IDistributedCache>();
@@ -47,7 +46,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// <summary>
         /// 创建数据权限缓存
         /// </summary>
-        public override void BuildCaches()
+        public void BuildCaches()
         {
             var entityRoles = _serviceProvider.ExecuteScopedWork(provider =>
             {
@@ -83,7 +82,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// 设置指定数据权限的缓存
         /// </summary>
         /// <param name="item">数据权限缓存项</param>
-        public override void SetCache(DataAuthCacheItem item)
+        public void SetCache(DataAuthCacheItem item)
         {
             string key = GetKey(item.RoleName, item.EntityTypeFullName, item.Operation);
             string name = GetName(item.RoleName, item.EntityTypeFullName, item.Operation);
@@ -96,7 +95,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// 移除指定角色名与实体类型的缓存项
         /// </summary>
         /// <param name="item">要移除的数据权限缓存项信息</param>
-        public override void RemoveCache(DataAuthCacheItem item)
+        public void RemoveCache(DataAuthCacheItem item)
         {
             string key = GetKey(item.RoleName, item.EntityTypeFullName, item.Operation);
             string name = GetName(item.RoleName, item.EntityTypeFullName, item.Operation);
@@ -111,7 +110,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// <param name="entityTypeFullName">实体类型名称</param>
         /// <returns>数据过滤条件组</returns>
         /// <param name="operation">数据权限操作</param>
-        public override FilterGroup GetFilterGroup(string roleName, string entityTypeFullName, DataAuthOperation operation)
+        public FilterGroup GetFilterGroup(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
             string key = GetKey(roleName, entityTypeFullName, operation);
             return _cache.Get<FilterGroup>(key);

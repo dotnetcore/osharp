@@ -25,7 +25,7 @@ namespace Liuliu.Demo.MultiTenancy
     /// <summary>
     /// 功能权限缓存
     /// </summary>
-    public class TenantFunctionAuthCache : FunctionAuthCacheBase<ModuleFunction, ModuleRole, ModuleUser, Function, Module, long, Role, long, User, long>
+    public class TenantFunctionAuthCache : IFunctionAuthCache
     {
         private readonly Random _random = new();
         private readonly IServiceProvider _serviceProvider;
@@ -37,7 +37,6 @@ namespace Liuliu.Demo.MultiTenancy
         /// 初始化一个<see cref="TenantFunctionAuthCache"/>类型的新实例
         /// </summary>
         public TenantFunctionAuthCache(IServiceProvider serviceProvider)
-            : base(serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _cache = serviceProvider.GetService<IDistributedCache>();
@@ -47,7 +46,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// <summary>
         /// 创建功能权限缓存，只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
         /// </summary>
-        public override void BuildRoleCaches()
+        public void BuildRoleCaches()
         {
             //只创建 功能-角色集合 的映射，用户-功能 的映射，遇到才即时创建并缓存
             _serviceProvider.ExecuteScopedWork(provider =>
@@ -67,7 +66,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// 移除指定功能的缓存
         /// </summary>
         /// <param name="functionIds">功能编号集合</param>
-        public override void RemoveFunctionCaches(params long[] functionIds)
+        public void RemoveFunctionCaches(params long[] functionIds)
         {
             foreach (long functionId in functionIds)
             {
@@ -82,7 +81,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// 移除指定用户的缓存
         /// </summary>
         /// <param name="userNames">用户编号集合</param>
-        public override void RemoveUserCaches(params string[] userNames)
+        public void RemoveUserCaches(params string[] userNames)
         {
             foreach (string userName in userNames)
             {
@@ -158,7 +157,7 @@ namespace Liuliu.Demo.MultiTenancy
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <returns>用户的所有特权功能</returns>
-        public override long[] GetUserFunctions(string userName)
+        public long[] GetUserFunctions(string userName)
         {
             string key = GetUserFunctionsKey(userName);
             long[] functionIds = _cache.Get<long[]>(key);
