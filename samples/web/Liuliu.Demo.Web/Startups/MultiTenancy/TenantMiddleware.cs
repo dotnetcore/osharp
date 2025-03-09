@@ -70,7 +70,7 @@ namespace Liuliu.Demo.Web.Startups
                     }
 
                     // 可以在这里添加租户相关的请求头或其他信息
-                    context.Items["CurrentTenant"] = tenant;
+                    //context.Items["CurrentTenant"] = tenant;
                 }
                 else
                 {

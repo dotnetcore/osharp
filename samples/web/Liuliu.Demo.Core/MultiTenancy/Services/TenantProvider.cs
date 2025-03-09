@@ -44,10 +44,10 @@ namespace Liuliu.Demo.MultiTenancy
         public TenantOutputDto GetCurrentTenant()
         {
             // 首先检查租户访问器中是否已有租户信息
-            if (_tenantAccessor.CurrentTenant != null)
-            {
-                return _tenantAccessor.CurrentTenant;
-            }
+            //if (_tenantAccessor.CurrentTenant != null)
+            //{
+            //    return _tenantAccessor.CurrentTenant;
+            //}
 
             HttpContext httpContext = _httpContextAccessor.HttpContext;
             if (httpContext == null)
@@ -65,7 +65,7 @@ namespace Liuliu.Demo.MultiTenancy
                 if (tenant != null)
                 {
                     // 将解析到的租户设置到租户访问器中
-                    _tenantAccessor.CurrentTenant = tenant;
+                    //_tenantAccessor.CurrentTenant = tenant;
                     return tenant;
                 }
             }
