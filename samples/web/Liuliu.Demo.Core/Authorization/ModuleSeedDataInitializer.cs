@@ -33,7 +33,8 @@ namespace Liuliu.Demo.Authorization
         /// <returns></returns>
         protected override Module[] SeedData(IServiceProvider provider)
         {
-            long id = IdHelper.NextId();
+            //long id = IdHelper.NextId();
+            long id = 13700000000;
             return new[]
             {
                 new Module() {Id = id, Name = "根节点", Remark = "系统根节点", Code = "Root", OrderCode = 1, TreePathString = $"${id}$" },
