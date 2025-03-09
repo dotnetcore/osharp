@@ -43,8 +43,7 @@ namespace Liuliu.Demo.Web.Startups
 
                     if (tenant.TenantKey != "Default")
                     {
-                        var keyParams = new string[] { "TenantRunTime", tenant.TenantKey };
-                        var key = new StringCacheKeyGenerator().GetKey(keyParams);
+                        var key = "MultiTenancy:RunTime:" + tenant.TenantKey;
                         var tenantRunTime = cache.Get<DateTime?>(key);
                         if (tenantRunTime == null)
                         {
@@ -52,8 +51,7 @@ namespace Liuliu.Demo.Web.Startups
                         }
                         else
                         {
-                            keyParams = new string[] { "TenantRunTime", "Default" };
-                            key = new StringCacheKeyGenerator().GetKey(keyParams);
+                            key = "MultiTenancy:RunTime:Default";
                             var defaultRunTime = cache.Get<DateTime?>(key);
                             if (tenantRunTime < defaultRunTime)
                             {

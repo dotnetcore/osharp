@@ -23,6 +23,7 @@ namespace Liuliu.Demo.Web.Startups
         public override IServiceCollection AddServices(IServiceCollection services)
         {
             services.TryAddScoped<IMultiTenancyContract, MultiTenancyService>();
+            services.AddSingleton<ISeedDataInitializer, MultiTenancySeedDataInitializer>();
 
             services.AddScoped<ITenantAccessor, AsyncLocalTenantAccessor>();
             services.AddScoped<ITenantProvider, HttpTenantProvider>();

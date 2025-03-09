@@ -150,12 +150,9 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetKey(string userName)
         {
-            var tenantKey = "Default";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantCacheKeyPre = _tenantAccessor.TenantCacheKeyPre;
 
-            return $"{tenantKey}:Identity:OnlineUser:{userName}";
+            return $"{tenantCacheKeyPre}Identity:OnlineUser:{userName}";
         }
     }
 }

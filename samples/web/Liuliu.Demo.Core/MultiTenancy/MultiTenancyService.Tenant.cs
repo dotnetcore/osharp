@@ -47,35 +47,6 @@ namespace Liuliu.Demo.MultiTenancy
             return result;
         }
 
-        public OperationResult InitTenants()
-        {
-            var _dbContexts = ServiceProvider.GetOSharpOptions().DbContexts;
-            OsharpDbContextOptions dbContextOptions = _dbContexts.Values.FirstOrDefault(m => m.DbContextType.Name == "DefaultDbContext");
-            if (dbContextOptions == null)
-            {
-                throw new OsharpException($"数据上下文“DefaultDbContext”的数据上下文配置信息不存在");
-            }
-            var defaultConnectionString = dbContextOptions.ConnectionString;
-
-            var dtos = new List<TenantInputDto>();
-            var dto = new TenantInputDto()
-            {
-                TenantKey = "Default",
-                ConnectionString = defaultConnectionString,
-                CustomJson = "",
-                ExpireDate = null,
-                Host = "localhost",
-                IsEnabled = true,
-                Name = "杭州智密科技有限公司",
-                ShortName = "智密科技"
-            };
-            dtos.Add(dto);
-
-            var result = TenantRepository.Insert(dtos);
-            ClearAllTenants();
-            return result;
-        }
-
         /// <summary>
         /// 更新站内信信息
         /// </summary>

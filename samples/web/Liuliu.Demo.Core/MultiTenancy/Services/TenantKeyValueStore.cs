@@ -234,12 +234,9 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetCacheKey(string key)
         {
-            var tenantKey = "Default";
-            var tenant = _tenantAccessor.CurrentTenant;
-            if (tenant != null)
-                tenantKey = tenant.TenantKey;
+            var tenantCacheKeyPre = _tenantAccessor.TenantCacheKeyPre;
 
-            return $"{tenantKey}:Systems:KeyValues:{key}";
+            return $"{tenantCacheKeyPre}Systems:KeyValues:{key}";
         }
     }
 

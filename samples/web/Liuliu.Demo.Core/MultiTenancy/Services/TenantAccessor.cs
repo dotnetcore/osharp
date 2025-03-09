@@ -11,6 +11,16 @@ namespace Liuliu.Demo.MultiTenancy
     public class TenantAccessor : ITenantAccessor
     {
         public TenantOutputDto CurrentTenant { get; set; }
+
+        public string TenantCacheKeyPre
+        { get
+            {
+                if (CurrentTenant == null)
+                    return "Tenant:Default:";
+                else
+                    return "Tenant:" + CurrentTenant.TenantKey+":";
+            }
+        }
     }
 
     /// <summary>
@@ -28,6 +38,17 @@ namespace Liuliu.Demo.MultiTenancy
         {
             get => _currentTenant.Value;
             set => _currentTenant.Value = value;
+        }
+
+        public string TenantCacheKeyPre
+        {
+            get
+            {
+                if (CurrentTenant == null)
+                    return "Tenant:Default:";
+                else
+                    return "Tenant:" + CurrentTenant.TenantKey+":";
+            }
         }
     }
 }

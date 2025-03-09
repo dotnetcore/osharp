@@ -194,32 +194,28 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetFunctionRolesKey(long functionId)
         {
-            var tenantKey = "Default";
+            var tenantCacheKeyPre = "";
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
-                var tenant = _tenantAccessor.CurrentTenant;
-                if (tenant != null)
-                    tenantKey = tenant.TenantKey;
+                tenantCacheKeyPre = _tenantAccessor.TenantCacheKeyPre;
             }
 
-            return $"{tenantKey}:Auth:Function:FunctionRoles:{functionId}";
+            return $"{tenantCacheKeyPre}Auth:Function:FunctionRoles:{functionId}";
         }
 
         private string GetUserFunctionsKey(string userName)
         {
-            var tenantKey = "Default";
+            var tenantCacheKeyPre = "";
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
-                var tenant = _tenantAccessor.CurrentTenant;
-                if (tenant != null)
-                    tenantKey = tenant.TenantKey;
+                tenantCacheKeyPre = _tenantAccessor.TenantCacheKeyPre;
             }
 
-            return $"{tenantKey}:Auth:Function:UserFunctions:{userName}";
+            return $"{tenantCacheKeyPre}Auth:Function:UserFunctions:{userName}";
         }
     }
 }

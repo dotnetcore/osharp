@@ -78,8 +78,7 @@ namespace Liuliu.Demo.Web.Startups
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
-                    var keyParams = new string[] { "TenantRunTime", tenant.TenantKey };
-                    var key = new StringCacheKeyGenerator().GetKey(keyParams);
+                    var key = "MultiTenancy:RunTime:"+tenant.TenantKey;
                     var _cache = scope.ServiceProvider.GetService<IDistributedCache>();
                     _cache.Set(key, System.DateTime.Now);
                 }
@@ -195,7 +194,7 @@ namespace Liuliu.Demo.Web.Startups
             }
             catch (Exception ex)
             {
-                _logger.LogError("租户 " + tenant.TenantKey + " 缓存数据初始化开始", ex);
+                _logger.LogError("租户 " + tenant.TenantKey + " 缓存数据初始化失败", ex);
                 return new OperationResult(OperationResultType.Error, "租户 " + tenant.TenantKey + " 缓存数据初始化开始:" + ex.Message);
             }
             return new OperationResult(OperationResultType.Success);

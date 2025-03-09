@@ -119,32 +119,30 @@ namespace Liuliu.Demo.MultiTenancy
 
         private string GetKey(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            var tenantKey = "Default";
+            var tenantCacheKeyPre = "";
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
-                var tenant = _tenantAccessor.CurrentTenant;
-                if (tenant != null)
-                    tenantKey = tenant.TenantKey;
+                tenantCacheKeyPre = _tenantAccessor.TenantCacheKeyPre;
             }
 
-            return $"{tenantKey}:Auth:Data:EntityRole:{roleName}:{entityTypeFullName}:{operation}";
+            return $"{tenantCacheKeyPre}Auth:Data:EntityRole:{roleName}:{entityTypeFullName}:{operation}";
         }
 
         private string GetName(string roleName, string entityTypeFullName, DataAuthOperation operation)
         {
-            var tenantKey = "Default";
+            var tenantName = "Default";
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var _tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantAccessor>();
                 var tenant = _tenantAccessor.CurrentTenant;
                 if (tenant != null)
-                    tenantKey = tenant.TenantKey;
+                    tenantName =  tenant.TenantKey;
             }
 
-            return $"租户“{tenantKey}”角色“{roleName}”和实体“{entityTypeFullName}”和操作“{operation}”";
+            return $"租户“{tenantName}”角色“{roleName}”和实体“{entityTypeFullName}”和操作“{operation}”";
         }
     }
 }

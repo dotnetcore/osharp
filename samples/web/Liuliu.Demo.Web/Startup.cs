@@ -77,8 +77,7 @@ namespace Liuliu.Demo.Web
 
             using (var scope = app.Services.CreateScope())
             {
-                var keyParams = new string[] { "TenantRunTime", "Default" };
-                var key = new StringCacheKeyGenerator().GetKey(keyParams);
+                var key = "MultiTenancy:RunTime:Default";
                 var _cache = scope.ServiceProvider.GetService<IDistributedCache>();
                 _cache.Set(key, System.DateTime.Now);
             }

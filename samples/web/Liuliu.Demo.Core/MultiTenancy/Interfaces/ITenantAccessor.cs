@@ -11,5 +11,7 @@ namespace Liuliu.Demo.MultiTenancy
     public interface ITenantAccessor
     {
         TenantOutputDto CurrentTenant { get; set; }
+
+        string TenantCacheKeyPre { get; }
     }
 }

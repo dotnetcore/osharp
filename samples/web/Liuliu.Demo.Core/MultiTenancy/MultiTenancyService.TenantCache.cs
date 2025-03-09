@@ -18,8 +18,8 @@ namespace Liuliu.Demo.MultiTenancy
     public partial class MultiTenancyService
     {
         private readonly int tenantCacheSeconds = 600; //10分钟
-        private const string tenantCacheKeyPrefix = "Tenant_";
-        private const string allTenantsCacheKey = "Tenants_All";
+        private const string tenantCacheKeyPrefix = "MultiTenancy:Tenants:";
+        private const string allTenantsCacheKey = "MultiTenancy:Tenants:All";
         private object tenantLockObj = new object();
 
         /// <summary>
@@ -38,14 +38,8 @@ namespace Liuliu.Demo.MultiTenancy
                     if (cacheData == null)
                     {
                         cacheData = Tenants.ToOutput<Tenant, TenantOutputDto>().ToList();
-
-                        if (cacheData == null || cacheData.Count == 0)
-                        {
-                            InitTenants();
-                            cacheData = Tenants.ToOutput<Tenant, TenantOutputDto>().ToList();
-                        }
-
-                        Cache.Set(cacheKey, cacheData, tenantCacheSeconds);
+                        if(cacheData!=null && cacheData.Count>0)
+                            Cache.Set(cacheKey, cacheData, tenantCacheSeconds);
                     }
                 }
             }
@@ -72,7 +66,8 @@ namespace Liuliu.Demo.MultiTenancy
             if (cacheData == null)
             {
                 cacheData = GetAllTenants().FirstOrDefault(p=>p.TenantKey==tenantKey);
-                Cache.Set(cacheKey, cacheData, tenantCacheSeconds);
+                if(cacheData!=null)
+                    Cache.Set(cacheKey, cacheData, tenantCacheSeconds);
             }
 
             return cacheData;
