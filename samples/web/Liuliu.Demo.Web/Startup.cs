@@ -7,10 +7,16 @@
 //  <last-date>2022-11-10 13:46</last-date>
 // -----------------------------------------------------------------------
 
+using Liuliu.Demo.Authorization;
+using Liuliu.Demo.Identity;
+using Liuliu.Demo.Infos;
+using Liuliu.Demo.MultiTenancy;
+using Liuliu.Demo.Systems;
 using Liuliu.Demo.Web.Startups;
-
+using Microsoft.Extensions.Caching.Distributed;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
+using OSharp.Caching;
 using OSharp.Entity;
 using OSharp.Hangfire;
 using OSharp.Log4Net;
@@ -34,7 +40,14 @@ namespace Liuliu.Demo.Web
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 .AddPack<RedisPack>()
-                .AddPack<SqlServerDefaultDbContextMigrationPack>();
+                .AddPack<AuthenticationPack>()
+                .AddPack<FunctionAuthorizationPack>()
+                .AddPack<DataAuthorizationPack>()
+                .AddPack<SqlServerDefaultDbContextMigrationPack>()
+                .AddPack<SqlServerTenantDbContextMigrationPack>()
+                .AddPack<MultiTenancyPack>()
+                .AddPack<InfosPack>()
+                .AddPack<AuditPack>();
 
             services.AddSingleton<IEntityBatchConfiguration, PropertyCommentConfiguration>();
             services.AddSingleton<IEntityBatchConfiguration, PropertyUtcDateTimeConfiguration>();
@@ -54,10 +67,20 @@ namespace Liuliu.Demo.Web
                 app.UseHttpsRedirection();
             }
 
+            // 添加多租户中间件
+            app.UseMiddleware<TenantMiddleware>();
+
             app //.UseMiddleware<JsonExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles();
             app.UseOSharp();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var key = "MultiTenancy:RunTime:Default";
+                var _cache = scope.ServiceProvider.GetService<IDistributedCache>();
+                _cache.Set(key, System.DateTime.Now);
+            }
         }
     }
 }
