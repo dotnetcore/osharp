@@ -4,28 +4,37 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <PackageId>OSharp.EntityFrameworkCore</PackageId>
     <Description>OSharp数据访问组件，封装EntityFrameworkCore数据访问功能的实现</Description>
     <Summary>OSharp数据访问组件</Summary>
     <RootNamespace>OSharp.Entity</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.151" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[6.0.22, 7.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[6.0.22, 7.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[6.100.0.2, 7.0.0)" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="[7.0.11, 8.0.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[7.0.11, 8.0.0)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="[7.100.0.2, 8.0.0)" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.*" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\OSharp\OSharp.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="Dapper" Version="2.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.*" />
   </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+      <PackageReference Include="Dapper" Version="2.*" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.*" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.*" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="9.*" />
+  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\OSharp\OSharp.csproj" />
+    </ItemGroup>
 </Project>

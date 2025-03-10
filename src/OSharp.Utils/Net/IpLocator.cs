@@ -34,7 +34,15 @@ namespace OSharp.Net
             using (FileStream fs = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 _data = new byte[fs.Length];
-                fs.Read(_data, 0, _data.Length);
+                int bytesRead = 0;
+                int totalBytesRead = 0;
+                while (totalBytesRead < _data.Length)
+                {
+                    bytesRead = fs.Read(_data, totalBytesRead, _data.Length - totalBytesRead);
+                    if (bytesRead == 0)
+                        break; // 已到达文件末尾
+                    totalBytesRead += bytesRead;
+                }
             }
             byte[] buffer = new byte[8];
             Array.Copy(_data, 0, buffer, 0, 8);
@@ -208,7 +216,9 @@ namespace OSharp.Net
         {
             long leftOffset = _firstStartIpOffset + (left * 7L);
             byte[] buffer = new byte[7];
-            Array.Copy(_data, leftOffset, buffer, 0, 7);
+
+            Array.Copy(_data, leftOffset, buffer, 0, buffer.Length);
+
             endIpOff = (Convert.ToInt64(buffer[4].ToString(CultureInfo.InvariantCulture)) +
                 (Convert.ToInt64(buffer[5].ToString(CultureInfo.InvariantCulture)) * 0x100L)) +
                 ((Convert.ToInt64(buffer[6].ToString(CultureInfo.InvariantCulture)) * 0x100L) * 0x100L);
@@ -221,7 +231,9 @@ namespace OSharp.Net
         private long GetEndIp(long endIpOff, out int countryFlag)
         {
             byte[] buffer = new byte[5];
-            Array.Copy(_data, endIpOff, buffer, 0, 5);
+
+            Array.Copy(_data, endIpOff, buffer, 0, buffer.Length);
+
             countryFlag = buffer[4];
             return ((Convert.ToInt64(buffer[0].ToString(CultureInfo.InvariantCulture)) +
                 (Convert.ToInt64(buffer[1].ToString(CultureInfo.InvariantCulture)) * 0x100L)) +
@@ -270,7 +282,10 @@ namespace OSharp.Net
                 {
                     break;
                 }
-                Array.Copy(_data, forwardOffset, buffer, 0, 3);
+
+                Array.Copy(_data, forwardOffset, buffer, 0, buffer.Length);
+                forwardOffset += buffer.Length;
+
                 if (flag == 2)
                 {
                     countryFlag = 2;
@@ -293,16 +308,17 @@ namespace OSharp.Net
             Encoding encoding = Encoding.GetEncoding("GB2312");
             while (true)
             {
-                byte lowByte = _data[offset++];
+                Array.Copy(_data, offset, bytes, 0, bytes.Length);
+                offset += bytes.Length;
+
+                byte lowByte = bytes[0];
                 if (lowByte == 0)
                 {
                     return stringBuilder.ToString();
                 }
                 if (lowByte > 0x7f)
                 {
-                    byte highByte = _data[offset++];
-                    bytes[0] = lowByte;
-                    bytes[1] = highByte;
+                    byte highByte = bytes[1];
                     if (highByte == 0)
                     {
                         return stringBuilder.ToString();

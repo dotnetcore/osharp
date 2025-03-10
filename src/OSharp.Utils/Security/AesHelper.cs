@@ -204,7 +204,15 @@ namespace OSharp.Security
             {
                 long length = ifs.Length;
                 byte[] decodeBytes = new byte[length];
-                ifs.Read(decodeBytes, 0, decodeBytes.Length);
+                int bytesRead = 0;
+                int totalBytesRead = 0;
+                while (totalBytesRead < decodeBytes.Length)
+                {
+                    bytesRead = ifs.Read(decodeBytes, totalBytesRead, decodeBytes.Length - totalBytesRead);
+                    if (bytesRead == 0)
+                        break; // 已到达文件末尾
+                    totalBytesRead += bytesRead;
+                }
                 byte[] encodeBytes = Encrypt(decodeBytes, key, needIV);
                 ofs.Write(encodeBytes, 0, encodeBytes.Length);
             }
@@ -223,7 +231,15 @@ namespace OSharp.Security
             {
                 long length = ifs.Length;
                 byte[] encodeBytes = new byte[length];
-                ifs.Read(encodeBytes, 0, encodeBytes.Length);
+                int bytesRead = 0;
+                int totalBytesRead = 0;
+                while (totalBytesRead < encodeBytes.Length)
+                {
+                    bytesRead = ifs.Read(encodeBytes, totalBytesRead, encodeBytes.Length - totalBytesRead);
+                    if (bytesRead == 0)
+                        break; // 已到达文件末尾
+                    totalBytesRead += bytesRead;
+                }
                 byte[] decodeBytes = Decrypt(encodeBytes, key, needIV);
                 ofs.Write(decodeBytes, 0, decodeBytes.Length);
             }

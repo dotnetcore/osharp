@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,13 +10,22 @@ namespace OSharp.AspNetCore.Tests
 {
     public class JsonNoFoundHandlerMiddlewareTests
     {
+        private readonly ServiceProvider _provider;
+
+        public JsonNoFoundHandlerMiddlewareTests()
+        {
+            var services = new ServiceCollection();
+            services.AddLogging();
+            _provider = services.BuildServiceProvider();
+        }
+
         [Fact()]
         public async Task InvokeAsyncTest1()
         {
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/foo");
 
-            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(_provider, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;
@@ -33,7 +42,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/foo.html");
 
-            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(_provider, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;
@@ -51,7 +60,7 @@ namespace OSharp.AspNetCore.Tests
             HttpContext context = new DefaultHttpContext();
             context.Request.Path = new PathString("/api/foo");
 
-            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(null, new RequestDelegate(c =>
+            var middleware = ActivatorUtilities.CreateInstance<JsonNoFoundHandlerMiddleware>(_provider, new RequestDelegate(c =>
             {
                 c.Response.StatusCode = 404;
                 return Task.CompletedTask;

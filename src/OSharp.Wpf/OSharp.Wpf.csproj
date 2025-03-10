@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
     <PackageId>OSharp.Wpf</PackageId>
     <Summary>OSharp Wpf 客户端组件</Summary>
     <Description>OSharp Wpf 客户端组件，封装Wpf客户端的辅助操作</Description>
@@ -17,16 +17,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.7.1" />
-    <PackageReference Include="Stylet" Version="1.3.6" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.*" />
+    <PackageReference Include="Stylet" Version="1.*" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-windows'">
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[6.0.22, 7.0.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0-windows'">
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[7.0.11, 8.0.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.*" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.*" />
+  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net9.0-windows'">
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.*" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\OSharp\OSharp.csproj" />
   </ItemGroup>

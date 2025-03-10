@@ -112,7 +112,7 @@ public class HostHttpCrypto : IHostHttpCrypto
         }
         catch (Exception ex)
         {
-            _logger.LogError("服务器对返回数据进行加密处理时发生异常", ex);
+            _logger.LogError(ex, "服务器对返回数据进行加密处理时发生异常");
             throw;
         }
     }

@@ -20,8 +20,8 @@ public partial class RoleConfiguration : EntityTypeConfigurationBase<Role, long>
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<Role> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.NormalizedName, m.DeletedTime }).HasDatabaseName("RoleNameIndex").IsUnique();
-
         builder.Property(m => m.ConcurrencyStamp).IsConcurrencyToken();
 
         EntityConfigurationAppend(builder);

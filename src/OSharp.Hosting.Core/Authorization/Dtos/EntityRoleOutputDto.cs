@@ -35,7 +35,7 @@ public class EntityRoleOutputDto : IOutputDto, IDataAuthEnabled
         IsLocked = entityRole.IsLocked;
         Operation = entityRole.Operation;
         CreatedTime = entityRole.CreatedTime;
-        FilterGroup = entityRole.FilterGroupJson.FromJsonString<FilterGroup>();
+        FilterGroup = entityRole.FilterGroup;
     }
 
     /// <summary>

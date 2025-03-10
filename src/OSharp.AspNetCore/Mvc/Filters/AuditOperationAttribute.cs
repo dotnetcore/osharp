@@ -42,7 +42,7 @@ public sealed class AuditOperationAttribute : ActionFilterAttribute
             UserAgent = context.HttpContext.Request.Headers["User-Agent"].FirstOrDefault(),
             CreatedTime = DateTime.Now
         };
-        if (context.HttpContext.User.Identity.IsAuthenticated && context.HttpContext.User.Identity is ClaimsIdentity identity)
+        if (context.HttpContext.User.Identity?.IsAuthenticated == true && context.HttpContext.User.Identity is ClaimsIdentity identity)
         {
             operation.UserId = identity.GetUserId();
             operation.UserName = identity.GetUserName();

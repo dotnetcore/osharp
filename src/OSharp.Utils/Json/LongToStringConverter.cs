@@ -40,7 +40,8 @@ namespace OSharp.Json
             JsonSerializer serializer)
         {
             var jt = JToken.ReadFrom(reader);
-            return jt.Values();
+            var value = jt.Value<long>();
+            return value;
         }
 
         /// <summary>

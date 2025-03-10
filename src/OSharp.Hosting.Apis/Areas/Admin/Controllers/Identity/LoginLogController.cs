@@ -34,6 +34,7 @@ public class LoginLogController : AdminApiControllerBase
     {
         Check.NotNull(request, nameof(request));
 
+        request.AddDefaultSortCondition(new SortCondition("CreatedTime", ListSortDirection.Descending));
         Expression<Func<LoginLog, bool>> exp = FilterService.GetExpression<LoginLog>(request.FilterGroup);
         var page = IdentityContract.LoginLogs.ToPage(exp,
             request.PageCondition,
@@ -42,11 +43,24 @@ public class LoginLogController : AdminApiControllerBase
                 D = m,
                 User = new { m.User.UserName, m.User.NickName }
             }).ToPageResult(data => data.Select(m => new LoginLogOutputDto(m.D)
-        {
-            UserName = m.User.UserName,
-            NickName = m.User.NickName
-        }).ToArray());
+            {
+                UserName = m.User.UserName,
+                NickName = m.User.NickName,
+            }).ToArray());
 
         return new AjaxResult(page.ToPageData());
+    }
+
+    //删除登录日志信息
+    [HttpPost]
+    [ModuleInfo]
+    [UnitOfWork]
+    [Description("删除")]
+    public async Task<AjaxResult> Delete(long[] ids)
+    {
+        Check.NotNull(ids, nameof(ids));
+
+        OperationResult result = await IdentityContract.DeleteLoginLogs(ids);
+        return result.ToAjaxResult();
     }
 }

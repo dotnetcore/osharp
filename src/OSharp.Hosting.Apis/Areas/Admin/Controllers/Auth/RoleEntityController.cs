@@ -38,15 +38,12 @@ public class RoleEntityController : AdminApiControllerBase
     public AjaxResult Read(PageRequest request)
     {
         Expression<Func<EntityRole, bool>> predicate = FilterService.GetExpression<EntityRole>(request.FilterGroup);
-        if (request.PageCondition.SortConditions.Length == 0)
+        request.AddDefaultSortCondition(new[]
         {
-            request.PageCondition.SortConditions = new[]
-            {
-                new SortCondition("RoleId"),
-                new SortCondition("EntityId"),
-                new SortCondition("Operation")
-            };
-        }
+            new SortCondition("RoleId"),
+            new SortCondition("EntityId"),
+            new SortCondition("Operation")
+        });
         RoleManager<Role> roleManager = HttpContext.RequestServices.GetService<RoleManager<Role>>();
         Func<EntityRole, bool> updateFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Update).Compile();
         Func<EntityRole, bool> deleteFunc = FilterService.GetDataFilterExpression<EntityRole>(null, DataAuthOperation.Delete).Compile();
@@ -105,6 +102,23 @@ public class RoleEntityController : AdminApiControllerBase
     {
         Check.NotNull(dtos, nameof(dtos));
         OperationResult result = await _dataAuthManager.UpdateEntityRoles(dtos);
+        return result.ToAjaxResult();
+    }
+
+    /// <summary>
+    /// 设置角色数据权限的过滤条件组
+    /// </summary>
+    /// <param name="id">权限记录identity.api</param>
+    /// <param name="group">过滤条件组</param>
+    /// <returns>JSON操作结果</returns>
+    [HttpPost]
+    [ModuleInfo]
+    [DependOnFunction(nameof(Read))]
+    [UnitOfWork]
+    [Description("设置过滤条件")]
+    public async Task<AjaxResult> SetFilterGroup(long id, [FromBody]FilterGroup group)
+    {
+        OperationResult result = await _dataAuthManager.SetFilterGroup(id, group);
         return result.ToAjaxResult();
     }
 

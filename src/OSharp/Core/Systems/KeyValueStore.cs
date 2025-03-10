@@ -82,7 +82,7 @@ public class KeyValueStore : IKeyValueStore
     public IKeyValue[] GetByRootKey(string rootKey)
     {
         string[] keys = GetKeys(rootKey);
-        return keys.Select(key => GetByKey(key)).Where(value => value != null).ToArray();
+        return keys.Select(GetByKey).Where(value => value != null).ToArray();
     }
 
     /// <summary>
@@ -162,10 +162,10 @@ public class KeyValueStore : IKeyValueStore
             }
         }
 
-        unitOfWork.Commit();
+        await unitOfWork.CommitAsync();
 
-        string[] cacheKeys = removeKeys.Select(m => GetCacheKey(m)).ToArray();
-        await Cache.RemoveAsync(cacheKeys);
+        string[] cacheKeys = removeKeys.Select(GetCacheKey).ToArray();
+        await Cache.RemoveAsync(default, cacheKeys);
 
         return OperationResult.Success;
     }
@@ -198,10 +198,10 @@ public class KeyValueStore : IKeyValueStore
             removeKeys.AddIf(pair.Key, count > 0);
         }
 
-        unitOfWork.Commit();
+        await unitOfWork.CommitAsync();
 
-        string[] cacheKeys = removeKeys.Select(m => GetCacheKey(m)).ToArray();
-        await Cache.RemoveAsync(cacheKeys);
+        string[] cacheKeys = removeKeys.Select(GetCacheKey).ToArray();
+        await Cache.RemoveAsync(default, cacheKeys);
 
         return OperationResult.Success;
     }

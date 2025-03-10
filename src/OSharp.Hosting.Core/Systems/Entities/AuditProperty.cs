@@ -32,13 +32,13 @@ public class AuditProperty : EntityBase<long>
     /// <summary>
     /// 获取或设置 旧值
     /// </summary>
-    [DisplayName("旧值"), StringLength(5000)]
+    [DisplayName("旧值")]
     public string OriginalValue { get; set; }
 
     /// <summary>
     /// 获取或设置 新值
     /// </summary>
-    [DisplayName("新值"), StringLength(5000)]
+    [DisplayName("新值")]
     public string NewValue { get; set; }
 
     /// <summary>

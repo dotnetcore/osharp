@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="StringExtensions.cs" company="OSharp开源团队">
 //      Copyright (c) 2014 OSharp. All rights reserved.
 //  </copyright>
@@ -327,7 +327,7 @@ namespace OSharp.Extensions
         /// <param name="isRestrict">是否按严格格式验证</param>
         public static bool IsMobileNumber(this string value, bool isRestrict = false)
         {
-            string pattern = isRestrict ? @"^[1][3-8]\d{9}$" : @"^[1]\d{10}$";
+            string pattern = isRestrict ? @"^1[3-9]\d{9}$" : @"^1\d{10}$";
             return value.IsMatch(pattern);
         }
 
@@ -741,7 +741,11 @@ namespace OSharp.Extensions
         /// <returns>十六进制字符串</returns>
         public static string ToHexString(this byte[] bytes)
         {
+#if NET
+            return Convert.ToHexString(bytes);
+#else
             return bytes.Aggregate(string.Empty, (current, t) => current + t.ToString("X2"));
+#endif
         }
 
         /// <summary>
@@ -753,12 +757,16 @@ namespace OSharp.Extensions
         {
             hexString = hexString ?? "";
             hexString = hexString.Replace(" ", "");
+#if NET
+            return Convert.FromHexString(hexString);
+#else
             byte[] bytes = new byte[hexString.Length / 2];
             for (int i = 0; i < bytes.Length; i++)
             {
                 bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
             }
             return bytes;
+#endif
         }
 
         /// <summary>

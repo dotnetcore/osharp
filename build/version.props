@@ -1,10 +1,10 @@
 <Project>
   <PropertyGroup>
-    <VersionMain>7.0</VersionMain>
-    <VersionPrefix>11</VersionPrefix>
-    <VersionSuffix>-snow</VersionSuffix>
-    <VersionSuffixVersion>1001</VersionSuffixVersion>
-    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)</Version>
+    <VersionMain>9.0</VersionMain>
+    <VersionPrefix>0</VersionPrefix>
+    <VersionSuffix>-preview.</VersionSuffix>
+    <VersionSuffixVersion>306</VersionSuffixVersion>
+    <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>
     <FileVersion>$(VersionMain).$(VersionPrefix)</FileVersion>-->

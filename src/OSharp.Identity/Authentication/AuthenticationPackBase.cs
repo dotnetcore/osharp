@@ -173,13 +173,6 @@ public abstract class AuthenticationPackBase<TUser, TUserKey> : AspOsharpPack
 
             switch (name)
             {
-                case "QQ":
-                    builder.AddQQ(opts =>
-                    {
-                        opts.AppId = options.ClientId;
-                        opts.AppKey = options.ClientSecret;
-                    });
-                    break;
                 case "Microsoft":
                     builder.AddMicrosoftAccount(opts =>
                     {
@@ -187,13 +180,13 @@ public abstract class AuthenticationPackBase<TUser, TUserKey> : AspOsharpPack
                         opts.ClientSecret = options.ClientSecret;
                     });
                     break;
-                case "GitHub":
-                    builder.AddGitHub(opts =>
-                    {
-                        opts.ClientId = options.ClientId;
-                        opts.ClientSecret = options.ClientSecret;
-                    });
-                    break;
+                //case "GitHub":
+                //    builder.AddGitHub(opts =>
+                //    {
+                //        opts.ClientId = options.ClientId;
+                //        opts.ClientSecret = options.ClientSecret;
+                //    });
+                //    break;
             }
         }
 

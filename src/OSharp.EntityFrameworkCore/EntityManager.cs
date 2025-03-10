@@ -128,6 +128,7 @@ public class EntityManager : IEntityManager
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<EntityInfo> builder)
         {
+            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.HasIndex(m => m.TypeName).HasDatabaseName("ClassFullNameIndex").IsUnique();
         }
     }
@@ -141,6 +142,7 @@ public class EntityManager : IEntityManager
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<Function> builder)
         {
+            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.HasIndex(m => new { m.Area, m.Controller, m.Action }).HasDatabaseName("AreaControllerActionIndex").IsUnique();
         }
     }
@@ -154,6 +156,7 @@ public class EntityManager : IEntityManager
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<KeyValue> builder)
         {
+            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.Property(m => m.ValueJson).HasColumnType("text");
             builder.HasIndex(m => m.Key).HasDatabaseName("KeyIndex").IsUnique();
         }

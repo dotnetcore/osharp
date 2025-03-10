@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Liuliu.Demo.Systems.Entities;
 
@@ -17,6 +17,7 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<AuditProperty> builder)
         {
+            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.HasIndex(m => m.AuditEntityId);
             builder.HasOne(m => m.AuditEntity).WithMany(n => n.Properties).HasForeignKey(m => m.AuditEntityId);
 

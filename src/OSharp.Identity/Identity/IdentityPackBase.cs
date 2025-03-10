@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 //  <copyright file="IdentityPackBase.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2018 OSharp. All rights reserved.
 //  </copyright>
@@ -74,7 +74,7 @@ public abstract class IdentityPackBase<TUserStore, TRoleStore, TUser, TUserKey, 
             {
                 IHttpContextAccessor accessor = provider.GetService<IHttpContextAccessor>();
                 ClaimsPrincipal principal = accessor?.HttpContext?.User;
-                if (principal != null && principal.Identity is ClaimsIdentity identity)
+                if (principal is { Identity: ClaimsIdentity identity })
                 {
                     PropertyInfo property = typeof(TUser).GetProperty("Id");
                     if (property != null && !identity.HasClaim(m => m.Type == OsharpConstants.UserIdTypeName))

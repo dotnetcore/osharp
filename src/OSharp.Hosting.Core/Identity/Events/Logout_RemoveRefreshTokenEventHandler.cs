@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 //  <copyright file="Logout_RemoveRefreshTokenEventHandler.cs" company="OSharp开源团队">
 //      Copyright (c) 2014-2022 OSharp. All rights reserved.
 //  </copyright>
@@ -16,16 +16,14 @@ namespace OSharp.Hosting.Identity.Events;
 
 public class Logout_RemoveRefreshTokenEventHandler : EventHandlerBase<LogoutEventData>
 {
-    private readonly IPrincipal _principal;
-    private readonly UserManager<User> _userManager;
+    private readonly IServiceProvider _provider;
 
     /// <summary>
     /// 初始化一个<see cref="Logout_RemoveRefreshTokenEventHandler"/>类型的新实例
     /// </summary>
-    public Logout_RemoveRefreshTokenEventHandler(UserManager<User> userManager, IPrincipal principal)
+    public Logout_RemoveRefreshTokenEventHandler(IServiceProvider provider)
     {
-        _userManager = userManager;
-        _principal = principal;
+        _provider = provider;
     }
 
     /// <summary>
@@ -45,7 +43,8 @@ public class Logout_RemoveRefreshTokenEventHandler : EventHandlerBase<LogoutEven
     /// <returns>是否成功</returns>
     public override async Task HandleAsync(LogoutEventData eventData, CancellationToken cancelToken = default(CancellationToken))
     {
-        ClaimsIdentity identity = _principal.Identity as ClaimsIdentity;
+        IPrincipal principal = _provider.GetCurrentUser();
+        ClaimsIdentity identity = principal.Identity as ClaimsIdentity;
         if (identity?.IsAuthenticated != true)
         {
             return;
@@ -57,6 +56,10 @@ public class Logout_RemoveRefreshTokenEventHandler : EventHandlerBase<LogoutEven
             return;
         }
 
-        await _userManager.RemoveRefreshToken(eventData.UserId.ToString(), clientId);
+        var dataAuthService = _provider.GetService<IDataAuthService>();
+        dataAuthService.SetIgnoreDataAuth(typeof(User));
+
+        var userManager = _provider.GetService<UserManager<User>>();
+        await userManager.RemoveRefreshToken(eventData.UserId.ToString(), clientId);
     }
 }

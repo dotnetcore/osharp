@@ -39,4 +39,9 @@ public class FunctionOutputDto2 : IOutputDto
     /// 获取或设置 控制器名称
     /// </summary>
     public string Controller { get; set; }
+
+    /// <summary>
+    /// 获取或设置 动作
+    /// </summary>
+    public string Action { get; set; }
 }

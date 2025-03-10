@@ -54,6 +54,14 @@ public interface IEntityRoleStore<TEntityRole, in TEntityRoleInputDto, in TRoleK
     Task<OperationResult> UpdateEntityRoles(params TEntityRoleInputDto[] dtos);
 
     /// <summary>
+    /// 设置角色数据权限的过滤条件组
+    /// </summary>
+    /// <param name="id">权限记录identity.api</param>
+    /// <param name="group">过滤条件组</param>
+    /// <returns>业务操作结果</returns>
+    Task<OperationResult> SetFilterGroup(long id, FilterGroup group);
+
+    /// <summary>
     /// 删除实体角色信息
     /// </summary>
     /// <param name="ids">要删除的实体角色信息编号</param>
