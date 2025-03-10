@@ -39,6 +39,7 @@ namespace OSharp.Hosting.EntityConfiguration.Infos
         /// <param name="builder">实体类型创建器</param>
         public override void Configure(EntityTypeBuilder<Message> builder)
         {
+            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.HasOne<User>(m => m.Sender).WithMany().HasForeignKey(m => m.SenderId).IsRequired();
             builder.HasMany<Role>(m => m.PublicRoles).WithOne();
             builder.HasMany<User>(m => m.Recipients).WithOne();

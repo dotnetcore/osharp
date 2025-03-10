@@ -20,6 +20,7 @@ public partial class UserDetailConfiguration : EntityTypeConfigurationBase<UserD
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<UserDetail> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasOne(ud => ud.User).WithOne(u => u.UserDetail).HasForeignKey<UserDetail>(ud => ud.UserId).IsRequired();
 
         EntityConfigurationAppend(builder);

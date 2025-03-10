@@ -20,6 +20,7 @@ public partial class AuditEntityConfiguration : EntityTypeConfigurationBase<Audi
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<AuditEntity> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => m.OperationId);
         builder.HasOne(m => m.Operation).WithMany(n => n.AuditEntities).HasForeignKey(m => m.OperationId);
 

@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------
 
 using Liuliu.Demo.Web.Startups;
-
+using Microsoft.Extensions.Caching.Distributed;
 using OSharp.AspNetCore.Routing;
 using OSharp.AutoMapper;
 using OSharp.Entity;
@@ -21,6 +21,7 @@ using OSharp.Log4Net;
 using OSharp.MiniProfiler;
 using OSharp.Redis;
 using OSharp.Swagger;
+using OSharp.Caching;
 
 
 namespace Liuliu.Demo.Web
@@ -37,12 +38,14 @@ namespace Liuliu.Demo.Web
                 .AddPack<EndpointsPack>()
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
-                //.AddPack<RedisPack>()
+                .AddPack<RedisPack>()
                 .AddPack<SystemsPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqlServerDefaultDbContextMigrationPack>()
+                .AddPack<SqlServerTenantDbContextMigrationPack>() //多租户数据库支持
+                .AddPack<MultiTenancyPack>() //多住户注入
                 //.AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
@@ -65,10 +68,21 @@ namespace Liuliu.Demo.Web
                 app.UseHttpsRedirection();
             }
 
+            // 添加多租户中间件
+            app.UseMiddleware<TenantMiddleware>();
+
             app //.UseMiddleware<JsonExceptionHandlerMiddleware>()
                 .UseDefaultFiles()
                 .UseStaticFiles();
             app.UseOSharp();
+
+            //多租户支持代码
+            using (var scope = app.Services.CreateScope())
+            {
+                var key = "MultiTenancy:RunTime:Default";
+                var _cache = scope.ServiceProvider.GetService<IDistributedCache>();
+                _cache.Set(key, System.DateTime.Now);
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ public partial class UserLoginConfiguration : EntityTypeConfigurationBase<UserLo
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<UserLogin> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.LoginProvider, m.ProviderKey }).HasDatabaseName("UserLoginIndex").IsUnique();
         builder.HasOne(ul => ul.User).WithMany(u => u.UserLogins).HasForeignKey(ul => ul.UserId).IsRequired();
 

@@ -20,6 +20,7 @@ public partial class OrganizationConfiguration : EntityTypeConfigurationBase<Org
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<Organization> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasOne<Organization>().WithMany().HasForeignKey(m => m.ParentId).IsRequired(false);
 
         EntityConfigurationAppend(builder);
