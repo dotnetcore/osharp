@@ -9,10 +9,10 @@ using OSharp.Entity;
 
 #nullable disable
 
-namespace Liuliu.Demo.Web.Migrations
+namespace Liuliu.Demo.Web.Migrations.DefaultDb
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20250306044927_init")]
+    [Migration("20250310002450_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -335,11 +335,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleRole", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("ModuleId")
                         .HasColumnType("bigint")
@@ -363,11 +360,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Authorization.Entities.ModuleUser", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit")
@@ -395,11 +389,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.LoginLog", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2")
@@ -433,11 +424,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.Organization", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -695,11 +683,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserClaim", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ClaimType")
                         .IsRequired()
@@ -726,11 +711,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserDetail", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("RegisterIp")
                         .HasMaxLength(50)
@@ -752,11 +734,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserLogin", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Avatar")
                         .HasMaxLength(1000)
@@ -801,11 +780,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserRole", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2")
@@ -842,11 +818,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Identity.Entities.UserToken", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(200)
@@ -880,11 +853,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.Message", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime?>("BeginDate")
                         .HasColumnType("datetime2")
@@ -946,11 +916,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReceive", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2")
@@ -984,11 +951,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Infos.Entities.MessageReply", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("BelongMessageId")
                         .HasColumnType("bigint")
@@ -1043,11 +1007,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditEntity", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("EntityKey")
                         .HasMaxLength(200)
@@ -1084,11 +1045,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditOperation", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Browser")
                         .HasMaxLength(200)
@@ -1156,11 +1114,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.AuditProperty", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AuditEntityId")
                         .HasColumnType("bigint")
@@ -1199,11 +1154,8 @@ namespace Liuliu.Demo.Web.Migrations
             modelBuilder.Entity("OSharp.Hosting.Systems.Entities.Menu", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasComment("编号");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Acl")
                         .HasMaxLength(500)

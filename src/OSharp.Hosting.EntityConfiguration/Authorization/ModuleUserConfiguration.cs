@@ -24,6 +24,7 @@ public partial class ModuleUserConfiguration : EntityTypeConfigurationBase<Modul
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<ModuleUser> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.ModuleId, m.UserId }).HasDatabaseName("ModuleUserIndex").IsUnique();
 
         builder.HasOne<Module>(mu => mu.Module).WithMany().HasForeignKey(m => m.ModuleId);

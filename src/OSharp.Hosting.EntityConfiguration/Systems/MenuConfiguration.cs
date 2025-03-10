@@ -20,6 +20,7 @@ public partial class MenuConfiguration : EntityTypeConfigurationBase<Menu, long>
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<Menu> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => m.ParentId);
         builder.HasMany(m => m.Children).WithOne(m => m.Parent).HasForeignKey(m => m.ParentId);
 

@@ -28,7 +28,6 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         public override void Configure(EntityTypeBuilder<AuditEntity> builder)
         {
             builder.Property(m => m.Id).ValueGeneratedNever();
-            builder.Property(m => m.Id).ValueGeneratedNever();
             builder.HasIndex(m => m.OperationId);
             builder.HasOne(m => m.Operation).WithMany(n => n.AuditEntities).HasForeignKey(m => m.OperationId);
 

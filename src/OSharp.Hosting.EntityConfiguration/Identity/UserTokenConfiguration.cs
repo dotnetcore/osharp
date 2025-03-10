@@ -20,6 +20,7 @@ public partial class UserTokenConfiguration : EntityTypeConfigurationBase<UserTo
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<UserToken> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasIndex(m => new { m.UserId, m.LoginProvider, m.Name }).HasDatabaseName("UserTokenIndex").IsUnique();
         builder.HasOne(ut => ut.User).WithMany(u => u.UserTokens).HasForeignKey(ut => ut.UserId).IsRequired();
 

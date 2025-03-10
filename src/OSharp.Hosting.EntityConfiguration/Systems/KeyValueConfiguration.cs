@@ -20,6 +20,7 @@ public partial class KeyValueConfiguration : EntityTypeConfigurationBase<KeyValu
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<KeyValue> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         EntityConfigurationAppend(builder);
     }
 

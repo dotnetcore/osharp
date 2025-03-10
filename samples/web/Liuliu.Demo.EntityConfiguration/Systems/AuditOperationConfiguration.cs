@@ -27,7 +27,6 @@ namespace Liuliu.Demo.EntityConfiguration.Systems
         public override void Configure(EntityTypeBuilder<AuditOperation> builder)
         {
             builder.Property(m => m.Id).ValueGeneratedNever();
-            builder.Property(m => m.Id).ValueGeneratedNever();
             EntityConfigurationAppend(builder);
         }
 

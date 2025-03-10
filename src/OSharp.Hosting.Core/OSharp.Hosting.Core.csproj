@@ -11,9 +11,6 @@
     <RootNamespace>OSharp.Hosting</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
     <PackageReference Include="Lazy.Captcha.Core" Version="2.0.9" />
     <PackageReference Include="MailKit" Version="4.8.0" />
@@ -36,6 +33,7 @@
     <ProjectReference Include="..\OSharp.Authorization.Datas\OSharp.Authorization.Datas.csproj" />
     <ProjectReference Include="..\OSharp.Authorization.Functions\OSharp.Authorization.Functions.csproj" />
     <ProjectReference Include="..\OSharp.AutoMapper\OSharp.AutoMapper.csproj" />
+    <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

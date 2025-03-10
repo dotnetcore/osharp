@@ -20,6 +20,7 @@ public partial class UserClaimConfiguration : EntityTypeConfigurationBase<UserCl
     /// <param name="builder">实体类型创建器</param>
     public override void Configure(EntityTypeBuilder<UserClaim> builder)
     {
+        builder.Property(m => m.Id).ValueGeneratedNever();
         builder.HasOne(uc => uc.User).WithMany(u => u.UserClaims).HasForeignKey(uc => uc.UserId).IsRequired();
 
         EntityConfigurationAppend(builder);
