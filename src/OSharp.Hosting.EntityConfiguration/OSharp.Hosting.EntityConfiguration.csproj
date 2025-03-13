@@ -17,6 +17,6 @@
   <ItemGroup>
     <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.*" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.*" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.*" />
   </ItemGroup>
 </Project>
