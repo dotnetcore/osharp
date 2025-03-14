@@ -18,7 +18,7 @@ using OSharp.Exceptions;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.DotNet.Scaffolding.Shared;
 
-namespace Liuliu.Demo.Web.Startups
+namespace Liuliu.Demo.Web.Startups.Yitter
 {
     [DependsOnPacks(typeof(OsharpCorePack))]
     public class YitterIdGeneratorPack : OsharpPack
@@ -45,7 +45,7 @@ namespace Liuliu.Demo.Web.Startups
         {
             var _options = provider.GetRequiredService<IOptions<IdGeneratorOptions>>().Value;
             var _logger = provider.GetRequiredService<ILogger<YitterIdGeneratorPack>>();
-            var workerId = GetWorkerId(provider, _options);
+            var workerId = GetWorkerIdAsync(provider, _options).Result;
             var options = new IdGeneratorOptions
             {
                 Method = _options.Method,
@@ -62,7 +62,7 @@ namespace Liuliu.Demo.Web.Startups
             YitIdHelper.SetIdGenerator(options);
         }
 
-        private ushort GetWorkerId(IServiceProvider provider,IdGeneratorOptions options)
+        private async Task<ushort> GetWorkerIdAsync(IServiceProvider provider,IdGeneratorOptions options)
         {
             var lockName = $"{MainLockName}";
             var valueKey = $"{MainValueKey}";
@@ -75,67 +75,70 @@ namespace Liuliu.Demo.Web.Startups
 
             long workId = -1;
             var tempWorkIds = Enumerable.Range(minWorkId, maxWorkId).Select(id => id.ToString()).ToList();
-            try
+            using (var distributedLock = new DistributedLock(cache, lockName))
             {
-                string workIdKey = "";
-                foreach (var item in tempWorkIds)
+                if (!await distributedLock.AcquireAsync(TimeSpan.FromSeconds(10)))
                 {
-                    var workIdStr = item;
-                    workIdKey = $"{valueKey}:{workIdStr}";
-                    var exist = cache.Get<bool>(workIdKey);
-                    if (exist)
-                    {
-                        workIdKey = "";
-                        continue;
-                    }
-
-                    _logger.LogInformation($"############ 当前应用雪花WorkId:【{workIdStr}】############");
-
-                    workId = long.Parse(workIdStr);
-                    if (workId < minWorkId || workId > maxWorkId)
-                        continue;
-
-                    // 设置雪花Id算法机器码
-                    YitIdHelper.SetIdGenerator(new IdGeneratorOptions
-                    {
-                        WorkerId = (ushort)workId,
-                        WorkerIdBitLength = options.WorkerIdBitLength,
-                        SeqBitLength = options.SeqBitLength
-                    });
-
-                    var cacheOptions = new DistributedCacheEntryOptions
-                    {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
-                    };
-                    cache.Set(workIdKey, true, cacheOptions);
-
-                    break;
+                    throw new OsharpException("获取分布式锁失败");
                 }
-
-                if (string.IsNullOrWhiteSpace(workIdKey)) throw new OsharpException("未设置有效的机器码，启动失败");
-
-                // 开一个任务设置当前workId过期时间
-                Task.Run(() =>
+                try
                 {
-                    while (true)
+                    string workIdKey = "";
+                    foreach (var item in tempWorkIds)
                     {
+                        var workIdStr = item;
+                        workIdKey = $"{valueKey}:{workIdStr}";
+                        var exist = cache.Get<bool>(workIdKey);
+                        if (exist)
+                        {
+                            workIdKey = "";
+                            continue;
+                        }
+
+                        _logger.LogInformation($"############ 当前应用雪花WorkId:【{workIdStr}】############");
+
+                        workId = long.Parse(workIdStr);
+                        if (workId < minWorkId || workId > maxWorkId)
+                            continue;
+
+                        // 设置雪花Id算法机器码
+                        YitIdHelper.SetIdGenerator(new IdGeneratorOptions
+                        {
+                            WorkerId = (ushort)workId,
+                            WorkerIdBitLength = options.WorkerIdBitLength,
+                            SeqBitLength = options.SeqBitLength
+                        });
+
                         var cacheOptions = new DistributedCacheEntryOptions
                         {
                             AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
                         };
                         cache.Set(workIdKey, true, cacheOptions);
 
-                        Thread.Sleep(10000);
+                        break;
                     }
-                });
-            }
-            catch (Exception ex)
-            {
-                throw new OsharpException($"{ex.Message};{ex.StackTrace};{ex.StackTrace}");
-            }
-            finally
-            {
 
+                    if (string.IsNullOrWhiteSpace(workIdKey)) throw new OsharpException("未设置有效的机器码，启动失败");
+
+                    // 开一个任务设置当前workId过期时间
+                    _ = Task.Run(() =>
+                    {
+                        while (true)
+                        {
+                            var cacheOptions = new DistributedCacheEntryOptions
+                            {
+                                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
+                            };
+                            cache.Set(workIdKey, true, cacheOptions);
+
+                            Thread.Sleep(10000);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new OsharpException($"{ex.Message};{ex.StackTrace};{ex.StackTrace}");
+                }
             }
             if(workId < minWorkId || workId >= maxWorkId) throw new OsharpException("未设置有效的机器码，启动失败");
             return (ushort)workId;
