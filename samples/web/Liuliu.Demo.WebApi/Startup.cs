@@ -22,6 +22,7 @@ using OSharp.MiniProfiler;
 using OSharp.Redis;
 using OSharp.Swagger;
 using OSharp.Caching;
+using Liuliu.Demo.Web.Startups.Yitter;
 
 
 namespace Liuliu.Demo.Web
