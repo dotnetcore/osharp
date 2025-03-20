@@ -558,8 +558,8 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     {
         IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
         Check.NotNull(entities, nameof(entities));
-        await _dbSet.BulkInsertAsync(entities);
-        unitOfWork.Commit();
+        await _dbSet.BulkInsertAsync(entities, _cancellationTokenProvider.Token);
+        await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return;
     }
 
