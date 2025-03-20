@@ -268,6 +268,89 @@ OSharp 当前版本（6.0.0）使用了 `.net` 当前最新版本 `6.0.0`，所�
 
 ![image](https://raw.githubusercontent.com/i66soft/docs_images/master/osharpns/Readme/0006.png)
 
+# OSharp多租户访问实现
+
+本项目实现了OSharp框架的多种多租户访问方式，包括：
+
+## 支持的租户识别方式
+
+1. **域名识别**：根据请求的域名识别租户，例如 `tenant1.example.com`
+2. **请求头识别**：通过HTTP请求头识别租户，默认使用 `X-Tenant` 请求头
+3. **查询参数识别**：通过URL查询参数识别租户，默认使用 `tenant` 参数，例如 `?tenant=tenant1`
+4. **Cookie识别**：通过Cookie识别租户，默认使用 `tenant` Cookie
+5. **Claims识别**：通过用户Claims识别租户，默认使用 `tenant` Claim
+6. **路由参数识别**：通过路由参数识别租户，默认使用 `tenant` 路由参数
+
+## 配置说明
+
+在 `appsettings.json` 中配置多租户识别方式：
+
+```json
+"MultiTenancy": {
+  "TenantResolve": {
+    "EnableDomain": true,
+    "EnableHeader": true,
+    "HeaderName": "X-Tenant",
+    "EnableQueryString": true,
+    "QueryStringName": "tenant",
+    "EnableCookie": true,
+    "CookieName": "tenant",
+    "EnableClaim": true,
+    "ClaimType": "tenant",
+    "EnableRoute": true,
+    "RouteParamName": "tenant"
+  }
+}
+```
+## 使用方法
+
+### 1. 通过域名访问
+
+直接通过配置的租户域名访问应用，例如：`http://tenant1.example.com/api/tenant/current`
+
+### 2. 通过请求头访问
+
+在请求中添加 `X-Tenant` 请求头：
+
+```
+GET /api/tenant/current
+X-Tenant: tenant1
+```
+
+### 3. 通过查询参数访问
+
+在URL中添加 `tenant` 查询参数：
+
+```
+GET /api/tenant/current?tenant=tenant1
+```
+
+### 4. 通过Cookie访问
+
+设置Cookie后访问：
+
+```
+GET /api/tenant/set-cookie/tenant1
+```
+
+然后访问：
+
+```
+GET /api/tenant/current
+```
+
+### 5. 通过Claims访问
+
+用户登录后，如果用户的Claims中包含 `tenant Claim，则会自动识别租户。
+
+### 6. 通过路由参数访问
+
+在路由中包含租户参数：
+
+```
+GET /tenant1/api/tenant/current
+```
+
 ## <span id="04">项目开发进度</span>
 
 截止到目前，OSharp 框架的完成程度已经很高了，计划中的功能点，均已得到较高水准的实现，具体功能点完成进度如下所示：

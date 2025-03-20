@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------
 
 using OSharp.Data.Snows;
+using OSharp.Entity.KeyGenerate;
 using OSharp.Hosting.Authorization;
 using OSharp.Hosting.Authorization.Dtos;
 using OSharp.Hosting.Common.Dtos;
@@ -19,10 +20,12 @@ namespace OSharp.Hosting.Apis.Areas.Admin.Controllers;
 public class FunctionController : AdminApiControllerBase
 {
     private readonly FunctionAuthManager _functionAuthManager;
+    private readonly IKeyGenerator<long> _keyGenerator;
 
-    public FunctionController(IServiceProvider provider) : base(provider)
+    public FunctionController(IServiceProvider provider, IKeyGenerator<long> keyGenerator) : base(provider)
     {
         _functionAuthManager = provider.GetRequiredService<FunctionAuthManager>();
+        _keyGenerator = keyGenerator;
     }
 
     /// <summary> 
@@ -72,7 +75,7 @@ public class FunctionController : AdminApiControllerBase
         TreeNode root = new TreeNode { Id = "0      ", Name = "系统", HasChildren = true };
         foreach (var group1 in groups)
         {
-            TreeNode areaNode = new TreeNode { Id = IdHelper.NextId().ToString(), Name = group1.Key == null ? "网站" : group1.Key == "Admin" ? "管理" : "未知模块" };
+            TreeNode areaNode = new TreeNode { Id = _keyGenerator.Create().ToString(), Name = group1.Key == null ? "网站" : group1.Key == "Admin" ? "管理" : "未知模块" };
             root.Items.Add(areaNode);
             var group2S = group1.GroupBy(m => m.Controller).OrderBy(m => m.Key).ToList();
             foreach (var group2 in group2S)

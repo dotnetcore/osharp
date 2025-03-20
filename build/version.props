@@ -2,8 +2,8 @@
   <PropertyGroup>
     <VersionMain>9.0</VersionMain>
     <VersionPrefix>0</VersionPrefix>
-    <VersionSuffix>-preview.</VersionSuffix>
-    <VersionSuffixVersion>306</VersionSuffixVersion>
+    <VersionSuffix>-snow</VersionSuffix>
+    <VersionSuffixVersion></VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
     <FileVersion>$(VersionMain).$(VersionPrefix).$(VersionSuffixVersion)</FileVersion>
     <!--<Version>$(VersionMain).$(VersionPrefix)</Version>
