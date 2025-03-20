@@ -32,6 +32,13 @@ public interface IRepository<TEntity, TKey>
     int Insert(params TEntity[] entities);
 
     /// <summary>
+    /// 批量插入实体
+    /// </summary>
+    /// <param name="entities">实体对象集合</param>
+    /// <returns>操作影响的行数</returns>
+    void BulkInsert(params TEntity[] entities);
+
+    /// <summary>
     /// 插入或更新实体
     /// </summary>
     /// <param name="entities">要处理的实体</param>
@@ -206,6 +213,13 @@ public interface IRepository<TEntity, TKey>
     /// <param name="entities">实体对象集合</param>
     /// <returns>操作影响的行数</returns>
     Task<int> InsertAsync(params TEntity[] entities);
+
+    /// <summary>
+    /// 异步批量插入实体
+    /// </summary>
+    /// <param name="entities">实体对象集合</param>
+    /// <returns>操作影响的行数</returns>
+    Task BulkInsertAsync(params TEntity[] entities);
 
     /// <summary>
     /// 插入或更新实体

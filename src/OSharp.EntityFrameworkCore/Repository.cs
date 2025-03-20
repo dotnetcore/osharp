@@ -68,6 +68,20 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
     }
 
     /// <summary>
+    /// 批量插入实体
+    /// </summary>
+    /// <param name="entities">实体对象集合</param>
+    /// <returns>操作影响的行数</returns>
+    public virtual void BulkInsert(params TEntity[] entities)
+    {
+        IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+        Check.NotNull(entities, nameof(entities));
+        _dbSet.BulkInsert(entities);
+        unitOfWork.Commit();
+        return;
+    }
+
+    /// <summary>
     /// 插入或更新实体
     /// </summary>
     /// <param name="entities">要处理的实体</param>
@@ -533,6 +547,20 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         int count = await _dbContext.SaveChangesAsync(_cancellationTokenProvider.Token);
         await unitOfWork.CommitAsync(_cancellationTokenProvider.Token);
         return count;
+    }
+
+    /// <summary>
+    /// 异步批量插入实体
+    /// </summary>
+    /// <param name="entities">实体对象集合</param>
+    /// <returns>操作影响的行数</returns>
+    public virtual async Task BulkInsertAsync(params TEntity[] entities)
+    {
+        IUnitOfWork unitOfWork = _serviceProvider.GetUnitOfWork(true);
+        Check.NotNull(entities, nameof(entities));
+        await _dbSet.BulkInsertAsync(entities);
+        unitOfWork.Commit();
+        return;
     }
 
     /// <summary>
