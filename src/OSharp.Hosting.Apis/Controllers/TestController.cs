@@ -7,9 +7,13 @@
 //  <last-date>2018-06-27 4:50</last-date>
 // -----------------------------------------------------------------------
 
+using Microsoft.AspNetCore.Authorization;
+using NuGet.Common;
+using OSharp.Entity.KeyGenerate;
 using OSharp.Hosting.Identity;
 using OSharp.Hosting.Identity.Dtos;
 using OSharp.Hosting.Identity.Entities;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 
 namespace OSharp.Hosting.Apis.Controllers;
@@ -29,6 +33,10 @@ public class TestController : SiteApiControllerBase
     private UserManager<User> UserManager => _provider.GetRequiredService<UserManager<User>>();
 
     private IIdentityContract IdentityContract => _provider.GetRequiredService<IIdentityContract>();
+
+    private IRepository<Role, long> RoleRepository => _provider.GetRequiredService<IRepository<Role, long>>();
+
+    private IKeyGenerator<long> IdMaker => _provider.GetRequiredService<IKeyGenerator<long>>();
 
     [HttpGet]
     [UnitOfWork]
@@ -92,6 +100,34 @@ public class TestController : SiteApiControllerBase
         await manager.CreateAsync(new Role() { Name = "测试角色4" + token, Remark = "测试角色002描述" });
          
         return provider.GetRequiredService<RoleManager<Role>>().Roles.Count();
+    }
+
+    [HttpPost]
+    [Description("测试BulkInsert")]
+    [AllowAnonymous]
+    public string Test03()
+    {
+        var roleList = new List<Role>();
+        string token = Guid.NewGuid().ToString("N").Substring(0, 5);
+        roleList.Add(new Role() { Id = IdMaker.Create(), NormalizedName = "测试角色3" + token, Name = "测试角色3" + token, Remark = "测试角色003描述" });
+        roleList.Add(new Role() { Id = IdMaker.Create(), NormalizedName = "测试角色4" + token, Name = "测试角色4" + token, Remark = "测试角色004描述" });
+
+        RoleRepository.BulkInsert(roleList.ToArray());
+        return "插入完成";
+    }
+
+    [HttpPost]
+    [Description("测试BulkInsertAsync")]
+    [AllowAnonymous]
+    public async Task<string> Test04()
+    {
+        var roleList = new List<Role>();
+        string token = Guid.NewGuid().ToString("N").Substring(0, 5);
+        roleList.Add(new Role() { Id = IdMaker.Create(), NormalizedName = "测试角色3" + token, Name = "测试角色3" + token, Remark = "测试角色003描述" });
+        roleList.Add(new Role() { Id = IdMaker.Create(), NormalizedName = "测试角色4" + token, Name = "测试角色4" + token, Remark = "测试角色004描述" });
+
+        await RoleRepository.BulkInsertAsync(roleList.ToArray());
+        return "插入完成";
     }
 }
 
