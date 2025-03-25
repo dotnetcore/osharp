@@ -52,6 +52,9 @@ RUN dotnet publish "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# 设置HTTP客户端超时环境变量
+ENV DOTNET_HTTPCLIENT_DEFAULT_TIMEOUT=300
+ENV DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2UNENCRYPTEDSUPPORT=1
 # 添加健康检查
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:80/health || exit 1
 ENTRYPOINT ["dotnet", "Liuliu.Demo.WebApi.dll"]

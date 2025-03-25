@@ -27,14 +27,15 @@ steps:
     username: root
     password: 
       from_secret: wxy_vip_server_password
-    command_timeout: 2m
+    command_timeout: 5m  # 增加超时时间，解决context deadline exceeded问题
+    script_stop: false   # 即使某个命令失败也继续执行后续命令
     script: 
       - source /etc/profile
       - ls -la
       - docker info
-      - docker stop `docker ps -a| grep osharp | awk '{print $1}'`
-      - docker rm  $(docker ps -a | grep Exited | awk '{print $1}')
-      - docker rm  $(docker ps -a | grep Created | awk '{print $1}')
+      - docker stop `docker ps -a| grep osharp | awk '{print $1}'` || true
+      - docker rm  $(docker ps -a | grep Exited | awk '{print $1}') || true
+      - docker rm  $(docker ps -a | grep Created | awk '{print $1}') || true
       #- docker rmi $(docker images | grep "none" | awk '{print $3}')     
       - echo 项目清理成功
       - cd /data/
@@ -50,3 +51,13 @@ volumes:
 trigger:
   branch:  
     - dev/snow
+
+# 增加全局webhook设置
+webhook_endpoint:
+  image: plugins/webhook
+  settings:
+    urls: 
+      - https://drone.wuxiaoyang.top/hook?secret=XgdBzjVcpGjQzh3KF7eMN4oDcG5oiUAF
+    timeout: 120  # 设置webhook超时时间为120秒
+    method: POST
+    content_type: application/json
