@@ -5,13 +5,13 @@ WORKDIR /app
 # 安装curl用于健康检查
 # RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt install -y curl sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
-USER app
+#USER app
 EXPOSE 80
 EXPOSE 8080
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Debug 
+ARG BUILD_CONFIGURATION=Release 
 WORKDIR /src
 
 # 复制项目文件，优化缓存
@@ -48,12 +48,12 @@ WORKDIR "/src/samples/web/Liuliu.Demo.WebApi"
 RUN dotnet build "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Debug 
+ARG BUILD_CONFIGURATION=Release 
 RUN dotnet publish "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 # 添加健康检查
-#HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8080/health || exit 1
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8080/health || exit 1
 ENTRYPOINT ["dotnet", "Liuliu.Demo.WebApi.dll"]
