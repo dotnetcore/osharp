@@ -13,9 +13,9 @@ steps:
       from_secret: ALIYUN_DOCKER_PASSWORD
   commands:
   - docker -v
-  - docker build -t registry.cn-shanghai.aliyuncs.com/shiningrise/osharp_api:v9.0.0 -f samples/web/Liuliu.Demo.WebApi/Dockerfile .
+  - docker build -t registry.cn-hangzhou.aliyuncs.com/shiningrise/osharp_api:v9.0.0 -f samples/web/Liuliu.Demo.WebApi/Dockerfile .
   - docker login --username=shiningrise@aliyun.com --password=$DOCKER_PASSWORD registry.cn-hangzhou.aliyuncs.com
-  - docker push registry.cn-shanghai.aliyuncs.com/shiningrise/osharp_api:v9.0.0
+  - docker push registry.cn-hangzhou.aliyuncs.com/shiningrise/osharp_api:v9.0.0
   - echo 项目构建且推送成功
 
 - name: deploy
@@ -39,7 +39,8 @@ steps:
       #- docker rmi $(docker images | grep "none" | awk '{print $3}')     
       - echo 项目清理成功
       - cd /data/
-      - docker-compose up -d
+      - docker pull registry-vpc.cn-hangzhou.aliyuncs.com/shiningrise/osharp_api:v9.0.0
+      - docker compose up -d
       - echo 项目部署成功
       
 volumes:
@@ -50,14 +51,4 @@ volumes:
 # 可限制哪些分支可以推送自动 CICD
 trigger:
   branch:  
-    - dev/snow
-
-# 增加全局webhook设置
-webhook_endpoint:
-  image: plugins/webhook
-  settings:
-    urls: 
-      - https://drone.wuxiaoyang.top/hook?secret=XgdBzjVcpGjQzh3KF7eMN4oDcG5oiUAF
-    timeout: 120  # 设置webhook超时时间为120秒
-    method: POST
-    content_type: application/json
+    - snow

@@ -3,13 +3,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 # 安装curl用于健康检查
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt install -y curl sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
 USER app
 EXPOSE 80
+EXPOSE 8080
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Debug 
 WORKDIR /src
 
 # 复制项目文件，优化缓存
@@ -46,15 +48,12 @@ WORKDIR "/src/samples/web/Liuliu.Demo.WebApi"
 RUN dotnet build "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Debug 
 RUN dotnet publish "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# 设置HTTP客户端超时环境变量
-ENV DOTNET_HTTPCLIENT_DEFAULT_TIMEOUT=300
-ENV DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2UNENCRYPTEDSUPPORT=1
 # 添加健康检查
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:80/health || exit 1
+#HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8080/health || exit 1
 ENTRYPOINT ["dotnet", "Liuliu.Demo.WebApi.dll"]

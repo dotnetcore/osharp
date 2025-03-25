@@ -45,8 +45,8 @@ namespace Liuliu.Demo.Web
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
-                .AddPack<SqlServerDefaultDbContextMigrationPack>()
-                .AddPack<SqlServerTenantDbContextMigrationPack>() //多租户数据库支持
+                .AddPack<SqliteDefaultDbContextMigrationPack>()
+                .AddPack<SqliteTenantDbContextMigrationPack>() //多租户数据库支持
                 .AddPack<MultiTenancyPack>() //多住户注入
                 //.AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
@@ -67,7 +67,7 @@ namespace Liuliu.Demo.Web
             }
             else
             {
-                app.UseHttpsRedirection();
+                //app.UseHttpsRedirection();
             }
 
             // 添加多租户中间件
