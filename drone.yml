@@ -45,3 +45,8 @@ volumes:
   - name: docker-sock
     host:
       path: /var/run/docker.sock
+      
+# 可限制哪些分支可以推送自动 CICD
+trigger:
+  branch:  
+    - dev/snow
