@@ -54,6 +54,9 @@ RUN dotnet publish "Liuliu.Demo.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN mkdir -pm 777 /app/data
+
 # 添加健康检查
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8080/health || exit 1
 ENTRYPOINT ["dotnet", "Liuliu.Demo.WebApi.dll"]

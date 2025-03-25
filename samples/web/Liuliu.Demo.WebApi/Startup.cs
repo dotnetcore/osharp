@@ -23,16 +23,50 @@ using OSharp.Redis;
 using OSharp.Swagger;
 using OSharp.Caching;
 using Liuliu.Demo.Web.Startups.Yitter;
-
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Configuration;
+using OSharp.Core.Options;
+using System.Linq;
 
 namespace Liuliu.Demo.Web
 {
     public class Startup
     {
+        public Startup()
+        {
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            var _configuration = services.GetConfiguration();
+
+            // 添加健康检查服务
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddCheck("sqlite", () =>
+                {
+                    try
+                    {
+                        var options = _configuration.GetSection("OSharp").Get<OsharpOptions>();
+                        var dbConfig = options?.DbContexts?.FirstOrDefault(m => m.Value.DatabaseType ==  DatabaseType.Sqlite).Value;
+                        if (dbConfig == null || string.IsNullOrEmpty(dbConfig.ConnectionString))
+                        {
+                            return HealthCheckResult.Unhealthy("数据库配置不存在");
+                        }
+                        using var connection = new Microsoft.Data.Sqlite.SqliteConnection(dbConfig.ConnectionString);
+                        connection.Open();
+                        return HealthCheckResult.Healthy();
+                    }
+                    catch (Exception ex)
+                    {
+                        return HealthCheckResult.Unhealthy(exception: ex);
+                    }
+                });
+
             services.AddOSharp()
                 .AddPack<Log4NetPack>()
                 .AddPack<AutoMapperPack>()
@@ -40,18 +74,18 @@ namespace Liuliu.Demo.Web
                 .AddPack<MiniProfilerPack>()
                 .AddPack<SwaggerPack>()
                 // .AddPack<RedisPack>()
-                .AddPack<YitterIdGeneratorPack> () 
+                .AddPack<YitterIdGeneratorPack>()
                 .AddPack<SystemsPack>()
                 .AddPack<AuthenticationPack>()
                 .AddPack<FunctionAuthorizationPack>()
                 .AddPack<DataAuthorizationPack>()
                 .AddPack<SqliteDefaultDbContextMigrationPack>()
-                .AddPack<SqliteTenantDbContextMigrationPack>() //多租户数据库支持
-                .AddPack<MultiTenancyPack>() //多住户注入
+                .AddPack<SqliteTenantDbContextMigrationPack>()
+                .AddPack<MultiTenancyPack>()
                 //.AddPack<HangfirePack>()
                 .AddPack<AuditPack>()
                 .AddPack<InfosPack>();
-            
+
             services.AddSingleton<IEntityBatchConfiguration, PropertyCommentConfiguration>();
             services.AddSingleton<IEntityBatchConfiguration, PropertyUtcDateTimeConfiguration>();
         }
@@ -69,6 +103,27 @@ namespace Liuliu.Demo.Web
             {
                 //app.UseHttpsRedirection();
             }
+
+            // 添加健康检查终端点
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = async (context, report) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    var result = new
+                    {
+                        status = report.Status.ToString(),
+                        checks = report.Entries.Select(entry => new
+                        {
+                            name = entry.Key,
+                            status = entry.Value.Status.ToString(),
+                            description = entry.Value.Description,
+                            duration = entry.Value.Duration
+                        })
+                    };
+                    await context.Response.WriteAsJsonAsync(result);
+                }
+            });
 
             // 添加多租户中间件
             app.UseMiddleware<TenantMiddleware>();
