@@ -33,7 +33,8 @@ public class IdentityPack : IdentityPackBase<UserStore, RoleStore, User, long, U
         services.AddScoped<IIdentityContract, IdentityService>();
         services.AddSingleton<IMapTuple, AutoMapperConfiguration>();
         services.AddSingleton<ISeedDataInitializer, RoleSeedDataInitializer>();
-            
+        services.AddSingleton<ISeedDataInitializer, UserSeedDataInitializer>();
+
         IConfiguration configuration = services.GetConfiguration();
         services.AddCaptcha(configuration);
 
