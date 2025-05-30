@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <VersionMain>9.0</VersionMain>
-    <VersionPrefix>1</VersionPrefix>
+    <VersionPrefix>2</VersionPrefix>
     <VersionSuffix>-snow</VersionSuffix>
     <VersionSuffixVersion></VersionSuffixVersion>
     <Version>$(VersionMain).$(VersionPrefix)$(VersionSuffix)$(VersionSuffixVersion)</Version>
