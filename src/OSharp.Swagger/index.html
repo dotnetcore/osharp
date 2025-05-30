@@ -1,4 +1,4 @@
-﻿<!-- HTML for static distribution bundle build -->
+<!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,11 +25,164 @@
             margin: 0;
             background: #fafafa;
         }
+
+        /* 登录界面样式 */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .login-form {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            min-width: 400px;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #45a049;
+        }
+
+        .login-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #f44336;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* 顶部导航栏 */
+        .auth-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 0 0 0 8px;
+        }
+
+        .auth-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            padding: 6px 12px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background: #da190b;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
     %(HeadContent)
 </head>
 
 <body>
+    <!-- 登录界面 -->
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-form">
+            <h2>API 文档登录</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="account">账号:</label>
+                    <input type="text" id="account" name="account" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn" id="login-btn">登录</button>
+                <div id="error-message" class="error-message"></div>
+                <div id="success-message" class="success-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 认证信息显示 -->
+    <div id="auth-header" class="auth-header hidden">
+        <div class="auth-info">
+            <span class="user-info">已登录用户: <span id="current-user"></span></span>
+            <button id="debug-auth-btn" class="logout-btn" style="background: #2196F3; margin-right: 10px;">调试认证</button>
+            <button id="logout-btn" class="logout-btn">退出登录</button>
+        </div>
+    </div>
+
     <div id="swagger-ui"></div>
 <script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.0.138+gcc91adf599"
         data-version="4.0.138+gcc91adf599" data-path="/profiler/" data-scheme=""
@@ -48,6 +201,206 @@
     <script src="./swagger-ui-bundle.js"></script>
     <script src="./swagger-ui-standalone-preset.js"></script>
     <script>
+        // 认证管理
+        class AuthManager {
+            constructor() {
+                this.tokenKey = 'swagger_auth_token';
+                this.userKey = 'swagger_auth_user';
+                this.loginUrl = '/api/identity/token'; // 根据实际登录接口调整
+            }
+
+            // 获取存储的 token
+            getToken() {
+                return localStorage.getItem(this.tokenKey);
+            }
+
+            // 获取存储的用户信息
+            getUser() {
+                return localStorage.getItem(this.userKey);
+            }
+
+            // 存储 token 和用户信息
+            setAuth(token, user) {
+                localStorage.setItem(this.tokenKey, token);
+                localStorage.setItem(this.userKey, user);
+            }
+
+            // 清除认证信息
+            clearAuth() {
+                localStorage.removeItem(this.tokenKey);
+                localStorage.removeItem(this.userKey);
+            }
+
+            // 检查是否已登录
+            isAuthenticated() {
+                return !!this.getToken();
+            }
+
+            // 登录
+            async login(account, password) {
+                try {
+                    const response = await fetch(this.loginUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ account, password,grantType:"password" })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('===========================================================');
+                        console.log(data);
+                        // 根据实际API返回结构调整
+                        const token = data.data.accessToken;
+                        this.setAuth(token, account);
+                        return { success: true, token };
+                    } else {
+                        const error = await response.text();
+                        return { success: false, error: error || '登录失败' };
+                    }
+                } catch (error) {
+                    return { success: false, error: '网络错误: ' + error.message };
+                }
+            }
+
+            // 退出登录
+            logout() {
+                // 清除 Swagger UI 认证信息
+                if (window.ui) {
+                    try {
+                        // 清除 API Key 认证
+                        window.ui.preauthorizeApiKey('Authorization', '');
+                        
+                        // 清除所有认证信息
+                        const authActions = window.ui.getSystem().authActions;
+                        if (authActions) {
+                            authActions.logout(['Authorization']);
+                        }
+                    } catch (e) {
+                        console.log('清除认证信息失败:', e);
+                    }
+                }
+                
+                this.clearAuth();
+                location.reload();
+            }
+        }
+
+        // 初始化认证管理器
+        const authManager = new AuthManager();
+
+        // 显示/隐藏登录界面
+        function showLogin() {
+            document.getElementById('login-overlay').classList.remove('hidden');
+            document.getElementById('auth-header').classList.add('hidden');
+        }
+
+        function hideLogin() {
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('auth-header').classList.remove('hidden');
+            document.getElementById('current-user').textContent = authManager.getUser();
+            
+            // 设置 Swagger UI 的 Authorization 认证信息
+            const token = authManager.getToken();
+            if (token && window.ui) {
+                const bearerToken = 'Bearer ' + token;
+                // 设置 API Key 认证
+                window.ui.preauthorizeApiKey('Authorization', bearerToken);
+                
+                // 设置认证输入框的值
+                setSwaggerAuthValue(token);
+                
+                // 也可以通过这种方式设置（备用方案）
+                try {
+                    const authActions = window.ui.getSystem().authActions;
+                    if (authActions) {
+                        authActions.authorize({
+                            'Authorization': {
+                                name: 'Authorization',
+                                schema: {
+                                    type: 'apiKey',
+                                    in: 'header',
+                                    name: 'Authorization'
+                                },
+                                value: bearerToken
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.log('备用认证设置方法失败:', e);
+                }
+            }
+        }
+
+        // 显示消息
+        function showMessage(message, isError = true) {
+            const errorEl = document.getElementById('error-message');
+            const successEl = document.getElementById('success-message');
+            
+            if (isError) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+                successEl.style.display = 'none';
+            } else {
+                successEl.textContent = message;
+                successEl.style.display = 'block';
+                errorEl.style.display = 'none';
+            }
+        }
+
+        // 登录表单处理
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const account = document.getElementById('account').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('login-btn');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = '登录中...';
+            
+            const result = await authManager.login(account, password);
+            
+            if (result.success) {
+                showMessage('登录成功!', false);
+                setTimeout(() => {
+                    hideLogin();
+                    initSwagger();
+                }, 1000);
+            } else {
+                showMessage(result.error);
+            }
+            
+            loginBtn.disabled = false;
+            loginBtn.textContent = '登录';
+        });
+
+        // 退出登录处理
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('确定要退出登录吗？')) {
+                authManager.logout();
+            }
+        });
+
+        // 调试认证按钮处理
+        document.getElementById('debug-auth-btn').addEventListener('click', () => {
+            console.log('=== 手动调试认证 ===');
+            const token = authManager.getToken();
+            if (token) {
+                console.log('当前token:', token);
+                setSwaggerAuthValue(token);
+                
+                // 额外的调试信息
+                setTimeout(() => {
+                    console.log('=== 3秒后再次检查 ===');
+                    debugSwaggerAuthElements();
+                }, 3000);
+            } else {
+                console.log('未找到token');
+            }
+        });
+
         /* Source: https://gist.github.com/lamberta/3768814
          * Parse a string function definition and return a function object. Does not use eval.
          * @param {string} str
@@ -77,7 +430,8 @@
             return new Fn();
         }
 
-        window.onload = function () {
+        // 初始化 Swagger UI
+        function initSwagger() {
             var configObject = JSON.parse('%(ConfigObject)');
             var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
 
@@ -107,15 +461,320 @@
             if (interceptors.ResponseInterceptorFunction)
                 configObject.responseInterceptor = parseFunction(interceptors.ResponseInterceptorFunction);
 
+            // 添加请求拦截器，自动添加 Authorization header
+            const originalRequestInterceptor = configObject.requestInterceptor;
+            configObject.requestInterceptor = function(request) {
+                const token = authManager.getToken();
+                if (token) {
+                    request.headers['Authorization'] = 'Bearer ' + token;
+                    
+                    // 尝试设置 Swagger UI 中的认证输入框值
+                    try {
+                        // 常见的 Swagger UI 认证输入框选择器
+                        const selectors = [
+                            '#api_key_value',
+                            'input[placeholder*="api_key"]',
+                            'input[name="Authorization"]',
+                            '.auth-wrapper input[type="text"]',
+                            '.authorization__btn + div input'
+                        ];
+                        
+                        let authInput = null;
+                        for (const selector of selectors) {
+                            authInput = document.querySelector(selector);
+                            if (authInput) {
+                                console.log('找到认证输入框:', selector);
+                                break;
+                            }
+                        }
+                        
+                        if (authInput) {
+                            authInput.value = 'Bearer ' + token;
+                            // 触发 change 事件确保 Swagger UI 识别到值的变化
+                            authInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            authInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        } else {
+                            console.log('未找到认证输入框，可能还未渲染');
+                        }
+                    } catch (e) {
+                        console.log('设置认证输入框失败:', e);
+                    }
+                }
+                
+                // 如果有原始拦截器，也执行它
+                if (originalRequestInterceptor) {
+                    return originalRequestInterceptor(request);
+                }
+                return request;
+            };
+
+            // 添加响应拦截器，处理 401 未授权响应
+            const originalResponseInterceptor = configObject.responseInterceptor;
+            configObject.responseInterceptor = function(response) {
+                if (response.status === 401) {
+                    alert('登录已过期，请重新登录');
+                    authManager.logout();
+                    return response;
+                }
+                
+                // 如果有原始拦截器，也执行它
+                if (originalResponseInterceptor) {
+                    return originalResponseInterceptor(response);
+                }
+                return response;
+            };
+
             // Begin Swagger UI call region
-
             const ui = SwaggerUIBundle(configObject);
-
             ui.initOAuth(oauthConfigObject);
-
             // End Swagger UI call region
 
             window.ui = ui;
+            
+            // 启用 DOM 变化监听器
+            setupAuthObserver();
+            
+            // 在 Swagger UI 初始化完成后设置认证信息
+            setTimeout(() => {
+                const token = authManager.getToken();
+                if (token) {
+                    const bearerToken = 'Bearer ' + token;
+                    // 设置 API Key 认证
+                    try {
+                        ui.preauthorizeApiKey('Authorization', bearerToken);
+                        console.log('已自动设置 Authorization 认证信息');
+                    } catch (e) {
+                        console.log('设置认证信息失败:', e);
+                    }
+                    
+                    // 设置认证输入框的值
+                    setSwaggerAuthValue(token);
+                    
+                    // 备用方案
+                    try {
+                        const authActions = ui.getSystem().authActions;
+                        if (authActions) {
+                            authActions.authorize({
+                                'Authorization': {
+                                    name: 'Authorization',
+                                    schema: {
+                                        type: 'apiKey',
+                                        in: 'header',
+                                        name: 'Authorization'
+                                    },
+                                    value: bearerToken
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.log('备用认证设置失败:', e);
+                    }
+                    
+                    // 多次重试设置认证值
+                    let retryCount = 0;
+                    const maxRetries = 5;
+                    const retryInterval = setInterval(() => {
+                        retryCount++;
+                        console.log(`第 ${retryCount} 次重试设置认证值`);
+                        const success = setSwaggerAuthValue(token);
+                        if (success || retryCount >= maxRetries) {
+                            clearInterval(retryInterval);
+                            if (success) {
+                                console.log('认证值设置成功');
+                            } else {
+                                console.log('达到最大重试次数，认证值设置失败');
+                            }
+                        }
+                    }, 2000); // 每2秒重试一次
+                }
+            }, 1000); // 延迟1秒确保UI完全加载
+        }
+
+        // 页面加载时检查认证状态
+        window.onload = function () {
+            if (authManager.isAuthenticated()) {
+                hideLogin();
+                initSwagger();
+            } else {
+                showLogin();
+            }
+        }
+
+        // 调试函数：探索 Swagger UI 的认证相关元素
+        function debugSwaggerAuthElements() {
+            console.log('=== 开始探索 Swagger UI 认证元素 ===');
+            
+            // 查找所有可能的认证相关元素
+            const allInputs = document.querySelectorAll('input');
+            console.log('所有输入框数量:', allInputs.length);
+            
+            allInputs.forEach((input, index) => {
+                const info = {
+                    index: index,
+                    id: input.id,
+                    name: input.name,
+                    type: input.type,
+                    placeholder: input.placeholder,
+                    className: input.className,
+                    value: input.value,
+                    'data-name': input.getAttribute('data-name'),
+                    parent: input.parentElement ? input.parentElement.className : 'no parent'
+                };
+                
+                // 只显示可能与认证相关的输入框
+                if (input.type === 'text' || input.type === 'password' || 
+                    input.placeholder?.includes('api') || 
+                    input.placeholder?.includes('key') || 
+                    input.placeholder?.includes('token') ||
+                    input.placeholder?.includes('auth') ||
+                    input.id?.includes('api') ||
+                    input.id?.includes('auth') ||
+                    input.name?.includes('auth') ||
+                    input.className?.includes('auth')) {
+                    console.log('可能的认证输入框:', info);
+                }
+            });
+            
+            // 查找包含 "auth" 或 "api" 的所有元素
+            const authElements = document.querySelectorAll('*[class*="auth"], *[id*="auth"], *[class*="api"], *[id*="api"]');
+            console.log('包含auth/api的元素数量:', authElements.length);
+            authElements.forEach((el, index) => {
+                if (index < 10) { // 只显示前10个
+                    console.log(`认证相关元素 ${index}:`, {
+                        tagName: el.tagName,
+                        id: el.id,
+                        className: el.className,
+                        textContent: el.textContent?.substring(0, 50) + '...'
+                    });
+                }
+            });
+            
+            console.log('=== 认证元素探索完成 ===');
+        }
+
+        // 使用 MutationObserver 监听 DOM 变化
+        function setupAuthObserver() {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                // 检查新添加的节点是否包含认证相关元素
+                                const authInputs = node.querySelectorAll ? 
+                                    node.querySelectorAll('input[placeholder*="api"], input[id*="api"], input[class*="auth"], input[placeholder*="Authorization"]') : 
+                                    [];
+                                
+                                if (authInputs.length > 0) {
+                                    console.log('检测到新的认证输入框:', authInputs);
+                                    const token = authManagerauthManager.getToken();
+                                    if (token) {
+                                        setTimeout(() => setSwaggerAuthValue(token), 100);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+            
+            console.log('DOM 变化监听器已启动');
+        }
+
+        // 设置 Swagger UI 认证输入框的值（增强版）
+        function setSwaggerAuthValue(token) {
+            if (!token) return;
+            
+            const bearerToken = 'Bearer ' + token;
+            
+            // 首先运行调试函数
+            //debugSwaggerAuthElements();
+            
+            // 扩展的选择器列表
+            const selectors = [
+                '#api_key_value',
+                'input[placeholder*="api_key"]',
+                'input[placeholder*="Authorization"]',
+                'input[placeholder*="Bearer"]',
+                'input[name="Authorization"]',
+                'input[name="api_key"]',
+                'input[data-name="Authorization"]',
+                'input[data-name="api_key"]',
+                '.auth-wrapper input[type="text"]',
+                '.authorization__btn + div input',
+                '.auth-container input',
+                '.scheme-container input',
+                '.auth-btn-wrapper input',
+                'input[aria-label*="auth"]',
+                'input[aria-label*="api"]',
+                // 通用的文本输入框在认证相关的父容器中
+                '.swagger-ui .auth-wrapper input',
+                '.swagger-ui .authorization input',
+                '.swagger-ui .scheme-container input',
+                // 更宽泛的搜索
+                'div[class*="auth"] input[type="text"]',
+                'div[class*="authorization"] input[type="text"]',
+                'section[class*="auth"] input[type="text"]'
+            ];
+            
+            console.log('开始尝试设置认证值:', bearerToken);
+            
+            let success = false;
+            for (const selector of selectors) {
+                try {
+                    const elements = document.querySelectorAll(selector);
+                    if (elements.length > 0) {
+                        console.log(`选择器 "${selector}" 找到 ${elements.length} 个元素`);
+                        elements.forEach((element, index) => {
+                            console.log(`  元素 ${index}:`, {
+                                id: element.id,
+                                name: element.name,
+                                placeholder: element.placeholder,
+                                value: element.value,
+                                className: element.className
+                            });
+                            
+                            element.value = bearerToken;
+                            // 触发多种事件
+                            ['input', 'change', 'blur', 'keyup'].forEach(eventType => {
+                                element.dispatchEvent(new Event(eventType, { bubbles: true }));
+                            });
+                            success = true;
+                        });
+                        if (success) break;
+                    }
+                } catch (e) {
+                    console.log(`选择器 "${selector}" 出错:`, e);
+                }
+            }
+            
+            if (!success) {
+                console.log('所有选择器都未找到认证输入框');
+                // 尝试更暴力的方法：找到所有文本输入框并检查其上下文
+                const allTextInputs = document.querySelectorAll('input[type="text"]');
+                console.log('找到的所有文本输入框数量:', allTextInputs.length);
+                
+                allTextInputs.forEach((input, index) => {
+                    const context = input.parentElement?.textContent?.toLowerCase() || '';
+                    if (context.includes('api') || context.includes('auth') || context.includes('key') || context.includes('token')) {
+                        console.log(`可能的认证输入框 ${index}:`, {
+                            id: input.id,
+                            placeholder: input.placeholder,
+                            context: context.substring(0, 100)
+                        });
+                        input.value = bearerToken;
+                        ['input', 'change', 'blur'].forEach(eventType => {
+                            input.dispatchEvent(new Event(eventType, { bubbles: true }));
+                        });
+                    }
+                });
+            }
+            
+            return success;
         }
     </script>
 </body>
