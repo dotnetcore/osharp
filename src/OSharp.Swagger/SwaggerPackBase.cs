@@ -131,7 +131,7 @@ public abstract class SwaggerPackBase : AspOsharpPack
 
             options.RoutePrefix = swagger.RoutePrefix;
 
-            //if (swagger.MiniProfiler)
+            if (swagger.MiniProfiler)
             {
                 options.IndexStream = () => GetType().Assembly.GetManifestResourceStream("OSharp.Swagger.index.html");
             }
