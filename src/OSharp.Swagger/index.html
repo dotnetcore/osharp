@@ -251,7 +251,8 @@
                         console.log('===========================================================');
                         console.log(data);
                         // 根据实际API返回结构调整
-                        const token = data.data.accessToken;
+                        //const token = data.data.accessToken;
+                        const token = data.Data ? data.Data.AccessToken : data.data.accessToken;
                         this.setAuth(token, account);
                         return { success: true, token };
                     } else {
