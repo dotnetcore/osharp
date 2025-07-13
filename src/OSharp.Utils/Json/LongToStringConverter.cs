@@ -39,7 +39,26 @@ namespace OSharp.Json
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
             JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                // 如果是可空类型，返回null；否则抛出异常
+                if (Nullable.GetUnderlyingType(objectType) != null)
+                {
+                    return null;
+                }
+                throw new JsonSerializationException($"Cannot convert null value to {objectType}.");
+            }
+
             var jt = JToken.ReadFrom(reader);
+            // 处理空字符串的情况
+            if (jt.Type == JTokenType.String && string.IsNullOrEmpty(jt.Value<string>()))
+            {
+                if (Nullable.GetUnderlyingType(objectType) != null)
+                {
+                    return null;
+                }
+                throw new JsonSerializationException($"Cannot convert empty string to {objectType}.");
+            }
             var value = jt.Value<long>();
             return value;
         }
@@ -53,7 +72,7 @@ namespace OSharp.Json
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(long) || objectType == typeof(ulong);
+            return objectType == typeof(long?) || objectType == typeof(long) || objectType == typeof(ulong);
         }
     }
 

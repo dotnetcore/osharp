@@ -129,6 +129,19 @@ public class TestController : SiteApiControllerBase
         await RoleRepository.BulkInsertAsync(roleList.ToArray());
         return "插入完成";
     }
+
+    [HttpPost]
+    [Description("测试JsonConvert")]
+    [AllowAnonymous]
+    public async Task<JsonConvertDto> TestJsonConvert(JsonConvertDto dto)
+    {
+        return dto;
+    }
+
+    public class JsonConvertDto
+    {
+        public long? Id { get; set; }
+    }
 }
 
 public class ClassFilter : ActionFilterAttribute, IExceptionFilter
