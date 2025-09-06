@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2024.*" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.*" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.*" />
     <PackageReference Include="System.ComponentModel" Version=" 4.*" />
