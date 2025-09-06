@@ -12,15 +12,15 @@ using OSharp.Entity;
 namespace Liuliu.Demo.Web.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20231006102753_Comment")]
-    partial class Comment
+    [Migration("20250306083037_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -44,7 +44,6 @@ namespace Liuliu.Demo.Web.Migrations
 
                     b.Property<string>("PropertyJson")
                         .IsRequired()
-                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)")
                         .HasComment("实体属性信息Json字符串");
 
@@ -442,6 +441,20 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasComment("编号");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("编码");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2")
+                        .HasComment("创建时间");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit")
+                        .HasComment("是否锁定");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1163,12 +1176,10 @@ namespace Liuliu.Demo.Web.Migrations
                         .HasComment("字段");
 
                     b.Property<string>("NewValue")
-                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)")
                         .HasComment("新值");
 
                     b.Property<string>("OriginalValue")
-                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)")
                         .HasComment("旧值");
 

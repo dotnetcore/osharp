@@ -13,6 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\OSharp.EntityFrameworkCore\OSharp.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\OSharp.Hosting.Core\OSharp.Hosting.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.*" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.*" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.*" />
   </ItemGroup>
 
 </Project>
