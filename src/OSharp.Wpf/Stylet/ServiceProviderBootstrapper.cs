@@ -11,19 +11,17 @@ namespace OSharp.Wpf.Stylet;
 
 public abstract class ServiceProviderBootstrapper<TRootViewModel> : BootstrapperBase where TRootViewModel : class
 {
-    private object _rootViewModel;
+    private TRootViewModel _rootViewModel;
+    protected virtual TRootViewModel RootViewModel => this._rootViewModel ??= (TRootViewModel)this.GetInstance(typeof(TRootViewModel));
 
-    protected virtual object RootViewModel
-    {
-        get { return _rootViewModel ??= ServiceProvider.GetService(typeof(TRootViewModel)); }
-    }
+    private ServiceProvider _serviceProvider;
 
-    protected IServiceProvider ServiceProvider { get; private set; }
+    protected IServiceProvider ServiceProvider => _serviceProvider;
 
     /// <summary>
     /// Overridden from BootstrapperBase, this sets up the IoC container
     /// </summary>
-    protected sealed override void ConfigureBootstrapper()
+    protected override void ConfigureBootstrapper()
     {
         IServiceCollection services = new ServiceCollection();
 
@@ -31,7 +29,7 @@ public abstract class ServiceProviderBootstrapper<TRootViewModel> : Bootstrapper
         this.DefaultConfigureIoC(services);
         this.ConfigureIoC(services);
 
-        ServiceProvider = services.BuildServiceProvider();
+        _serviceProvider = services.BuildServiceProvider();
     }
 
     protected virtual void ConfigureIoC(IServiceCollection services)
@@ -39,22 +37,21 @@ public abstract class ServiceProviderBootstrapper<TRootViewModel> : Bootstrapper
 
     protected virtual void DefaultConfigureIoC(IServiceCollection services)
     {
-        ViewManagerConfig viewManagerConfig = new ViewManagerConfig()
+        var viewManagerConfig = new ViewManagerConfig()
         {
             ViewFactory = this.GetInstance,
-            ViewAssemblies = new List<Assembly>() { GetType().Assembly }
+            ViewAssemblies = [this.GetType().Assembly]
         };
 
-        services.AddSingleton<ViewManagerConfig>(viewManagerConfig);
-        services.AddSingleton<IViewManager, ViewManager>();
-        services.AddSingleton<IWindowManagerConfig>(this);
-        services.AddSingleton<IWindowManager>(p => new WindowManager(
-            p.GetRequiredService<IViewManager>(),
-            p.GetRequiredService<IMessageBoxViewModel>,
-            p.GetRequiredService<IWindowManagerConfig>()));
-        services.AddSingleton<IEventAggregator, EventAggregator>();
-        services.AddTransient<IMessageBoxViewModel, MessageBoxViewModel>();
+        services.AddSingleton<IViewManager>(new ViewManager(viewManagerConfig));
         services.AddTransient<MessageBoxView>();
+
+        services.AddSingleton<IWindowManagerConfig>(this);
+        services.AddSingleton<IWindowManager, WindowManager>();
+        services.AddSingleton<IEventAggregator, EventAggregator>();
+        services.AddTransient<IMessageBoxViewModel, MessageBoxViewModel>(); // Not singleton!
+        // Also need a factory
+        services.AddSingleton<Func<IMessageBoxViewModel>>(() => new MessageBoxViewModel());
     }
 
     /// <summary>
@@ -82,5 +79,6 @@ public abstract class ServiceProviderBootstrapper<TRootViewModel> : Bootstrapper
     {
         base.Dispose();
         ScreenExtensions.TryDispose(_rootViewModel);
+        _serviceProvider?.Dispose();
     }
 }
