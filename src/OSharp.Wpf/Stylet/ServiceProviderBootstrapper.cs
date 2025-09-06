@@ -9,7 +9,7 @@
 
 namespace OSharp.Wpf.Stylet;
 
-public class ServiceProviderBootstrapper<TRootViewModel> : BootstrapperBase where TRootViewModel : class
+public abstract class ServiceProviderBootstrapper<TRootViewModel> : BootstrapperBase where TRootViewModel : class
 {
     private object _rootViewModel;
 
@@ -44,10 +44,14 @@ public class ServiceProviderBootstrapper<TRootViewModel> : BootstrapperBase wher
             ViewFactory = this.GetInstance,
             ViewAssemblies = new List<Assembly>() { GetType().Assembly }
         };
-        services.AddSingleton<IViewManager>(new ViewManager(viewManagerConfig));
 
+        services.AddSingleton<ViewManagerConfig>(viewManagerConfig);
+        services.AddSingleton<IViewManager, ViewManager>();
         services.AddSingleton<IWindowManagerConfig>(this);
-        services.AddSingleton<IWindowManager>(p => new WindowManager(p.GetService<IViewManager>(), p.GetService<IMessageBoxViewModel>, this));
+        services.AddSingleton<IWindowManager>(p => new WindowManager(
+            p.GetRequiredService<IViewManager>(),
+            p.GetRequiredService<IMessageBoxViewModel>,
+            p.GetRequiredService<IWindowManagerConfig>()));
         services.AddSingleton<IEventAggregator, EventAggregator>();
         services.AddTransient<IMessageBoxViewModel, MessageBoxViewModel>();
         services.AddTransient<MessageBoxView>();
