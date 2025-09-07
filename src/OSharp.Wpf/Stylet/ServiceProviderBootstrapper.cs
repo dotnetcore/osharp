@@ -40,7 +40,7 @@ public abstract class ServiceProviderBootstrapper<TRootViewModel> : Bootstrapper
         var viewManagerConfig = new ViewManagerConfig()
         {
             ViewFactory = this.GetInstance,
-            ViewAssemblies = [this.GetType().Assembly]
+            ViewAssemblies = new List<Assembly>(){ this.GetType().Assembly}
         };
 
         services.AddSingleton<IViewManager>(new ViewManager(viewManagerConfig));
