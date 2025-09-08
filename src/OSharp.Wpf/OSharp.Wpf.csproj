@@ -4,7 +4,7 @@
   <Import Project="../../build/version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows;net7.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
     <PackageId>OSharp.Wpf</PackageId>
     <Summary>OSharp Wpf 客户端组件</Summary>
     <Description>OSharp Wpf 客户端组件，封装Wpf客户端的辅助操作</Description>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.*" />
-    <PackageReference Include="Stylet" Version="1.*" />
+    <PackageReference Include="OSharp.Stylet" Version="1.*" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-windows'">
